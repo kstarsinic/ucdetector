@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?eclipse version="3.3"?>
+<plugin>
+  <!-- ===================================================================== -->
+  <!-- POP UP                                                                -->
+  <!-- ===================================================================== -->
+	<extension point="org.eclipse.ui.popupMenus">
+		<objectContribution
+				adaptable="true"
+				objectClass="org.eclipse.jdt.core.IJavaElement"
+				id="org.ucdetector.popupMenus.project">
+			<menu label="%popupMenus.root"
+					path="additions"
+					id="ucdetectorGroup">
+      </menu>
+		</objectContribution>
+
+    <!-- ExampleAction ============================ -->
+		<objectContribution
+				adaptable="true"
+				id="org.ucdetector.popupMenus.project.Analyze"
+				objectClass="org.eclipse.jdt.core.IJavaElement">
+			<action class="org.ucdetector.action.ExampleAction"
+					enablesFor="+"
+					id="org.ucdetector.action.ExampleAction"
+					label="%ExampleAction.label"
+					tooltip="%ExampleAction.tooltip"
+					icon="icons/example.gif"
+					menubarPath="ucdetectorGroup/additional"/>
+		</objectContribution>
+	</extension>
+
+  <!-- ===================================================================== -->
+   <!-- MARKER                                                               -->
+  <!-- ===================================================================== -->
+	<extension
+			id="org.ucdetector.analyzeMarkerExample"
+			name="UCDetector Marker (Example)"
+			point="org.eclipse.core.resources.markers">
+		<super type="org.eclipse.core.resources.problemmarker"/>
+		<super type="org.eclipse.core.resources.textmarker"/>
+		<super type="org.ucdetector.analyzeMarker"/>
+		<persistent value="true"></persistent>
+	</extension>
+
+	<extension point="org.eclipse.ui.editors.annotationTypes">
+		<type name="org.ucdetector.analyzeMarkerExample"
+				super="org.eclipse.ui.workbench.texteditor.warning"
+				markerType="org.ucdetector.analyzeMarkerExample"/>
+	</extension>
+ 
+	<extension point="org.eclipse.ui.editors.markerAnnotationSpecification">
+		<specification
+				annotationType="org.ucdetector.analyzeMarkerExample"
+				icon="icons/example.gif"
+				includeOnPreferencePage="true"
+				label="%specification.label.0"/>
+	</extension>
+</plugin>
