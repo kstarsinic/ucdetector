@@ -1,0 +1,255 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?eclipse version="3.3"?>
+<plugin>
+  <!-- ===================================================================== -->
+  <!-- PREFERENCE PAGE                                                       -->
+  <!-- ===================================================================== -->
+  <extension point="org.eclipse.ui.preferencePages">
+    <page name="%preferencePages.name"
+        class="org.ucdetector.preferences.UCDetectorPreferencePage"
+        id="org.ucdetector.preferences.PreferencePage">
+    </page>
+  </extension>
+
+  <!-- ===================================================================== -->
+  <!-- PREFERENCES                                                           -->
+  <!-- ===================================================================== -->
+  <extension point="org.eclipse.core.runtime.preferences">
+    <initializer class="org.ucdetector.preferences.PreferenceInitializer"/>
+  </extension>
+  
+  <!-- ===================================================================== -->
+  <!-- POP UP                                                                -->
+  <!-- ===================================================================== -->
+  <extension point="org.eclipse.ui.popupMenus">
+  
+  <!-- =====================================================================
+      see: SynchronizeAction
+    objectClass=org.eclipse.core.resources.mapping.ResourceMapping
+   -->
+    <objectContribution
+        adaptable="true"
+        objectClass="org.eclipse.jdt.core.IJavaElement"
+        id="org.ucdetector.popupMenus.project">
+      <menu label="%popupMenus.root"
+          path="additions"
+          id="ucdetectorGroup">
+      </menu>
+    </objectContribution>
+
+    <!-- COUNT ============================ -->
+    <objectContribution
+        adaptable="true"
+        id="org.ucdetector.popupMenus.project.Analyze"
+        objectClass="org.eclipse.jdt.core.IJavaElement">
+      <action class="org.ucdetector.action.CountAction"
+          enablesFor="+"
+          id="org.ucdetector.CountAction"
+          label="%CountAction.label"
+          tooltip="%CountAction.tooltip"
+          icon="$nl$/icons/info_obj.gif"
+          menubarPath="ucdetectorGroup/ucdetector"/>
+    </objectContribution>
+
+    <!-- CLEAN MARKERS ============================ -->
+    <objectContribution
+        adaptable="true"
+        id="org.ucdetector.popupMenus.project.Analyze"
+        objectClass="org.eclipse.jdt.core.IJavaElement">
+      <action class="org.ucdetector.action.CleanMarkersAction"
+          enablesFor="+"
+          id="org.ucdetector.CleanMarkersAction"
+          label="%CleanMarkersAction.label"
+          tooltip="%CleanMarkersAction.tooltip"
+          icon="$nl$/icons/remove.gif"
+          menubarPath="ucdetectorGroup/ucdetector"/>
+    </objectContribution>
+
+    <!-- DETECT UC ============================ -->
+    <objectContribution
+        adaptable="true"
+        id="org.ucdetector.popupMenus.project.Analyze"
+        objectClass="org.eclipse.jdt.core.IJavaElement">
+      <action class="org.ucdetector.action.UCDetectorAction"
+          enablesFor="+"
+          id="org.ucdetector.SearchAction"
+          label="%DetectAction.label"
+          tooltip="%DetectAction.tooltip"
+          icon="$nl$/icons/ucd.gif"
+          menubarPath="ucdetectorGroup/ucdetector"/>
+    </objectContribution>
+
+    <!-- DETECT CYCLE ============================ -->
+    <objectContribution
+        adaptable="true"
+        id="org.ucdetector.popupMenus.project.Analyze"
+        objectClass="org.eclipse.jdt.core.IJavaElement">
+      <action class="org.ucdetector.action.CycleAction"
+          enablesFor="+"
+          id="org.ucdetector.cycle.CycleAction"
+          label="%CycleAction.label"
+          tooltip="%CycleAction.tooltip"
+          icon="$nl$/icons/cycle.gif"
+          menubarPath="ucdetectorGroup/cycle"/>
+    </objectContribution>
+  </extension>
+
+  <!-- ===================================================================== -->
+   <!-- MARKER                                                               -->
+  <!-- ===================================================================== -->
+  <!-- base -->
+  <!-- *** 1 *** -->
+  <extension
+      id="org.ucdetector.analyzeMarker"
+      name="UCDetector Marker"
+      point="org.eclipse.core.resources.markers">
+    <persistent value="true"/>
+    <super type="org.eclipse.core.resources.problemmarker"/>
+    <super type="org.eclipse.core.resources.textmarker"/>
+  </extension>
+  <!-- References -->
+  <extension
+      id="org.ucdetector.analyzeMarkerReference"
+      name="UCDetector Marker (References)"
+      point="org.eclipse.core.resources.markers">
+    <super type="org.eclipse.core.resources.problemmarker"/>
+    <super type="org.eclipse.core.resources.textmarker"/>
+    <super type="org.ucdetector.analyzeMarker"/>
+    <persistent
+        value="true"></persistent>
+  </extension>
+   <!-- visibility -->
+  <extension
+      id="org.ucdetector.analyzeMarkerVisibilityPrivate"
+      name="UCDetector Marker (Visibility: Use private)"
+      point="org.eclipse.core.resources.markers">
+    <super type="org.eclipse.core.resources.problemmarker"/>
+    <super type="org.eclipse.core.resources.textmarker"/>
+    <super type="org.ucdetector.analyzeMarker"/>
+    <persistent  value="true"></persistent>
+  </extension>
+  <extension
+      id="org.ucdetector.analyzeMarkerVisibilityProtected"
+      name="UCDetector Marker (Visibility: Use protected)"
+      point="org.eclipse.core.resources.markers">
+    <super type="org.eclipse.core.resources.problemmarker"/>
+    <super type="org.eclipse.core.resources.textmarker"/>
+    <super type="org.ucdetector.analyzeMarker"/>
+    <persistent  value="true"></persistent>
+  </extension>
+  <extension
+      id="org.ucdetector.analyzeMarkerVisibilityDefault"
+      name="UCDetector Marker (Visibility: Use default)"
+      point="org.eclipse.core.resources.markers">
+    <super type="org.eclipse.core.resources.problemmarker"/>
+    <super type="org.eclipse.core.resources.textmarker"/>
+    <super type="org.ucdetector.analyzeMarker"/>
+    <persistent  value="true"></persistent>
+  </extension>
+   <!-- final -->
+  <extension
+      id="org.ucdetector.analyzeMarkerFinal"
+      name="UCDetector Marker (Final)"
+      point="org.eclipse.core.resources.markers">
+    <super type="org.eclipse.core.resources.problemmarker"/>
+    <super type="org.eclipse.core.resources.textmarker"/>
+    <super type="org.ucdetector.analyzeMarker"/>
+    <persistent  value="true"></persistent>
+  </extension>
+  
+   <!-- ucd icon -->
+    <!-- *** 2 *** -->
+  <extension point="org.eclipse.ui.editors.annotationTypes">
+    <type
+        name="org.ucdetector.analyzeAnnotationReference"
+        super="org.eclipse.ui.workbench.texteditor.warning"
+        markerType="org.ucdetector.analyzeMarkerReference"/>
+    <!-- visibility -->
+    <type
+        name="org.ucdetector.analyzeAnnotationVisibilityPrivate"
+        super="org.eclipse.ui.workbench.texteditor.warning"
+        markerType="org.ucdetector.analyzeMarkerVisibilityPrivate"/>
+    <type
+        name="org.ucdetector.analyzeAnnotationVisibilityProtected"
+        super="org.eclipse.ui.workbench.texteditor.warning"
+        markerType="org.ucdetector.analyzeMarkerVisibilityProtected"/>
+    <type
+        name="org.ucdetector.analyzeAnnotationVisibilityDefault"
+        super="org.eclipse.ui.workbench.texteditor.warning"
+        markerType="org.ucdetector.analyzeMarkerVisibilityDefault"/>
+    <!-- visibility -->
+    <type
+        name="org.ucdetector.analyzeAnnotationFinal"
+        super="org.eclipse.ui.workbench.texteditor.warning"
+        markerType="org.ucdetector.analyzeMarkerFinal"/>
+  </extension>
+  
+  <!-- *** 3 *** -->
+  <extension point="org.eclipse.ui.editors.markerAnnotationSpecification">
+    <specification
+        annotationType="org.ucdetector.analyzeAnnotationReference"
+        icon="icons/not_found_obj.gif"
+        includeOnPreferencePage="true"
+        label="%specification.label.references"/>
+    <!-- visibility -->
+    <specification
+        annotationType="org.ucdetector.analyzeAnnotationVisibilityPrivate"
+        icon="icons/use_private.gif"
+        includeOnPreferencePage="true"
+        label="%specification.label.private"/>
+    <specification
+        annotationType="org.ucdetector.analyzeAnnotationVisibilityProtected"
+        icon="icons/use_protected.gif"
+        includeOnPreferencePage="true"
+        label="%specification.label.protected"/>
+    <specification
+        annotationType="org.ucdetector.analyzeAnnotationVisibilityDefault"
+        icon="icons/use_default.gif"
+        includeOnPreferencePage="true"
+        label="%specification.label.default"/>
+    <!-- -->
+    <specification
+        annotationType="org.ucdetector.analyzeAnnotationFinal"
+        icon="icons/use_final.gif"
+        includeOnPreferencePage="true"
+        label="%specification.label.final"/>
+  </extension>
+
+  <!-- ===================================================================== -->
+  <!-- VIEW                                                                  -->
+  <!-- ===================================================================== -->
+   <extension point="org.eclipse.ui.views">
+      <category  name="%category.name.CycleView" id="org.ucdetector.cycle.CycleView">
+      </category>
+      <view name="%view.name.CycleView"
+            icon="$nl$/icons/cycle.gif"
+            category="org.ucdetector.cycle.CycleView"
+            class="org.ucdetector.cycle.CycleView"
+            id="org.ucdetector.cycle.view.CycleView">
+      </view>
+   </extension>
+   <extension point="org.eclipse.ui.perspectiveExtensions">
+      <perspectiveExtension
+            targetID="org.eclipse.jdt.ui.JavaPerspective">
+         <view ratio="0.5"
+               relative="org.eclipse.ui.views.TaskList"
+               relationship="right"
+               id="org.ucdetector.cycle.view.CycleView">
+         </view>
+      </perspectiveExtension>
+   </extension>
+
+  <!-- ===================================================================== -->
+  <!-- HELP.TOC                                                              -->
+  <!-- ===================================================================== -->
+  <extension point="org.eclipse.help.toc">
+    <toc file="toc.xml" primary="true"></toc>
+  </extension>
+
+  <!-- ===================================================================== -->
+  <!-- HELP.CONTEXTS                                                         -->
+  <!-- ===================================================================== -->
+  <extension point="org.eclipse.help.contexts">
+    <contexts file="contexts.xml" plugin="org.ucdetector"></contexts>
+  </extension>
+</plugin>

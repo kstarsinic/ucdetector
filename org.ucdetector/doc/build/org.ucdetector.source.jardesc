@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="WINDOWS-1252" standalone="no"?>
+<jardesc>
+	<jar path="org.ucdetector/doc/build/plugins/org.ucdetector.source_0.10.0.jar"/>
+	<options
+			buildIfNeeded="true"
+			compress="true"
+			descriptionLocation="/org.ucdetector/doc/build/org.ucdetector.source.jardesc"
+			exportErrors="true"
+			exportWarnings="true"
+			includeDirectoryEntries="true"
+			overwrite="false"
+			saveDescription="true"
+			storeRefactorings="false"
+			useSourceFolders="true"/>
+	<storedRefactorings
+			deprecationInfo="true"
+			structuralOnly="false"/>
+	<selectedProjects/>
+	<selectedElements exportClassFiles="false"
+			exportJavaFiles="true"
+			exportOutputFolder="false">
+		<file path="/org.ucdetector/.options"/>
+		<folder path="/org.ucdetector/icons"/>
+		<file path="/org.ucdetector/.classpath"/>
+		<file path="/org.ucdetector/.project"/>
+		<file path="/org.ucdetector/plugin.properties"/>
+		<javaElement handleIdentifier="=org.ucdetector/src"/>
+		<file path="/org.ucdetector/doc/build/BuildUCDetector.launch"/>
+		<file path="/org.ucdetector/toc.xml"/>
+		<file path="/org.ucdetector/index.html"/>
+		<file path="/org.ucdetector/doc/README.txt"/>
+		<file path="/org.ucdetector/doc/ucdector_code_style_formatter.xml"/>
+		<file path="/org.ucdetector/doc/CHANGES.txt"/>
+		<file path="/org.ucdetector/build.properties"/>
+		<folder path="/org.ucdetector/META-INF"/>
+		<file path="/org.ucdetector/doc/build/build.xml"/>
+		<file path="/org.ucdetector/contexts.xml"/>
+		<file path="/org.ucdetector/plugin.xml"/>
+		<file path="/org.ucdetector/doc/TODO.txt"/>
+		<file path="/org.ucdetector/about.html"/>
+	</selectedElements>
+	<fatjar builder="org.eclipse.jdt.ui.plain_jar_builder" launchConfig=""/>
+</jardesc>

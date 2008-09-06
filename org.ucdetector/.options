@@ -1,0 +1,7 @@
+# Debugging options for the org.ucdetector plugin.
+
+# Turn on debugging for the org.ucdetector plugin.
+org.ucdetector/debug=false
+
+# Monitor builders and gather time statistics etc.
+org.ucdetector/debug/test=true

@@ -1,0 +1,30 @@
+UCDetector (Unecessary Code Detector) is a Open Source eclipse PlugIn Tool to find unecessary
+(dead) java code. It also tries to make code final, protected or private.
+UCDetector also finds cyclic dependencies between classes.
+
+
+
+UCDetector 0.10.0 from 2008-09-04:
+New features:
+ - Filter for methods and fields
+ - Final detection for methods and fields
+ - Search of full qualifies class name in text files
+ - Create html and xml report
+ - Marker for default visibility
+ - Different icons for private, protected, default and public
+ - Tooltips in preference page
+ - Show help for OutOfMemoryError'
+Bugfixes:
+ - Don't try to make normal classes private
+ - Different icons for private, protected, default and public
+ - Ignore serialization methods and fields like: serialVersionUID
+ - Add example plugin to write your own detection: org.ucdetector.additional
+ - Ignore methods which override or implement other methods
+ - Ignore methods which are overridden
+ - Ignore interfaces
+ - Ignore abstract methods
+
+
+UCDetector 0.9.0 from 2008-03-01:
+ - first version 
+ 
