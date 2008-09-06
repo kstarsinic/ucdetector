@@ -1,0 +1,467 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+"http://www.w3.org/TR/html4/loose.dtd">
+<html>
+  <head>
+  <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+    <meta http-equiv="Content-Language" content="em">
+    <meta http-equiv="author" content="Joerg Spieler">
+    <meta http-equiv="description"
+      content="Eclipse PlugIn to detect unnecessary or dead java code and class cycles">
+
+    <meta http-equiv="rating" content="eclipse PlugIn">
+    <meta http-equiv="revisit-after" content="3 days">
+    <meta http-equiv="pragma" content="no-cache">
+    <meta http-equiv="keywords" 
+		      content="java, eclipse, tool, PlugIn, programmer, code quality, refactoring, unused code, dead code, class cycles">
+    <meta name="robots" content="index,follow">
+
+  <title>UCDetector</title>
+    <link rel="shortcut icon" href="http://www.ucdetector.org/ucdetector.ico">
+<style type="text/css">
+ thead.c8 {text-align: center}
+ span.c7 {color: #009917}
+ span.c6 {color: #000000}
+ span.c5 {color: #0099FF}
+ span.c4 {color: #6600CC}
+ span.c3 {color: red}
+ span.c2 {color: #006699}
+ h1.c1 {text-align: center}
+</style>
+</head>
+  <body>
+
+  <h1 align="center">
+<img alt="UCDetector" src="http://www.ucdetector.org/ucdetector.ico">
+UCDetector: Unnecessary Code Detector</h1>
+
+
+<table border="0" summary="left text, right image">
+<tr valign="top">
+<td>
+
+<h2>About</h2>
+<!-- ======================================================================= -->
+UCDetector (Unnecessary Code Detector) is a eclipse PlugIn tool to find unnecessary
+(dead) <font color="#006699"><strong>public</strong></font> java code.
+For example classes, methods or fields which have no references. UCDetector creates
+markers for the following problems, which appear in the eclipse problem view:<p>
+
+<ul>
+  <li>Unnecessary (dead) code</li>
+  <li>Code where the visibility could be changed to
+    <font color="#006699"><strong>protected</strong></font>, default or
+  <font color="#006699"><strong>private</strong></font>
+  <li>Methods of fields, which can be <font color="#006699"><strong>final</strong></font></li>
+</ul>
+
+<p>
+UCDetector also finds cyclic dependencies between classes in your code.
+This cycle classes are shown in s special cycle view.
+</p>
+
+<h2>Installation</h2>
+<!-- ======================================================================= -->
+
+<ul>
+  <li>Download <a href="http://sourceforge.net/project/showfiles.php?group_id=219599">org.ucdetector_*.jar</a>
+  </li>
+  <li>Put the jar into your ECLIPSE_HOME/plugins directory</li>
+  <li>Restart <a href="http://www.eclipse.org/downloads/">Eclipse version >= 3.3</a>
+</ul>
+
+
+
+<h2>Quick start</h2>
+<!-- ======================================================================= -->
+Instead of clicking Shift+Ctrl+G
+      (search references in workspace) all the time, follow the next steps:
+<ul>
+  <li>Right click on a project or package in the eclipse package explorer</li>
+  <li>
+	Select the context menu: UCDetector/detect unnecessary code
+	  <img alt="run UCDetector" src="icons/ucd.gif">
+  </li>
+  <li>
+     Check warnings in the eclipse java editor and the eclipse problem view
+    <img alt="not found" src="icons/not_found_obj.gif">
+    <img alt="use private" src="icons/use_private.gif">
+    <img alt="use default" src="icons/use_default.gif">
+    <img alt="use protected" src="icons/use_protected.gif">
+    <img alt="use final" src="icons/use_final.gif">
+	</li>
+  <li>Use the menu "Group By/Type" in the Problems View</li>
+</ul>
+
+
+<h2>Really want to change code?</h2>
+<!-- ======================================================================= -->
+The problems found by UCDetector, are only suggestions.
+
+<font color="red">
+Before changing code, you should really know what you are doing!
+</font>
+If UCDetector tells you, that there are no references your code still may be used by:
+<ul>
+  <li><font color="red">Reflection</font></li>
+  <li>Frameworks like Spring, Hibernate or Eclipse which declare dependencies in
+   property files, xml files...</li>
+  <li>Third party code, which is using your code</li>
+  <li>Jars in your workspace</li>
+  <li>To be continued...</li>
+</ul>
+<p>
+Change visibility may cause problems with inheritance, reflection, instantiation...
+</p>
+<p>
+It's good idea to do a full text search in workspace for the piece of code,
+you want to change.
+</p>
+
+
+<h2>Change code!</h2>
+<!-- ======================================================================= -->
+After checking carefully all the possibilities above, maybe you decide to change
+your code:
+<ul>
+  <li>Delete code: When UCDetector tells you that there are no references</li>
+  <li>Move code: When UCDetector tells you that there is only
+    1 reference (change "Limit" to 1 in "Window/Preferences")</li>
+  <li>Change visibility: Use <font color="#006699"><strong>protected</strong></font>
+	   , default or <font color="#006699"><strong>private</strong></font></li>
+  <li>Use <font color="#006699"><strong>final</strong></font></li>
+</ul>
+
+
+<h2>Ignore code</h2>
+<!-- ======================================================================= -->
+Use "NO_UCD" tag in code, for lines, which should be ignored:
+<pre>
+<span class="c4">
+/**
+ * Class is only used by reflection.
+ * Write a <strong>"NO_UCD"</strong> comment at the end of the line.
+ * This line will be ignored by UCDector.
+ */</span>
+<span class="c2"><strong>public</strong></span> <span class="c5"><strong>class</strong></span> BeanExample <span class="c6"><strong>{</strong></span> <span class="c7">// <strong>NO_UCD</strong></span>
+</pre>
+
+
+</td>
+<td>
+<img alt="UCDetector"  border="1" src="images/popup.png">
+<p></p>
+<img alt="UCDetector"  border="1" src="images/markers.png">
+</td>
+</tr>
+
+
+<tr valign="top">
+<td>
+<h2>Write your own detector!</h2>
+<!-- ======================================================================= -->
+<a href="http://sourceforge.net/svn/?group_id=219599">Check out</a>
+ project "org.ucdetector.additional" from SVN:
+<pre>
+svn co https://ucdetector.svn.sourceforge.net/svnroot/ucdetector ucdetector
+</pre>
+Create your own problem markers! I already provided example code to 
+detect naming conventions for classes/methods/fields. This code is 
+ easy to extend. Look at this example:
+<pre><font color="#000000">  <font color="#006699"><strong>protected</strong></font> <font color="#0099ff"><strong>void</strong></font> <font color="#9966ff">handleType</font><font color="#000000"><strong>(</strong></font>IType type<font color="#000000"><strong>)</strong></font> <font color="#006699"><strong>throws</strong></font> CoreException <font color="#000000"><strong>{</strong></font>
+    String className <font color="#000000"><strong>=</strong></font> type.<font color="#9966ff">getElementName</font><font color="#000000"><strong>(</strong></font><font color="#000000"><strong>)</strong></font>;
+    <font color="#006699"><strong>if</strong></font> <font color="#000000"><strong>(</strong></font><font color="#000000"><strong>!</strong></font>type.<font color="#9966ff">isAnonymous</font><font color="#000000"><strong>(</strong></font><font color="#000000"><strong>)</strong></font> <font color="#000000"><strong>&amp;</strong></font><font color="#000000"><strong>&amp;</strong></font> <font color="#000000"><strong>!</strong></font><font color="#9966ff">startsWithUpper</font><font color="#000000"><strong>(</strong></font>className<font color="#000000"><strong>)</strong></font><font color="#000000"><strong>)</strong></font> <font color="#000000"><strong>{</strong></font>
+      markerFactory.<font color="#9966ff">createMarker</font><font color="#000000"><strong>(</strong></font>type, <font color="#ff00cc">&quot;</font><font color="#ff00cc">Class</font><font color="#ff00cc"> </font><font color="#ff00cc">name</font><font color="#ff00cc"> </font><font color="#ff00cc">must</font><font color="#ff00cc"> </font><font color="#ff00cc">start</font><font color="#ff00cc"> </font><font color="#ff00cc">with</font><font color="#ff00cc"> </font><font color="#ff00cc">upper</font><font color="#ff00cc"> </font><font color="#ff00cc">case</font><font color="#ff00cc">&quot;</font><font color="#000000"><strong>)</strong></font>;
+    <font color="#000000"><strong>}</strong></font>
+</font></pre>
+To create your own detector:
+<ul>
+  <li>Change code of example above found in CheckNameConventionIterator.java</li>
+  <li>Create plugin running ant build file in Eclipse: /org.ucdetector.additional/doc/build.xml</li>
+  <li>Put create plugins in ECLIPSE_HOME/plugins directory</li>
+  <li>Restart Eclipse</li>
+</ul>
+
+<a href="mailto:feedback@ucdetector.org">E-Mail </a> me your detection example!
+
+
+</td>
+
+<td align="left" valign="middle">
+<img alt="Additional"  border="1" src="images/additional.png">
+</td>
+</tr>
+</table>
+
+
+<h2>Preferences</h2>
+<!-- ======================================================================= -->
+<p>
+Select menu: Window/Preferences.../UCDetector
+</p>
+
+<table cellpadding="20"  summary="Preferences">
+
+<tr valign="top">
+<td>
+<h3>Filter</h3>
+<!-- ============================= -->
+It is possible to filter java elements (and all its children),
+which should not be checked by UCDetector. A simple regular expression is used:
+<ul>
+  <li>?: Match one character</li>
+  <li>*: Match 0 or more characters</li>
+</ul>
+<p>
+You can enter more than 1 entry, using the separator ","
+</p>
+
+</td>
+<td align="left" valign="middle">
+<img alt="UCDetector preferences"  border="1" src="images/preferences_1_filter.png">
+</td>
+</tr>
+
+<tr valign="top">
+<td>
+<p>
+
+<h3>Detect</h3>
+<!-- ============================= -->
+<p><b>Detect code with max number of references:</b><br>
+Number of found references, which are necessary to mark java code as problem.
+0 means: If a class has no references, mark it with UCDetector
+</p>
+
+<p><b>In classes, in methods, in fields:</b><br>
+Select how problems should be marked. There are 3 possibilities:
+</p>
+<ul>
+	<li>Error: Mark the problem using error markers</li>
+	<li>Warning: Mark the problem using warning markers</li>
+	<li>Ignore: Don't create markers for the problem</li>
+</ul>
+<p>
+Select what kind of code should be marked:
+</p>
+<ul>
+	<li>Classes: Select error level for classes</li>
+	<li>Methods: Select error level for methods</li>
+	<li>Fields: Select error level for fields</li>
+</ul>
+
+<p><b>File name pattern to search:</b><br>
+It is possible to add a file pattern. Full qualified class names (org.ucdetector.Example)
+found in this files will get no marker for "0 references found". But text
+search is slow, if there are many text files!
+</p>
+</td>
+<td align="left" valign="middle">
+<img alt="UCDetector preferences"  border="1" src="images/preferences_2_ucd.png">
+</td>
+</tr>
+
+<tr valign="top">
+<td>
+<h3>Keyword</h3>
+<!-- ============================= -->
+
+<p><b>Possible use of <font color="#006699"><strong>protected</strong></font> or
+  <font color="#006699"><strong>private</strong></font></b>:<br>
+Select error level for visibility. This option will create markers for code
+which could be <font color="#006699"><strong>protected</strong></font>, default or
+  <font color="#006699"><strong>private</strong></font>. 
+This is code, which has only references in same package or same class.
+</p>
+
+<p><b>Possible use of <font color="#006699"><strong>final</strong></font> for fields</b>:<br>
+This option will create markers for fields, which could be
+<font color="#006699"><strong>final</strong></font>.
+This are fields, which have no write access.
+</p>
+
+<p><b>Possible use of <font color="#006699"><strong>final</strong></font> for methods</b>:<br>
+This option will create markers for methods, which could be
+<font color="#006699"><strong>final</strong></font>.
+This are methods, which:
+</p>
+<ul>
+  <li>Don't implement interfaces</li>
+  <li>Don't override methods</li>
+  <li>Are not overridden</li>
+  <li>Methods in classes, which do not extend other classes</li>
+</ul>
+<p>
+Maybe this rules are not OK for you! Anyway: Apply changes for this rule carefully.
+</p>
+</td>
+<td align="left" valign="middle">
+<img alt="UCDetector preferences"  border="1" src="images/preferences_3_keyword.png">
+</td>
+</tr>
+
+<tr valign="top">
+<td>
+<h3>Other</h3>
+<!-- ============================= -->
+<p><b>HTHM report</b>:<br>
+Enter file name, if you want to create a report like this:
+</p>
+
+<table border="1"  summary="UCDetector report">
+<thead align="center">
+<tr bgcolor="#C0C0C0"><th>Nr</th><th>Warn level</th><th>Location</th><th>Description</th></tr>
+</thead>
+<tr><td>1</td><td>Warning</td><td>org.ucdetector.MixedExample .declartion(MixedExample.java:4)</td><td>Change visibility of "MixedExample" to default</td></tr>
+<tr><td>2</td><td>Warning</td><td>org.ucdetector.MixedExample. unusedMethod(MixedExample.java:7)</td><td>Method "unusedMethod" has 0 references</td></tr>
+<tr><td>3</td><td>Warning</td><td>org.ucdetector.MixedExample. makePrivateMethod(MixedExample.java:10)</td><td>Method "makePrivateMethod" has 0 references</td></tr>
+<tr><td>4</td><td>Warning</td><td>org.ucdetector.MixedExample. useFinal(MixedExample.java:5)</td><td>Use "final" for field "useFinal"</td></tr>
+</table>
+<p>
+To create custom reports change:
+<pre>
+ECLIPSE_HOME/plugins/org.ucdetector_*.jar/org/ucdetector/report/html.xslt
+</pre>
+</p>
+
+
+<b>Max cycle size</b>:<br>
+For cycle detection you can choose the "max cycle size". If there are many
+cycles in your code, a big number here makes cycle detection very slow!
+
+
+<!-- ======================================================================= -->
+</td>
+<td align="left" valign="middle">
+<img alt="UCDetector preferences"  border="1" src="images/preferences_4_other.png">
+</td>
+</tr>
+</table>
+
+
+
+<table  summary="others">
+<tr valign="top">
+<td>
+<h2><img alt="cycle" src="icons/cycle.gif">Detect class cycles</h2>
+<!-- ======================================================================= -->
+Right click on classes, packages or projects, Select context menu: "UCDetector/detect cycles".
+The class cycles will appear in the Cycle View. Browse the class cycles by exploring the
+cycle tree.
+</td>
+<td align="left" valign="middle">
+<img alt="UCDetector cycle"  border="1" src="images/cycles.png">
+</td>
+</tr>
+<!-- ======================================================================= -->
+<tr valign="top">
+<td>
+
+<h2><img alt="count" src="icons/info_obj.gif">Count code checked by UCDetector</h2>
+<!-- ======================================================================= -->
+It is possible to count code checked by UCDetector. Select context menu: "UCDetector/count elements"
+</td>
+
+<td align="left" valign="middle">
+<img alt="UCDetector count"  border="1" src="images/count.png">
+</td>
+</tr>
+
+
+<tr><td></td><td></td></tr>
+
+
+<tr>
+<td>
+<h2><img alt="remove" src="icons/remove.gif">Clean markers</h2>
+<!-- ======================================================================= -->
+Delete UCDetector markers by right clicking on a java element which contains
+the markers and select:<br>
+"UCDetector/Clean markers"
+</td>
+<td></td>
+</tr>
+
+
+
+<tr>
+<td>
+<h2>Licence</h2>
+<!-- ======================================================================= -->
+UCDetector is Open Source and published under the
+<a href="http://www.eclipse.org/legal/epl-v10.html">Eclipse Public License v1.0</a>
+</td>
+<td></td>
+</tr>
+<!-- <tr><td><h2></h2></td><td></td></tr> -->
+</table>
+
+
+
+<h2>Releases</h2>
+<!-- ======================================================================= -->
+<h3>UCDetector 0.10.0 - Release from 2008-09-04</h3>
+<!-- ============================= -->
+New features:
+<ul>
+ <li>Filter for methods and fields</li>
+ <li>Final detection for methods and fields</li>
+ <li>Search of full qualifies class name in text files</li>
+ <li>Create html and xml report</li>
+ <li>Marker for default visibility</li>
+ <li>Different icons for private, protected, default and public</li>
+ <li>Tooltips in preference page</li>
+ <li>Show help for OutOfMemoryError'</li>
+</ul>
+Bugfixes:
+<ul>
+ <li>Don't try to make normal classes private</li>
+ <li>Different icons for private, protected, default and public</li>
+ <li>Ignore serialization methods and fields like: serialVersionUID</li>
+ <li>Add example plugin to write your own detection: org.ucdetector.additional</li>
+ <li>Ignore methods which override or implement other methods</li>
+ <li>Ignore methods which are overridden</li>
+ <li>Ignore interfaces</li>
+ <li>Ignore abstract methods</li>
+</ul>
+
+
+<h3>UCDetector 0.9.0 - First release from 2008-03-01</h3>
+<!-- ============================= -->
+<h2>Contact &amp; Links</h2>
+<!-- ======================================================================= -->
+<ul>
+	<li><a href="http://www.ucdetector.org">UCDetector homepage</a></li>
+	<li><a href="http://sourceforge.net/projects/ucdetector/">Sourceforge project page</a></li>
+	<li><a href="http://sourceforge.net/project/platformdownload.php?group_id=219599">Downloads</a></li>
+	<li><a href="mailto:feedback@ucdetector.org">Feedback welcome!</a></li>
+</ul>
+
+<hr>
+
+<table width="100%"  summary="footer">
+	<tr>
+		<td align="left"  valign="middle">Last Update: 2008-09-05</td>
+		<td align="right" valign="middle">Copyright &copy; 2008, by Joerg Spieler</td>
+	</tr>
+</table>
+
+<hr>
+
+<table width="100%"  summary="footer 2">
+	<tr>
+		<td align="left" valign="middle">
+	Page views since 2008-03-01:
+			<img alt="Page views since 2008-03-01" src="http://www.jspieler.de/cgi-bin/counting.php.cgi?counterid=3">
+</td>
+		<td align="right"  valign="middle">
+	Hosted by:
+	<a href="http://sourceforge.net">
+		<img src="http://sflogo.sourceforge.net/sflogo.php?group_id=219599&amp;type=2"
+		width="125" height="37" border="0" alt="SourceForge.net Logo">
+	</a>
+</td>
+	</tr>
+</table>
+
+</body>
+</html>
