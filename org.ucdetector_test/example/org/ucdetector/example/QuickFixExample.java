@@ -12,41 +12,41 @@ public class QuickFixExample {
     System.out.println(usePrivateField_5);
   }
 
-  public int usePrivateField_1 = 0;// Marker YES
+  public final int usePrivateField_1 = 0;// Marker YES: use private
 
-  public int usePrivateField_2 = 0;// Marker YES
+  public final int usePrivateField_2 = 0;// Marker YES: use private
 
-  public int usePrivateField_3 = 0;// Marker YES
+  public final int usePrivateField_3 = 0;// Marker YES: use private
 
-  public int usePrivateField_4 = 0;// Marker YES
+  public final int usePrivateField_4 = 0;// Marker YES: use private
 
-  public int usePrivateField_5 = 0;// Marker YES
+  public final int usePrivateField_5 = 0;// Marker YES: use private
   // -------------------------------------------------------------------------
-  int unusedField_1 = 0;// Marker YES
+  final int unusedField_1 = 0;// Marker YES: unused code
 
-  int unusedField_2 = 0;// Marker YES
+  final int unusedField_2 = 0;// Marker YES: unused code
 
-  int unusedField_3 = 0;// Marker YES
+  final int unusedField_3 = 0;// Marker YES: unused code
 
-  int unusedField_4 = 0;// Marker YES
+  final int unusedField_4 = 0;// Marker YES: unused code
 
-  int unusedField_5 = 0;// Marker YES
+  final int unusedField_5 = 0;// Marker YES: unused code
 
   // -------------------------------------------------------------------------
 
-  void unusedPublicMethod_1() {// Marker YES
+  void unusedPublicMethod_1() {// Marker YES: unused code
   }
 
-  void unusedPublicMethod_2() {// Marker YES
+  void unusedPublicMethod_2() {// Marker YES: unused code
   }
 
-  void unusedPublicMethod_3() {// Marker YES
+  void unusedPublicMethod_3() {// Marker YES: unused code
   }
 
-  void unusedPublicMethod_4() {// Marker YES
+  void unusedPublicMethod_4() {// Marker YES: unused code
   }
 
-  void unusedPublicMethod_5() {// Marker YES
+  void unusedPublicMethod_5() {// Marker YES: unused code
   }
 
 }

@@ -9,7 +9,7 @@ import java.io.Serializable;
 public class ObjectClass implements Serializable {
   static final long serialVersionUID = -629941578936022146L;
 
-  public void unused() { // Marker YES
+  public void unused() { // Marker YES: unused code
 
   }
 
@@ -39,22 +39,22 @@ public class ObjectClass implements Serializable {
   // ------------------------------------------------------------------------
   // NO OBJECT
   // ------------------------------------------------------------------------
-  public int hashCode(String s) { // Marker YES
+  public int hashCode(String s) { // Marker YES: unused code
     return 0;
   }
 
-  public Object clone(String s) { // Marker YES
+  public Object clone(String s) { // Marker YES: unused code
     return new Object();
   }
 
-  public String toString(String s) { // Marker YES
+  public String toString(String s) { // Marker YES: unused code
     return "hello";
   }
 
-  public void finalize(String s) { // Marker YES
+  public void finalize(String s) { // Marker YES: unused code
   }
 
-  public boolean equals(String s, Object o) { // Marker YES
+  public boolean equals(String s, Object o) { // Marker YES: unused code
     return super.equals(o);
   }
 }

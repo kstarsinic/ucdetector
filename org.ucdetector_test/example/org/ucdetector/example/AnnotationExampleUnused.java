@@ -3,6 +3,6 @@ package org.ucdetector.example;
 /**
  * 
  */
-public @interface AnnotationExampleUnused { // Marker YES
+public @interface AnnotationExampleUnused { // Marker YES: unused code
 
 }

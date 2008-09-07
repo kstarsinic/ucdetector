@@ -15,7 +15,7 @@ public class FinalMethodExample {
   public void methodOverridden() {
   }
 
-  public void methodNotOverridden() { // Marker YES
+  public void methodNotOverridden() { // Marker YES: use final
   }
 
   /** NO final marker here, because method is final! */

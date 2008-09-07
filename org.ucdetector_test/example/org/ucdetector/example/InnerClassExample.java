@@ -10,12 +10,12 @@ public class InnerClassExample {
     new MyArrayList2<String>();
   }
 
-  static class MyArrayList<E> extends ArrayList<E> { // Marker YES
+  static class MyArrayList<E> extends ArrayList<E> { // Marker YES: unused code
 
   }
 
   private static class MyArrayList2<E> extends ArrayList<E> {
-    public void unused() {// Marker YES
+    public void unused() {// Marker YES: unused code
 
     }
 

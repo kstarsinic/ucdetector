@@ -19,22 +19,22 @@ public class MethodExamples {
   private void unusedPrivateMethod() {
   }
 
-  void unusedDefaultMethod() { // Marker YES
+  void unusedDefaultMethod() { // Marker YES: unused code
   }
 
-  protected void unusedProtectedMethod() {// Marker YES
+  protected void unusedProtectedMethod() {// Marker YES: unused code
   }
 
-  void unusedPublicMethod1() {// Marker YES
+  void unusedPublicMethod1() {// Marker YES: unused code
   }
 
-  void unusedPublicMethod2() {// Marker YES
+  void unusedPublicMethod2() {// Marker YES: unused code
   }
 
-  void unusedPublicMethod3() {// Marker YES
+  void unusedPublicMethod3() {// Marker YES: unused code
   }
 
-  void unusedPublicMethod5() {// Marker YES
+  void unusedPublicMethod5() {// Marker YES: unused code
   }
 
   // -------------------------------------------------------------------------

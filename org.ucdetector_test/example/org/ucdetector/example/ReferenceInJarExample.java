@@ -11,7 +11,7 @@ public class ReferenceInJarExample {
    * org.ucdetector.JavaStructureDiffViewer.initialSelection() (potential
    * match)
    */
-  public IType getRoot() { // Marker YES
+  public IType getRoot() { // Marker YES: unused code
     return null;
   }
 

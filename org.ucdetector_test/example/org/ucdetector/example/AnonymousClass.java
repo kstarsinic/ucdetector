@@ -14,7 +14,7 @@ public class AnonymousClass {
         return 2;
       }
 
-      public void changeToPrivate() { // Marker YES
+      public void changeToPrivate() { // Marker YES: use private
 
       }
     };
@@ -28,7 +28,7 @@ public class AnonymousClass {
       }
 
       @SuppressWarnings("unused")
-      public void unused() { // Marker YES
+      public void unused() { // Marker YES: unused code
 
       }
     };

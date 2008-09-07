@@ -32,12 +32,12 @@ public class Java5Example {
   /**
    * The generic parameter list should not cause problems to UCDetector
    */
-  public void genericExampleUnused(List<Map<Integer, String>> list) { // Marker YES
+  public void genericExampleUnused(List<Map<Integer, String>> list) { // Marker YES: unused code
 
   }
 
   @SuppressWarnings("unchecked")
-  public static List asList(Object[] array) { // Marker YES
+  public static List asList(Object[] array) { // Marker YES: unused code
     return Arrays.asList(array);
   }
 

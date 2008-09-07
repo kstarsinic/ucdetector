@@ -12,7 +12,7 @@ public class InterfaceImplExample extends AbstractInterfaceImplExample {
 		return "overridenMethod";
 	}
 
-	protected String overrideMe() { // Marker YES
+	protected String overrideMe() { // Marker YES: unused code
 		return "overrideMe";
 	}
 

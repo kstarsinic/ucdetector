@@ -6,19 +6,19 @@ package org.ucdetector.example.visibility;
 public class UsePrivateClass
 {
 	// USE
-	final String usePrivate_default = "1";// Marker YES
+	final String usePrivate_default = "1";// Marker YES: use private
 
-	protected final String usePrivate_protected = "2";// Marker YES
+	protected final String usePrivate_protected = "2";// Marker YES: use private
 
-	public final String usePrivate_public = "3";// Marker YES
+	public final String usePrivate_public = "3";// Marker YES: use private
 
-	public static final String USE_PRIVATE = "4";// Marker YES
+	public static final String USE_PRIVATE = "4";// Marker YES: use private
 
-	public void usePrivate() // Marker YES
+	public void usePrivate() // Marker YES: use private
 	{
 	}
 
-	public static void usePrivateStatic() // Marker YES
+	public static void usePrivateStatic() // Marker YES: use private
 	{
 	}
 

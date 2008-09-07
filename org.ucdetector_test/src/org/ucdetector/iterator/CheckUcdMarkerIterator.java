@@ -16,7 +16,6 @@ import org.eclipse.jdt.core.compiler.IScanner;
 import org.eclipse.jdt.core.compiler.ITerminalSymbols;
 import org.eclipse.jdt.core.compiler.InvalidInputException;
 import org.ucdetector.UCDetectorPlugin;
-import org.ucdetector.search.LineManger;
 import org.ucdetector.util.MarkerFactory;
 
 /**
@@ -35,25 +34,41 @@ public class CheckUcdMarkerIterator extends AbstractUCDetectorIterator {
     IResource resource = unit.getCorrespondingResource();
     IMarker[] markers = resource.findMarkers(MarkerFactory.ANALYZE_MARKER,
         true, IResource.DEPTH_ZERO);
-    if (markers.length == 0) {
-      return;
-    }
-    Set<Integer> markerLinesExpected = getMakerLinesExpected(unit);
+
+    Set<LineNrComment> lineNrComments = getLineNrComments(unit);
     markerCount += markers.length;
     Set<Integer> makerLinesFound = new LinkedHashSet<Integer>();
+    // Check, if each marker has a marker comment
     for (IMarker marker : markers) {
-      int lineNr = marker.getAttribute(IMarker.LINE_NUMBER, -1);
-      makerLinesFound.add(Integer.valueOf(lineNr));
-    }
-    // -------------------------------------------------------------------------
-    for (Integer markerLineExpected : markerLinesExpected) {
-      if (!makerLinesFound.contains(markerLineExpected)) {
-        createMarker(resource, "Missing marker", markerLineExpected);
+      Integer markerLineFound = Integer.valueOf(marker.getAttribute(
+          IMarker.LINE_NUMBER, -1));
+      boolean added = makerLinesFound.add(markerLineFound);
+      if (!added) {
+        createMarker(resource, "More than one marker found", markerLineFound);
+      }
+      // Search line number in comments
+      LineNrComment commentForLine = null;
+      for (LineNrComment lineNrComment : lineNrComments) {
+        if (markerLineFound.equals(lineNrComment.lineNr)) {
+          commentForLine = lineNrComment;
+        }
+      }
+      if (commentForLine == null) {
+        createMarker(resource, "Additional marker", markerLineFound);
+      }
+      else {
+        String problemMarker = marker.getAttribute(MarkerFactory.PROBLEM, "?");
+        String problemExpected = commentForLine.comment;
+        if (!problemMarker.equals(problemExpected)) {
+          createMarker(resource, "Wrong marker. Expected: '" + problemExpected
+              + "'. Found: '" + problemMarker + "'", markerLineFound);
+        }
       }
     }
-    for (Integer makerLineFound : makerLinesFound) {
-      if (!markerLinesExpected.contains(makerLineFound)) {
-        createMarker(resource, "Additional marker", makerLineFound);
+    // Check, if each marker comment has a marker
+    for (LineNrComment lineNrComment : lineNrComments) {
+      if (!makerLinesFound.contains(lineNrComment.lineNr)) {
+        createMarker(resource, "Missing marker", lineNrComment.lineNr);
       }
     }
   }
@@ -91,18 +106,18 @@ public class CheckUcdMarkerIterator extends AbstractUCDetectorIterator {
   /**
    * Parse the java code
    */
-  private Set<Integer> getMakerLinesExpected(ICompilationUnit unit)
+  private Set<LineNrComment> getLineNrComments(ICompilationUnit unit)
       throws CoreException {
     IScanner scanner = ToolFactory.createScanner(true, false, false, true);
     scanner.setSource(unit.getBuffer().getCharacters());
-    Set<Integer> ignoreLines = new HashSet<Integer>();
+    Set<LineNrComment> ignoreLines = new HashSet<LineNrComment>();
     int nextToken;
     try {
       while ((nextToken = scanner.getNextToken()) != ITerminalSymbols.TokenNameEOF) {
-        Integer ignoreLine = LineManger.findTagInComment(scanner, "Marker YES",
-            nextToken);
-        if (ignoreLine != null) {
-          ignoreLines.add(ignoreLine);
+        LineNrComment lineNrComment = findLineNrComments(scanner,
+            "Marker YES: ", nextToken);
+        if (lineNrComment != null) {
+          ignoreLines.add(lineNrComment);
         }
       }
     }
@@ -112,6 +127,36 @@ public class CheckUcdMarkerIterator extends AbstractUCDetectorIterator {
       throw new CoreException(status);
     }
     return ignoreLines;
+  }
+
+  /**
+   * @return line number for a tag like "NO_UCD", or <code>null</code>
+   * if there is no tag like "NO_UCD"
+   */
+  private static LineNrComment findLineNrComments(IScanner scanner, String tag,
+      int nextToken) {
+    if (nextToken == ITerminalSymbols.TokenNameCOMMENT_LINE) {
+      char[] currentTokenSource = scanner.getCurrentTokenSource();
+      String source = new String(currentTokenSource);
+      int beginnIndex = source.indexOf(tag);
+      if (beginnIndex != -1) {
+        int start = scanner.getCurrentTokenStartPosition();
+        int line = scanner.getLineNumber(start);
+        String commentEnd = source.substring(beginnIndex + tag.length()).trim();
+        return new LineNrComment(Integer.valueOf(line), commentEnd);
+      }
+    }
+    return null;
+  }
+
+  private static final class LineNrComment {
+    private final String comment;
+    private final Integer lineNr;
+
+    public LineNrComment(Integer lineNr, String comment) {
+      this.lineNr = lineNr;
+      this.comment = comment;
+    }
   }
 
   @Override

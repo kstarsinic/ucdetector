@@ -4,7 +4,7 @@ public interface InterfaceExample {
     // -------------------------------------------------------------------------
     // UNUSED
     // -------------------------------------------------------------------------
-    public static final String UNUSED = "UNUSED"; // Marker YES
+    public static final String UNUSED = "UNUSED"; // Marker YES: unused code
 
     // -------------------------------------------------------------------------
     // USED

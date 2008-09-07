@@ -49,7 +49,7 @@ import org.ucdetector.UCDetectorPlugin;
  * @see http://www.eclipse.org/articles/article.php?file=Article-
  *      JavaCodeManipulation_AST/index.html
  */
-public class UCDQuickFix implements IMarkerResolution {  // NO_UCD
+public class UCDQuickFix implements IMarkerResolution { // NO_UCD
   // TODO 331.08.2008: monitor is not set
   private IProgressMonitor monitor; // NO_UCD
   //
@@ -84,14 +84,8 @@ public class UCDQuickFix implements IMarkerResolution {  // NO_UCD
   public String getLabel() {
     // ----------------------------------------------------------------------
     // DELETE (classes, methods, fields)
-    if (MarkerFactory.PROBLEM_UNUSED_CLASS.equals(problem)) {
-      return "Delete class (EXPERIMENTAL)"; //$NON-NLS-1$
-    }
-    if (MarkerFactory.PROBLEM_UNUSED_METHOD.equals(problem)) {
-      return "Delete method (EXPERIMENTAL)"; //$NON-NLS-1$
-    }
-    if (MarkerFactory.PROBLEM_UNUSED_FIELD.equals(problem)) {
-      return "Delete field (EXPERIMENTAL)"; //$NON-NLS-1$
+    if (MarkerFactory.PROBLEM_UNUSED.equals(problem)) {
+      return "Delete code (EXPERIMENTAL)"; //$NON-NLS-1$
     }
     // ----------------------------------------------------------------------
     // CHANGE KEYWORD (methods, fields), REMOVE KEYWORD (classes)
@@ -115,10 +109,7 @@ public class UCDQuickFix implements IMarkerResolution {  // NO_UCD
 
   public void run(IMarker marker) {
     try {
-      if (MarkerFactory.PROBLEM_UNUSED_CLASS.equals(problem) || //
-          MarkerFactory.PROBLEM_UNUSED_METHOD.equals(problem) || //
-          MarkerFactory.PROBLEM_UNUSED_FIELD.equals(problem)//
-      ) {
+      if (MarkerFactory.PROBLEM_UNUSED.equals(problem)) {
         runDeleteElement(marker);
       }
       // ------------------------------------------------------------------

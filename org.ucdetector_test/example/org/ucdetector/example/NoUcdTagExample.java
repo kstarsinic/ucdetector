@@ -11,7 +11,7 @@ public class NoUcdTagExample {
 
   public static String USED = "UNUSED"; // NO_UCD
 
-  public static String UNUSED2 = "UNUSED"; // Marker YES
+  public static final String UNUSED2 = "UNUSED"; // Marker: unused code
 
   public static final String USED2 = "UNUSED";
 
@@ -24,9 +24,9 @@ public class NoUcdTagExample {
 
   long unusedLong = 5L; // NO_UCD
 
-  public static final String UNUSED_MARKER = "UNUSED"; // Marker YES
+  public static final String UNUSED_MARKER = "UNUSED"; // Marker YES: unused code
 
-  public static String unused_Marker() {// Marker YES
+  public static String unused_Marker() {// Marker YES: unused code
     return "hello";
   }
 }

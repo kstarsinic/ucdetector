@@ -1,6 +1,6 @@
 package org.ucdetector.example;
 
-public interface UnusedInterfaceExample {// Marker YES
+public interface UnusedInterfaceExample {// Marker YES: unused code
 
     void unused();
 

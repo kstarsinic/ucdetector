@@ -11,7 +11,7 @@ import java.io.ObjectStreamField;
  * Test some special Methods and field for Serialization
  */
 public class SerializationExample {
-  public static final long UNUSED = 0; // Marker YES
+  public static final long UNUSED = 0; // Marker YES: unused code
 
   static final long serialVersionUID = 0;
 
@@ -54,7 +54,7 @@ public class SerializationExample {
     }
   };
 
-  public void unused() { // Marker YES
+  public void unused() { // Marker YES: unused code
 
   }
 

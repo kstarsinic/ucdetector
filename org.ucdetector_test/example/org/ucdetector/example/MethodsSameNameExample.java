@@ -13,13 +13,13 @@ public class MethodsSameNameExample {
     /**
      * javadoc
      */
-    public void sameName(int i) {// Marker YES
+    public void sameName(int i) {// Marker YES: unused code
     }
 
     /**
      * javadoc
      */
-    public void sameName(String s, int i) {// Marker YES
+    public void sameName(String s, int i) {// Marker YES: unused code
     }
 
     /**
@@ -32,6 +32,6 @@ public class MethodsSameNameExample {
     /**
      * javadoc
      */
-    public void sameName(Float f, String s, int i) {// Marker YES
+    public void sameName(Float f, String s, int i) {// Marker YES: unused code
     }
 }

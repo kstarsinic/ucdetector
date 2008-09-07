@@ -17,14 +17,14 @@ public class FieldExamples {
 	 */ 
 	private final int privateUnusedField = 0;
 
-	final int defaultUnusedField = 0;// Marker YES
+	final int defaultUnusedField = 0;// Marker YES: unused code
 
-	protected final int protectedUnusedField = 0; // Marker YES
+	protected final int protectedUnusedField = 0; // Marker YES: unused code
 
-	public final int publicUnusedField = 0; // Marker YES
+	public final int publicUnusedField = 0; // Marker YES: unused code
 
 	/** javadoc */
-	public static final String UNUSED_FIELD = "UNUSED_FIELD"; // Marker YES //
+	public static final String UNUSED_FIELD = "UNUSED_FIELD"; // Marker YES: unused code
 	// (private)
 
 	// -------------------------------------------------------------------------

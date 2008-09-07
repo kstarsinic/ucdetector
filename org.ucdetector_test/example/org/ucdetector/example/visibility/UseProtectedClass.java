@@ -3,15 +3,15 @@ package org.ucdetector.example.visibility;
 public class UseProtectedClass // Marker YES
 {
 	// USE
-	public final String useProtected_public = "useProtected";// Marker YES
+	public final String useProtected_public = "useProtected";// Marker YES: use protected
 
-	public static final String USE_PROTECTED = "useProtected";// Marker YES
+	public static final String USE_PROTECTED = "useProtected";// Marker YES: use protected
 
-	public void useProtected() // Marker YES
+	public void useProtected() // Marker YES: use protected
 	{
 	}
 
-	public static void useProtectedStatic() // Marker YES
+	public static void useProtectedStatic() // Marker YES: use protected
 	{
 	}
 
