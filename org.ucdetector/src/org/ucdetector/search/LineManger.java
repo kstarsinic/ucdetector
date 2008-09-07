@@ -116,7 +116,7 @@ public class LineManger {
     int nextToken;
     try {
       while ((nextToken = scanner.getNextToken()) != ITerminalSymbols.TokenNameEOF) {
-        Integer ignoreLine = findNoUcdTagInComment(scanner, nextToken);
+        Integer ignoreLine = findTagInComment(scanner, NO_UCD_TAG, nextToken);
         if (ignoreLine != null) {
           ignoreLines.add(ignoreLine);
         }
@@ -158,14 +158,15 @@ public class LineManger {
   }
 
   /**
-   * @return line number for "NO_UCD" tag, or <code>null</code>
-   * if there is no "NO_UCD" tag
+   * @return line number for a tag like "NO_UCD", or <code>null</code>
+   * if there is no tag like "NO_UCD"
    */
-  private static Integer findNoUcdTagInComment(IScanner scanner, int nextToken) {
+  public static Integer findTagInComment(IScanner scanner, String tag,
+      int nextToken) {
     if (nextToken == ITerminalSymbols.TokenNameCOMMENT_LINE) {
       char[] currentTokenSource = scanner.getCurrentTokenSource();
       String source = new String(currentTokenSource);
-      if (source.contains(NO_UCD_TAG)) {
+      if (source.contains(tag)) {
         int start = scanner.getCurrentTokenStartPosition();
         int line = scanner.getLineNumber(start);
         return Integer.valueOf(line);
