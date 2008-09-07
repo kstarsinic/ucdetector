@@ -80,7 +80,7 @@ class UCDetectorHandler implements IUCDetectorHandler {
   }
 
   /** @throws CoreException in classes overriding this method */
-  protected void handleUnit(ICompilationUnit unit) throws CoreException {// NO_UCD
+  protected void handleCompilationUnit(ICompilationUnit unit) throws CoreException {// NO_UCD
   }
 
   /** @throws CoreException in classes overriding this method */

@@ -43,12 +43,4 @@ public class CountAction extends AbstractUCDetectorAction {// NO_UCD
     });
     return status;
   }
-
-  /**
-   * this action is enabled for all JavaElement. Includes JavaElement in jars
-   */
-  @Override
-  protected void handleJavaElementSelections(final IAction action) {
-    action.setEnabled(true);
-  }
 }
