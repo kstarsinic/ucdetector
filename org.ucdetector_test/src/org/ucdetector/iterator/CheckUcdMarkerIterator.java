@@ -1,9 +1,7 @@
 package org.ucdetector.iterator;
 
-import java.util.HashMap;
 import java.util.HashSet;
 import java.util.LinkedHashSet;
-import java.util.Map;
 import java.util.Set;
 
 import org.eclipse.core.resources.IMarker;
@@ -18,7 +16,6 @@ import org.eclipse.jdt.core.compiler.IScanner;
 import org.eclipse.jdt.core.compiler.ITerminalSymbols;
 import org.eclipse.jdt.core.compiler.InvalidInputException;
 import org.ucdetector.UCDetectorPlugin;
-import org.ucdetector.report.MarkerReport;
 import org.ucdetector.search.LineManger;
 import org.ucdetector.util.MarkerFactory;
 
@@ -31,12 +28,6 @@ public class CheckUcdMarkerIterator extends AbstractUCDetectorIterator {
   //
   private int markerCount;
   private int badMarkerCount;
-  //
-  private static final Map<IResource, IMarker[]> fileMarkerMap//
-  = new HashMap<IResource, IMarker[]>();
-
-  //
-  private static final MarkerReport markerReport = new MarkerReport();
 
   @Override
   protected void handleCompilationUnit(ICompilationUnit unit)
@@ -47,13 +38,9 @@ public class CheckUcdMarkerIterator extends AbstractUCDetectorIterator {
     if (markers.length == 0) {
       return;
     }
-    Set<Integer> markerLinesExpected = getIgnoreLines(unit);
-    Set<Integer> makerLinesFound = new LinkedHashSet<Integer>();
-
+    Set<Integer> markerLinesExpected = getMakerLinesExpected(unit);
     markerCount += markers.length;
-    fileMarkerMap.put(resource, markers);
-    System.out.println("resource=" + resource);
-    //    System.out.println("markers=" + markers.length);
+    Set<Integer> makerLinesFound = new LinkedHashSet<Integer>();
     for (IMarker marker : markers) {
       int lineNr = marker.getAttribute(IMarker.LINE_NUMBER, -1);
       makerLinesFound.add(Integer.valueOf(lineNr));
@@ -61,14 +48,11 @@ public class CheckUcdMarkerIterator extends AbstractUCDetectorIterator {
     // -------------------------------------------------------------------------
     for (Integer markerLineExpected : markerLinesExpected) {
       if (!makerLinesFound.contains(markerLineExpected)) {
-        badMarkerCount++;
         createMarker(resource, "Missing marker", markerLineExpected);
       }
     }
-
     for (Integer makerLineFound : makerLinesFound) {
       if (!markerLinesExpected.contains(makerLineFound)) {
-        badMarkerCount++;
         createMarker(resource, "Additional marker", makerLineFound);
       }
     }
@@ -94,23 +78,23 @@ public class CheckUcdMarkerIterator extends AbstractUCDetectorIterator {
     return sb.toString();
   }
 
-  private static void createMarker(IResource resource, String message,
-      Integer line) throws CoreException {
+  private void createMarker(IResource resource, String message, Integer line)
+      throws CoreException {
     IMarker marker = resource.createMarker(ANALYZE_MARKER_CHECK_UCD_MARKERS);
     marker.setAttribute(IMarker.MESSAGE, message);
     marker.setAttribute(IMarker.PRIORITY, IMarker.PRIORITY_HIGH);
     marker.setAttribute(IMarker.SEVERITY, IMarker.SEVERITY_WARNING);
     marker.setAttribute(IMarker.LINE_NUMBER, line.intValue());
+    badMarkerCount++;
   }
 
   /**
    * Parse the java code
    */
-  private Set<Integer> getIgnoreLines(ICompilationUnit unit)
+  private Set<Integer> getMakerLinesExpected(ICompilationUnit unit)
       throws CoreException {
     IScanner scanner = ToolFactory.createScanner(true, false, false, true);
-    char[] contents = unit.getBuffer().getCharacters();
-    scanner.setSource(contents);
+    scanner.setSource(unit.getBuffer().getCharacters());
     Set<Integer> ignoreLines = new HashSet<Integer>();
     int nextToken;
     try {
