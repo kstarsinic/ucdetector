@@ -33,9 +33,9 @@ public class MarkerFactory {
   /**
    * See extension point="org.eclipse.core.resources.markers" in plugin.xml
    */
-  private static final String ANALYZE_MARKER //
+  public static final String ANALYZE_MARKER //
   = "org.ucdetector.analyzeMarker"; //$NON-NLS-1$
-  private static final String ANALYZE_MARKER_REFERENCE //
+  public static final String ANALYZE_MARKER_REFERENCE //
   = "org.ucdetector.analyzeMarkerReference"; //$NON-NLS-1$
   //
   public static final String ANALYZE_MARKER_VISIBILITY_PRIVATE //
@@ -45,7 +45,7 @@ public class MarkerFactory {
   public static final String ANALYZE_MARKER_VISIBILITY_DEFAULT //
   = "org.ucdetector.analyzeMarkerVisibilityDefault"; //$NON-NLS-1$
   //
-  private static final String ANALYZE_MARKER_FINAL //
+  public static final String ANALYZE_MARKER_FINAL //
   = "org.ucdetector.analyzeMarkerFinal"; //$NON-NLS-1$
   // -------------------------------------------------------------------------
   public static final String PROBLEM = "UCD_PROBLEM";//$NON-NLS-1$
