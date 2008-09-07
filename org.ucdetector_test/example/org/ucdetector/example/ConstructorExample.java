@@ -7,6 +7,6 @@ public class ConstructorExample {
   }
 
   /** we dont't ignore constructors with parameter! */
-  public ConstructorExample(String parameter) { // MARKER YES
+  public ConstructorExample(String parameter) { // Marker YES
   }
 }

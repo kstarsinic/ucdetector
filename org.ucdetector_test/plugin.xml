@@ -2,10 +2,65 @@
 <?eclipse version="3.3"?>
 <plugin>
 
+	<extension point="org.eclipse.ui.popupMenus">
+		<objectContribution
+				adaptable="true"
+				objectClass="org.eclipse.jdt.core.IJavaElement"
+				id="org.ucdetector.popupMenus.project">
+			<menu label="%popupMenus.root"
+					path="additions"
+					id="ucdetectorGroup">
+      </menu>
+		</objectContribution>
+
+  <!-- ExampleAction ============================ -->
+	<objectContribution
+			adaptable="true"
+			id="org.ucdetector.popupMenus.project.Analyze"
+			objectClass="org.eclipse.jdt.core.IJavaElement">
+		<action class="org.ucdetector.action.CheckUcdMarkerAction"
+				enablesFor="+"
+				id="org.ucdetector.action.CheckUcdMarkerAction"
+				label="Check UCD Markers"
+				menubarPath="ucdetectorGroup/additional"/>
+				<!--
+			tooltip="%ExampleAction.tooltip"
+  		icon="$nl$/icons/example.gif"
+				-->
+	</objectContribution>
+	</extension>
+	
+  <!-- ===================================================================== -->
+   <!-- MARKER                                                               -->
+  <!-- ===================================================================== -->
+	<extension
+			id="org.ucdetector.analyzeMarkerCheckUcdMarkers"
+			name="UCDetector Marker (Check Ucd Markers)"
+			point="org.eclipse.core.resources.markers">
+		<super type="org.eclipse.core.resources.problemmarker"/>
+		<super type="org.eclipse.core.resources.textmarker"/>
+		<super type="org.ucdetector.analyzeMarker"/>
+		<persistent value="true"></persistent>
+	</extension>
+
+	<extension point="org.eclipse.ui.editors.annotationTypes">
+		<type name="org.ucdetector.analyzeMarkerCheckUcdMarkers"
+				super="org.eclipse.ui.workbench.texteditor.warning"
+				markerType="org.ucdetector.analyzeMarkerCheckUcdMarkers"/>
+	</extension>
+ 
+	<extension point="org.eclipse.ui.editors.markerAnnotationSpecification">
+		<specification
+				annotationType="org.ucdetector.analyzeMarkerCheckUcdMarkers"
+				icon="icons/example.gif"
+				includeOnPreferencePage="true"
+				label="Check UcdM arkers"/>
+	</extension>
+	
   <!-- ===================================================================== -->
   <!-- QUICK FIX                                                          -->
   <!-- ===================================================================== -->
-  <!-- http://wiki.eclipse.org/FAQ_How_do_I_implement_Quick_Fixes_for_my_own_language%3F -->
+  <!-- http://wiki.eclipse.org/FAQ_How_do_I_implement_Quick_Fixes_for_my_own_language%3F 
   <extension point="org.eclipse.ui.ide.markerResolution">
     <markerResolutionGenerator
      markerType="org.ucdetector.analyzeMarkerReference"
@@ -35,4 +90,5 @@
      markerType="org.ucdetector.analyzeMarkerVisibilityDefault"
      class="org.ucdetector.util.UCDQuickFixer"/>
   </extension>
+  -->
 </plugin>

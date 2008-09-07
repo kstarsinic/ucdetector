@@ -3,6 +3,7 @@ package org.ucdetector.example.impl;
 import org.ucdetector.example.AbstractMethodExample;
 import org.ucdetector.example.AnnotationExample;
 import org.ucdetector.example.AnonymousClass;
+import org.ucdetector.example.BadMarkerExample;
 import org.ucdetector.example.ConstructorExample;
 import org.ucdetector.example.EnumExample;
 import org.ucdetector.example.FieldExamples;
@@ -131,6 +132,10 @@ public class PublicReferenceHolder {
     System.out.println(NoUcdTagExample.USED);
     System.out.println(NoUcdTagExample.USED2);
     ReferenceInJarExample.class.getName();
+    // ---------------------------------------------------------------------
+    System.out.println(new BadMarkerExample());
+    System.out.println(BadMarkerExample.USED_MARKER_NO);
+    System.out.println(BadMarkerExample.USED_MARKER_YES);
     // ---------------------------------------------------------------------
   }
 }

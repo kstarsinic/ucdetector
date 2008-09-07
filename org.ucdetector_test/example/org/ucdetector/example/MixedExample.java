@@ -4,16 +4,16 @@ package org.ucdetector.example;
  */
 public class MixedExample {
 
-  private int useFinal = 0;
+  private int useFinal = 0; // Marker YES
 
   // TODO 31.08.2008: Marker problems for final methods and make private
-  protected void makePrivateMethod() {
+  protected void makePrivateMethod() { // Marker YES
   }
 
-  protected void makeProtectedMethod() {
+  protected void makeProtectedMethod() { // Marker YES
   }
 
-  public void makeFinalMethod() {
+  public void makeFinalMethod() { // Marker YES
   }
 
   public static void main(String[] args) {

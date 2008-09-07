@@ -25,19 +25,19 @@ public class Java5Example {
   /**
    * The generic parameter list should not cause problems to UCDetector
    */
-  public void genericExample(List<Map<Integer, String>> list) { 
+  public void genericExample(List<Map<Integer, String>> list) {
 
   }
-  
+
   /**
    * The generic parameter list should not cause problems to UCDetector
    */
   public void genericExampleUnused(List<Map<Integer, String>> list) { // Marker YES
-    
+
   }
-  
+
   @SuppressWarnings("unchecked")
-  public static List asList(Object[] array) {
+  public static List asList(Object[] array) { // Marker YES
     return Arrays.asList(array);
   }
 

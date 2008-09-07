@@ -3,7 +3,7 @@ package org.ucdetector.example;
  *
  */
 public class OverrideExample {
-  public static final String UNUSED = null;
+  public static final String UNUSED = null; // Marker YES
 
   public static void main(String[] args) {
     OverrideExample overrideExample = new OverrideExample();
@@ -25,10 +25,10 @@ public class OverrideExample {
   }
 
   // TODO: 2 marker OK?
-  public void makePrivate() {
+  public void makePrivate() { // Marker YES
   }
 
   // TODO: 2 Marker OK?
-  public void unused() {
+  public void unused() { // Marker YES
   }
 }
