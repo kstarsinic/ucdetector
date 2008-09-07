@@ -49,15 +49,13 @@ public class MarkerFactory {
   = "org.ucdetector.analyzeMarkerFinal"; //$NON-NLS-1$
   // -------------------------------------------------------------------------
   public static final String PROBLEM = "UCD_PROBLEM";//$NON-NLS-1$
-  public static final String PROBLEM_UNUSED_CLASS = "PROBLEM_UNUSED_CLASS";//$NON-NLS-1$
-  public static final String PROBLEM_UNUSED_METHOD = "PROBLEM_UNUSED_METHOD";//$NON-NLS-1$
-  public static final String PROBLEM_UNUSED_FIELD = "PROBLEM_UNUSED_FIELD";//$NON-NLS-1$
+  public static final String PROBLEM_UNUSED = "unused code";//$NON-NLS-1$
   //
-  static final String PROBLEM_USE_PRIVATE = "PROBLEM_USE_PRIVATE";//$NON-NLS-1$
-  static final String PROBLEM_USE_PROTECTED = "PROBLEM_USE_PROTECTED";//$NON-NLS-1$
-  static final String PROBLEM_USE_DEFAULT = "PROBLEM_USE_DEFAULT";//$NON-NLS-1$
+  public static final String PROBLEM_USE_PRIVATE = "use private";//$NON-NLS-1$
+  public static final String PROBLEM_USE_PROTECTED = "use protected";//$NON-NLS-1$
+  public static final String PROBLEM_USE_DEFAULT = "use default";//$NON-NLS-1$
   //
-  static final String PROBLEM_USE_FINAL = "PROBLEM_USE_FINAL";//$NON-NLS-1$
+  public static final String PROBLEM_USE_FINAL = "use final";//$NON-NLS-1$
   /**
    * Helper attribute to transfer java element information
    * of a marker to QuickFix. Only String, Integer... are permitted

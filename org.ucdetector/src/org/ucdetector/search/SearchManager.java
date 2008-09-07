@@ -117,7 +117,7 @@ public class SearchManager {
       String searchInfo = Messages.SearchManager_Class;
       StopWatch watch = new StopWatch(type);
       int found = searchImpl(type, Prefs.getUCDetectionInClasses(), searchInfo,
-          MarkerFactory.PROBLEM_UNUSED_CLASS);
+          MarkerFactory.PROBLEM_UNUSED);
       watch.end("searchImpl"); //$NON-NLS-1$
       if (found == 0) {
         noRefTypes.add(type);
@@ -177,7 +177,7 @@ public class SearchManager {
       String searchInfo = method.isConstructor() ? Messages.SearchManager_Constructor
           : Messages.SearchManager_Method;
       searchImpl(method, Prefs.getUCDetectionInMethods(), searchInfo,
-          MarkerFactory.PROBLEM_UNUSED_METHOD);
+          MarkerFactory.PROBLEM_UNUSED);
       watch.end("searchImpl"); //$NON-NLS-1$
     }
   }
@@ -221,7 +221,7 @@ public class SearchManager {
           : Messages.SearchManager_Field;
       updateMonitorMessage(field, Messages.SearchManager_SearchReferences);
       searchImpl(field, Prefs.getUCDetectionInFields(), searchInfo,
-          MarkerFactory.PROBLEM_UNUSED_FIELD);
+          MarkerFactory.PROBLEM_UNUSED);
       watch.end("searchImpl"); //$NON-NLS-1$
     }
   }

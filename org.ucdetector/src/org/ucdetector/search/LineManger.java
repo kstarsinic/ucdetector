@@ -161,7 +161,7 @@ public class LineManger {
    * @return line number for a tag like "NO_UCD", or <code>null</code>
    * if there is no tag like "NO_UCD"
    */
-  public static Integer findTagInComment(IScanner scanner, String tag,
+  private static Integer findTagInComment(IScanner scanner, String tag,
       int nextToken) {
     if (nextToken == ITerminalSymbols.TokenNameCOMMENT_LINE) {
       char[] currentTokenSource = scanner.getCurrentTokenSource();
