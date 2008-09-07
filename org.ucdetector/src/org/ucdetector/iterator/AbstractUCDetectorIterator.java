@@ -82,8 +82,8 @@ public abstract class AbstractUCDetectorIterator extends UCDetectorHandler {
       return;
     }
     handleStartElement(javaElement);
-    if (javaElement.getResource() != null) {
-      handleResource(javaElement.getResource());
+    if (javaElement.getCorrespondingResource() != null) {
+      handleResource(javaElement.getCorrespondingResource());
     }
     //
     boolean doChildren = true;
@@ -112,7 +112,7 @@ public abstract class AbstractUCDetectorIterator extends UCDetectorHandler {
     }
     else if (javaElement instanceof ICompilationUnit) {
       ICompilationUnit unit = (ICompilationUnit) javaElement;
-      handleUnit(unit);
+      handleCompilationUnit(unit);
     }
     else if (javaElement instanceof IType) {
       IType type = (IType) javaElement;
