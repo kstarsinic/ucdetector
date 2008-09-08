@@ -208,6 +208,9 @@ Select menu: Window/Preferences.../UCDetector
 It is possible to filter java elements (and all its children),
 which should not be checked by UCDetector. A simple regular expression is used:
 <ul>
+  <!-- TODO 0.11.0:
+  <li>All filters are "ignore case"</li>
+	-->
   <li>?: Match one character</li>
   <li>*: Match 0 or more characters</li>
 </ul>
@@ -254,6 +257,17 @@ It is possible to add a file pattern. Full qualified class names (org.ucdetector
 found in this files will get no marker for "0 references found". But text
 search is slow, if there are many text files!
 </p>
+
+<!-- TODO 0.11.0: add ignore bean methods, update screenshot
+<p><b>Ignore bean methods:</b><br>
+Ignore methods, which use the java bean convention. For example
+<pre>
+public String getName();
+public void setName(String name);
+public boolean isValid();
+</pre>
+-->
+
 </td>
 <td align="left" valign="middle">
 <img alt="UCDetector preferences"  border="1" src="images/preferences_2_ucd.png">
