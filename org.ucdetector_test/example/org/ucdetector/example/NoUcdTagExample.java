@@ -11,7 +11,7 @@ public class NoUcdTagExample {
 
   public static String USED = "UNUSED"; // NO_UCD
 
-  public static final String UNUSED2 = "UNUSED"; // Marker: unused code
+  public static final String UNUSED2 = "UNUSED"; // Marker YES: unused code
 
   public static final String USED2 = "UNUSED";
 

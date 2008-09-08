@@ -6,11 +6,12 @@ public class MixedExample {
 
   private int useFinal = 0; // Marker YES: use final
 
-  // TODO 31.08.2008: Marker problems for final methods and make private
-  protected void makePrivateMethod() { // Marker YES: use final
+  public static final String UNUSED = "UNUSED"; // Marker YES: unused code
+
+  public final void makePrivateMethod() { // Marker YES: use private
   }
 
-  protected void makeProtectedMethod() { // Marker YES: use final
+  public final void makeProtectedMethod() { // Marker YES: use protected
   }
 
   public void makeFinalMethod() { // Marker YES: use final

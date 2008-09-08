@@ -1,5 +1,5 @@
 package org.ucdetector.example;
 
-public class SameName { // Marker YES: unused code
+public class SameName {// Marker YES: unused code
 
 }

@@ -1,6 +1,5 @@
 /**
- * Provide Example classes to test UCDetector
+ * Provide Example classes to test UCDetector<br>
+ * This file should not cause UCDetector problems
  */
 package org.ucdetector.example;
-
-// this file should not cause UCDetector problems
