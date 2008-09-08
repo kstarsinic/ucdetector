@@ -44,8 +44,8 @@ public class LineManger {
   /**
    * parsed java files
    */
-  private final Map<ICompilationUnit, IScanner> scannerMap //
-  = new HashMap<ICompilationUnit, IScanner>();
+  private final Map<ICompilationUnit, ScannerTimestamp> scannerMap //
+  = new HashMap<ICompilationUnit, ScannerTimestamp>();
   /**
    * lines containing "NO_UCD
    */
@@ -103,8 +103,16 @@ public class LineManger {
       return null;
     }
     ICompilationUnit compilationUnit = (ICompilationUnit) openable;
-    if (scannerMap.containsKey(compilationUnit)) {
-      return scannerMap.get(compilationUnit);
+    // Update scanner, if file changed!
+    long timeStamp = javaElement.getResource().getLocalTimeStamp();
+    ScannerTimestamp scannerTimestamp = scannerMap.get(compilationUnit);
+    if (scannerTimestamp != null) {
+      if (timeStamp > scannerTimestamp.timeStamp) {
+        scannerMap.remove(compilationUnit);
+      }
+      else {
+        return scannerMap.get(compilationUnit).scanner;
+      }
     }
     IScanner scanner = ToolFactory.createScanner(true, false, false, true);
     // old: char[] contents = org.eclipse.jdt.internal.core.CompilationUnit.getContents();
@@ -127,7 +135,7 @@ public class LineManger {
           IStatus.ERROR, e.getMessage(), e);
       throw new CoreException(status);
     }
-    scannerMap.put(compilationUnit, scanner);
+    scannerMap.put(compilationUnit, new ScannerTimestamp(scanner, timeStamp));
     lineEndsMap.put(compilationUnit, scanner.getLineEnds());
     return scanner;
   }
@@ -173,5 +181,19 @@ public class LineManger {
       }
     }
     return null;
+  }
+
+  /**
+   * This class holds a scanner and its timestamp.
+   * Update scanner, if file has changed!
+   */
+  private static final class ScannerTimestamp {
+    private final long timeStamp;
+    private final IScanner scanner;
+
+    ScannerTimestamp(IScanner scanner, long timeStamp) {
+      this.scanner = scanner;
+      this.timeStamp = timeStamp;
+    }
   }
 }
