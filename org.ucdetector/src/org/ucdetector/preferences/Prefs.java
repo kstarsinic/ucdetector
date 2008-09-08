@@ -290,7 +290,8 @@ public class Prefs {
 
   /**
    * @return <code>true</code>, when the name matches one of the Strings
-   * found in the preference filteName
+   * found in the preference filteName.<br>
+   * This method ignores case since version 0.10.1
    */
   static boolean matchFilter(String filterName, String name) {
     String[] filters = parseFilters(filterName);
