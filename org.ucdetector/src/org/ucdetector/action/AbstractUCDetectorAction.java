@@ -41,7 +41,6 @@ public abstract class AbstractUCDetectorAction extends ActionDelegate { // NO_UC
       return;
     }
     final AbstractUCDetectorIterator iterator = createIterator();
-    // http://www.eclipse.org/articles/Article-Concurrency/jobs-api.html
     Job job = new Job(iterator.getJobName()) {
       @Override
       public IStatus run(IProgressMonitor monitor) {
@@ -72,7 +71,9 @@ public abstract class AbstractUCDetectorAction extends ActionDelegate { // NO_UC
         return Status.OK_STATUS;
       }
     };
-    job.setRule(ResourcesPlugin.getWorkspace().getRoot());
+    // TODO 08.09.2008: Review rule stuff
+    // http://www.eclipse.org/articles/Article-Concurrency/jobs-api.html
+//    job.setRule(ResourcesPlugin.getWorkspace().getRoot());
     job.setUser(true);
     job.schedule();
   }
