@@ -10,6 +10,7 @@ package org.ucdetector.search;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.OperationCanceledException;
 import org.eclipse.jdt.core.Flags;
+import org.eclipse.jdt.core.IField;
 import org.eclipse.jdt.core.IJavaElement;
 import org.eclipse.jdt.core.IMember;
 import org.eclipse.jdt.core.IMethod;
@@ -41,14 +42,10 @@ class VisibilityHandler {
     this.markerFactory = markerFactory;
     this.startElement = startElement;
     int flags = startElement.getFlags();
-    IJavaElement parent = startElement.getParent();
-    // handle enum member like protected, they have no "public"
-    boolean isEnum = (parent instanceof IType && ((IType) parent).isEnum());
     if (Flags.isPublic(flags)) {
       visibilityStart = VISIBILITY_PUBLIC;
     }
-    else if (Flags.isProtected(flags) || Flags.isPackageDefault(flags)
-        || isEnum) {
+    else if (Flags.isProtected(flags) || Flags.isPackageDefault(flags)) {
       visibilityStart = VISIBILITY_PROTECTED;
     }
     else {
@@ -105,6 +102,13 @@ class VisibilityHandler {
         return false;
       }
     }
+    if (startElement instanceof IField) {
+      IField field = (IField) startElement;
+      if (field.isEnumConstant()) {
+        return false;
+      }
+    }
+
     boolean isPrivate = maxVisibilityFound == VISIBILITY_PRIVATE;
     // classes can't be protected!
     String type = isPrivate ? MarkerFactory.ANALYZE_MARKER_VISIBILITY_PRIVATE
