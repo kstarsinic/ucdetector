@@ -4,7 +4,7 @@ package org.ucdetector.example.fields;
  * {@link FieldExamples#usedByJavadoc}
  */
 public class FieldExamples {
-
+  
   /** should be ignored, because of field filter (ignore case) *test* */
   public static final int TEST_FIELD = 0;
 
@@ -12,15 +12,15 @@ public class FieldExamples {
   public static final int test_field = 0;
 
   /** should be ignored, because of field filter (ignore case) *test* */
-  public static final int MY_TEST_FIELD = 0;
+  public static final int MY_FIELD_TEST = 0;
 
   /** should be ignored, because of field filter (ignore case) *test* */
-  public static final int my_test_field = 0;
+  public static final int my_field_test = 0;
 
   /**
    *  This field is referenced by javadoc
    **/
-  public int usedByJavadoc = 1;// Marker YES: unused code
+  public final int usedByJavadoc = 1;// Marker YES: unused code
 
   /** This kind of field declaration should not cause problems for UCDetector! */
   private final int usedFieldList1 = 1, //

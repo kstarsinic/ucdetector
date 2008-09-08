@@ -31,7 +31,7 @@ public class MethodExamples {
   }
 
   /** should be ignored, because of method filter (ignore case) *test* */
-  public void myTestMethod() {
+  public void myMethodTest() {
 
   }
 
