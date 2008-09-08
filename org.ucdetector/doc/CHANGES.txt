@@ -2,6 +2,7 @@ UCDetector 0.11.0 from ?:
 New features:
  - Checkbox "Ignore bean methods"
  - When UCDetector is running, now it is possible to continue editing
+ - speed up detection for overridden methods
  
 Bugfixes:
  - Filters are now "ignore case"

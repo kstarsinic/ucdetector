@@ -94,14 +94,6 @@ class VisibilityHandler {
     if (!needVisibilityMarker(member, found)) {
       return false;
     }
-    // Fix for BUG 1925549
-    // Exclude overridden methods from visibility detection
-    if (member instanceof IMethod) {
-      // TODO 01.09.2008: This is already done SearchManager.searchMethods(List<IMethod>)
-      if (JavaElementUtil.isOverriddenMethod((IMethod) member)) {
-        return false;
-      }
-    }
     if (startElement instanceof IField) {
       IField field = (IField) startElement;
       if (field.isEnumConstant()) {

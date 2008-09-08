@@ -290,9 +290,11 @@ public class JavaElementUtil {
   // -------------------------------------------------------------------------
 
   /**
-   * @return <code>true</code> if a method is overridden
+   * @return <code>true</code> if a method is overridden<br>
+   * it is very expensive to call this method!!!
    */
   public static boolean isOverriddenMethod(IMethod method) throws CoreException {
+    StopWatch stop = new StopWatch(method);
     SearchPattern pattern = SearchPattern.createPattern(method,
         IJavaSearchConstants.DECLARATIONS, SearchPattern.R_EXACT_MATCH
     // | IJavaSearchConstants.IGNORE_DECLARING_TYPE
@@ -311,6 +313,7 @@ public class JavaElementUtil {
     catch (OutOfMemoryError e) {
       UCDetectorPlugin.handleOutOfMemoryError(e);
     }
+    stop.end("isOverriddenMethod");
     return requestor.found > 1;
   }
 

@@ -51,8 +51,6 @@ class FinalHandler {
         || Flags.isAbstract(flags) //
         || Flags.isFinal(flags) //
         || Flags.isInterface(flags) //
-        // TODO 01.09.2008: This is already done SearchManager.searchMethods(List<IMethod>)
-        || JavaElementUtil.isOverriddenMethod(method) 
     ) {
       return false;
     }

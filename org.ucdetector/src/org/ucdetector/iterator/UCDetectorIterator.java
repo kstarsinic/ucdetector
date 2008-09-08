@@ -16,10 +16,12 @@ import org.eclipse.jdt.core.IJavaElement;
 import org.eclipse.jdt.core.IMethod;
 import org.eclipse.jdt.core.IType;
 import org.ucdetector.Messages;
+import org.ucdetector.UCDetectorPlugin;
 import org.ucdetector.preferences.Prefs;
 import org.ucdetector.search.SearchManager;
 import org.ucdetector.util.JavaElementUtil;
 import org.ucdetector.util.MarkerFactory;
+import org.ucdetector.util.StopWatch;
 
 /**
  * Unnecessary Code Detector Iterator Collect types, methods an fields which
@@ -28,6 +30,8 @@ public class UCDetectorIterator extends AbstractUCDetectorIterator {
   private final List<IType> types = new ArrayList<IType>();
   private final List<IMethod> methods = new ArrayList<IMethod>();
   private final List<IField> fields = new ArrayList<IField>();
+  
+  private final StopWatch stopWatch = new StopWatch("UCDetectorIterator");
 
   @Override
   public void handleStartSelectedElement(IJavaElement javaElement)
@@ -96,6 +100,7 @@ public class UCDetectorIterator extends AbstractUCDetectorIterator {
     int total = types.size() + methods.size() + fields.size();
     SearchManager searchManager = new SearchManager(getMonitor(), total);
     searchManager.search(types, methods, fields, objects);
+    stopWatch.end("Run");
   }
 
   @Override

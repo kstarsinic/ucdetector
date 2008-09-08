@@ -117,7 +117,7 @@ public class SearchManager {
       String searchInfo = Messages.SearchManager_Class;
       StopWatch watch = new StopWatch(type);
       int found = searchImpl(type, Prefs.getUCDetectionInClasses(), searchInfo,
-          MarkerFactory.PROBLEM_UNUSED);
+          MarkerFactory.PROBLEM_UNUSED, false);
       watch.end("searchImpl"); //$NON-NLS-1$
       if (found == 0) {
         noRefTypes.add(type);
@@ -165,19 +165,25 @@ public class SearchManager {
       if (isOverride) {
         continue;
       }
+
+      // it is very expensive to call this method!!!
+      boolean isOverriddenMethod = JavaElementUtil.isOverriddenMethod(method);
+
       int line = lineManger.getLine(method);
       StopWatch watch = new StopWatch(method);
-      updateMonitorMessage(method, SEARCH_FINAL_MESSAGE);
-      boolean created = finalHandler.createFinalMarker(method, line);
-      watch.end("createFinalMarker"); //$NON-NLS-1$
-      if (created) {
-        foundTotal++;
+      if (!isOverriddenMethod) {
+        updateMonitorMessage(method, SEARCH_FINAL_MESSAGE);
+        boolean created = finalHandler.createFinalMarker(method, line);
+        watch.end("createFinalMarker"); //$NON-NLS-1$
+        if (created) {
+          foundTotal++;
+        }
       }
       updateMonitorMessage(method, Messages.SearchManager_SearchReferences);
       String searchInfo = method.isConstructor() ? Messages.SearchManager_Constructor
           : Messages.SearchManager_Method;
       searchImpl(method, Prefs.getUCDetectionInMethods(), searchInfo,
-          MarkerFactory.PROBLEM_UNUSED);
+          MarkerFactory.PROBLEM_UNUSED, isOverriddenMethod);
       watch.end("searchImpl"); //$NON-NLS-1$
     }
   }
@@ -221,7 +227,7 @@ public class SearchManager {
           : Messages.SearchManager_Field;
       updateMonitorMessage(field, Messages.SearchManager_SearchReferences);
       searchImpl(field, Prefs.getUCDetectionInFields(), searchInfo,
-          MarkerFactory.PROBLEM_UNUSED);
+          MarkerFactory.PROBLEM_UNUSED, false);
       watch.end("searchImpl"); //$NON-NLS-1$
     }
   }
@@ -230,7 +236,8 @@ public class SearchManager {
     * Search for references create marker
     */
   private int searchImpl(IMember member, WarnLevel warnlevel,
-      String searchInfo, String problem) throws CoreException {
+      String searchInfo, String problem, boolean isOverriddenMethod)
+      throws CoreException {
     int line = lineManger.getLine(member);
     if (monitor.isCanceled() || line == LineManger.LINE_NOT_FOUND) {
       return 0;
@@ -240,10 +247,13 @@ public class SearchManager {
 
     int found = searchJavaImpl(member, visibilityHandler);
     found += searchTextImpl(member, visibilityHandler, found);
-
-    boolean created = visibilityHandler.createMarker(member, line, found);
-    if (created) {
-      foundTotal++;
+    boolean created = false;
+    // Fix for BUG 1925549:  Exclude overridden methods from visibility detection
+    if (!isOverriddenMethod) {
+      created = visibilityHandler.createMarker(member, line, found);
+      if (created) {
+        foundTotal++;
+      }
     }
     Object[] bindings = new Object[] { searchInfo, member.getElementName(),
         new Integer(found) };
