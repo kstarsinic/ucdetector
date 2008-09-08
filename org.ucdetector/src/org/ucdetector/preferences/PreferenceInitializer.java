@@ -22,7 +22,7 @@ public class PreferenceInitializer extends AbstractPreferenceInitializer { // NO
   private static final String PACKAGE_FILTER //
   = "*test*,"; //$NON-NLS-1$
   private static final String CLASS_FILTER //
-  = "*Test*,"; //$NON-NLS-1$
+  = "*test*,"; //$NON-NLS-1$
   private static final String METHOD_FILTER //
   = "*test*,"; //$NON-NLS-1$
   private static final String FIELD_FILTER //
@@ -44,6 +44,7 @@ public class PreferenceInitializer extends AbstractPreferenceInitializer { // NO
     store.setDefault(Prefs.FILTER_SOURCE_FOLDER, SOURCE_FOLDER_FILTER);
     store.setDefault(Prefs.FILTER_PACKAGE, PACKAGE_FILTER);
     store.setDefault(Prefs.FILTER_CLASS, CLASS_FILTER);
+    store.setDefault(Prefs.FILTER_BEAN_METHOD, true);
     store.setDefault(Prefs.FILTER_METHOD, METHOD_FILTER);
     store.setDefault(Prefs.FILTER_FIELD, FIELD_FILTER);
     // Limit -------------------------------------------------------------------
