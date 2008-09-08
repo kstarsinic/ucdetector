@@ -191,6 +191,7 @@ public class UCDetectorPreferencePage extends FieldEditorPreferencePage // NO_UC
   /** 
    * Hack for layout problems. See also: IntegerFieldEditor.getNumberOfControls() 
    * */
+  @Override
   protected void adjustGridLayout() {
   }
 

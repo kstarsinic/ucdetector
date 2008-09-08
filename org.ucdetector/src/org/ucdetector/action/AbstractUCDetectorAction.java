@@ -11,7 +11,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.eclipse.core.resources.IResource;
-import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
@@ -73,7 +72,7 @@ public abstract class AbstractUCDetectorAction extends ActionDelegate { // NO_UC
     };
     // TODO 08.09.2008: Review rule stuff
     // http://www.eclipse.org/articles/Article-Concurrency/jobs-api.html
-//    job.setRule(ResourcesPlugin.getWorkspace().getRoot());
+    //    job.setRule(ResourcesPlugin.getWorkspace().getRoot());
     job.setUser(true);
     job.schedule();
   }

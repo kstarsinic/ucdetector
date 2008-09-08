@@ -39,7 +39,6 @@ import org.eclipse.osgi.util.NLS;
 import org.ucdetector.Messages;
 import org.ucdetector.UCDetectorPlugin;
 import org.ucdetector.preferences.Prefs;
-import org.ucdetector.report.IUCDetctorReport.ReportParam;
 import org.ucdetector.util.JavaElementUtil;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
@@ -115,7 +114,8 @@ public class TextReport implements IUCDetctorReport {
     appendChild(marker, "level", reportParam.level.toString());//$NON-NLS-1$
 
     // NODE: org.ucdetector
-    IPackageFragment pack = JavaElementUtil.getPackageFor(reportParam.javaElement);
+    IPackageFragment pack = JavaElementUtil
+        .getPackageFor(reportParam.javaElement);
     appendChild(marker, "package", pack.getElementName());//$NON-NLS-1$
 
     // NODE: UCDetectorPlugin

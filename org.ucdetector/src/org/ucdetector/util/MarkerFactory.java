@@ -176,7 +176,8 @@ public class MarkerFactory {
       return false;
     }
     for (IUCDetctorReport report : reports) {
-      report.reportMarker(new ReportParam(javaElement, message, line, level, markerType, problem));
+      report.reportMarker(new ReportParam(javaElement, message, line, level,
+          markerType, problem));
     }
     return true;
   }

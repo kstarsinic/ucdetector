@@ -16,7 +16,6 @@ import org.eclipse.jdt.core.IJavaElement;
 import org.eclipse.jdt.core.IMethod;
 import org.eclipse.jdt.core.IType;
 import org.ucdetector.Messages;
-import org.ucdetector.UCDetectorPlugin;
 import org.ucdetector.preferences.Prefs;
 import org.ucdetector.search.SearchManager;
 import org.ucdetector.util.JavaElementUtil;
@@ -30,7 +29,7 @@ public class UCDetectorIterator extends AbstractUCDetectorIterator {
   private final List<IType> types = new ArrayList<IType>();
   private final List<IMethod> methods = new ArrayList<IMethod>();
   private final List<IField> fields = new ArrayList<IField>();
-  
+
   private final StopWatch stopWatch = new StopWatch("UCDetectorIterator");
 
   @Override
