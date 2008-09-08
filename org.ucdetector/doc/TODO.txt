@@ -1,7 +1,4 @@
 //------------------------------------------------------------------------------
-TODO 0.9.0:
-
-//------------------------------------------------------------------------------
 TODO 0.10.0:
  - refactor "copy and paste" code for:
     - searchEngine.search
@@ -11,7 +8,6 @@ TODO 0.10.0:
    - local classes can be private
  - editor templates
  - code style templates
- - checkbox "Ignore bean methods"
  - create an extension point for "org.ucdetector.additional"
  - use combo for file extensions: TextSearchPage.addFileNameControls()
  - check TODO's from E-Mails, sourceforge tasks/requests
