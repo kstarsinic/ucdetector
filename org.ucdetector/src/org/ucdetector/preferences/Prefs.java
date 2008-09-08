@@ -30,6 +30,8 @@ public class Prefs {
   = UCDetectorPlugin.ID + ".packageFilter"; //$NON-NLS-1$
   static final String FILTER_CLASS //
   = UCDetectorPlugin.ID + ".classFilter"; //$NON-NLS-1$
+  static final String FILTER_BEAN_METHOD //
+  = UCDetectorPlugin.ID + ".beanMethodFilter"; //$NON-NLS-1$
   static final String FILTER_METHOD //
   = UCDetectorPlugin.ID + ".methodFilter"; //$NON-NLS-1$
   static final String FILTER_FIELD //
@@ -91,7 +93,7 @@ public class Prefs {
   }
 
   /**
-   * @return <code>true</code>, when the IPackageFragment
+   * @return <code>true</code>, when the type
    * matches the type filter
    */
   public static boolean filterType(IType type) {
@@ -99,7 +101,14 @@ public class Prefs {
   }
 
   /**
-   * @return <code>true</code>, when the IPackageFragment
+   * @return <code>true</code>, when bean methods should be filtered
+   */
+  public static boolean isFilterBeanMethod() {
+    return getStore().getBoolean(Prefs.FILTER_BEAN_METHOD);
+  }
+
+  /**
+   * @return <code>true</code>, when the method
    * matches the method filter
    */
   public static boolean filterMethod(IMethod method) {
@@ -107,7 +116,7 @@ public class Prefs {
   }
 
   /**
-   * @return <code>true</code>, when the IPackageFragment
+   * @return <code>true</code>, when the field
    * matches the field filter
    */
   public static boolean filterField(IField field) {
@@ -286,8 +295,10 @@ public class Prefs {
   static boolean matchFilter(String filterName, String name) {
     String[] filters = parseFilters(filterName);
     for (String regex : filters) {
+      String regexLower = regex.toLowerCase();
+      String nameLower = name.toLowerCase();
       // IPackageFragmentRoot can be "", filter can be ""
-      if (regex.length() > 0 && Pattern.matches(regex, name)) {
+      if (regex.length() > 0 && Pattern.matches(regexLower, nameLower)) {
         return true;
       }
     }

@@ -364,4 +364,29 @@ public class JavaElementUtil {
   public static boolean isConstant(IField field) throws JavaModelException {
     return Flags.isStatic(field.getFlags()) && Flags.isFinal(field.getFlags());
   }
+
+  public static boolean isBeanMethod(IMethod method) throws JavaModelException {
+    if (Flags.isPublic(method.getFlags()) && !Flags.isStatic(method.getFlags())) {
+      String name = method.getElementName();
+      if (name.length() > 3 && name.startsWith("set")
+          && Character.isUpperCase(name.charAt(3))
+          && Signature.SIG_VOID.equals(method.getReturnType())
+          && method.getNumberOfParameters() == 1) {
+        return true;
+      }
+      if (name.length() > 3 && name.startsWith("get")
+          && Character.isUpperCase(name.charAt(3))
+          && !Signature.SIG_VOID.equals(method.getReturnType())
+          && method.getNumberOfParameters() == 0) {
+        return true;
+      }
+      if (name.length() > 2 && name.startsWith("is")
+          && Character.isUpperCase(name.charAt(2))
+          && Signature.SIG_BOOLEAN.equals(method.getReturnType())
+          && method.getNumberOfParameters() == 0) {
+        return true;
+      }
+    }
+    return false;
+  }
 }

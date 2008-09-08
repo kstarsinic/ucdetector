@@ -18,6 +18,7 @@ import org.eclipse.jdt.core.IType;
 import org.ucdetector.Messages;
 import org.ucdetector.preferences.Prefs;
 import org.ucdetector.search.SearchManager;
+import org.ucdetector.util.JavaElementUtil;
 import org.ucdetector.util.MarkerFactory;
 
 /**
@@ -61,6 +62,9 @@ public class UCDetectorIterator extends AbstractUCDetectorIterator {
       return;
     }
     if (Flags.isAbstract(method.getFlags())) {
+      return;
+    }
+    if (Prefs.isFilterBeanMethod() && JavaElementUtil.isBeanMethod(method)) {
       return;
     }
     methods.add(method);

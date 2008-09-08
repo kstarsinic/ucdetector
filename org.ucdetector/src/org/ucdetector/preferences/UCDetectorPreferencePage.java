@@ -91,6 +91,10 @@ public class UCDetectorPreferencePage extends FieldEditorPreferencePage // NO_UC
         Messages.PreferencePage_IgnoreFieldFilter, spacer,
         Messages.PreferencePage_IgnoreFieldFilterToolTip);
     this.addField(fieldFilter);
+    BooleanFieldEditor beanMethodFilter = new BooleanFieldEditor(
+        Prefs.FILTER_BEAN_METHOD, "Ignore bean methods",
+        BooleanFieldEditor.SEPARATE_LABEL, spacer);
+    this.addField(beanMethodFilter);
   }
 
   /**
