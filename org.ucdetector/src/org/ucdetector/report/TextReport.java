@@ -39,7 +39,7 @@ import org.eclipse.osgi.util.NLS;
 import org.ucdetector.Messages;
 import org.ucdetector.UCDetectorPlugin;
 import org.ucdetector.preferences.Prefs;
-import org.ucdetector.preferences.WarnLevel;
+import org.ucdetector.report.IUCDetctorReport.ReportParam;
 import org.ucdetector.util.JavaElementUtil;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
@@ -101,8 +101,7 @@ public class TextReport implements IUCDetctorReport {
   /**
    * creates for each marker a xml element and its children
    */
-  public void reportMarker(IJavaElement javaElement, String message, int line,
-      WarnLevel level, String markerType, String problem) throws CoreException {
+  public void reportMarker(ReportParam reportParam) throws CoreException {
     if (initXMLException != null || !Prefs.isWriteReportFile()) {
       return;
     }
@@ -110,27 +109,27 @@ public class TextReport implements IUCDetctorReport {
     markers.appendChild(doc.createComment(" === Marker number " + markerCount));//$NON-NLS-1$
     Element marker = doc.createElement("marker"); //$NON-NLS-1$
     markers.appendChild(marker);
-    IResource resource = javaElement.getResource();
+    IResource resource = reportParam.javaElement.getResource();
 
     // NODE: "Error", "Warning"
-    appendChild(marker, "level", level.toString());//$NON-NLS-1$
+    appendChild(marker, "level", reportParam.level.toString());//$NON-NLS-1$
 
     // NODE: org.ucdetector
-    IPackageFragment pack = JavaElementUtil.getPackageFor(javaElement);
+    IPackageFragment pack = JavaElementUtil.getPackageFor(reportParam.javaElement);
     appendChild(marker, "package", pack.getElementName());//$NON-NLS-1$
 
     // NODE: UCDetectorPlugin
-    IType type = JavaElementUtil.getTypeFor(javaElement);
+    IType type = JavaElementUtil.getTypeFor(reportParam.javaElement);
     appendChild(marker, "class", type.getElementName());//$NON-NLS-1$
 
-    if (javaElement instanceof IMethod) {
+    if (reportParam.javaElement instanceof IMethod) {
       // NODE: method
-      IMethod method = (IMethod) javaElement;
+      IMethod method = (IMethod) reportParam.javaElement;
       appendChild(marker, "method", JavaElementUtil.getMethodName(method));//$NON-NLS-1$
     }
-    if (javaElement instanceof IField) {
+    if (reportParam.javaElement instanceof IField) {
       // NODE: field
-      appendChild(marker, "field", javaElement.getElementName());//$NON-NLS-1$
+      appendChild(marker, "field", reportParam.javaElement.getElementName());//$NON-NLS-1$
     }
 
     if (resource != null) {
@@ -139,10 +138,10 @@ public class TextReport implements IUCDetctorReport {
     }
 
     // NODE: 123
-    appendChild(marker, "line", String.valueOf(line));//$NON-NLS-1$
+    appendChild(marker, "line", String.valueOf(reportParam.line));//$NON-NLS-1$
 
     // NODE: Change visibility of MixedExample to default
-    appendChild(marker, "description", message);//$NON-NLS-1$
+    appendChild(marker, "description", reportParam.message);//$NON-NLS-1$
 
     if (resource != null && resource.getLocation() != null) {
       // NODE:
@@ -167,7 +166,7 @@ public class TextReport implements IUCDetctorReport {
   /**
    * Write report to xml file, do xslt transformation to an html file
    */
-  public void endReport(Object[] selected, long start) {
+  public void endReport(Object[] selected, long start) throws CoreException {
     if (!Prefs.isWriteReportFile()) {
       return;
     }

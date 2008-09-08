@@ -14,8 +14,26 @@ import org.ucdetector.preferences.WarnLevel;
  *
  */
 public interface IUCDetctorReport {
-  void reportMarker(IJavaElement javaElement, String message, int line,
-      WarnLevel level, String markerType, String problem) throws CoreException;
+  public static class ReportParam {
+    public IJavaElement javaElement;
+    public String message;
+    public int line;
+    public WarnLevel level;
+    public String markerType;
+    public String problem;
 
-  void endReport(Object[] selected, long start);
+    public ReportParam(IJavaElement javaElement, String message, int line,
+        WarnLevel level, String markerType, String problem) {
+      this.javaElement = javaElement;
+      this.message = message;
+      this.line = line;
+      this.level = level;
+      this.markerType = markerType;
+      this.problem = problem;
+    }
+  }
+
+  void reportMarker(ReportParam reportParam) throws CoreException;
+
+  void endReport(Object[] selected, long start) throws CoreException;
 }

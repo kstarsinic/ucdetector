@@ -6,26 +6,51 @@
  */
 package org.ucdetector.report;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.eclipse.core.resources.IMarker;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.jdt.core.IField;
 import org.eclipse.jdt.core.IJavaElement;
 import org.eclipse.jdt.core.IMethod;
 import org.eclipse.jdt.core.IType;
-import org.ucdetector.preferences.WarnLevel;
 import org.ucdetector.util.MarkerFactory;
 
 /**
  *
  */
 public class MarkerReport implements IUCDetctorReport {
+  /**
+   * Don't create one marker each, create number of markers declared here
+   * each time!
+   */
+  private static final int MARKERS_TO_CREATE_COUNT = 10;
+  private final List<ReportParam> markersToCreate = new ArrayList<ReportParam>();
 
-  public void reportMarker(IJavaElement javaElement, String message, int line,
-      WarnLevel level, String markerType, String problem) throws CoreException {
-    IMarker marker = javaElement.getResource().createMarker(markerType);
-    marker.setAttribute(IMarker.MESSAGE, message);
+  public void reportMarker(ReportParam reportParam) throws CoreException {
+    markersToCreate.add(reportParam);
+    if (markersToCreate.size() >= MARKERS_TO_CREATE_COUNT) {
+      flushReport();
+    }
+  }
+
+  /**
+   * Create markers and clean cache;
+   */
+  private void flushReport() throws CoreException {
+    for (ReportParam reportParamToCreate : markersToCreate) {
+      createMarker(reportParamToCreate);
+    }
+    markersToCreate.clear();
+  }
+
+  private void createMarker(ReportParam reportParam) throws CoreException {
+    IMarker marker = reportParam.javaElement.getResource().createMarker(
+        reportParam.markerType);
+    marker.setAttribute(IMarker.MESSAGE, reportParam.message);
     marker.setAttribute(IMarker.PRIORITY, IMarker.PRIORITY_HIGH);
-    switch (level) {
+    switch (reportParam.level) {
       case ERROR:
         marker.setAttribute(IMarker.SEVERITY, IMarker.SEVERITY_ERROR);
         break;
@@ -36,10 +61,10 @@ public class MarkerReport implements IUCDetctorReport {
         // marker.setAttribute(IMarker.SEVERITY, IMarker.SEVERITY_INFO);
         break;
     }
-    marker.setAttribute(IMarker.LINE_NUMBER, line);
+    marker.setAttribute(IMarker.LINE_NUMBER, reportParam.line);
     // additional info, not used at the moment
-    marker.setAttribute(MarkerFactory.PROBLEM, problem);
-    String elementString = getJavaElementString(javaElement);
+    marker.setAttribute(MarkerFactory.PROBLEM, reportParam.problem);
+    String elementString = getJavaElementString(reportParam.javaElement);
     marker.setAttribute(MarkerFactory.JAVA_ELEMENT_ATTRIBUTE, elementString);
   }
 
@@ -70,7 +95,7 @@ public class MarkerReport implements IUCDetctorReport {
     return sb.toString();
   }
 
-  public void endReport(Object[] selected, long start) {
-
+  public void endReport(Object[] selected, long start) throws CoreException {
+    flushReport();
   }
 }

@@ -22,6 +22,7 @@ import org.ucdetector.preferences.WarnLevel;
 import org.ucdetector.report.IUCDetctorReport;
 import org.ucdetector.report.MarkerReport;
 import org.ucdetector.report.TextReport;
+import org.ucdetector.report.IUCDetctorReport.ReportParam;
 import org.ucdetector.search.LineManger;
 
 /**
@@ -48,6 +49,9 @@ public class MarkerFactory {
   public static final String ANALYZE_MARKER_FINAL //
   = "org.ucdetector.analyzeMarkerFinal"; //$NON-NLS-1$
   // -------------------------------------------------------------------------
+  // ###########################################################################
+  // TODO 08.09.2008: Constants ANALYZE_MARKER* and PROBLEM* is the same: Remove PROBLEM*
+  // ###########################################################################
   public static final String PROBLEM = "UCD_PROBLEM";//$NON-NLS-1$
   public static final String PROBLEM_UNUSED = "unused code";//$NON-NLS-1$
   //
@@ -80,7 +84,7 @@ public class MarkerFactory {
     return new MarkerFactory();
   }
 
-  public void endReport(Object[] selected, long start) {
+  public void endReport(Object[] selected, long start) throws CoreException {
     for (IUCDetctorReport report : reports) {
       report.endReport(selected, start);
     }
@@ -172,8 +176,7 @@ public class MarkerFactory {
       return false;
     }
     for (IUCDetctorReport report : reports) {
-      report.reportMarker(javaElement, message, line, level, markerType,
-          problem);
+      report.reportMarker(new ReportParam(javaElement, message, line, level, markerType, problem));
     }
     return true;
   }
