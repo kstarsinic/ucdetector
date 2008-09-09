@@ -1,9 +1,10 @@
 package org.ucdetector.example.impl;
 
 // ############################################################################
-// DONT REMOVD IMPORT!
+// Don't Remove IMPORT!
 // ############################################################################
 import org.ucdetector.example.classes.OnlyImportDeclarationReferenceExample;
 
+@SuppressWarnings("unused")
 public class ReferenceHolderDontChange {
 }

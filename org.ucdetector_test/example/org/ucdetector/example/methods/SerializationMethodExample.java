@@ -5,7 +5,6 @@ import java.io.InvalidClassException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.io.ObjectStreamException;
-import java.io.ObjectStreamField;
 
 /**
  * Test some special methods for Serialization

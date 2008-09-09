@@ -38,8 +38,7 @@ import org.ucdetector.example.visibility.UseProtectedClass;
  */
 @SuppressWarnings("unused")
 public class PublicReferenceHolder {
-  // unusued
-
+  @SuppressWarnings("deprecation")
   @AnnotationExample(parameterExmaple = "1")
   public static void main(String[] args) throws Throwable {
     FieldExamples fieldExamples = new FieldExamples();

@@ -113,8 +113,7 @@ public class UCDQuickFix implements IMarkerResolution { // NO_UCD
         runDeleteElement(marker);
       }
       // ------------------------------------------------------------------
-      else if (MarkerFactory.UCD_MARKER_USE_PRIVATE.equals(problem)
-          || //
+      else if (MarkerFactory.UCD_MARKER_USE_PRIVATE.equals(problem) || //
           MarkerFactory.UCD_MARKER_USE_PROETECTED.equals(problem) || //
           MarkerFactory.UCD_MARKER_USE_DEFAULT.equals(problem)) {
         runSetVisibilityKeyword(marker);
@@ -192,6 +191,7 @@ public class UCDQuickFix implements IMarkerResolution { // NO_UCD
   /**
    * Delete a class, a method or a field
    */
+  @SuppressWarnings("deprecation")
   private void runDeleteElement(IMarker marker) throws CoreException,
       BadLocationException {
     ICompilationUnit originalUnit = getCompilationUnit(marker);
