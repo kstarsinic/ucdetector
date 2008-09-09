@@ -296,10 +296,8 @@ public class Prefs {
   static boolean matchFilter(String filterName, String name) {
     String[] filters = parseFilters(filterName);
     for (String regex : filters) {
-      String regexLower = regex.toLowerCase();
-      String nameLower = name.toLowerCase();
       // IPackageFragmentRoot can be "", filter can be ""
-      if (regex.length() > 0 && Pattern.matches(regexLower, nameLower)) {
+      if (regex.length() > 0 && Pattern.matches(regex, name)) {
         return true;
       }
     }

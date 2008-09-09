@@ -22,11 +22,11 @@ public class PreferenceInitializer extends AbstractPreferenceInitializer { // NO
   private static final String PACKAGE_FILTER //
   = "*test*,"; //$NON-NLS-1$
   private static final String CLASS_FILTER //
-  = "test*,*test"; //$NON-NLS-1$
+  = "Test*,*Test"; //$NON-NLS-1$
   private static final String METHOD_FILTER //
-  = "test*,*test"; //$NON-NLS-1$
+  = "test*,*Test"; //$NON-NLS-1$
   private static final String FIELD_FILTER //
-  = "test*,*test"; //$NON-NLS-1$
+  = "test*,*Test"; //$NON-NLS-1$
   private static final String FILE_PATTERN_LITERAL_SEARCH //
   = "*.xml,"; //$NON-NLS-1$
 
