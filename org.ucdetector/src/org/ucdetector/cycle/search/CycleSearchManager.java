@@ -16,7 +16,6 @@ import java.util.Map.Entry;
 
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IProgressMonitor;
-import org.eclipse.core.runtime.OperationCanceledException;
 import org.eclipse.jdt.core.IJavaElement;
 import org.eclipse.jdt.core.IJavaProject;
 import org.eclipse.jdt.core.IType;
@@ -24,7 +23,6 @@ import org.eclipse.jdt.core.search.IJavaSearchConstants;
 import org.eclipse.jdt.core.search.IJavaSearchScope;
 import org.eclipse.jdt.core.search.SearchEngine;
 import org.eclipse.jdt.core.search.SearchMatch;
-import org.eclipse.jdt.core.search.SearchParticipant;
 import org.eclipse.jdt.core.search.SearchPattern;
 import org.eclipse.jdt.core.search.SearchRequestor;
 import org.eclipse.osgi.util.NLS;
@@ -33,6 +31,7 @@ import org.ucdetector.UCDetectorPlugin;
 import org.ucdetector.cycle.model.Cycle;
 import org.ucdetector.cycle.model.SearchResult;
 import org.ucdetector.cycle.model.SearchResultRoot;
+import org.ucdetector.util.JavaElementUtil;
 
 /**
  * Use eclipse search to find references of classes
@@ -109,23 +108,11 @@ public class CycleSearchManager {
           new IJavaProject[] { javaProject }, false);
       ReferenceSearchRequestor requestor = new ReferenceSearchRequestor(
           typeAndMatches);
-      SearchEngine searchEngine = new SearchEngine();
-      try {
-        SearchParticipant[] participant = new SearchParticipant[] { SearchEngine
-            .getDefaultSearchParticipant() };
-        searchEngine.search(pattern, participant, scope, requestor, null);
-      }
-      catch (OperationCanceledException e) {
-        // ignore
-      }
-      catch (OutOfMemoryError e) {
-        UCDetectorPlugin.handleOutOfMemoryError(e);
-      }
+      JavaElementUtil.runSearch(pattern, requestor, scope);
       result.add(typeAndMatches);
       if (UCDetectorPlugin.DEBUG) {
         UCDetectorPlugin.logDebug(typeAndMatches.getTypeSearchMatches().size()
             + " refs for: " + type.getElementName()); //$NON-NLS-1$
-
       }
     }
     return result;
@@ -133,20 +120,18 @@ public class CycleSearchManager {
 
   private String getMonitorMessage(List<IType> types, int projectNr,
       int search, IType type) {
+    List<Object> bindingList = new ArrayList<Object>();
     if (typesMap.size() > 1) {
-      Object[] bindings = new Object[] {//
-      Integer.valueOf(projectNr), //
-          Integer.valueOf(typesMap.size()), //
-          Integer.valueOf(search), //
-          Integer.valueOf(types.size()), //
-          type.getElementName() };
-      return NLS.bind(Messages.CycleSearchManager_MonitorProject, bindings);
+      bindingList.add(Integer.valueOf(projectNr));
+      bindingList.add(Integer.valueOf(typesMap.size()));
     }
-    Object[] bindings = new Object[] {//
-    Integer.valueOf(search), //
-        Integer.valueOf(types.size()), //
-        type.getElementName() };
-    return NLS.bind(Messages.CycleSearchManager_Monitor, bindings);
+    bindingList.add(Integer.valueOf(search));
+    bindingList.add(Integer.valueOf(types.size()));
+    bindingList.add(type.getElementName());
+    Object[] bindings = bindingList.toArray();
+    return typesMap.size() > 1 ? //
+    NLS.bind(Messages.CycleSearchManager_MonitorProject, bindings)
+        : NLS.bind(Messages.CycleSearchManager_Monitor, bindings);
   }
 
   /**

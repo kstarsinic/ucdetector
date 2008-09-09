@@ -25,7 +25,6 @@ import org.eclipse.jdt.core.search.IJavaSearchConstants;
 import org.eclipse.jdt.core.search.IJavaSearchScope;
 import org.eclipse.jdt.core.search.SearchEngine;
 import org.eclipse.jdt.core.search.SearchMatch;
-import org.eclipse.jdt.core.search.SearchParticipant;
 import org.eclipse.jdt.core.search.SearchPattern;
 import org.eclipse.jdt.core.search.SearchRequestor;
 import org.eclipse.osgi.util.NLS;
@@ -272,29 +271,10 @@ public class SearchManager {
     IJavaSearchScope scope = SearchEngine.createWorkspaceScope();
     SearchPattern pattern = SearchPattern.createPattern(member,
         IJavaSearchConstants.REFERENCES);
-
     UCDSearchRequestor requestor = new UCDSearchRequestor(member,
         visibilityHandler);
-    SearchEngine searchEngine = new SearchEngine();
-    boolean isSearchException = false;
-    try {
-      SearchParticipant[] participant = new SearchParticipant[] { SearchEngine
-          .getDefaultSearchParticipant() };
-      searchEngine.search(pattern, participant, scope, requestor, null);
-    }
-    catch (OperationCanceledException e) {
-      isSearchException = true;
-      // ignore
-    }
-    catch (RuntimeException rte) {
-      isSearchException = true;
-      // Java Search throws an NullPointerException in Eclipse 3.4M5
-      UCDetectorPlugin.logError("Java search problems", rte); //$NON-NLS-1$
-    }
-    catch (OutOfMemoryError e) {
-      isSearchException = true;
-      UCDetectorPlugin.handleOutOfMemoryError(e);
-    }
+    boolean isSearchException = JavaElementUtil.runSearch(pattern, requestor,
+        scope);
     // Let's be pessimistic and handle an Exception as "reference found"!
     if (isSearchException && requestor.found == 0) {
       requestor.found = 1;

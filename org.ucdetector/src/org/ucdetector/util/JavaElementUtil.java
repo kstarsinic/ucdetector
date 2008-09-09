@@ -299,8 +299,15 @@ public class JavaElementUtil {
         IJavaSearchConstants.DECLARATIONS, SearchPattern.R_EXACT_MATCH
     // | IJavaSearchConstants.IGNORE_DECLARING_TYPE
         );
-    IJavaSearchScope scope = SearchEngine.createWorkspaceScope();
     CountRequestor requestor = new CountRequestor();
+    runSearch(pattern, requestor, SearchEngine.createWorkspaceScope());
+    stop.end("isOverriddenMethod");
+    return requestor.found > 1;
+  }
+
+  public static boolean runSearch(SearchPattern pattern,
+      SearchRequestor requestor, IJavaSearchScope scope) throws CoreException {
+    boolean isSearchException = false;
     SearchEngine searchEngine = new SearchEngine();
     try {
       SearchParticipant[] participant = new SearchParticipant[] { SearchEngine
@@ -310,11 +317,16 @@ public class JavaElementUtil {
     catch (OperationCanceledException e) {
       // ignore
     }
+    catch (RuntimeException rte) {
+      isSearchException = true;
+      // Java Search throws an NullPointerException in Eclipse 3.4M5
+      UCDetectorPlugin.logError("Java search problems", rte); //$NON-NLS-1$
+    }
     catch (OutOfMemoryError e) {
+      isSearchException = true;
       UCDetectorPlugin.handleOutOfMemoryError(e);
     }
-    stop.end("isOverriddenMethod");
-    return requestor.found > 1;
+    return isSearchException;
   }
 
   private static final class CountRequestor extends SearchRequestor {
@@ -337,27 +349,25 @@ public class JavaElementUtil {
   // SUB, SUPER CLASSES
   // -------------------------------------------------------------------------
   public static boolean hasSubClasses(IType type) throws JavaModelException {
-    // org.eclipse.jdt.internal.corext.dom.Bindings.findOverriddenMethod
-    // org.eclipse.jdt.internal.ui.typehierarchy.SubTypeHierarchyViewer
-    TYPE_HIERARCHY_LIFECYCLE.doHierarchyRefresh(type, null);
-    ITypeHierarchy hierarchy = TYPE_HIERARCHY_LIFECYCLE.getHierarchy();
-    if (hierarchy != null) {
-      IType[] subTypes = hierarchy.getSubtypes(type);
-      if (subTypes == null || subTypes.length == 0) {
-        return false;
-      }
-    }
-    return true;
+    return hasXType(type, false);
   }
 
   public static boolean hasSuperClasses(IType type) throws JavaModelException { // NO_UCD
-    // org.eclipse.jdt.internal.corext.dom.Bindings.findOverriddenMethod
-    // org.eclipse.jdt.internal.ui.typehierarchy.SubTypeHierarchyViewer
+    return hasXType(type, true);
+  }
+
+  /**
+   * org.eclipse.jdt.internal.corext.dom.Bindings.findOverriddenMethod
+   * org.eclipse.jdt.internal.ui.typehierarchy.SubTypeHierarchyViewer
+   */
+  private static boolean hasXType(IType type, boolean isSupertype)
+      throws JavaModelException {
     TYPE_HIERARCHY_LIFECYCLE.doHierarchyRefresh(type, null);
     ITypeHierarchy hierarchy = TYPE_HIERARCHY_LIFECYCLE.getHierarchy();
     if (hierarchy != null) {
-      IType[] subTypes = hierarchy.getSupertypes(type);
-      if (subTypes == null || subTypes.length == 0) {
+      IType[] types = isSupertype ? hierarchy.getSupertypes(type) : hierarchy
+          .getSubtypes(type);
+      if (types == null || types.length == 0) {
         return false;
       }
     }

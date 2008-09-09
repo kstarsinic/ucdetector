@@ -16,13 +16,10 @@ import org.eclipse.jdt.core.IMethod;
 import org.eclipse.jdt.core.IType;
 import org.eclipse.jdt.core.JavaModelException;
 import org.eclipse.jdt.core.search.IJavaSearchConstants;
-import org.eclipse.jdt.core.search.IJavaSearchScope;
 import org.eclipse.jdt.core.search.SearchEngine;
 import org.eclipse.jdt.core.search.SearchMatch;
-import org.eclipse.jdt.core.search.SearchParticipant;
 import org.eclipse.jdt.core.search.SearchPattern;
 import org.eclipse.jdt.core.search.SearchRequestor;
-import org.ucdetector.UCDetectorPlugin;
 import org.ucdetector.preferences.Prefs;
 import org.ucdetector.util.JavaElementUtil;
 import org.ucdetector.util.MarkerFactory;
@@ -89,20 +86,9 @@ class FinalHandler {
   private static boolean canMakeFinal(IField field) throws CoreException {
     SearchPattern pattern = SearchPattern.createPattern(field,
         IJavaSearchConstants.WRITE_ACCESSES);
-    IJavaSearchScope scope = SearchEngine.createWorkspaceScope();
     FieldWriteRequestor requestor = new FieldWriteRequestor(field);
-    SearchEngine searchEngine = new SearchEngine();
-    try {
-      SearchParticipant[] participant = new SearchParticipant[] { SearchEngine
-          .getDefaultSearchParticipant() };
-      searchEngine.search(pattern, participant, scope, requestor, null);
-    }
-    catch (OperationCanceledException e) {
-      // ignore
-    }
-    catch (OutOfMemoryError e) {
-      UCDetectorPlugin.handleOutOfMemoryError(e);
-    }
+    JavaElementUtil.runSearch(pattern, requestor, SearchEngine
+        .createWorkspaceScope());
     return !requestor.fieldHasWriteAccessFromMethod;
   }
 
