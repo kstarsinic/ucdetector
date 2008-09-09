@@ -79,8 +79,7 @@ public class CountIterator extends AbstractUCDetectorIterator {
 
   @Override
   protected void handleType(IType type) throws CoreException {
-    if (isPrivate(type) || !Prefs.isUCDetectionInClasses()
-        || Prefs.filterType(type)) {
+    if (isDefaultFilter(type)) {
       return;
     }
     classes++;
@@ -88,8 +87,7 @@ public class CountIterator extends AbstractUCDetectorIterator {
 
   @Override
   protected void handleMethod(IMethod method) throws CoreException {
-    if (isPrivate(method) || !Prefs.isUCDetectionInMethods()
-        || Prefs.filterMethod(method)) {
+    if (isDefaultFilter(method)) {
       return;
     }
     methods++;

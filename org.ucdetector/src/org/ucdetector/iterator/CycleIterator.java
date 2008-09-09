@@ -15,7 +15,6 @@ import org.eclipse.jdt.core.IJavaElement;
 import org.eclipse.jdt.core.IType;
 import org.ucdetector.Messages;
 import org.ucdetector.cycle.search.CycleSearchManager;
-import org.ucdetector.preferences.Prefs;
 
 /**
  * search for class cycles
@@ -25,11 +24,7 @@ public class CycleIterator extends AbstractUCDetectorIterator {
 
   @Override
   protected void handleType(IType type) throws CoreException {
-    if (isPrivate(type) || !Prefs.isUCDetectionInClasses()
-        || Prefs.filterType(type)) {
-      return;
-    }
-    if (type.isLocal() || type.isAnonymous()) {
+    if (isDefaultFilter(type) || type.isLocal() || type.isAnonymous()) {
       return;
     }
     // ignore classes declared inside a class
