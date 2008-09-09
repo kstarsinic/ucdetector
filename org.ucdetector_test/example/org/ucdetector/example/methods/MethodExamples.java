@@ -25,12 +25,12 @@ public class MethodExamples {
 
   }
 
-  /** should be ignored, because of method filter (ignore case) *test* */
+  /** should be ignored, because of method filter *test* */
   public void testMethod() {
 
   }
 
-  /** should be ignored, because of method filter (ignore case) *test* */
+  /** should be ignored, because of method filter *test* */
   public void myMethodTest() {
 
   }

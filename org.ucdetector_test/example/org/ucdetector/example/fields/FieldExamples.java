@@ -5,17 +5,14 @@ package org.ucdetector.example.fields;
  */
 public class FieldExamples {
   
-  /** should be ignored, because of field filter (ignore case) *test* */
-  public static final int TEST_FIELD = 0;
-
-  /** should be ignored, because of field filter (ignore case) *test* */
+  /** should be ignored, because of field filter *test* */
   public static final int test_field = 0;
 
-  /** should be ignored, because of field filter (ignore case) *test* */
-  public static final int MY_FIELD_TEST = 0;
+  /** should be ignored, because of field filter *test* */
+  public static final int myTest = 0;
 
-  /** should be ignored, because of field filter (ignore case) *test* */
-  public static final int my_field_test = 0;
+  /** should be ignored, because of field filter *test* */
+  public static final int my_field_Test = 0;
 
   /**
    *  This field is referenced by javadoc

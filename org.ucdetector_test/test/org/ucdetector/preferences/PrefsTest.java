@@ -109,12 +109,8 @@ public class PrefsTest extends TestCase {
   }
 
   public void testMatchFilterIgnoreCase() {
-    // ignore case!
-    assertTrue(Prefs.matchFilter(Prefs.FILTER_CLASS, "aaatestbbb"));
-    // ignore case!
-    assertTrue(Prefs.matchFilter(Prefs.FILTER_METHOD, "MyTestMy"));
-    // ignore case!
-    assertTrue(Prefs.matchFilter(Prefs.FILTER_FIELD, "MyTestMy"));
+    assertTrue(Prefs.matchFilter(Prefs.FILTER_CLASS, "Testbbb"));
+    assertTrue(Prefs.matchFilter(Prefs.FILTER_METHOD, "testMy"));
   }
 
   public final void testMatchFilterEmpty() {
