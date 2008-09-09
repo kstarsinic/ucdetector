@@ -42,7 +42,7 @@ public class Java5Example {
   }
 
   @SuppressWarnings("unchecked")
-  public static List asList(Object[] array) { // Marker YES: unused code
+  public static List asMyList(Object[] array) { // Marker YES: unused code
     return Arrays.asList(array);
   }
 
