@@ -26,15 +26,21 @@ import org.ucdetector.util.MarkerFactory;
  * modifier "protected" instead of "public"
  */
 class VisibilityHandler {
-  private static final int VISIBILITY_PRIVATE = 0;
-  private static final int VISIBILITY_PROTECTED = 1;
-  private static final int VISIBILITY_PUBLIC = 2;
+  private enum VISIBILITY {
+    PRIVATE(0), PROTECTED(1), PUBLIC(2);
+    private final int value;
 
-  private final int visibilityStart;
+    VISIBILITY(int value) {
+      this.value = value;
+
+    }
+  }
+
+  private final VISIBILITY visibilityStart;
+  private VISIBILITY visibilityMaxFound = VISIBILITY.PRIVATE;
+  //
   private final IMember startElement;
   private final MarkerFactory markerFactory;
-
-  private int maxVisibilityFound = VISIBILITY_PRIVATE;
 
   VisibilityHandler(MarkerFactory markerFactory, IMember startElement)
       throws JavaModelException {
@@ -42,13 +48,13 @@ class VisibilityHandler {
     this.startElement = startElement;
     int flags = startElement.getFlags();
     if (Flags.isPublic(flags)) {
-      visibilityStart = VISIBILITY_PUBLIC;
+      visibilityStart = VISIBILITY.PUBLIC;
     }
     else if (Flags.isProtected(flags) || Flags.isPackageDefault(flags)) {
-      visibilityStart = VISIBILITY_PROTECTED;
+      visibilityStart = VISIBILITY.PROTECTED;
     }
     else {
-      visibilityStart = VISIBILITY_PRIVATE;
+      visibilityStart = VISIBILITY.PRIVATE;
     }
   }
 
@@ -65,20 +71,20 @@ class VisibilityHandler {
     IType foundType = JavaElementUtil.getTypeFor(foundElement);
     if (startType == null || foundType == null) {
       // reference in xml file found!
-      setMaxVisibilityFound(VISIBILITY_PUBLIC);
+      setMaxVisibilityFound(VISIBILITY.PUBLIC);
       return;
     }
     if (startType.equals(foundType)) {
-      setMaxVisibilityFound(VISIBILITY_PRIVATE);
+      setMaxVisibilityFound(VISIBILITY.PRIVATE);
       return;
     }
     IPackageFragment startPackage = JavaElementUtil.getPackageFor(startElement);
     IPackageFragment foundPackage = JavaElementUtil.getPackageFor(foundElement);
     if (startPackage.getElementName().equals(foundPackage.getElementName())) {
-      setMaxVisibilityFound(VISIBILITY_PROTECTED);
+      setMaxVisibilityFound(VISIBILITY.PROTECTED);
       return;
     }
-    setMaxVisibilityFound(VISIBILITY_PUBLIC);
+    setMaxVisibilityFound(VISIBILITY.PUBLIC);
     if (found > Prefs.getWarnLimit()) {
       throw new OperationCanceledException("Cancel Search: public found"); //$NON-NLS-1$
     }
@@ -99,12 +105,22 @@ class VisibilityHandler {
         return false;
       }
     }
-
-    boolean isPrivate = maxVisibilityFound == VISIBILITY_PRIVATE;
-    // classes can't be protected!
-    String type = isPrivate ? MarkerFactory.ANALYZE_MARKER_VISIBILITY_PRIVATE
-        : (member instanceof IType) ? MarkerFactory.ANALYZE_MARKER_VISIBILITY_DEFAULT
-            : MarkerFactory.ANALYZE_MARKER_VISIBILITY_PROETECTED;
+    String type;
+    switch (visibilityMaxFound) {
+      case PRIVATE:
+        type = MarkerFactory.UCD_MARKER_USE_PRIVATE;
+        break;
+      case PROTECTED:
+        if (member instanceof IType) {
+          type = MarkerFactory.UCD_MARKER_USE_DEFAULT;
+        }
+        else {
+          type = MarkerFactory.UCD_MARKER_USE_PROETECTED;
+        }
+        break;
+      default:
+        return false;
+    }
     return markerFactory.createVisibilityMarker(member, type, line);
   }
 
@@ -116,8 +132,10 @@ class VisibilityHandler {
    * <li>VISIBILITY_PUBLIC = 2</li>
    * </ul>
    */
-  private void setMaxVisibilityFound(int visibility) {
-    maxVisibilityFound = Math.max(maxVisibilityFound, visibility);
+  private void setMaxVisibilityFound(VISIBILITY visibility) {
+    if (visibility.value > visibilityMaxFound.value) {
+      visibilityMaxFound = visibility;
+    }
   }
 
   /**
@@ -125,11 +143,11 @@ class VisibilityHandler {
    *         to private or protected
    */
   private boolean needVisibilityMarker(IMember member, int found) {
-    boolean decreaseVisibility = visibilityStart > maxVisibilityFound;
+    boolean decreaseVisibility = visibilityStart.value > visibilityMaxFound.value;
     return (found > 0 && Prefs.isCheckIncreaseVisibility() && decreaseVisibility);
   }
 
   boolean isMaxVisibilityFoundPublic() {
-    return maxVisibilityFound == VISIBILITY_PUBLIC;
+    return visibilityMaxFound == VISIBILITY.PUBLIC;
   }
 }
