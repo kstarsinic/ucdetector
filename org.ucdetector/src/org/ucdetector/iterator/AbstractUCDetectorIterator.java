@@ -30,7 +30,9 @@ import org.eclipse.jdt.core.IPackageFragmentRoot;
 import org.eclipse.jdt.core.IParent;
 import org.eclipse.jdt.core.IType;
 import org.eclipse.jdt.core.JavaCore;
+import org.eclipse.jdt.core.JavaModelException;
 import org.ucdetector.UCDetectorPlugin;
+import org.ucdetector.preferences.Prefs;
 
 /**
  * Base Class to iterate over projects, packages, classes, methods, fields...
@@ -195,5 +197,15 @@ public abstract class AbstractUCDetectorIterator extends UCDetectorHandler {
       }
     }
     return selectedAsString.toString();
+  }
+
+  protected boolean isDefaultFilter(IType type) throws JavaModelException {
+    return isPrivate(type) || !Prefs.isUCDetectionInClasses()
+        || Prefs.filterType(type);
+  }
+
+  protected boolean isDefaultFilter(IMethod method) throws JavaModelException {
+    return isPrivate(method) || !Prefs.isUCDetectionInMethods()
+        || Prefs.filterMethod(method);
   }
 }
