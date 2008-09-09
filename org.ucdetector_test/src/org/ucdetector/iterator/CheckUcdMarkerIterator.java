@@ -1,7 +1,9 @@
 package org.ucdetector.iterator;
 
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.LinkedHashSet;
+import java.util.Map;
 import java.util.Set;
 
 import org.eclipse.core.resources.IMarker;
@@ -22,18 +24,29 @@ import org.ucdetector.util.MarkerFactory;
  *
  */
 public class CheckUcdMarkerIterator extends AbstractUCDetectorIterator {
+  /** human redable String to use for marker tags  */
+  private static final Map<String, String> markerMap //
+  = new HashMap<String, String>();
   private static final String ANALYZE_MARKER_CHECK_UCD_MARKERS //
   = "org.ucdetector.analyzeMarkerCheckUcdMarkers"; //$NON-NLS-1$
   //
   private int markerCount;
   private int badMarkerCount;
 
+  static {
+    markerMap.put(MarkerFactory.UCD_MARKER_UNUSED, "unused code");
+    markerMap.put(MarkerFactory.UCD_MARKER_USE_PRIVATE, "use private");
+    markerMap.put(MarkerFactory.UCD_MARKER_USE_PROETECTED, "use protected");
+    markerMap.put(MarkerFactory.UCD_MARKER_USE_DEFAULT, "use default");
+    markerMap.put(MarkerFactory.UCD_MARKER_USE_FINAL, "use final");
+  }
+
   @Override
   protected void handleCompilationUnit(ICompilationUnit unit)
       throws CoreException {
     IResource resource = unit.getCorrespondingResource();
-    IMarker[] markers = resource.findMarkers(MarkerFactory.ANALYZE_MARKER,
-        true, IResource.DEPTH_ZERO);
+    IMarker[] markers = resource.findMarkers(MarkerFactory.UCD_MARKER, true,
+        IResource.DEPTH_ZERO);
 
     Set<LineNrComment> lineNrComments = getLineNrComments(unit);
     markerCount += markers.length;
@@ -57,7 +70,8 @@ public class CheckUcdMarkerIterator extends AbstractUCDetectorIterator {
         createMarker(resource, "Additional marker", markerLineFound);
       }
       else {
-        String problemMarker = marker.getAttribute(MarkerFactory.PROBLEM, "?");
+        // System.out.println("Marker:" + new HashMap(marker.getAttributes()));
+        String problemMarker = markerMap.get(marker.getType());
         String problemExpected = commentForLine.comment;
         if (!problemMarker.equals(problemExpected)) {
           createMarker(resource, "Wrong marker. Expected: '" + problemExpected

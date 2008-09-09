@@ -84,23 +84,23 @@ public class UCDQuickFix implements IMarkerResolution { // NO_UCD
   public String getLabel() {
     // ----------------------------------------------------------------------
     // DELETE (classes, methods, fields)
-    if (MarkerFactory.PROBLEM_UNUSED.equals(problem)) {
+    if (MarkerFactory.UCD_MARKER_UNUSED.equals(problem)) {
       return "Delete code (EXPERIMENTAL)"; //$NON-NLS-1$
     }
     // ----------------------------------------------------------------------
     // CHANGE KEYWORD (methods, fields), REMOVE KEYWORD (classes)
-    if (MarkerFactory.PROBLEM_USE_PRIVATE.equals(problem)) {
+    if (MarkerFactory.UCD_MARKER_USE_PRIVATE.equals(problem)) {
       return "Change visibility to private (EXPERIMENTAL)"; //$NON-NLS-1$
     }
-    if (MarkerFactory.PROBLEM_USE_PROTECTED.equals(problem)) {
+    if (MarkerFactory.UCD_MARKER_USE_PROETECTED.equals(problem)) {
       return "Change visibility to protected (EXPERIMENTAL)"; //$NON-NLS-1$
     }
-    if (MarkerFactory.PROBLEM_USE_DEFAULT.equals(problem)) {
+    if (MarkerFactory.UCD_MARKER_USE_DEFAULT.equals(problem)) {
       return "Change visibility to default (EXPERIMENTAL)"; //$NON-NLS-1$
     }
     // ----------------------------------------------------------------------
     // ADD FINAL (methods, fields)
-    if (MarkerFactory.PROBLEM_USE_FINAL.equals(problem)) {
+    if (MarkerFactory.UCD_MARKER_USE_FINAL.equals(problem)) {
       return "Add keyword 'final' (EXPERIMENTAL)"; //$NON-NLS-1$
     }
     // ----------------------------------------------------------------------
@@ -109,17 +109,18 @@ public class UCDQuickFix implements IMarkerResolution { // NO_UCD
 
   public void run(IMarker marker) {
     try {
-      if (MarkerFactory.PROBLEM_UNUSED.equals(problem)) {
+      if (MarkerFactory.UCD_MARKER_UNUSED.equals(problem)) {
         runDeleteElement(marker);
       }
       // ------------------------------------------------------------------
-      else if (MarkerFactory.PROBLEM_USE_PRIVATE.equals(problem) || //
-          MarkerFactory.PROBLEM_USE_PROTECTED.equals(problem) || //
-          MarkerFactory.PROBLEM_USE_DEFAULT.equals(problem)) {
+      else if (MarkerFactory.UCD_MARKER_USE_PRIVATE.equals(problem)
+          || //
+          MarkerFactory.UCD_MARKER_USE_PROETECTED.equals(problem) || //
+          MarkerFactory.UCD_MARKER_USE_DEFAULT.equals(problem)) {
         runSetVisibilityKeyword(marker);
       }
       // ------------------------------------------------------------------
-      else if (MarkerFactory.PROBLEM_USE_FINAL.equals(problem)) {
+      else if (MarkerFactory.UCD_MARKER_USE_FINAL.equals(problem)) {
         runAddKeywordFinal(marker);
       }
       else {

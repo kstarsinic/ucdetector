@@ -20,7 +20,7 @@ import org.eclipse.ui.IMarkerResolutionGenerator;
 public class UCDQuickFixer implements IMarkerResolutionGenerator { // NO_UCD
   public IMarkerResolution[] getResolutions(IMarker marker) {
     try {
-      String problem = (String) marker.getAttribute(MarkerFactory.PROBLEM);
+      String problem = (String) marker.getAttribute(MarkerFactory.UCD_MARKER);
       // we can use only use String, Boolean, Integer here,
       // no IJavaElements are permitted here!
       String javaElement = (String) marker
