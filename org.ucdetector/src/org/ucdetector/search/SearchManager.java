@@ -36,7 +36,6 @@ import org.eclipse.search.ui.text.FileTextSearchScope;
 import org.ucdetector.Messages;
 import org.ucdetector.UCDetectorPlugin;
 import org.ucdetector.preferences.Prefs;
-import org.ucdetector.preferences.WarnLevel;
 import org.ucdetector.util.JavaElementUtil;
 import org.ucdetector.util.MarkerFactory;
 import org.ucdetector.util.StopWatch;
@@ -116,8 +115,7 @@ public class SearchManager {
       updateMonitorMessage(type, Messages.SearchManager_SearchReferences);
       String searchInfo = Messages.SearchManager_Class;
       StopWatch watch = new StopWatch(type);
-      int found = searchImpl(type, Prefs.getUCDetectionInClasses(), searchInfo,
-          MarkerFactory.PROBLEM_UNUSED, false);
+      int found = searchImpl(type, searchInfo, false);
       watch.end("searchImpl"); //$NON-NLS-1$
       if (found == 0) {
         noRefTypes.add(type);
@@ -182,8 +180,7 @@ public class SearchManager {
       updateMonitorMessage(method, Messages.SearchManager_SearchReferences);
       String searchInfo = method.isConstructor() ? Messages.SearchManager_Constructor
           : Messages.SearchManager_Method;
-      searchImpl(method, Prefs.getUCDetectionInMethods(), searchInfo,
-          MarkerFactory.PROBLEM_UNUSED, isOverriddenMethod);
+      searchImpl(method, searchInfo, isOverriddenMethod);
       watch.end("searchImpl"); //$NON-NLS-1$
     }
   }
@@ -226,8 +223,7 @@ public class SearchManager {
       String searchInfo = JavaElementUtil.isConstant(field) ? Messages.SearchManager_Constant
           : Messages.SearchManager_Field;
       updateMonitorMessage(field, Messages.SearchManager_SearchReferences);
-      searchImpl(field, Prefs.getUCDetectionInFields(), searchInfo,
-          MarkerFactory.PROBLEM_UNUSED, false);
+      searchImpl(field, searchInfo, false);
       watch.end("searchImpl"); //$NON-NLS-1$
     }
   }
@@ -235,9 +231,8 @@ public class SearchManager {
   /**
     * Search for references create marker
     */
-  private int searchImpl(IMember member, WarnLevel warnlevel,
-      String searchInfo, String problem, boolean isOverriddenMethod)
-      throws CoreException {
+  private int searchImpl(IMember member, String searchInfo,
+      boolean isOverriddenMethod) throws CoreException {
     int line = lineManger.getLine(member);
     if (monitor.isCanceled() || line == LineManger.LINE_NOT_FOUND) {
       return 0;
@@ -260,8 +255,8 @@ public class SearchManager {
     String markerMessage = NLS.bind(Messages.SearchManager_MarkerReference,
         bindings);
     if (found <= Prefs.getWarnLimit()) {
-      created = markerFactory.createReferenceMarker(member, markerMessage,
-          line, warnlevel, problem);
+      created = markerFactory
+          .createReferenceMarker(member, markerMessage, line);
       if (created) {
         foundTotal++;
       }

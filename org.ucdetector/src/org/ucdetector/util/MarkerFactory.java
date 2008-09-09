@@ -18,11 +18,10 @@ import org.eclipse.jdt.core.IMethod;
 import org.eclipse.osgi.util.NLS;
 import org.ucdetector.Messages;
 import org.ucdetector.preferences.Prefs;
-import org.ucdetector.preferences.WarnLevel;
 import org.ucdetector.report.IUCDetctorReport;
 import org.ucdetector.report.MarkerReport;
+import org.ucdetector.report.ReportParam;
 import org.ucdetector.report.TextReport;
-import org.ucdetector.report.IUCDetctorReport.ReportParam;
 import org.ucdetector.search.LineManger;
 
 /**
@@ -34,32 +33,18 @@ public class MarkerFactory {
   /**
    * See extension point="org.eclipse.core.resources.markers" in plugin.xml
    */
-  public static final String ANALYZE_MARKER //
+  public static final String UCD_MARKER //
   = "org.ucdetector.analyzeMarker"; //$NON-NLS-1$
-  public static final String ANALYZE_MARKER_REFERENCE //
+  public static final String UCD_MARKER_UNUSED //
   = "org.ucdetector.analyzeMarkerReference"; //$NON-NLS-1$
-  //
-  public static final String ANALYZE_MARKER_VISIBILITY_PRIVATE //
+  public static final String UCD_MARKER_USE_PRIVATE //
   = "org.ucdetector.analyzeMarkerVisibilityPrivate"; //$NON-NLS-1$
-  public static final String ANALYZE_MARKER_VISIBILITY_PROETECTED //
+  public static final String UCD_MARKER_USE_PROETECTED //
   = "org.ucdetector.analyzeMarkerVisibilityProtected"; //$NON-NLS-1$
-  public static final String ANALYZE_MARKER_VISIBILITY_DEFAULT //
+  public static final String UCD_MARKER_USE_DEFAULT //
   = "org.ucdetector.analyzeMarkerVisibilityDefault"; //$NON-NLS-1$
-  //
-  public static final String ANALYZE_MARKER_FINAL //
+  public static final String UCD_MARKER_USE_FINAL //
   = "org.ucdetector.analyzeMarkerFinal"; //$NON-NLS-1$
-  // -------------------------------------------------------------------------
-  // ###########################################################################
-  // TODO 08.09.2008: Constants ANALYZE_MARKER* and PROBLEM* is the same: Remove PROBLEM*
-  // ###########################################################################
-  public static final String PROBLEM = "UCD_PROBLEM";//$NON-NLS-1$
-  public static final String PROBLEM_UNUSED = "unused code";//$NON-NLS-1$
-  //
-  public static final String PROBLEM_USE_PRIVATE = "use private";//$NON-NLS-1$
-  public static final String PROBLEM_USE_PROTECTED = "use protected";//$NON-NLS-1$
-  public static final String PROBLEM_USE_DEFAULT = "use default";//$NON-NLS-1$
-  //
-  public static final String PROBLEM_USE_FINAL = "use final";//$NON-NLS-1$
   /**
    * Helper attribute to transfer java element information
    * of a marker to QuickFix. Only String, Integer... are permitted
@@ -98,9 +83,8 @@ public class MarkerFactory {
       throws CoreException {
     String message = NLS.bind(Messages.SearchManager_MarkerFinalMethod,
         new Object[] { method.getElementName() });
-    WarnLevel level = Prefs.getCheckUseFinalMethod();
-    return createMarkerImpl(method, message, line, level, ANALYZE_MARKER_FINAL,
-        PROBLEM_USE_FINAL);
+    return createMarkerImpl(new ReportParam(method, message, line,
+        UCD_MARKER_USE_FINAL));
   }
 
   /**
@@ -110,19 +94,17 @@ public class MarkerFactory {
   public boolean createFinalMarker(IField field, int line) throws CoreException {
     String message = NLS.bind(Messages.SearchManager_MarkerFinalField,
         new Object[] { field.getElementName() });
-    WarnLevel level = Prefs.getCheckUseFinalField();
-    return createMarkerImpl(field, message, line, level, ANALYZE_MARKER_FINAL,
-        PROBLEM_USE_FINAL);
+    return createMarkerImpl(new ReportParam(field, message, line,
+        UCD_MARKER_USE_FINAL));
   }
 
   /**
    * Create an eclipse marker: "Class MyClass has 0 references"
    */
   public boolean createReferenceMarker(IJavaElement javaElement,
-      String message, int line, WarnLevel level, String problem)
-      throws CoreException {
-    String type = ANALYZE_MARKER_REFERENCE;
-    return createMarkerImpl(javaElement, message, line, level, type, problem);
+      String message, int line) throws CoreException {
+    String type = UCD_MARKER_UNUSED;
+    return createMarkerImpl(new ReportParam(javaElement, message, line, type));
   }
 
   /**
@@ -131,53 +113,41 @@ public class MarkerFactory {
   public boolean createVisibilityMarker(IJavaElement javaElement, String type,
       int line) throws CoreException {
     String visibilityString = null;
-    String problem = null;
-    if (ANALYZE_MARKER_VISIBILITY_PRIVATE.equals(type)) {
+    if (UCD_MARKER_USE_PRIVATE.equals(type)) {
       visibilityString = "private"; //$NON-NLS-1$
-      problem = MarkerFactory.PROBLEM_USE_PRIVATE;
     }
-    else if (ANALYZE_MARKER_VISIBILITY_PROETECTED.equals(type)) {
+    else if (UCD_MARKER_USE_PROETECTED.equals(type)) {
       visibilityString = "protected"; //$NON-NLS-1$
-      problem = MarkerFactory.PROBLEM_USE_PROTECTED;
     }
-    else if (ANALYZE_MARKER_VISIBILITY_DEFAULT.equals(type)) {
+    else if (UCD_MARKER_USE_DEFAULT.equals(type)) {
       visibilityString = "default"; //$NON-NLS-1$
-      problem = MarkerFactory.PROBLEM_USE_DEFAULT;
     }
     Object[] bindings = new Object[] { javaElement.getElementName(),
         visibilityString };
     String message = NLS
         .bind(Messages.SearchManager_MarkerVisibility, bindings);
-    WarnLevel level = Prefs.getCheckIncreaseVisibility();
-    return createMarkerImpl(javaElement, message, line, level, type, problem);
+    return createMarkerImpl(new ReportParam(javaElement, message, line, type));
   }
 
   /**
    * Create any eclipse marker
    */
-  public boolean createMarker(IJavaElement javaElement, String message, // NO_UCD
-      int line, WarnLevel level, String markerType, String problem)
-      throws CoreException {
-    return createMarkerImpl(javaElement, message, line, level, markerType,
-        problem);
+  public boolean createMarker(ReportParam reportParam) throws CoreException {
+    return createMarkerImpl(reportParam);
   }
 
   /**
    * This method does the work and creates an marker
    * @return <code>true</code>, if a marker was created
    */
-  private boolean createMarkerImpl(IJavaElement javaElement, String message,
-      int line, WarnLevel level, String markerType, String problem)
+  private boolean createMarkerImpl(ReportParam reportParam)
       throws CoreException {
-    if (line == LineManger.LINE_NOT_FOUND //
-        || javaElement.getResource() == null //
-        || WarnLevel.IGNORE.equals(level) //
-    ) {
+    if (reportParam.line == LineManger.LINE_NOT_FOUND //
+        || reportParam.javaElement.getResource() == null) {
       return false;
     }
     for (IUCDetctorReport report : reports) {
-      report.reportMarker(new ReportParam(javaElement, message, line, level,
-          markerType, problem));
+      report.reportMarker(reportParam);
     }
     return true;
   }
@@ -188,7 +158,7 @@ public class MarkerFactory {
   public static void deleteMarkers(IJavaElement javaElement)
       throws CoreException {
     if (javaElement.getResource() != null) {
-      javaElement.getResource().deleteMarkers(ANALYZE_MARKER, true,
+      javaElement.getResource().deleteMarkers(UCD_MARKER, true,
           IResource.DEPTH_INFINITE);
     }
   }

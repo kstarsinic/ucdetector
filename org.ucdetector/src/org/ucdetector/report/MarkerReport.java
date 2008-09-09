@@ -45,25 +45,25 @@ public class MarkerReport implements IUCDetctorReport {
     markersToCreate.clear();
   }
 
+  // TODO 09.09.2008: Use Error markers for ERROR???
   private void createMarker(ReportParam reportParam) throws CoreException {
-    IMarker marker = reportParam.javaElement.getResource().createMarker(
-        reportParam.markerType);
-    marker.setAttribute(IMarker.MESSAGE, reportParam.message);
-    marker.setAttribute(IMarker.PRIORITY, IMarker.PRIORITY_HIGH);
+    int severity;
     switch (reportParam.level) {
       case ERROR:
-        marker.setAttribute(IMarker.SEVERITY, IMarker.SEVERITY_ERROR);
+        severity = IMarker.SEVERITY_ERROR;
         break;
       case WARNING:
-        marker.setAttribute(IMarker.SEVERITY, IMarker.SEVERITY_WARNING);
+        severity = IMarker.SEVERITY_WARNING;
         break;
-      case IGNORE:
-        // marker.setAttribute(IMarker.SEVERITY, IMarker.SEVERITY_INFO);
-        break;
+      default:
+        return;
     }
+    IMarker marker = reportParam.javaElement.getResource().createMarker(
+        reportParam.markerType);
+    marker.setAttribute(IMarker.SEVERITY, severity);
+    marker.setAttribute(IMarker.MESSAGE, reportParam.message);
+    marker.setAttribute(IMarker.PRIORITY, IMarker.PRIORITY_HIGH);
     marker.setAttribute(IMarker.LINE_NUMBER, reportParam.line);
-    // additional info, not used at the moment
-    marker.setAttribute(MarkerFactory.PROBLEM, reportParam.problem);
     String elementString = getJavaElementString(reportParam.javaElement);
     marker.setAttribute(MarkerFactory.JAVA_ELEMENT_ATTRIBUTE, elementString);
   }
