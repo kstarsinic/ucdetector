@@ -1,8 +1,5 @@
 //------------------------------------------------------------------------------
 TODO 0.10.0:
- - refactor "copy and paste" code for:
-    - searchEngine.search
-    - UCDetectorHandler.handleType()
  - refactor SearchManager: Confusing to understand / add new handler!
  - check local/anonymous types:
    - local classes can be private
@@ -12,7 +9,6 @@ TODO 0.10.0:
  - use combo for file extensions: TextSearchPage.addFileNameControls()
  - check TODO's from E-Mails, sourceforge tasks/requests
  - QuickFix
- - create package's for examples
  - README.txt
 
 //------------------------------------------------------------------------------
