@@ -44,8 +44,8 @@ public abstract class AbstractUCDetectorIterator extends UCDetectorHandler {
   protected IJavaElement[] selections;
   private IPackageFragment activePackage;
 
-  private final List<String> visitedPackages //
-  = new ArrayList<String>();
+  private final List<IPackageFragment> visitedPackages //
+  = new ArrayList<IPackageFragment>();
 
   // -------------------------------------------------------------------------
   // ITERATOR
@@ -114,9 +114,20 @@ public abstract class AbstractUCDetectorIterator extends UCDetectorHandler {
     else if (javaElement instanceof IPackageFragment) {
       doChildren = false;
       IPackageFragment packageFragment = (IPackageFragment) javaElement;
-      if (!visitedPackages.contains(packageFragment.getElementName())) {
-        visitedPackages.add(packageFragment.getElementName());
-        doTest2(packageFragment);
+      if (!visitedPackages.contains(packageFragment)) {
+        visitedPackages.add(packageFragment);
+        if (activePackage == packageFragment) {
+          IJavaElement[] allPackages = ((IPackageFragmentRoot) packageFragment
+              .getParent()).getChildren();
+          for (IJavaElement javaElement1 : allPackages) {
+            IPackageFragment pakage = (IPackageFragment) javaElement1;
+            if (pakage.getElementName().startsWith(
+                activePackage.getElementName() + ".")
+                || activePackage.isDefaultPackage()) {
+              iterate(pakage);
+            }
+          }
+        }
         doChildren = doPackageChildren(packageFragment);
         handlePackageFragment(packageFragment);
       }
@@ -178,27 +189,6 @@ public abstract class AbstractUCDetectorIterator extends UCDetectorHandler {
     }
     handleEndElement(javaElement);
   }
-
-  private void doTest2(IPackageFragment packageFragment) throws CoreException {
-    if (activePackage != packageFragment) {
-      return;
-    }
-    IPackageFragment tempPackage = activePackage;
-    activePackage = null;
-    IJavaElement[] packages = ((IPackageFragmentRoot) packageFragment
-        .getParent()).getChildren();
-    for (IJavaElement rootJavaElement : packages) {
-      IPackageFragment rootPackage = (IPackageFragment) rootJavaElement;
-      if (rootPackage.getElementName().startsWith(
-          tempPackage.getElementName() + ".")) {
-        iterate(rootPackage);
-      }
-    }
-  }
-
-  // -------------------------------------------------------------------------
-  // HELPER
-  // -------------------------------------------------------------------------
 
   public final void setMonitor(IProgressMonitor monitor) {
     this.monitor = monitor;
