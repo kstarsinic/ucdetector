@@ -42,6 +42,10 @@ public abstract class AbstractUCDetectorIterator extends UCDetectorHandler {
   private IProgressMonitor monitor;
   /** Elements selected in the UI */
   protected IJavaElement[] selections;
+  private IPackageFragment activePackage;
+
+  private final List<String> visitedPackages //
+  = new ArrayList<String>();
 
   // -------------------------------------------------------------------------
   // ITERATOR
@@ -69,6 +73,10 @@ public abstract class AbstractUCDetectorIterator extends UCDetectorHandler {
     this.selections = SelectionsUI;
     handleStartGlobal(selections);
     for (IJavaElement selection : selections) {
+      activePackage = null;
+      if (selection instanceof IPackageFragment) {
+        activePackage = (IPackageFragment) selection;
+      }
       handleStartSelectedElement(selection);
       iterate(selection);
       handleEndSelectedElement(selection);
@@ -97,15 +105,21 @@ public abstract class AbstractUCDetectorIterator extends UCDetectorHandler {
       IJavaProject project = (IJavaProject) javaElement;
       handleJavaProject(project);
     }
+
     else if (javaElement instanceof IPackageFragmentRoot) {
       IPackageFragmentRoot pfRoot = (IPackageFragmentRoot) javaElement;
       doChildren = doPackageFragmentRootChildren(pfRoot);
       handlePackageFragmentRoot(pfRoot);
     }
     else if (javaElement instanceof IPackageFragment) {
+      doChildren = false;
       IPackageFragment packageFragment = (IPackageFragment) javaElement;
-      doChildren = doPackageChildren(packageFragment);
-      handlePackageFragment(packageFragment);
+      if (!visitedPackages.contains(packageFragment.getElementName())) {
+        visitedPackages.add(packageFragment.getElementName());
+        doTest2(packageFragment);
+        doChildren = doPackageChildren(packageFragment);
+        handlePackageFragment(packageFragment);
+      }
     }
     // CLASS ---------------------------------------------------------------
     else if (javaElement instanceof IClassFile) {
@@ -163,6 +177,23 @@ public abstract class AbstractUCDetectorIterator extends UCDetectorHandler {
       }
     }
     handleEndElement(javaElement);
+  }
+
+  private void doTest2(IPackageFragment packageFragment) throws CoreException {
+    if (activePackage != packageFragment) {
+      return;
+    }
+    IPackageFragment tempPackage = activePackage;
+    activePackage = null;
+    IJavaElement[] packages = ((IPackageFragmentRoot) packageFragment
+        .getParent()).getChildren();
+    for (IJavaElement rootJavaElement : packages) {
+      IPackageFragment rootPackage = (IPackageFragment) rootJavaElement;
+      if (rootPackage.getElementName().startsWith(
+          tempPackage.getElementName() + ".")) {
+        iterate(rootPackage);
+      }
+    }
   }
 
   // -------------------------------------------------------------------------
