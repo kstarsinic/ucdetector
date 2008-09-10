@@ -87,7 +87,7 @@ public class UCDetectorPreferencePage extends FieldEditorPreferencePage // NO_UC
         Messages.PreferencePage_IgnoreMethodFilter, spacer,
         Messages.PreferencePage_IgnoreMethodFilterToolTip);
     this.addField(methodFilter);
-    StringFieldEditor fieldFilter = createText(Prefs.FILTER_METHOD,
+    StringFieldEditor fieldFilter = createText(Prefs.FILTER_FIELD,
         Messages.PreferencePage_IgnoreFieldFilter, spacer,
         Messages.PreferencePage_IgnoreFieldFilterToolTip);
     this.addField(fieldFilter);

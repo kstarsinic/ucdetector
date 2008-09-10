@@ -7,6 +7,7 @@ New features:
 Bugfixes:
  - Filters are now "ignore case"
  - Don't change visibility of enums constants
+ - fix Bug [ 2103382 ]: Method filter not saved in preference page
 
 // -----------------------------------------------------------------------------
 UCDetector 0.10.0 from 2008-09-04:
