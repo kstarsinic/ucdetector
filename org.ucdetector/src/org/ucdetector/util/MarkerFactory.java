@@ -25,7 +25,9 @@ import org.ucdetector.report.TextReport;
 import org.ucdetector.search.LineManger;
 
 /**
- * Create ERROR, WARN markers. Delete markers
+ * Create ERROR, WARN markers. Delete markers<p>
+ * 
+ * CALL endReport() TO FLUSH MARKERS!!!
  */
 public class MarkerFactory {
   private final List<IUCDetctorReport> reports = new ArrayList<IUCDetctorReport>();
