@@ -14,7 +14,7 @@ import org.eclipse.core.runtime.CoreException;
 /**
  * Detect no java files
  */
-public class DetectNoJavaFileIterator extends AbstractUCDetectorIterator {
+public class DetectNoJavaFileIterator extends AdditionalIterator {
   @Override
   public void handleResource(IResource resource) throws CoreException {
     if (resource instanceof IContainer) {

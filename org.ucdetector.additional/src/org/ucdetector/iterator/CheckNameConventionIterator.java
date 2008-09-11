@@ -17,20 +17,18 @@ import org.ucdetector.util.MarkerFactory;
 /**
  * Detect naming conventions for classes/methods/fields
  */
-public class CheckNameConventionIterator extends AbstractUCDetectorIterator {
-  private final AdditionalUtil markerFactory = new AdditionalUtil();
+public class CheckNameConventionIterator extends AdditionalIterator {
   private int typeCount;
 
   @Override
   protected void handleType(IType type) throws CoreException {
     String className = type.getElementName();
     if (!type.isAnonymous() && !startsWithUpper(className)) {
-      markerFactory.createMarker(type,
-          "Class name should start with upper case");
+      createMarker(type, "Class name should start with upper case");
     }
     if (typeCount == 0) {
-      markerFactory.createMarker(type, "Example marker! For class '"
-          + className + "'");
+      System.out.println("classname ='" + className + "'");
+      createMarker(type, "Example marker! For class '" + className + "'");
     }
     typeCount++;
   }
@@ -41,19 +39,19 @@ public class CheckNameConventionIterator extends AbstractUCDetectorIterator {
     int flags = field.getFlags();
     if (Flags.isStatic(flags) && Flags.isFinal(flags)) {
       if (!isConstantName(fieldName)) {
-        markerFactory.createMarker(field, "Constant '" + fieldName
+        createMarker(field, "Constant '" + fieldName
             + "' should use upper case or '_'");
       }
     }
     else if (field.isEnumConstant()) {
       if (!isConstantName(fieldName)) {
-        markerFactory.createMarker(field, "Enum Constant '" + fieldName
+        createMarker(field, "Enum Constant '" + fieldName
             + "' should use upper case or '_'");
       }
     }
     else if (!Flags.isFinal(flags) && !Flags.isStatic(flags)
         && startsWithUpper(fieldName)) {
-      markerFactory.createMarker(field, "Field '" + fieldName
+      createMarker(field, "Field '" + fieldName
           + "' should start with lower case");
     }
   }
@@ -64,7 +62,7 @@ public class CheckNameConventionIterator extends AbstractUCDetectorIterator {
       // ignore constructor!
     }
     else if (startsWithUpper(method.getElementName())) {
-      markerFactory.createMarker(method, "Method '" + method.getElementName()
+      createMarker(method, "Method '" + method.getElementName()
           + "' should start with lower case");
     }
   }

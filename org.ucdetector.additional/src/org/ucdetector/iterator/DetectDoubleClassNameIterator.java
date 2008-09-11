@@ -20,8 +20,7 @@ import org.ucdetector.util.MarkerFactory;
 /**
  * Detect double class names
  */
-public class DetectDoubleClassNameIterator extends AbstractUCDetectorIterator {
-  private final AdditionalUtil additionalUtil = new AdditionalUtil();
+public class DetectDoubleClassNameIterator extends AdditionalIterator {
 
   private final Map<String, Set<IType>> typeMap //
   = new HashMap<String, Set<IType>>();
@@ -50,8 +49,7 @@ public class DetectDoubleClassNameIterator extends AbstractUCDetectorIterator {
       Set<IType> types = entry.getValue();
       if (types.size() > 1) {
         for (IType type : types) {
-          additionalUtil.createMarker(type, "Type name found " + types.size()
-              + " times");
+          createMarker(type, "Type name found " + types.size() + " times");
         }
       }
     }
