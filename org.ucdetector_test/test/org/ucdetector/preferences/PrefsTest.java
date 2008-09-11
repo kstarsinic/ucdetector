@@ -32,7 +32,10 @@ public class PrefsTest extends TestCase {
             if (Prefs.ANALYZE_FIELDS.equals(prefName)) {
               return WarnLevel.IGNORE.toString();
             }
-            if (Prefs.ANALYZE_VISIBILITY.equals(prefName)) {
+            if (Prefs.ANALYZE_VISIBILITY_PROTECTED.equals(prefName)) {
+              return WarnLevel.IGNORE.toString();
+            }
+            if (Prefs.ANALYZE_VISIBILITY_PRIVATE.equals(prefName)) {
               return WarnLevel.IGNORE.toString();
             }
             // -----------------------------------------------------
@@ -140,7 +143,7 @@ public class PrefsTest extends TestCase {
   }
 
   public final void testIsAnalyseVisibility() {
-    assertFalse(Prefs.isCheckIncreaseVisibility());
+    assertFalse(Prefs.isCheckIncreaseVisibilityProtected());
   }
 
   // -------------------------------------------------------------------------
@@ -160,6 +163,6 @@ public class PrefsTest extends TestCase {
   }
 
   public final void testGetAnalyseVisibility() {
-    assertEquals(WarnLevel.IGNORE, Prefs.getCheckIncreaseVisibility());
+    assertEquals(WarnLevel.IGNORE, Prefs.getCheckIncreaseVisibilityProtected());
   }
 }
