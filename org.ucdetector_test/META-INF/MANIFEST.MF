@@ -17,14 +17,7 @@ Require-Bundle: org.eclipse.ui,
  org.ucdetector;bundle-version="0.10.0"
 Bundle-ClassPath: .
 Export-Package: org.ucdetector.action;uses:="org.eclipse.core.runtime,org.ucdetector.iterator",
- org.ucdetector.cycle;uses:="org.ucdetector.test",
- org.ucdetector.example,
- org.ucdetector.example.impl,
- org.ucdetector.example.no_java,
- org.ucdetector.example.visibility,
  org.ucdetector.iterator;uses:="org.eclipse.jdt.core,org.eclipse.core.resources",
- org.ucdetector.mini_cycle,
  org.ucdetector.preferences;uses:="junit.framework",
- org.ucdetector.test,
  org.ucdetector.util;uses:="org.eclipse.ui,org.eclipse.core.resources"
 Eclipse-LazyStart: true
