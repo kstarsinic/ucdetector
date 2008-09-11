@@ -1,5 +1,5 @@
 package org.ucdetector.example.fields.a;
 
-public class B {
+public class B { // Marker YES: unused code
 
 }

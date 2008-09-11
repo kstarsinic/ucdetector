@@ -16,6 +16,9 @@ import org.ucdetector.example.inheritance.InterfaceExample;
 import org.ucdetector.example.inheritance.InterfaceImplExample;
 import org.ucdetector.example.inheritance.OverrideExample;
 import org.ucdetector.example.inheritance.OverrideImplExample;
+import org.ucdetector.example.inheritance.bug.A;
+import org.ucdetector.example.inheritance.bug.B;
+import org.ucdetector.example.inheritance.bug.C;
 import org.ucdetector.example.methods.AbstractMethodExample;
 import org.ucdetector.example.methods.BeanExample;
 import org.ucdetector.example.methods.ConstructorExample;
@@ -139,5 +142,10 @@ public class PublicReferenceHolder {
     // ---------------------------------------------------------------------
     BeanExample.class.getName();
     SerializationFieldExample.class.getName();
+    // ---------------------------------------------------------------------
+    A.class.getName();
+    B.class.getName();
+    C.class.getName();
+    // ---------------------------------------------------------------------
   }
 }
