@@ -6,8 +6,10 @@
  */
 package org.ucdetector.util;
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Iterator;
+import java.util.List;
 
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.OperationCanceledException;
@@ -17,6 +19,7 @@ import org.eclipse.jdt.core.IField;
 import org.eclipse.jdt.core.IJavaElement;
 import org.eclipse.jdt.core.IMethod;
 import org.eclipse.jdt.core.IPackageFragment;
+import org.eclipse.jdt.core.IPackageFragmentRoot;
 import org.eclipse.jdt.core.IType;
 import org.eclipse.jdt.core.ITypeHierarchy;
 import org.eclipse.jdt.core.JavaModelException;
@@ -401,5 +404,39 @@ public class JavaElementUtil {
       }
     }
     return false;
+  }
+
+  /**
+   * If we call <code>IPackageFragment.getChildren()</code>
+   * we do NOT get sub packages!<br>
+   * This is a workaround. We calculate sub packages by going to the
+   * parent of code>IPackageFragment</code> 
+   * which is a <code>IPackageFragmentRoot</code> and call
+   * <code>IPackageFragmentRoot.getChildren()</code>
+   * When a name of a subpackage starts with package name + "." it is a
+   * subpackage
+   * 
+   * @return a list of all sub packages for the input package. For example input 
+   * <pre>org.ucdetector.cycle</pre>
+   * return a list with:
+   * <ul>
+   * <li><code>org.ucdetector.cycle.model</code></li>
+   * <li><code>org.ucdetector.cycle.search</code></li>
+   * </ul>
+   */
+  public static List<IPackageFragment> getSubPackages(
+      IPackageFragment packageFragment) throws CoreException {
+    List<IPackageFragment> subPackages = new ArrayList<IPackageFragment>();
+    IJavaElement[] allPackages = ((IPackageFragmentRoot) packageFragment
+        .getParent()).getChildren();
+    for (IJavaElement javaElement : allPackages) {
+      IPackageFragment pakage = (IPackageFragment) javaElement;
+      String startPackagenName = packageFragment.getElementName() + ".";
+      if (packageFragment.isDefaultPackage()
+          || pakage.getElementName().startsWith(startPackagenName)) {
+        subPackages.add(pakage);
+      }
+    }
+    return subPackages;
   }
 }

@@ -33,6 +33,8 @@ import org.eclipse.jdt.core.JavaCore;
 import org.eclipse.jdt.core.JavaModelException;
 import org.ucdetector.UCDetectorPlugin;
 import org.ucdetector.preferences.Prefs;
+import org.ucdetector.util.JavaElementUtil;
+import org.ucdetector.util.MarkerFactory;
 
 /**
  * Base Class to iterate over projects, packages, classes, methods, fields...
@@ -42,10 +44,13 @@ public abstract class AbstractUCDetectorIterator extends UCDetectorHandler {
   private IProgressMonitor monitor;
   /** Elements selected in the UI */
   protected IJavaElement[] selections;
-  private IPackageFragment activePackage;
 
+  private IPackageFragment activePackage;
   private final List<IPackageFragment> visitedPackages //
   = new ArrayList<IPackageFragment>();
+
+  private long start = System.currentTimeMillis();
+  private MarkerFactory markerFactory = MarkerFactory.createInstance();
 
   // -------------------------------------------------------------------------
   // ITERATOR
@@ -81,7 +86,16 @@ public abstract class AbstractUCDetectorIterator extends UCDetectorHandler {
       iterate(selection);
       handleEndSelectedElement(selection);
     }
+    markerFactory.endReport(selections, start);
     handleEndGlobal(selections);
+  }
+
+  /**
+   * @return number of elemnts to detect. If return 0, a warning message will
+   * be shown "nothing to detect"
+   */
+  public int getElelementsToDetectCount() {
+    return -1;
   }
 
   /**
@@ -114,18 +128,14 @@ public abstract class AbstractUCDetectorIterator extends UCDetectorHandler {
     else if (javaElement instanceof IPackageFragment) {
       doChildren = false;
       IPackageFragment packageFragment = (IPackageFragment) javaElement;
+      // fix for [ 2103678 ] Unnecessary code doesn't recurse in sub packages
       if (!visitedPackages.contains(packageFragment)) {
         visitedPackages.add(packageFragment);
         if (activePackage == packageFragment) {
-          IJavaElement[] allPackages = ((IPackageFragmentRoot) packageFragment
-              .getParent()).getChildren();
-          for (IJavaElement javaElement1 : allPackages) {
-            IPackageFragment pakage = (IPackageFragment) javaElement1;
-            if (pakage.getElementName().startsWith(
-                activePackage.getElementName() + ".")
-                || activePackage.isDefaultPackage()) {
-              iterate(pakage);
-            }
+          List<IPackageFragment> subPackages = JavaElementUtil
+              .getSubPackages(packageFragment);
+          for (IPackageFragment subPackage : subPackages) {
+            iterate(subPackage);
           }
         }
         doChildren = doPackageChildren(packageFragment);
@@ -228,5 +238,9 @@ public abstract class AbstractUCDetectorIterator extends UCDetectorHandler {
   protected boolean isDefaultFilter(IMethod method) throws JavaModelException {
     return isPrivate(method) || !Prefs.isUCDetectionInMethods()
         || Prefs.filterMethod(method);
+  }
+
+  public MarkerFactory getMarkerFactory() {
+    return markerFactory;
   }
 }
