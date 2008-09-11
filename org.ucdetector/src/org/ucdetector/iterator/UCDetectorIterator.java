@@ -83,13 +83,17 @@ public class UCDetectorIterator extends AbstractUCDetectorIterator {
    */
   @Override
   public void handleEndGlobal(IJavaElement[] objects) throws CoreException {
-    int totalSize = types.size() + methods.size() + fields.size();
+    int totalSize = getElelementsToDetectCount();
     getMonitor().beginTask(Messages.UCDetectorIterator_MONITOR_INFO, totalSize);
     getMonitor().worked(1);
-    int total = types.size() + methods.size() + fields.size();
-    SearchManager searchManager = new SearchManager(getMonitor(), total);
+    SearchManager searchManager = new SearchManager(getMonitor(), totalSize,
+        getMarkerFactory());
     searchManager.search(types, methods, fields, objects);
     stopWatch.end("Run");
+  }
+
+  public int getElelementsToDetectCount() {
+    return types.size() + methods.size() + fields.size();
   }
 
   @Override

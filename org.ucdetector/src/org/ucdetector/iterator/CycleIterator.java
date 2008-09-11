@@ -43,9 +43,12 @@ public class CycleIterator extends AbstractUCDetectorIterator {
     cycleSearchManager.search();
   }
 
+  public int getElelementsToDetectCount() {
+    return types.size();
+  }
+
   @Override
   public String getJobName() {
     return Messages.CycleIterator_JobName;
   }
-
 }

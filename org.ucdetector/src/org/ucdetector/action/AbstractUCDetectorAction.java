@@ -18,8 +18,10 @@ import org.eclipse.core.runtime.Status;
 import org.eclipse.core.runtime.jobs.Job;
 import org.eclipse.jdt.core.IJavaElement;
 import org.eclipse.jface.action.IAction;
+import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.jface.viewers.ISelection;
 import org.eclipse.jface.viewers.IStructuredSelection;
+import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Event;
 import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.actions.ActionDelegate;
@@ -49,6 +51,7 @@ public abstract class AbstractUCDetectorAction extends ActionDelegate { // NO_UC
           if (monitor.isCanceled()) {
             return Status.CANCEL_STATUS;
           }
+          showNothingToDetectMessage(iterator);
           IStatus status = postIteration();
           if (status != null) {
             return status;
@@ -68,6 +71,18 @@ public abstract class AbstractUCDetectorAction extends ActionDelegate { // NO_UC
           monitor.done();
         }
         return Status.OK_STATUS;
+      }
+
+      private void showNothingToDetectMessage(AbstractUCDetectorIterator iter) {
+        if (iter.getElelementsToDetectCount() == 0) {
+          Display.getDefault().asyncExec(new Runnable() {
+            public void run() {
+              MessageDialog.openWarning(UCDetectorPlugin.getShell(),
+                  Messages.AbstractUCDetectorIterator_NothingToDetectTitle,
+                  Messages.AbstractUCDetectorIterator_NothingToDetect);
+            }
+          });
+        }
       }
     };
     // TODO 08.09.2008: Review rule stuff

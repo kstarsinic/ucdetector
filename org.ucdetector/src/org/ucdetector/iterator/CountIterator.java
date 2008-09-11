@@ -110,7 +110,7 @@ public class CountIterator extends AbstractUCDetectorIterator {
     StringBuffer sb = new StringBuffer();
     sb.append(Messages.CountIterator_NotPrivate).append(' ');
     // sb.append("\r\n");
-    int totalFound = projects + packages + classes + methods + fields;
+    int totalFound = getElelementsToDetectCount();
     if (totalFound == 0) {
       sb.append(Messages.CountIterator_NothingFound);
       return sb.toString();
@@ -139,6 +139,10 @@ public class CountIterator extends AbstractUCDetectorIterator {
     sb.setLength(sb.length() - SEP.length());
     sb.append(" (in ").append(selectedAsString).append(')');//$NON-NLS-1$
     return sb.toString();
+  }
+
+  public int getElelementsToDetectCount() {
+    return projects + packages + classes + methods + fields;
   }
 
   @Override
