@@ -20,7 +20,7 @@ class PrefConverter {
       Prefs.FILTER_METHOD, Prefs.FILTER_FIELD, Prefs.ANALYZE_LITERALS };
   private static final String[] WARN_LEVEL_TO_REPLACE = new String[] {
       Prefs.ANALYZE_CLASSES, Prefs.ANALYZE_MEHTODS, Prefs.ANALYZE_FIELDS,
-      Prefs.ANALYZE_VISIBILITY, Prefs.ANALYZE_FINAL_FIELD,
+      Prefs.ANALYZE_VISIBILITY_PROTECTED, Prefs.ANALYZE_FINAL_FIELD,
       Prefs.ANALYZE_FINAL_METHOD };
 
   private static final String UCD_PREFERENCE_VERSION //

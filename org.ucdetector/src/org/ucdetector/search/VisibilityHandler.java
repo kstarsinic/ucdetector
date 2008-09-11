@@ -64,7 +64,8 @@ class VisibilityHandler {
    * <code>protected</code>.
    */
   void checkVisibility(IJavaElement foundElement, int found) {
-    if (!Prefs.isCheckIncreaseVisibility()) {
+    if (!Prefs.isCheckIncreaseVisibilityProtected() &&
+            !Prefs.isCheckIncreaseVisibilityToPrivate()) {
       return;
     }
     IType startType = JavaElementUtil.getTypeFor(startElement);
@@ -144,7 +145,9 @@ class VisibilityHandler {
    */
   private boolean needVisibilityMarker(IMember member, int found) {
     boolean decreaseVisibility = visibilityStart.value > visibilityMaxFound.value;
-    return (found > 0 && Prefs.isCheckIncreaseVisibility() && decreaseVisibility);
+    return found > 0 && decreaseVisibility &&
+            (Prefs.isCheckIncreaseVisibilityProtected() && visibilityMaxFound == VISIBILITY.PROTECTED
+            || Prefs.isCheckIncreaseVisibilityToPrivate() && visibilityMaxFound == VISIBILITY.PRIVATE);
   }
 
   boolean isMaxVisibilityFoundPublic() {

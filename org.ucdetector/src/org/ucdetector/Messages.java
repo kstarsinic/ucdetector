@@ -35,6 +35,8 @@ public class Messages extends NLS {
   public static String CycleIterator_MONITOR_INFO; // NO_UCD
 
   public static String UCDetectorIterator_MONITOR_INFO; // NO_UCD
+  public static String AbstractUCDetectorIterator_NothingToDetectTitle; // NO_UCD
+  public static String AbstractUCDetectorIterator_NothingToDetect; // NO_UCD
   // count
   public static String CountIterator_JobName; // NO_UCD
   public static String CountIterator_NotPrivate; // NO_UCD
@@ -46,7 +48,8 @@ public class Messages extends NLS {
   public static String CountIterator_NothingFound; // NO_UCD
 
   // PreferencePage ----------------------------------------------------------
-  public static String PreferencePage_CheckVisibility; // NO_UCD
+  public static String PreferencePage_CheckVisibilityProtected; // NO_UCD
+  public static String PreferencePage_CheckVisibilityPrivate; // NO_UCD
   public static String PreferencePage_CheckFinalMethod; // NO_UCD
   public static String PreferencePage_CheckFinalField; // NO_UCD
 

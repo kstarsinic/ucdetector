@@ -81,11 +81,12 @@ public class SearchManager {
   private final MarkerFactory markerFactory;
   private final FinalHandler finalHandler;
 
-  public SearchManager(IProgressMonitor monitor, int searchTotal) {
+  public SearchManager(IProgressMonitor monitor, int searchTotal,
+      MarkerFactory markerFactory) {
     this.monitor = monitor;
     this.searchTotal = searchTotal;
     filePatternLiteralSearch = Prefs.getFilePatternLiteralSearch();
-    markerFactory = MarkerFactory.createInstance();
+    this.markerFactory = markerFactory;
     finalHandler = new FinalHandler(markerFactory);
   }
 
@@ -94,11 +95,9 @@ public class SearchManager {
    */
   public final void search(List<IType> types, List<IMethod> methods,
       List<IField> fields, Object[] selected) throws CoreException {
-    long start = System.currentTimeMillis();
     searchTypes(types);
     searchMethods(methods);
     searchFields(fields);
-    markerFactory.endReport(selected, start);
   }
 
   /**
@@ -359,7 +358,9 @@ public class SearchManager {
         this.found++;
       }
 
-      if (found > Prefs.getWarnLimit() && !Prefs.isCheckIncreaseVisibility()) {
+      if (found > Prefs.getWarnLimit()
+          && !Prefs.isCheckIncreaseVisibilityProtected()
+          && !Prefs.isCheckIncreaseVisibilityToPrivate()) {
         throw new OperationCanceledException(
             "Cancel Search: Warn limit reached");//$NON-NLS-1$
       }
@@ -406,7 +407,9 @@ public class SearchManager {
         return;
       }
       this.found++;
-      if (found > Prefs.getWarnLimit() && !Prefs.isCheckIncreaseVisibility()) {
+      if (found > Prefs.getWarnLimit()
+          && !Prefs.isCheckIncreaseVisibilityProtected()
+          && !Prefs.isCheckIncreaseVisibilityToPrivate()) {
         throw new OperationCanceledException(
             "Cancel Search: Warn limit reached");//$NON-NLS-1$
       }

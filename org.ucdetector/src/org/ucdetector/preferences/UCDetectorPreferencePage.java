@@ -135,9 +135,12 @@ public class UCDetectorPreferencePage extends FieldEditorPreferencePage // NO_UC
   private void createKeywordGroup(Composite parentGroups) {
     Composite spacer = createGroup(parentGroups,
         Messages.PreferencePage_GroupKeyWord, 1, 1, GridData.FILL_HORIZONTAL);
-    ComboFieldEditor analyzeVisibility = createCombo(Prefs.ANALYZE_VISIBILITY,
-        Messages.PreferencePage_CheckVisibility, spacer);
+    ComboFieldEditor analyzeVisibility = createCombo(Prefs.ANALYZE_VISIBILITY_PROTECTED,
+        Messages.PreferencePage_CheckVisibilityProtected, spacer);
     this.addField(analyzeVisibility);
+    ComboFieldEditor analyzeVisibilityPrivate = createCombo(Prefs.ANALYZE_VISIBILITY_PRIVATE,
+            Messages.PreferencePage_CheckVisibilityPrivate, spacer);
+    this.addField(analyzeVisibilityPrivate);
     ComboFieldEditor analyzeFinalMethod = createCombo(
         Prefs.ANALYZE_FINAL_METHOD, Messages.PreferencePage_CheckFinalMethod,
         spacer);

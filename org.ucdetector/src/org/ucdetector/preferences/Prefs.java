@@ -51,8 +51,10 @@ public class Prefs {
   protected static final String WARN_LIMIT //
   = UCDetectorPlugin.ID + ".warnLimit"; //$NON-NLS-1$
   // KEYWORD -------------------------------------------------------------------
-  protected static final String ANALYZE_VISIBILITY //
+  protected static final String ANALYZE_VISIBILITY_PROTECTED //
   = UCDetectorPlugin.ID + ".visibility"; //$NON-NLS-1$
+  protected static final String ANALYZE_VISIBILITY_PRIVATE //
+  = UCDetectorPlugin.ID + ".visibilityPrivate"; //$NON-NLS-1$
   static final String ANALYZE_FINAL_FIELD //
   = UCDetectorPlugin.ID + ".finalField"; //$NON-NLS-1$
   static final String ANALYZE_FINAL_METHOD //
@@ -198,19 +200,34 @@ public class Prefs {
   }
 
   // KEYWORD GROUP -------------------------------------------------------------
-  // VISIBILITY -----------------------
+  // VISIBILITY PROTECTED -----------------------
   /**
-   * @return WarnLevel if we can use protected or private
+   * @return WarnLevel if we can use protected
    */
-  public static WarnLevel getCheckIncreaseVisibility() {
-    return WarnLevel.valueOf(getString(ANALYZE_VISIBILITY));
+  public static WarnLevel getCheckIncreaseVisibilityProtected() {
+    return WarnLevel.valueOf(getString(ANALYZE_VISIBILITY_PROTECTED));
   }
 
   /**
-   * @return <code>true</code> if we can use protected or private
+   * @return <code>true</code> if we can use protected
    */
-  public static boolean isCheckIncreaseVisibility() {
-    return !WarnLevel.IGNORE.equals(getCheckIncreaseVisibility());
+  public static boolean isCheckIncreaseVisibilityProtected() {
+    return !WarnLevel.IGNORE.equals(getCheckIncreaseVisibilityProtected());
+  }
+
+  // VISIBILITY PRIVATE -----------------------
+  /**
+   * @return WarnLevel if we can use private
+   */
+  public static WarnLevel getCheckIncreaseVisibilityToPrivate() {
+    return WarnLevel.valueOf(getString(ANALYZE_VISIBILITY_PRIVATE));
+  }
+
+  /**
+   * @return <code>true</code> if we can use private
+   */
+  public static boolean isCheckIncreaseVisibilityToPrivate() {
+    return !WarnLevel.IGNORE.equals(getCheckIncreaseVisibilityToPrivate());
   }
 
   // FINAL FIELD -----------------------
