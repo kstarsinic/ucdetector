@@ -1,0 +1,4 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<test hello="world">
+	<class>org.ucdetector.example.classes.ClassNameInXmlFile</class/>
+</toc>
