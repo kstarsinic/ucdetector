@@ -1,4 +1,36 @@
 //------------------------------------------------------------------------------
+http://sourceforge.net/tracker/index.php?func=detail&aid=2103655&group_id=219599&atid=1046865
+Sender: nobody
+1/ Yes i can run "Count elements"
+2/ No i don't have test
+
+I can't have cycle detection to run on my eclipse (I20080617-2000). I've
+tried in cycle_example.zip (after unzipping to a new java project), but it
+didn't work.
+
+On my big java project (120 packages), cycle detection appears for 3 sec
+in the progress view.
+//------------------------------------------------------------------------------
+https://sourceforge.net/tracker/?func=detail&atid=1046865&aid=2105379&group_id=219599
+In the following example, "new B().bar()" will call B.foo().
+But if A.foo() is marked private, it will be called instead of B.foo().
+
+public class A {
+    public void foo() {
+    }
+    public void bar() {
+        foo();
+    }
+}
+public class B {
+    public void foo() {
+        
+    }
+}
+I would suspect that the method must be checked for overloading in super classes as well as sub classes.
+//------------------------------------------------------------------------------
+
+//------------------------------------------------------------------------------
 TODO 0.10.0:
  - refactor SearchManager: Confusing to understand / add new handler!
  - check local/anonymous types:
@@ -10,6 +42,7 @@ TODO 0.10.0:
  - check TODO's from E-Mails, sourceforge tasks/requests
  - QuickFix
  - README.txt
+ - Review marker factory
 
 //------------------------------------------------------------------------------
 Steps to create new Version:
@@ -20,8 +53,8 @@ Steps to create new Version:
  - check build.properties
  - java 5, eclipse 3.3
  - create jar, install in eclipse, run UCDetector
- - run UCDetector with:  org.ucdetector_test, jEdit, JUnit
- - run UCDetector with: change warn limit to > 0
+ - run UCDetector with: org.ucdetector_test, jEdit, JUnit
+ - run UCDetector with: change warn limit to 2
  - check UCDetector Code with: PMD, CPD, finbugs, Energy
  - update homepage and help
  - check help
