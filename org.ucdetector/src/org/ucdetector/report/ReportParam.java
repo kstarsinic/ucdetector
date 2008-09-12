@@ -1,5 +1,6 @@
 package org.ucdetector.report;
 
+import org.eclipse.core.resources.IResource;
 import org.eclipse.jdt.core.IField;
 import org.eclipse.jdt.core.IJavaElement;
 import org.eclipse.jdt.core.IMethod;
@@ -17,6 +18,20 @@ public class ReportParam {
   public final int line;
   public final String markerType;
   public final WarnLevel level;
+
+  @Override
+  public String toString() {
+    StringBuilder sb = new StringBuilder();
+    sb.append("MARKER ").append(level).append(';').append(message); //$NON-NLS-1$
+    sb.append(";").append(message); //$NON-NLS-1$
+    IResource resource = javaElement.getResource();
+    if (resource != null) {
+      sb.append(';').append(resource.getFullPath());
+    }
+    sb.append(';').append("line=").append(line); //$NON-NLS-1$
+    sb.append(';').append(markerType);
+    return sb.toString();
+  }
 
   public ReportParam(IJavaElement javaElement, String message, int line,
       String markerType) {

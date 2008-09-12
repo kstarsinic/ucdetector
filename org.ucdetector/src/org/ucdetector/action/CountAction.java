@@ -11,6 +11,7 @@ import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.swt.widgets.Display;
+import org.ucdetector.Log;
 import org.ucdetector.Messages;
 import org.ucdetector.UCDetectorPlugin;
 import org.ucdetector.iterator.AbstractUCDetectorIterator;
@@ -33,7 +34,7 @@ public class CountAction extends AbstractUCDetectorAction {// NO_UCD
     // show message for count dialog, create status
     final IStatus status = new Status(IStatus.INFO, UCDetectorPlugin.ID,
         IStatus.INFO, iterator.toString(), null);
-    UCDetectorPlugin.log(status);
+    Log.logStatus(status);
     Display.getDefault().asyncExec(new Runnable() {
       public void run() {
         MessageDialog.openInformation(UCDetectorPlugin.getShell(),

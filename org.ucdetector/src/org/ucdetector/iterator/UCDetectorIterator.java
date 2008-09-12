@@ -30,7 +30,7 @@ public class UCDetectorIterator extends AbstractUCDetectorIterator {
   private final List<IMethod> methods = new ArrayList<IMethod>();
   private final List<IField> fields = new ArrayList<IField>();
 
-  private final StopWatch stopWatch = new StopWatch("UCDetectorIterator");
+  private final StopWatch stopWatch = new StopWatch("UCDetectorIterator"); //$NON-NLS-1$
 
   @Override
   public void handleStartSelectedElement(IJavaElement javaElement)
@@ -89,9 +89,10 @@ public class UCDetectorIterator extends AbstractUCDetectorIterator {
     SearchManager searchManager = new SearchManager(getMonitor(), totalSize,
         getMarkerFactory());
     searchManager.search(types, methods, fields, objects);
-    stopWatch.end("Run");
+    stopWatch.end("Run"); //$NON-NLS-1$
   }
 
+  @Override
   public int getElelementsToDetectCount() {
     return types.size() + methods.size() + fields.size();
   }

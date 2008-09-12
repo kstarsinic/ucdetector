@@ -7,8 +7,10 @@
  */
 package org.ucdetector;
 
+import java.text.DateFormat;
+import java.util.Date;
+
 import org.eclipse.core.runtime.CoreException;
-import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.ui.IWorkbenchPage;
@@ -20,21 +22,14 @@ import org.osgi.framework.BundleContext;
  * Default Activator-class of this plug-ins
  */
 public class UCDetectorPlugin extends AbstractUIPlugin {
-  private static final String LOG_LEVEL_DEBUG = "DEBUG"; //$NON-NLS-1$
-  private static final String LOG_LEVEL_INFO = "INFO"; //$NON-NLS-1$
-  private static final String LOG_LEVEL_WARN = "WARN"; //$NON-NLS-1$
-  private static final String LOG_LEVEL_ERROR = "ERROR"; //$NON-NLS-1$
   /**
-   * To activate debug traces add system property: "org.ucdetector.debug"
+   * To activate debug traces add line
+   * <pre>org.ucdetector/debug=true</pre>
+   * to file ECLIPSE_INSTALL_DIR\.options
+   * 
+   * @see http://wiki.eclipse.org/FAQ_How_do_I_use_the_platform_debug_tracing_facility%3F
    */
-  public static final boolean DEBUG = System
-      .getProperty("org.ucdetector.debug") != null; //$NON-NLS-1$
-  /**
-   * http://wiki.eclipse.org/FAQ_How_do_I_use_the_platform_debug_tracing_facility
-   */
-  // public static final boolean DEBUG =
-  // UCDetectorPlugin.getDefault().isDebugging() &&
-  // "true".equalsIgnoreCase(Platform.getDebugOption("org.ucdetector/debug"));
+  public static boolean DEBUG = Log.isDebugOption("org.ucdetector/debug"); //$NON-NLS-1$
   /**
    * See MANIFEST.MF: Bundle-SymbolicName, and .project
    */
@@ -48,6 +43,36 @@ public class UCDetectorPlugin extends AbstractUIPlugin {
 
   public UCDetectorPlugin() {
     UCDetectorPlugin.plugin = this;
+  }
+
+  @Override
+  public void start(BundleContext context) throws Exception {
+    super.start(context);
+    dumpInformation();
+  }
+
+  private void dumpInformation() {
+    StringBuilder sb = new StringBuilder();
+    Object version = getBundle().getHeaders().get("Bundle-Version"); //$NON-NLS-1$
+    sb.append("Starting UCDetector version ").append(version); //$NON-NLS-1$
+    sb.append(" at ").append( //$NON-NLS-1$
+        DateFormat.getDateTimeInstance().format(new Date()));
+    sb.append("\r\njava=").append(System.getProperty("java.version")); //$NON-NLS-1$ //$NON-NLS-2$
+    sb.append(",eclipse=").append(System.getProperty("osgi.framework.version")); //$NON-NLS-1$ //$NON-NLS-2$
+    sb.append("\r\nlogfile=").append(System.getProperty("osgi.logfile")); //$NON-NLS-1$ //$NON-NLS-2$
+    sb.append("\r\n ---- Plugin Preferences -------------------"); //$NON-NLS-1$
+    sb.append(getPreferencesAsString());
+    Log.logInfo(sb.toString());
+  }
+
+  public static String getPreferencesAsString() {
+    StringBuilder sb = new StringBuilder();
+    String[] propertyNames = plugin.getPluginPreferences().propertyNames();
+    for (String propertyName : propertyNames) {
+      sb.append("\r\n   ").append(propertyName).append("="); //$NON-NLS-1$ //$NON-NLS-2$
+      sb.append(plugin.getPluginPreferences().getString(propertyName));
+    }
+    return sb.toString();
   }
 
   /**
@@ -65,10 +90,8 @@ public class UCDetectorPlugin extends AbstractUIPlugin {
    */
   public static void handleOutOfMemoryError(OutOfMemoryError e)
       throws CoreException {
-    e.printStackTrace();
-    IStatus status = new Status(IStatus.ERROR, ID, IStatus.ERROR,
+    Status status = Log.logErrorAndStatus(
         Messages.CycleSearchManager_OutOfMemoryError_Hint, e);
-    log(status);
     throw new CoreException(status);
   }
 
@@ -79,56 +102,9 @@ public class UCDetectorPlugin extends AbstractUIPlugin {
     return UCDetectorPlugin.plugin;
   }
 
-  /**
-   * @param status which is be logged to default log
-   */
-  public static void log(IStatus status) {
-    getDefault().getLog().log(status);
-  }
-
   // -------------------------------------------------------------------------
   // LOGGING
   // -------------------------------------------------------------------------
-
-  public static void logDebug(String message) {
-    logImpl(LOG_LEVEL_DEBUG, message, null);
-  }
-
-  public static void logInfo(String message) {
-    logImpl(LOG_LEVEL_INFO, message, null);
-  }
-
-  public static void logWarn(String message) {
-    logImpl(LOG_LEVEL_WARN, message, null);
-  }
-
-  public static void logError(String message) {
-    logError(message, null);
-  }
-
-  public static void logError(String message, Throwable ex) {
-    logImpl(LOG_LEVEL_ERROR, message, ex);
-  }
-
-  /**
-   * Very simple logging to System.out and System.err
-   * VM Parameter "-Dorg.ucdetector.debug" must be set
-   * to see info and debug traces
-   */
-  private static void logImpl(String level, String message, Throwable ex) {
-    StringBuilder sb = new StringBuilder();
-    sb.append(level).append(": ").append(message == null ? "" : message); //$NON-NLS-1$ //$NON-NLS-2$
-    if (DEBUG
-        && (LOG_LEVEL_DEBUG.equals(level) || LOG_LEVEL_INFO.equals(level))) {
-      System.out.println(sb.toString());
-    }
-    else if (LOG_LEVEL_WARN.equals(level) || LOG_LEVEL_ERROR.equals(level)) {
-      System.err.println(sb.toString());
-    }
-    if (ex != null) {
-      ex.printStackTrace();
-    }
-  }
 
   public static IWorkbenchPage getActivePage() {
     return getActiveWorkbenchWindow().getActivePage();

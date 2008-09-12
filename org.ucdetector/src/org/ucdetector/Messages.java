@@ -65,6 +65,8 @@ public class Messages extends NLS {
   public static String PreferencePage_IgnoreMethodFilterToolTip; // NO_UCD
   public static String PreferencePage_IgnoreFieldFilter; // NO_UCD
   public static String PreferencePage_IgnoreFieldFilterToolTip; // NO_UCD
+  public static String PreferencePage_IgnoreBeanMethods; // "Ignore bean methods",
+  public static String PreferencePage_IgnoreBeanMethodsToolTip;
 
   public static String PreferencePage_Classes; // NO_UCD
   public static String PreferencePage_Methods; // NO_UCD
@@ -123,7 +125,7 @@ public class Messages extends NLS {
   // -------------------------------------------------------------------------
   public static String CycleCalculator_Monitor; // NO_UCD
   public static String CycleCalculator_removeDoubleCycles; // NO_UCD
-  public static String CycleView_run_ucd_for_results = "Run UCDetector to find cycles";// NO_UCD
+  public static String CycleView_run_ucd_for_results;// NO_UCD
   // REPORT --------------------------------------------------------------------
   public static String XMLReportWriteOk; // NO_UCD
   public static String XMLReportWriteError; // NO_UCD

@@ -26,6 +26,7 @@ import org.eclipse.jdt.core.search.SearchMatch;
 import org.eclipse.jdt.core.search.SearchPattern;
 import org.eclipse.jdt.core.search.SearchRequestor;
 import org.eclipse.osgi.util.NLS;
+import org.ucdetector.Log;
 import org.ucdetector.Messages;
 import org.ucdetector.UCDetectorPlugin;
 import org.ucdetector.cycle.model.Cycle;
@@ -111,7 +112,7 @@ public class CycleSearchManager {
       JavaElementUtil.runSearch(pattern, requestor, scope);
       result.add(typeAndMatches);
       if (UCDetectorPlugin.DEBUG) {
-        UCDetectorPlugin.logDebug(typeAndMatches.getTypeSearchMatches().size()
+        Log.logDebug(typeAndMatches.getTypeSearchMatches().size()
             + " refs for: " + type.getElementName()); //$NON-NLS-1$
       }
     }

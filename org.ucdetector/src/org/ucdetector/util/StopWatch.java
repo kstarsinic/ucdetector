@@ -8,13 +8,15 @@
 package org.ucdetector.util;
 
 import org.eclipse.jdt.core.IMember;
+import org.ucdetector.Log;
 import org.ucdetector.UCDetectorPlugin;
 
 /**
  * Simple stop watch to measure performance
  */
 public class StopWatch {
-  private static final int MINIMUM_DURATION = 1000;
+  private static final int MINIMUM_DURATION = Log.getDebugOption(
+      "org.ucdetector/debug/search/duration", -1); //$NON-NLS-1$
   private final String message;
   private long start = System.currentTimeMillis();
 
@@ -39,7 +41,8 @@ public class StopWatch {
         sb.append(info).append(": "); //$NON-NLS-1$
       }
       sb.append(message).append(": ").append(duration); //$NON-NLS-1$
-      UCDetectorPlugin.logDebug(sb.toString());
+      sb.append(" milliseconds"); //$NON-NLS-1$
+      Log.logDebug(sb.toString());
     }
   }
 }

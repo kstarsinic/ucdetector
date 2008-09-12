@@ -25,6 +25,7 @@ import org.eclipse.jdt.core.ToolFactory;
 import org.eclipse.jdt.core.compiler.IScanner;
 import org.eclipse.jdt.core.compiler.ITerminalSymbols;
 import org.eclipse.jdt.core.compiler.InvalidInputException;
+import org.ucdetector.Log;
 import org.ucdetector.UCDetectorPlugin;
 import org.ucdetector.util.JavaElementUtil;
 
@@ -98,7 +99,7 @@ public class LineManger {
   private IScanner createScanner(IJavaElement javaElement) throws CoreException {
     IOpenable openable = javaElement.getOpenable();
     if (!(openable instanceof ICompilationUnit)) {
-      UCDetectorPlugin.logError("openable NOT instanceof ICompilationUnit" + //$NON-NLS-1$
+      Log.logError("openable NOT instanceof ICompilationUnit" + //$NON-NLS-1$
           javaElement.getElementName());
       return null;
     }
@@ -157,7 +158,7 @@ public class LineManger {
             return String.valueOf(chars, start, end - start).trim();
           }
           catch (Exception e) {
-            UCDetectorPlugin.logError("Can't get line", e); //$NON-NLS-1$
+            Log.logError("Can't get line", e); //$NON-NLS-1$
           }
         }
       }

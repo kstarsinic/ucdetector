@@ -11,9 +11,11 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.eclipse.core.resources.IProject;
+import org.eclipse.core.resources.IResource;
 import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IProgressMonitor;
+import org.eclipse.core.runtime.Platform;
 import org.eclipse.jdt.core.IClassFile;
 import org.eclipse.jdt.core.ICompilationUnit;
 import org.eclipse.jdt.core.IField;
@@ -31,7 +33,7 @@ import org.eclipse.jdt.core.IParent;
 import org.eclipse.jdt.core.IType;
 import org.eclipse.jdt.core.JavaCore;
 import org.eclipse.jdt.core.JavaModelException;
-import org.ucdetector.UCDetectorPlugin;
+import org.ucdetector.Log;
 import org.ucdetector.preferences.Prefs;
 import org.ucdetector.util.JavaElementUtil;
 import org.ucdetector.util.MarkerFactory;
@@ -40,6 +42,8 @@ import org.ucdetector.util.MarkerFactory;
  * Base Class to iterate over projects, packages, classes, methods, fields...
  */
 public abstract class AbstractUCDetectorIterator extends UCDetectorHandler {
+  static final boolean DEBUG = "true".equalsIgnoreCase(Platform //$NON-NLS-1$
+      .getDebugOption("org.ucdetector/debug/iterator")); //$NON-NLS-1$
   static final String SEP = ", "; //$NON-NLS-1$
   private IProgressMonitor monitor;
   /** Elements selected in the UI */
@@ -49,8 +53,8 @@ public abstract class AbstractUCDetectorIterator extends UCDetectorHandler {
   private final List<IPackageFragment> visitedPackages //
   = new ArrayList<IPackageFragment>();
 
-  private long start = System.currentTimeMillis();
-  private MarkerFactory markerFactory = MarkerFactory.createInstance();
+  private final long start = System.currentTimeMillis();
+  private MarkerFactory markerFactory = null;
 
   // -------------------------------------------------------------------------
   // ITERATOR
@@ -74,8 +78,11 @@ public abstract class AbstractUCDetectorIterator extends UCDetectorHandler {
   /**
    * Start point for all for all iterations
    */
-  public final void iterate(IJavaElement[] SelectionsUI) throws CoreException {
-    this.selections = SelectionsUI;
+  public final void iterate(IJavaElement[] selectionsUI) throws CoreException {
+    if (DEBUG) {
+      Log.logDebug("Selection to iterate: " + getSelectedString(selectionsUI)); //$NON-NLS-1$
+    }
+    this.selections = selectionsUI;
     handleStartGlobal(selections);
     for (IJavaElement selection : selections) {
       activePackage = null;
@@ -86,8 +93,10 @@ public abstract class AbstractUCDetectorIterator extends UCDetectorHandler {
       iterate(selection);
       handleEndSelectedElement(selection);
     }
-    markerFactory.endReport(selections, start);
     handleEndGlobal(selections);
+    if (markerFactory != null) {
+      markerFactory.endReport(selections, start);
+    }
   }
 
   /**
@@ -105,9 +114,21 @@ public abstract class AbstractUCDetectorIterator extends UCDetectorHandler {
     if (getMonitor().isCanceled()) {
       return;
     }
+    if (DEBUG) {
+      Log.logDebug("iterate java element '" // //$NON-NLS-1$
+          + JavaElementUtil.asString(javaElement) + "' " //$NON-NLS-1$
+          + Log.getClassName(javaElement));
+    }
     handleStartElement(javaElement);
+
+    // TODO 12.09.2008: Resource iteration NOT OK!
     if (javaElement.getCorrespondingResource() != null) {
-      handleResource(javaElement.getCorrespondingResource());
+      IResource resource = javaElement.getCorrespondingResource();
+      if (DEBUG && resource != null) {
+        Log.logDebug("iterate resource     '" // //$NON-NLS-1$
+            + resource.getName() + "' " + Log.getClassName(resource)); //$NON-NLS-1$
+      }
+      handleResource(resource);
     }
     //
     boolean doChildren = true;
@@ -184,7 +205,7 @@ public abstract class AbstractUCDetectorIterator extends UCDetectorHandler {
     else {
       // ILocalVariable
       // ITypeParameter
-      UCDetectorPlugin.logWarn("UNHANDLED TYPE" //$NON-NLS-1$
+      Log.logWarn("UNHANDLED TYPE" //$NON-NLS-1$
           + javaElement.getElementName() + ":" //$NON-NLS-1$
           + javaElement.getClass().getSimpleName());
     }
@@ -241,6 +262,9 @@ public abstract class AbstractUCDetectorIterator extends UCDetectorHandler {
   }
 
   public MarkerFactory getMarkerFactory() {
+    if (markerFactory == null) {
+      markerFactory = MarkerFactory.createInstance();
+    }
     return markerFactory;
   }
 }

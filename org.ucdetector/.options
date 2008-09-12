@@ -1,7 +1,30 @@
 # Debugging options for the org.ucdetector plugin.
 
 # Turn on debugging for the org.ucdetector plugin.
-org.ucdetector/debug=false
+org.ucdetector/debug=true
 
-# Monitor builders and gather time statistics etc.
-org.ucdetector/debug/test=true
+# Turn on debugging for iterator: Which java elements are visited
+org.ucdetector/debug/iterator=true
+
+# Turn on debugging for search: Show search progress info
+org.ucdetector/debug/search=true
+
+# Turn on debugging for search: Minimum milliseconds to show duration traces
+org.ucdetector/debug/search/duration=500
+
+# ------------------------------------------------------------------------------
+#             OTHER PLUGINS
+# ------------------------------------------------------------------------------
+# Turn on debug tracing for org.eclipse.jdt.core plugin
+#org.eclipse.jdt.core/debug=true
+
+# Reports java search activity
+# see: plugins\org.eclipse.jdt.core_*.jar/.options
+#org.eclipse.jdt.core/debug/search=false
+
+# Print notified Java element deltas
+#org.eclipse.jdt.core/debug/javadelta=true
+#org.eclipse.jdt.core/debug/javadelta/verbose=true
+
+
+#:mode=properties:

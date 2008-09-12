@@ -18,6 +18,7 @@ import java.util.Stack;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.jdt.core.IType;
 import org.eclipse.osgi.util.NLS;
+import org.ucdetector.Log;
 import org.ucdetector.Messages;
 import org.ucdetector.UCDetectorPlugin;
 import org.ucdetector.cycle.model.Cycle;
@@ -68,7 +69,7 @@ class CycleCalculator {
       IType startType = typeAndMatches.getRoot();
       searchCycles(startType, path, allCycles);
       if (UCDetectorPlugin.DEBUG) {
-        UCDetectorPlugin.logDebug(("Delta=" //$NON-NLS-1$
+        Log.logDebug(("Delta=" //$NON-NLS-1$
             + (allCycles.size() - prevSize) + ", " + typeAndMatches //$NON-NLS-1$
             .getRoot().getElementName()));
       }

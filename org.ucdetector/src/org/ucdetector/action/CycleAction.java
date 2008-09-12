@@ -8,11 +8,11 @@
 package org.ucdetector.action;
 
 import org.eclipse.core.runtime.IStatus;
-import org.eclipse.core.runtime.Status;
 import org.eclipse.jdt.core.IJavaElement;
 import org.eclipse.jface.action.IAction;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.ui.PartInitException;
+import org.ucdetector.Log;
 import org.ucdetector.Messages;
 import org.ucdetector.UCDetectorPlugin;
 import org.ucdetector.cycle.CycleView;
@@ -43,9 +43,7 @@ public class CycleAction extends AbstractUCDetectorAction { // NO_UCD
           }
         }
         catch (PartInitException e) {
-          IStatus status = new Status(IStatus.ERROR, UCDetectorPlugin.ID,
-              IStatus.ERROR, Messages.CycleAction_cant_open_editor, e);
-          UCDetectorPlugin.log(status);
+          Log.logErrorAndStatus(Messages.CycleAction_cant_open_editor, e);
         }
       }
     });

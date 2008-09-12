@@ -45,6 +45,7 @@ import org.eclipse.ui.ISharedImages;
 import org.eclipse.ui.IWorkbenchActionConstants;
 import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.part.ViewPart;
+import org.ucdetector.Log;
 import org.ucdetector.Messages;
 import org.ucdetector.UCDetectorPlugin;
 import org.ucdetector.cycle.model.Cycle;
@@ -249,7 +250,7 @@ public class CycleView extends ViewPart { // NO_UCD
           }
         }
         catch (Exception e) {
-          UCDetectorPlugin.logError("Can't open editor", e); //$NON-NLS-1$
+          Log.logError("Can't open editor", e); //$NON-NLS-1$
         }
       }
     };
@@ -280,7 +281,7 @@ public class CycleView extends ViewPart { // NO_UCD
   public void refresh() {
     viewer.refresh();
     boolean hasInput = tree != null && tree.getItemCount() > 0;
-    label.setText(hasInput ? "" : Messages.CycleView_run_ucd_for_results);
+    label.setText(hasInput ? "" : Messages.CycleView_run_ucd_for_results); //$NON-NLS-1$
   }
 
   /**

@@ -43,6 +43,7 @@ public class CycleIterator extends AbstractUCDetectorIterator {
     cycleSearchManager.search();
   }
 
+  @Override
   public int getElelementsToDetectCount() {
     return types.size();
   }

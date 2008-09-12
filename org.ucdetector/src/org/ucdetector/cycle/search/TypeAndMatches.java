@@ -18,7 +18,7 @@ import org.eclipse.core.runtime.CoreException;
 import org.eclipse.jdt.core.IJavaElement;
 import org.eclipse.jdt.core.IType;
 import org.eclipse.jdt.core.search.SearchMatch;
-import org.ucdetector.UCDetectorPlugin;
+import org.ucdetector.Log;
 import org.ucdetector.cycle.model.CycleMember;
 import org.ucdetector.cycle.model.CycleRegion;
 import org.ucdetector.cycle.model.CycleType;
@@ -67,7 +67,7 @@ class TypeAndMatches {
       lineNr = lineManger.getLine(matchtedType, match.getOffset());
     }
     catch (CoreException e) {
-      UCDetectorPlugin.logError("Can't get line", e); //$NON-NLS-1$
+      Log.logError("Can't get line", e); //$NON-NLS-1$
       return;
     }
     int offset = match.getOffset();

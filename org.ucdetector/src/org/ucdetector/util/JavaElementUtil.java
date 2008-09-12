@@ -34,6 +34,7 @@ import org.eclipse.jdt.core.search.SearchRequestor;
 import org.eclipse.jdt.internal.ui.typehierarchy.TypeHierarchyLifeCycle;
 import org.eclipse.jdt.ui.JavaElementImageDescriptor;
 import org.eclipse.jdt.ui.OverrideIndicatorLabelDecorator;
+import org.ucdetector.Log;
 import org.ucdetector.UCDetectorPlugin;
 
 /**
@@ -195,6 +196,10 @@ public class JavaElementUtil {
     if (element == null) {
       return "null"; //$NON-NLS-1$
     }
+    if (element instanceof IPackageFragment
+        && ((IPackageFragment) element).isDefaultPackage()) {
+      return "default package"; //$NON-NLS-1$
+    }
     StringBuffer info = new StringBuffer();
     if (element instanceof IMethod) {
       IMethod method = (IMethod) element;
@@ -283,7 +288,7 @@ public class JavaElementUtil {
       }
     }
     catch (Exception e) {
-      sb.append("???");
+      sb.append("???"); //$NON-NLS-1$
     }
     return sb.toString();
   }
@@ -304,7 +309,7 @@ public class JavaElementUtil {
         );
     CountRequestor requestor = new CountRequestor();
     runSearch(pattern, requestor, SearchEngine.createWorkspaceScope());
-    stop.end("isOverriddenMethod");
+    stop.end("isOverriddenMethod"); //$NON-NLS-1$
     return requestor.found > 1;
   }
 
@@ -323,7 +328,7 @@ public class JavaElementUtil {
     catch (RuntimeException rte) {
       isSearchException = true;
       // Java Search throws an NullPointerException in Eclipse 3.4M5
-      UCDetectorPlugin.logError("Java search problems", rte); //$NON-NLS-1$
+      Log.logError("Java search problems", rte); //$NON-NLS-1$
     }
     catch (OutOfMemoryError e) {
       isSearchException = true;
@@ -384,19 +389,19 @@ public class JavaElementUtil {
   public static boolean isBeanMethod(IMethod method) throws JavaModelException {
     if (Flags.isPublic(method.getFlags()) && !Flags.isStatic(method.getFlags())) {
       String name = method.getElementName();
-      if (name.length() > 3 && name.startsWith("set")
+      if (name.length() > 3 && name.startsWith("set") //$NON-NLS-1$
           && Character.isUpperCase(name.charAt(3))
           && Signature.SIG_VOID.equals(method.getReturnType())
           && method.getNumberOfParameters() == 1) {
         return true;
       }
-      if (name.length() > 3 && name.startsWith("get")
+      if (name.length() > 3 && name.startsWith("get") //$NON-NLS-1$
           && Character.isUpperCase(name.charAt(3))
           && !Signature.SIG_VOID.equals(method.getReturnType())
           && method.getNumberOfParameters() == 0) {
         return true;
       }
-      if (name.length() > 2 && name.startsWith("is")
+      if (name.length() > 2 && name.startsWith("is") //$NON-NLS-1$
           && Character.isUpperCase(name.charAt(2))
           && Signature.SIG_BOOLEAN.equals(method.getReturnType())
           && method.getNumberOfParameters() == 0) {
@@ -431,7 +436,7 @@ public class JavaElementUtil {
         .getParent()).getChildren();
     for (IJavaElement javaElement : allPackages) {
       IPackageFragment pakage = (IPackageFragment) javaElement;
-      String startPackagenName = packageFragment.getElementName() + ".";
+      String startPackagenName = packageFragment.getElementName() + "."; //$NON-NLS-1$
       if (packageFragment.isDefaultPackage()
           || pakage.getElementName().startsWith(startPackagenName)) {
         subPackages.add(pakage);

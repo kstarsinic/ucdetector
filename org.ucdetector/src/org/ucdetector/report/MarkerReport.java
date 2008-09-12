@@ -15,6 +15,8 @@ import org.eclipse.jdt.core.IField;
 import org.eclipse.jdt.core.IJavaElement;
 import org.eclipse.jdt.core.IMethod;
 import org.eclipse.jdt.core.IType;
+import org.ucdetector.Log;
+import org.ucdetector.UCDetectorPlugin;
 import org.ucdetector.util.MarkerFactory;
 
 /**
@@ -29,6 +31,9 @@ public class MarkerReport implements IUCDetctorReport {
   private final List<ReportParam> markersToCreate = new ArrayList<ReportParam>();
 
   public void reportMarker(ReportParam reportParam) throws CoreException {
+    if (UCDetectorPlugin.DEBUG) {
+      Log.logDebug("add marker to queue: " + reportParam); //$NON-NLS-1$
+    }
     markersToCreate.add(reportParam);
     if (markersToCreate.size() >= MARKERS_TO_CREATE_COUNT) {
       flushReport();
@@ -39,6 +44,10 @@ public class MarkerReport implements IUCDetctorReport {
    * Create markers and clean cache;
    */
   private void flushReport() throws CoreException {
+    if (UCDetectorPlugin.DEBUG) {
+      Log.logDebug(" FlushMarkers: Create : " + markersToCreate.size() //$NON-NLS-1$
+          + " markers"); //$NON-NLS-1$
+    }
     for (ReportParam reportParamToCreate : markersToCreate) {
       createMarker(reportParamToCreate);
     }

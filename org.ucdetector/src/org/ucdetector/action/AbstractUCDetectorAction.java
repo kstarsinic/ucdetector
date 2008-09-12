@@ -25,6 +25,7 @@ import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Event;
 import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.actions.ActionDelegate;
+import org.ucdetector.Log;
 import org.ucdetector.Messages;
 import org.ucdetector.UCDetectorPlugin;
 import org.ucdetector.iterator.AbstractUCDetectorIterator;
@@ -61,11 +62,8 @@ public abstract class AbstractUCDetectorAction extends ActionDelegate { // NO_UC
           return e.getStatus();
         }
         catch (Exception e) {
-          IStatus status = new Status(IStatus.ERROR, UCDetectorPlugin.ID,
-              IStatus.ERROR,
+          return Log.logErrorAndStatus(
               Messages.AbstractUCDetectorAction_AnalyzeFailedText, e);
-          UCDetectorPlugin.log(status);
-          return status;
         }
         finally {
           monitor.done();

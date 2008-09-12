@@ -32,6 +32,7 @@ import org.eclipse.search.core.text.TextSearchEngine;
 import org.eclipse.search.core.text.TextSearchMatchAccess;
 import org.eclipse.search.core.text.TextSearchRequestor;
 import org.eclipse.search.ui.text.FileTextSearchScope;
+import org.ucdetector.Log;
 import org.ucdetector.Messages;
 import org.ucdetector.UCDetectorPlugin;
 import org.ucdetector.preferences.Prefs;
@@ -43,6 +44,8 @@ import org.ucdetector.util.StopWatch;
  * Search for class, methods, fields using the eclipse search mechanism
  */
 public class SearchManager {
+  private static boolean DEBUG = Log
+      .isDebugOption("org.ucdetector/debug/search"); //$NON-NLS-1$
   /**
    * Information for user, that we are searching for final stuff
    */
@@ -95,6 +98,11 @@ public class SearchManager {
    */
   public final void search(List<IType> types, List<IMethod> methods,
       List<IField> fields, Object[] selected) throws CoreException {
+    if (DEBUG) {
+      Log.logDebug("Types to search   : " + types.size()); //$NON-NLS-1$
+      Log.logDebug("Methods to search : " + methods.size()); //$NON-NLS-1$
+      Log.logDebug("Fields to search  : " + fields.size()); //$NON-NLS-1$
+    }
     searchTypes(types);
     searchMethods(methods);
     searchFields(fields);
@@ -327,6 +335,9 @@ public class SearchManager {
         Integer.valueOf(search), Integer.valueOf(searchTotal), info, details };
     String message = NLS.bind(Messages.SearchManager_Monitor, bindings);
     monitor.subTask(message);
+    if (DEBUG) {
+      Log.logDebug(message);
+    }
   }
 
   /**

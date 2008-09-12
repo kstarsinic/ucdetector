@@ -92,8 +92,10 @@ public class UCDetectorPreferencePage extends FieldEditorPreferencePage // NO_UC
         Messages.PreferencePage_IgnoreFieldFilterToolTip);
     this.addField(fieldFilter);
     BooleanFieldEditor beanMethodFilter = new BooleanFieldEditor(
-        Prefs.FILTER_BEAN_METHOD, "Ignore bean methods",
+        Prefs.FILTER_BEAN_METHOD, Messages.PreferencePage_IgnoreBeanMethods,
         BooleanFieldEditor.SEPARATE_LABEL, spacer);
+    beanMethodFilter.getLabelControl(spacer).setToolTipText(
+        Messages.PreferencePage_IgnoreBeanMethodsToolTip);
     this.addField(beanMethodFilter);
   }
 
@@ -135,11 +137,13 @@ public class UCDetectorPreferencePage extends FieldEditorPreferencePage // NO_UC
   private void createKeywordGroup(Composite parentGroups) {
     Composite spacer = createGroup(parentGroups,
         Messages.PreferencePage_GroupKeyWord, 1, 1, GridData.FILL_HORIZONTAL);
-    ComboFieldEditor analyzeVisibility = createCombo(Prefs.ANALYZE_VISIBILITY_PROTECTED,
+    ComboFieldEditor analyzeVisibility = createCombo(
+        Prefs.ANALYZE_VISIBILITY_PROTECTED,
         Messages.PreferencePage_CheckVisibilityProtected, spacer);
     this.addField(analyzeVisibility);
-    ComboFieldEditor analyzeVisibilityPrivate = createCombo(Prefs.ANALYZE_VISIBILITY_PRIVATE,
-            Messages.PreferencePage_CheckVisibilityPrivate, spacer);
+    ComboFieldEditor analyzeVisibilityPrivate = createCombo(
+        Prefs.ANALYZE_VISIBILITY_PRIVATE,
+        Messages.PreferencePage_CheckVisibilityPrivate, spacer);
     this.addField(analyzeVisibilityPrivate);
     ComboFieldEditor analyzeFinalMethod = createCombo(
         Prefs.ANALYZE_FINAL_METHOD, Messages.PreferencePage_CheckFinalMethod,

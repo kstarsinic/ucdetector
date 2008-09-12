@@ -36,6 +36,7 @@ import org.eclipse.jdt.core.IMethod;
 import org.eclipse.jdt.core.IPackageFragment;
 import org.eclipse.jdt.core.IType;
 import org.eclipse.osgi.util.NLS;
+import org.ucdetector.Log;
 import org.ucdetector.Messages;
 import org.ucdetector.UCDetectorPlugin;
 import org.ucdetector.preferences.Prefs;
@@ -92,7 +93,7 @@ public class TextReport implements IUCDetctorReport {
       root.appendChild(statistcs);
     }
     catch (Throwable e) {
-      UCDetectorPlugin.logError("XML problems", e);//$NON-NLS-1$
+      Log.logError("XML problems", e);//$NON-NLS-1$
       initXMLException = e;
     }
   }
@@ -205,7 +206,7 @@ public class TextReport implements IUCDetctorReport {
       int iStatus, Throwable ex) {
     String mes = NLS.bind(message, new Object[] { parm });
     Status status = new Status(iStatus, UCDetectorPlugin.ID, iStatus, mes, ex);
-    UCDetectorPlugin.log(status);
+    Log.logStatus(status);
   }
 
   /**

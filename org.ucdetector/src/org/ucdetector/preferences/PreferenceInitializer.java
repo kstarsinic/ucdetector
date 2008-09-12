@@ -37,8 +37,10 @@ public class PreferenceInitializer extends AbstractPreferenceInitializer { // NO
     store.setDefault(Prefs.ANALYZE_CLASSES, WarnLevel.WARNING.toString());
     store.setDefault(Prefs.ANALYZE_MEHTODS, WarnLevel.WARNING.toString());
     store.setDefault(Prefs.ANALYZE_FIELDS, WarnLevel.WARNING.toString());
-    store.setDefault(Prefs.ANALYZE_VISIBILITY_PROTECTED, WarnLevel.WARNING.toString());
-    store.setDefault(Prefs.ANALYZE_VISIBILITY_PRIVATE, WarnLevel.WARNING.toString());
+    store.setDefault(Prefs.ANALYZE_VISIBILITY_PROTECTED, WarnLevel.WARNING
+        .toString());
+    store.setDefault(Prefs.ANALYZE_VISIBILITY_PRIVATE, WarnLevel.WARNING
+        .toString());
     store.setDefault(Prefs.ANALYZE_LITERALS_CHECK, Boolean.TRUE);
     store.setDefault(Prefs.ANALYZE_LITERALS, FILE_PATTERN_LITERAL_SEARCH);
     // Filter ------------------------------------------------------------------

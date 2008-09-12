@@ -141,6 +141,7 @@ public class CountIterator extends AbstractUCDetectorIterator {
     return sb.toString();
   }
 
+  @Override
   public int getElelementsToDetectCount() {
     return projects + packages + classes + methods + fields;
   }
