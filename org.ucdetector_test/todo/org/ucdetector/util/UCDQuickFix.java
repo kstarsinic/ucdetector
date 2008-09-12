@@ -41,7 +41,7 @@ import org.eclipse.jface.text.Document;
 import org.eclipse.jface.text.IDocument;
 import org.eclipse.text.edits.TextEdit;
 import org.eclipse.ui.IMarkerResolution;
-import org.ucdetector.UCDetectorPlugin;
+import org.ucdetector.Log;
 
 /**
  * // http://help.eclipse.org/help32/index.jsp?topic=/org.eclipse.jdt.doc.isv/
@@ -128,7 +128,7 @@ public class UCDQuickFix implements IMarkerResolution { // NO_UCD
       }
     }
     catch (Exception e) {
-      UCDetectorPlugin.logError("Quick Fix Problems", e); //$NON-NLS-1$
+      Log.logError("Quick Fix Problems", e); //$NON-NLS-1$
     }
   }
 
