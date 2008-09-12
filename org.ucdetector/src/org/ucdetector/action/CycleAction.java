@@ -55,6 +55,7 @@ public class CycleAction extends AbstractUCDetectorAction { // NO_UCD
    */
   @Override
   protected void handleJavaElementSelections(IAction action) {
+    super.handleJavaElementSelections(action);
     for (Object sel : selections) {
       if (sel instanceof IJavaElement) {
         int elementType = ((IJavaElement) sel).getElementType();
