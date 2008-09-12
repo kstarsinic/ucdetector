@@ -16,6 +16,7 @@ import org.eclipse.jdt.core.IField;
 import org.eclipse.jdt.core.IJavaElement;
 import org.eclipse.jdt.core.IMethod;
 import org.eclipse.osgi.util.NLS;
+import org.ucdetector.Log;
 import org.ucdetector.Messages;
 import org.ucdetector.preferences.Prefs;
 import org.ucdetector.report.IUCDetctorReport;
@@ -144,8 +145,12 @@ public class MarkerFactory {
    */
   private boolean createMarkerImpl(ReportParam reportParam)
       throws CoreException {
-    if (reportParam.line == LineManger.LINE_NOT_FOUND //
-        || reportParam.javaElement.getResource() == null) {
+    if (reportParam.line == LineManger.LINE_NOT_FOUND ) {
+      Log.logError("TEST: createMarkerImpl: ", new RuntimeException("LINE_NOT_FOUND"));
+      return false;
+    }
+    if (reportParam.javaElement.getResource() == null) {
+      Log.logError("TEST: createMarkerImpl: ", new RuntimeException("Resource not found"));
       return false;
     }
     for (IUCDetctorReport report : reports) {

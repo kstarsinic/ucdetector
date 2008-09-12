@@ -38,9 +38,12 @@ public class StopWatch {
     if (UCDetectorPlugin.DEBUG && duration > MINIMUM_DURATION) {
       StringBuilder sb = new StringBuilder();
       if (info != null) {
-        sb.append(info).append(": "); //$NON-NLS-1$
+        sb.append(info).append(" "); //$NON-NLS-1$
       }
-      sb.append(message).append(": ").append(duration); //$NON-NLS-1$
+      if (message != null) {
+        sb.append(message).append(" "); //$NON-NLS-1$
+      }
+      sb.append(": ").append(duration); //$NON-NLS-1$
       sb.append(" milliseconds"); //$NON-NLS-1$
       Log.logDebug(sb.toString());
     }

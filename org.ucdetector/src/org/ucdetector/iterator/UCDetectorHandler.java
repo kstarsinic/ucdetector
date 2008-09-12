@@ -80,8 +80,8 @@ class UCDetectorHandler implements IUCDetectorHandler {
   }
 
   /** @throws CoreException in classes overriding this method */
-  protected void handleCompilationUnit(ICompilationUnit unit)
-      throws CoreException {// NO_UCD
+  protected void handleCompilationUnit(ICompilationUnit unit)// NO_UCD
+      throws CoreException {
   }
 
   /** @throws CoreException in classes overriding this method */
@@ -120,6 +120,10 @@ class UCDetectorHandler implements IUCDetectorHandler {
   // -------------------------------------------------------------------------
   // DO
   // -------------------------------------------------------------------------
+  protected boolean doSelectedElementChildren() {
+    return true;
+  }
+
   protected boolean doPackageFragmentRootChildren(IPackageFragmentRoot root) {
     return !root.isArchive() && !Prefs.filterPackageFragmentRoot(root);
   }

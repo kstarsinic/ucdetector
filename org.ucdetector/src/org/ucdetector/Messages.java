@@ -65,8 +65,8 @@ public class Messages extends NLS {
   public static String PreferencePage_IgnoreMethodFilterToolTip; // NO_UCD
   public static String PreferencePage_IgnoreFieldFilter; // NO_UCD
   public static String PreferencePage_IgnoreFieldFilterToolTip; // NO_UCD
-  public static String PreferencePage_IgnoreBeanMethods; // "Ignore bean methods",
-  public static String PreferencePage_IgnoreBeanMethodsToolTip;
+  public static String PreferencePage_IgnoreBeanMethods; // NO_UCD
+  public static String PreferencePage_IgnoreBeanMethodsToolTip;// NO_UCD
 
   public static String PreferencePage_Classes; // NO_UCD
   public static String PreferencePage_Methods; // NO_UCD

@@ -309,7 +309,7 @@ public class JavaElementUtil {
         );
     CountRequestor requestor = new CountRequestor();
     runSearch(pattern, requestor, SearchEngine.createWorkspaceScope());
-    stop.end("isOverriddenMethod"); //$NON-NLS-1$
+    stop.end("Calculate if is overridden method"); //$NON-NLS-1$
     return requestor.found > 1;
   }
 
@@ -389,19 +389,22 @@ public class JavaElementUtil {
   public static boolean isBeanMethod(IMethod method) throws JavaModelException {
     if (Flags.isPublic(method.getFlags()) && !Flags.isStatic(method.getFlags())) {
       String name = method.getElementName();
-      if (name.length() > 3 && name.startsWith("set") //$NON-NLS-1$
+      if (name.length() > 3
+          && name.startsWith("set") //$NON-NLS-1$
           && Character.isUpperCase(name.charAt(3))
           && Signature.SIG_VOID.equals(method.getReturnType())
           && method.getNumberOfParameters() == 1) {
         return true;
       }
-      if (name.length() > 3 && name.startsWith("get") //$NON-NLS-1$
+      if (name.length() > 3
+          && name.startsWith("get") //$NON-NLS-1$
           && Character.isUpperCase(name.charAt(3))
           && !Signature.SIG_VOID.equals(method.getReturnType())
           && method.getNumberOfParameters() == 0) {
         return true;
       }
-      if (name.length() > 2 && name.startsWith("is") //$NON-NLS-1$
+      if (name.length() > 2
+          && name.startsWith("is") //$NON-NLS-1$
           && Character.isUpperCase(name.charAt(2))
           && Signature.SIG_BOOLEAN.equals(method.getReturnType())
           && method.getNumberOfParameters() == 0) {

@@ -23,7 +23,6 @@ public class ReportParam {
   public String toString() {
     StringBuilder sb = new StringBuilder();
     sb.append("MARKER ").append(level).append(';').append(message); //$NON-NLS-1$
-    sb.append(";").append(message); //$NON-NLS-1$
     IResource resource = javaElement.getResource();
     if (resource != null) {
       sb.append(';').append(resource.getFullPath());

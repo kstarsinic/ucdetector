@@ -30,7 +30,7 @@ class VisibilityHandler {
     PRIVATE(0), PROTECTED(1), PUBLIC(2);
     private final int value;
 
-    VISIBILITY(int value) {
+    private VISIBILITY(int value) {
       this.value = value;
 
     }

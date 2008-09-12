@@ -22,6 +22,11 @@ public class CleanMarkersIterator extends AbstractUCDetectorIterator {
       throws CoreException {
     MarkerFactory.deleteMarkers(javaElement);
   }
+  
+  @Override
+  protected boolean doSelectedElementChildren() {
+    return false;
+  }
 
   @Override
   public String getJobName() {

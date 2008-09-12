@@ -90,7 +90,9 @@ public abstract class AbstractUCDetectorIterator extends UCDetectorHandler {
         activePackage = (IPackageFragment) selection;
       }
       handleStartSelectedElement(selection);
-      iterate(selection);
+      if (doSelectedElementChildren()) {
+        iterate(selection);
+      }
       handleEndSelectedElement(selection);
     }
     handleEndGlobal(selections);
@@ -251,12 +253,13 @@ public abstract class AbstractUCDetectorIterator extends UCDetectorHandler {
     return selectedAsString.toString();
   }
 
-  protected boolean isDefaultFilter(IType type) throws JavaModelException {
+  protected final boolean isDefaultFilter(IType type) throws JavaModelException {
     return isPrivate(type) || !Prefs.isUCDetectionInClasses()
         || Prefs.filterType(type);
   }
 
-  protected boolean isDefaultFilter(IMethod method) throws JavaModelException {
+  protected final boolean isDefaultFilter(IMethod method)
+      throws JavaModelException {
     return isPrivate(method) || !Prefs.isUCDetectionInMethods()
         || Prefs.filterMethod(method);
   }

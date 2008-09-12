@@ -44,7 +44,7 @@ import org.ucdetector.util.StopWatch;
  * Search for class, methods, fields using the eclipse search mechanism
  */
 public class SearchManager {
-  private static boolean DEBUG = Log
+  private static final boolean DEBUG = Log
       .isDebugOption("org.ucdetector/debug/search"); //$NON-NLS-1$
   /**
    * Information for user, that we are searching for final stuff
@@ -122,7 +122,7 @@ public class SearchManager {
       String searchInfo = Messages.SearchManager_Class;
       StopWatch watch = new StopWatch(type);
       int found = searchImpl(type, searchInfo, false);
-      watch.end("searchImpl"); //$NON-NLS-1$
+      watch.end("Calculate reference marker"); //$NON-NLS-1$
       if (found == 0) {
         noRefTypes.add(type);
       }
@@ -139,7 +139,7 @@ public class SearchManager {
       }
       search++;
       monitor.worked(1);
-      updateMonitorMessage(method, ""); //$NON-NLS-1$
+      updateMonitorMessage(method, Messages.SearchManager_Method);
       IType type = JavaElementUtil.getTypeFor(method);
       // Ignore types, which have no references
       if (noRefTypes.contains(type)) {
@@ -178,7 +178,7 @@ public class SearchManager {
       if (!isOverriddenMethod) {
         updateMonitorMessage(method, SEARCH_FINAL_MESSAGE);
         boolean created = finalHandler.createFinalMarker(method, line);
-        watch.end("createFinalMarker"); //$NON-NLS-1$
+        watch.end("Calculate method final marker"); //$NON-NLS-1$
         if (created) {
           foundTotal++;
         }
@@ -209,7 +209,7 @@ public class SearchManager {
       }
       // We create final markers even for classes which have no references
       boolean created = finalHandler.createFinalMarker(field, line);
-      watch.end("createFinalMarker"); //$NON-NLS-1$
+      watch.end("Calculate field final marker"); //$NON-NLS-1$
       if (created) {
         foundTotal++;
       }

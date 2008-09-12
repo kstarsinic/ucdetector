@@ -29,7 +29,7 @@ public class UCDetectorPlugin extends AbstractUIPlugin {
    * 
    * @see http://wiki.eclipse.org/FAQ_How_do_I_use_the_platform_debug_tracing_facility%3F
    */
-  public static boolean DEBUG = Log.isDebugOption("org.ucdetector/debug"); //$NON-NLS-1$
+  public static final boolean DEBUG = Log.isDebugOption("org.ucdetector/debug"); //$NON-NLS-1$
   /**
    * See MANIFEST.MF: Bundle-SymbolicName, and .project
    */
@@ -65,7 +65,7 @@ public class UCDetectorPlugin extends AbstractUIPlugin {
     Log.logInfo(sb.toString());
   }
 
-  public static String getPreferencesAsString() {
+  private static String getPreferencesAsString() {
     StringBuilder sb = new StringBuilder();
     String[] propertyNames = plugin.getPluginPreferences().propertyNames();
     for (String propertyName : propertyNames) {

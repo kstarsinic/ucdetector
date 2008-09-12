@@ -9,6 +9,7 @@ package org.ucdetector.action;
 
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
+import org.eclipse.jface.action.IAction;
 import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.swt.widgets.Display;
 import org.ucdetector.Log;
@@ -42,5 +43,13 @@ public class CountAction extends AbstractUCDetectorAction {// NO_UCD
       }
     });
     return status;
+  }
+
+  /**
+   * this action is enabled for all JavaElement. Includes JavaElement in jars
+   */
+  @Override
+  protected void handleJavaElementSelections(IAction action) {
+    action.setEnabled(true);
   }
 }

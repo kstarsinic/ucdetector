@@ -89,7 +89,7 @@ public class UCDetectorIterator extends AbstractUCDetectorIterator {
     SearchManager searchManager = new SearchManager(getMonitor(), totalSize,
         getMarkerFactory());
     searchManager.search(types, methods, fields, objects);
-    stopWatch.end("Run"); //$NON-NLS-1$
+    stopWatch.end("Time to run UCDetctor"); //$NON-NLS-1$
   }
 
   @Override
