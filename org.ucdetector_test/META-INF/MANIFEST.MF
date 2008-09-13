@@ -2,7 +2,7 @@ Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: %pluginName
 Bundle-SymbolicName: org.ucdetector_test;singleton:=true
-Bundle-Version: 0.10.0
+Bundle-Version: 0.10.1
 Bundle-Vendor: %providerName
 Bundle-Localization: plugin
 Bundle-RequiredExecutionEnvironment: J2SE-1.5
@@ -12,9 +12,9 @@ Require-Bundle: org.eclipse.ui,
  org.eclipse.jdt.core,
  org.eclipse.ui.ide,
  org.eclipse.jface.text,
- org.junit;bundle-version="3.8.2",
+ org.junit,
  org.eclipse.core.filebuffers,
- org.ucdetector;bundle-version="0.10.0"
+ org.ucdetector
 Bundle-ClassPath: .
 Export-Package: org.ucdetector.action;uses:="org.eclipse.core.runtime,org.ucdetector.iterator",
  org.ucdetector.iterator;uses:="org.eclipse.jdt.core,org.eclipse.core.resources",
