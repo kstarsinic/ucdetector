@@ -55,15 +55,15 @@ public class UCDetectorPlugin extends AbstractUIPlugin {
     StringBuilder sb = new StringBuilder();
     sb.append("-----------------------------------------------");
     Object version = getBundle().getHeaders().get("Bundle-Version"); //$NON-NLS-1$
-    sb.append("Starting UCDetector version ").append(version); //$NON-NLS-1$
+    sb.append("\r\nStarting UCDetector version ").append(version); //$NON-NLS-1$
     sb.append(" at ").append( //$NON-NLS-1$
         DateFormat.getDateTimeInstance().format(new Date()));
     sb.append("\r\njava=").append(System.getProperty("java.version")); //$NON-NLS-1$ //$NON-NLS-2$
     sb.append(",eclipse=").append(System.getProperty("osgi.framework.version")); //$NON-NLS-1$ //$NON-NLS-2$
     sb.append("\r\nlogfile=").append(System.getProperty("osgi.logfile")); //$NON-NLS-1$ //$NON-NLS-2$
-    sb.append("\r\n ---- Plugin Preferences -------------------"); //$NON-NLS-1$
+    sb.append("\r\n---- Plugin Preferences -------------------"); //$NON-NLS-1$
     sb.append(getPreferencesAsString());
-    sb.append("-----------------------------------------------");
+    sb.append("\r\n-----------------------------------------------");
     Log.logInfo(sb.toString());
   }
 
