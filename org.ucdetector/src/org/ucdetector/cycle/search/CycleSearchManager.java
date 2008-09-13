@@ -85,7 +85,7 @@ public class CycleSearchManager {
       //
       searchResult.setCycles(cycleList);
       if (UCDetectorPlugin.DEBUG) {
-        Log.logDebug("Found cycles:\r\n" + searchResult);
+        Log.logDebug("Found cycles:\r\n" + searchResult); //$NON-NLS-1$
       }
       root.getChildren().add(searchResult);
       projectNr++;
@@ -117,7 +117,7 @@ public class CycleSearchManager {
       result.add(typeAndMatches);
       if (UCDetectorPlugin.DEBUG) {
         int found = typeAndMatches.getTypeSearchMatches().size();
-        Log.logDebug("found " + found + " references for "
+        Log.logDebug("found " + found + " references for " //$NON-NLS-1$ //$NON-NLS-2$
             + type.getElementName());
       }
     }

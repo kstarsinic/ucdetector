@@ -72,7 +72,7 @@ class CycleCalculator {
         int found = allCycles.size() - prevSize;
         Log.logDebug(found + " cycles found for " //$NON-NLS-1$
             + typeAndMatches.getRoot().getElementName()
-            + " (including double cycles)");
+            + " (including double cycles)"); //$NON-NLS-1$
       }
       prevSize = allCycles.size();
     }
@@ -121,7 +121,7 @@ class CycleCalculator {
     }
     if (UCDetectorPlugin.DEBUG) {
       int removed = cyclesFound.size() - result.size();
-      Log.logDebug("Removed double cycle: " + removed);
+      Log.logDebug("Removed double cycle: " + removed); //$NON-NLS-1$
     }
     return result;
   }
