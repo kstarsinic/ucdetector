@@ -21,7 +21,7 @@
 		<action class="org.ucdetector.action.CheckUcdMarkerAction"
 				enablesFor="+"
 				id="org.ucdetector.action.CheckUcdMarkerAction"
-				label="Check UCD Markers"
+				label="%action.label.0"
 				menubarPath="ucdetectorGroup/additional"/>
 				<!--
 			tooltip="%ExampleAction.tooltip"
@@ -54,7 +54,7 @@
 				annotationType="org.ucdetector.analyzeMarkerCheckUcdMarkers"
 				icon="icons/example.gif"
 				includeOnPreferencePage="true"
-				label="Check UcdM arkers"/>
+				label="%specification.label.0"/>
 	</extension>
 	
   <!-- ===================================================================== -->
