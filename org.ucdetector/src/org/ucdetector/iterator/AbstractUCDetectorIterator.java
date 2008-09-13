@@ -10,8 +10,12 @@ package org.ucdetector.iterator;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.eclipse.core.resources.IContainer;
+import org.eclipse.core.resources.IFile;
+import org.eclipse.core.resources.IFolder;
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.IResource;
+import org.eclipse.core.resources.IWorkspaceRoot;
 import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IProgressMonitor;
@@ -83,13 +87,19 @@ public abstract class AbstractUCDetectorIterator extends UCDetectorHandler {
     this.selections = selectionsUI;
     handleStartGlobal(selections);
     for (IJavaElement selection : selections) {
-      activePackage = null;
       if (selection instanceof IPackageFragment) {
         activePackage = (IPackageFragment) selection;
       }
+      else {
+        activePackage = null;
+      }
       handleStartSelectedElement(selection);
-      if (doSelectedElementChildren()) {
+      if (doJavaElements()) {
         iterate(selection);
+      }
+      IResource resource = selection.getCorrespondingResource();
+      if (doResources() && resource != null) {
+        iterateResource(resource);
       }
       handleEndSelectedElement(selection);
     }
@@ -100,7 +110,48 @@ public abstract class AbstractUCDetectorIterator extends UCDetectorHandler {
   }
 
   /**
-   * @return number of elemnts to detect. If return 0, a warning message will
+   * Concrete iteration method for resources, called recursively
+   */
+  private void iterateResource(IResource resource) throws CoreException {
+    if (getMonitor().isCanceled()) {
+      return;
+    }
+    if (DEBUG) {
+      Log.logDebug("iterate resource '" + resource.getName() //$NON-NLS-1$
+          + "' " + Log.getClassName(resource)); //$NON-NLS-1$
+    }
+    if (resource instanceof IFile) {
+      IFile file = (IFile) resource;
+      handleResourceFile(file);
+    }
+    else if (resource instanceof IFolder) {
+      IFolder folder = (IFolder) resource;
+      handleResourceFolder(folder);
+    }
+    else if (resource instanceof IProject) {
+      IProject project = (IProject) resource;
+      handleResourceProject(project);
+    }
+    else if (resource instanceof IWorkspaceRoot) {
+      IWorkspaceRoot workspaceRoot = (IWorkspaceRoot) resource;
+      handleResourceWorkspaceRoot(workspaceRoot);
+    }
+    else {
+      Log.logWarn("UNHANDLED RESOURCE" //$NON-NLS-1$
+          + resource.getName() + ":" //$NON-NLS-1$
+          + resource.getClass().getSimpleName());
+    }
+    if (resource instanceof IContainer) {
+      IContainer container = (IContainer) resource;
+      IResource[] members = container.members();
+      for (IResource member : members) {
+        iterateResource(member);
+      }
+    }
+  }
+
+  /**
+   * @return number of elements to detect. If return 0, a warning message will
    * be shown "nothing to detect"
    */
   public int getElelementsToDetectCount() {
@@ -120,17 +171,6 @@ public abstract class AbstractUCDetectorIterator extends UCDetectorHandler {
           + Log.getClassName(javaElement));
     }
     handleStartElement(javaElement);
-
-    // TODO 12.09.2008: Resource iteration NOT OK!
-    if (javaElement.getCorrespondingResource() != null) {
-      IResource resource = javaElement.getCorrespondingResource();
-      if (DEBUG && resource != null) {
-        Log.logDebug("iterate resource     '" // //$NON-NLS-1$
-            + resource.getName() + "' " + Log.getClassName(resource)); //$NON-NLS-1$
-      }
-      handleResource(resource);
-    }
-    //
     boolean doChildren = true;
     if (javaElement instanceof IJavaModel) {
       IJavaModel model = (IJavaModel) javaElement;

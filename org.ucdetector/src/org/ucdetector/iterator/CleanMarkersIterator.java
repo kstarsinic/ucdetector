@@ -22,9 +22,9 @@ public class CleanMarkersIterator extends AbstractUCDetectorIterator {
       throws CoreException {
     MarkerFactory.deleteMarkers(javaElement);
   }
-  
+
   @Override
-  protected boolean doSelectedElementChildren() {
+  protected boolean doJavaElements() {
     return false;
   }
 

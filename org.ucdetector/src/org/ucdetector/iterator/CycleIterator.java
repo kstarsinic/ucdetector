@@ -39,8 +39,8 @@ public class CycleIterator extends AbstractUCDetectorIterator {
       ignore = true;
     }
     if (DEBUG) {
-      Log.logDebug("CycleIterator type " + JavaElementUtil.asString(type)
-          + (ignore ? " NOT" : " ") + " Added");
+      Log.logDebug("CycleIterator type " + JavaElementUtil.asString(type) //$NON-NLS-1$
+          + (ignore ? " NOT" : " ") + " Added"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
     }
     if (!ignore) {
       this.types.add(type);

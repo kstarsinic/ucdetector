@@ -7,7 +7,10 @@
  */
 package org.ucdetector.iterator;
 
-import org.eclipse.core.resources.IResource;
+import org.eclipse.core.resources.IFile;
+import org.eclipse.core.resources.IFolder;
+import org.eclipse.core.resources.IProject;
+import org.eclipse.core.resources.IWorkspaceRoot;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.jdt.core.Flags;
 import org.eclipse.jdt.core.IClassFile;
@@ -28,39 +31,42 @@ import org.eclipse.jdt.core.IType;
 import org.eclipse.jdt.core.JavaModelException;
 import org.ucdetector.preferences.Prefs;
 
-class UCDetectorHandler implements IUCDetectorHandler {
+public class UCDetectorHandler {
 
-  // -------------------------------------------------------------------------
+  // ---------------------------------------------------------------------------
   // GENERIC HANDLERS
-  // -------------------------------------------------------------------------
+  // ---------------------------------------------------------------------------
+  /** @throws CoreException in classes overriding this method */
   public void handleStartGlobal(IJavaElement[] objects) throws CoreException {
   }
 
+  /** @throws CoreException in classes overriding this method */
   public void handleEndGlobal(IJavaElement[] objects) throws CoreException {
   }
 
+  /** @throws CoreException in classes overriding this method */
   public void handleStartSelectedElement(IJavaElement javaElement)
       throws CoreException {
   }
 
+  /** @throws CoreException in classes overriding this method */
   public void handleEndSelectedElement(IJavaElement javaElement)
       throws CoreException {
   }
 
+  /** @throws CoreException in classes overriding this method */
   public void handleStartElement(IJavaElement javaElement) throws CoreException {
     // Dumping all javaElements
     // System.out.println(JavaElementUtil.asString(javaElement));
   }
 
+  /** @throws CoreException in classes overriding this method */
   public void handleEndElement(IJavaElement javaElement) throws CoreException {
   }
 
-  public void handleResource(IResource resource) throws CoreException {
-  }
-
-  // -------------------------------------------------------------------------
-  // SPECIFIC HANDLERS
-  // -------------------------------------------------------------------------
+  // ---------------------------------------------------------------------------
+  // JAVA ELEMENT HANDLERS
+  // ---------------------------------------------------------------------------
 
   protected void handleJavaModel(IJavaModel model) {// NO_UCD
   }
@@ -75,7 +81,7 @@ class UCDetectorHandler implements IUCDetectorHandler {
   }
 
   /** @throws CoreException in classes overriding this method */
-  // CLASS -------------------------------------------------------------------
+  // CLASS ---------------------------------------------------------------------
   protected void handleClassFile(IClassFile classFile) throws CoreException {// NO_UCD
   }
 
@@ -88,7 +94,7 @@ class UCDetectorHandler implements IUCDetectorHandler {
   protected void handleType(IType type) throws CoreException {
   }
 
-  // SUP CLASS ---------------------------------------------------------------
+  // SUP CLASS -----------------------------------------------------------------
   /** @throws CoreException */
   protected void handlePackageDeclaration(IPackageDeclaration packageDeclaration)// NO_UCD
       throws CoreException {
@@ -117,11 +123,35 @@ class UCDetectorHandler implements IUCDetectorHandler {
   protected void handleMethod(IMethod method) throws CoreException {
   }
 
-  // -------------------------------------------------------------------------
+  // ---------------------------------------------------------------------------
+  // RESOURCE HANDLERS
+  // ---------------------------------------------------------------------------
+  /** @throws CoreException */
+  protected void handleResourceFile(IFile file) throws CoreException {
+  }
+
+  /** @throws CoreException */
+  protected void handleResourceFolder(IFolder folder) throws CoreException {
+  }
+
+  /** @throws CoreException */
+  protected void handleResourceProject(IProject project) throws CoreException {
+  }
+
+  /** @throws CoreException */
+  protected void handleResourceWorkspaceRoot(IWorkspaceRoot workspaceRoot)
+      throws CoreException {
+  }
+
+  // ---------------------------------------------------------------------------
   // DO
-  // -------------------------------------------------------------------------
-  protected boolean doSelectedElementChildren() {
+  // ---------------------------------------------------------------------------
+  protected boolean doJavaElements() {
     return true;
+  }
+
+  protected boolean doResources() {
+    return false;
   }
 
   protected boolean doPackageFragmentRootChildren(IPackageFragmentRoot root) {
@@ -132,13 +162,13 @@ class UCDetectorHandler implements IUCDetectorHandler {
     return !Prefs.filterPackage(packageFragment);
   }
 
-  protected boolean doTypeChildren(IType type) {// NO_UCD
+  protected boolean doTypeChildren(IType type) {
     return !Prefs.filterType(type);
   }
 
-  // -------------------------------------------------------------------------
+  // ---------------------------------------------------------------------------
   // HELPER
-  // -------------------------------------------------------------------------
+  // ---------------------------------------------------------------------------
   static final boolean isPrivate(IMember member) throws JavaModelException {
     return Flags.isPrivate(member.getFlags());
   }
