@@ -164,9 +164,14 @@ Use "NO_UCD" tag in code, for lines, which should be ignored:
 <pre>
 svn co https://ucdetector.svn.sourceforge.net/svnroot/ucdetector ucdetector
 </pre>
-Create your own problem markers! I already provided example code to 
-detect naming conventions for classes/methods/fields. This code is 
- easy to extend. Look at this example:
+Create your own problem markers! I already provided example code for
+<ul>
+  <li>Detect naming conventions for classes/methods/fields and create markers</li>
+  <li>Detect class names which are not unique</li>
+  <li>Detect no java files</li>
+  <li>Find all comments which contain "TODO"</li>
+</ul>
+This code is  easy to extend. Look at this example:
 <pre><font color="#000000">  <font color="#006699"><strong>protected</strong></font> <font color="#0099ff"><strong>void</strong></font> <font color="#9966ff">handleType</font><font color="#000000"><strong>(</strong></font>IType type<font color="#000000"><strong>)</strong></font> <font color="#006699"><strong>throws</strong></font> CoreException <font color="#000000"><strong>{</strong></font>
     String className <font color="#000000"><strong>=</strong></font> type.<font color="#9966ff">getElementName</font><font color="#000000"><strong>(</strong></font><font color="#000000"><strong>)</strong></font>;
     <font color="#006699"><strong>if</strong></font> <font color="#000000"><strong>(</strong></font><font color="#000000"><strong>!</strong></font>type.<font color="#9966ff">isAnonymous</font><font color="#000000"><strong>(</strong></font><font color="#000000"><strong>)</strong></font> <font color="#000000"><strong>&amp;</strong></font><font color="#000000"><strong>&amp;</strong></font> <font color="#000000"><strong>!</strong></font><font color="#9966ff">startsWithUpper</font><font color="#000000"><strong>(</strong></font>className<font color="#000000"><strong>)</strong></font><font color="#000000"><strong>)</strong></font> <font color="#000000"><strong>{</strong></font>
