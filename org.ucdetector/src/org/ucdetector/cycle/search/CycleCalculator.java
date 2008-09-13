@@ -69,9 +69,10 @@ class CycleCalculator {
       IType startType = typeAndMatches.getRoot();
       searchCycles(startType, path, allCycles);
       if (UCDetectorPlugin.DEBUG) {
-        Log.logDebug(("Delta=" //$NON-NLS-1$
-            + (allCycles.size() - prevSize) + ", " + typeAndMatches //$NON-NLS-1$
-            .getRoot().getElementName()));
+        int found = allCycles.size() - prevSize;
+        Log.logDebug(found + " cycles found for " //$NON-NLS-1$
+            + typeAndMatches.getRoot().getElementName()
+            + " (including double cycles)");
       }
       prevSize = allCycles.size();
     }
@@ -118,6 +119,10 @@ class CycleCalculator {
         result.add(cycleToAdd);
       }
     }
+    if (UCDetectorPlugin.DEBUG) {
+      int removed = cyclesFound.size() - result.size();
+      Log.logDebug("Removed double cycle: " + removed);
+    }
     return result;
   }
 
@@ -125,7 +130,7 @@ class CycleCalculator {
    * This method is called recursively to search cycles
    * @param startType we iterate all references of this type
    * @param path actual search Path: A-B-C
-   * @param result contains all found cycles, new cycles are adds
+   * @param result contains all found cycles, new cycles are added
    */
   private void searchCycles(IType startType, Stack<TypeAndMatches> path,
       List<Cycle> result) {

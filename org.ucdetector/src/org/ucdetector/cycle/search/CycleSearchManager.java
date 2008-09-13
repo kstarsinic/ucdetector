@@ -32,6 +32,7 @@ import org.ucdetector.UCDetectorPlugin;
 import org.ucdetector.cycle.model.Cycle;
 import org.ucdetector.cycle.model.SearchResult;
 import org.ucdetector.cycle.model.SearchResultRoot;
+import org.ucdetector.search.SearchManager;
 import org.ucdetector.util.JavaElementUtil;
 
 /**
@@ -83,6 +84,9 @@ public class CycleSearchManager {
       List<Cycle> cycleList = cycleCalculator.calculate();
       //
       searchResult.setCycles(cycleList);
+      if (UCDetectorPlugin.DEBUG) {
+        Log.logDebug("Found cycles:\r\n" + searchResult);
+      }
       root.getChildren().add(searchResult);
       projectNr++;
     }
@@ -112,8 +116,9 @@ public class CycleSearchManager {
       JavaElementUtil.runSearch(pattern, requestor, scope);
       result.add(typeAndMatches);
       if (UCDetectorPlugin.DEBUG) {
-        Log.logDebug(typeAndMatches.getTypeSearchMatches().size()
-            + " refs for: " + type.getElementName()); //$NON-NLS-1$
+        int found = typeAndMatches.getTypeSearchMatches().size();
+        Log.logDebug("found " + found + " references for "
+            + type.getElementName());
       }
     }
     return result;
@@ -130,9 +135,13 @@ public class CycleSearchManager {
     bindingList.add(Integer.valueOf(types.size()));
     bindingList.add(type.getElementName());
     Object[] bindings = bindingList.toArray();
-    return typesMap.size() > 1 ? //
+    String message = typesMap.size() > 1 ? //
     NLS.bind(Messages.CycleSearchManager_MonitorProject, bindings)
         : NLS.bind(Messages.CycleSearchManager_Monitor, bindings);
+    if (UCDetectorPlugin.DEBUG) {
+      Log.logDebug(message);
+    }
+    return message;
   }
 
   /**
@@ -147,11 +156,8 @@ public class CycleSearchManager {
 
     @Override
     public void acceptSearchMatch(SearchMatch match) {
-      // System.out.println(" acceptSearchMatch: " + match);
-      if (match.isInsideDocComment()) {
-        return;
-      }
-      if (!(match.getElement() instanceof IJavaElement)) {
+      IJavaElement javaElement = SearchManager.defaultIgnoreMatch(match);
+      if (javaElement == null) {
         return;
       }
       this.typeAndMatches.addMatch(match);
