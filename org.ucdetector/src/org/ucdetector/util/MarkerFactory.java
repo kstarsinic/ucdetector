@@ -145,12 +145,12 @@ public class MarkerFactory {
    */
   private boolean createMarkerImpl(ReportParam reportParam)
       throws CoreException {
-    if (reportParam.line == LineManger.LINE_NOT_FOUND ) {
-      Log.logError("TEST: createMarkerImpl: ", new RuntimeException("LINE_NOT_FOUND"));
+    if (reportParam.line == LineManger.LINE_NOT_FOUND) {
+      Log.logError("createMarkerImpl: Line not found"); //$NON-NLS-1$
       return false;
     }
     if (reportParam.javaElement.getResource() == null) {
-      Log.logError("TEST: createMarkerImpl: ", new RuntimeException("Resource not found"));
+      Log.logError("createMarkerImpl: Resource is null"); //$NON-NLS-1$
       return false;
     }
     for (IUCDetctorReport report : reports) {
