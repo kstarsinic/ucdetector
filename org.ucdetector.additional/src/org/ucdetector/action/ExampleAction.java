@@ -13,18 +13,20 @@ import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.swt.widgets.Display;
 import org.ucdetector.UCDetectorPlugin;
 import org.ucdetector.iterator.AbstractUCDetectorIterator;
+import org.ucdetector.iterator.AdditionalIterator;
 
 /**
  * Run Example Action
  */
 public class ExampleAction extends AbstractUCDetectorAction {// NO_UCD
-  private AbstractUCDetectorIterator iterator;
+  private AdditionalIterator iterator;
 
   @Override
   protected AbstractUCDetectorIterator createIterator() {
     iterator = new org.ucdetector.iterator.CheckNameConventionIterator();
-    //    iterator = new org.ucdetector.iterator.DetectDoubleClassNameIterator();
-    //    iterator = new org.ucdetector.iterator.DetectNoJavaFileIterator();
+    // iterator = new org.ucdetector.iterator.DetectDoubleClassNameIterator();
+    // iterator = new org.ucdetector.iterator.DetectNoJavaFileIterator();
+    // iterator = new org.ucdetector.iterator.CommentIterator();
     return iterator;
   }
 
@@ -34,7 +36,7 @@ public class ExampleAction extends AbstractUCDetectorAction {// NO_UCD
     Display.getDefault().asyncExec(new Runnable() {
       public void run() {
         MessageDialog.openInformation(UCDetectorPlugin.getShell(), iterator
-            .getJobName(), iterator.toString());
+            .getJobName(), iterator.getMessage());
       }
     });
     return null;
