@@ -6,35 +6,51 @@
  */
 package org.ucdetector.iterator;
 
-import org.eclipse.core.resources.IContainer;
 import org.eclipse.core.resources.IFile;
-import org.eclipse.core.resources.IResource;
 import org.eclipse.core.runtime.CoreException;
+import org.eclipse.jdt.core.IJavaElement;
 
 /**
  * Detect no java files
  */
 public class DetectNoJavaFileIterator extends AdditionalIterator {
-  @Override
-  public void handleResource(IResource resource) throws CoreException {
-    if (resource instanceof IContainer) {
-      IContainer container = (IContainer) resource;
-      IResource[] members = container.members();
-      for (IResource member : members) {
-        if (member instanceof IFile) {
-          IFile file = (IFile) member;
-          if (!file.getName().endsWith(".java")) { //$NON-NLS-1$
-            System.out.println("No java: " + file.getName());//$NON-NLS-1$
-            // file.delete(false, null);
-          }
-        }
-      }
-    }
+  private final StringBuilder report = new StringBuilder("No java files:\r\n");
+  private int noJavaFileCount = 0;
 
+  @Override
+  protected void handleResourceFile(IFile file) throws CoreException {
+    String name = file.getName();
+    if (!name.endsWith(".java") && !name.endsWith("class")) { //$NON-NLS-1$
+      report.append(file.getFullPath()).append("\r\n");//$NON-NLS-1$
+      noJavaFileCount++;
+    }
+  }
+
+  @Override
+  public void handleEndGlobal(IJavaElement[] objects) throws CoreException {
+    System.out.println(report);
+  }
+
+  @Override
+  protected boolean doResources() {
+    return true;
+  }
+
+  @Override
+  protected boolean doJavaElements() {
+    return false;
+  }
+
+  /**
+   * do a simple "report"
+   */
+  @Override
+  public String getMessage() {
+    return "Found " + noJavaFileCount + " no java files";
   }
 
   @Override
   public String getJobName() {
-    return "Detect mo java file job";
+    return "Detect no java file job";
   }
 }

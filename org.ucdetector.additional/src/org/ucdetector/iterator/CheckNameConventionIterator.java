@@ -103,7 +103,7 @@ public class CheckNameConventionIterator extends AdditionalIterator {
    * do a simple "report"
    */
   @Override
-  public String toString() {
+  public String getMessage() {
     return "Checked " + typeCount + " classes.\r\n"
         + "Created at least one example marker.\r\n" + "Check problems view!";
   }

@@ -25,6 +25,8 @@ public class DetectDoubleClassNameIterator extends AdditionalIterator {
   private final Map<String, Set<IType>> typeMap //
   = new HashMap<String, Set<IType>>();
 
+  private int doubleTypeCount = 0;
+
   @Override
   protected void handleType(IType type) throws CoreException {
     String className = type.getElementName();
@@ -50,9 +52,18 @@ public class DetectDoubleClassNameIterator extends AdditionalIterator {
       if (types.size() > 1) {
         for (IType type : types) {
           createMarker(type, "Type name found " + types.size() + " times");
+          doubleTypeCount++;
         }
       }
     }
+  }
+
+  /**
+   * do a simple "report"
+   */
+  @Override
+  public String getMessage() {
+    return "Found " + doubleTypeCount + " double classes";
   }
 
   @Override
