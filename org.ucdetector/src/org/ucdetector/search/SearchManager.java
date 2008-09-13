@@ -440,22 +440,10 @@ public class SearchManager {
      * </ul>
      */
     private boolean ignoreMatch(SearchMatch match) {
-      // Ignore javadoc matches.
-      // See JavaDocExample
-      if (match.isInsideDocComment()) {
+      IJavaElement matchJavaElement = defaultIgnoreMatch(match);
+      if (matchJavaElement == null) {
         return true;
       }
-      // Ignore matches in jars, or matches caused by compile problems
-      // See ReferenceInJarExample
-      if (match.getAccuracy() == SearchMatch.A_INACCURATE) {
-        return true;
-      }
-      Object matchElement = match.getElement();
-      // Ignore no IJavaElement matches
-      if (!(matchElement instanceof IJavaElement)) {
-        return true;
-      }
-      IJavaElement matchJavaElement = (IJavaElement) matchElement;
       // Ignore import, because it maybe an unnecessary import!
       // See OnlyImportDeclarationReferenceExample
       if (matchJavaElement instanceof IImportDeclaration) {
@@ -472,6 +460,34 @@ public class SearchManager {
       }
       return false;
     }
+  }
+
+  /**
+   * @return <code>true</code> if the found match should be ignored
+   * Ignore matches:
+   * <ul>
+   * <li>matches in jars</li>
+   * <li>matches caused by compile problems</li>
+   * <li>no IJavaElement matches like javadoc</li>
+   * </ul>
+   */
+  public static IJavaElement defaultIgnoreMatch(SearchMatch match) {
+    // Ignore javadoc matches.
+    // See JavaDocExample
+    if (match.isInsideDocComment()) {
+      return null;
+    }
+    // Ignore matches in jars, or matches caused by compile problems
+    // See ReferenceInJarExample
+    if (match.getAccuracy() == SearchMatch.A_INACCURATE) {
+      return null;
+    }
+    Object matchElement = match.getElement();
+    // Ignore no IJavaElement matches
+    if (!(matchElement instanceof IJavaElement)) {
+      return null;
+    }
+    return (IJavaElement) matchElement;
   }
 }
 // 467
