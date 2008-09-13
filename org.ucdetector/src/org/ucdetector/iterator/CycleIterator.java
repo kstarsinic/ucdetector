@@ -30,8 +30,8 @@ public class CycleIterator extends AbstractUCDetectorIterator {
     boolean ignore = false;
     // Fix [ 2103655 ] Detect cycles does not show anything
     // Don't use "isUCDetectionInClasses()" here!
-    if (isPrivate(type) || Prefs.filterType(type) || type.isLocal()
-        || type.isAnonymous()) {
+    if (isPrivate(type) || type.isLocal() || type.isAnonymous()
+        || Prefs.filterType(type)) {
       ignore = true;
     }
     // ignore classes declared inside a class
@@ -45,6 +45,14 @@ public class CycleIterator extends AbstractUCDetectorIterator {
     if (!ignore) {
       this.types.add(type);
     }
+  }
+
+  /**
+   * Don't iterate methods and fields
+   */
+  @Override
+  protected boolean doTypeChildren(IType type) {
+    return false;
   }
 
   @Override

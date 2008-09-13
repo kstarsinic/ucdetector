@@ -135,6 +135,8 @@ public class Prefs {
   }
 
   /**
+   * Don't use this method as filter!
+   * See bug [ 2103655 ] Detect cycles does not show anything)
    * @return <code>true</code> if we should detect unnecessary code in classes
    */
   public static boolean isUCDetectionInClasses() {
@@ -150,6 +152,8 @@ public class Prefs {
   }
 
   /**
+   * Don't use this method as filter!
+   * See bug [ 2103655 ] Detect cycles does not show anything)
    * @return <code>true</code> if we should detect unnecessary code in methods
    */
   public static boolean isUCDetectionInMethods() {
@@ -165,6 +169,8 @@ public class Prefs {
   }
 
   /**
+   * Don't use this method as filter!
+   * See bug [ 2103655 ] Detect cycles does not show anything)
    * @return <code>true</code> if we should detect unnecessary code in fields
    */
   public static boolean isUCDetectionInFields() {

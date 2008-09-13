@@ -32,9 +32,7 @@ import org.eclipse.jdt.core.IPackageFragmentRoot;
 import org.eclipse.jdt.core.IParent;
 import org.eclipse.jdt.core.IType;
 import org.eclipse.jdt.core.JavaCore;
-import org.eclipse.jdt.core.JavaModelException;
 import org.ucdetector.Log;
-import org.ucdetector.preferences.Prefs;
 import org.ucdetector.util.JavaElementUtil;
 import org.ucdetector.util.MarkerFactory;
 
@@ -251,17 +249,6 @@ public abstract class AbstractUCDetectorIterator extends UCDetectorHandler {
       }
     }
     return selectedAsString.toString();
-  }
-
-  protected final boolean isDefaultFilter(IType type) throws JavaModelException {
-    return isPrivate(type) || !Prefs.isUCDetectionInClasses()
-        || Prefs.filterType(type);
-  }
-
-  protected final boolean isDefaultFilter(IMethod method)
-      throws JavaModelException {
-    return isPrivate(method) || !Prefs.isUCDetectionInMethods()
-        || Prefs.filterMethod(method);
   }
 
   public MarkerFactory getMarkerFactory() {

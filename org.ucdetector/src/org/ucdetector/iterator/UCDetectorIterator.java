@@ -41,7 +41,8 @@ public class UCDetectorIterator extends AbstractUCDetectorIterator {
   @Override
   protected void handleType(IType type) throws CoreException {
     // TODO 31.08.2008: Check local types?
-    if (isDefaultFilter(type) || type.isLocal() || type.isAnonymous()) {
+    if (isPrivate(type) || type.isLocal() || type.isAnonymous()
+        || !Prefs.isUCDetectionInClasses() || Prefs.filterType(type)) {
       return;
     }
     types.add(type);
@@ -49,8 +50,9 @@ public class UCDetectorIterator extends AbstractUCDetectorIterator {
 
   @Override
   protected void handleMethod(IMethod method) throws CoreException {
-    if (isDefaultFilter(method) || method.isMainMethod()
-        || Flags.isAbstract(method.getFlags())) {
+    if (isPrivate(method) || method.isMainMethod()
+        || Flags.isAbstract(method.getFlags())
+        || !Prefs.isUCDetectionInMethods() || Prefs.filterMethod(method)) {
       return;
     }
     // ignore default constructors
