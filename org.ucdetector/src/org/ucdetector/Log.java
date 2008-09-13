@@ -45,7 +45,10 @@ public class Log {
    * @param status which is be logged to default log
    */
   public static void logStatus(IStatus status) {
-    UCDetectorPlugin.getDefault().getLog().log(status);
+    UCDetectorPlugin ucd = UCDetectorPlugin.getDefault();
+    if (ucd != null && ucd.getLog() != null) {
+      ucd.getLog().log(status);
+    }
     if (status.getSeverity() == IStatus.ERROR) {
       logError(status.getMessage(), status.getException());
     }
