@@ -7,6 +7,9 @@
  */
 package org.ucdetector.preferences;
 
+import static org.ucdetector.preferences.WarnLevel.IGNORE;
+import static org.ucdetector.preferences.WarnLevel.WARNING;
+
 import org.eclipse.core.runtime.preferences.AbstractPreferenceInitializer;
 import org.eclipse.jface.preference.IPreferenceStore;
 import org.ucdetector.UCDetectorPlugin;
@@ -34,13 +37,11 @@ public class PreferenceInitializer extends AbstractPreferenceInitializer { // NO
   public void initializeDefaultPreferences() {
     IPreferenceStore store = UCDetectorPlugin.getDefault().getPreferenceStore();
     // Analyze -----------------------------------------------------------------
-    store.setDefault(Prefs.ANALYZE_CLASSES, WarnLevel.WARNING.toString());
-    store.setDefault(Prefs.ANALYZE_MEHTODS, WarnLevel.WARNING.toString());
-    store.setDefault(Prefs.ANALYZE_FIELDS, WarnLevel.WARNING.toString());
-    store.setDefault(Prefs.ANALYZE_VISIBILITY_PROTECTED, WarnLevel.WARNING
-        .toString());
-    store.setDefault(Prefs.ANALYZE_VISIBILITY_PRIVATE, WarnLevel.WARNING
-        .toString());
+    store.setDefault(Prefs.ANALYZE_CLASSES, WARNING.name());
+    store.setDefault(Prefs.ANALYZE_MEHTODS, WARNING.name());
+    store.setDefault(Prefs.ANALYZE_FIELDS, WARNING.name());
+    store.setDefault(Prefs.ANALYZE_VISIBILITY_PROTECTED, WARNING.name());
+    store.setDefault(Prefs.ANALYZE_VISIBILITY_PRIVATE, WARNING.name());
     store.setDefault(Prefs.ANALYZE_LITERALS_CHECK, Boolean.TRUE);
     store.setDefault(Prefs.ANALYZE_LITERALS, FILE_PATTERN_LITERAL_SEARCH);
     // Filter ------------------------------------------------------------------
@@ -53,8 +54,8 @@ public class PreferenceInitializer extends AbstractPreferenceInitializer { // NO
     // Limit -------------------------------------------------------------------
     store.setDefault(Prefs.WARN_LIMIT, 0);
     // final -------------------------------------------------------------------
-    store.setDefault(Prefs.ANALYZE_FINAL_FIELD, WarnLevel.IGNORE.toString());
-    store.setDefault(Prefs.ANALYZE_FINAL_METHOD, WarnLevel.IGNORE.toString());
+    store.setDefault(Prefs.ANALYZE_FINAL_FIELD, IGNORE.name());
+    store.setDefault(Prefs.ANALYZE_FINAL_METHOD, IGNORE.name());
     // Cycles ------------------------------------------------------------------
     store.setDefault(Prefs.CYCLE_DEPTH, Prefs.CYCLE_DEPTH_DEFAULT);
     // Report ------------------------------------------------------------------
