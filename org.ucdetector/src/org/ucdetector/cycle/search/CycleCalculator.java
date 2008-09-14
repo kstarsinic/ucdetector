@@ -70,7 +70,8 @@ class CycleCalculator {
       searchCycles(startType, path, allCycles);
       if (UCDetectorPlugin.DEBUG) {
         int found = allCycles.size() - prevSize;
-        Log.logDebug(found + " cycles found for " //$NON-NLS-1$
+        Log.logDebug(found
+            + " cycles found for " //$NON-NLS-1$
             + typeAndMatches.getRoot().getElementName()
             + " (including double cycles)"); //$NON-NLS-1$
       }
@@ -103,7 +104,11 @@ class CycleCalculator {
       return result;
     }
     // small cycles first
-    Collections.sort(cyclesFound, new SizeComparator());
+    Collections.sort(cyclesFound, new Comparator<Cycle>() {
+      public int compare(Cycle o1, Cycle o2) {
+        return o1.getChildrenSize() - o2.getChildrenSize();
+      }
+    });
     result.add(cyclesFound.get(0));
     for (Cycle cycleToAdd : cyclesFound) {
       boolean isContained = false;
@@ -172,11 +177,4 @@ class CycleCalculator {
     }
     return result;
   }
-
-  private static class SizeComparator implements Comparator<Cycle> {
-    public int compare(Cycle o1, Cycle o2) {
-      return o1.getChildrenSize() - o2.getChildrenSize();
-    }
-  }
-
 }

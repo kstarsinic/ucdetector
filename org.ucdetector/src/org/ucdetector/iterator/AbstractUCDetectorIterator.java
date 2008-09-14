@@ -277,14 +277,11 @@ public abstract class AbstractUCDetectorIterator extends UCDetectorHandler {
   /**
    * @return creates a String for all selected javaElents
    */
-  protected final String getSelectedString(IJavaElement[] objects) {
+  protected final String getSelectedString(IJavaElement[] javaElements) {
     StringBuffer selectedAsString = new StringBuffer();
-    for (Object selection : objects) {
-      if (selection instanceof IJavaElement) {
-        if (selectedAsString.length() > 0) {
-          selectedAsString.append(SEP);
-        }
-        IJavaElement javaElement = (IJavaElement) selection;
+    for (IJavaElement javaElement : javaElements) {
+      if (selectedAsString.length() > 0) {
+        selectedAsString.append(SEP);
         selectedAsString.append(javaElement.getElementName());
       }
     }

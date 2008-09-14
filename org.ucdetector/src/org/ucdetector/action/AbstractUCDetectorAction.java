@@ -128,13 +128,10 @@ public abstract class AbstractUCDetectorAction extends ActionDelegate { // NO_UC
    *         Accessibility is necessary to create markers.
    */
   protected final boolean allAccessible() { // NO_UCD
-    for (Object sel : selections) {
-      if (sel instanceof IJavaElement) {
-        IJavaElement javaElement = (IJavaElement) sel;
-        IResource resource = javaElement.getResource();
-        if (resource == null || !resource.isAccessible()) {
-          return false;
-        }
+    for (IJavaElement javaElement : selections) {
+      IResource resource = javaElement.getResource();
+      if (resource == null || !resource.isAccessible()) {
+        return false;
       }
     }
     return true;

@@ -61,9 +61,8 @@ public class TextReport implements IUCDetctorReport {
 
   private static final String XSL_FILE = "org/ucdetector/report/html.xslt";//$NON-NLS-1$
 
-  private static final DateFormat DATE_FORMATTER = DateFormat
-      .getDateTimeInstance(DateFormat.SHORT, DateFormat.SHORT, Locale
-          .getDefault());
+  private final DateFormat dateFormatter = DateFormat.getDateTimeInstance(
+      DateFormat.SHORT, DateFormat.SHORT, Locale.getDefault());
 
   private Document doc;
   private Element markers;
@@ -214,7 +213,7 @@ public class TextReport implements IUCDetctorReport {
    */
   private void appendStatistics(Object[] selected, long start) {
     long end = System.currentTimeMillis();
-    appendChild(statistcs, "date", DATE_FORMATTER.format(new Date(end)));//$NON-NLS-1$
+    appendChild(statistcs, "date", dateFormatter.format(new Date(end)));//$NON-NLS-1$
     appendChild(statistcs, "duration", String.valueOf(end - start));//$NON-NLS-1$
     Element searched = appendChild(statistcs, "searched", null);//$NON-NLS-1$
     for (Object selection : selected) {
@@ -243,18 +242,27 @@ public class TextReport implements IUCDetctorReport {
    * Do an xslt transformation
    */
   private Document transformXSLT(File file) throws Exception {
-    TransformerFactory factory = TransformerFactory.newInstance();
-    InputStream xslIn = getClass().getClassLoader().getResourceAsStream(
-        XSL_FILE);
-    Templates template = factory.newTemplates(new StreamSource(xslIn));
-    Transformer xformer = template.newTransformer();
-    InputStream xmlIn = new FileInputStream(file);
-    Source source = new StreamSource(xmlIn);
-    DocumentBuilder builder = DocumentBuilderFactory.newInstance()
-        .newDocumentBuilder();
-    Document transformedDoc = builder.newDocument();
-    Result result = new DOMResult(transformedDoc);
-    xformer.transform(source, result);
-    return transformedDoc;
+    InputStream xmlIn = null;
+    try {
+      TransformerFactory factory = TransformerFactory.newInstance();
+      InputStream xslIn = getClass().getClassLoader().getResourceAsStream(
+          XSL_FILE);
+      Templates template = factory.newTemplates(new StreamSource(xslIn));
+      Transformer xformer = template.newTransformer();
+      xmlIn = new FileInputStream(file);
+      Source source = new StreamSource(xmlIn);
+      DocumentBuilder builder = DocumentBuilderFactory.newInstance()
+          .newDocumentBuilder();
+      Document transformedDoc = builder.newDocument();
+      Result result = new DOMResult(transformedDoc);
+      xformer.transform(source, result);
+      xmlIn.close();
+      return transformedDoc;
+    }
+    finally {
+      if (xmlIn != null) {
+        xmlIn.close();
+      }
+    }
   }
 }
