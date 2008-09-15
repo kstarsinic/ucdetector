@@ -37,7 +37,7 @@ public class DetectNoJavaFileIterator extends AdditionalIterator {
   }
 
   @Override
-  protected boolean doJavaElements() {
+  protected boolean doSelectedElement() {
     return false;
   }
 
