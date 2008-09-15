@@ -24,7 +24,7 @@ public class CleanMarkersIterator extends AbstractUCDetectorIterator {
   }
 
   @Override
-  protected boolean doJavaElements() {
+  protected boolean doSelectedElement() {
     return false;
   }
 

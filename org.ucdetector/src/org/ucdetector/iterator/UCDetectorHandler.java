@@ -146,24 +146,53 @@ public class UCDetectorHandler {
   // ---------------------------------------------------------------------------
   // DO
   // ---------------------------------------------------------------------------
-  protected boolean doJavaElements() {
+  /**
+   * Override and return <code>false</code>, if you don't want 
+   * to iterate a selected element. In this case, nothing will be iterated!
+   */
+  protected boolean doSelectedElement() {
     return true;
   }
 
+  /**
+   * Override and return <code>true</code>, if you don't want to iterate
+   *  resources like files and folders.
+   */
   protected boolean doResources() {
     return false;
   }
 
+  /**
+   * Override and return <code>true</code>, if you don't want to iterate
+   * PackageFragmentRoot children (children of jars...)
+   * This could be a lot of stuff in case of big jars!
+   */
   protected boolean doPackageFragmentRootChildren(IPackageFragmentRoot root) {
     return !root.isArchive() && !Prefs.filterPackageFragmentRoot(root);
   }
 
+  /**
+   * Override and return <code>true</code>, if you don't want to iterate
+   * children of packages, which are classes
+   */
   protected boolean doPackageChildren(IPackageFragment packageFragment) { // NO_UCD
     return !Prefs.filterPackage(packageFragment);
   }
 
+  /**
+   * Override and return <code>true</code>, if you don't want to iterate
+   * children of types, which are methods, classes, fields, imports
+   */
   protected boolean doTypeChildren(IType type) {
     return !Prefs.filterType(type);
+  }
+
+  /**
+   * Override and return <code>true</code>, if you don't want to iterate
+   * children of importContainer, which are all imports.
+   */
+  protected boolean doImportContainerChildren(IImportContainer importContainer) {
+    return false;
   }
 
   // ---------------------------------------------------------------------------

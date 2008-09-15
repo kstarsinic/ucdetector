@@ -96,7 +96,7 @@ public abstract class AbstractUCDetectorIterator extends UCDetectorHandler {
         activePackage = null;
       }
       handleStartSelectedElement(selection);
-      if (doJavaElements()) {
+      if (doSelectedElement()) {
         iterate(selection);
       }
       IResource resource = selection.getCorrespondingResource();
@@ -222,6 +222,7 @@ public abstract class AbstractUCDetectorIterator extends UCDetectorHandler {
     // SUB CLASS -----------------------------------------------------------
     else if (javaElement instanceof IImportContainer) {
       IImportContainer importContainer = (IImportContainer) javaElement;
+      doChildren = doImportContainerChildren(importContainer);
       handleImportContainer(importContainer);
     }
     else if (javaElement instanceof IPackageDeclaration) {
