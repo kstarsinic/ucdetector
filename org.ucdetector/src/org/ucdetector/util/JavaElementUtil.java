@@ -7,8 +7,6 @@
 package org.ucdetector.util;
 
 import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Iterator;
 import java.util.List;
 
 import org.eclipse.core.runtime.CoreException;
@@ -16,6 +14,7 @@ import org.eclipse.core.runtime.OperationCanceledException;
 import org.eclipse.jdt.core.Flags;
 import org.eclipse.jdt.core.ICompilationUnit;
 import org.eclipse.jdt.core.IField;
+import org.eclipse.jdt.core.IImportContainer;
 import org.eclipse.jdt.core.IJavaElement;
 import org.eclipse.jdt.core.IMethod;
 import org.eclipse.jdt.core.IPackageFragment;
@@ -78,17 +77,22 @@ public class JavaElementUtil {
   }
 
   /**
-   * @return the class for an class, method, or field
+   * @return the class for an class, method, or field,
+   * or return <code>null</code> if there is no type, for example a package
+   * has no type.
    */
   public static IType getTypeFor(IJavaElement javaElement) {
     IJavaElement parent = javaElement;
     while (true) {
+      if (parent == null) {
+        return null;
+      }
+      if (parent instanceof IType) {
+        return (IType) parent;
+      }
       if (parent instanceof ICompilationUnit) {
         ICompilationUnit cu = (ICompilationUnit) parent;
         return cu.findPrimaryType();
-      }
-      if (parent instanceof IType || parent == null) {
-        return (IType) parent;
       }
       parent = parent.getParent();
     }
@@ -172,25 +176,12 @@ public class JavaElementUtil {
   }
 
   /**
-   * @return a list of IJavaElement as string
-   */
-  public static String asStringSimple(Collection<? extends IJavaElement> list) { // NO_UCD
-    StringBuilder sb = new StringBuilder();
-    for (Iterator<? extends IJavaElement> iterator = list.iterator(); iterator
-        .hasNext();) {
-      IJavaElement element = iterator.next();
-      sb.append(element == null ? "null" : element.getElementName());//$NON-NLS-1$
-      sb.append(',');
-    }
-    return sb.toString();
-  }
-
-  /**
    * @return <ul>
   * <li>For classes: <code>ClassName</code></li>
   * <li>For methods: <code>ClassName.methodName(String, int, double )</code></li>
   * <li>For fields: <code>ClassName.fieldName</code></li>
   * </ul>
+  * @see org.eclipse.jdt.internal.core.JavaElement#readableName()
    */
   public static String asString(IJavaElement element) {
     if (element == null) {
@@ -200,69 +191,58 @@ public class JavaElementUtil {
         && ((IPackageFragment) element).isDefaultPackage()) {
       return "default package"; //$NON-NLS-1$
     }
-    StringBuffer info = new StringBuffer();
+    if (element instanceof IImportContainer) {
+      return "import declarations"; //$NON-NLS-1$
+    }
+    if (element instanceof IType) {
+      return getTypeName(element);
+    }
     if (element instanceof IMethod) {
-      IMethod method = (IMethod) element;
-      String className = element.getParent().getElementName();
-      className = (className == null ? "" : className); //$NON-NLS-1$
-      // hack for anonymous classes
-      info.append(className.length() == 0 ? "$" : className); //$NON-NLS-1$
-      info.append('.');
-      info.append(getMethodName(method));
-      info.append('(');
-      info.append(parametersToString(method));
-      info.append(')');
+      return getMethodName((IMethod) element);
     }
-    else if (element instanceof IField) {
-      info.append(element.getParent().getElementName());
-      info.append('.').append(element.getElementName());
+    if (element instanceof IField) {
+      return getFieldName((IField) element);
     }
-    else {
-      info.append(element.getElementName());
-    }
-    return info.toString();
+    return element.getElementName();
   }
 
-  /**
-   * @return <ul>
-  * <li>For classes: <code>org.ucdetector.ClassName</code></li>
-  * <li>For methods: <code>org.ucdetector.ClassName.methodName</code></li>
-  * <li>For constructors: <code>org.ucdetector.ClassName.&lt;init&gt;</code></li>
-  * <li>For fields: <code>org.ucdetector.ClassName.fieldName</code></li>
-  * </ul>
-   */
-  public static String asStringWithPackage(IJavaElement element) { // NO_UCD
-    if (element == null) {
-      return "null"; //$NON-NLS-1$
+  public static String getTypeName(IJavaElement element) {
+    if (element instanceof IType) {
+      return ((IType) element).getTypeQualifiedName();
     }
-    StringBuffer info = new StringBuffer();
-    IPackageFragment pack = getPackageFor(element);
-    info.append(pack.getElementName()).append('.');
-    IType type = getTypeFor(element);
-    info.append(type.getElementName());
-    if (element instanceof IMethod) {
-      info.append('.');
-      IMethod method = (IMethod) element;
-      info.append(getMethodName(method));
-    }
-    else if (element instanceof IField) {
-      info.append('.').append(element.getElementName());
-    }
-    return info.toString();
+    return "class?";
   }
 
   /**
    * @return Method name as String, or for constructors  "<init>"
    */
-  public static String getMethodName(IMethod method) {
-    boolean isConstructor;
-    try {
-      isConstructor = method.isConstructor();
+  private static String getMethodName(IMethod method) {
+    if (method == null) {
+      return "method?";
     }
-    catch (JavaModelException e) {
-      isConstructor = false;
+    StringBuffer info = new StringBuffer();
+    info.append(getTypeName(method.getParent()));
+    info.append('.');
+    info.append(getSimpleMethodName(method));
+    info.append('(');
+    info.append(parametersToString(method));
+    info.append(')');
+    return info.toString();
+  }
+
+  public static String getSimpleMethodName(IMethod method) {
+    String methodName = method == null ? "method?" : method.getElementName();
+    return ((methodName.length() == 0 ? "<init>" : methodName));
+  }
+
+  private static String getFieldName(IField field) {
+    if (field == null) {
+      return "field?";
     }
-    return isConstructor ? "<init>" : method.getElementName();//$NON-NLS-1$
+    StringBuffer info = new StringBuffer();
+    info.append(getTypeName(field.getParent()));
+    info.append('.').append(field.getElementName());
+    return info.toString();
   }
 
   /**
@@ -274,21 +254,16 @@ public class JavaElementUtil {
    */
   private static String parametersToString(IMethod method) {
     StringBuffer sb = new StringBuffer();
-    try {
-      String[] typeParameters = method.getParameterTypes();
-      for (int i = 0; i < typeParameters.length; i++) {
-        String typeAsString = Signature.toString(typeParameters[i]);
-        if (i == 0) {
-          sb.append(typeAsString); // Always show first parameter
-        }
-        else {
-          sb.append(',');
-          sb.append(sb.length() > 30 ? "*" : typeAsString); //$NON-NLS-1$
-        }
+    String[] typeParameters = method.getParameterTypes();
+    for (int i = 0; i < typeParameters.length; i++) {
+      String typeAsString = Signature.toString(typeParameters[i]);
+      if (i == 0) {
+        sb.append(typeAsString); // Always show first parameter
       }
-    }
-    catch (Exception e) {
-      sb.append("???"); //$NON-NLS-1$
+      else {
+        sb.append(',');
+        sb.append(sb.length() > 30 ? "*" : typeAsString); //$NON-NLS-1$
+      }
     }
     return sb.toString();
   }

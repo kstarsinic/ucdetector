@@ -125,7 +125,7 @@ public class TextReport implements IUCDetctorReport {
     if (reportParam.javaElement instanceof IMethod) {
       // NODE: method
       IMethod method = (IMethod) reportParam.javaElement;
-      appendChild(marker, "method", JavaElementUtil.getMethodName(method));//$NON-NLS-1$
+      appendChild(marker, "method", JavaElementUtil.getSimpleMethodName(method));//$NON-NLS-1$
     }
     if (reportParam.javaElement instanceof IField) {
       // NODE: field
