@@ -303,7 +303,7 @@ public class Prefs {
       return store_FOR_TEST;
     }
     IPreferenceStore store = UCDetectorPlugin.getDefault().getPreferenceStore();
-    PrefConverter.convert09to10(store);
+    // PrefConverter.convert09to10(store);
     return store;
   }
 
