@@ -76,7 +76,8 @@
           label="%DetectAction.label"
           tooltip="%DetectAction.tooltip"
           icon="$nl$/icons/ucd.gif"
-          menubarPath="ucdetectorGroup/ucdetector"/>
+          menubarPath="ucdetectorGroup/ucdetector"
+          definitionId="org.ucdetector.definitionId.ucd"/>
     </objectContribution>
 
     <!-- DETECT CYCLE ============================ -->
@@ -93,7 +94,22 @@
           menubarPath="ucdetectorGroup/cycle"/>
     </objectContribution>
   </extension>
-
+  
+  <!-- ===================================================================== -->
+  <!-- COMMAND+BINDINGS to declare shortcut  Alt+Shift+U                     -->
+  <!-- ===================================================================== -->
+	<extension point="org.eclipse.ui.commands"> 
+		<command name="UCDetector command" 
+		       id="org.ucdetector.definitionId.ucd"> 
+		</command>
+	</extension>
+	<extension point="org.eclipse.ui.bindings" name="UCDetector binding"> 
+    <key commandId="org.ucdetector.definitionId.ucd" 
+         contextId="org.eclipse.ui.contexts.window" 
+         schemeId="org.eclipse.ui.defaultAcceleratorConfiguration" 
+         sequence="M2+M3+U"
+         /> 
+  </extension>
   <!-- ===================================================================== -->
    <!-- MARKER                                                               -->
   <!-- ===================================================================== -->
