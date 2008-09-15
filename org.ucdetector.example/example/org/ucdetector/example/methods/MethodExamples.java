@@ -45,16 +45,27 @@ public class MethodExamples {
   protected void unusedProtectedMethod() {// Marker YES: unused code
   }
 
-  void unusedPublicMethod1() {// Marker YES: unused code
+  native protected void unusedNativeMethod();
+
+  /** keyword "strictfp" should not cause problems to UCDetector */
+  strictfp void unusedPublicMethod1() {// Marker YES: unused code
+    /** keyword "assert" should not cause problems to UCDetector */
+    assert true;
   }
 
-  void unusedPublicMethod2() {// Marker YES: unused code
+  /** Arrays should not cause problems to UCDetector */
+  void unusedPublicMethod2(int[] iArray, Object[][] o) {// Marker YES: unused code
   }
 
-  void unusedPublicMethod3() {// Marker YES: unused code
+  /** Simple types should not cause problems to UCDetector */
+  void unusedPublicMethod3(boolean b2, int i2, char c) {// Marker YES: unused code
   }
 
-  void unusedPublicMethod5() {// Marker YES: unused code
+  void transientunusedPublicMethod3(Boolean b, Integer i, Character c) {// Marker YES: unused code
+  }
+
+  /** keyword "throws" should not cause problems to UCDetector */
+  void unusedPublicMethod5() throws Exception {// Marker YES: unused code
   }
 
   // -------------------------------------------------------------------------

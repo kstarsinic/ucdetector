@@ -38,7 +38,8 @@ public class FieldExamples {
 
   protected final int protectedUnusedField = 0; // Marker YES: unused code
 
-  public final int publicUnusedField = 0; // Marker YES: unused code
+  /** keyword "transient" should not cause UCDetector problems */
+  public transient final int publicUnusedField = 0; // Marker YES: unused code
 
   /** javadoc */
   public static final String UNUSED_FIELD = "UNUSED_FIELD"; // Marker YES: unused code
@@ -51,7 +52,8 @@ public class FieldExamples {
 
   int defaultUsedField = 0;
 
-  protected int protectedUsedField = 0;
+  /** keyword "volatile" should not cause UCDetector problems */
+  protected volatile int protectedUsedField = 0;
 
   public int publicUsedField = 0;
 
