@@ -11,13 +11,12 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.eclipse.core.runtime.CoreException;
+import org.eclipse.jdt.core.ICompilationUnit;
 import org.eclipse.jdt.core.IJavaElement;
 import org.eclipse.jdt.core.IType;
-import org.ucdetector.Log;
 import org.ucdetector.Messages;
 import org.ucdetector.cycle.search.CycleSearchManager;
 import org.ucdetector.preferences.Prefs;
-import org.ucdetector.util.JavaElementUtil;
 
 /**
  * search for class cycles
@@ -27,24 +26,24 @@ public class CycleIterator extends AbstractUCDetectorIterator {
 
   @Override
   protected void handleType(IType type) throws CoreException {
-    boolean ignore = false;
     // Fix [ 2103655 ] Detect cycles does not show anything
     // Don't use "isUCDetectionInClasses()" here!
-    if (isPrivate(type) || type.isLocal() || type.isAnonymous()
-        || Prefs.filterType(type)) {
-      ignore = true;
+    if (isPrivate(type) || type.isLocal() || type.isAnonymous()) {
+      debugNotHandle("type", type, "isPrivate || isLocal || isAnonymous");
+      return;
     }
-    // ignore classes declared inside a class
-    else if (!type.getCompilationUnit().findPrimaryType().equals(type)) {
-      ignore = true;
+    if (Prefs.filterType(type)) {
+      debugNotHandle("type", type, "filterType");
+      return;
     }
-    if (DEBUG) {
-      Log.logDebug("CycleIterator type " + JavaElementUtil.asString(type) //$NON-NLS-1$
-          + (ignore ? " NOT" : " ") + " Added"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+    ICompilationUnit compilationUnit = type.getCompilationUnit();
+    IType primaryType = compilationUnit.findPrimaryType();
+    if (!primaryType.equals(type)) {
+      debugNotHandle("type", type, "!primary type");
+      return;
     }
-    if (!ignore) {
-      this.types.add(type);
-    }
+    debugHandle("type", type);
+    this.types.add(type);
   }
 
   /**

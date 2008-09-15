@@ -80,24 +80,30 @@ public class CountIterator extends AbstractUCDetectorIterator {
   @Override
   protected void handleType(IType type) throws CoreException {
     if (isPrivate(type) || Prefs.filterType(type)) {
+      debugNotHandle("type", type, "isPrivate || filterType");
       return;
     }
+    debugHandle("type", type);
     classes++;
   }
 
   @Override
   protected void handleMethod(IMethod method) throws CoreException {
     if (isPrivate(method) || Prefs.filterMethod(method)) {
+      debugNotHandle("method", method, "isPrivate || filterMethod");
       return;
     }
+    debugHandle("method", method);
     methods++;
   }
 
   @Override
   protected void handleField(IField field) throws CoreException {
     if (isPrivate(field) || Prefs.filterField(field)) {
+      debugNotHandle("field", field, "isPrivate || filterField");
       return;
     }
+    debugHandle("field", field);
     fields++;
   }
 

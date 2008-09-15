@@ -29,6 +29,7 @@ import org.eclipse.jdt.core.IInitializer;
 import org.eclipse.jdt.core.IJavaElement;
 import org.eclipse.jdt.core.IJavaModel;
 import org.eclipse.jdt.core.IJavaProject;
+import org.eclipse.jdt.core.IMember;
 import org.eclipse.jdt.core.IMethod;
 import org.eclipse.jdt.core.IPackageDeclaration;
 import org.eclipse.jdt.core.IPackageFragment;
@@ -82,7 +83,8 @@ public abstract class AbstractUCDetectorIterator extends UCDetectorHandler {
    */
   public final void iterate(IJavaElement[] selectionsUI) throws CoreException {
     if (DEBUG) {
-      Log.logDebug("Selection to iterate: " + getSelectedString(selectionsUI)); //$NON-NLS-1$
+      Log.logDebug(selectionsUI.length
+          + " selection to iterate: " + getSelectedString(selectionsUI)); //$NON-NLS-1$
     }
     this.selections = selectionsUI;
     handleStartGlobal(selections);
@@ -282,8 +284,8 @@ public abstract class AbstractUCDetectorIterator extends UCDetectorHandler {
     for (IJavaElement javaElement : javaElements) {
       if (selectedAsString.length() > 0) {
         selectedAsString.append(SEP);
-        selectedAsString.append(javaElement.getElementName());
       }
+      selectedAsString.append(javaElement.getElementName());
     }
     return selectedAsString.toString();
   }
@@ -293,5 +295,31 @@ public abstract class AbstractUCDetectorIterator extends UCDetectorHandler {
       markerFactory = MarkerFactory.createInstance();
     }
     return markerFactory;
+  }
+
+  /**
+   * Debug, that a member will be handled!
+   */
+  protected void debugHandle(String what, IMember member) {
+    if (DEBUG) {
+      StringBuilder sb = new StringBuilder();
+      sb.append("Handle ").append(what);
+      sb.append(JavaElementUtil.asString(member));
+      Log.logDebug(sb.toString());
+    }
+  }
+
+  /**
+   * Debug, that a member will not be handled, because it is
+   * filtered, private...
+   */
+  protected void debugNotHandle(String what, IMember member, String reason) {
+    if (DEBUG) {
+      StringBuilder sb = new StringBuilder();
+      sb.append("Ignore ").append(what).append(" '");
+      sb.append(JavaElementUtil.asString(member));
+      sb.append("# because: ").append(reason);
+      Log.logDebug(sb.toString());
+    }
   }
 }

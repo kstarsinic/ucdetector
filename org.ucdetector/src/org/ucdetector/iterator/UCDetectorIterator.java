@@ -41,42 +41,68 @@ public class UCDetectorIterator extends AbstractUCDetectorIterator {
   @Override
   protected void handleType(IType type) throws CoreException {
     // TODO 31.08.2008: Check local types?
-    if (isPrivate(type) || type.isLocal() || type.isAnonymous()
-        || !Prefs.isUCDetectionInClasses() || Prefs.filterType(type)) {
+    if (isPrivate(type) || type.isLocal() || type.isAnonymous()) {
+      debugNotHandle("type", type, "isPrivate || isLocal || isAnonymous");
       return;
     }
+    if (!Prefs.isUCDetectionInClasses()) {
+      debugNotHandle("type", type, "!isUCDetectionInClasses");
+      return;
+    }
+    if (Prefs.filterType(type)) {
+      debugNotHandle("type", type, "filterType");
+      return;
+    }
+    debugHandle("type", type);
     types.add(type);
   }
 
   @Override
   protected void handleMethod(IMethod method) throws CoreException {
     if (isPrivate(method) || method.isMainMethod()
-        || Flags.isAbstract(method.getFlags())
-        || !Prefs.isUCDetectionInMethods() || Prefs.filterMethod(method)) {
+        || Flags.isAbstract(method.getFlags())) {
+      debugNotHandle("method", method,
+          "isPrivate || isMainMethod || isAbstract");
+      return;
+    }
+    if (!Prefs.isUCDetectionInMethods()) {
+      debugNotHandle("method", method, "!isUCDetectionInMethods");
+      return;
+    }
+    if (Prefs.filterMethod(method)) {
+      debugNotHandle("method", method, "filterMethod");
       return;
     }
     // ignore default constructors
     if (method.isConstructor() && method.getNumberOfParameters() == 0) {
+      debugNotHandle("method", method, "default constructor");
       return;
     }
     if (Prefs.isFilterBeanMethod() && JavaElementUtil.isBeanMethod(method)) {
+      debugNotHandle("method", method, "bean method");
       return;
     }
+    debugHandle("method", method);
     methods.add(method);
   }
 
   @Override
   protected void handleField(IField field) throws CoreException {
     if (Prefs.filterField(field)) {
+      debugNotHandle("field", field, "filterField");
       return;
     }
     if (Prefs.isCheckUseFinalField()) {
       // we need even private fields here!
+      debugHandle("field", field);
       fields.add(field);
     }
     else if (Prefs.isUCDetectionInFields() && !isPrivate(field)) {
+      debugHandle("field", field);
       fields.add(field);
     }
+    debugNotHandle("field", field,
+        "!isCheckUseFinalField || isUCDetectionInFields");
   }
 
   /**
