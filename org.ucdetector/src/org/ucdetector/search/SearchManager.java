@@ -118,8 +118,9 @@ public class SearchManager {
       }
       search++;
       monitor.worked(1);
-      updateMonitorMessage(type, Messages.SearchManager_SearchReferences);
       String searchInfo = Messages.SearchManager_Class;
+      updateMonitorMessage(type, Messages.SearchManager_SearchReferences,
+          searchInfo);
       StopWatch watch = new StopWatch(type);
       int found = searchImpl(type, searchInfo, false);
       watch.end("Calculate reference marker"); //$NON-NLS-1$
@@ -139,7 +140,9 @@ public class SearchManager {
       }
       search++;
       monitor.worked(1);
-      updateMonitorMessage(method, Messages.SearchManager_Method);
+      String searchInfo = method.isConstructor() ? Messages.SearchManager_Constructor
+          : Messages.SearchManager_Method;
+      updateMonitorMessage(method, Messages.SearchManager_Method, searchInfo);
       IType type = JavaElementUtil.getTypeFor(method);
       // Ignore types, which have no references
       if (noRefTypes.contains(type)) {
@@ -157,7 +160,7 @@ public class SearchManager {
       if (JavaElementUtil.isSerializationMethod(method)) {
         continue;
       }
-      updateMonitorMessage(method, "override/implements"); //$NON-NLS-1$
+      updateMonitorMessage(method, "override/implements", searchInfo); //$NON-NLS-1$
       // ***********************************************************************
       // TODO 01.09.2008: Refactor. Confusing to understand / add new handler!
       //  - finalHandler.createFinalMarker
@@ -176,16 +179,15 @@ public class SearchManager {
       int line = lineManger.getLine(method);
       StopWatch watch = new StopWatch(method);
       if (!isOverriddenMethod) {
-        updateMonitorMessage(method, SEARCH_FINAL_MESSAGE);
+        updateMonitorMessage(method, SEARCH_FINAL_MESSAGE, searchInfo);
         boolean created = finalHandler.createFinalMarker(method, line);
         watch.end("Calculate method final marker"); //$NON-NLS-1$
         if (created) {
           foundTotal++;
         }
       }
-      updateMonitorMessage(method, Messages.SearchManager_SearchReferences);
-      String searchInfo = method.isConstructor() ? Messages.SearchManager_Constructor
-          : Messages.SearchManager_Method;
+      updateMonitorMessage(method, Messages.SearchManager_SearchReferences,
+          searchInfo);
       searchImpl(method, searchInfo, isOverriddenMethod);
       watch.end("searchImpl"); //$NON-NLS-1$
     }
@@ -201,7 +203,9 @@ public class SearchManager {
       }
       search++;
       monitor.worked(1);
-      updateMonitorMessage(field, SEARCH_FINAL_MESSAGE);
+      String searchInfo = JavaElementUtil.isConstant(field) ? Messages.SearchManager_Constant
+          : Messages.SearchManager_Field;
+      updateMonitorMessage(field, SEARCH_FINAL_MESSAGE, searchInfo);
       StopWatch watch = new StopWatch(field);
       int line = lineManger.getLine(field);
       if (JavaElementUtil.isSerializationField(field)) {
@@ -226,9 +230,8 @@ public class SearchManager {
       //  - visibilityHandler.createMarker
       //  - markerFactory.createReferenceMarker
       // ***********************************************************************
-      String searchInfo = JavaElementUtil.isConstant(field) ? Messages.SearchManager_Constant
-          : Messages.SearchManager_Field;
-      updateMonitorMessage(field, Messages.SearchManager_SearchReferences);
+      updateMonitorMessage(field, Messages.SearchManager_SearchReferences,
+          searchInfo);
       searchImpl(field, searchInfo, false);
       watch.end("searchImpl"); //$NON-NLS-1$
     }
@@ -303,7 +306,8 @@ public class SearchManager {
       return 0;
     }
     IType type = (IType) member;
-    updateMonitorMessage(type, Messages.SearchManager_SearchClassNameAsLiteral);
+    updateMonitorMessage(type, Messages.SearchManager_SearchClassNameAsLiteral,
+        Messages.SearchManager_Class);
     FileTextSearchScope scope = FileTextSearchScope.newWorkspaceScope(
         filePatternLiteralSearch, true);
     // String searchString = "\"" + type.getFullyQualifiedName() + "\"";
@@ -327,12 +331,15 @@ public class SearchManager {
 
   /**
    * Message shown in the progress dialog like:<br>
-   *        <code>Found 2, search 7/58: Classname.methodName()</code>
+   *        <code>Found 2! Done 7/58. Detecting class Classname.methodName()</code>
+   * @param searchInfo TODO
    */
-  private void updateMonitorMessage(IJavaElement element, String details) {
-    String info = JavaElementUtil.asString(element);
+  private void updateMonitorMessage(IJavaElement element, String details,
+      String searchInfo) {
+    String javaElement = JavaElementUtil.asString(element);
     Object[] bindings = new Object[] { Integer.valueOf(foundTotal),
-        Integer.valueOf(search), Integer.valueOf(searchTotal), info, details };
+        Integer.valueOf(search), Integer.valueOf(searchTotal), searchInfo,
+        javaElement, details };
     String message = NLS.bind(Messages.SearchManager_Monitor, bindings);
     monitor.subTask(message);
     if (DEBUG) {
