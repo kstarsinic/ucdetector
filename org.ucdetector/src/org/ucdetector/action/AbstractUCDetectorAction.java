@@ -17,6 +17,8 @@ import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.core.runtime.jobs.Job;
 import org.eclipse.jdt.core.IJavaElement;
+import org.eclipse.jdt.core.IPackageFragmentRoot;
+import org.eclipse.jdt.core.JavaModelException;
 import org.eclipse.jface.action.IAction;
 import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.jface.viewers.ISelection;
@@ -129,8 +131,18 @@ public abstract class AbstractUCDetectorAction extends ActionDelegate { // NO_UC
    */
   protected final boolean allAccessible() { // NO_UCD
     for (IJavaElement javaElement : selections) {
-      IResource resource = javaElement.getResource();
-      if (resource == null || !resource.isAccessible()) {
+      try {
+        if (javaElement instanceof IPackageFragmentRoot) {
+          IPackageFragmentRoot pfr = (IPackageFragmentRoot) javaElement;
+          return pfr.getKind() != IPackageFragmentRoot.K_BINARY;
+        }
+        IResource resource = javaElement.getCorrespondingResource();
+        if (resource == null || !resource.isAccessible()) {
+          return false;
+        }
+      }
+      catch (JavaModelException e) {
+        Log.logError("allAccessible", e);
         return false;
       }
     }
