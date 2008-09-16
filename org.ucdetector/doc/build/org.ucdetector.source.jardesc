@@ -29,7 +29,7 @@
 		<file path="/org.ucdetector/toc.xml"/>
 		<file path="/org.ucdetector/index.html"/>
 		<file path="/org.ucdetector/doc/README.txt"/>
-		<file path="/org.ucdetector/doc/ucdector_code_style_formatter.xml"/>
+		<file path="/org.ucdetector/doc/ucdetector_code_style_formatter.xml"/>
 		<file path="/org.ucdetector/doc/CHANGES.txt"/>
 		<file path="/org.ucdetector/build.properties"/>
 		<folder path="/org.ucdetector/META-INF"/>
