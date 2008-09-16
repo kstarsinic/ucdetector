@@ -19,7 +19,7 @@ import org.eclipse.osgi.util.NLS;
 import org.ucdetector.Log;
 import org.ucdetector.Messages;
 import org.ucdetector.preferences.Prefs;
-import org.ucdetector.report.IUCDetctorReport;
+import org.ucdetector.report.IUCDetectorReport;
 import org.ucdetector.report.MarkerReport;
 import org.ucdetector.report.ReportParam;
 import org.ucdetector.report.TextReport;
@@ -31,7 +31,7 @@ import org.ucdetector.search.LineManger;
  * CALL endReport() TO FLUSH MARKERS!!!
  */
 public class MarkerFactory {
-  private final List<IUCDetctorReport> reports = new ArrayList<IUCDetctorReport>();
+  private final List<IUCDetectorReport> reports = new ArrayList<IUCDetectorReport>();
 
   /**
    * See extension point="org.eclipse.core.resources.markers" in plugin.xml
@@ -73,7 +73,7 @@ public class MarkerFactory {
   }
 
   public void endReport(Object[] selected, long start) throws CoreException {
-    for (IUCDetctorReport report : reports) {
+    for (IUCDetectorReport report : reports) {
       report.endReport(selected, start);
     }
   }
@@ -153,7 +153,7 @@ public class MarkerFactory {
       Log.logError("createMarkerImpl: Resource is null"); //$NON-NLS-1$
       return false;
     }
-    for (IUCDetctorReport report : reports) {
+    for (IUCDetectorReport report : reports) {
       report.reportMarker(reportParam);
     }
     return true;

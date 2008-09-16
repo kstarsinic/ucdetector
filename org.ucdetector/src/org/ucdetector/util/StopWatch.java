@@ -20,9 +20,13 @@ public class StopWatch {
   private final String message;
   private long start = System.currentTimeMillis();
 
-  public StopWatch(String message) {
-    this.message = message;
+  public StopWatch() {
+    message = null;
   }
+
+//  public StopWatch(String message) {
+//    this.message = message;
+//  }
 
   public StopWatch(IMember member) {
     this.message = JavaElementUtil.asString(member);
@@ -41,10 +45,10 @@ public class StopWatch {
         sb.append(info).append(" "); //$NON-NLS-1$
       }
       if (message != null) {
-        sb.append(message).append(" "); //$NON-NLS-1$
+        sb.append(message); //$NON-NLS-1$
       }
-      sb.append(": ").append(duration); //$NON-NLS-1$
-      sb.append(" milliseconds"); //$NON-NLS-1$
+      sb.append(": ").append(duration / 1000d); //$NON-NLS-1$
+      sb.append(" seconds"); //$NON-NLS-1$
       Log.logDebug(sb.toString());
     }
   }

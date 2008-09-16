@@ -183,6 +183,7 @@ public class JavaElementUtil {
   * </ul>
   * @see org.eclipse.jdt.internal.core.JavaElement#readableName()
    */
+  // TODO overlaoaded method: getElementName()
   public static String asString(IJavaElement element) {
     if (element == null) {
       return "null"; //$NON-NLS-1$
@@ -206,7 +207,7 @@ public class JavaElementUtil {
     return element.getElementName();
   }
 
-  public static String getTypeName(IJavaElement element) {
+  public static String getTypeName(IJavaElement element) { // NO_UCD
     if (element instanceof IType) {
       return ((IType) element).getTypeQualifiedName();
     }
@@ -284,7 +285,7 @@ public class JavaElementUtil {
         );
     CountRequestor requestor = new CountRequestor();
     runSearch(pattern, requestor, SearchEngine.createWorkspaceScope());
-    stop.end("Calculate if is overridden method"); //$NON-NLS-1$
+    stop.end("    Calculate if is overridden method"); //$NON-NLS-1$
     return requestor.found > 1;
   }
 
