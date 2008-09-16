@@ -31,7 +31,7 @@ import org.eclipse.jdt.core.IType;
 import org.eclipse.jdt.core.JavaModelException;
 import org.ucdetector.preferences.Prefs;
 
-public class UCDetectorHandler {
+public class UCDetectorHandler { // NO_UCD
 
   // ---------------------------------------------------------------------------
   // GENERIC HANDLERS
@@ -68,13 +68,13 @@ public class UCDetectorHandler {
   // JAVA ELEMENT HANDLERS
   // ---------------------------------------------------------------------------
 
-  protected void handleJavaModel(IJavaModel model) {// NO_UCD
+  protected void handleJavaModel(IJavaModel model) {// 
   }
 
   protected void handleJavaProject(IJavaProject project) {
   }
 
-  protected void handlePackageFragmentRoot(IPackageFragmentRoot root) {// NO_UCD
+  protected void handlePackageFragmentRoot(IPackageFragmentRoot root) {// 
   }
 
   protected void handlePackageFragment(IPackageFragment packageFragment) {
@@ -82,11 +82,11 @@ public class UCDetectorHandler {
 
   /** @throws CoreException in classes overriding this method */
   // CLASS ---------------------------------------------------------------------
-  protected void handleClassFile(IClassFile classFile) throws CoreException {// NO_UCD
+  protected void handleClassFile(IClassFile classFile) throws CoreException {// 
   }
 
   /** @throws CoreException in classes overriding this method */
-  protected void handleCompilationUnit(ICompilationUnit unit)// NO_UCD
+  protected void handleCompilationUnit(ICompilationUnit unit)// 
       throws CoreException {
   }
 
@@ -96,17 +96,17 @@ public class UCDetectorHandler {
 
   // SUP CLASS -----------------------------------------------------------------
   /** @throws CoreException */
-  protected void handlePackageDeclaration(IPackageDeclaration packageDeclaration)// NO_UCD
+  protected void handlePackageDeclaration(IPackageDeclaration packageDeclaration)// 
       throws CoreException {
   }
 
   /** @throws CoreException */
-  protected void handleImportContainer(IImportContainer importContainer)// NO_UCD
+  protected void handleImportContainer(IImportContainer importContainer)// 
       throws CoreException {
   }
 
   /** @throws CoreException */
-  protected void handleImportDeclaration(IImportDeclaration importDeclaration)// NO_UCD
+  protected void handleImportDeclaration(IImportDeclaration importDeclaration)// 
       throws CoreException {
   }
 
@@ -115,7 +115,7 @@ public class UCDetectorHandler {
   }
 
   /** @throws CoreException */
-  protected void handleInitializer(IInitializer initializer)// NO_UCD
+  protected void handleInitializer(IInitializer initializer)// 
       throws CoreException {
   }
 
@@ -175,7 +175,7 @@ public class UCDetectorHandler {
    * Override and return <code>true</code>, if you don't want to iterate
    * children of packages, which are classes
    */
-  protected boolean doPackageChildren(IPackageFragment packageFragment) { // NO_UCD
+  protected boolean doPackageChildren(IPackageFragment packageFragment) { // 
     return !Prefs.filterPackage(packageFragment);
   }
 

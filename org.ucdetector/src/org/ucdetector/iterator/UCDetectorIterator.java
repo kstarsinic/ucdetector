@@ -30,7 +30,7 @@ public class UCDetectorIterator extends AbstractUCDetectorIterator {
   private final List<IMethod> methods = new ArrayList<IMethod>();
   private final List<IField> fields = new ArrayList<IField>();
 
-  private final StopWatch stopWatch = new StopWatch("UCDetectorIterator"); //$NON-NLS-1$
+  private final StopWatch stopWatch = new StopWatch(); //$NON-NLS-1$
 
   @Override
   public void handleStartSelectedElement(IJavaElement javaElement)
@@ -90,9 +90,8 @@ public class UCDetectorIterator extends AbstractUCDetectorIterator {
   protected void handleField(IField field) throws CoreException {
     if (Prefs.filterField(field)) {
       debugNotHandle("field", field, "filterField");
-      return;
     }
-    if (Prefs.isCheckUseFinalField()) {
+    else if (Prefs.isCheckUseFinalField()) {
       // we need even private fields here!
       debugHandle("field", field);
       fields.add(field);
@@ -101,8 +100,10 @@ public class UCDetectorIterator extends AbstractUCDetectorIterator {
       debugHandle("field", field);
       fields.add(field);
     }
-    debugNotHandle("field", field,
-        "!isCheckUseFinalField || isUCDetectionInFields");
+    else {
+      debugNotHandle("field", field,
+          "!isCheckUseFinalField || isUCDetectionInFields");
+    }
   }
 
   /**
@@ -117,7 +118,7 @@ public class UCDetectorIterator extends AbstractUCDetectorIterator {
     SearchManager searchManager = new SearchManager(getMonitor(), totalSize,
         getMarkerFactory());
     searchManager.search(types, methods, fields, objects);
-    stopWatch.end("Time to run UCDetctor"); //$NON-NLS-1$
+    stopWatch.end("Time to run UCDetector"); //$NON-NLS-1$
   }
 
   @Override

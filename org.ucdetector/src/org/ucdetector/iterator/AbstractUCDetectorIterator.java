@@ -18,7 +18,6 @@ import org.eclipse.core.resources.IResource;
 import org.eclipse.core.resources.IWorkspaceRoot;
 import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.CoreException;
-import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.Platform;
 import org.eclipse.jdt.core.IClassFile;
 import org.eclipse.jdt.core.ICompilationUnit;
@@ -38,6 +37,7 @@ import org.eclipse.jdt.core.IParent;
 import org.eclipse.jdt.core.IType;
 import org.eclipse.jdt.core.JavaCore;
 import org.ucdetector.Log;
+import org.ucdetector.search.UCDProgressMonitor;
 import org.ucdetector.util.JavaElementUtil;
 import org.ucdetector.util.MarkerFactory;
 
@@ -45,10 +45,10 @@ import org.ucdetector.util.MarkerFactory;
  * Base Class to iterate over projects, packages, classes, methods, fields...
  */
 public abstract class AbstractUCDetectorIterator extends UCDetectorHandler {
-  static final boolean DEBUG = "true".equalsIgnoreCase(Platform //$NON-NLS-1$
+  static final boolean DEBUG = "true".equalsIgnoreCase(Platform //$NON-NLS-1$ NO_UCD
       .getDebugOption("org.ucdetector/debug/iterator")); //$NON-NLS-1$
   static final String SEP = ", "; //$NON-NLS-1$
-  private IProgressMonitor monitor;
+  private UCDProgressMonitor monitor;
   /** Elements selected in the UI */
   protected IJavaElement[] selections;
 
@@ -83,8 +83,10 @@ public abstract class AbstractUCDetectorIterator extends UCDetectorHandler {
    */
   public final void iterate(IJavaElement[] selectionsUI) throws CoreException {
     if (DEBUG) {
-      Log.logDebug(selectionsUI.length
-          + " selection to iterate: " + getSelectedString(selectionsUI)); //$NON-NLS-1$
+      StringBuilder sb = new StringBuilder();
+      sb.append(selectionsUI.length).append(" selections to iterate: ");//$NON-NLS-1$
+      sb.append(getSelectedString(selectionsUI));
+      Log.logInfo(sb.toString());
     }
     this.selections = selectionsUI;
     handleStartGlobal(selections);
@@ -119,8 +121,10 @@ public abstract class AbstractUCDetectorIterator extends UCDetectorHandler {
       return;
     }
     if (DEBUG) {
-      Log.logDebug("iterate resource '" + resource.getName() //$NON-NLS-1$
-          + "' " + Log.getClassName(resource)); //$NON-NLS-1$
+      StringBuilder sb = new StringBuilder();
+      sb.append("Iterate Resource '").append(resource.getName()); //$NON-NLS-1$
+      sb.append("' ").append(Log.getClassName(resource)); //$NON-NLS-1$
+      Log.logDebug(sb.toString());
     }
     if (resource instanceof IFile) {
       IFile file = (IFile) resource;
@@ -168,9 +172,11 @@ public abstract class AbstractUCDetectorIterator extends UCDetectorHandler {
       return;
     }
     if (DEBUG) {
-      Log.logDebug("iterate java element '" // //$NON-NLS-1$
-          + JavaElementUtil.asString(javaElement) + "' " //$NON-NLS-1$
-          + Log.getClassName(javaElement));
+      StringBuilder sb = new StringBuilder();
+      sb.append("Iterate JavaElement '");
+      sb.append(JavaElementUtil.asString(javaElement)).append("' ");
+      sb.append(Log.getClassName(javaElement)); //$NON-NLS-1$
+      Log.logDebug(sb.toString());
     }
     handleStartElement(javaElement);
     boolean doChildren = true;
@@ -264,11 +270,11 @@ public abstract class AbstractUCDetectorIterator extends UCDetectorHandler {
     handleEndElement(javaElement);
   }
 
-  public final void setMonitor(IProgressMonitor monitor) {
+  public final void setMonitor(UCDProgressMonitor monitor) {
     this.monitor = monitor;
   }
 
-  protected final IProgressMonitor getMonitor() {
+  protected final UCDProgressMonitor getMonitor() {
     return monitor;
   }
 
@@ -301,11 +307,11 @@ public abstract class AbstractUCDetectorIterator extends UCDetectorHandler {
   /**
    * Debug, that a member will be handled!
    */
-  protected void debugHandle(String what, IMember member) {
+  protected final void debugHandle(String what, IMember member) {
     if (DEBUG) {
       StringBuilder sb = new StringBuilder();
-      sb.append("Handle ").append(what);
-      sb.append(JavaElementUtil.asString(member));
+      sb.append("    Handle ").append(what).append(" '");
+      sb.append(JavaElementUtil.asString(member)).append('\'');
       Log.logDebug(sb.toString());
     }
   }
@@ -314,12 +320,12 @@ public abstract class AbstractUCDetectorIterator extends UCDetectorHandler {
    * Debug, that a member will not be handled, because it is
    * filtered, private...
    */
-  protected void debugNotHandle(String what, IMember member, String reason) {
+  protected final void debugNotHandle(String what, IMember member, String reason) {
     if (DEBUG) {
       StringBuilder sb = new StringBuilder();
-      sb.append("Ignore ").append(what).append(" '");
+      sb.append("    Ignore ").append(what).append(" '");
       sb.append(JavaElementUtil.asString(member));
-      sb.append("# because: ").append(reason);
+      sb.append("' because: ").append(reason);
       Log.logDebug(sb.toString());
     }
   }
