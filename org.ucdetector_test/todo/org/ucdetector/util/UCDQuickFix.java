@@ -50,7 +50,6 @@ import org.ucdetector.Log;
  *      JavaCodeManipulation_AST/index.html
  */
 public class UCDQuickFix implements IMarkerResolution { // NO_UCD
-  // TODO 331.08.2008: monitor is not set
   private IProgressMonitor monitor; // NO_UCD
   //
   private final String problem;
@@ -147,7 +146,6 @@ public class UCDQuickFix implements IMarkerResolution { // NO_UCD
     Document doc = new Document(originalUnit.getBuffer().getContents());
     CompilationUnit copyUnit = createCopy(originalUnit);
     ASTRewrite rewrite = ASTRewrite.create(copyUnit.getAST());
-    // TODO JSPIELER 20.07.2008: find class, method, field
     TypeDeclaration td = (TypeDeclaration) copyUnit.types().get(0);
     //    ASTNode nodeToRewrite = null;
     Modifier finalModifier = copyUnit.getAST().newModifier(
@@ -167,7 +165,6 @@ public class UCDQuickFix implements IMarkerResolution { // NO_UCD
       modRewrite.insertLast(finalModifier, null);
     }
     rewriteCompilationUnit(rewrite, doc, originalUnit);
-    // TODO JSPIELER 20.07.2008: refresh markers
     marker.delete();
   }
 
@@ -177,7 +174,6 @@ public class UCDQuickFix implements IMarkerResolution { // NO_UCD
     Document doc = new Document(originalUnit.getBuffer().getContents());
     CompilationUnit copyUnit = createCopy(originalUnit);
     ASTRewrite rewrite = ASTRewrite.create(copyUnit.getAST());
-    // TODO JSPIELER 20.07.2008: find class, method, field
     TypeDeclaration td = (TypeDeclaration) copyUnit.types().get(0);
 
     Modifier modifierPublic = getModifier(td, ModifierKeyword.PUBLIC_KEYWORD);
