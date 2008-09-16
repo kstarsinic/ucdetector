@@ -214,7 +214,7 @@ public class TextReport implements IUCDetectorReport {
   private void appendStatistics(Object[] selected, long start) {
     long end = System.currentTimeMillis();
     appendChild(statistcs, "date", dateFormatter.format(new Date(end)));//$NON-NLS-1$
-    appendChild(statistcs, "duration", String.valueOf((end - start) / 1000));//$NON-NLS-1$
+    appendChild(statistcs, "duration", String.valueOf((end - start) / 1000d));//$NON-NLS-1$
     Element searched = appendChild(statistcs, "searched", null);//$NON-NLS-1$
     for (Object selection : selected) {
       if (selection instanceof IJavaElement) {
