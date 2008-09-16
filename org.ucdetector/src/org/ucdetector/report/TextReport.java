@@ -54,7 +54,7 @@ import org.w3c.dom.Element;
 * This class tries to not throw Exceptions.
 * @see /org.ucdetector/src/org/ucdetector/report/html.xslt
  */
-public class TextReport implements IUCDetctorReport {
+public class TextReport implements IUCDetectorReport {
   private static final String EXTENSION_XML = ".xml"; //$NON-NLS-1$
 
   private static final String EXTENSION_HTML = ".html"; //$NON-NLS-1$
@@ -214,7 +214,7 @@ public class TextReport implements IUCDetctorReport {
   private void appendStatistics(Object[] selected, long start) {
     long end = System.currentTimeMillis();
     appendChild(statistcs, "date", dateFormatter.format(new Date(end)));//$NON-NLS-1$
-    appendChild(statistcs, "duration", String.valueOf(end - start));//$NON-NLS-1$
+    appendChild(statistcs, "duration", String.valueOf((end - start) / 1000));//$NON-NLS-1$
     Element searched = appendChild(statistcs, "searched", null);//$NON-NLS-1$
     for (Object selection : selected) {
       if (selection instanceof IJavaElement) {

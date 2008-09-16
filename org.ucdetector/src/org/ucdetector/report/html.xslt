@@ -26,7 +26,7 @@ To create custom reports change:
 
   <!-- =============================== markers ========================= -->
 	<xsl:template match="markers">
-		<h1>UCDetctor report</h1>
+		<h1>UCDetector report</h1>
 		<table border="1">
 			<thead align="center">
 				<tr bgcolor="#C0C0C0">
@@ -78,7 +78,7 @@ To create custom reports change:
 		<h2>Search statistics</h2>
 		Search date: <xsl:value-of select="date"/>
 		<br></br>
-		Search duration: <xsl:value-of select="duration"/> milliseconds<p></p>
+		Search duration: <xsl:value-of select="duration"/> seconds<p></p>
 		Searched in:
 		<ul>
 		<xsl:for-each select="searched/search">
