@@ -11,7 +11,6 @@ import java.util.List;
 import java.util.regex.Pattern;
 
 import org.eclipse.core.runtime.CoreException;
-import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.OperationCanceledException;
 import org.eclipse.jdt.core.Flags;
 import org.eclipse.jdt.core.IField;
@@ -57,7 +56,7 @@ public class SearchManager {
   /**
    * Show progress to user
    */
-  private final IProgressMonitor monitor;
+  private final UCDProgressMonitor monitor;
   /**
    * Number of classes, methods, fields to search
    */
@@ -84,7 +83,7 @@ public class SearchManager {
   private final MarkerFactory markerFactory;
   private final FinalHandler finalHandler;
 
-  public SearchManager(IProgressMonitor monitor, int searchTotal,
+  public SearchManager(UCDProgressMonitor monitor, int searchTotal,
       MarkerFactory markerFactory) {
     this.monitor = monitor;
     this.searchTotal = searchTotal;
@@ -99,9 +98,9 @@ public class SearchManager {
   public final void search(List<IType> types, List<IMethod> methods,
       List<IField> fields, Object[] selected) throws CoreException {
     if (DEBUG) {
-      Log.logDebug("Types to search   : " + types.size()); //$NON-NLS-1$
-      Log.logDebug("Methods to search : " + methods.size()); //$NON-NLS-1$
-      Log.logDebug("Fields to search  : " + fields.size()); //$NON-NLS-1$
+      Log.logDebug(types.size() + " types to search"); //$NON-NLS-1$
+      Log.logDebug(methods.size() + " methods to search"); //$NON-NLS-1$
+      Log.logDebug(fields.size() + " fields to search"); //$NON-NLS-1$
     }
     searchTypes(types);
     searchMethods(methods);
@@ -123,7 +122,7 @@ public class SearchManager {
           searchInfo);
       StopWatch watch = new StopWatch(type);
       int found = searchImpl(type, searchInfo, false);
-      watch.end("Calculate reference marker"); //$NON-NLS-1$
+      watch.end("    Calculate reference marker"); //$NON-NLS-1$
       if (found == 0) {
         noRefTypes.add(type);
       }
@@ -138,6 +137,11 @@ public class SearchManager {
       if (monitor.isCanceled()) {
         return;
       }
+
+      if ("compare".equals(method.getElementName())) {
+        System.out.println("STOP");
+      }
+
       search++;
       monitor.worked(1);
       String searchInfo = method.isConstructor() ? Messages.SearchManager_Constructor
@@ -181,7 +185,7 @@ public class SearchManager {
       if (!isOverriddenMethod) {
         updateMonitorMessage(method, SEARCH_FINAL_MESSAGE, searchInfo);
         boolean created = finalHandler.createFinalMarker(method, line);
-        watch.end("Calculate method final marker"); //$NON-NLS-1$
+        watch.end("    Calculate method final marker"); //$NON-NLS-1$
         if (created) {
           foundTotal++;
         }
@@ -189,7 +193,7 @@ public class SearchManager {
       updateMonitorMessage(method, Messages.SearchManager_SearchReferences,
           searchInfo);
       searchImpl(method, searchInfo, isOverriddenMethod);
-      watch.end("searchImpl"); //$NON-NLS-1$
+      watch.end("    searchImpl"); //$NON-NLS-1$
     }
   }
 
@@ -213,7 +217,7 @@ public class SearchManager {
       }
       // We create final markers even for classes which have no references
       boolean created = finalHandler.createFinalMarker(field, line);
-      watch.end("Calculate field final marker"); //$NON-NLS-1$
+      watch.end("    Calculate field final marker"); //$NON-NLS-1$
       if (created) {
         foundTotal++;
       }
@@ -233,7 +237,7 @@ public class SearchManager {
       updateMonitorMessage(field, Messages.SearchManager_SearchReferences,
           searchInfo);
       searchImpl(field, searchInfo, false);
-      watch.end("searchImpl"); //$NON-NLS-1$
+      watch.end("    searchImpl"); //$NON-NLS-1$
     }
   }
 
@@ -332,7 +336,6 @@ public class SearchManager {
   /**
    * Message shown in the progress dialog like:<br>
    *        <code>Found 2! Done 7/58. Detecting class Classname.methodName()</code>
-   * @param searchInfo TODO
    */
   private void updateMonitorMessage(IJavaElement element, String details,
       String searchInfo) {
