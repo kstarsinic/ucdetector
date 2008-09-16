@@ -106,8 +106,8 @@ If UCDetector tells you, that there are no references your code still may be use
 <ul>
   <li><font color="red">Reflection</font></li>
   <li>Frameworks like Spring, Hibernate or Eclipse which declare dependencies in
-   property files, xml files...</li>
-  <li>Third party code, which is using your code</li>
+   property files, xml files (extension-points) ...</li>
+  <li>Third party code, which is using your API</li>
   <li>Jars in your workspace</li>
   <li>To be continued...</li>
 </ul>
@@ -142,7 +142,7 @@ Use "NO_UCD" tag in code, for lines, which should be ignored:
 /**
  * Class is only used by reflection.
  * Write a <strong>"NO_UCD"</strong> comment at the end of the line.
- * This line will be ignored by UCDector.
+ * This line will be ignored by UCDetector.
  */</span>
 <span class="c2"><strong>public</strong></span> <span class="c5"><strong>class</strong></span> BeanExample <span class="c6"><strong>{</strong></span> <span class="c7">// <strong>NO_UCD</strong></span>
 </pre>
@@ -322,7 +322,7 @@ Maybe this rules are not OK for you! Anyway: Apply changes for this rule careful
 <td>
 <h3>Other</h3>
 <!-- ============================= -->
-<p><b>HTHM report</b>:<br>
+<p><b>HTML report</b>:<br>
 Enter file name, if you want to create a report like this:
 </p>
 
