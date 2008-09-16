@@ -88,7 +88,6 @@ public abstract class AbstractUCDetectorAction extends ActionDelegate { // NO_UC
         }
       }
     };
-    // TODO 08.09.2008: Review rule stuff
     // http://www.eclipse.org/articles/Article-Concurrency/jobs-api.html
     //    job.setRule(ResourcesPlugin.getWorkspace().getRoot());
     job.setUser(true);

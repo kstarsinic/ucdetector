@@ -40,9 +40,8 @@ public class UCDetectorIterator extends AbstractUCDetectorIterator {
 
   @Override
   protected void handleType(IType type) throws CoreException {
-    // TODO 31.08.2008: Check local types?
-    if (isPrivate(type) || type.isLocal() || type.isAnonymous()) {
-      debugNotHandle("type", type, "isPrivate || isLocal || isAnonymous");
+    if (isPrivate(type) || type.isAnonymous()) {
+      debugNotHandle("type", type, "isPrivate || isAnonymous");
       return;
     }
     if (!Prefs.isUCDetectionInClasses()) {

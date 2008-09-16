@@ -1,22 +1,28 @@
 package org.ucdetector.search;
 
 import org.eclipse.core.runtime.IProgressMonitor;
+import org.ucdetector.Log;
+import org.ucdetector.UCDetectorPlugin;
 
 /**
  *
  */
 public class UCDProgressMonitor implements IProgressMonitor {
   private final IProgressMonitor delegate;
+  private String taskName = "?";
 
   public UCDProgressMonitor(IProgressMonitor delegate) {
     this.delegate = delegate;
   }
 
-  public void beginTask(String name, int totalWork) {
-    delegate.beginTask(name, totalWork);
+  public void beginTask(String taskName, int totalWork) {
+    this.taskName = taskName;
+    Log.logInfo("Start task: " + taskName);
+    delegate.beginTask(taskName, totalWork);
   }
 
   public void done() {
+    Log.logInfo("End task: " + taskName);
     delegate.done();
   }
 
@@ -29,6 +35,7 @@ public class UCDProgressMonitor implements IProgressMonitor {
   }
 
   public void setCanceled(boolean value) {
+    Log.logInfo("Task canceled: " + taskName);
     delegate.setCanceled(value);
   }
 
@@ -37,7 +44,9 @@ public class UCDProgressMonitor implements IProgressMonitor {
   }
 
   public void subTask(String name) {
-    // TODO 16.09.2008: logging
+    if (UCDetectorPlugin.DEBUG) {
+      Log.logDebug(name);
+    }
     delegate.subTask(name);
   }
 
