@@ -12,6 +12,7 @@ import org.ucdetector.example.fields.FinalFieldExamples;
 import org.ucdetector.example.fields.SerializationFieldExample;
 import org.ucdetector.example.inheritance.FinalMethodExample;
 import org.ucdetector.example.inheritance.FinalMethodImplExample;
+import org.ucdetector.example.inheritance.ImplementsExample;
 import org.ucdetector.example.inheritance.InterfaceExample;
 import org.ucdetector.example.inheritance.InterfaceImplExample;
 import org.ucdetector.example.inheritance.OverrideExample;
@@ -146,6 +147,7 @@ public class PublicReferenceHolder {
     A.class.getName();
     B.class.getName();
     C.class.getName();
+    ImplementsExample.class.getName();
     // ---------------------------------------------------------------------
   }
 }
