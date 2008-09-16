@@ -58,7 +58,7 @@ import org.ucdetector.cycle.model.SearchResultRoot;
 /**
  * 
  */
-public class CycleView extends ViewPart { // NO_UCD
+public class CycleView extends ViewPart { // 
   public static final String ID = "org.ucdetector.cycle.view.CycleView"; //$NON-NLS-1$
   private static CycleView INSTANCE = null;
   private TreeViewer viewer;
@@ -300,11 +300,6 @@ public class CycleView extends ViewPart { // NO_UCD
   private Object getFirstSelectedElement() {
     ISelection selection = this.viewer.getSelection();
     return ((IStructuredSelection) selection).getFirstElement();
-  }
-
-  TreePath getSelectedTreePath() {
-    ISelection selection = this.viewer.getSelection();
-    return ((ITreeSelection) selection).getPaths()[0];
   }
 
   private ITreeSelection getTreeSelection() {

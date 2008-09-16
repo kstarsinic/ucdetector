@@ -17,6 +17,7 @@ import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.core.runtime.jobs.Job;
 import org.eclipse.jdt.core.IJavaElement;
+import org.eclipse.jdt.core.IMember;
 import org.eclipse.jdt.core.IPackageFragmentRoot;
 import org.eclipse.jdt.core.JavaModelException;
 import org.eclipse.jface.action.IAction;
@@ -31,6 +32,7 @@ import org.ucdetector.Log;
 import org.ucdetector.Messages;
 import org.ucdetector.UCDetectorPlugin;
 import org.ucdetector.iterator.AbstractUCDetectorIterator;
+import org.ucdetector.search.UCDProgressMonitor;
 
 /**
  * Base class for actions in this plugin
@@ -48,10 +50,11 @@ public abstract class AbstractUCDetectorAction extends ActionDelegate { // NO_UC
     Job job = new Job(iterator.getJobName()) {
       @Override
       public IStatus run(IProgressMonitor monitor) {
-        iterator.setMonitor(monitor);
+        UCDProgressMonitor ucdMonitor = new UCDProgressMonitor(monitor);
+        iterator.setMonitor(ucdMonitor);
         try {
           iterator.iterate(selections);
-          if (monitor.isCanceled()) {
+          if (ucdMonitor.isCanceled()) {
             return Status.CANCEL_STATUS;
           }
           showNothingToDetectMessage(iterator);
@@ -68,7 +71,7 @@ public abstract class AbstractUCDetectorAction extends ActionDelegate { // NO_UC
               Messages.AbstractUCDetectorAction_AnalyzeFailedText, e);
         }
         finally {
-          monitor.done();
+          ucdMonitor.done();
         }
         return Status.OK_STATUS;
       }
@@ -129,9 +132,12 @@ public abstract class AbstractUCDetectorAction extends ActionDelegate { // NO_UC
    * @return <code>true</code> when all javaElements are accessible.
    *         Accessibility is necessary to create markers.
    */
-  protected final boolean allAccessible() { // NO_UCD
+  protected final boolean allAccessible() { // 
     for (IJavaElement javaElement : selections) {
       try {
+        if (javaElement instanceof IMember) {
+          return !((IMember) javaElement).isBinary();
+        }
         if (javaElement instanceof IPackageFragmentRoot) {
           IPackageFragmentRoot pfr = (IPackageFragmentRoot) javaElement;
           return pfr.getKind() != IPackageFragmentRoot.K_BINARY;
@@ -153,7 +159,7 @@ public abstract class AbstractUCDetectorAction extends ActionDelegate { // NO_UC
    * enable/disable action. Default Behavior: enabled for accessible java
    * elements
    */
-  protected void handleJavaElementSelections(IAction action) {// NO_UCD
+  protected void handleJavaElementSelections(IAction action) {// 
     action.setEnabled(allAccessible());
   }
 
