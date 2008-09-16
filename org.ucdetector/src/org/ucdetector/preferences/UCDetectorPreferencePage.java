@@ -34,8 +34,7 @@ import org.ucdetector.UCDetectorPlugin;
  * @see example in http://www.eclipsepluginsite.com/preference-pages.html
  */
 public class UCDetectorPreferencePage extends FieldEditorPreferencePage // NO_UCD
-    implements // NO_UCD
-    IWorkbenchPreferencePage {
+    implements IWorkbenchPreferencePage {
 
   /**
    * entryNames (first column) and values (second column) for the
