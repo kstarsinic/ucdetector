@@ -11,7 +11,7 @@ import org.eclipse.core.runtime.CoreException;
 /**
  *
  */
-public interface IUCDetctorReport {
+public interface IUCDetectorReport {
   void reportMarker(ReportParam reportParam) throws CoreException;
 
   void endReport(Object[] selected, long start) throws CoreException;

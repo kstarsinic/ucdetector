@@ -14,21 +14,23 @@ import org.ucdetector.util.MarkerFactory;
  */
 public class ReportParam {
   public final IJavaElement javaElement;
-  public final String message;
+  protected final String message;
   public final int line;
-  public final String markerType;
-  public final WarnLevel level;
+  protected final String markerType;
+  protected final WarnLevel level;
 
   @Override
   public String toString() {
     StringBuilder sb = new StringBuilder();
-    sb.append("MARKER ").append(level).append(';').append(message); //$NON-NLS-1$
+    sb.append("MARKER{").append(level).append(';').append(message); //$NON-NLS-1$
     IResource resource = javaElement.getResource();
     if (resource != null) {
-      sb.append(';').append(resource.getFullPath());
+      sb.append(';').append(resource.getFullPath()).append(':').append(line);
     }
-    sb.append(';').append("line=").append(line); //$NON-NLS-1$
-    sb.append(';').append(markerType);
+    else {
+      sb.append(";line=").append(line); //$NON-NLS-1$
+    }
+    sb.append(';').append(markerType).append('}');
     return sb.toString();
   }
 

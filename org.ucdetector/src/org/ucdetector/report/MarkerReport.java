@@ -22,7 +22,7 @@ import org.ucdetector.util.MarkerFactory;
 /**
  *
  */
-public class MarkerReport implements IUCDetctorReport {
+public class MarkerReport implements IUCDetectorReport {
   /**
    * Don't create one marker each, create number of markers declared here
    * each time!
@@ -32,7 +32,7 @@ public class MarkerReport implements IUCDetctorReport {
 
   public void reportMarker(ReportParam reportParam) throws CoreException {
     if (UCDetectorPlugin.DEBUG) {
-      Log.logDebug("add marker to queue: " + reportParam); //$NON-NLS-1$
+      Log.logDebug("    Add to queue: " + reportParam); //$NON-NLS-1$
     }
     markersToCreate.add(reportParam);
     if (markersToCreate.size() >= MARKERS_TO_CREATE_COUNT) {
@@ -54,7 +54,6 @@ public class MarkerReport implements IUCDetctorReport {
     markersToCreate.clear();
   }
 
-  // TODO 09.09.2008: Use Error markers for ERROR???
   private void createMarker(ReportParam reportParam) throws CoreException {
     int severity;
     switch (reportParam.level) {
