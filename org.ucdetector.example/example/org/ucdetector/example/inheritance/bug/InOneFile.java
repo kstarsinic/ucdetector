@@ -15,7 +15,7 @@ class InOneFile {
   public void foo() {
   }
 
-  public void barA() { // Marker YES: unused code
+  public void barA() { // Marker YES: unused code, use final
     foo();
   }
 }
@@ -24,7 +24,7 @@ class B2 extends InOneFile {
   public void foo() {
   }
 
-  public void barB() { // Marker YES: unused code
+  public void barB() { // Marker YES: unused code, use final
     foo();
   }
 }

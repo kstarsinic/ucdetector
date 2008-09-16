@@ -45,7 +45,8 @@ public class MethodExamples {
   protected void unusedProtectedMethod() {// Marker YES: unused code
   }
 
-  native protected void unusedNativeMethod();
+  /** keyword "native" should not cause problems to UCDetector */
+  native protected void unusedNativeMethod();// Marker YES: unused code
 
   /** keyword "strictfp" should not cause problems to UCDetector */
   strictfp void unusedPublicMethod1() {// Marker YES: unused code

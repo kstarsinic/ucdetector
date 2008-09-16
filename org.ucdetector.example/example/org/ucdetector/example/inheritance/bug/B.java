@@ -6,7 +6,7 @@ public class B extends A {
   public void foo() {
   }
 
-  public void barB() { // Marker YES: use protected
+  public void barB() { // Marker YES: use protected, use final
     foo();
   }
 }

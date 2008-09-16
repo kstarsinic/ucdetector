@@ -4,7 +4,7 @@ package org.ucdetector.example.fields;
  * {@link FieldExamples#usedByJavadoc}
  */
 public class FieldExamples {
-  
+
   /** should be ignored, because of field filter *test* */
   public static final int test_field = 0;
 
@@ -17,12 +17,12 @@ public class FieldExamples {
   /**
    *  This field is referenced by javadoc
    **/
-  public final int usedByJavadoc = 1;// Marker YES: unused code
+  public int usedByJavadoc = 1;// Marker YES: unused code,use final
 
   /** This kind of field declaration should not cause problems for UCDetector! */
-  private final int usedFieldList1 = 1, //
-      usedFieldList2 = 2,//
-      usedFieldList3 = 4;//
+  private int usedFieldList1 = 1, // Marker YES: use final
+      usedFieldList2 = 2,// Marker YES: use final
+      usedFieldList3 = 4;// Marker YES: use final
 
   // -------------------------------------------------------------------------
   // UNUSED
@@ -36,10 +36,10 @@ public class FieldExamples {
 
   final int defaultUnusedField = 0;// Marker YES: unused code
 
-  protected final int protectedUnusedField = 0; // Marker YES: unused code
+  protected int protectedUnusedField = 0; // Marker YES: unused code,use final
 
   /** keyword "transient" should not cause UCDetector problems */
-  public transient final int publicUnusedField = 0; // Marker YES: unused code
+  public transient int publicUnusedField = 0; // Marker YES: unused code,use final
 
   /** javadoc */
   public static final String UNUSED_FIELD = "UNUSED_FIELD"; // Marker YES: unused code
