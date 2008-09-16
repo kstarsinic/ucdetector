@@ -137,11 +137,6 @@ public class SearchManager {
       if (monitor.isCanceled()) {
         return;
       }
-
-      if ("compare".equals(method.getElementName())) {
-        System.out.println("STOP");
-      }
-
       search++;
       monitor.worked(1);
       String searchInfo = method.isConstructor() ? Messages.SearchManager_Constructor
