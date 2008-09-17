@@ -94,7 +94,6 @@ public class PublicReferenceHolder {
     System.out.println(UsePrivateClass.DONT_USE_PRIVATE);
     usePrivateClass.dontUsePrivate();
     UsePrivateClass.dontUsePrivateStatic();
-
     // ---------------------------------------------------------------------
     UseProtectedClass useProtectedClass = new UseProtectedClass();
     useProtectedClass.dontUseProtected();
@@ -148,6 +147,11 @@ public class PublicReferenceHolder {
     B.class.getName();
     C.class.getName();
     ImplementsExample.class.getName();
+    
+    System.out.println(QuickFixExample.USE_FINAL);
+    System.out.println(QuickFixExample.USE_FINAL2);
+    System.out.println(QuickFixExample.USE_FINAL3);
+    System.out.println(QuickFixExample.USE_FINAL4);
     // ---------------------------------------------------------------------
   }
 }
