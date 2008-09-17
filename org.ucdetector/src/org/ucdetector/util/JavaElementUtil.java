@@ -188,21 +188,21 @@ public class JavaElementUtil {
     if (element == null) {
       return "null"; //$NON-NLS-1$
     }
+    if (element instanceof IMethod) {
+      return getMethodName((IMethod) element);
+    }
+    if (element instanceof IField) {
+      return getFieldName((IField) element);
+    }
+    if (element instanceof IType) {
+      return getTypeName(element);
+    }
     if (element instanceof IPackageFragment
         && ((IPackageFragment) element).isDefaultPackage()) {
       return "default package"; //$NON-NLS-1$
     }
     if (element instanceof IImportContainer) {
       return "import declarations"; //$NON-NLS-1$
-    }
-    if (element instanceof IType) {
-      return getTypeName(element);
-    }
-    if (element instanceof IMethod) {
-      return getMethodName((IMethod) element);
-    }
-    if (element instanceof IField) {
-      return getFieldName((IField) element);
     }
     return element.getElementName();
   }

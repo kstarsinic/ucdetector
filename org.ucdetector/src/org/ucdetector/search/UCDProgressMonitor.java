@@ -15,10 +15,10 @@ public class UCDProgressMonitor implements IProgressMonitor {
     this.delegate = delegate;
   }
 
-  public void beginTask(String taskName, int totalWork) {
-    this.taskName = taskName;
-    Log.logInfo("Start task: " + taskName);
-    delegate.beginTask(taskName, totalWork);
+  public void beginTask(String beginTaskName, int totalWork) {
+    this.taskName = beginTaskName;
+    Log.logInfo("Start task: " + beginTaskName);
+    delegate.beginTask(beginTaskName, totalWork);
   }
 
   public void done() {

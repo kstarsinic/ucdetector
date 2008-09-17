@@ -255,7 +255,7 @@ public abstract class AbstractUCDetectorIterator extends UCDetectorHandler {
       // ILocalVariable
       // ITypeParameter
       Log.logWarn("UNHANDLED TYPE" //$NON-NLS-1$
-          + javaElement.getElementName() + ":" //$NON-NLS-1$
+          + JavaElementUtil.getElementName(javaElement) + ":" //$NON-NLS-1$
           + javaElement.getClass().getSimpleName());
     }
     // CHILDREN
@@ -292,7 +292,7 @@ public abstract class AbstractUCDetectorIterator extends UCDetectorHandler {
       if (selectedAsString.length() > 0) {
         selectedAsString.append(SEP);
       }
-      selectedAsString.append(javaElement.getElementName());
+      selectedAsString.append(JavaElementUtil.getElementName(javaElement));
     }
     return selectedAsString.toString();
   }

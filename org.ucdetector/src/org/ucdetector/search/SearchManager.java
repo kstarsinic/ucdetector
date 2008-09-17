@@ -258,8 +258,8 @@ public class SearchManager {
         foundTotal++;
       }
     }
-    Object[] bindings = new Object[] { searchInfo, member.getElementName(),
-        Integer.valueOf(found) };
+    Object[] bindings = new Object[] { searchInfo,
+        JavaElementUtil.getElementName(member), Integer.valueOf(found) };
     String markerMessage = NLS.bind(Messages.SearchManager_MarkerReference,
         bindings);
     if (found <= Prefs.getWarnLimit()) {

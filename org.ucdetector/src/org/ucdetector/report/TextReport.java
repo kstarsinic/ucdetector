@@ -120,7 +120,7 @@ public class TextReport implements IUCDetectorReport {
 
     // NODE: UCDetectorPlugin
     IType type = JavaElementUtil.getTypeFor(reportParam.javaElement);
-    appendChild(marker, "class", type.getElementName());//$NON-NLS-1$
+    appendChild(marker, "class", JavaElementUtil.getElementName(type));//$NON-NLS-1$
 
     if (reportParam.javaElement instanceof IMethod) {
       // NODE: method
@@ -129,7 +129,8 @@ public class TextReport implements IUCDetectorReport {
     }
     if (reportParam.javaElement instanceof IField) {
       // NODE: field
-      appendChild(marker, "field", reportParam.javaElement.getElementName());//$NON-NLS-1$
+      appendChild(marker,
+          "field", JavaElementUtil.getElementName(reportParam.javaElement));//$NON-NLS-1$
     }
 
     if (resource != null) {
@@ -219,7 +220,8 @@ public class TextReport implements IUCDetectorReport {
     for (Object selection : selected) {
       if (selection instanceof IJavaElement) {
         IJavaElement javaElement = (IJavaElement) selection;
-        appendChild(searched, "search", javaElement.getElementName());//$NON-NLS-1$
+        appendChild(searched,
+            "search", JavaElementUtil.getElementName(javaElement));//$NON-NLS-1$
       }
     }
   }
