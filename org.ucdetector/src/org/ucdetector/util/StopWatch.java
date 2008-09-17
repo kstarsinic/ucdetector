@@ -29,7 +29,7 @@ public class StopWatch {
 //  }
 
   public StopWatch(IMember member) {
-    this.message = JavaElementUtil.asString(member);
+    this.message = JavaElementUtil.getElementName(member);
   }
 
   /**

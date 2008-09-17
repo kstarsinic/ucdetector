@@ -334,7 +334,7 @@ public class SearchManager {
    */
   private void updateMonitorMessage(IJavaElement element, String details,
       String searchInfo) {
-    String javaElement = JavaElementUtil.asString(element);
+    String javaElement = JavaElementUtil.getElementName(element);
     Object[] bindings = new Object[] { Integer.valueOf(foundTotal),
         Integer.valueOf(search), Integer.valueOf(searchTotal), searchInfo,
         javaElement, details };

@@ -174,7 +174,7 @@ public abstract class AbstractUCDetectorIterator extends UCDetectorHandler {
     if (DEBUG) {
       StringBuilder sb = new StringBuilder();
       sb.append("Iterate JavaElement '");
-      sb.append(JavaElementUtil.asString(javaElement)).append("' ");
+      sb.append(JavaElementUtil.getElementName(javaElement)).append("' ");
       sb.append(Log.getClassName(javaElement)); //$NON-NLS-1$
       Log.logDebug(sb.toString());
     }
@@ -311,7 +311,7 @@ public abstract class AbstractUCDetectorIterator extends UCDetectorHandler {
     if (DEBUG) {
       StringBuilder sb = new StringBuilder();
       sb.append("    Handle ").append(what).append(" '");
-      sb.append(JavaElementUtil.asString(member)).append('\'');
+      sb.append(JavaElementUtil.getElementName(member)).append('\'');
       Log.logDebug(sb.toString());
     }
   }
@@ -324,7 +324,7 @@ public abstract class AbstractUCDetectorIterator extends UCDetectorHandler {
     if (DEBUG) {
       StringBuilder sb = new StringBuilder();
       sb.append("    Ignore ").append(what).append(" '");
-      sb.append(JavaElementUtil.asString(member));
+      sb.append(JavaElementUtil.getElementName(member));
       sb.append("' because: ").append(reason);
       Log.logDebug(sb.toString());
     }
