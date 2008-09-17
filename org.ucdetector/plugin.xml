@@ -18,6 +18,28 @@
     <initializer class="org.ucdetector.preferences.PreferenceInitializer"/>
   </extension>
   
+  
+  <!-- ===================================================================== -->
+  <!-- TOOL BAR                                    
+  http://www.onjava.com/pub/a/onjava/2005/03/30/eclipse.html?page=2                            -->
+  <!-- =====================================================================
+		<extension id="UCDetectorAction"
+					 name="UCDetector Action"
+					 point="org.eclipse.ui.actionSets">
+		<actionSet id="UCDetector.actionSet"
+					label="UCDetector Actions"
+					visible="true">
+      <action class="org.ucdetector.action.UCDetectorAction"
+          enablesFor="+"
+          id="org.ucdetector.SearchAction"
+          label="%DetectAction.label"
+          tooltip="%DetectAction.tooltip"
+          icon="$nl$/icons/ucd.gif"
+          toolbarPath="additions"
+          definitionId="org.ucdetector.definitionId.ucd"/>
+		</actionSet>
+	</extension>
+	 -->
   <!-- ===================================================================== -->
   <!-- POP UP                                                                -->
   <!-- ===================================================================== -->
