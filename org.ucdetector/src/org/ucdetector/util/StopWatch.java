@@ -45,7 +45,7 @@ public class StopWatch {
         sb.append(info).append(" "); //$NON-NLS-1$
       }
       if (message != null) {
-        sb.append(message); //$NON-NLS-1$
+        sb.append(message); 
       }
       sb.append(": ").append(duration / 1000d); //$NON-NLS-1$
       sb.append(" seconds"); //$NON-NLS-1$

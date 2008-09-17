@@ -211,7 +211,7 @@ public class JavaElementUtil {
     if (element instanceof IType) {
       return ((IType) element).getTypeQualifiedName();
     }
-    return "class?";
+    return "class?"; //$NON-NLS-1$
   }
 
   /**
@@ -219,7 +219,7 @@ public class JavaElementUtil {
    */
   private static String getMethodName(IMethod method) {
     if (method == null) {
-      return "method?";
+      return "method?"; //$NON-NLS-1$
     }
     StringBuffer info = new StringBuffer();
     info.append(getTypeName(method.getParent()));
@@ -232,13 +232,13 @@ public class JavaElementUtil {
   }
 
   public static String getSimpleMethodName(IMethod method) {
-    String methodName = method == null ? "method?" : method.getElementName();
-    return ((methodName.length() == 0 ? "<init>" : methodName));
+    String methodName = method == null ? "method?" : method.getElementName(); //$NON-NLS-1$
+    return ((methodName.length() == 0 ? "<init>" : methodName)); //$NON-NLS-1$
   }
 
   private static String getFieldName(IField field) {
     if (field == null) {
-      return "field?";
+      return "field?"; //$NON-NLS-1$
     }
     StringBuffer info = new StringBuffer();
     info.append(getTypeName(field.getParent()));
