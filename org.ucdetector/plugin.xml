@@ -290,31 +290,31 @@
   <extension point="org.eclipse.ui.ide.markerResolution">
     <markerResolutionGenerator
      markerType="org.ucdetector.analyzeMarkerReference"
-     class="org.ucdetector.util.UCDQuickFixer"/>
+     class="org.ucdetector.quickfix.UCDQuickGenerator"/>
   </extension>  
 
   <extension point="org.eclipse.ui.ide.markerResolution">
     <markerResolutionGenerator
      markerType="org.ucdetector.analyzeMarkerFinal"
-     class="org.ucdetector.util.UCDQuickFixer"/>
+     class="org.ucdetector.quickfix.UCDQuickGenerator"/>
   </extension>
    
   <extension point="org.eclipse.ui.ide.markerResolution">
     <markerResolutionGenerator
      markerType="org.ucdetector.analyzeMarkerVisibilityPrivate"
-     class="org.ucdetector.util.UCDQuickFixer"/>
+     class="org.ucdetector.quickfix.UCDQuickGenerator"/>
   </extension>
   
   <extension point="org.eclipse.ui.ide.markerResolution">
     <markerResolutionGenerator
      markerType="org.ucdetector.analyzeMarkerVisibilityProtected"
-     class="org.ucdetector.util.UCDQuickFixer"/>
+     class="org.ucdetector.quickfix.UCDQuickGenerator"/>
   </extension>
   
   <extension point="org.eclipse.ui.ide.markerResolution">
     <markerResolutionGenerator
      markerType="org.ucdetector.analyzeMarkerVisibilityDefault"
-     class="org.ucdetector.util.UCDQuickFixer"/>
+     class="org.ucdetector.quickfix.UCDQuickGenerator"/>
   </extension>
   <!-- ===================================================================== -->
   <!-- HELP.TOC                                                              -->
