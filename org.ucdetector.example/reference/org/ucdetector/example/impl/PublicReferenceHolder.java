@@ -148,10 +148,11 @@ public class PublicReferenceHolder {
     C.class.getName();
     ImplementsExample.class.getName();
     
-    System.out.println(QuickFixExample.USE_FINAL);
+    System.out.println(QuickFixExample.USE_FINAL1);
     System.out.println(QuickFixExample.USE_FINAL2);
     System.out.println(QuickFixExample.USE_FINAL3);
     System.out.println(QuickFixExample.USE_FINAL4);
+    System.out.println(QuickFixExample.USE_FINAL5);
     // ---------------------------------------------------------------------
   }
 }

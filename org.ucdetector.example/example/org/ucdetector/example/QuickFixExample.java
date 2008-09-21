@@ -4,31 +4,31 @@ package org.ucdetector.example;
  */
 public class QuickFixExample {
 
-  public static int USE_FINAL1 = 1;
+  public static int USE_FINAL1 = 1;// Marker YES: use final,unused code
 
-  public static int USE_FINAL2 = 2;
+  public static int USE_FINAL2 = 2;// Marker YES: use final,unused code
 
-  public static int USE_FINAL3 = 3;
+  public static int USE_FINAL3 = 3;// Marker YES: use final,unused code
 
-  public static int USE_FINAL4 = 4;
+  public static int USE_FINAL4 = 4;// Marker YES: use final,unused code
 
-  public static int USE_FINAL5 = 5;
+  public static int USE_FINAL5 = 5;// Marker YES: use final,unused code
   
   // -------------------------------------------------------------------------
 
-  public class UseProtectedClass_1 {
+  public class UseProtectedClass_1 {// Marker YES: use default
   }
 
-  public class UseProtectedClass_2 {
+  public class UseProtectedClass_2 {// Marker YES: use default
   }
 
-  public class UseProtectedClass_3 {
+  public class UseProtectedClass_3 {// Marker YES: use default
   }
 
-  public class UseProtectedClass_4 {
+  public class UseProtectedClass_4 {// Marker YES: use default
   }
 
-  public class UseProtectedClass_5 {
+  public class UseProtectedClass_5 {// Marker YES: use default
   }
 
   // -------------------------------------------------------------------------
@@ -56,35 +56,35 @@ public class QuickFixExample {
   public final int useProtectedField_5 = 0;// Marker YES: use protected
 
   // -------------------------------------------------------------------------
-  public void useProtected_1() {
+  public void useProtected_1() {// Marker YES: use protected
   };
 
-  public void useProtected_2() {
+  public void useProtected_2() {// Marker YES: use protected
   };
 
-  public void useProtected_3() {
+  public void useProtected_3() {// Marker YES: use protected
   };
 
-  public void useProtected_4() {
+  public void useProtected_4() {// Marker YES: use protected
   };
 
-  public void useProtected_5() {
+  public void useProtected_5() {// Marker YES: use protected
   };
 
   // -------------------------------------------------------------------------
-  public void usePrivate_1() {
+  public void usePrivate_1() {// Marker YES: use private
   }
 
-  public void usePrivate_2() {
+  public void usePrivate_2() {// Marker YES: use private
   }
 
-  public void usePrivate_3() {
+  public void usePrivate_3() {// Marker YES: use private
   }
 
-  public void usePrivate_4() {
+  public void usePrivate_4() {// Marker YES: use private
   }
 
-  public void usePrivate_5() {
+  public void usePrivate_5() {// Marker YES: use private
   }
 
   // -------------------------------------------------------------------------
@@ -100,36 +100,36 @@ public class QuickFixExample {
 
   // -------------------------------------------------------------------------
 
-  public void unusedPublicMethod_1() {// Marker YES: unused code
+  public void unusedMethod_1() {// Marker YES: unused code
   }
 
-  public void unusedPublicMethod_2() {// Marker YES: unused code
+  public void unusedMethod_2() {// Marker YES: unused code
   }
 
-  public void unusedPublicMethod_3() {// Marker YES: unused code
+  public void unusedMethod_3() {// Marker YES: unused code
   }
 
-  public void unusedPublicMethod_4() {// Marker YES: unused code
+  public void unusedMethod_4() {// Marker YES: unused code
   }
 
-  public void unusedPublicMethod_5() {// Marker YES: unused code
+  public void unusedMethod_5() {// Marker YES: unused code
   }
 
   // -------------------------------------------------------------------------
 
-  public class UnusedClass_1 {
+  public class UnusedClass_1 {// Marker YES: unused code
   }
 
-  public class UnusedClass_2 {
+  public class UnusedClass_2 {// Marker YES: unused code
   }
 
-  public class UnusedClass_3 {
+  public class UnusedClass_3 {// Marker YES: unused code
   }
 
-  public class UnusedClass_4 {
+  public class UnusedClass_4 {// Marker YES: unused code
   }
 
-  public class UnusedClass_5 {
+  public class UnusedClass_5 {// Marker YES: unused code
   }
 
   // -------------------------------------------------------------------------
