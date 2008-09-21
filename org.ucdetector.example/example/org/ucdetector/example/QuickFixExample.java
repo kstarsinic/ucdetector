@@ -4,14 +4,16 @@ package org.ucdetector.example;
  */
 public class QuickFixExample {
 
-  public static int USE_FINAL = 1;
+  public static int USE_FINAL1 = 1;
 
-  public static int USE_FINAL2 = 1;
+  public static int USE_FINAL2 = 2;
 
-  public static int USE_FINAL3 = 1;
+  public static int USE_FINAL3 = 3;
 
-  public static int USE_FINAL4 = 1;
+  public static int USE_FINAL4 = 4;
 
+  public static int USE_FINAL5 = 5;
+  
   // -------------------------------------------------------------------------
 
   public class UseProtectedClass_1 {
@@ -26,8 +28,10 @@ public class QuickFixExample {
   public class UseProtectedClass_4 {
   }
 
-  class UseProtectedClass_5 {
+  public class UseProtectedClass_5 {
   }
+
+  // -------------------------------------------------------------------------
 
   public final int usePrivateField_1 = 0;// Marker YES: use private
 
@@ -84,22 +88,51 @@ public class QuickFixExample {
   }
 
   // -------------------------------------------------------------------------
-  final int unusedField_1 = 0;// Marker YES: unused code
+  final int unusedField_1 = 1;// Marker YES: unused code
 
-  final int unusedField_2 = 0;// Marker YES: unused code
+  final int unusedField_2 = 2;// Marker YES: unused code
 
-  final int unusedField_3 = 0;// Marker YES: unused code
+  final int unusedField_3 = 3;// Marker YES: unused code
 
-  final int unusedField_5 = 0;// Marker YES: unused code
+  final int unusedField_4 = 4;// Marker YES: unused code
+  
+  final int unusedField_5 = 5;// Marker YES: unused code
 
   // -------------------------------------------------------------------------
 
+  public void unusedPublicMethod_1() {// Marker YES: unused code
+  }
+
   public void unusedPublicMethod_2() {// Marker YES: unused code
+  }
+
+  public void unusedPublicMethod_3() {// Marker YES: unused code
+  }
+
+  public void unusedPublicMethod_4() {// Marker YES: unused code
   }
 
   public void unusedPublicMethod_5() {// Marker YES: unused code
   }
 
+  // -------------------------------------------------------------------------
+
+  public class UnusedClass_1 {
+  }
+
+  public class UnusedClass_2 {
+  }
+
+  public class UnusedClass_3 {
+  }
+
+  public class UnusedClass_4 {
+  }
+
+  public class UnusedClass_5 {
+  }
+
+  // -------------------------------------------------------------------------
   public QuickFixExample() {
     System.out.println(usePrivateField_1);
     System.out.println(usePrivateField_2);
