@@ -7,18 +7,17 @@
  */
 package org.ucdetector.util;
 
-import java.util.HashMap;
 import java.util.List;
 
 import org.eclipse.core.filebuffers.FileBuffers;
 import org.eclipse.core.filebuffers.ITextFileBuffer;
 import org.eclipse.core.filebuffers.ITextFileBufferManager;
+import org.eclipse.core.filebuffers.LocationKind;
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IMarker;
 import org.eclipse.core.resources.IResource;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IPath;
-import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.jdt.core.ICompilationUnit;
 import org.eclipse.jdt.core.IJavaElement;
 import org.eclipse.jdt.core.JavaCore;
@@ -47,8 +46,6 @@ import org.ucdetector.UCDetectorPlugin;
  * @see http://www.eclipse.org/articles/article.php?file=Article-JavaCodeManipulation_AST/index.html
  */
 public class UCDQuickFix implements IMarkerResolution { // NO_UCD
-  private IProgressMonitor monitor; // NO_UCD
-  //
   private final String problem;
   /** The marker marks a type */
   private final boolean isType;
@@ -69,8 +66,8 @@ public class UCDQuickFix implements IMarkerResolution { // NO_UCD
 
   UCDQuickFix(String problem, String javaElementString) {
     if (UCDetectorPlugin.DEBUG) {
-      Log.logDebug("UCDQuickFix: problem          =" + problem); //$NON-NLS-1$
-      Log.logDebug("UCDQuickFix: javaElementString=" + javaElementString); //$NON-NLS-1$
+      Log.logDebug("UCDQuickFix(): problem=" + problem + //$NON-NLS-1$
+          ",javaElementString=" + javaElementString); //$NON-NLS-1$
     }
     if (problem == null || javaElementString == null) {
       throw new IllegalArgumentException("problem=" + problem //$NON-NLS-1$
@@ -109,7 +106,7 @@ public class UCDQuickFix implements IMarkerResolution { // NO_UCD
   public void run(IMarker marker) {
     try {
       if (UCDetectorPlugin.DEBUG) {
-        Log.logDebug("  QuickFix: " + new HashMap(marker.getAttributes())); //$NON-NLS-1$
+        Log.logDebug("  QuickFix.run(): " + marker.getAttributes().values()); //$NON-NLS-1$
       }
       originalUnit = getCompilationUnit(marker);
       copyUnit = createCopy(originalUnit);
@@ -207,13 +204,11 @@ public class UCDQuickFix implements IMarkerResolution { // NO_UCD
   private void runDeleteElement(IMarker marker) throws CoreException,
       BadLocationException {
     if (UCDetectorPlugin.DEBUG) {
-      Log.logDebug("  QuickFix delete"); //$NON-NLS-1$
+      Log.logDebug("  QuickFix delete: " + bodyDeclaration); //$NON-NLS-1$
     }
     rewrite.remove(bodyDeclaration, null);
     commit(marker);
-    if (marker.exists()) {
-      marker.delete();
-    }
+    marker.delete();
   }
 
   private void commit(IMarker marker) throws CoreException,
@@ -222,16 +217,17 @@ public class UCDQuickFix implements IMarkerResolution { // NO_UCD
         .getTextFileBufferManager();
     IPath path = copyUnit.getJavaElement().getPath();
     try {
-      bufferManager.connect(path, null);
-      ITextFileBuffer textFileBuffer = bufferManager.getTextFileBuffer(path);
+      bufferManager.connect(path, LocationKind.NORMALIZE, null);
+      ITextFileBuffer textFileBuffer = bufferManager.getTextFileBuffer(path,
+          LocationKind.NORMALIZE);
       IDocument doc = textFileBuffer.getDocument();
       TextEdit edits = rewrite.rewriteAST(doc, originalUnit.getJavaProject()
           .getOptions(true));
       edits.apply(doc);
-      textFileBuffer.commit(null, false);
+      textFileBuffer.commit(null, true);
     }
     finally {
-      bufferManager.disconnect(path, null);
+      bufferManager.disconnect(path, LocationKind.NORMALIZE, null);
     }
   }
 
@@ -342,10 +338,22 @@ public class UCDQuickFix implements IMarkerResolution { // NO_UCD
 
   private CompilationUnit createCopy(ICompilationUnit unit)
       throws JavaModelException {
-    unit.becomeWorkingCopy(monitor);
+    unit.becomeWorkingCopy(null);
     ASTParser parser = ASTParser.newParser(AST.JLS3);
     parser.setSource(unit);
     parser.setResolveBindings(true);
-    return (CompilationUnit) parser.createAST(monitor);
+    return (CompilationUnit) parser.createAST(null);
   }
+
+  // TODO 21.09.2008: Use IMarkerResolution2?
+  //  public String getDescription() {
+  //    return "Test Description";
+  //  }
+  //
+  //  public Image getImage() {
+  //    IPath path = new Path("icons").append("/cycle.gif"); //$NON-NLS-1$ //$NON-NLS-2$
+  //    ImageDescriptor id = JavaPluginImages.createImageDescriptor(
+  //        UCDetectorPlugin.getDefault().getBundle(), path, false);
+  //    return id.createImage();
+  //  }
 }

@@ -227,28 +227,34 @@
     <specification
         annotationType="org.ucdetector.analyzeAnnotationReference"
         icon="icons/not_found_obj.gif"
+        quickFixIcon="icons/not_found_obj.gif"
         includeOnPreferencePage="true"
         label="%specification.label.references"/>
     <!-- visibility -->
     <specification
         annotationType="org.ucdetector.analyzeAnnotationVisibilityPrivate"
         icon="icons/use_private.gif"
+        quickFixIcon="icons/use_private.gif"
         includeOnPreferencePage="true"
         label="%specification.label.private"/>
     <specification
         annotationType="org.ucdetector.analyzeAnnotationVisibilityProtected"
         icon="icons/use_protected.gif"
+        quickFixIcon="icons/use_protected.gif"
         includeOnPreferencePage="true"
         label="%specification.label.protected"/>
     <specification
         annotationType="org.ucdetector.analyzeAnnotationVisibilityDefault"
         icon="icons/use_default.gif"
+        quickFixIcon="icons/use_default.gif"
         includeOnPreferencePage="true"
+        highlightPreferenceValue="true"
         label="%specification.label.default"/>
     <!-- -->
     <specification
         annotationType="org.ucdetector.analyzeAnnotationFinal"
         icon="icons/use_final.gif"
+        quickFixIcon="icons/use_final.gif"
         includeOnPreferencePage="true"
         label="%specification.label.final"/>
   </extension>
