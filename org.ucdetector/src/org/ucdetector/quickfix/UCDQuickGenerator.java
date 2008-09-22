@@ -31,22 +31,22 @@ public class UCDQuickGenerator implements IMarkerResolutionGenerator2 { // NO_UC
       }
       String problem = marker.getType();
       List<IMarkerResolution> resolutions = new ArrayList<IMarkerResolution>();
-      resolutions.add(new NoUcdTagQuickFix(marker));
-      add(resolutions, new NoUcdTagQuickFix(marker));
+      resolutions.add(new NoUcdTagQuickFix());
+      add(resolutions, new NoUcdTagQuickFix());
       // TODO 22.09.2008: Use private + use final QuickFix:
       // - remove use private
       // - don't put 2 NoUcdTagQuickFix
       if (MarkerFactory.UCD_MARKER_UNUSED.equals(problem)) {
-        resolutions.add(new DeleteQuickFix(marker));
-        resolutions.add(new LineCommentQuickFix(marker));
+        resolutions.add(new DeleteQuickFix());
+        resolutions.add(new LineCommentQuickFix());
       }
       else if (MarkerFactory.UCD_MARKER_USE_PRIVATE.equals(problem)
           || MarkerFactory.UCD_MARKER_USE_PROETECTED.equals(problem)
           || MarkerFactory.UCD_MARKER_USE_DEFAULT.equals(problem)) {
-        resolutions.add(new VisibilityQuickFix(marker));
+        resolutions.add(new VisibilityQuickFix());
       }
       else if (MarkerFactory.UCD_MARKER_USE_FINAL.equals(problem)) {
-        resolutions.add(new UseFinalQuickFix(marker));
+        resolutions.add(new UseFinalQuickFix());
       }
       return resolutions.toArray(new IMarkerResolution[resolutions.size()]);
     }

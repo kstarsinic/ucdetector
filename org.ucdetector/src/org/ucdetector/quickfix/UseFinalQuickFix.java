@@ -8,7 +8,7 @@
 package org.ucdetector.quickfix;
 
 import org.eclipse.core.resources.IMarker;
-import org.eclipse.core.runtime.CoreException;
+import org.eclipse.jdt.core.dom.BodyDeclaration;
 import org.eclipse.jdt.core.dom.Modifier;
 import org.eclipse.jdt.core.dom.rewrite.ListRewrite;
 
@@ -17,19 +17,17 @@ import org.eclipse.jdt.core.dom.rewrite.ListRewrite;
  * @see http://www.eclipse.org/articles/article.php?file=Article-JavaCodeManipulation_AST/index.html
  */
 public class UseFinalQuickFix extends AbstractUCDQuickFix { // NO_UCD
-  public UseFinalQuickFix(IMarker marker) throws CoreException {
-    super(marker);
-  }
 
   public String getLabel() {
     return "Add keyword 'final'"; //$NON-NLS-1$
   }
 
   @Override
-  public final void runImpl(IMarker marker) throws Exception {
-    ListRewrite listRewrite = getListRewrite();
-    Modifier modifierFound = getModifierVisibility(bodyDeclaration);
-    Modifier modifierFinal = bodyDeclaration.getAST().newModifier(
+  public final void runImpl(IMarker marker, ELEMENT element,
+      BodyDeclaration nodeToChange) throws Exception {
+    ListRewrite listRewrite = getListRewrite(element, nodeToChange);
+    Modifier modifierFound = getModifierVisibility(nodeToChange);
+    Modifier modifierFinal = nodeToChange.getAST().newModifier(
         Modifier.ModifierKeyword.FINAL_KEYWORD);
     // default -> final
     if (modifierFound == null) {

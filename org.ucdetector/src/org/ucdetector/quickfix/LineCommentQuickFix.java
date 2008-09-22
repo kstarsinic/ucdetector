@@ -5,8 +5,8 @@ import org.eclipse.core.filebuffers.ITextFileBuffer;
 import org.eclipse.core.filebuffers.ITextFileBufferManager;
 import org.eclipse.core.filebuffers.LocationKind;
 import org.eclipse.core.resources.IMarker;
-import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IPath;
+import org.eclipse.jdt.core.dom.BodyDeclaration;
 import org.eclipse.jface.text.IDocument;
 import org.eclipse.jface.text.IRegion;
 
@@ -15,18 +15,14 @@ import org.eclipse.jface.text.IRegion;
  */
 class LineCommentQuickFix extends AbstractUCDQuickFix {
 
-  protected LineCommentQuickFix(IMarker marker) throws CoreException {
-    super(marker);
-  }
-
   public String getLabel() {
     return "Comment all lines";
   }
 
   @Override
-  public void runImpl(IMarker marker) throws Exception {
-    int offsetBody = bodyDeclaration.getStartPosition();
-    int lengthBody = bodyDeclaration.getLength();
+  public void runImpl(IMarker marker, ELEMENT element, BodyDeclaration nodeToChange) throws Exception {
+    int offsetBody = nodeToChange.getStartPosition();
+    int lengthBody = nodeToChange.getLength();
     ITextFileBufferManager bufferManager = FileBuffers
         .getTextFileBufferManager();
     IPath path = marker.getResource().getLocation();

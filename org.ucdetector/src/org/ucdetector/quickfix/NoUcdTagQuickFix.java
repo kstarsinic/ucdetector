@@ -7,6 +7,7 @@ import org.eclipse.core.filebuffers.LocationKind;
 import org.eclipse.core.resources.IMarker;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IPath;
+import org.eclipse.jdt.core.dom.BodyDeclaration;
 import org.eclipse.jface.text.BadLocationException;
 import org.eclipse.jface.text.IDocument;
 import org.eclipse.jface.text.IRegion;
@@ -16,17 +17,12 @@ import org.eclipse.text.edits.MalformedTreeException;
  *
  */
 class NoUcdTagQuickFix extends AbstractUCDQuickFix {
-
-  protected NoUcdTagQuickFix(IMarker marker) throws CoreException {
-    super(marker);
-  }
-
   public String getLabel() {
     return "Use comment: // NO_UCD";
   }
 
   @Override
-  public void runImpl(IMarker marker) throws Exception {
+  public void runImpl(IMarker marker, ELEMENT element, BodyDeclaration nodeToChange) throws Exception {
     addUCDComment(marker);
   }
 

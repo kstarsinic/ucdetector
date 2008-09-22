@@ -8,7 +8,7 @@
 package org.ucdetector.quickfix;
 
 import org.eclipse.core.resources.IMarker;
-import org.eclipse.core.runtime.CoreException;
+import org.eclipse.jdt.core.dom.BodyDeclaration;
 import org.eclipse.jdt.core.dom.Modifier;
 import org.eclipse.jdt.core.dom.rewrite.ListRewrite;
 import org.ucdetector.util.MarkerFactory;
@@ -18,31 +18,28 @@ import org.ucdetector.util.MarkerFactory;
  * @see http://www.eclipse.org/articles/article.php?file=Article-JavaCodeManipulation_AST/index.html
  */
 public class VisibilityQuickFix extends AbstractUCDQuickFix { // NO_UCD
-  public VisibilityQuickFix(IMarker marker) throws CoreException {
-    super(marker);
-  }
-
   public String getLabel() {
-    if (MarkerFactory.UCD_MARKER_USE_PROETECTED.equals(problem)) {
+    if (MarkerFactory.UCD_MARKER_USE_PROETECTED.equals(markerType)) {
       return "Change visibility to protected"; //$NON-NLS-1$
     }
-    if (MarkerFactory.UCD_MARKER_USE_DEFAULT.equals(problem)) {
+    if (MarkerFactory.UCD_MARKER_USE_DEFAULT.equals(markerType)) {
       return "Change visibility to default"; //$NON-NLS-1$
     }
     return "Change visibility to private"; //$NON-NLS-1$
   }
 
   @Override
-  public void runImpl(IMarker marker) throws Exception {
-    ListRewrite listRewrite = getListRewrite();
-    Modifier modifierFound = getModifierVisibility(bodyDeclaration);
+  public void runImpl(IMarker marker, ELEMENT element,
+      BodyDeclaration nodeToChange) throws Exception {
+    ListRewrite listRewrite = getListRewrite(element, nodeToChange);
+    Modifier modifierFound = getModifierVisibility(nodeToChange);
     Modifier modifierNew = null;
-    if (MarkerFactory.UCD_MARKER_USE_PRIVATE.equals(problem)) {
-      modifierNew = bodyDeclaration.getAST().newModifier(
+    if (MarkerFactory.UCD_MARKER_USE_PRIVATE.equals(markerType)) {
+      modifierNew = nodeToChange.getAST().newModifier(
           Modifier.ModifierKeyword.PRIVATE_KEYWORD);
     }
-    else if (MarkerFactory.UCD_MARKER_USE_PROETECTED.equals(problem)) {
-      modifierNew = bodyDeclaration.getAST().newModifier(
+    else if (MarkerFactory.UCD_MARKER_USE_PROETECTED.equals(markerType)) {
+      modifierNew = nodeToChange.getAST().newModifier(
           Modifier.ModifierKeyword.PROTECTED_KEYWORD);
     }
     // default -> default
