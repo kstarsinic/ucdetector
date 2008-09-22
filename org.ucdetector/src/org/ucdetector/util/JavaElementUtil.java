@@ -183,7 +183,6 @@ public class JavaElementUtil {
   * </ul>
   * @see org.eclipse.jdt.internal.core.JavaElement#readableName()
    */
-  // TODO overlaoaded method: getElementName()
   public static String getElementName(IJavaElement element) {
     if (element == null) {
       return "null"; //$NON-NLS-1$
