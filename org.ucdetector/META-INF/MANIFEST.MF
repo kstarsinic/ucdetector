@@ -25,6 +25,7 @@ Export-Package: org.ucdetector,
  org.ucdetector.cycle.search,
  org.ucdetector.iterator,
  org.ucdetector.preferences,
+ org.ucdetector.quickfix,
  org.ucdetector.report,
  org.ucdetector.search,
  org.ucdetector.util
