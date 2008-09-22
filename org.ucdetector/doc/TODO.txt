@@ -1,19 +1,15 @@
+
+
 //------------------------------------------------------------------------------
 TODO 0.10.0:
  - refactor SearchManager: Confusing to understand / add new handler!
  - check local/anonymous types:
    - local classes can be private
- - editor templates
- - code style templates
  - create an extension point for "org.ucdetector.additional"
  - use combo for file extensions: TextSearchPage.addFileNameControls()
- - check TODO's from E-Mails, sourceforge tasks/requests
- - QuickFix
  - README.txt
- - Review marker factory
- - check bugs and add troubleshooting
- - logging for UCDetector
- 
+ - unused jars?
+  - http://www.timhardy.net/wordpress/2006/08/13/eclipse-quick-fix-quick-assist/
  
 //------------------------------------------------------------------------------
 Steps to create new Version:
@@ -37,7 +33,7 @@ Steps to create new Version:
    - jar, source.jar, additional_source.jar
 	 - Categorization
 	 - Description
-	 - Screenshots
+	 - Screenshot
 	 - Category
 	 - Changes
 	 - Upload

@@ -5,12 +5,14 @@ New features:
  - Speed up detection for overridden methods
  - Feature request [ 2103460 ]: Split visibility detection in private and protected.
  - Add warning message, if there are no elements found to run detection [ 2103655 ]
- 
+ - QuickFixes
+
 Bugfixes:
  - Don't change visibility of enums constants
  - Fix Bug [ 2103382 ]: Method filter not saved in preference page
  - Fix Bug [ 2103678 ] Unnecessary code doesn't recurse in sub packages
  - Fix Bug [ 2103655 ] Detect cycles does not show anything
+ 
 // -----------------------------------------------------------------------------
 UCDetector 0.10.0 from 2008-09-04:
 New features:
