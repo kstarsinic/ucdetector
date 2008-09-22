@@ -12,9 +12,12 @@ import java.util.Date;
 
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.Status;
+import org.eclipse.jdt.internal.ui.JavaPluginImages;
+import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.ui.IWorkbenchPage;
 import org.eclipse.ui.IWorkbenchWindow;
+import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.plugin.AbstractUIPlugin;
 import org.osgi.framework.BundleContext;
 
@@ -84,6 +87,14 @@ public class UCDetectorPlugin extends AbstractUIPlugin {
   public void stop(BundleContext context) throws Exception {
     super.stop(context);
     UCDetectorPlugin.plugin = null;
+  }
+
+  public static Image getJavaPluginImage(String key) {
+    return JavaPluginImages.get(key); // IMG_OBJS_JSEARCH
+  }
+
+  public static final Image getSharedImage(String id) {
+    return PlatformUI.getWorkbench().getSharedImages().getImage(id);
   }
 
   /**
