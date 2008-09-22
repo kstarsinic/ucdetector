@@ -9,7 +9,10 @@ package org.ucdetector.quickfix;
 
 import org.eclipse.core.resources.IMarker;
 import org.eclipse.jdt.core.dom.BodyDeclaration;
+import org.eclipse.jdt.internal.ui.JavaPluginImages;
+import org.eclipse.swt.graphics.Image;
 import org.ucdetector.Messages;
+import org.ucdetector.UCDetectorPlugin;
 
 /**
  * // http://help.eclipse.org/help32/index.jsp?topic=/org.eclipse.jdt.doc.isv/reference/api/org/eclipse/jdt/core/dom/rewrite/ASTRewrite.html
@@ -25,5 +28,12 @@ class DeleteQuickFix extends AbstractUCDQuickFix {
 
   public String getLabel() {
     return Messages.DeleteQuickFix_label;
+  }
+
+  @Override
+  public Image getImage() {
+    return UCDetectorPlugin
+        .getJavaPluginImage(JavaPluginImages.IMG_CORRECTION_REMOVE);
+    //    return UCDetectorPlugin.getSharedImage(ISharedImages.IMG_TOOL_DELETE);
   }
 }

@@ -7,9 +7,12 @@ import org.eclipse.core.filebuffers.LocationKind;
 import org.eclipse.core.resources.IMarker;
 import org.eclipse.core.runtime.IPath;
 import org.eclipse.jdt.core.dom.BodyDeclaration;
+import org.eclipse.jdt.internal.ui.JavaPluginImages;
 import org.eclipse.jface.text.IDocument;
 import org.eclipse.jface.text.IRegion;
+import org.eclipse.swt.graphics.Image;
 import org.ucdetector.Messages;
+import org.ucdetector.UCDetectorPlugin;
 
 /**
  *
@@ -47,5 +50,11 @@ class LineCommentQuickFix extends AbstractUCDQuickFix {
 
   public String getLabel() {
     return Messages.LineCommentQuickFix_label;
+  }
+
+  @Override
+  public Image getImage() {
+    return UCDetectorPlugin
+        .getJavaPluginImage(JavaPluginImages.IMG_CORRECTION_REMOVE);
   }
 }

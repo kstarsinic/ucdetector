@@ -8,11 +8,15 @@
 package org.ucdetector.quickfix;
 
 import org.eclipse.core.resources.IMarker;
+import org.eclipse.core.runtime.CoreException;
 import org.eclipse.jdt.core.dom.BodyDeclaration;
 import org.eclipse.jdt.core.dom.Modifier;
 import org.eclipse.jdt.core.dom.rewrite.ListRewrite;
+import org.eclipse.jdt.internal.ui.JavaPluginImages;
 import org.eclipse.osgi.util.NLS;
+import org.eclipse.swt.graphics.Image;
 import org.ucdetector.Messages;
+import org.ucdetector.UCDetectorPlugin;
 import org.ucdetector.util.MarkerFactory;
 
 /**
@@ -20,6 +24,18 @@ import org.ucdetector.util.MarkerFactory;
  * @see http://www.eclipse.org/articles/article.php?file=Article-JavaCodeManipulation_AST/index.html
  */
 class VisibilityQuickFix extends AbstractUCDQuickFix {
+  private String markerType = null;
+
+  // TODO 22.09.2008: clean up
+  VisibilityQuickFix(IMarker marker) {
+    try {
+      this.markerType = marker.getType();
+    }
+    catch (CoreException e) {
+      e.printStackTrace();
+    }
+  }
+
   @Override
   public void runImpl(IMarker marker, ELEMENT element,
       BodyDeclaration nodeToChange) throws Exception {
@@ -65,5 +81,22 @@ class VisibilityQuickFix extends AbstractUCDQuickFix {
       keyword = "private"; //$NON-NLS-1$
     }
     return NLS.bind(Messages.VisibilityQuickFix_label, keyword);
+  }
+
+  @Override
+  public Image getImage() {
+    if (MarkerFactory.UCD_MARKER_USE_PROETECTED.equals(markerType)) {
+      return UCDetectorPlugin
+          .getJavaPluginImage(JavaPluginImages.IMG_MISC_PROTECTED);
+    }
+    else if (MarkerFactory.UCD_MARKER_USE_DEFAULT.equals(markerType)) {
+      return UCDetectorPlugin
+          .getJavaPluginImage(JavaPluginImages.IMG_MISC_DEFAULT);
+    }
+    else if (MarkerFactory.UCD_MARKER_USE_PRIVATE.equals(markerType)) {
+      return UCDetectorPlugin
+          .getJavaPluginImage(JavaPluginImages.IMG_MISC_PRIVATE);
+    }
+    return null;
   }
 }

@@ -40,4 +40,10 @@ class UseFinalQuickFix extends AbstractUCDQuickFix {
   public String getLabel() {
     return Messages.UseFinalQuickFix_label;
   }
+
+  //  @Override
+  //  public Image getImage() {
+  //    return UCDetectorPlugin.getJavaPluginImage(JavaPluginImages.DESC_OVR_FINAL);
+  //  }
+
 }

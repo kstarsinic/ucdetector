@@ -40,7 +40,7 @@ public class UCDQuickGenerator implements IMarkerResolutionGenerator2 { // NO_UC
       else if (MarkerFactory.UCD_MARKER_USE_PRIVATE.equals(problem)
           || MarkerFactory.UCD_MARKER_USE_PROETECTED.equals(problem)
           || MarkerFactory.UCD_MARKER_USE_DEFAULT.equals(problem)) {
-        resolutions.add(new VisibilityQuickFix());
+        resolutions.add(new VisibilityQuickFix(marker));
       }
       else if (MarkerFactory.UCD_MARKER_USE_FINAL.equals(problem)) {
         resolutions.add(new UseFinalQuickFix());

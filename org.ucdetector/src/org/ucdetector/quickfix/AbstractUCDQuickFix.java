@@ -45,7 +45,7 @@ abstract class AbstractUCDQuickFix implements IMarkerResolution2 {
     TYPE, METHOD, FIELD;
   }
 
-  protected String markerType;
+  private String markerType;
   /** Parameters of the methods */
   // TODO 22.09.2008: Use this field for: findMethodDeclaration()
   private String[] methodParams;
