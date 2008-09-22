@@ -56,39 +56,4 @@
 				includeOnPreferencePage="true"
 				label="%specification.label.0"/>
 	</extension>
-	
-  <!-- ===================================================================== -->
-  <!-- QUICK FIX                                                          -->
-  <!-- ===================================================================== -->
-  <!-- http://wiki.eclipse.org/FAQ_How_do_I_implement_Quick_Fixes_for_my_own_language%3F 
-  <extension point="org.eclipse.ui.ide.markerResolution">
-    <markerResolutionGenerator
-     markerType="org.ucdetector.analyzeMarkerReference"
-     class="org.ucdetector.quickfix.UCDQuickFixer"/>
-  </extension>  
-
-  <extension point="org.eclipse.ui.ide.markerResolution">
-    <markerResolutionGenerator
-     markerType="org.ucdetector.analyzeMarkerFinal"
-     class="org.ucdetector.quickfix.UCDQuickFixer"/>
-  </extension>
-   
-  <extension point="org.eclipse.ui.ide.markerResolution">
-    <markerResolutionGenerator
-     markerType="org.ucdetector.analyzeMarkerVisibilityPrivate"
-     class="org.ucdetector.quickfix.UCDQuickFixer"/>
-  </extension>
-  
-  <extension point="org.eclipse.ui.ide.markerResolution">
-    <markerResolutionGenerator
-     markerType="org.ucdetector.analyzeMarkerVisibilityProtected"
-     class="org.ucdetector.quickfix.UCDQuickFixer"/>
-  </extension>
-  
-  <extension point="org.eclipse.ui.ide.markerResolution">
-    <markerResolutionGenerator
-     markerType="org.ucdetector.analyzeMarkerVisibilityDefault"
-     class="org.ucdetector.quickfix.UCDQuickFixer"/>
-  </extension>
-  -->
 </plugin>
