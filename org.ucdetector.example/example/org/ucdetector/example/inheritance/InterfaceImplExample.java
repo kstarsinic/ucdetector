@@ -5,23 +5,32 @@ package org.ucdetector.example.inheritance;
  */
 public class InterfaceImplExample extends AbstractInterfaceImplExample {
 
-	/**
-	 * javadoc
-	 */
-	public String overridenMethod() {
-		return "overridenMethod";
-	}
+  public InterfaceImplExample() {
+    this(0);
+  }
 
-	protected String overrideMe() { // Marker YES: unused code
-		return "overrideMe";
-	}
+  // no final markers here!!
+  InterfaceImplExample(int i) { // Marker YES: use private
+    super(i);
+  }
 
-	@Override
-	protected void noMarkerForAbstractMethod() {
+  /**
+   * javadoc
+   */
+  public String overridenMethod() {
+    return "overridenMethod";
+  }
 
-	}
+  protected String overrideMe() { // Marker YES: unused code
+    return "overrideMe";
+  }
 
-	public void unusedMethod() {
+  @Override
+  protected void noMarkerForAbstractMethod() {
 
-	}
+  }
+
+  public void unusedMethod() {
+
+  }
 }

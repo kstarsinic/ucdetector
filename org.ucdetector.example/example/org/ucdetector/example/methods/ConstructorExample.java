@@ -9,4 +9,8 @@ public class ConstructorExample {
   /** we dont't ignore constructors with parameter! */
   public ConstructorExample(String parameter) { // Marker YES: unused code
   }
+
+  
+  public ConstructorExample(int i,String parameter) { // Marker YES: unused code
+  }
 }

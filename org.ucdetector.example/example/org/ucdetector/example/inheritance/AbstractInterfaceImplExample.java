@@ -1,11 +1,14 @@
 package org.ucdetector.example.inheritance;
 
-
 /**
  * no markers here
  */
 abstract class AbstractInterfaceImplExample implements InterfaceExample {
 
-	protected abstract void noMarkerForAbstractMethod();
+  AbstractInterfaceImplExample(int i) {
+
+  }
+
+  protected abstract void noMarkerForAbstractMethod();
 
 }
