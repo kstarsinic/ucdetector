@@ -48,6 +48,7 @@ class FinalHandler {
         || Flags.isAbstract(flags) //
         || Flags.isFinal(flags) //
         || Flags.isInterface(flags) //
+        || method.isConstructor()//
     ) {
       return false;
     }
