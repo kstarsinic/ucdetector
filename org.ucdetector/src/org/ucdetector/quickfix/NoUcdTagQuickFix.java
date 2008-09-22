@@ -15,14 +15,14 @@ import org.eclipse.text.edits.MalformedTreeException;
 /**
  *
  */
-public class NoUcdTagQuickFix extends AbstractUCDQuickFix {
+class NoUcdTagQuickFix extends AbstractUCDQuickFix {
 
-  public NoUcdTagQuickFix(IMarker marker) throws CoreException {
+  protected NoUcdTagQuickFix(IMarker marker) throws CoreException {
     super(marker);
   }
 
   public String getLabel() {
-    return "Add comment: // NO_UCD";
+    return "Use comment: // NO_UCD";
   }
 
   @Override

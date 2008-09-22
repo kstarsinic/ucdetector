@@ -13,9 +13,9 @@ import org.eclipse.jface.text.IRegion;
 /**
  *
  */
-public class LineCommentQuickFix extends AbstractUCDQuickFix {
+class LineCommentQuickFix extends AbstractUCDQuickFix {
 
-  public LineCommentQuickFix(IMarker marker) throws CoreException {
+  protected LineCommentQuickFix(IMarker marker) throws CoreException {
     super(marker);
   }
 

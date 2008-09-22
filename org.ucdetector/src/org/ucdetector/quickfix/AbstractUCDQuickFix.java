@@ -2,10 +2,15 @@ package org.ucdetector.quickfix;
 
 import java.util.List;
 
+import org.eclipse.core.filebuffers.FileBuffers;
+import org.eclipse.core.filebuffers.ITextFileBuffer;
+import org.eclipse.core.filebuffers.ITextFileBufferManager;
+import org.eclipse.core.filebuffers.LocationKind;
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IMarker;
 import org.eclipse.core.resources.IResource;
 import org.eclipse.core.runtime.CoreException;
+import org.eclipse.core.runtime.IPath;
 import org.eclipse.jdt.core.ICompilationUnit;
 import org.eclipse.jdt.core.IJavaElement;
 import org.eclipse.jdt.core.JavaCore;
@@ -16,9 +21,15 @@ import org.eclipse.jdt.core.dom.BodyDeclaration;
 import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jdt.core.dom.FieldDeclaration;
 import org.eclipse.jdt.core.dom.MethodDeclaration;
+import org.eclipse.jdt.core.dom.Modifier;
 import org.eclipse.jdt.core.dom.TypeDeclaration;
 import org.eclipse.jdt.core.dom.VariableDeclarationFragment;
+import org.eclipse.jdt.core.dom.Modifier.ModifierKeyword;
 import org.eclipse.jdt.core.dom.rewrite.ASTRewrite;
+import org.eclipse.jdt.core.dom.rewrite.ListRewrite;
+import org.eclipse.jface.text.BadLocationException;
+import org.eclipse.jface.text.IDocument;
+import org.eclipse.text.edits.TextEdit;
 import org.eclipse.ui.IMarkerResolution;
 import org.ucdetector.Log;
 import org.ucdetector.UCDetectorPlugin;
@@ -27,26 +38,26 @@ import org.ucdetector.util.MarkerFactory;
 /**
  *
  */
-public abstract class AbstractUCDQuickFix implements IMarkerResolution {
+abstract class AbstractUCDQuickFix implements IMarkerResolution {
   protected final String problem;
   /** Parameters of the methods */
   private final String[] methodParameters;
   /** The marker marks a type */
-  protected final boolean isType;
+  private final boolean isType;
   /** The marker marks a method */
-  protected final boolean isMethod;
+  private final boolean isMethod;
   /** The marker marks a field */
-  protected final boolean isField;
+  private final boolean isField;
   /** Name of the type, method or field */
-  protected final String elementName;
+  private final String elementName;
 
-  protected ICompilationUnit originalUnit;
-  protected CompilationUnit copyUnit;
+  private ICompilationUnit originalUnit;
+  private CompilationUnit copyUnit;
   protected ASTRewrite rewrite;
-  protected TypeDeclaration typeDeclaration;
+  private TypeDeclaration typeDeclaration;
   protected BodyDeclaration bodyDeclaration;
 
-  public AbstractUCDQuickFix(IMarker marker) throws CoreException {
+  protected AbstractUCDQuickFix(IMarker marker) throws CoreException {
     // we can use only use String, Boolean, Integer here,
     // no IJavaElements are permitted here!
     String javaElement = (String) marker
@@ -92,7 +103,7 @@ public abstract class AbstractUCDQuickFix implements IMarkerResolution {
 
   public abstract void runImpl(IMarker marker) throws Exception;
 
-  protected TypeDeclaration findTypeDeclaration(TypeDeclaration td) {
+  private final TypeDeclaration findTypeDeclaration(TypeDeclaration td) {
     String typeName = td.getName().getIdentifier();
     if (typeName.equals(this.elementName)) {
       return td;
@@ -108,7 +119,7 @@ public abstract class AbstractUCDQuickFix implements IMarkerResolution {
     return null;
   }
 
-  protected MethodDeclaration findMethodDeclaration(MethodDeclaration[] methods) {
+  private MethodDeclaration findMethodDeclaration(MethodDeclaration[] methods) {
     for (MethodDeclaration td : methods) {
       String methodName = td.getName().getIdentifier();
       if (methodName.equals(this.elementName)) {
@@ -119,7 +130,7 @@ public abstract class AbstractUCDQuickFix implements IMarkerResolution {
     return null;
   }
 
-  protected FieldDeclaration findFieldDeclaration(FieldDeclaration[] fields) {
+  private FieldDeclaration findFieldDeclaration(FieldDeclaration[] fields) {
     for (FieldDeclaration field : fields) {
       List<?> fragments = field.fragments();
       for (Object object : fragments) {
@@ -136,7 +147,7 @@ public abstract class AbstractUCDQuickFix implements IMarkerResolution {
     return null;
   }
 
-  ICompilationUnit getCompilationUnit(IMarker marker) {
+  private ICompilationUnit getCompilationUnit(IMarker marker) {
     IResource resource = marker.getResource();
     if (resource instanceof IFile && resource.isAccessible()) {
       IFile file = (IFile) resource;
@@ -150,7 +161,8 @@ public abstract class AbstractUCDQuickFix implements IMarkerResolution {
     return null;
   }
 
-  CompilationUnit createCopy(ICompilationUnit unit) throws JavaModelException {
+  private CompilationUnit createCopy(ICompilationUnit unit)
+      throws JavaModelException {
     unit.becomeWorkingCopy(null);
     ASTParser parser = ASTParser.newParser(AST.JLS3);
     parser.setSource(unit);
@@ -170,7 +182,7 @@ public abstract class AbstractUCDQuickFix implements IMarkerResolution {
   //    return id.createImage();
   //  }
 
-  protected BodyDeclaration getBodyDeclaration() {
+  private BodyDeclaration getBodyDeclaration() {
     if (isField) {
       return findFieldDeclaration(typeDeclaration.getFields());
     }
@@ -179,6 +191,58 @@ public abstract class AbstractUCDQuickFix implements IMarkerResolution {
     }
     if (isType) {
       return findTypeDeclaration(typeDeclaration);
+    }
+    return null;
+  }
+
+  protected final void commit(IMarker marker) throws CoreException,
+      BadLocationException {
+    ITextFileBufferManager bufferManager = FileBuffers
+        .getTextFileBufferManager();
+    IPath path = copyUnit.getJavaElement().getPath();
+    try {
+      bufferManager.connect(path, LocationKind.NORMALIZE, null);
+      ITextFileBuffer textFileBuffer = bufferManager.getTextFileBuffer(path,
+          LocationKind.NORMALIZE);
+      IDocument doc = textFileBuffer.getDocument();
+
+      TextEdit edits = rewrite.rewriteAST(doc, originalUnit.getJavaProject()
+          .getOptions(true));
+      edits.apply(doc);
+      textFileBuffer.commit(null, true);
+    }
+    finally {
+      bufferManager.disconnect(path, LocationKind.NORMALIZE, null);
+    }
+  }
+
+  protected final ListRewrite getListRewrite() {
+    if (isField) {
+      return rewrite.getListRewrite(bodyDeclaration,
+          FieldDeclaration.MODIFIERS2_PROPERTY);
+    }
+    if (isMethod) {
+      return rewrite.getListRewrite(bodyDeclaration,
+          MethodDeclaration.MODIFIERS2_PROPERTY);
+    }
+    if (isType) {
+      return rewrite.getListRewrite(bodyDeclaration,
+          TypeDeclaration.MODIFIERS2_PROPERTY);
+    }
+    return null;
+  }
+
+  protected static Modifier getModifierVisibility(BodyDeclaration declaration) {
+    List<?> list = declaration.modifiers();
+    for (Object o : list) {
+      if (o.getClass().equals(Modifier.class)) {
+        Modifier mdf = (Modifier) o;
+        if (mdf.getKeyword().equals(ModifierKeyword.PUBLIC_KEYWORD)
+            || mdf.getKeyword().equals(ModifierKeyword.PROTECTED_KEYWORD)
+            || mdf.getKeyword().equals(ModifierKeyword.PRIVATE_KEYWORD)) {
+          return mdf;
+        }
+      }
     }
     return null;
   }

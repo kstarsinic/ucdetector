@@ -29,19 +29,46 @@ public class UCDQuickGenerator implements IMarkerResolutionGenerator2 { // NO_UC
       if (UCDetectorPlugin.DEBUG) {
         Log.logDebug("UCDQuickFixer.getResolutions()" + marker); //$NON-NLS-1$
       }
+      String problem = marker.getType();
       List<IMarkerResolution> resolutions = new ArrayList<IMarkerResolution>();
-      if (MarkerFactory.UCD_MARKER_UNUSED.equals(marker.getType())) {
+      resolutions.add(new NoUcdTagQuickFix(marker));
+      add(resolutions, new NoUcdTagQuickFix(marker));
+      // TODO 22.09.2008: Use private + use final QuickFix:
+      // - remove use private
+      // - don't put 2 NoUcdTagQuickFix
+      if (MarkerFactory.UCD_MARKER_UNUSED.equals(problem)) {
+        resolutions.add(new DeleteQuickFix(marker));
         resolutions.add(new LineCommentQuickFix(marker));
       }
-      resolutions.add(new NoUcdTagQuickFix(marker));
-      resolutions.add(new UCDQuickFix(marker));
-      return resolutions
-          .toArray(new IMarkerResolution[resolutions.size()]);
+      else if (MarkerFactory.UCD_MARKER_USE_PRIVATE.equals(problem)
+          || MarkerFactory.UCD_MARKER_USE_PROETECTED.equals(problem)
+          || MarkerFactory.UCD_MARKER_USE_DEFAULT.equals(problem)) {
+        resolutions.add(new VisibilityQuickFix(marker));
+      }
+      else if (MarkerFactory.UCD_MARKER_USE_FINAL.equals(problem)) {
+        resolutions.add(new UseFinalQuickFix(marker));
+      }
+      return resolutions.toArray(new IMarkerResolution[resolutions.size()]);
     }
     catch (CoreException e) {
       Log.logError("Can't get UCD resolutions", e);
     }
     return new IMarkerResolution[0];
+  }
+
+  private void add(List<IMarkerResolution> resolutions,
+      AbstractUCDQuickFix quickFix) {
+    for (IMarkerResolution resolution : resolutions) {
+      if (resolution instanceof NoUcdTagQuickFix
+          && quickFix instanceof NoUcdTagQuickFix) {
+        // ignore
+      }
+      else {
+        resolutions.add(quickFix);
+      }
+    }
+    // TODO Auto-generated method stub
+
   }
 
   public boolean hasResolutions(IMarker marker) {
