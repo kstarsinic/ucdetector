@@ -156,6 +156,17 @@
     <persistent
         value="true"></persistent>
   </extension>
+  <!-- Few references -->
+  <extension
+      id="org.ucdetector.analyzeMarkerFewReference"
+      name="UCDetector Marker (Few references)"
+      point="org.eclipse.core.resources.markers">
+    <super type="org.eclipse.core.resources.problemmarker"/>
+    <super type="org.eclipse.core.resources.textmarker"/>
+    <super type="org.ucdetector.analyzeMarker"/>
+    <persistent
+        value="true"></persistent>
+  </extension>
    <!-- visibility -->
   <extension
       id="org.ucdetector.analyzeMarkerVisibilityPrivate"
@@ -198,10 +209,16 @@
    <!-- ucd icon -->
     <!-- *** 2 *** -->
   <extension point="org.eclipse.ui.editors.annotationTypes">
+    <!-- Reference -->
     <type
         name="org.ucdetector.analyzeAnnotationReference"
         super="org.eclipse.ui.workbench.texteditor.warning"
         markerType="org.ucdetector.analyzeMarkerReference"/>
+    <!-- few references -->
+    <type
+        name="org.ucdetector.analyzeAnnotationFewReference"
+        super="org.eclipse.ui.workbench.texteditor.warning"
+        markerType="org.ucdetector.analyzeMarkerFewReference"/>
     <!-- visibility -->
     <type
         name="org.ucdetector.analyzeAnnotationVisibilityPrivate"
@@ -215,7 +232,7 @@
         name="org.ucdetector.analyzeAnnotationVisibilityDefault"
         super="org.eclipse.ui.workbench.texteditor.warning"
         markerType="org.ucdetector.analyzeMarkerVisibilityDefault"/>
-    <!-- visibility -->
+    <!-- final -->
     <type
         name="org.ucdetector.analyzeAnnotationFinal"
         super="org.eclipse.ui.workbench.texteditor.warning"
@@ -224,12 +241,19 @@
   
   <!-- *** 3 *** -->
   <extension point="org.eclipse.ui.editors.markerAnnotationSpecification">
+    <!-- references -->
     <specification
         annotationType="org.ucdetector.analyzeAnnotationReference"
         icon="icons/not_found_obj.gif"
         quickFixIcon="icons/not_found_obj.gif"
         includeOnPreferencePage="true"
         label="%specification.label.references"/>
+    <!-- few references -->
+    <specification
+        annotationType="org.ucdetector.analyzeAnnotationFewReference"
+        icon="icons/few_found_obj.gif"
+        includeOnPreferencePage="true"
+        label="%specification.label.few.references"/>
     <!-- visibility -->
     <specification
         annotationType="org.ucdetector.analyzeAnnotationVisibilityPrivate"
@@ -291,8 +315,13 @@
     <markerResolutionGenerator
      markerType="org.ucdetector.analyzeMarkerReference"
      class="org.ucdetector.quickfix.UCDQuickGenerator"/>
-  </extension>  
-
+  </extension>
+  <!-- no quickFix for few references
+  <extension point="org.eclipse.ui.ide.markerResolution">
+    <markerResolutionGenerator
+     markerType="org.ucdetector.analyzeMarkerFewReference"
+     class="org.ucdetector.quickfix.UCDQuickGenerator"/>
+  </extension> -->
   <extension point="org.eclipse.ui.ide.markerResolution">
     <markerResolutionGenerator
      markerType="org.ucdetector.analyzeMarkerFinal"

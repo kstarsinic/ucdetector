@@ -40,6 +40,8 @@ public class MarkerFactory {
   = "org.ucdetector.analyzeMarker"; //$NON-NLS-1$
   public static final String UCD_MARKER_UNUSED //
   = "org.ucdetector.analyzeMarkerReference"; //$NON-NLS-1$
+  public static final String UCD_MARKER_USED_FEW //
+  = "org.ucdetector.analyzeMarkerFewReference"; //$NON-NLS-1$
   public static final String UCD_MARKER_USE_PRIVATE //
   = "org.ucdetector.analyzeMarkerVisibilityPrivate"; //$NON-NLS-1$
   public static final String UCD_MARKER_USE_PROETECTED //
@@ -102,11 +104,12 @@ public class MarkerFactory {
   }
 
   /**
-   * Create an eclipse marker: "Class MyClass has 0 references"
+   * Create an eclipse marker: "Class MyClass has {0} references"
+   * @param found TODO
    */
   public boolean createReferenceMarker(IJavaElement javaElement,
-      String message, int line) throws CoreException {
-    String type = UCD_MARKER_UNUSED;
+      String message, int line, int found) throws CoreException {
+    String type = found == 0 ? UCD_MARKER_UNUSED : UCD_MARKER_USED_FEW;
     return createMarkerImpl(new ReportParam(javaElement, message, line, type));
   }
 

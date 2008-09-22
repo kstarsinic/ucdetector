@@ -33,9 +33,6 @@ public class UCDQuickGenerator implements IMarkerResolutionGenerator2 { // NO_UC
       List<IMarkerResolution> resolutions = new ArrayList<IMarkerResolution>();
       resolutions.add(new NoUcdTagQuickFix());
       add(resolutions, new NoUcdTagQuickFix());
-      // TODO 22.09.2008: Use private + use final QuickFix:
-      // - remove use private
-      // - don't put 2 NoUcdTagQuickFix
       if (MarkerFactory.UCD_MARKER_UNUSED.equals(problem)) {
         resolutions.add(new DeleteQuickFix());
         resolutions.add(new LineCommentQuickFix());
@@ -59,17 +56,20 @@ public class UCDQuickGenerator implements IMarkerResolutionGenerator2 { // NO_UC
   private void add(List<IMarkerResolution> resolutions,
       AbstractUCDQuickFix quickFix) {
     for (IMarkerResolution resolution : resolutions) {
-      if (resolution instanceof NoUcdTagQuickFix
-          && quickFix instanceof NoUcdTagQuickFix) {
-        // ignore
-      }
-      else {
+      if (!(resolution instanceof NoUcdTagQuickFix)
+          || !(quickFix instanceof NoUcdTagQuickFix)) {
         resolutions.add(quickFix);
       }
     }
   }
 
   public boolean hasResolutions(IMarker marker) {
-    return true;
+    try {
+      return !MarkerFactory.UCD_MARKER_USED_FEW.equals(marker.getType());
+    }
+    catch (CoreException e) {
+      Log.logError("Can't get UCD resolutions", e); //$NON-NLS-1$
+      return false;
+    }
   }
 }

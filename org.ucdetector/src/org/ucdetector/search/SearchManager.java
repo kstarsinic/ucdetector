@@ -264,7 +264,7 @@ public class SearchManager {
         bindings);
     if (found <= Prefs.getWarnLimit()) {
       created = markerFactory
-          .createReferenceMarker(member, markerMessage, line);
+          .createReferenceMarker(member, markerMessage, line, found);
       if (created) {
         foundTotal++;
       }

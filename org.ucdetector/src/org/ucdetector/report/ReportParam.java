@@ -50,7 +50,8 @@ public class ReportParam {
 
   private WarnLevel calculateWarnLevel() {
     WarnLevel warnLevel = null;
-    if (MarkerFactory.UCD_MARKER_UNUSED.equals(markerType)) {
+    if (MarkerFactory.UCD_MARKER_UNUSED.equals(markerType)
+        || MarkerFactory.UCD_MARKER_USED_FEW.equals(markerType)) {
       if (javaElement instanceof IType) {
         warnLevel = Prefs.getUCDetectionInClasses();
       }
