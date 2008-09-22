@@ -129,4 +129,10 @@ public class Messages extends NLS {
   // REPORT --------------------------------------------------------------------
   public static String XMLReportWriteOk; // NO_UCD
   public static String XMLReportWriteError; // NO_UCD
+  // QuickFix ------------------------------------------------------------------
+  public static String UseFinalQuickFix_label;
+  public static String DeleteQuickFix_label;
+  public static String LineCommentQuickFix_label;
+  public static String NoUcdTagQuickFix_label;
+  public static String VisibilityQuickFix_label;
 }

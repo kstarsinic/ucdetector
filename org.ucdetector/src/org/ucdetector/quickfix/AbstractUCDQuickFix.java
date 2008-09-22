@@ -1,5 +1,6 @@
 package org.ucdetector.quickfix;
 
+import java.util.HashMap;
 import java.util.List;
 
 import org.eclipse.core.filebuffers.FileBuffers;
@@ -47,30 +48,28 @@ abstract class AbstractUCDQuickFix implements IMarkerResolution2 {
   protected String markerType;
   /** Parameters of the methods */
   // TODO 22.09.2008: Use this field for: findMethodDeclaration()
-  private String[] methodParameters;
+  private String[] methodParams;
   private String elementName;
   // ---------------------------------------------------------------------------
   protected ASTRewrite rewrite;
 
+  @SuppressWarnings("unchecked")
   public void run(IMarker marker) {
     try {
       // -----------------------------------------------------------------------
-      String javaElement = (String) marker
-          .getAttribute(MarkerFactory.JAVA_ELEMENT_ATTRIBUTE);
-      markerType = marker.getType();
       if (UCDetectorPlugin.DEBUG) {
-        Log.logDebug("UCDQuickFix(): problem=" + markerType + //$NON-NLS-1$
-            ",javaElementString=" + javaElement); //$NON-NLS-1$
+        StringBuilder sb = new StringBuilder();
+        sb.append(getClass().getSimpleName()).append("run().Marker="); //$NON-NLS-1$
+        sb.append(new HashMap(marker.getAttributes()));
+        Log.logDebug(sb.toString());
       }
-      if (markerType == null || javaElement == null) {
-        throw new IllegalArgumentException("problem=" + markerType //$NON-NLS-1$
-            + ", javaElement=" + javaElement); //$NON-NLS-1$
-      }
-      String[] split = javaElement.split(","); //$NON-NLS-1$
-      ELEMENT element = getElement(split[0]);
-      elementName = split[1];
-      methodParameters = new String[split.length - 2];
-      System.arraycopy(split, 2, methodParameters, 0, methodParameters.length);
+      markerType = marker.getType();
+      String[] elementInfos = marker.getAttribute(
+          MarkerFactory.JAVA_ELEMENT_ATTRIBUTE, "?").split(","); //$NON-NLS-1$ //$NON-NLS-2$
+      ELEMENT element = getElement(elementInfos[0]);
+      elementName = elementInfos[1];
+      methodParams = new String[elementInfos.length - 2];
+      System.arraycopy(elementInfos, 2, methodParams, 0, methodParams.length);
       // -----------------------------------------------------------------------
       ICompilationUnit originalUnit = getCompilationUnit(marker);
       CompilationUnit copyUnit = createCopy(originalUnit);
@@ -79,10 +78,17 @@ abstract class AbstractUCDQuickFix implements IMarkerResolution2 {
           0);
       BodyDeclaration nodeToChange = getBodyDeclaration(element,
           typeDeclaration);
+      if (UCDetectorPlugin.DEBUG) {
+        StringBuilder sb = new StringBuilder();
+        sb.append("    Node to change='"); //$NON-NLS-1$
+        sb.append(nodeToChange).append('\'');
+        Log.logDebug(sb.toString());
+      }
       if (nodeToChange == null) {
         return;
       }
       runImpl(marker, element, nodeToChange);
+      marker.delete();
     }
     catch (Exception e) {
       Log.logErrorAndStatus("Quick Fix Problems", e); //$NON-NLS-1$

@@ -9,18 +9,16 @@ import org.eclipse.core.runtime.IPath;
 import org.eclipse.jdt.core.dom.BodyDeclaration;
 import org.eclipse.jface.text.IDocument;
 import org.eclipse.jface.text.IRegion;
+import org.ucdetector.Messages;
 
 /**
  *
  */
 class LineCommentQuickFix extends AbstractUCDQuickFix {
 
-  public String getLabel() {
-    return "Comment all lines";
-  }
-
   @Override
-  public void runImpl(IMarker marker, ELEMENT element, BodyDeclaration nodeToChange) throws Exception {
+  public void runImpl(IMarker marker, ELEMENT element,
+      BodyDeclaration nodeToChange) throws Exception {
     int offsetBody = nodeToChange.getStartPosition();
     int lengthBody = nodeToChange.getLength();
     ITextFileBufferManager bufferManager = FileBuffers
@@ -38,13 +36,16 @@ class LineCommentQuickFix extends AbstractUCDQuickFix {
         int offsetLine = region.getOffset();
         int lengthLine = region.getLength();
         String strLine = doc.get(offsetLine, lengthLine);
-        doc.replace(offsetLine, lengthLine, "// " + strLine);
+        doc.replace(offsetLine, lengthLine, "// " + strLine); //$NON-NLS-1$
       }
       textFileBuffer.commit(null, true);
-      marker.delete();
     }
     finally {
       bufferManager.disconnect(path, LocationKind.NORMALIZE, null);
     }
+  }
+
+  public String getLabel() {
+    return Messages.LineCommentQuickFix_label;
   }
 }

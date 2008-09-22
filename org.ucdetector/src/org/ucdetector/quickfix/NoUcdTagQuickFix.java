@@ -5,29 +5,19 @@ import org.eclipse.core.filebuffers.ITextFileBuffer;
 import org.eclipse.core.filebuffers.ITextFileBufferManager;
 import org.eclipse.core.filebuffers.LocationKind;
 import org.eclipse.core.resources.IMarker;
-import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IPath;
 import org.eclipse.jdt.core.dom.BodyDeclaration;
-import org.eclipse.jface.text.BadLocationException;
 import org.eclipse.jface.text.IDocument;
 import org.eclipse.jface.text.IRegion;
-import org.eclipse.text.edits.MalformedTreeException;
+import org.ucdetector.Messages;
 
 /**
  *
  */
 class NoUcdTagQuickFix extends AbstractUCDQuickFix {
-  public String getLabel() {
-    return "Use comment: // NO_UCD";
-  }
-
   @Override
-  public void runImpl(IMarker marker, ELEMENT element, BodyDeclaration nodeToChange) throws Exception {
-    addUCDComment(marker);
-  }
-
-  private void addUCDComment(IMarker marker) throws CoreException,
-      MalformedTreeException, BadLocationException {
+  public void runImpl(IMarker marker, ELEMENT element,
+      BodyDeclaration nodeToChange) throws Exception {
     ITextFileBufferManager bufferManager = FileBuffers
         .getTextFileBufferManager();
     IPath path = marker.getResource().getLocation();
@@ -44,12 +34,15 @@ class NoUcdTagQuickFix extends AbstractUCDQuickFix {
       int offset = region.getOffset();
       int length = region.getLength();
       String strLine = doc.get(offset, length);
-      doc.replace(offset, length, strLine + " // NO_UCD");
+      doc.replace(offset, length, strLine + " // NO_UCD"); //$NON-NLS-1$
       textFileBuffer.commit(null, true);
-      marker.delete();
     }
     finally {
       bufferManager.disconnect(path, LocationKind.NORMALIZE, null);
     }
+  }
+
+  public String getLabel() {
+    return Messages.NoUcdTagQuickFix_label;
   }
 }

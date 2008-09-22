@@ -27,7 +27,7 @@ public class UCDQuickGenerator implements IMarkerResolutionGenerator2 { // NO_UC
   public IMarkerResolution[] getResolutions(IMarker marker) {
     try {
       if (UCDetectorPlugin.DEBUG) {
-        Log.logDebug("UCDQuickFixer.getResolutions()" + marker); //$NON-NLS-1$
+        Log.logDebug("UCDQuickFixer.getResolutions()" + marker.getType()); //$NON-NLS-1$
       }
       String problem = marker.getType();
       List<IMarkerResolution> resolutions = new ArrayList<IMarkerResolution>();
@@ -51,7 +51,7 @@ public class UCDQuickGenerator implements IMarkerResolutionGenerator2 { // NO_UC
       return resolutions.toArray(new IMarkerResolution[resolutions.size()]);
     }
     catch (CoreException e) {
-      Log.logError("Can't get UCD resolutions", e);
+      Log.logError("Can't get UCD resolutions", e); //$NON-NLS-1$
     }
     return new IMarkerResolution[0];
   }
@@ -67,8 +67,6 @@ public class UCDQuickGenerator implements IMarkerResolutionGenerator2 { // NO_UC
         resolutions.add(quickFix);
       }
     }
-    // TODO Auto-generated method stub
-
   }
 
   public boolean hasResolutions(IMarker marker) {

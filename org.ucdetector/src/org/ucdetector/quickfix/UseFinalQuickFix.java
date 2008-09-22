@@ -11,16 +11,13 @@ import org.eclipse.core.resources.IMarker;
 import org.eclipse.jdt.core.dom.BodyDeclaration;
 import org.eclipse.jdt.core.dom.Modifier;
 import org.eclipse.jdt.core.dom.rewrite.ListRewrite;
+import org.ucdetector.Messages;
 
 /**
  * // http://help.eclipse.org/help32/index.jsp?topic=/org.eclipse.jdt.doc.isv/reference/api/org/eclipse/jdt/core/dom/rewrite/ASTRewrite.html
  * @see http://www.eclipse.org/articles/article.php?file=Article-JavaCodeManipulation_AST/index.html
  */
-public class UseFinalQuickFix extends AbstractUCDQuickFix { // NO_UCD
-
-  public String getLabel() {
-    return "Add keyword 'final'"; //$NON-NLS-1$
-  }
+class UseFinalQuickFix extends AbstractUCDQuickFix {
 
   @Override
   public final void runImpl(IMarker marker, ELEMENT element,
@@ -33,11 +30,14 @@ public class UseFinalQuickFix extends AbstractUCDQuickFix { // NO_UCD
     if (modifierFound == null) {
       listRewrite.insertFirst(modifierFinal, null);
     }
+    // public -> public final
     else {
-      // public -> public final
       listRewrite.insertAfter(modifierFinal, modifierFound, null);
     }
     commit(marker);
-    marker.delete();
+  }
+
+  public String getLabel() {
+    return Messages.UseFinalQuickFix_label;
   }
 }
