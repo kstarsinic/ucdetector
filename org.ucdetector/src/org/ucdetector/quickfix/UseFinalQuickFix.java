@@ -43,7 +43,11 @@ class UseFinalQuickFix extends AbstractUCDQuickFix {
 
   //  @Override
   //  public Image getImage() {
-  //    return UCDetectorPlugin.getJavaPluginImage(JavaPluginImages.DESC_OVR_FINAL);
+  //    ISharedImages sharedImages = PlatformUI.getWorkbench().getSharedImages();
+  //    ImageDescriptor descriptor = sharedImages
+  //        .getImageDescriptor(org.eclipse.jdt.ui.ISharedImages.DESC_OVR_FINAL);
+  //    return descriptor.createImage();
+  //    //    return UCDetectorPlugin.getJavaPluginImage(JavaPluginImages.DESC_OVR_FINAL);
   //  }
 
 }
