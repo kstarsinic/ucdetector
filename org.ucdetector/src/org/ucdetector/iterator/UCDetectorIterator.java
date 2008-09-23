@@ -30,7 +30,7 @@ public class UCDetectorIterator extends AbstractUCDetectorIterator {
   private final List<IMethod> methods = new ArrayList<IMethod>();
   private final List<IField> fields = new ArrayList<IField>();
 
-  private final StopWatch stopWatch = new StopWatch(); //$NON-NLS-1$
+  private final StopWatch stopWatch = new StopWatch(); 
 
   @Override
   public void handleStartSelectedElement(IJavaElement javaElement)

@@ -78,7 +78,7 @@ public class MarkerReport implements IUCDetectorReport {
 
   /**
    * @return a nice String for a class, method or field like:
-   * MyClass.myMethod(String, int)
+   * type,MyClass
    */
   private static String getJavaElementString(IJavaElement javaElement) {
     StringBuilder sb = new StringBuilder();
@@ -92,14 +92,6 @@ public class MarkerReport implements IUCDetectorReport {
       sb.append(MarkerFactory.JAVA_ELEMENT_FIELD);
     }
     sb.append(',').append(javaElement.getElementName());
-    if (javaElement instanceof IMethod) {
-      IMethod method = (IMethod) javaElement;
-      String[] parameterTypes = method.getParameterTypes();
-      for (int i = 0; i < parameterTypes.length; i++) {
-        sb.append(',');
-        sb.append(parameterTypes[i]);
-      }
-    }
     return sb.toString();
   }
 

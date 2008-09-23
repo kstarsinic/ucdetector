@@ -175,7 +175,7 @@ public abstract class AbstractUCDetectorIterator extends UCDetectorHandler {
       StringBuilder sb = new StringBuilder();
       sb.append("Iterate JavaElement '");
       sb.append(JavaElementUtil.getElementName(javaElement)).append("' ");
-      sb.append(Log.getClassName(javaElement)); //$NON-NLS-1$
+      sb.append(Log.getClassName(javaElement)); 
       Log.logDebug(sb.toString());
     }
     handleStartElement(javaElement);

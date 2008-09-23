@@ -105,7 +105,6 @@ public class MarkerFactory {
 
   /**
    * Create an eclipse marker: "Class MyClass has {0} references"
-   * @param found TODO
    */
   public boolean createReferenceMarker(IJavaElement javaElement,
       String message, int line, int found) throws CoreException {
