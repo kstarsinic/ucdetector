@@ -9,7 +9,7 @@ import org.ucdetector.UCDetectorPlugin;
  */
 public class UCDProgressMonitor implements IProgressMonitor {
   private final IProgressMonitor delegate;
-  private String taskName = "?";
+  private String taskName = "?"; //$NON-NLS-1$
 
   public UCDProgressMonitor(IProgressMonitor delegate) {
     this.delegate = delegate;
@@ -17,12 +17,12 @@ public class UCDProgressMonitor implements IProgressMonitor {
 
   public void beginTask(String beginTaskName, int totalWork) {
     this.taskName = beginTaskName;
-    Log.logInfo("Start task: " + beginTaskName);
+    Log.logInfo("Start task: " + beginTaskName); //$NON-NLS-1$
     delegate.beginTask(beginTaskName, totalWork);
   }
 
   public void done() {
-    Log.logInfo("End task: " + taskName);
+    Log.logInfo("End task: " + taskName); //$NON-NLS-1$
     delegate.done();
   }
 
@@ -35,7 +35,7 @@ public class UCDProgressMonitor implements IProgressMonitor {
   }
 
   public void setCanceled(boolean value) {
-    Log.logInfo("Task canceled: " + taskName);
+    Log.logInfo("Task canceled: " + taskName); //$NON-NLS-1$
     delegate.setCanceled(value);
   }
 

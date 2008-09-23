@@ -147,7 +147,7 @@ public abstract class AbstractUCDetectorAction extends ActionDelegate { // NO_UC
         }
       }
       catch (JavaModelException e) {
-        Log.logError("allAccessible", e);
+        Log.logError("allAccessible", e); //$NON-NLS-1$
         return false;
       }
     }
