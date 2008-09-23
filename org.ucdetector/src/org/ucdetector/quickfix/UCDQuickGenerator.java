@@ -32,18 +32,18 @@ public class UCDQuickGenerator implements IMarkerResolutionGenerator2 { // NO_UC
         Log.logDebug("UCDQuickFixer.getResolutions()" + markerType); //$NON-NLS-1$
       }
       List<IMarkerResolution> resolutions = new ArrayList<IMarkerResolution>();
-      add(resolutions, new UseTag_NO_UCD_QuickFix());
+      resolutions.add(new UseTag_NO_UCD_QuickFix());
       if (MarkerFactory.UCD_MARKER_UNUSED.equals(markerType)) {
-        add(resolutions, new DeleteQuickFix());
-        add(resolutions, new LineCommentQuickFix());
+        resolutions.add(new DeleteQuickFix());
+        resolutions.add(new LineCommentQuickFix());
       }
       else if (MarkerFactory.UCD_MARKER_USE_PRIVATE.equals(markerType)
           || MarkerFactory.UCD_MARKER_USE_PROETECTED.equals(markerType)
           || MarkerFactory.UCD_MARKER_USE_DEFAULT.equals(markerType)) {
-        add(resolutions, new VisibilityQuickFix(markerType));
+        resolutions.add(new VisibilityQuickFix(markerType));
       }
       else if (MarkerFactory.UCD_MARKER_USE_FINAL.equals(markerType)) {
-        add(resolutions, new UseFinalQuickFix());
+        resolutions.add(new UseFinalQuickFix());
       }
       return resolutions.toArray(new IMarkerResolution[resolutions.size()]);
     }
@@ -51,19 +51,6 @@ public class UCDQuickGenerator implements IMarkerResolutionGenerator2 { // NO_UC
       Log.logError("Can't get UCDetector resolutions", e); //$NON-NLS-1$
     }
     return new IMarkerResolution[0];
-  }
-
-  /**
-   * Avoid double QuickFixes
-   */
-  private void add(List<IMarkerResolution> resolutions,
-      AbstractUCDQuickFix quickFix) {
-    for (IMarkerResolution resolution : resolutions) {
-      if (!(resolution instanceof UseTag_NO_UCD_QuickFix)
-          || !(quickFix instanceof UseTag_NO_UCD_QuickFix)) {
-        resolutions.add(quickFix);
-      }
-    }
   }
 
   public boolean hasResolutions(IMarker marker) {
