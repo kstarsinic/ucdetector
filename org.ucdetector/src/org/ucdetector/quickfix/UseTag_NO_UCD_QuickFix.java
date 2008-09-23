@@ -7,14 +7,17 @@ import org.eclipse.core.filebuffers.LocationKind;
 import org.eclipse.core.resources.IMarker;
 import org.eclipse.core.runtime.IPath;
 import org.eclipse.jdt.core.dom.BodyDeclaration;
+import org.eclipse.jdt.internal.ui.JavaPluginImages;
 import org.eclipse.jface.text.IDocument;
 import org.eclipse.jface.text.IRegion;
+import org.eclipse.swt.graphics.Image;
 import org.ucdetector.Messages;
 
 /**
- *
+ * 'Fixes' code by adding line comment at end of line: "// NO_UCD"
  */
-class NoUcdTagQuickFix extends AbstractUCDQuickFix {
+class UseTag_NO_UCD_QuickFix extends AbstractUCDQuickFix {
+
   @Override
   public void runImpl(IMarker marker, ELEMENT element,
       BodyDeclaration nodeToChange) throws Exception {
@@ -40,6 +43,11 @@ class NoUcdTagQuickFix extends AbstractUCDQuickFix {
     finally {
       bufferManager.disconnect(path, LocationKind.NORMALIZE, null);
     }
+  }
+
+  public Image getImage() {
+    // IMG_OBJS_HTMLTAG
+    return JavaPluginImages.get(JavaPluginImages.IMG_OBJS_NLS_SKIP);
   }
 
   public String getLabel() {

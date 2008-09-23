@@ -20,44 +20,47 @@ import org.ucdetector.util.MarkerFactory;
 
 /**
  * Generates Marker Resolutions<br>
+ * 
  * @see http://wiki.eclipse.org/FAQ_How_do_I_implement_Quick_Fixes_for_my_own_language%3F
  * @see extension point="org.eclipse.ui.ide.markerResolution" in plugin.xml
  */
 public class UCDQuickGenerator implements IMarkerResolutionGenerator2 { // NO_UCD
   public IMarkerResolution[] getResolutions(IMarker marker) {
     try {
+      String markerType = marker.getType();
       if (UCDetectorPlugin.DEBUG) {
-        Log.logDebug("UCDQuickFixer.getResolutions()" + marker.getType()); //$NON-NLS-1$
+        Log.logDebug("UCDQuickFixer.getResolutions()" + markerType); //$NON-NLS-1$
       }
-      String problem = marker.getType();
       List<IMarkerResolution> resolutions = new ArrayList<IMarkerResolution>();
-      resolutions.add(new NoUcdTagQuickFix());
-      add(resolutions, new NoUcdTagQuickFix());
-      if (MarkerFactory.UCD_MARKER_UNUSED.equals(problem)) {
-        resolutions.add(new DeleteQuickFix());
-        resolutions.add(new LineCommentQuickFix());
+      add(resolutions, new UseTag_NO_UCD_QuickFix());
+      if (MarkerFactory.UCD_MARKER_UNUSED.equals(markerType)) {
+        add(resolutions, new DeleteQuickFix());
+        add(resolutions, new LineCommentQuickFix());
       }
-      else if (MarkerFactory.UCD_MARKER_USE_PRIVATE.equals(problem)
-          || MarkerFactory.UCD_MARKER_USE_PROETECTED.equals(problem)
-          || MarkerFactory.UCD_MARKER_USE_DEFAULT.equals(problem)) {
-        resolutions.add(new VisibilityQuickFix(marker));
+      else if (MarkerFactory.UCD_MARKER_USE_PRIVATE.equals(markerType)
+          || MarkerFactory.UCD_MARKER_USE_PROETECTED.equals(markerType)
+          || MarkerFactory.UCD_MARKER_USE_DEFAULT.equals(markerType)) {
+        add(resolutions, new VisibilityQuickFix(markerType));
       }
-      else if (MarkerFactory.UCD_MARKER_USE_FINAL.equals(problem)) {
-        resolutions.add(new UseFinalQuickFix());
+      else if (MarkerFactory.UCD_MARKER_USE_FINAL.equals(markerType)) {
+        add(resolutions, new UseFinalQuickFix());
       }
       return resolutions.toArray(new IMarkerResolution[resolutions.size()]);
     }
     catch (CoreException e) {
-      Log.logError("Can't get UCD resolutions", e); //$NON-NLS-1$
+      Log.logError("Can't get UCDetector resolutions", e); //$NON-NLS-1$
     }
     return new IMarkerResolution[0];
   }
 
+  /**
+   * Avoid double QuickFixes
+   */
   private void add(List<IMarkerResolution> resolutions,
       AbstractUCDQuickFix quickFix) {
     for (IMarkerResolution resolution : resolutions) {
-      if (!(resolution instanceof NoUcdTagQuickFix)
-          || !(quickFix instanceof NoUcdTagQuickFix)) {
+      if (!(resolution instanceof UseTag_NO_UCD_QuickFix)
+          || !(quickFix instanceof UseTag_NO_UCD_QuickFix)) {
         resolutions.add(quickFix);
       }
     }

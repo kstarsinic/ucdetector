@@ -11,11 +11,12 @@ import org.eclipse.core.resources.IMarker;
 import org.eclipse.jdt.core.dom.BodyDeclaration;
 import org.eclipse.jdt.core.dom.Modifier;
 import org.eclipse.jdt.core.dom.rewrite.ListRewrite;
+import org.eclipse.swt.graphics.Image;
 import org.ucdetector.Messages;
+import org.ucdetector.UCDetectorPlugin;
 
 /**
- * // http://help.eclipse.org/help32/index.jsp?topic=/org.eclipse.jdt.doc.isv/reference/api/org/eclipse/jdt/core/dom/rewrite/ASTRewrite.html
- * @see http://www.eclipse.org/articles/article.php?file=Article-JavaCodeManipulation_AST/index.html
+ * Fixes code by adding keyword <code>final</code>
  */
 class UseFinalQuickFix extends AbstractUCDQuickFix {
 
@@ -41,13 +42,7 @@ class UseFinalQuickFix extends AbstractUCDQuickFix {
     return Messages.UseFinalQuickFix_label;
   }
 
-  //  @Override
-  //  public Image getImage() {
-  //    ISharedImages sharedImages = PlatformUI.getWorkbench().getSharedImages();
-  //    ImageDescriptor descriptor = sharedImages
-  //        .getImageDescriptor(org.eclipse.jdt.ui.ISharedImages.DESC_OVR_FINAL);
-  //    return descriptor.createImage();
-  //    //    return UCDetectorPlugin.getJavaPluginImage(JavaPluginImages.DESC_OVR_FINAL);
-  //  }
-
+  public Image getImage() {
+    return UCDetectorPlugin.getImage(UCDetectorPlugin.IMAGE_FINAL);
+  }
 }

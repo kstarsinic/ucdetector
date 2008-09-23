@@ -18,8 +18,10 @@ import org.eclipse.jdt.core.JavaCore;
 import org.eclipse.jdt.core.JavaModelException;
 import org.eclipse.jdt.core.dom.AST;
 import org.eclipse.jdt.core.dom.ASTParser;
+import org.eclipse.jdt.core.dom.AnnotationTypeDeclaration;
 import org.eclipse.jdt.core.dom.BodyDeclaration;
 import org.eclipse.jdt.core.dom.CompilationUnit;
+import org.eclipse.jdt.core.dom.EnumDeclaration;
 import org.eclipse.jdt.core.dom.FieldDeclaration;
 import org.eclipse.jdt.core.dom.MethodDeclaration;
 import org.eclipse.jdt.core.dom.Modifier;
@@ -30,7 +32,6 @@ import org.eclipse.jdt.core.dom.rewrite.ASTRewrite;
 import org.eclipse.jdt.core.dom.rewrite.ListRewrite;
 import org.eclipse.jface.text.BadLocationException;
 import org.eclipse.jface.text.IDocument;
-import org.eclipse.swt.graphics.Image;
 import org.eclipse.text.edits.TextEdit;
 import org.eclipse.ui.IMarkerResolution2;
 import org.ucdetector.Log;
@@ -38,7 +39,10 @@ import org.ucdetector.UCDetectorPlugin;
 import org.ucdetector.util.MarkerFactory;
 
 /**
- *
+ * Base class for all UCDetector QuickFixes
+ * 
+ * http://help.eclipse.org/help32/index.jsp?topic=/org.eclipse.jdt.doc.isv/reference/api/org/eclipse/jdt/core/dom/rewrite/ASTRewrite.html
+ * @see http://www.eclipse.org/articles/article.php?file=Article-JavaCodeManipulation_AST/index.html
  */
 abstract class AbstractUCDQuickFix implements IMarkerResolution2 {
   static enum ELEMENT {
@@ -74,10 +78,24 @@ abstract class AbstractUCDQuickFix implements IMarkerResolution2 {
       ICompilationUnit originalUnit = getCompilationUnit(marker);
       CompilationUnit copyUnit = createCopy(originalUnit);
       rewrite = ASTRewrite.create(copyUnit.getAST());
-      TypeDeclaration typeDeclaration = (TypeDeclaration) copyUnit.types().get(
-          0);
-      BodyDeclaration nodeToChange = getBodyDeclaration(element,
-          typeDeclaration);
+      // -----------------------------------------------------------------------
+      // TODO 23.09.2008: handle AnnotationTypeDeclaration and EnumDeclaration
+      //  use lines to get BodyDeclaration!
+      // -----------------------------------------------------------------------
+      Object firstType = copyUnit.types().get(0);
+      BodyDeclaration nodeToChange = null;
+      if (firstType instanceof TypeDeclaration) {
+        TypeDeclaration typeDeclaration = (TypeDeclaration) firstType;
+        nodeToChange = getBodyDeclaration(element, typeDeclaration);
+      }
+      else if (firstType instanceof AnnotationTypeDeclaration) {
+        AnnotationTypeDeclaration atd = (AnnotationTypeDeclaration) firstType;
+        atd.bodyDeclarations();
+      }
+      else if (firstType instanceof EnumDeclaration) {
+        EnumDeclaration ed = (EnumDeclaration) firstType;
+        ed.bodyDeclarations();
+      }
       if (UCDetectorPlugin.DEBUG) {
         StringBuilder sb = new StringBuilder();
         sb.append("    Node to change='"); //$NON-NLS-1$
@@ -250,13 +268,5 @@ abstract class AbstractUCDQuickFix implements IMarkerResolution2 {
   // TODO 21.09.2008: Use IMarkerResolution2?
   public String getDescription() {
     return null;//"Test Description";
-  }
-
-  public Image getImage() {
-    //      IPath path = new Path("icons").append("/cycle.gif"); //$NON-NLS-1$ //$NON-NLS-2$
-    //      ImageDescriptor id = JavaPluginImages.createImageDescriptor(
-    //          UCDetectorPlugin.getDefault().getBundle(), path, false);
-    //      return id.createImage();
-    return null;
   }
 }

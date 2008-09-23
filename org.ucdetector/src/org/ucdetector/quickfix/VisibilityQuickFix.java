@@ -8,7 +8,6 @@
 package org.ucdetector.quickfix;
 
 import org.eclipse.core.resources.IMarker;
-import org.eclipse.core.runtime.CoreException;
 import org.eclipse.jdt.core.dom.BodyDeclaration;
 import org.eclipse.jdt.core.dom.Modifier;
 import org.eclipse.jdt.core.dom.rewrite.ListRewrite;
@@ -16,24 +15,17 @@ import org.eclipse.jdt.internal.ui.JavaPluginImages;
 import org.eclipse.osgi.util.NLS;
 import org.eclipse.swt.graphics.Image;
 import org.ucdetector.Messages;
-import org.ucdetector.UCDetectorPlugin;
 import org.ucdetector.util.MarkerFactory;
 
 /**
- * // http://help.eclipse.org/help32/index.jsp?topic=/org.eclipse.jdt.doc.isv/reference/api/org/eclipse/jdt/core/dom/rewrite/ASTRewrite.html
- * @see http://www.eclipse.org/articles/article.php?file=Article-JavaCodeManipulation_AST/index.html
+ * Fixes code by changing visibility to <code>protected</code>
+ * default or <code>private</code>
  */
 class VisibilityQuickFix extends AbstractUCDQuickFix {
-  private String markerType = null;
+  private final String markerType;
 
-  // TODO 22.09.2008: clean up
-  VisibilityQuickFix(IMarker marker) {
-    try {
-      this.markerType = marker.getType();
-    }
-    catch (CoreException e) {
-      e.printStackTrace();
-    }
+  VisibilityQuickFix(String markerType) {
+    this.markerType = markerType;
   }
 
   @Override
@@ -83,19 +75,15 @@ class VisibilityQuickFix extends AbstractUCDQuickFix {
     return NLS.bind(Messages.VisibilityQuickFix_label, keyword);
   }
 
-  @Override
   public Image getImage() {
     if (MarkerFactory.UCD_MARKER_USE_PROETECTED.equals(markerType)) {
-      return UCDetectorPlugin
-          .getJavaPluginImage(JavaPluginImages.IMG_MISC_PROTECTED);
+      return JavaPluginImages.get(JavaPluginImages.IMG_MISC_PROTECTED);
     }
     else if (MarkerFactory.UCD_MARKER_USE_DEFAULT.equals(markerType)) {
-      return UCDetectorPlugin
-          .getJavaPluginImage(JavaPluginImages.IMG_MISC_DEFAULT);
+      return JavaPluginImages.get(JavaPluginImages.IMG_MISC_DEFAULT);
     }
     else if (MarkerFactory.UCD_MARKER_USE_PRIVATE.equals(markerType)) {
-      return UCDetectorPlugin
-          .getJavaPluginImage(JavaPluginImages.IMG_MISC_PRIVATE);
+      return JavaPluginImages.get(JavaPluginImages.IMG_MISC_PRIVATE);
     }
     return null;
   }
