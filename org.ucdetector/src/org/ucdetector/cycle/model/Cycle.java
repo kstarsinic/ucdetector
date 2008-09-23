@@ -10,10 +10,6 @@ package org.ucdetector.cycle.model;
 import java.util.LinkedList;
 import java.util.List;
 
-import org.eclipse.core.runtime.IPath;
-import org.eclipse.core.runtime.Path;
-import org.eclipse.jdt.internal.ui.JavaPluginImages;
-import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.swt.graphics.Image;
 import org.ucdetector.Messages;
 import org.ucdetector.UCDetectorPlugin;
@@ -33,14 +29,6 @@ import org.ucdetector.UCDetectorPlugin;
 public class Cycle extends CycleBaseElement {
   private final LinkedList<CycleType> cycleList;
   private final SearchResult parent;
-  private static final Image IMAGE;
-
-  static {
-    IPath path = new Path("icons").append("/cycle.gif"); //$NON-NLS-1$ //$NON-NLS-2$
-    ImageDescriptor id = JavaPluginImages.createImageDescriptor(
-        UCDetectorPlugin.getDefault().getBundle(), path, false);
-    IMAGE = id.createImage();
-  }
 
   public Cycle(SearchResult parent, LinkedList<CycleType> cycleList) {
     if (cycleList.size() < 2) {
@@ -109,7 +97,7 @@ public class Cycle extends CycleBaseElement {
   }
 
   public Image getImage() {
-    return IMAGE;
+    return UCDetectorPlugin.getImage(UCDetectorPlugin.IMAGE_CYCLE);
   }
 
   public SearchResult getParent() {

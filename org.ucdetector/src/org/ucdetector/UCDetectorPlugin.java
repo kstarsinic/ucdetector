@@ -11,10 +11,15 @@ import java.text.DateFormat;
 import java.util.Date;
 
 import org.eclipse.core.runtime.CoreException;
+import org.eclipse.core.runtime.IPath;
+import org.eclipse.core.runtime.Path;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.jdt.internal.ui.JavaPluginImages;
+import org.eclipse.jface.resource.ImageDescriptor;
+import org.eclipse.jface.resource.ImageRegistry;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.widgets.Shell;
+import org.eclipse.ui.ISharedImages;
 import org.eclipse.ui.IWorkbenchPage;
 import org.eclipse.ui.IWorkbenchWindow;
 import org.eclipse.ui.PlatformUI;
@@ -25,6 +30,10 @@ import org.osgi.framework.BundleContext;
  * Default Activator-class of this plug-ins
  */
 public class UCDetectorPlugin extends AbstractUIPlugin {
+  public static final String IMAGE_FINAL = "IMAGE_FINAL";
+  public static final String IMAGE_CYCLE = "IMAGE_CYCLE";
+  /** org.eclipse.jdt.ui\etool16\comment_edit.gif */
+  public static final String IMAGE_COMMENT = "IMAGE_COMMENT";
   /**
    * To activate debug traces add line
    * <pre>org.ucdetector/debug=true</pre>
@@ -52,6 +61,7 @@ public class UCDetectorPlugin extends AbstractUIPlugin {
   public void start(BundleContext context) throws Exception {
     super.start(context);
     dumpInformation();
+    registerImages(getDefault().getImageRegistry());
   }
 
   private void dumpInformation() {
@@ -89,14 +99,6 @@ public class UCDetectorPlugin extends AbstractUIPlugin {
     UCDetectorPlugin.plugin = null;
   }
 
-  public static Image getJavaPluginImage(String key) {
-    return JavaPluginImages.get(key); // IMG_OBJS_JSEARCH
-  }
-
-  public static final Image getSharedImage(String id) {
-    return PlatformUI.getWorkbench().getSharedImages().getImage(id);
-  }
-
   /**
    * During search there can be <code>OutOfMemoryErrors</code>.
    * This method creates an messages for the user.
@@ -115,8 +117,30 @@ public class UCDetectorPlugin extends AbstractUIPlugin {
     return UCDetectorPlugin.plugin;
   }
 
-  // -------------------------------------------------------------------------
-  // LOGGING
+  // ---------------------------------------------------------------------------
+  // IMAGES
+  // ---------------------------------------------------------------------------
+  private void registerImages(ImageRegistry registry) {
+    registry.put(IMAGE_CYCLE, getUcdImage("cycle.gif"));
+    registry.put(IMAGE_COMMENT, getUcdImage("comment_edit.gif"));
+    registry.put(IMAGE_FINAL, JavaPluginImages.DESC_OVR_FINAL);
+  }
+
+  private ImageDescriptor getUcdImage(String icon) {
+    IPath path = new Path("icons").append("/" + icon); //$NON-NLS-1$ //$NON-NLS-2$
+    return JavaPluginImages.createImageDescriptor(getDefault().getBundle(),
+        path, true);
+  }
+
+  public static final Image getSharedImage(String id) {
+    ISharedImages sharedImages = PlatformUI.getWorkbench().getSharedImages();
+    return sharedImages.getImage(id);
+  }
+
+  public static Image getImage(String key) {
+    return getDefault().getImageRegistry().get(key);
+  }
+
   // -------------------------------------------------------------------------
 
   public static IWorkbenchPage getActivePage() {
