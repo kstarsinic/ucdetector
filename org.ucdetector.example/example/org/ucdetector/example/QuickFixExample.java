@@ -13,7 +13,7 @@ public class QuickFixExample {
   public static int USE_FINAL4 = 4;// Marker YES: use final,unused code
 
   public static int USE_FINAL5 = 5;// Marker YES: use final,unused code
-  
+
   // -------------------------------------------------------------------------
 
   public class UseProtectedClass_1 {// Marker YES: use default
@@ -95,7 +95,7 @@ public class QuickFixExample {
   final int unusedField_3 = 3;// Marker YES: unused code
 
   final int unusedField_4 = 4;// Marker YES: unused code
-  
+
   final int unusedField_5 = 5;// Marker YES: unused code
 
   // -------------------------------------------------------------------------
@@ -103,12 +103,23 @@ public class QuickFixExample {
   public void unusedMethod_1() {// Marker YES: unused code
   }
 
+  public int unusedField = 1;
   public void unusedMethod_2() {// Marker YES: unused code
+    // comment
+    System.out.println("hello ");
+    // comment
   }
 
   public void unusedMethod_3() {// Marker YES: unused code
+    System.out.println("hello ");
+    /* -- comment */
+    System.out.println("hello ");
+    // comment
   }
 
+  /**
+   * Not used
+   */
   public void unusedMethod_4() {// Marker YES: unused code
   }
 
@@ -127,6 +138,12 @@ public class QuickFixExample {
   }
 
   public class UnusedClass_4 {// Marker YES: unused code
+    {
+      System.out.println("hello ");
+      /* -- comment */
+      System.out.println("hello ");
+      // comment
+    }
   }
 
   public class UnusedClass_5 {// Marker YES: unused code
