@@ -96,7 +96,7 @@ abstract class AbstractUCDQuickFix implements IMarkerResolution2 {
       firstType.accept(visitor);
       BodyDeclaration nodeToChange = visitor.nodeToChange;
       if (UCDetectorPlugin.DEBUG) {
-        Log.logDebug("Node to change:\r\n" + nodeToChange);
+        Log.logDebug("Node to change:\r\n" + nodeToChange); //$NON-NLS-1$
       }
       if (nodeToChange == null) {
         return;
@@ -217,7 +217,7 @@ abstract class AbstractUCDQuickFix implements IMarkerResolution2 {
         }
       }
       catch (BadLocationException e) {
-        Log.logError("Can't get line", e);
+        Log.logError("Can't get line", e); //$NON-NLS-1$
         return false;
       }
       return nodeToChange == null;

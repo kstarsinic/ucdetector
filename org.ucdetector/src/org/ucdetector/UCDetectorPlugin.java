@@ -30,10 +30,10 @@ import org.osgi.framework.BundleContext;
  * Default Activator-class of this plug-ins
  */
 public class UCDetectorPlugin extends AbstractUIPlugin {
-  public static final String IMAGE_FINAL = "IMAGE_FINAL";
-  public static final String IMAGE_CYCLE = "IMAGE_CYCLE";
+  public static final String IMAGE_FINAL = "IMAGE_FINAL"; //$NON-NLS-1$
+  public static final String IMAGE_CYCLE = "IMAGE_CYCLE"; //$NON-NLS-1$
   /** org.eclipse.jdt.ui\etool16\comment_edit.gif */
-  public static final String IMAGE_COMMENT = "IMAGE_COMMENT";
+  public static final String IMAGE_COMMENT = "IMAGE_COMMENT"; //$NON-NLS-1$
   /**
    * To activate debug traces add line
    * <pre>org.ucdetector/debug=true</pre>
@@ -121,8 +121,8 @@ public class UCDetectorPlugin extends AbstractUIPlugin {
   // IMAGES
   // ---------------------------------------------------------------------------
   private void registerImages(ImageRegistry registry) {
-    registry.put(IMAGE_CYCLE, getUcdImage("cycle.gif"));
-    registry.put(IMAGE_COMMENT, getUcdImage("comment_edit.gif"));
+    registry.put(IMAGE_CYCLE, getUcdImage("cycle.gif")); //$NON-NLS-1$
+    registry.put(IMAGE_COMMENT, getUcdImage("comment_edit.gif")); //$NON-NLS-1$
     registry.put(IMAGE_FINAL, JavaPluginImages.DESC_OVR_FINAL);
   }
 
