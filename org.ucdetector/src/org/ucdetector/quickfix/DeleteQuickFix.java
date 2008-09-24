@@ -22,7 +22,7 @@ class DeleteQuickFix extends AbstractUCDQuickFix {
   public void runImpl(IMarker marker, ELEMENT element,
       BodyDeclaration nodeToChange) throws Exception {
     rewrite.remove(nodeToChange, null);
-    commit(marker);
+    commitChanges();
   }
 
   public String getLabel() {

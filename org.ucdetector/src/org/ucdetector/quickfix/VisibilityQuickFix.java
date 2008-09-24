@@ -31,7 +31,7 @@ class VisibilityQuickFix extends AbstractUCDQuickFix {
   @Override
   public void runImpl(IMarker marker, ELEMENT element,
       BodyDeclaration nodeToChange) throws Exception {
-    ListRewrite listRewrite = getListRewrite(element, nodeToChange);
+    ListRewrite listRewrite = getModifierListRewrite(element, nodeToChange);
     Modifier modifierFound = getModifierVisibility(nodeToChange);
     Modifier modifierNew = null;
     if (MarkerFactory.UCD_MARKER_USE_PRIVATE.equals(markerType)) {
@@ -58,7 +58,7 @@ class VisibilityQuickFix extends AbstractUCDQuickFix {
     else if (modifierFound != null && modifierNew != null) {
       listRewrite.replace(modifierFound, modifierNew, null);
     }
-    commit(marker);
+    commitChanges();
   }
 
   public String getLabel() {

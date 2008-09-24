@@ -28,7 +28,9 @@ import org.eclipse.jdt.core.dom.EnumDeclaration;
 import org.eclipse.jdt.core.dom.FieldDeclaration;
 import org.eclipse.jdt.core.dom.MethodDeclaration;
 import org.eclipse.jdt.core.dom.Modifier;
+import org.eclipse.jdt.core.dom.SimpleName;
 import org.eclipse.jdt.core.dom.TypeDeclaration;
+import org.eclipse.jdt.core.dom.VariableDeclarationFragment;
 import org.eclipse.jdt.core.dom.Modifier.ModifierKeyword;
 import org.eclipse.jdt.core.dom.rewrite.ASTRewrite;
 import org.eclipse.jdt.core.dom.rewrite.ListRewrite;
@@ -41,7 +43,8 @@ import org.ucdetector.UCDetectorPlugin;
 import org.ucdetector.util.MarkerFactory;
 
 /**
- * Base class for all UCDetector QuickFixes
+ * Base class for all UCDetector QuickFixes. This class does all the stuff to
+ * change a java file.
  * 
  * http://help.eclipse.org/help32/index.jsp?topic=/org.eclipse.jdt.doc.isv/reference/api/org/eclipse/jdt/core/dom/rewrite/ASTRewrite.html
  * @see http://www.eclipse.org/articles/article.php?file=Article-JavaCodeManipulation_AST/index.html
@@ -51,14 +54,9 @@ abstract class AbstractUCDQuickFix implements IMarkerResolution2 {
     TYPE, METHOD, FIELD;
   }
 
-  private String markerType;
-  /** Parameters of the methods */
-  //  private String elementName;
   // ---------------------------------------------------------------------------
   protected ASTRewrite rewrite;
   protected IDocument doc;
-  protected ITextFileBuffer textFileBuffer;
-  private int lineNrMarker;
 
   @SuppressWarnings("unchecked")
   public void run(IMarker marker) {
@@ -72,29 +70,24 @@ abstract class AbstractUCDQuickFix implements IMarkerResolution2 {
         sb.append(new HashMap(marker.getAttributes()));
         Log.logDebug(sb.toString());
       }
-      // -----------------------------------------------------------------------
-      markerType = marker.getType();
-      lineNrMarker = marker.getAttribute(IMarker.LINE_NUMBER, -1);
-      // -----------------------------------------------------------------------
+      int lineNrMarker = marker.getAttribute(IMarker.LINE_NUMBER, -1);
       bufferManager.connect(path, LocationKind.NORMALIZE, null);
-      textFileBuffer = bufferManager.getTextFileBuffer(path,
+      ITextFileBuffer textFileBuffer = bufferManager.getTextFileBuffer(path,
           LocationKind.NORMALIZE);
       doc = textFileBuffer.getDocument();
-      // -----------------------------------------------------------------------
       String[] elementInfos = marker.getAttribute(
           MarkerFactory.JAVA_ELEMENT_ATTRIBUTE, "?").split(","); //$NON-NLS-1$ //$NON-NLS-2$
       ELEMENT element = getElement(elementInfos[0]);
-      //      elementName = elementInfos[1];
       // -----------------------------------------------------------------------
       ICompilationUnit originalUnit = getCompilationUnit(marker);
       CompilationUnit copyUnit = createCopy(originalUnit);
       rewrite = ASTRewrite.create(copyUnit.getAST());
-
       AbstractTypeDeclaration firstType = (AbstractTypeDeclaration) copyUnit
           .types().get(0);
-      FindNodeToChangeVisitor visitor = new FindNodeToChangeVisitor();
+      FindNodeToChangeVisitor visitor = new FindNodeToChangeVisitor(doc,
+          lineNrMarker);
       firstType.accept(visitor);
-      BodyDeclaration nodeToChange = visitor.nodeToChange;
+      BodyDeclaration nodeToChange = visitor.nodeFound;
       if (UCDetectorPlugin.DEBUG) {
         Log.logDebug("Node to change:\r\n" + nodeToChange); //$NON-NLS-1$
       }
@@ -117,6 +110,9 @@ abstract class AbstractUCDQuickFix implements IMarkerResolution2 {
     }
   }
 
+  /**
+   * @return type of java element: type, method or field
+   */
   private ELEMENT getElement(String elementType) {
     if (elementType.equals(MarkerFactory.JAVA_ELEMENT_TYPE)) {
       return ELEMENT.TYPE;
@@ -130,7 +126,12 @@ abstract class AbstractUCDQuickFix implements IMarkerResolution2 {
     return null;
   }
 
-  private ICompilationUnit getCompilationUnit(IMarker marker) {
+  /**
+   * @return top java element (CompilationUnit) of the marker
+   * @throws CoreException 
+   */
+  private ICompilationUnit getCompilationUnit(IMarker marker)
+      throws CoreException {
     IResource resource = marker.getResource();
     if (resource instanceof IFile && resource.isAccessible()) {
       IFile file = (IFile) resource;
@@ -140,10 +141,13 @@ abstract class AbstractUCDQuickFix implements IMarkerResolution2 {
       }
     }
     Log.logWarn("Can't find CompilationUnit: " //$NON-NLS-1$
-        + this.markerType); 
+        + marker.getType());
     return null;
   }
 
+  /**
+   * @return copy of CompilationUnit, which is used for manipulation
+   */
   private CompilationUnit createCopy(ICompilationUnit unit)
       throws JavaModelException {
     unit.becomeWorkingCopy(null);
@@ -153,14 +157,26 @@ abstract class AbstractUCDQuickFix implements IMarkerResolution2 {
     return (CompilationUnit) parser.createAST(null);
   }
 
-  protected final void commit(IMarker marker) throws CoreException,
-      BadLocationException {
+  /**
+   * commit changes to document
+   */
+  protected final void commitChanges() throws BadLocationException {
     TextEdit edits = rewrite.rewriteAST(doc, null);
     edits.apply(doc);
-    textFileBuffer.commit(null, true);
+    // We don't save the buffer at the moment
+    // textFileBuffer.commit(null, false);
   }
 
-  protected final ListRewrite getListRewrite(ELEMENT element,
+  /**
+   * @return ListRewrite to change modifiers like
+   * <ul>
+   * <li><code>final</code></li>
+   * <li><code>protected</code></li>
+   * <li><code>private</code></li>
+   * <li>default</li>
+   * </ul>
+   */
+  protected final ListRewrite getModifierListRewrite(ELEMENT element,
       BodyDeclaration nodeToChange) {
     switch (element) {
       case TYPE:
@@ -176,6 +192,9 @@ abstract class AbstractUCDQuickFix implements IMarkerResolution2 {
     return null;
   }
 
+  /**
+   * @return modifier like: public, protected, private
+   */
   protected static Modifier getModifierVisibility(BodyDeclaration declaration) {
     List<?> list = declaration.modifiers();
     for (Object child : list) {
@@ -203,55 +222,84 @@ abstract class AbstractUCDQuickFix implements IMarkerResolution2 {
   }
 
   /**
-   * Finds a ASTNode by line number
+   * Find a ASTNode by line number
    */
-  private final class FindNodeToChangeVisitor extends ASTVisitor {
-    private BodyDeclaration nodeToChange = null;
+  private static final class FindNodeToChangeVisitor extends ASTVisitor {
+    private BodyDeclaration nodeFound = null;
+    private final IDocument doc;
+    private final int lineMarker;
 
-    private boolean visitImpl(BodyDeclaration declaration) {
+    protected FindNodeToChangeVisitor(IDocument doc, int lineNrMarker) {
+      this.doc = doc;
+      this.lineMarker = lineNrMarker;
+    }
+
+    private boolean visitImpl(BodyDeclaration declaration, SimpleName name) {
+      if (nodeFound != null) {
+        return false;
+      }
       try {
-        int start = declaration.getStartPosition();
-        int lineNrDeclaration = doc.getLineOfOffset(start) + 1;
-        if (lineNrDeclaration == lineNrMarker) {
-          nodeToChange = declaration;
+        // start of javadoc, before return type
+        int startPos = declaration.getStartPosition();
+        // end of class/method/field name
+        int endPos = name.getStartPosition() + name.getLength();
+        int lineStart = doc.getLineOfOffset(startPos) + 1;
+        int lineEnd = doc.getLineOfOffset(endPos) + 1;
+        boolean found = lineStart <= lineMarker && lineMarker <= lineEnd;
+        if (UCDetectorPlugin.DEBUG) {
+          Log.logDebug("\r\n" + declaration);
+          Log.logDebug("Lines: " + lineStart + "<=" + lineMarker + "<="
+              + lineEnd + ", Found node=" + found);
+        }
+        if (found) {
+          Log.logDebug("NODE FOUND: \r\n" + name.getIdentifier());
+          nodeFound = declaration;
         }
       }
       catch (BadLocationException e) {
         Log.logError("Can't get line", e); //$NON-NLS-1$
         return false;
       }
-      return nodeToChange == null;
+      return nodeFound == null;
     }
 
     @Override
     public boolean visit(TypeDeclaration declaration) {
-      return visitImpl(declaration);
-    }
-
-    @Override
-    public boolean visit(EnumDeclaration declaration) {
-      return visitImpl(declaration);
-    }
-
-    @Override
-    public boolean visit(AnnotationTypeDeclaration declaration) {
-      return visitImpl(declaration);
+      return visitImpl(declaration, declaration.getName());
     }
 
     @Override
     public boolean visit(MethodDeclaration declaration) {
-      return visitImpl(declaration);
+      return visitImpl(declaration, declaration.getName());
     }
 
+    /**
+     * Use name of last VariableDeclarationFragment for SimpleName
+     */
     @Override
     public boolean visit(FieldDeclaration declaration) {
-      visitImpl(declaration);
+      List<?> fragments = declaration.fragments();
+      if (fragments.size() > 0) {
+        Object last = fragments.get(fragments.size() - 1);
+        SimpleName name = ((VariableDeclarationFragment) last).getName();
+        visitImpl(declaration, name);
+      }
       return false;
     }
 
     @Override
+    public boolean visit(EnumDeclaration declaration) {
+      return visitImpl(declaration, declaration.getName());
+    }
+
+    @Override
+    public boolean visit(AnnotationTypeDeclaration declaration) {
+      return visitImpl(declaration, declaration.getName());
+    }
+
+    @Override
     public boolean visit(EnumConstantDeclaration declaration) {
-      visitImpl(declaration);
+      visitImpl(declaration, declaration.getName());
       return false;
     }
   }

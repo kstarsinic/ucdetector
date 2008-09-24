@@ -15,7 +15,7 @@ class LineCommentQuickFix extends AbstractUCDQuickFix {
 
   private static final String LINE_COMMENT = "// "; //$NON-NLS-1$
   private static final String TODO_COMMENT //
-  = "TODO UCdetector: Remove unused code"; //$NON-NLS-1$
+  = "TODO UCdetector: Remove unused code: "; //$NON-NLS-1$
 
   @Override
   public void runImpl(IMarker marker, ELEMENT element,
@@ -31,7 +31,6 @@ class LineCommentQuickFix extends AbstractUCDQuickFix {
     else {
       createBlockComment(lineStart, lineEnd);
     }
-    textFileBuffer.commit(null, true);
   }
 
   /**
@@ -39,17 +38,16 @@ class LineCommentQuickFix extends AbstractUCDQuickFix {
    */
   private void createBlockComment(int lineStart, int lineEnd)
       throws BadLocationException {
+    String newLine = getLineDelimitter();
     // end -----------------------------------------------------------------
     IRegion region = doc.getLineInformation(lineEnd);
     int offsetLine = region.getOffset();
     int lengthLine = region.getLength();
     String strLine = doc.get(offsetLine, lengthLine);
-    String newLine = getLineDelimitter(lineEnd);
     StringBuilder replaceEnd = new StringBuilder();
     replaceEnd.append(strLine).append(newLine).append("*/"); //$NON-NLS-1$
     doc.replace(offsetLine, lengthLine, replaceEnd.toString());
     // start ---------------------------------------------------------------
-    newLine = getLineDelimitter(lineEnd);
     region = doc.getLineInformation(lineStart);
     offsetLine = region.getOffset();
     lengthLine = region.getLength();
@@ -65,9 +63,9 @@ class LineCommentQuickFix extends AbstractUCDQuickFix {
    */
   private void createLineComments(int lineStart, int lineEnd)
       throws BadLocationException {
+    String newLine = getLineDelimitter();
     // start at the end, because inserting new lines shifts following lines
     for (int lineNr = lineEnd; lineNr >= lineStart; lineNr--) {
-      String newLine = getLineDelimitter(lineNr);
       IRegion region = doc.getLineInformation(lineNr);
       int offsetLine = region.getOffset();
       int lengthLine = region.getLength();
@@ -83,11 +81,13 @@ class LineCommentQuickFix extends AbstractUCDQuickFix {
   }
 
   /**
+   * Cant insert new lines: Confuses confuses markers.line :-(
    * @return lineDelimitter at lineNr or line separator from system
    */
-  private String getLineDelimitter(int lineNr) throws BadLocationException {
-    String delimiter = doc.getLineDelimiter(lineNr);
-    return delimiter == null ? System.getProperty("line.separator") : delimiter; //$NON-NLS-1$
+  private String getLineDelimitter() {
+    return "";//TextUtilities.getDefaultLineDelimiter(doc);
+    //    String delimiter = doc.getLineDelimiter(lineNr);
+    //    return delimiter == null ? System.getProperty("line.separator") : delimiter; //$NON-NLS-1$
   }
 
   /**

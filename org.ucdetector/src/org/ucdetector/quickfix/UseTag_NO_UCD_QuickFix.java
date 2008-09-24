@@ -24,7 +24,6 @@ class UseTag_NO_UCD_QuickFix extends AbstractUCDQuickFix {
     int length = region.getLength();
     String strLine = doc.get(offset, length);
     doc.replace(offset, length, strLine + " // NO_UCD"); //$NON-NLS-1$
-    textFileBuffer.commit(null, true);
   }
 
   public Image getImage() {

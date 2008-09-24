@@ -23,7 +23,7 @@ class UseFinalQuickFix extends AbstractUCDQuickFix {
   @Override
   public final void runImpl(IMarker marker, ELEMENT element,
       BodyDeclaration nodeToChange) throws Exception {
-    ListRewrite listRewrite = getListRewrite(element, nodeToChange);
+    ListRewrite listRewrite = getModifierListRewrite(element, nodeToChange);
     Modifier modifierFound = getModifierVisibility(nodeToChange);
     Modifier modifierFinal = nodeToChange.getAST().newModifier(
         Modifier.ModifierKeyword.FINAL_KEYWORD);
@@ -35,7 +35,7 @@ class UseFinalQuickFix extends AbstractUCDQuickFix {
     else {
       listRewrite.insertAfter(modifierFinal, modifierFound, null);
     }
-    commit(marker);
+    commitChanges();
   }
 
   public String getLabel() {
