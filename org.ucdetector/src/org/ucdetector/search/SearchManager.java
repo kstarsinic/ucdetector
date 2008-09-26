@@ -173,7 +173,9 @@ public class SearchManager {
       }
 
       // it is very expensive to call this method!!!
+      StopWatch stop = new StopWatch(method);
       boolean isOverriddenMethod = JavaElementUtil.isOverriddenMethod(method);
+      stop.end("    Calculate if is overridden method"); //$NON-NLS-1$
 
       int line = lineManger.getLine(method);
       StopWatch watch = new StopWatch(method);

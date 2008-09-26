@@ -7,7 +7,6 @@
  */
 package org.ucdetector.util;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import org.eclipse.core.resources.IResource;
@@ -18,11 +17,8 @@ import org.eclipse.jdt.core.IMethod;
 import org.eclipse.osgi.util.NLS;
 import org.ucdetector.Log;
 import org.ucdetector.Messages;
-import org.ucdetector.preferences.Prefs;
 import org.ucdetector.report.IUCDetectorReport;
-import org.ucdetector.report.MarkerReport;
 import org.ucdetector.report.ReportParam;
-import org.ucdetector.report.TextReport;
 import org.ucdetector.search.LineManger;
 
 /**
@@ -31,7 +27,7 @@ import org.ucdetector.search.LineManger;
  * CALL endReport() TO FLUSH MARKERS!!!
  */
 public final class MarkerFactory {
-  private final List<IUCDetectorReport> reports = new ArrayList<IUCDetectorReport>();
+  private final List<IUCDetectorReport> reports;
 
   /**
    * See extension point="org.eclipse.core.resources.markers" in plugin.xml
@@ -63,15 +59,13 @@ public final class MarkerFactory {
   /** the java element of the marker is an field */
   public static final String JAVA_ELEMENT_FIELD = "field";//$NON-NLS-1$
 
-  private MarkerFactory() {
-    reports.add(new MarkerReport());
-    if (Prefs.isWriteReportFile()) {
-      reports.add(new TextReport());
-    }
+  private MarkerFactory(List<IUCDetectorReport> reports) {
+    this.reports = reports;
   }
 
-  public static MarkerFactory createInstance() {
-    return new MarkerFactory();
+  public static MarkerFactory createInstance(
+      List<IUCDetectorReport> reports) {
+    return new MarkerFactory(reports);
   }
 
   public void endReport(Object[] selected, long start) throws CoreException {

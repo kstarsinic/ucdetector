@@ -277,14 +277,12 @@ public class JavaElementUtil {
    * it is very expensive to call this method!!!
    */
   public static boolean isOverriddenMethod(IMethod method) throws CoreException {
-    StopWatch stop = new StopWatch(method);
     SearchPattern pattern = SearchPattern.createPattern(method,
         IJavaSearchConstants.DECLARATIONS, SearchPattern.R_EXACT_MATCH
     // | IJavaSearchConstants.IGNORE_DECLARING_TYPE
         );
     CountRequestor requestor = new CountRequestor();
     runSearch(pattern, requestor, SearchEngine.createWorkspaceScope());
-    stop.end("    Calculate if is overridden method"); //$NON-NLS-1$
     return requestor.found > 1;
   }
 

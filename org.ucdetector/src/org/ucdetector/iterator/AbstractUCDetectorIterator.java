@@ -37,6 +37,10 @@ import org.eclipse.jdt.core.IParent;
 import org.eclipse.jdt.core.IType;
 import org.eclipse.jdt.core.JavaCore;
 import org.ucdetector.Log;
+import org.ucdetector.preferences.Prefs;
+import org.ucdetector.report.IUCDetectorReport;
+import org.ucdetector.report.MarkerReport;
+import org.ucdetector.report.TextReport;
 import org.ucdetector.search.UCDProgressMonitor;
 import org.ucdetector.util.JavaElementUtil;
 import org.ucdetector.util.MarkerFactory;
@@ -299,7 +303,11 @@ public abstract class AbstractUCDetectorIterator extends UCDetectorHandler {
 
   public MarkerFactory getMarkerFactory() {
     if (markerFactory == null) {
-      markerFactory = MarkerFactory.createInstance();
+      List<IUCDetectorReport> reports = new ArrayList<IUCDetectorReport>();      reports.add(new MarkerReport());
+      if (Prefs.isWriteReportFile()) {
+        reports.add(new TextReport());
+      }
+      markerFactory = MarkerFactory.createInstance(reports);
     }
     return markerFactory;
   }
