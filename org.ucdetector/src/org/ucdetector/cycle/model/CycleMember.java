@@ -62,12 +62,13 @@ public class CycleMember extends CycleBaseElement {
   }
 
   public String getText() {
-    if (match instanceof IImportDeclaration) {
-      return super.getDefaultText(match);
-    }
-    StringBuilder sb = new StringBuilder();
     IType typeFor = JavaElementUtil.getTypeFor(match);
+    StringBuilder sb = new StringBuilder();
     sb.append(super.getDefaultText(typeFor));
+    if (match instanceof IImportDeclaration) {
+      sb.append(" (import declaration)");
+      return sb.toString();
+    }
     sb.append('.').append(getDefaultText(match));
     return sb.toString();
   }
