@@ -31,7 +31,7 @@ import org.ucdetector.util.JavaElementUtil;
 public class CycleMember extends CycleBaseElement {
   private final IJavaElement match;
   private final List<CycleRegion> cycleRegions = new ArrayList<CycleRegion>();
-  private CycleType parent;
+  private CycleBaseElement parent;
 
   public CycleMember(IJavaElement match) {
     if (match == null) {
@@ -57,7 +57,7 @@ public class CycleMember extends CycleBaseElement {
     return match;
   }
 
-  public CycleType getParent() {
+  public CycleBaseElement getParent() {
     return parent;
   }
 
@@ -73,7 +73,7 @@ public class CycleMember extends CycleBaseElement {
     return sb.toString();
   }
 
-  void setParent(CycleType parent) {
+  void setParent(CycleBaseElement parent) {
     this.parent = parent;
   }
 }

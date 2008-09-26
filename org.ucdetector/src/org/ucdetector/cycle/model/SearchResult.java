@@ -32,7 +32,7 @@ import org.ucdetector.Messages;
 public class SearchResult extends CycleBaseElement {
   // private final Date created = new Date();
   private List<Cycle> cycles = Collections.emptyList();
-  private final SearchResultRoot parent;
+  private final CycleBaseElement parent;
   private final IJavaProject javaProject;
   private final IJavaElement[] selections;
 
@@ -51,7 +51,7 @@ public class SearchResult extends CycleBaseElement {
     return JavaPluginImages.get(JavaPluginImages.IMG_OBJS_SEARCH_REF); // IMG_OBJS_JSEARCH
   }
 
-  public SearchResultRoot getParent() {
+  public CycleBaseElement getParent() {
     return parent;
   }
 

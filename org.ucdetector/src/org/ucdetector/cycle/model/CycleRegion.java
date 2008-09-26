@@ -27,13 +27,13 @@ import org.ucdetector.Messages;
  *           |-  <font color="red">CycleRegion</font>
  */
 public class CycleRegion extends CycleBaseElement {
-  private final CycleMember parent;
+  private final CycleBaseElement parent;
   private final int offset;
   private final int length;
   private final int line;
   private final String strLine;
 
-  public CycleRegion(CycleMember parent, int offset, int length, int line,
+  public CycleRegion(CycleBaseElement parent, int offset, int length, int line,
       String strLine) {
     this.parent = parent;
     this.offset = offset;
@@ -61,7 +61,7 @@ public class CycleRegion extends CycleBaseElement {
     return JavaPluginImages.get(JavaPluginImages.IMG_OBJS_SEARCH_OCCURRENCE);
   }
 
-  public CycleMember getParent() {
+  public CycleBaseElement getParent() {
     return parent;
   }
 

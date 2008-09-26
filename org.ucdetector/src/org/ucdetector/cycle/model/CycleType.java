@@ -27,7 +27,7 @@ import org.ucdetector.Messages;
 public class CycleType extends CycleBaseElement {
   private final List<CycleMember> cycleMembers;
   private final IType type;
-  private Cycle parent;
+  private CycleBaseElement parent;
 
   public CycleType(IType type, List<CycleMember> cycleMembers) {
     if (type == null) {
@@ -56,7 +56,7 @@ public class CycleType extends CycleBaseElement {
     return type;
   }
 
-  public Cycle getParent() {
+  public CycleBaseElement getParent() {
     return parent;
   }
 
@@ -78,7 +78,7 @@ public class CycleType extends CycleBaseElement {
     return sb.toString();
   }
 
-  void setParent(Cycle parent) {
+  void setParent(CycleBaseElement parent) {
     this.parent = parent;
   }
 }

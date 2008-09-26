@@ -18,7 +18,7 @@ import org.eclipse.ui.PlatformUI;
 /**
  * Base class of all CycleTreeElements
  */
-abstract class CycleBaseElement implements ICycleBaseElement {
+public abstract class CycleBaseElement implements ICycleBaseElement {
   private static final int LABLEL_FLAGS = JavaElementLabelProvider.SHOW_PARAMETERS;
 
   private static final ILabelProvider LABEL_PROVIDER_DELEGAT //
