@@ -24,9 +24,9 @@ public class StopWatch {
     message = null;
   }
 
-//  public StopWatch(String message) {
-//    this.message = message;
-//  }
+  //  public StopWatch(String message) {
+  //    this.message = message;
+  //  }
 
   public StopWatch(IMember member) {
     this.message = JavaElementUtil.getElementName(member);
@@ -45,7 +45,7 @@ public class StopWatch {
         sb.append(info).append(" "); //$NON-NLS-1$
       }
       if (message != null) {
-        sb.append(message); 
+        sb.append(message);
       }
       sb.append(": ").append(duration / 1000d); //$NON-NLS-1$
       sb.append(" seconds"); //$NON-NLS-1$
