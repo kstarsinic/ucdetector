@@ -4,6 +4,7 @@ import org.eclipse.core.resources.IMarker;
 import org.eclipse.jdt.core.dom.BodyDeclaration;
 import org.eclipse.jface.text.BadLocationException;
 import org.eclipse.jface.text.IRegion;
+import org.eclipse.jface.text.TextUtilities;
 import org.eclipse.swt.graphics.Image;
 import org.ucdetector.Messages;
 import org.ucdetector.UCDetectorPlugin;
@@ -53,7 +54,7 @@ class LineCommentQuickFix extends AbstractUCDQuickFix {
     lengthLine = region.getLength();
     strLine = doc.get(offsetLine, lengthLine);
     StringBuilder replaceStart = new StringBuilder();
-    replaceStart.append(newLine).append("/* ").append(TODO_COMMENT); //$NON-NLS-1$
+    replaceStart.append("/* ").append(TODO_COMMENT); //$NON-NLS-1$
     replaceStart.append(newLine).append(strLine);
     doc.replace(offsetLine, lengthLine, replaceStart.toString());
   }
@@ -81,13 +82,12 @@ class LineCommentQuickFix extends AbstractUCDQuickFix {
   }
 
   /**
-   * Cant insert new lines: Confuses confuses markers.line :-(
+   * Inserting new lines confuses markers.line
+   * We need to call IEditorPart.doSave() the buffer later, to avoid this problem
    * @return lineDelimitter at lineNr or line separator from system
    */
   private String getLineDelimitter() {
-    return "";//TextUtilities.getDefaultLineDelimiter(doc);
-    //    String delimiter = doc.getLineDelimiter(lineNr);
-    //    return delimiter == null ? System.getProperty("line.separator") : delimiter; //$NON-NLS-1$
+    return TextUtilities.getDefaultLineDelimiter(doc);
   }
 
   /**

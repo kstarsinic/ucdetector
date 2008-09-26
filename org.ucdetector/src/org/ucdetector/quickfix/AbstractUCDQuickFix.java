@@ -34,9 +34,11 @@ import org.eclipse.jdt.core.dom.VariableDeclarationFragment;
 import org.eclipse.jdt.core.dom.Modifier.ModifierKeyword;
 import org.eclipse.jdt.core.dom.rewrite.ASTRewrite;
 import org.eclipse.jdt.core.dom.rewrite.ListRewrite;
+import org.eclipse.jdt.internal.ui.javaeditor.EditorUtility;
 import org.eclipse.jface.text.BadLocationException;
 import org.eclipse.jface.text.IDocument;
 import org.eclipse.text.edits.TextEdit;
+import org.eclipse.ui.IEditorPart;
 import org.eclipse.ui.IMarkerResolution2;
 import org.ucdetector.Log;
 import org.ucdetector.UCDetectorPlugin;
@@ -49,16 +51,15 @@ import org.ucdetector.util.MarkerFactory;
  * http://help.eclipse.org/help32/index.jsp?topic=/org.eclipse.jdt.doc.isv/reference/api/org/eclipse/jdt/core/dom/rewrite/ASTRewrite.html
  * @see http://www.eclipse.org/articles/article.php?file=Article-JavaCodeManipulation_AST/index.html
  */
-abstract class AbstractUCDQuickFix implements IMarkerResolution2 {
+abstract class AbstractUCDQuickFix implements IMarkerResolution2 { // extends WorkbenchMarkerResolution
   static enum ELEMENT {
     TYPE, METHOD, FIELD;
   }
 
-  // ---------------------------------------------------------------------------
   protected ASTRewrite rewrite;
   protected IDocument doc;
 
-  @SuppressWarnings("unchecked")
+  @SuppressWarnings("unchecked")//$NON-NLS-1$
   public void run(IMarker marker) {
     ITextFileBufferManager bufferManager = FileBuffers
         .getTextFileBufferManager();
@@ -96,6 +97,15 @@ abstract class AbstractUCDQuickFix implements IMarkerResolution2 {
       }
       runImpl(marker, element, nodeToChange);
       marker.delete();
+      // -----------------------------------------------------------------------
+      // see org.eclipse.jdt.internal.ui.text.correction.CorrectionMarkerResolutionGenerator
+      IEditorPart part = EditorUtility.isOpenInEditor(originalUnit);
+      part.doSave(null);
+      //      if (part instanceof ITextEditor) {
+      //        ITextEditor textEditor = (ITextEditor) part;
+      //        textEditor.selectAndReveal(startPosition, 0);
+      //        part.setFocus();
+      //      }
     }
     catch (Exception e) {
       Log.logErrorAndStatus("Quick Fix Problems", e); //$NON-NLS-1$
@@ -247,12 +257,15 @@ abstract class AbstractUCDQuickFix implements IMarkerResolution2 {
         int lineEnd = doc.getLineOfOffset(endPos) + 1;
         boolean found = lineStart <= lineMarker && lineMarker <= lineEnd;
         if (UCDetectorPlugin.DEBUG) {
-          Log.logDebug("\r\n" + declaration);
-          Log.logDebug("Lines: " + lineStart + "<=" + lineMarker + "<="
-              + lineEnd + ", Found node=" + found);
+          StringBuilder sb = new StringBuilder();
+          sb.append("\r\n").append(declaration); //$NON-NLS-1$
+          sb.append("Lines: ").append(lineStart).append("<="); //$NON-NLS-1$ //$NON-NLS-2$
+          sb.append(lineMarker).append("<=").append(lineEnd); //$NON-NLS-1$
+          sb.append(", Found node=").append(found); //$NON-NLS-1$
+          Log.logDebug(sb.toString()); //$NON-NLS-1$
         }
         if (found) {
-          Log.logDebug("NODE FOUND: \r\n" + name.getIdentifier());
+          Log.logDebug("NODE FOUND: \r\n" + name.getIdentifier()); //$NON-NLS-1$
           nodeFound = declaration;
         }
       }
