@@ -12,7 +12,7 @@ import org.eclipse.osgi.util.NLS;
 /**
  * Eclipse l10n of this plugin
  */
-public class Messages extends NLS {
+public final class Messages extends NLS {
   private static final String BUNDLE_NAME = "org.ucdetector.messages"; //$NON-NLS-1$
   static {
     // initialize resource bundle
