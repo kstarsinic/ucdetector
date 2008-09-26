@@ -19,20 +19,20 @@ import org.ucdetector.UCDetectorPlugin;
 /**
  * Constant definitions for plug-in preferences, offer access to preferences
  */
-public class Prefs {
+public final class Prefs {
   private Prefs() {
   }
 
   // FILTER --------------------------------------------------------------------
-  static final String FILTER_SOURCE_FOLDER//
+  protected static final String FILTER_SOURCE_FOLDER//
   = UCDetectorPlugin.ID + ".sourceFolderFilter"; //$NON-NLS-1$
-  static final String FILTER_PACKAGE//
+  protected static final String FILTER_PACKAGE//
   = UCDetectorPlugin.ID + ".packageFilter"; //$NON-NLS-1$
-  static final String FILTER_CLASS //
+  protected static final String FILTER_CLASS //
   = UCDetectorPlugin.ID + ".classFilter"; //$NON-NLS-1$
-  static final String FILTER_BEAN_METHOD //
+  protected static final String FILTER_BEAN_METHOD //
   = UCDetectorPlugin.ID + ".beanMethodFilter"; //$NON-NLS-1$
-  static final String FILTER_METHOD //
+  protected static final String FILTER_METHOD //
   = UCDetectorPlugin.ID + ".methodFilter"; //$NON-NLS-1$
   static final String FILTER_FIELD //
   = UCDetectorPlugin.ID + ".fieldFilter"; //$NON-NLS-1$

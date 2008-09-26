@@ -30,7 +30,7 @@ import org.ucdetector.search.LineManger;
  * 
  * CALL endReport() TO FLUSH MARKERS!!!
  */
-public class MarkerFactory {
+public final class MarkerFactory {
   private final List<IUCDetectorReport> reports = new ArrayList<IUCDetectorReport>();
 
   /**
