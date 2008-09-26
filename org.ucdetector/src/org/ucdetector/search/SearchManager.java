@@ -263,8 +263,8 @@ public class SearchManager {
     String markerMessage = NLS.bind(Messages.SearchManager_MarkerReference,
         bindings);
     if (found <= Prefs.getWarnLimit()) {
-      created = markerFactory
-          .createReferenceMarker(member, markerMessage, line, found);
+      created = markerFactory.createReferenceMarker(member, markerMessage,
+          line, found);
       if (created) {
         foundTotal++;
       }
@@ -373,13 +373,7 @@ public class SearchManager {
       else {
         this.found++;
       }
-
-      if (found > Prefs.getWarnLimit()
-          && !Prefs.isCheckIncreaseVisibilityProtected()
-          && !Prefs.isCheckIncreaseVisibilityToPrivate()) {
-        throw new OperationCanceledException(
-            "Cancel Search: Warn limit reached");//$NON-NLS-1$
-      }
+      checkCancelSearch(found);
       IJavaElement matchJavaElement = JavaCore.create(matchAccess.getFile());
       visibilityHandler.checkVisibility(matchJavaElement, found);
       return true;
@@ -423,12 +417,7 @@ public class SearchManager {
         return;
       }
       this.found++;
-      if (found > Prefs.getWarnLimit()
-          && !Prefs.isCheckIncreaseVisibilityProtected()
-          && !Prefs.isCheckIncreaseVisibilityToPrivate()) {
-        throw new OperationCanceledException(
-            "Cancel Search: Warn limit reached");//$NON-NLS-1$
-      }
+      checkCancelSearch(found);
       IJavaElement matchJavaElement = (IJavaElement) match.getElement();
       visibilityHandler.checkVisibility(matchJavaElement, found);
     }
@@ -464,6 +453,14 @@ public class SearchManager {
         }
       }
       return false;
+    }
+  }
+
+  private static void checkCancelSearch(int found) {
+    if (found > Prefs.getWarnLimit()
+        && !Prefs.isCheckIncreaseVisibilityProtected()
+        && !Prefs.isCheckIncreaseVisibilityToPrivate()) {
+      throw new OperationCanceledException("Cancel Search: Warn limit reached");//$NON-NLS-1$
     }
   }
 
