@@ -12,6 +12,7 @@ import java.util.Date;
 
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IPath;
+import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Path;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.jdt.internal.ui.JavaPluginImages;
@@ -34,14 +35,6 @@ public class UCDetectorPlugin extends AbstractUIPlugin {
   public static final String IMAGE_CYCLE = "IMAGE_CYCLE"; //$NON-NLS-1$
   /** org.eclipse.jdt.ui\etool16\comment_edit.gif */
   public static final String IMAGE_COMMENT = "IMAGE_COMMENT"; //$NON-NLS-1$
-  /**
-   * To activate debug traces add line
-   * <pre>org.ucdetector/debug=true</pre>
-   * to file ECLIPSE_INSTALL_DIR\.options
-   * 
-   * @see http://wiki.eclipse.org/FAQ_How_do_I_use_the_platform_debug_tracing_facility%3F
-   */
-  public static final boolean DEBUG = Log.isDebugOption("org.ucdetector/debug"); //$NON-NLS-1$
   /**
    * See MANIFEST.MF: Bundle-SymbolicName, and .project
    */
@@ -105,7 +98,7 @@ public class UCDetectorPlugin extends AbstractUIPlugin {
    */
   public static void handleOutOfMemoryError(OutOfMemoryError e)
       throws CoreException {
-    Status status = Log.logErrorAndStatus(
+    Status status = logErrorAndStatus(
         Messages.CycleSearchManager_OutOfMemoryError_Hint, e);
     throw new CoreException(status);
   }
@@ -130,6 +123,32 @@ public class UCDetectorPlugin extends AbstractUIPlugin {
     IPath path = new Path("icons").append("/" + icon); //$NON-NLS-1$ //$NON-NLS-2$
     return JavaPluginImages.createImageDescriptor(getDefault().getBundle(),
         path, true);
+  }
+
+  /**
+   * @param status which is be logged to default log
+   */
+  public static void logStatus(IStatus status) {
+    UCDetectorPlugin ucd = getDefault();
+    if (ucd != null && ucd.getLog() != null) {
+      ucd.getLog().log(status);
+    }
+    if (status.getSeverity() == IStatus.ERROR) {
+      Log.logError(status.getMessage(), status.getException());
+    }
+    else if (status.getSeverity() == IStatus.WARNING) {
+      Log.logWarn(status.getMessage());
+    }
+    else if (status.getSeverity() == IStatus.INFO) {
+      Log.logInfo(status.getMessage());
+    }
+  }
+
+  public static Status logErrorAndStatus(String message, Throwable ex) {
+    Status status = new Status(IStatus.ERROR, ID,
+        IStatus.ERROR, message, ex);
+    UCDetectorPlugin.logStatus(status);
+    return status;
   }
 
   public static final Image getSharedImage(String id) {

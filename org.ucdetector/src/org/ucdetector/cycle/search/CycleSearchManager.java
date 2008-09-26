@@ -27,7 +27,6 @@ import org.eclipse.jdt.core.search.SearchRequestor;
 import org.eclipse.osgi.util.NLS;
 import org.ucdetector.Log;
 import org.ucdetector.Messages;
-import org.ucdetector.UCDetectorPlugin;
 import org.ucdetector.cycle.model.Cycle;
 import org.ucdetector.cycle.model.SearchResult;
 import org.ucdetector.cycle.model.SearchResultRoot;
@@ -84,7 +83,7 @@ public class CycleSearchManager {
       List<Cycle> cycleList = cycleCalculator.calculate();
       //
       searchResult.setCycles(cycleList);
-      if (UCDetectorPlugin.DEBUG) {
+      if (Log.DEBUG) {
         Log.logDebug("Found cycles:\r\n" + searchResult); //$NON-NLS-1$
       }
       root.getChildren().add(searchResult);
@@ -115,7 +114,7 @@ public class CycleSearchManager {
           typeAndMatches);
       JavaElementUtil.runSearch(pattern, requestor, scope);
       result.add(typeAndMatches);
-      if (UCDetectorPlugin.DEBUG) {
+      if (Log.DEBUG) {
         int found = typeAndMatches.getTypeSearchMatches().size();
         Log.logDebug("found " + found + " references for " //$NON-NLS-1$ //$NON-NLS-2$
             + type.getElementName());
@@ -138,7 +137,7 @@ public class CycleSearchManager {
     String message = typesMap.size() > 1 ? //
     NLS.bind(Messages.CycleSearchManager_MonitorProject, bindings)
         : NLS.bind(Messages.CycleSearchManager_Monitor, bindings);
-    if (UCDetectorPlugin.DEBUG) {
+    if (Log.DEBUG) {
       Log.logDebug(message);
     }
     return message;

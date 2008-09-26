@@ -15,7 +15,6 @@ import org.eclipse.core.runtime.CoreException;
 import org.eclipse.ui.IMarkerResolution;
 import org.eclipse.ui.IMarkerResolutionGenerator2;
 import org.ucdetector.Log;
-import org.ucdetector.UCDetectorPlugin;
 import org.ucdetector.util.MarkerFactory;
 
 /**
@@ -28,7 +27,7 @@ public class UCDQuickGenerator implements IMarkerResolutionGenerator2 { // NO_UC
   public IMarkerResolution[] getResolutions(IMarker marker) {
     try {
       String markerType = marker.getType();
-      if (UCDetectorPlugin.DEBUG) {
+      if (Log.DEBUG) {
         Log.logDebug("UCDQuickFixer.getResolutions()" + markerType); //$NON-NLS-1$
       }
       List<IMarkerResolution> resolutions = new ArrayList<IMarkerResolution>();

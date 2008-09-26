@@ -67,7 +67,7 @@ public abstract class AbstractUCDetectorAction extends ActionDelegate { // NO_UC
           return e.getStatus();
         }
         catch (Throwable e) {
-          return Log.logErrorAndStatus(
+          return UCDetectorPlugin.logErrorAndStatus(
               Messages.AbstractUCDetectorAction_AnalyzeFailedText, e);
         }
         finally {

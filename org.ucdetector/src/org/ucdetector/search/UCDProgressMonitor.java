@@ -2,7 +2,6 @@ package org.ucdetector.search;
 
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.ucdetector.Log;
-import org.ucdetector.UCDetectorPlugin;
 
 /**
  *
@@ -44,7 +43,7 @@ public class UCDProgressMonitor implements IProgressMonitor {
   }
 
   public void subTask(String name) {
-    if (UCDetectorPlugin.DEBUG) {
+    if (Log.DEBUG) {
       Log.logDebug(name);
     }
     delegate.subTask(name);

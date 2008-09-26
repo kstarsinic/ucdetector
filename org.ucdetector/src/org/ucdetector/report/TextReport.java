@@ -206,7 +206,7 @@ public class TextReport implements IUCDetectorReport {
       int iStatus, Throwable ex) {
     String mes = NLS.bind(message, new Object[] { parm });
     Status status = new Status(iStatus, UCDetectorPlugin.ID, iStatus, mes, ex);
-    Log.logStatus(status);
+    UCDetectorPlugin.logStatus(status);
   }
 
   /**

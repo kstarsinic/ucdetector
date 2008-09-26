@@ -19,7 +19,6 @@ import org.eclipse.jdt.core.IType;
 import org.eclipse.osgi.util.NLS;
 import org.ucdetector.Log;
 import org.ucdetector.Messages;
-import org.ucdetector.UCDetectorPlugin;
 import org.ucdetector.cycle.model.Cycle;
 import org.ucdetector.cycle.model.CycleType;
 import org.ucdetector.cycle.model.SearchResult;
@@ -68,7 +67,7 @@ class CycleCalculator {
       Stack<TypeAndMatches> path = new Stack<TypeAndMatches>();
       IType startType = typeAndMatches.getRoot();
       searchCycles(startType, path, allCycles);
-      if (UCDetectorPlugin.DEBUG) {
+      if (Log.DEBUG) {
         int found = allCycles.size() - prevSize;
         Log.logDebug(found
             + " cycles found for " //$NON-NLS-1$
@@ -125,7 +124,7 @@ class CycleCalculator {
         result.add(cycleToAdd);
       }
     }
-    if (UCDetectorPlugin.DEBUG) {
+    if (Log.DEBUG) {
       int removed = cyclesFound.size() - result.size();
       Log.logDebug("Removed double cycle: " + removed); //$NON-NLS-1$
     }

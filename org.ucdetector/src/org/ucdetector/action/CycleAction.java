@@ -12,7 +12,6 @@ import org.eclipse.jdt.core.IJavaElement;
 import org.eclipse.jface.action.IAction;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.ui.PartInitException;
-import org.ucdetector.Log;
 import org.ucdetector.Messages;
 import org.ucdetector.UCDetectorPlugin;
 import org.ucdetector.cycle.CycleView;
@@ -43,7 +42,7 @@ public class CycleAction extends AbstractUCDetectorAction { // NO_UCD
           }
         }
         catch (PartInitException e) {
-          Log.logErrorAndStatus(Messages.CycleAction_cant_open_editor, e);
+          UCDetectorPlugin.logErrorAndStatus(Messages.CycleAction_cant_open_editor, e);
         }
       }
     });

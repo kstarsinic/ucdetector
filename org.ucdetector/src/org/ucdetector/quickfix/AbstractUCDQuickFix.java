@@ -65,7 +65,7 @@ abstract class AbstractUCDQuickFix implements IMarkerResolution2 { // extends Wo
         .getTextFileBufferManager();
     IPath path = marker.getResource().getLocation();
     try {
-      if (UCDetectorPlugin.DEBUG) {
+      if (Log.DEBUG) {
         StringBuilder sb = new StringBuilder();
         sb.append(getClass().getSimpleName()).append("run().Marker="); //$NON-NLS-1$
         sb.append(new HashMap(marker.getAttributes()));
@@ -89,7 +89,7 @@ abstract class AbstractUCDQuickFix implements IMarkerResolution2 { // extends Wo
           lineNrMarker);
       firstType.accept(visitor);
       BodyDeclaration nodeToChange = visitor.nodeFound;
-      if (UCDetectorPlugin.DEBUG) {
+      if (Log.DEBUG) {
         Log.logDebug("Node to change:\r\n" + nodeToChange); //$NON-NLS-1$
       }
       if (nodeToChange == null) {
@@ -108,14 +108,14 @@ abstract class AbstractUCDQuickFix implements IMarkerResolution2 { // extends Wo
       //      }
     }
     catch (Exception e) {
-      Log.logErrorAndStatus("Quick Fix Problems", e); //$NON-NLS-1$
+      UCDetectorPlugin.logErrorAndStatus("Quick Fix Problems", e); //$NON-NLS-1$
     }
     finally {
       try {
         bufferManager.disconnect(path, LocationKind.NORMALIZE, null);
       }
       catch (CoreException e) {
-        Log.logErrorAndStatus("Quick Fix Problems", e); //$NON-NLS-1$
+        UCDetectorPlugin.logErrorAndStatus("Quick Fix Problems", e); //$NON-NLS-1$
       }
     }
   }
@@ -256,7 +256,7 @@ abstract class AbstractUCDQuickFix implements IMarkerResolution2 { // extends Wo
         int lineStart = doc.getLineOfOffset(startPos) + 1;
         int lineEnd = doc.getLineOfOffset(endPos) + 1;
         boolean found = lineStart <= lineMarker && lineMarker <= lineEnd;
-        if (UCDetectorPlugin.DEBUG) {
+        if (Log.DEBUG) {
           StringBuilder sb = new StringBuilder();
           sb.append("\r\n").append(declaration); //$NON-NLS-1$
           sb.append("Lines: ").append(lineStart).append("<="); //$NON-NLS-1$ //$NON-NLS-2$

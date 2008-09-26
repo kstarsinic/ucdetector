@@ -9,7 +9,6 @@ package org.ucdetector.util;
 
 import org.eclipse.jdt.core.IMember;
 import org.ucdetector.Log;
-import org.ucdetector.UCDetectorPlugin;
 
 /**
  * Simple stop watch to measure performance
@@ -39,7 +38,7 @@ public class StopWatch {
     long duration = System.currentTimeMillis() - start;
     start = System.currentTimeMillis();
     // traces for slow stuff
-    if (UCDetectorPlugin.DEBUG && duration > MINIMUM_DURATION) {
+    if (Log.DEBUG && duration > MINIMUM_DURATION) {
       StringBuilder sb = new StringBuilder();
       if (info != null) {
         sb.append(info).append(" "); //$NON-NLS-1$
