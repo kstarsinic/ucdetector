@@ -100,7 +100,9 @@ abstract class AbstractUCDQuickFix implements IMarkerResolution2 { // extends Wo
       // -----------------------------------------------------------------------
       // see org.eclipse.jdt.internal.ui.text.correction.CorrectionMarkerResolutionGenerator
       IEditorPart part = EditorUtility.isOpenInEditor(originalUnit);
-      part.doSave(null);
+      if (part != null) { // not open
+        part.doSave(null);
+      }
       //      if (part instanceof ITextEditor) {
       //        ITextEditor textEditor = (ITextEditor) part;
       //        textEditor.selectAndReveal(startPosition, 0);
