@@ -22,7 +22,9 @@ Steps to create new Version:
  - create jar, install in eclipse, run UCDetector
  - run UCDetector with: org.ucdetector_test, jEdit, JUnit
  - run UCDetector with: change warn limit to 2
+ - Apply QuickFixes to QuickFixExample
  - check UCDetector Code with: PMD, CPD, finbugs, Energy
+ - check screenshots
  - update homepage and help
  - check help
  - check: Help/about Eclipse Platform/Plugin Details

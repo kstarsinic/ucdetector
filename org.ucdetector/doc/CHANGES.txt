@@ -1,4 +1,4 @@
-UCDetector 0.11.0 from ?:
+UCDetector 0.11.0 from 2008.09.30:
 New features:
  - QuickFixes
  - Checkbox "Ignore bean methods"
