@@ -303,7 +303,8 @@ public abstract class AbstractUCDetectorIterator extends UCDetectorHandler {
 
   public MarkerFactory getMarkerFactory() {
     if (markerFactory == null) {
-      List<IUCDetectorReport> reports = new ArrayList<IUCDetectorReport>();      reports.add(new MarkerReport());
+      List<IUCDetectorReport> reports = new ArrayList<IUCDetectorReport>();
+      reports.add(new MarkerReport());
       if (Prefs.isWriteReportFile()) {
         reports.add(new TextReport());
       }

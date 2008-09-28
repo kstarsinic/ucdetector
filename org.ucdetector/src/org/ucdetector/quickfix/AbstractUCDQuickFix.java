@@ -59,7 +59,7 @@ abstract class AbstractUCDQuickFix implements IMarkerResolution2 { // extends Wo
   protected ASTRewrite rewrite;
   protected IDocument doc;
 
-  @SuppressWarnings("unchecked")//$NON-NLS-1$
+  @SuppressWarnings("unchecked")
   public void run(IMarker marker) {
     ITextFileBufferManager bufferManager = FileBuffers
         .getTextFileBufferManager();
@@ -264,7 +264,7 @@ abstract class AbstractUCDQuickFix implements IMarkerResolution2 { // extends Wo
           sb.append("Lines: ").append(lineStart).append("<="); //$NON-NLS-1$ //$NON-NLS-2$
           sb.append(lineMarker).append("<=").append(lineEnd); //$NON-NLS-1$
           sb.append(", Found node=").append(found); //$NON-NLS-1$
-          Log.logDebug(sb.toString()); //$NON-NLS-1$
+          Log.logDebug(sb.toString()); 
         }
         if (found) {
           Log.logDebug("NODE FOUND: \r\n" + name.getIdentifier()); //$NON-NLS-1$

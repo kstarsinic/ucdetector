@@ -66,7 +66,7 @@ public class CycleMember extends CycleBaseElement {
     StringBuilder sb = new StringBuilder();
     sb.append(super.getDefaultText(typeFor));
     if (match instanceof IImportDeclaration) {
-      sb.append(" (import declaration)");
+      sb.append(" (import declaration)"); //$NON-NLS-1$
       return sb.toString();
     }
     sb.append('.').append(getDefaultText(match));

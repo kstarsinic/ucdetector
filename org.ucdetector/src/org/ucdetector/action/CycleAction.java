@@ -42,7 +42,8 @@ public class CycleAction extends AbstractUCDetectorAction { // NO_UCD
           }
         }
         catch (PartInitException e) {
-          UCDetectorPlugin.logErrorAndStatus(Messages.CycleAction_cant_open_editor, e);
+          UCDetectorPlugin.logErrorAndStatus(
+              Messages.CycleAction_cant_open_editor, e);
         }
       }
     });

@@ -145,8 +145,7 @@ public class UCDetectorPlugin extends AbstractUIPlugin {
   }
 
   public static Status logErrorAndStatus(String message, Throwable ex) {
-    Status status = new Status(IStatus.ERROR, ID,
-        IStatus.ERROR, message, ex);
+    Status status = new Status(IStatus.ERROR, ID, IStatus.ERROR, message, ex);
     UCDetectorPlugin.logStatus(status);
     return status;
   }

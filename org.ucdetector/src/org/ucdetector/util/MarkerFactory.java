@@ -63,8 +63,7 @@ public final class MarkerFactory {
     this.reports = reports;
   }
 
-  public static MarkerFactory createInstance(
-      List<IUCDetectorReport> reports) {
+  public static MarkerFactory createInstance(List<IUCDetectorReport> reports) {
     return new MarkerFactory(reports);
   }
 

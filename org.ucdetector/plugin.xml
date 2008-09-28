@@ -121,7 +121,7 @@
   <!-- COMMAND+BINDINGS to declare shortcut  Alt+Shift+U                     -->
   <!-- ===================================================================== -->
 	<extension point="org.eclipse.ui.commands"> 
-		<command name="UCDetector command" 
+		<command name="%command.name.0" 
 		       id="org.ucdetector.definitionId.ucd"> 
 		</command>
 	</extension>

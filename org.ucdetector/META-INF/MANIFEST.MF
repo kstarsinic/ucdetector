@@ -2,7 +2,7 @@ Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: %pluginName
 Bundle-SymbolicName: org.ucdetector;singleton:=true
-Bundle-Version: 0.10.4
+Bundle-Version: 0.11.0
 Bundle-Activator: org.ucdetector.UCDetectorPlugin
 Bundle-Vendor: %providerName
 Bundle-Localization: plugin
@@ -15,8 +15,7 @@ Require-Bundle: org.eclipse.ui,
  org.eclipse.search,
  org.eclipse.jface.text,
  org.eclipse.core.filebuffers,
- org.eclipse.ui.ide,
- org.eclipse.ui.workbench.texteditor
+ org.eclipse.ui.ide
 Eclipse-LazyStart: true
 Bundle-ClassPath: .
 Export-Package: org.ucdetector,

@@ -31,7 +31,6 @@ public class UCDQuickGenerator implements IMarkerResolutionGenerator2 { // NO_UC
         Log.logDebug("UCDQuickFixer.getResolutions()" + markerType); //$NON-NLS-1$
       }
       List<IMarkerResolution> resolutions = new ArrayList<IMarkerResolution>();
-      resolutions.add(new UseTag_NO_UCD_QuickFix());
       if (MarkerFactory.UCD_MARKER_UNUSED.equals(markerType)) {
         resolutions.add(new DeleteQuickFix());
         resolutions.add(new LineCommentQuickFix());
@@ -44,6 +43,7 @@ public class UCDQuickGenerator implements IMarkerResolutionGenerator2 { // NO_UC
       else if (MarkerFactory.UCD_MARKER_USE_FINAL.equals(markerType)) {
         resolutions.add(new UseFinalQuickFix());
       }
+      resolutions.add(new UseTag_NO_UCD_QuickFix());
       return resolutions.toArray(new IMarkerResolution[resolutions.size()]);
     }
     catch (CoreException e) {
