@@ -103,7 +103,8 @@ public class QuickFixExample {
   public void unusedMethod_1() {// Marker YES: unused code
   }
 
-  public int unusedField = 1;
+  public int unusedField = 1;// Marker YES: unused code,use final
+
   public void unusedMethod_2() {// Marker YES: unused code
     // comment
     System.out.println("hello ");
