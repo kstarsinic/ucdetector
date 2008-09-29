@@ -1,7 +1,7 @@
 
 
 //------------------------------------------------------------------------------
-TODO 0.10.0:
+TODO 0.12.0:
  - refactor SearchManager: Confusing to understand / add new handler!
  - check local/anonymous types:
    - local classes can be private
@@ -31,6 +31,7 @@ Steps to create new Version:
  - spell check
  - SVN branch
  - CHANGES.txt
+ - search for old version number
  - Sourceforge:
    - jar, source.jar, additional_source.jar
 	 - Categorization
