@@ -1,4 +1,6 @@
 # Debugging options for the org.ucdetector plugin.
+# add programm parameter "-debug" to eclipse.ini
+# and put this file in your eclipse install directory
 
 # Turn on debugging for the org.ucdetector plugin.
 org.ucdetector/debug=true
