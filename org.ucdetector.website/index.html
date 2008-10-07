@@ -416,8 +416,41 @@ the markers and select:<br>
 
 
 
+
 <tr>
 <td>
+<h2>FAQ</h2>
+<p><b>How do I fix a OutOfMemoryError?</b><br>
+Increase java heap space by declaring vm parameter: -Xmx500m -XX:MaxPermSize=256m
+</p>
+
+<p><b>Does UCDetector find unnecessary private code?</b><br>
+No. Use eclipse compiler settings to find this kind of code.
+</p>
+
+<p><b>Can I trust UCDetector warnings?</b><br>
+No. Check reflection, do a full text search, ask your architect, apply changes carefully.
+</p>
+
+<p><b>Is there a UCDetector version for other IDE's?</b><br>
+No. UCDetector is limited to Eclipse IDE.
+</p>
+
+<p><b>I need UCDetector to check name conventions. Can you extend UCDetector?</b><br>
+No. Use other tools like PMD, Checkstyle, Finbugs.
+Or check out org.ucdetector.additional and write your own detection.
+</p>
+
+<p><b>Is there a ANT task to create UCDetector to create a UCDetector report?</b><br>
+No. It's planned. It will need a headless eclipse to work.
+</p>
+
+<p><b>How do I get rid of all this UCDetector warnings?</b><br>
+Run "clean markers". Group warnings by type.
+</p>
+
+
+
 <h2>License</h2>
 <!-- ======================================================================= -->
 UCDetector is Open Source and published under the
@@ -475,7 +508,7 @@ Bugfixes:
  <li>Add example plugin to write your own detection: org.ucdetector.additional</li>
  <li>Ignore methods which override or implement other methods</li>
  <li>Ignore methods which are overridden</li>
- <li>Ignore interfaces</li>
+ <li>Don't try to make interfaces final</li>
  <li>Ignore abstract methods</li>
 </ul>
 
