@@ -49,6 +49,7 @@ class FinalHandler {
         || Flags.isFinal(flags) //
         || Flags.isInterface(flags) //
         || method.isConstructor()//
+        || method.isMainMethod()//
     ) {
       return false;
     }
@@ -68,8 +69,8 @@ class FinalHandler {
     if (line == LineManger.LINE_NOT_FOUND //
         || !Prefs.isCheckUseFinalField() //
         || Flags.isFinal(flags)//
-        || Flags.isEnum(flags)//
-    ) {
+        || Flags.isVolatile(flags)// 2008-10-12
+        || field.isEnumConstant()) {
       return false;
     }
     if (!canMakeFinal(field)) {
