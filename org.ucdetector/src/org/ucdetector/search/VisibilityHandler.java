@@ -13,6 +13,7 @@ import org.eclipse.jdt.core.Flags;
 import org.eclipse.jdt.core.IField;
 import org.eclipse.jdt.core.IJavaElement;
 import org.eclipse.jdt.core.IMember;
+import org.eclipse.jdt.core.IMethod;
 import org.eclipse.jdt.core.IPackageFragment;
 import org.eclipse.jdt.core.IType;
 import org.eclipse.jdt.core.JavaModelException;
@@ -103,6 +104,12 @@ class VisibilityHandler {
     if (startElement instanceof IField) {
       IField field = (IField) startElement;
       if (field.isEnumConstant()) {
+        return false;
+      }
+    }
+    if (startElement instanceof IMethod) {
+      IMethod method = (IMethod) startElement;
+      if (method.isMainMethod()) {
         return false;
       }
     }
