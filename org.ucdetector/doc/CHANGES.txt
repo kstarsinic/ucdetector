@@ -1,3 +1,9 @@
+// -----------------------------------------------------------------------------
+UCDetector 0.11.1 from 2008.:
+Bugfixes:
+ - Fix Bug [ 2153699 ] Find unused interface methods, unused abstract methods
+
+// -----------------------------------------------------------------------------
 UCDetector 0.11.0 from 2008.09.30:
 New features:
  - QuickFixes

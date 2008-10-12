@@ -147,10 +147,6 @@ public class SearchManager {
       if (noRefTypes.contains(type)) {
         continue;
       }
-      // Ignore interface methods
-      if (type != null && type.isInterface()) {
-        continue;
-      }
       // Ignore methods overriding java.lang.Object methods
       if (JavaElementUtil.isMethodOfJavaLangObject(method)) {
         continue;

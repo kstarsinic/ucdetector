@@ -10,7 +10,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.eclipse.core.runtime.CoreException;
-import org.eclipse.jdt.core.Flags;
 import org.eclipse.jdt.core.IField;
 import org.eclipse.jdt.core.IJavaElement;
 import org.eclipse.jdt.core.IMethod;
@@ -58,10 +57,10 @@ public class UCDetectorIterator extends AbstractUCDetectorIterator {
 
   @Override
   protected void handleMethod(IMethod method) throws CoreException {
-    if (isPrivate(method) || method.isMainMethod()
-        || Flags.isAbstract(method.getFlags())) {
+    // Fix Bug [ 2153699 ] Find unused abstract methods
+    if (isPrivate(method) || method.isMainMethod()) {
       debugNotHandle("method", method, //$NON-NLS-1$
-          "isPrivate || isMainMethod || isAbstract"); //$NON-NLS-1$
+          "isPrivate || isMainMethod"); //$NON-NLS-1$
       return;
     }
     if (!Prefs.isUCDetectionInMethods()) {
