@@ -18,8 +18,8 @@ public class FinalFieldExamples {
   private int fieldNotSet2; // Marker YES: use final
 
   /**
-   *  Using final here, causes a compile error
-   *  BUT: It does make no sense to set field in declaration AND constructor!!!!
+   * Using final here, causes a compile error BUT: It does make no sense to
+   * set field in declaration AND constructor!!!!
    */
   private int fieldSetInConstructorAndDeclaration = 2; // Marker YES: use final
 
@@ -28,8 +28,8 @@ public class FinalFieldExamples {
   private int fieldSetInInitilizer; // Marker YES: use final
 
   /**
-   *  Using final here, causes a compile error
-   *  BUT: It does make no sense to set field in declaration AND constructor!!!!
+   * Using final here, causes a compile error BUT: It does make no sense to
+   * set field in declaration AND constructor!!!!
    */
   private int fieldSetInInitilizerAndDeclaration = 3; // Marker YES: use final
 
@@ -47,6 +47,11 @@ public class FinalFieldExamples {
 
   private static int staticFieldSetInSetter = 2;
 
+  /**
+   * 2008-10-12: volatile fields may not be final!
+   */
+  private volatile int volatitleField;
+
   public static int geStatictFieldSetInSetter() {
     return staticFieldSetInSetter;
   }
@@ -63,6 +68,7 @@ public class FinalFieldExamples {
 
   public FinalFieldExamples() {
     fieldSetInConstructor = 3;
+    volatitleField = 0;
     // It does make no sense to set field in declaration AND constructor!!!!
     fieldSetInConstructorAndDeclaration = 4;
     DONT_USE_FINAL = 1;
@@ -81,6 +87,7 @@ public class FinalFieldExamples {
     System.out.println(ex.fieldNotSet);
     System.out.println(ex.fieldSetInInitilizer);
     System.out.println(ex.fieldSetInInitilizerAndDeclaration);
+    System.out.println(ex.volatitleField);
     ex.fieldSetInStaticMethod = 3;
   }
 }

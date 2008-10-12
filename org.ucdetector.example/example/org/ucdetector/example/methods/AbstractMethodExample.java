@@ -5,10 +5,9 @@ package org.ucdetector.example.methods;
  */
 public abstract class AbstractMethodExample {
 
-  /** no marker here, because we ignore abstract methods */
-  public abstract void abstractMethod();
+  /**
+   * Fix Bug [ 2153699 ] Find unused abstract methods
+   */
+  public abstract void abstractMethod(); // Marker YES: unused code
 
-  public void unused() { // Marker YES: unused code
-
-  }
 }

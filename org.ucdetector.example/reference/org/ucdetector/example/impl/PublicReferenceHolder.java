@@ -23,6 +23,8 @@ import org.ucdetector.example.inheritance.bug.C;
 import org.ucdetector.example.methods.AbstractMethodExample;
 import org.ucdetector.example.methods.BeanExample;
 import org.ucdetector.example.methods.ConstructorExample;
+import org.ucdetector.example.methods.ConstructorImplExample;
+import org.ucdetector.example.methods.ConstructorNoDefaultExample;
 import org.ucdetector.example.methods.JavaDocExampleMethod;
 import org.ucdetector.example.methods.MethodExamples;
 import org.ucdetector.example.methods.MethodReferenceInJarExample;
@@ -147,7 +149,10 @@ public class PublicReferenceHolder {
     B.class.getName();
     C.class.getName();
     ImplementsExample.class.getName();
-    
+    ConstructorImplExample.class.getName();
+
+    new ConstructorImplExample(1, "2");
+
     System.out.println(QuickFixExample.USE_FINAL1);
     System.out.println(QuickFixExample.USE_FINAL2);
     System.out.println(QuickFixExample.USE_FINAL3);

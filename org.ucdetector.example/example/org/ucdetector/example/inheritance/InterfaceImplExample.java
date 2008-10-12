@@ -26,11 +26,19 @@ public class InterfaceImplExample extends AbstractInterfaceImplExample {
   }
 
   @Override
-  protected void noMarkerForAbstractMethod() {
+  protected void abstractMethod() {
+
+  }
+
+  @Override
+  public void abstractMethodUsed() {
 
   }
 
   public void unusedMethod() {
+    useProtected();
+  }
 
+  public void useProtected() {
   }
 }

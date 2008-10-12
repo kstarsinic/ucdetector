@@ -53,7 +53,7 @@ public class MethodExamples {
     /** keyword "assert" should not cause problems to UCDetector */
     assert true;
   }
-
+  
   /** Arrays should not cause problems to UCDetector */
   void unusedPublicMethod2(int[] iArray, Object[][] o) {// Marker YES: unused code
   }
