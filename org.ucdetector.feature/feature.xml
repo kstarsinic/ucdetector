@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<feature
+      id="org.ucdetector.feature"
+      label="UCDetector Feature"
+      version="0.11.1"
+      provider-name="Joerg Spieler">
+
+   <description url="http://www.ucdetector.org/">
+      Feature for UCDetector (Unnecessary Code Detector)
+   </description>
+
+   <copyright>
+      Copyright (c) 2008 Joerg Spieler
+   </copyright>
+
+   <license url="http://www.eclipse.org/legal/epl-v10.html">
+      All rights reserved. This program and the accompanying materials are made available under the terms of the Eclipse Public License v1.0 which accompanies this distribution, and is available at http://www.eclipse.org/legal/epl-v10.html
+   </license>
+
+   <url>
+      <update label="UCDetector update site" url="http://ucdetector.sourceforge.net/update"/>
+   </url>
+
+   <requires>
+      <import plugin="org.eclipse.ui"/>
+      <import plugin="org.eclipse.core.runtime"/>
+      <import plugin="org.eclipse.core.resources"/>
+      <import plugin="org.eclipse.jdt.core"/>
+      <import plugin="org.eclipse.jdt.ui" version="3.3.0" match="greaterOrEqual"/>
+      <import plugin="org.eclipse.search"/>
+      <import plugin="org.eclipse.jface.text"/>
+      <import plugin="org.eclipse.core.filebuffers"/>
+      <import plugin="org.eclipse.ui.ide"/>
+   </requires>
+
+   <plugin
+         id="org.ucdetector"
+         download-size="150"
+         install-size="150"
+         version="0.11.1"
+         unpack="false"/>
+
+</feature>
