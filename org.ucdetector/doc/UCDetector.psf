@@ -6,5 +6,7 @@
 <project reference="0.9.3,https://ucdetector.svn.sourceforge.net/svnroot/ucdetector/trunk/org.ucdetector.example,org.ucdetector.example"/>
 <project reference="0.9.3,https://ucdetector.svn.sourceforge.net/svnroot/ucdetector/trunk/org.ucdetector.website,org.ucdetector.website"/>
 <project reference="0.9.3,https://ucdetector.svn.sourceforge.net/svnroot/ucdetector/trunk/org.ucdetector_test,org.ucdetector_test"/>
+<project reference="0.9.3,https://ucdetector.svn.sourceforge.net/svnroot/ucdetector/trunk/org.ucdetector.feature,org.ucdetector.feature"/>
+<project reference="0.9.3,https://ucdetector.svn.sourceforge.net/svnroot/ucdetector/trunk/org.ucdetector.update_site,org.ucdetector.update_site"/>
 </provider>
 </psf>
