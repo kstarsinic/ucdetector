@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<site>
+   <feature url="features/org.ucdetector.feature_0.11.1.jar" id="org.ucdetector.feature" version="0.11.1">
+      <category name="ucd_category"/>
+   </feature>
+   <category-def name="ucd_category" label="UCDetector Category">
+      <description>
+         Category for UCDetector (Unnecessary Code Detector)
+      </description>
+   </category-def>
+</site>
