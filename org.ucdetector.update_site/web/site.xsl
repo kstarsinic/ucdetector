@@ -207,6 +207,16 @@
 	</xsl:otherwise>
 	</xsl:choose>
 	</table>
+	
+	
+	
+	Hosted by:
+	<a href="http://sourceforge.net">
+		<img src="http://sflogo.sourceforge.net/sflogo.php?group_id=219599&amp;type=2"
+		width="125" height="37" border="0" alt="SourceForge.net Logo"/>
+	</a>
+	
+	
 	</body>
 	</html>
 </xsl:for-each>
