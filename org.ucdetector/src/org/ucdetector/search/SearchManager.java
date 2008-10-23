@@ -156,12 +156,6 @@ public class SearchManager {
         continue;
       }
       updateMonitorMessage(method, "override/implements", searchInfo); //$NON-NLS-1$
-      // ***********************************************************************
-      // TODO 01.09.2008: Refactor. Confusing to understand / add new handler!
-      //  - finalHandler.createFinalMarker
-      //  - visibilityHandler.createMarker
-      //  - markerFactory.createReferenceMarker
-      // ***********************************************************************
       // Ignore methods overriding or implementing other methods
       boolean isOverride = JavaElementUtil.isOverrideOrImplements(method);
       if (isOverride) {
@@ -221,12 +215,6 @@ public class SearchManager {
       if (noRefTypes.contains(type)) {
         continue;
       }
-      // ***********************************************************************
-      // TODO 01.09.2008: Refactor. Confusing to understand / add new handler!
-      //  - finalHandler.createFinalMarker
-      //  - visibilityHandler.createMarker
-      //  - markerFactory.createReferenceMarker
-      // ***********************************************************************
       updateMonitorMessage(field, Messages.SearchManager_SearchReferences,
           searchInfo);
       searchImpl(field, searchInfo, false);
@@ -373,6 +361,7 @@ public class SearchManager {
       }
       checkCancelSearch(found);
       IJavaElement matchJavaElement = JavaCore.create(matchAccess.getFile());
+      // TODO 23.10.2008: Check match for no java files!
       visibilityHandler.checkVisibility(matchJavaElement, found);
       return true;
     }
