@@ -45,6 +45,8 @@ public final class Prefs {
   = UCDetectorPlugin.ID + ".member"; //$NON-NLS-1$
   protected static final String ANALYZE_LITERALS_CHECK //
   = UCDetectorPlugin.ID + ".literalsCheck"; //$NON-NLS-1$
+  protected static final String ANALYZE_CHECK_FULL_CLASS_NAME //
+  = UCDetectorPlugin.ID + ".checkFullClassName"; //$NON-NLS-1$
   protected static final String ANALYZE_LITERALS //
   = UCDetectorPlugin.ID + ".literals"; //$NON-NLS-1$
   // WARN_LIMIT ----------------------------------------------------------------
@@ -193,6 +195,14 @@ public final class Prefs {
    */
   public static boolean isUCDetectionInLiterals() {
     return getStore().getBoolean(ANALYZE_LITERALS_CHECK)
+        && getString(ANALYZE_LITERALS).length() > 0;
+  }
+
+  /**
+   * @return <code>true</code> if we should detect FULL class names in literals as well
+   */
+  public static boolean isUCDetectionInLiteralsFullClassName() {
+    return getStore().getBoolean(ANALYZE_CHECK_FULL_CLASS_NAME)
         && getString(ANALYZE_LITERALS).length() > 0;
   }
 

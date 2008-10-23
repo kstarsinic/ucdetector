@@ -71,6 +71,7 @@ public final class Messages extends NLS {
   public static String PreferencePage_Classes; // NO_UCD
   public static String PreferencePage_Methods; // NO_UCD
   public static String PreferencePage_Fields; // NO_UCD
+  public static String PreferencePage_CheckFullClassName; // NO_UCD
   public static String PreferencePage_LiteralsCheck; // NO_UCD
   public static String PreferencePage_LiteralsCheckToolTip; // NO_UCD
   public static String PreferencePage_Literals; // NO_UCD
@@ -81,6 +82,7 @@ public final class Messages extends NLS {
   public static String PreferencePage_WarnLimitToolTip; // NO_UCD
 
   public static String PreferencePage_GroupDetect; // NO_UCD
+  public static String PreferencePage_GroupFileSearch; // NO_UCD
   public static String PreferencePage_GroupOthers; // NO_UCD
   public static String PreferencePage_GroupFilter; // NO_UCD
   public static String PreferencePage_GroupKeyWord; // NO_UCD

@@ -59,6 +59,7 @@ public class UCDetectorPreferencePage extends FieldEditorPreferencePage // NO_UC
         GridData.FILL_HORIZONTAL);
     createFilterGroup(parentGroups);
     createDetectGroup(parentGroups);
+    createFileSearchGroup(parentGroups);
     createKeywordGroup(parentGroups);
     createOtherGroup(parentGroups);
   }
@@ -119,13 +120,28 @@ public class UCDetectorPreferencePage extends FieldEditorPreferencePage // NO_UC
     ComboFieldEditor analyzeFields = createCombo(Prefs.ANALYZE_FIELDS,
         Messages.PreferencePage_Fields, spacer);
     this.addField(analyzeFields);
+  }
+
+  /**
+   * Create a group of detection settings: Search classes, methods, fields,
+   * search class names in text files
+   */
+  private void createFileSearchGroup(Composite parentGroups) {
+    Composite spacer = createGroup(parentGroups,
+        Messages.PreferencePage_GroupFileSearch, 1, 1, GridData.FILL_HORIZONTAL);
     SynchBooleanFieldEditor analyzeLiteralsCheck = new SynchBooleanFieldEditor(
         spacer);
     this.addField(analyzeLiteralsCheck);
+    BooleanFieldEditor checkFullClassName = new BooleanFieldEditor(
+        Prefs.ANALYZE_CHECK_FULL_CLASS_NAME,
+        Messages.PreferencePage_CheckFullClassName,
+        BooleanFieldEditor.SEPARATE_LABEL, spacer);
+    this.addField(checkFullClassName);
     StringFieldEditor analyzeLiterals = createText(Prefs.ANALYZE_LITERALS,
         Messages.PreferencePage_Literals, spacer,
         Messages.PreferencePage_LiteralsToolTip);
     analyzeLiteralsCheck.setAnalyzeLiterals(analyzeLiterals);
+    analyzeLiteralsCheck.setCheckFullClassName(checkFullClassName);
     this.addField(analyzeLiterals);
   }
 
@@ -207,13 +223,13 @@ public class UCDetectorPreferencePage extends FieldEditorPreferencePage // NO_UC
   private static class SynchBooleanFieldEditor extends BooleanFieldEditor {
     private final Composite parent;
     private StringFieldEditor analyzeLiterals;
-    private final Button check;
+    private BooleanFieldEditor checkFullClassName;
 
     private SynchBooleanFieldEditor(Composite parent) {
       super(Prefs.ANALYZE_LITERALS_CHECK,
           Messages.PreferencePage_LiteralsCheck, parent);
       this.parent = parent;
-      check = getChangeControl(parent);
+      Button check = getChangeControl(parent);
       check.setToolTipText(Messages.PreferencePage_LiteralsCheckToolTip);
     }
 
@@ -223,6 +239,10 @@ public class UCDetectorPreferencePage extends FieldEditorPreferencePage // NO_UC
      */
     private void setAnalyzeLiterals(StringFieldEditor analyzeLiterals) {
       this.analyzeLiterals = analyzeLiterals;
+    }
+
+    private void setCheckFullClassName(BooleanFieldEditor checkFullClassName) {
+      this.checkFullClassName = checkFullClassName;
     }
 
     /**
@@ -247,6 +267,7 @@ public class UCDetectorPreferencePage extends FieldEditorPreferencePage // NO_UC
 
     private void synchronizeAnalyzeLiteralsCheck() {
       analyzeLiterals.setEnabled(getBooleanValue(), parent);
+      checkFullClassName.setEnabled(getBooleanValue(), parent);
     }
   }
 
