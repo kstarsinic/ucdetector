@@ -1,0 +1,147 @@
+
+<ucd page="Start">
+	<table border="0">
+<!-- row start ============================================================= -->
+		<tr valign="center">
+<!-- left ================================================== -->
+			<td>
+<h2>About</h2>
+<!-- ======================================================================= -->
+UCDetector (Unnecessary Code Detector) is a eclipse PlugIn tool to find unnecessary
+(dead) <font color="#006699"><strong>public</strong></font> java code.
+For example public classes, methods or fields which have no references. UCDetector creates
+markers for the following problems, which appear in the eclipse problem view:
+
+<ul>
+  <li>Unnecessary (dead) code</li>
+  <li>Code where the visibility could be changed to
+    <font color="#006699"><strong>protected</strong></font>, default or
+  <font color="#006699"><strong>private</strong></font></li>
+  <li>Methods of fields, which can be <font color="#006699"><strong>final</strong></font></li>
+</ul>
+
+<p>
+UCDetector also finds cyclic dependencies between classes in your code.
+This cycle classes are shown in s special cycle view.
+</p>			
+			
+			</td>
+<!-- right ================================================== -->
+			<td><img alt="UCDetector popup"  border="1" src="images/popup.png"/></td>
+		</tr>
+<!-- row end ============================================================= -->
+<!-- row start ============================================================= -->
+		<tr>
+<!-- left ================================================== -->
+			<td>
+<h2>Quick start</h2>
+<!-- ======================================================================= -->
+Instead of clicking Shift+Ctrl+G
+      (search references in workspace) all the time, follow the next steps:
+<ul>
+  <li>1. Right click on a project or package in the eclipse package explorer</li>
+  <li>2. 
+	Select the context menu: UCDetector/detect unnecessary code
+	  <img alt="run UCDetector" src="icons/ucd.gif" />
+  </li>
+  <li>3.
+     Check warnings in the eclipse java editor and the eclipse problem view
+    <img alt="not found" src="icons/not_found_obj.gif" />
+    <img alt="use private" src="icons/use_private.gif"/>
+    <img alt="use default" src="icons/use_default.gif"/>
+    <img alt="use protected" src="icons/use_protected.gif"/>
+    <img alt="use final" src="icons/use_final.gif"/>
+	</li>
+  <li>4. Use the menu "Group By/Type" in the Problems View</li>
+  <li>5. Change code carefully</li>
+  <li>6. Change preference "Detect code with max number of references" from 0 to 1, run UCDetector again</li>
+  <li>7. Repeat step 1. to 6.</li>
+</ul>
+			</td>
+<!-- right ================================================== -->
+			<td><img alt="UCDetector markers"  border="1" src="images/markers.png"/></td>
+		</tr>
+<!-- row end ============================================================= -->
+<!-- row start ============================================================= -->
+		<tr>
+<!-- left ================================================== -->
+			<td>
+
+<h2>Really want to change code?</h2>
+<!-- ======================================================================= -->
+The problems found by UCDetector, are only suggestions.
+
+<font color="red">
+Before changing code, you should really know what you are doing!
+</font>
+If UCDetector tells you, that there are no references your code still may be used by:
+<ul>
+  <li><font color="red">Reflection</font></li>
+  <li>Frameworks like Spring, Hibernate or Eclipse which declare dependencies in
+   property files, xml files (extension-points) ...</li>
+  <li>Third party code, which is using your API</li>
+  <li>Jars in your workspace</li>
+  <li>To be continued...</li>
+</ul>
+<p>
+Change visibility may cause problems with inheritance, reflection, instantiation...
+</p>
+<p>
+It's good idea to do a full text search in workspace for the piece of code,
+you want to change.
+</p>
+
+<h2>Change code, use QuickFixes!</h2>
+<!-- ======================================================================= -->
+After checking carefully all the possibilities above, maybe you decide to change
+your code. Click on the marker to see QuickFixes's to change code:
+<ul>
+  <li>Delete code: When UCDetector tells you that there are no references</li>
+  <li>Move code: When UCDetector tells you that there is only
+    1 reference (change "Limit" to 1 in "Window/Preferences")</li>
+  <li>Change visibility: Use <font color="#006699"><strong>protected</strong></font>
+	   , default or <font color="#006699"><strong>private</strong></font></li>
+  <li>Use <font color="#006699"><strong>final</strong></font></li>
+</ul>			
+			</td>
+<!-- right ================================================== -->
+			<td><img alt="UCDetector QuickFix"  border="1" src="images/quickfix.png"/></td>
+		</tr>
+<!-- row end ============================================================= -->
+
+
+
+<!-- row start ============================================================= -->
+		<tr>
+<!-- left ================================================== -->
+			<td>
+<h2>Ignore code</h2>
+<!-- ======================================================================= -->
+Use "NO_UCD" tag in code, for lines, which should be ignored:
+<pre>
+<span class="c4">
+/**
+ * Class is only used by reflection.
+ * Write a <strong>"NO_UCD"</strong> comment at the end of the line.
+ * This line will be ignored by UCDetector.
+ */</span>
+<span class="c2"><strong>public</strong></span> <span class="c5"><strong>class</strong></span> BeanExample <span class="c6"><strong>{</strong></span> <span class="c7">// <strong>NO_UCD</strong></span>
+</pre>
+			
+			</td>
+<!-- right ================================================== -->
+			<td></td>
+		</tr>
+<!-- row end ============================================================= -->
+
+
+<!-- row start ============================================================= -->
+		<tr>
+<!-- left ================================================== -->
+			<td><!-- left --></td>
+<!-- right ================================================== -->
+			<td><!-- right --></td>
+		</tr>
+<!-- row end ============================================================= -->
+	</table>
+</ucd>

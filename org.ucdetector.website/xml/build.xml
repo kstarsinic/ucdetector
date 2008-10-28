@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<project name="UCDetectorHomepage" default="transform" basedir=".">
+  <!-- ===================================================================== -->
+  <!--                      TRANSFORM                                        -->
+  <!-- ===================================================================== -->
+  <target name="transform">
+    <xslt destdir=".."
+          extension=".html"
+          basedir="."
+          includes="*.xml"
+          excludes="build.xml"
+          style="ucd.xsl">
+    </xslt>
+  </target>
+
+  <!-- ===================================================================== -->
+  <!--                      SEND                                             -->
+  <!-- ===================================================================== -->
+  <target name="send">
+    <property file="${user.home}/.ucdetector.properties" />
+    <echo>Sending files to: ${server}</echo>
+
+    <ftp password="${password}"
+         server="${server}"
+         userid="${user}"
+         remotedir="${remotedir}">
+      <fileset dir=".." includes="test.txt" />
+    </ftp>
+<!--
+    <property name="todir"
+              value="${userid}:${password}@${server}:${remotedir}" />
+    <scp todir="${todir}">
+      <fileset dir="..">
+        <include name="*.txt" />
+      </fileset>
+    </scp>
+-->
+  </target>
+</project>
+

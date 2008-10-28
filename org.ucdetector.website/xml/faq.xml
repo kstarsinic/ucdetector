@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<ucd page="FAQ">
+	<b>Why does the problems view doesn't show ucdetector problems?</b>
+	<br/>
+		Check problems view filters:
+  <ul>
+    <li>Click the small triangle in Problems View</li>
+		<li>Configure Contens...</li>
+		<li>Use "Group by type"</li>
+		<li>Preferences/marker limit</li>
+	</ul>
+	
+	<b>How do I get rid of all this UCDetector warnings?</b>
+	<br/>
+  <ul>
+    <li>Run UCDetector/clean markers</li>
+		<li>Group warnings by type</li>
+		<li>Filter UCDetector warinigs: Configure Contens.../Types</li>
+	</ul>
+	<p/>
+		
+	<b>How do I fix a OutOfMemoryError?</b>
+	<br/>
+		Increase java heap space by declaring vm parameter: -Xmx500m -XX:MaxPermSize=256m<p/>
+	
+	<b>Does UCDetector find unnecessary private code?</b>
+	<br/>
+		No. Use eclipse compiler settings to find this kind of code.<p/>
+	
+	<b>Can I trust 100% UCDetector warnings?</b>
+	<br/>
+		No. Check reflection, do a full text search, ask your architect, apply changes carefully.<p/>
+	
+	<b>Is there a UCDetector version for other IDE's?</b>
+	<br/>
+		No. UCDetector is limited to Eclipse IDE.<p/>
+	
+	<b>I need UCDetector to check name conventions. Can you extend UCDetector?</b>
+	<br/>
+		No. Use other tools like PMD, Checkstyle, Finbugs.
+Or check out org.ucdetector.additional and write your own detection.<p/>
+	
+	<b>Is there a ANT task to create UCDetector reports?</b>
+	<br/>
+		No. <!-- It's planned. It will need a headless eclipse to work.-->
+	<p/>
+	
+	
+	<b>Why did you create UCDetector?</b>
+	<br/>
+		UCDetector is a private project. I started it to find unused code. 
+		Especially before and after refactoring.<p/>
+	
+	<b>How can I see UCDetector traces?</b>
+	<br/>
+		Add programm parameter "-debug" to eclipse.ini, put org.ucdetector.jar\.options
+		file in your eclipse install directory.<p/>
+
+
+</ucd>

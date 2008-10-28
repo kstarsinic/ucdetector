@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<ucd page ="Releases">
+	<!-- ===================================================================== -->
+	<h3>UCDetector 0.11.0 from 2008-09-30:</h3>
+	<!-- ===================================================================== -->
+	<p>New features:</p>
+	<ul>
+		<li>QuickFixes</li>
+		<li>Checkbox "Ignore bean methods"</li>
+		<li>When UCDetector is running, now it is possible to continue editing files in eclipse</li>
+		<li>Speed up detection for overridden methods</li>
+		<li>Feature request [ 2103460 ]: Split visibility detection in private and protected.</li>
+		<li>Add warning message, if there are no elements found to run detection [ 2103655 ]</li>
+	</ul>
+	<p>Bugfixes:</p>
+	<ul>
+		<li>Don't suggest to change visibility of enums constants</li>
+		<li>Fix Bug [ 2103382 ] Method filter not saved in preference page</li>
+		<li>Fix Bug [ 2103678 ] Unnecessary code doesn't recurse in sub packages</li>
+		<li>Fix Bug [ 2103655 ] Detect cycles does not show anything</li>
+		<li>Fix Bug [ 2123103 ] Don't suggest to make constructors final</li>
+	</ul>
+
+	<!-- ===================================================================== -->
+	<h3>UCDetector 0.10.0 - Release from 2008-09-04</h3>
+	<!-- ===================================================================== -->
+	<p>New features:</p>
+	<ul>
+		<li>Filter for methods and fields</li>
+		<li>Final detection for methods and fields</li>
+		<li>Search of full qualifies class name in text files</li>
+		<li>Create html and xml report</li>
+		<li>Marker for default visibility</li>
+		<li>Different icons for private, protected, default and public</li>
+		<li>Tooltips in preference page</li>
+		<li>Show help for OutOfMemoryError'</li>
+	</ul>
+	<p>Bugfixes:</p>
+	<ul>
+		<li>Don't try to make normal classes private</li>
+		<li>Different icons for private, protected, default and public</li>
+		<li>Ignore serialization methods and fields like: serialVersionUID</li>
+		<li>Add example plugin to write your own detection: org.ucdetector.additional</li>
+		<li>Ignore methods which override or implement other methods</li>
+		<li>Ignore methods which are overridden</li>
+		<li>Don't try to make interfaces final</li>
+		<li>Ignore abstract methods</li>
+	</ul>
+	
+	<!-- ===================================================================== -->
+	<h3>UCDetector 0.9.0 - First release from 2008-03-01</h3>
+	<!-- ===================================================================== -->
+</ucd>
