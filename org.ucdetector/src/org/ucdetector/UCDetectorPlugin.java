@@ -54,7 +54,6 @@ public class UCDetectorPlugin extends AbstractUIPlugin {
   public void start(BundleContext context) throws Exception {
     super.start(context);
     dumpInformation();
-    registerImages(getDefault().getImageRegistry());
   }
 
   private void dumpInformation() {
@@ -113,7 +112,9 @@ public class UCDetectorPlugin extends AbstractUIPlugin {
   // ---------------------------------------------------------------------------
   // IMAGES
   // ---------------------------------------------------------------------------
-  private void registerImages(ImageRegistry registry) {
+  @Override
+  protected void initializeImageRegistry(ImageRegistry registry) {
+    super.initializeImageRegistry(registry);
     registry.put(IMAGE_CYCLE, getUcdImage("cycle.gif")); //$NON-NLS-1$
     registry.put(IMAGE_COMMENT, getUcdImage("comment_edit.gif")); //$NON-NLS-1$
     registry.put(IMAGE_FINAL, JavaPluginImages.DESC_OVR_FINAL);
