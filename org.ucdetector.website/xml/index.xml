@@ -2,10 +2,10 @@
 <ucd page="Start">
 	<table border="0">
 <!-- row start ============================================================= -->
-		<tr valign="center">
+<tr valign="top">
 <!-- left ================================================== -->
 			<td>
-<h2>About</h2>
+<h3>About</h3>
 <!-- ======================================================================= -->
 UCDetector (Unnecessary Code Detector) is a eclipse PlugIn tool to find unnecessary
 (dead) <font color="#006699"><strong>public</strong></font> java code.
@@ -27,14 +27,15 @@ This cycle classes are shown in s special cycle view.
 			
 			</td>
 <!-- right ================================================== -->
-			<td><img alt="UCDetector popup"  border="1" src="images/popup.png"/></td>
+			<td align="left" valign="middle">
+<img alt="UCDetector popup"  border="1" src="images/popup.png"/></td>
 		</tr>
 <!-- row end ============================================================= -->
 <!-- row start ============================================================= -->
 		<tr>
 <!-- left ================================================== -->
 			<td>
-<h2>Quick start</h2>
+<h3>Quick start</h3>
 <!-- ======================================================================= -->
 Instead of clicking Shift+Ctrl+G
       (search references in workspace) all the time, follow the next steps:
@@ -57,17 +58,9 @@ Instead of clicking Shift+Ctrl+G
   <li>6. Change preference "Detect code with max number of references" from 0 to 1, run UCDetector again</li>
   <li>7. Repeat step 1. to 6.</li>
 </ul>
-			</td>
-<!-- right ================================================== -->
-			<td><img alt="UCDetector markers"  border="1" src="images/markers.png"/></td>
-		</tr>
-<!-- row end ============================================================= -->
-<!-- row start ============================================================= -->
-		<tr>
-<!-- left ================================================== -->
-			<td>
 
-<h2>Really want to change code?</h2>
+
+<h3>Really want to change code?</h3>
 <!-- ======================================================================= -->
 The problems found by UCDetector, are only suggestions.
 
@@ -91,7 +84,18 @@ It's good idea to do a full text search in workspace for the piece of code,
 you want to change.
 </p>
 
-<h2>Change code, use QuickFixes!</h2>
+			</td>
+<!-- right ================================================== -->
+			<td align="left" valign="middle"><img alt="UCDetector markers"  border="1" src="images/markers.png"/></td>
+		</tr>
+<!-- row end ============================================================= -->
+<!-- row start ============================================================= -->
+		<tr>
+<!-- left ================================================== -->
+			<td>
+
+
+<h3>Change code, use QuickFixes!</h3>
 <!-- ======================================================================= -->
 After checking carefully all the possibilities above, maybe you decide to change
 your code. Click on the marker to see QuickFixes's to change code:
@@ -105,7 +109,7 @@ your code. Click on the marker to see QuickFixes's to change code:
 </ul>			
 			</td>
 <!-- right ================================================== -->
-			<td><img alt="UCDetector QuickFix"  border="1" src="images/quickfix.png"/></td>
+			<td align="left" valign="middle"><img alt="UCDetector QuickFix"  border="1" src="images/quickfix.png"/></td>
 		</tr>
 <!-- row end ============================================================= -->
 
@@ -118,22 +122,17 @@ your code. Click on the marker to see QuickFixes's to change code:
 <h2>Ignore code</h2>
 <!-- ======================================================================= -->
 Use "NO_UCD" tag in code, for lines, which should be ignored:
-<pre>
-<span class="c4">
-/**
+<pre><span class="c4">/**
  * Class is only used by reflection.
  * Write a <strong>"NO_UCD"</strong> comment at the end of the line.
  * This line will be ignored by UCDetector.
  */</span>
-<span class="c2"><strong>public</strong></span> <span class="c5"><strong>class</strong></span> BeanExample <span class="c6"><strong>{</strong></span> <span class="c7">// <strong>NO_UCD</strong></span>
-</pre>
-			
+<span class="c2"><strong>public</strong></span> <span class="c5"><strong>class</strong></span> BeanExample <span class="c6"><strong>{</strong></span> <span class="c7">// <strong>NO_UCD</strong></span></pre>
 			</td>
 <!-- right ================================================== -->
 			<td></td>
 		</tr>
 <!-- row end ============================================================= -->
-
 
 <!-- row start ============================================================= -->
 		<tr>

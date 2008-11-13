@@ -99,10 +99,41 @@ UCDetector: Unnecessary Code Detector</h1>
 						</td>
 					</tr>
 				</table>
+				
+<!-- FOOTER =============================================================== -->
+				<hr/>
+				<table width="100%" summary="footer">
+					<tr>
+						<td align="left" valign="middle">Last Update: 2008-10-12</td>
+						<td align="right" valign="middle">Copyright &#169; 2008, by Joerg Spieler</td>
+					</tr>
+				</table>
+				<hr/>
+				<table width="100%" summary="footer 2">
+					<tr>
+						<td align="left" valign="middle">
+	Page views since 2008-03-01:
+			<img alt="Page views since 2008-03-01" src="http://www.jspieler.de/cgi-bin/counting.php.cgi?counterid=3" />
+						</td>
+						<td align="right" valign="middle">
+	Hosted by:
+	<a href="http://sourceforge.net">
+		<img src="http://sflogo.sourceforge.net/sflogo.php?group_id=219599&amp;type=2" width="125" height="37" border="0" alt="SourceForge.net Logo" />
+							</a>
+						</td>
+					</tr>
+				</table>
+<!-- FOOTER =============================================================== -->
 			</body>
 		</html>
 	</xsl:template>
 	<!-- ================ LISTS ===============================================-->
+	
+	
+	TODO:
+	http://codexmonkey.blogspot.com/2007/02/stupid-xslt-trick-1-escape-madness.html
+	
+	
 	<xsl:template match="ul">
 		<ul>
 			<xsl:apply-templates/>
@@ -142,7 +173,7 @@ UCDetector: Unnecessary Code Detector</h1>
 	
 	<!-- ================ TABLE ===============================================-->
 	<xsl:template match="table">
-		<table border="0" summary="{@summary}">
+		<table border="{@border}" summary="{@summary}">
 			<xsl:apply-templates/>
 		</table>
 	</xsl:template>

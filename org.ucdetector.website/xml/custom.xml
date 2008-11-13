@@ -1,12 +1,11 @@
 <?xml version="1.0" encoding="ISO-8859-1"?>
-<ucd>
+<ucd page="Write your own detector!">
 	<table border="0" summary="left text, right image">
 		<tr valign="top">
 			<td>
-				<h2>Write your own detector!</h2>
 <!-- ======================================================================= -->
-				<a href="http://sourceforge.net/svn/?group_id=219599">Check out</a>
-				<p>xproject "org.ucdetector.additional" from SVN:</p>
+				<p><a href="http://sourceforge.net/svn/?group_id=219599">Check out</a>
+				project "org.ucdetector.additional" from SVN:</p>
 				<pre>svn co https://ucdetector.svn.sourceforge.net/svnroot/ucdetector ucdetector</pre>
 
 				<p>Create your own problem markers! I already provided example code for</p>
@@ -37,8 +36,6 @@
 				</ul>
 				
 				<a href="mailto:feedback@ucdetector.org">E-Mail </a> me your detection example!
-
-
            </td>
 			<td align="left" valign="middle">
 				<img alt="Additional" border="1" src="images/additional.png"/>
