@@ -104,12 +104,23 @@ class VisibilityHandler {
     if (startElement instanceof IField) {
       IField field = (IField) startElement;
       if (field.isEnumConstant()) {
+        // EnumConstant can not be private
+        return false;
+      }
+      IJavaElement parent = field.getParent();
+      if (parent instanceof IType && ((IType) parent).isInterface()) {
+        // fix bug [ 2269486 ] Constants in Interfaces Can't be Private
         return false;
       }
     }
     if (startElement instanceof IMethod) {
       IMethod method = (IMethod) startElement;
       if (method.isMainMethod()) {
+        return false;
+      }
+      IJavaElement parent = method.getParent();
+      if (parent instanceof IType && ((IType) parent).isInterface()) {
+        // fix bug [ 2269486 ] Constants in Interfaces Can't be Private
         return false;
       }
     }

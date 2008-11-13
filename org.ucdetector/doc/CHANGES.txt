@@ -2,6 +2,7 @@
 UCDetector 0.11.1 from 2008.:
 Bugfixes:
  - Fix Bug [ 2153699 ] Find unused interface methods, unused abstract methods
+ - Fix Bug [ 2269486 ] Constants in Interfaces Can't be Private
 
 // -----------------------------------------------------------------------------
 UCDetector 0.11.0 from 2008.09.30:
