@@ -5,6 +5,7 @@ package org.ucdetector.example.inheritance;
 public class FinalMethodImplExample extends FinalMethodExample {
 
     // NO final marker here, because method overrides an other method!
+    @Override
     public void methodOverridden() {
     }
 

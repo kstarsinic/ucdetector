@@ -9,9 +9,11 @@ public class OverrideImplExample extends OverrideExample {
   }
 
   // @Override
+  @Override
   public void methodToOverride() {
   }
 
+  @Override
   public void methodToOverrideProtected() {
   }
 
