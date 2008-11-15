@@ -248,7 +248,8 @@ public class SearchManager {
         JavaElementUtil.getElementName(member), Integer.valueOf(found) };
     String markerMessage = NLS.bind(Messages.SearchManager_MarkerReference,
         bindings);
-    if (found <= Prefs.getWarnLimit()) {
+    // Fix for BUG 2225016:  Dont create "0 references marker" for overridden methods
+    if (found <= Prefs.getWarnLimit() && !isOverriddenMethod) {
       created = markerFactory.createReferenceMarker(member, markerMessage,
           line, found);
       if (created) {
