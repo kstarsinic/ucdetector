@@ -18,7 +18,7 @@ import org.ucdetector.example.inheritance.InterfaceExample;
 import org.ucdetector.example.inheritance.InterfaceImplExample;
 import org.ucdetector.example.inheritance.OverrideExample;
 import org.ucdetector.example.inheritance.OverrideImplExample;
-import org.ucdetector.example.inheritance.UnusedInterfaceExample;
+import org.ucdetector.example.inheritance.InterfaceNotImplementedExample;
 import org.ucdetector.example.inheritance.bug.A;
 import org.ucdetector.example.inheritance.bug.B;
 import org.ucdetector.example.inheritance.bug.Bug2225016Impl;
@@ -164,6 +164,6 @@ public class PublicReferenceHolder {
 		// ---------------------------------------------------------------------
 		System.out.println(Bug2225016Impl.class.getName());
 		System.out.println(Bug2225016.class.getName());
-		System.out.println(UnusedInterfaceExample.class.getName());
+		System.out.println(InterfaceNotImplementedExample.class.getName());
 	}
 }
