@@ -17,21 +17,26 @@ public class ObjectClassMethodsExample implements Serializable {
   // ------------------------------------------------------------------------
   // NO OBJECT
   // ------------------------------------------------------------------------
+  @Override
   public int hashCode() {
     return 0;
   }
 
+  @Override
   public Object clone() {
     return new Object();
   }
 
+  @Override
   public String toString() {
     return "hello";
   }
 
+  @Override
   public void finalize() {
   }
 
+  @Override
   public boolean equals(Object o) {
     return super.equals(o);
   }

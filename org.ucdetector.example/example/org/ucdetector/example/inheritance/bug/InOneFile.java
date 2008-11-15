@@ -21,6 +21,7 @@ class InOneFile {
 }
 
 class B2 extends InOneFile {
+  @Override
   public void foo() {
   }
 
@@ -30,6 +31,7 @@ class B2 extends InOneFile {
 }
 
 class C2 extends B2 {
+  @Override
   public void foo() {
 
   }

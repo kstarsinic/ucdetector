@@ -3,6 +3,7 @@ package org.ucdetector.example.inheritance.bug;
  *
  */
 public class B extends A {
+  @Override
   public void foo() {
   }
 
