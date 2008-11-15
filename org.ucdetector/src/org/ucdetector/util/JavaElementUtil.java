@@ -273,16 +273,23 @@ public class JavaElementUtil {
   // -------------------------------------------------------------------------
 
   /**
+   * @see org.eclipse.jdt.ui.actions.FindDeclarationsAction
+   * @see http://help.eclipse.org/stable/index.jsp?topic=/org.eclipse.jdt.doc.isv/guide/jdt_api_search.htm
    * @return <code>true</code> if a method is overridden<br>
    * it is very expensive to call this method!!!
    */
   public static boolean isOverriddenMethod(IMethod method) throws CoreException {
-    SearchPattern pattern = SearchPattern.createPattern(method,
-        IJavaSearchConstants.DECLARATIONS, SearchPattern.R_EXACT_MATCH
-    // | IJavaSearchConstants.IGNORE_DECLARING_TYPE
-        );
+    if (method.isConstructor()) {
+      return false;
+    }
+    int limitTo = IJavaSearchConstants.DECLARATIONS
+        | IJavaSearchConstants.IGNORE_DECLARING_TYPE
+        | IJavaSearchConstants.IGNORE_RETURN_TYPE;
+    SearchPattern pattern = SearchPattern.createPattern(method, limitTo);
     CountRequestor requestor = new CountRequestor();
-    runSearch(pattern, requestor, SearchEngine.createWorkspaceScope());
+    IType declaringType = method.getDeclaringType();
+    IJavaSearchScope scope = SearchEngine.createHierarchyScope(declaringType);
+    runSearch(pattern, requestor, scope);
     return requestor.found > 1;
   }
 
@@ -315,6 +322,7 @@ public class JavaElementUtil {
 
     @Override
     public void acceptSearchMatch(SearchMatch match) {
+      // System.out.println("~~~~~~~~~~~acceptSearchMatch=" + match.getElement());
       this.found++;
     }
   }
