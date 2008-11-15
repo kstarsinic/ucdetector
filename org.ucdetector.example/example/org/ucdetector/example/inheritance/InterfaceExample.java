@@ -26,14 +26,14 @@ public interface InterfaceExample {
   public static final String USED = "USED";
 
   /**
-   * Fix Bug [ 2153699 ] Find unused interface methods
+   * NO marker! Method is implemented!
    */
-  void unusedMethod(); // Marker YES: unused code
+  void unusedMethod();
 
   /**
-   * Fix Bug [ 2153699 ] Find unused interface methods
+   * NO marker! Method is implemented!
    */
-  String overridenMethod(); // Marker YES: unused code
+  String overridenMethod();
 
   public void useProtected();
 
