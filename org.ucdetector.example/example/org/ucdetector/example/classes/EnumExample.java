@@ -13,6 +13,7 @@ public enum EnumExample {
    * */
   CHANGE_TO_PRIVATE;
 
+  @Override
   public String toString() {
     return CHANGE_TO_PRIVATE.name();
   }

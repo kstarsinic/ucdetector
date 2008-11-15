@@ -9,6 +9,7 @@ public class AnonymousClass {
       private static final long serialVersionUID = 1L;
 
       /** ignore, because it is overridden */
+      @Override
       public int size() {
         changeToPrivate();
         return 2;
@@ -23,6 +24,7 @@ public class AnonymousClass {
     ArrayList<String> list2 = new ArrayList<String>() {
       private static final long serialVersionUID = 1L;
 
+      @Override
       public int size() {
         return 2;
       }
