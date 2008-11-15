@@ -9,7 +9,8 @@ abstract class AbstractInterfaceImplExample implements InterfaceExample {
     abstractMethodUsed();
   }
 
-  protected abstract void abstractMethod(); // Marker YES: unused code
+  // no marker here, because method is overridden
+  protected abstract void abstractMethod();
 
   public abstract void abstractMethodUsed();
 
