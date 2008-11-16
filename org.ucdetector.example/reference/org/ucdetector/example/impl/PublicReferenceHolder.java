@@ -10,15 +10,16 @@ import org.ucdetector.example.classes.EnumExample;
 import org.ucdetector.example.fields.FieldExamples;
 import org.ucdetector.example.fields.FinalFieldExamples;
 import org.ucdetector.example.fields.SerializationFieldExample;
+import org.ucdetector.example.inheritance.Bug2139142Interface;
 import org.ucdetector.example.inheritance.Bug2225016;
 import org.ucdetector.example.inheritance.FinalMethodExample;
 import org.ucdetector.example.inheritance.FinalMethodImplExample;
 import org.ucdetector.example.inheritance.ImplementsExample;
 import org.ucdetector.example.inheritance.InterfaceExample;
 import org.ucdetector.example.inheritance.InterfaceImplExample;
+import org.ucdetector.example.inheritance.InterfaceNotImplementedExample;
 import org.ucdetector.example.inheritance.OverrideExample;
 import org.ucdetector.example.inheritance.OverrideImplExample;
-import org.ucdetector.example.inheritance.InterfaceNotImplementedExample;
 import org.ucdetector.example.inheritance.bug.A;
 import org.ucdetector.example.inheritance.bug.B;
 import org.ucdetector.example.inheritance.bug.Bug2225016Impl;
@@ -165,5 +166,6 @@ public class PublicReferenceHolder {
 		System.out.println(Bug2225016Impl.class.getName());
 		System.out.println(Bug2225016.class.getName());
 		System.out.println(InterfaceNotImplementedExample.class.getName());
+		System.out.println(Bug2139142Interface.class.getName());
 	}
 }

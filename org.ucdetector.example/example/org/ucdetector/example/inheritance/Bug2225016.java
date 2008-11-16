@@ -16,7 +16,7 @@ public class Bug2225016 {
   }
 
   // no markers here, because method is overridden
-  protected void methodIsOverriden() { // TODO: no marker should be here "unused code"
+  protected void methodIsOverriden() {
 
   }
 
