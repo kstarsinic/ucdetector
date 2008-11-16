@@ -217,8 +217,33 @@ public class SearchManager {
       }
       updateMonitorMessage(field, Messages.SearchManager_SearchReferences,
           searchInfo);
-      searchImpl(field, searchInfo, false);
+      int found = searchImpl(field, searchInfo, false);
       watch.end("    searchImpl"); //$NON-NLS-1$
+      if (found > 0 && !hasReadAccess(field)) {
+        // TODO:  markerFactory.createHasNoReadAccessMarker(field, line);
+      }
+    }
+  }
+
+  private static boolean hasReadAccess(IField field) throws CoreException {
+    SearchPattern pattern = SearchPattern.createPattern(field,
+        IJavaSearchConstants.READ_ACCESSES);
+    FieldReadRequestor requestor = new FieldReadRequestor();
+    JavaElementUtil.runSearch(pattern, requestor, SearchEngine
+        .createWorkspaceScope());
+    return requestor.hasReadAccess;
+  }
+
+  private static final class FieldReadRequestor extends SearchRequestor {
+    private boolean hasReadAccess = false;
+
+    @Override
+    public void acceptSearchMatch(SearchMatch match) {
+      if (match.getElement() instanceof IJavaElement) {
+        hasReadAccess = true;
+        throw new OperationCanceledException(
+            "Cancel Search: Field has read access");//$NON-NLS-1$
+      }
     }
   }
 
