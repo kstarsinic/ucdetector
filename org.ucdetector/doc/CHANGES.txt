@@ -1,5 +1,9 @@
 // -----------------------------------------------------------------------------
-UCDetector 0.11.1 from 2008.:
+UCDetector 0.12.0 from 2008.:
+New features:
+ - [ 2163715 ] eclipse update site
+ - [ 2290711 ] Detect write only fields
+
 Bugfixes:
  - Fix Bug [ 2153699 ] Find unused interface methods, unused abstract methods
  - Fix Bug [ 2269486 ] Constants in Interfaces Can't be Private
