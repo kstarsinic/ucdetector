@@ -20,6 +20,12 @@ package org.ucdetector.example.inheritance;
  * </ul>
  * How could discover a new developer in your team, that this class is used?
  * I think searching for references does not work.
+ * <p>
+ * Date: 2008-11-16 01:17<br>
+ * Sender: spj<br>
+ * Closed bug. There was no more feedback from bug writer. But the suggestion
+ * above mentioned should be used for this kind of problem!
+ * <p>
  * @see https://sourceforge.net/tracker/index.php?func=detail&aid=2139142&group_id=219599&atid=1046865
  */
 public class Bug2139142Class implements Bug2139142Interface { // Marker YES: unused code
