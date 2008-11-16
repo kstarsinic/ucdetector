@@ -1,4 +1,4 @@
-package org.ucdetector.example.inheritance;
+package org.ucdetector.example.bugs;
 /**
  * [ 2139142 ] Classes used through interface<p>
  * If there is class that implements some interface and is used only through

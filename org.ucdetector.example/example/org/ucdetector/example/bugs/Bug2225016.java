@@ -1,4 +1,4 @@
-package org.ucdetector.example.inheritance;
+package org.ucdetector.example.bugs;
 
 /**
  * [ 2225016 ] Prevent bad advise on methods that could be made private
