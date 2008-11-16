@@ -12,6 +12,8 @@ import org.ucdetector.example.classes.AnnotationExample;
 import org.ucdetector.example.classes.AnonymousClass;
 import org.ucdetector.example.classes.EnumExample;
 import org.ucdetector.example.fields.FieldExamples;
+import org.ucdetector.example.fields.FieldNeverRead;
+import org.ucdetector.example.fields.FieldNeverWrite;
 import org.ucdetector.example.fields.FinalFieldExamples;
 import org.ucdetector.example.fields.SerializationFieldExample;
 import org.ucdetector.example.inheritance.FinalMethodExample;
@@ -162,5 +164,13 @@ public class PublicReferenceHolder {
     System.out.println(InterfaceNotImplementedExample.class.getName());
     System.out.println(Bug2139142Interface.class.getName());
     System.out.println(Bug2269486.class.getName());
+    // ---------------------------------------------------------------------
+    FieldNeverRead fieldNeverRead = new FieldNeverRead();
+    FieldNeverRead.NEVER_READ_FIELD = "WRITE";
+    fieldNeverRead.neverReadField = "write";
+    //
+    FieldNeverWrite fieldNeverWrite = new FieldNeverWrite();
+    System.out.println(FieldNeverWrite.NEVER_WRITE_FIELD);
+    System.out.println(fieldNeverWrite.neverWriteField);
   }
 }
