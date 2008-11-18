@@ -136,6 +136,8 @@ public class UCDetectorPreferencePage extends FieldEditorPreferencePage // NO_UC
         Prefs.ANALYZE_CHECK_FULL_CLASS_NAME,
         Messages.PreferencePage_CheckFullClassName,
         BooleanFieldEditor.SEPARATE_LABEL, spacer);
+    Label label = checkFullClassName.getLabelControl(spacer);
+    label.setToolTipText(Messages.PreferencePage_CheckFullClassNameToolTip);
     this.addField(checkFullClassName);
     StringFieldEditor analyzeLiterals = createText(Prefs.ANALYZE_LITERALS,
         Messages.PreferencePage_Literals, spacer,
