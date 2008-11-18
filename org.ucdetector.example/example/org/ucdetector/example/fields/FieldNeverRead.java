@@ -11,14 +11,14 @@ package org.ucdetector.example.fields;
  * fields that are never assigned to, but only read from.
  */
 public class FieldNeverRead {
-  private int i = 1;
+  @SuppressWarnings("unused")
+  private int i = 1; // Marker YES: use final
 
-  public static String NEVER_READ_FIELD = "NEVER_READ_FIELD";
+  public static String NEVER_READ_FIELD = "NEVER_READ_FIELD"; // Marker YES: unused code
 
-  public String neverReadField = "NEVER_WRITE_FIELD";
+  public String neverReadField = "neverReadField"; // Marker YES: unused code
 
   public FieldNeverRead() {
     i = 2;
   }
-
 }
