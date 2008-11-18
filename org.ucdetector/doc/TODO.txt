@@ -2,14 +2,10 @@
 
 //------------------------------------------------------------------------------
 TODO 0.12.0:
- - refactor SearchManager: Confusing to understand / add new handler!
  - check local/anonymous types:
    - local classes can be private
  - create an extension point for "org.ucdetector.additional"
- - use combo for file extensions: TextSearchPage.addFileNameControls()
  - README.txt
- - unused jars?
-  - http://www.timhardy.net/wordpress/2006/08/13/eclipse-quick-fix-quick-assist/
  
 //------------------------------------------------------------------------------
 Steps to create new Version:
@@ -18,7 +14,10 @@ Steps to create new Version:
 	 - run source ... popup menus on UCDetector project
    - check TODO's in code
  - check build.properties
- - java 5, eclipse 3.3
+ - check MANIFEST.MF
+ - change version number in MANIFEST.MF
+ - search old version number "0.11." in files
+ - use java 5, eclipse 3.3
  - create jar, install in eclipse, run UCDetector
  - run UCDetector with: org.ucdetector_test, jEdit, JUnit
  - run UCDetector with: change warn limit to 2
@@ -31,7 +30,9 @@ Steps to create new Version:
  - spell check
  - SVN branch
  - CHANGES.txt
- - search for old version number
+ - update site:
+   - update /org.ucdetector.feature/feature.xml
+   - update /org.ucdetector.update_site/site.xml
  - Sourceforge:
    - jar, source.jar, additional_source.jar
 	 - Categorization

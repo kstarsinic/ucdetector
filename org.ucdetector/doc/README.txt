@@ -1,4 +1,4 @@
-UCDetector 0.11.0 README
+UCDetector 0.12.0 README
 
 * About UCDetector
 UCDetector (Unnecessary Code Detector) is a Open Source eclipse PlugIn Tool to find unnecessary
