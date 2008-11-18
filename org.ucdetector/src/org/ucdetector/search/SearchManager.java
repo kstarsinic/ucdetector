@@ -220,7 +220,10 @@ public class SearchManager {
       int found = searchImpl(field, searchInfo, false);
       watch.end("    searchImpl"); //$NON-NLS-1$
       if (found > 0 && !hasReadAccess(field)) {
-        // TODO:  markerFactory.createHasNoReadAccessMarker(field, line);
+        String message = NLS.bind(
+            Messages.SearchManager_MarkerReferenceFieldNeverRead,
+            new Object[] { JavaElementUtil.getElementName(field) });
+        markerFactory.createReferenceMarker(field, message, line, 0);
       }
     }
   }
