@@ -26,8 +26,8 @@
 		<file path="/org.ucdetector/plugin.properties"/>
 		<javaElement handleIdentifier="=org.ucdetector/src"/>
 		<file path="/org.ucdetector/doc/build/BuildUCDetector.launch"/>
-		<file path="/org.ucdetector/toc.xml"/>
-		<file path="/org.ucdetector/index.html"/>
+		<file path="/org.ucdetector/help/toc.xml"/>
+		<file path="/org.ucdetector/help/html/index.html"/>
 		<file path="/org.ucdetector/doc/README.txt"/>
 		<file path="/org.ucdetector/doc/ucdetector_code_style_formatter.xml"/>
 		<file path="/org.ucdetector/doc/CHANGES.txt"/>

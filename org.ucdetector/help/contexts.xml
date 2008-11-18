@@ -2,6 +2,6 @@
 <contexts>
    <context id="ucd_context_id">
       <description>UCDetector finds unnecessary Code.</description>
-      <topic href="index.html" label="UCDetector" />
+      <topic href="help/html/index.html" label="UCDetector" />
    </context>
 </contexts>

@@ -349,13 +349,13 @@
   <!-- HELP.TOC                                                              -->
   <!-- ===================================================================== -->
   <extension point="org.eclipse.help.toc">
-    <toc file="toc.xml" primary="true"></toc>
+    <toc file="help/toc.xml" primary="true"></toc>
   </extension>
 
   <!-- ===================================================================== -->
   <!-- HELP.CONTEXTS                                                         -->
   <!-- ===================================================================== -->
   <extension point="org.eclipse.help.contexts">
-    <contexts file="contexts.xml" plugin="org.ucdetector"></contexts>
+    <contexts file="help/contexts.xml" plugin="org.ucdetector"></contexts>
   </extension>
 </plugin>
