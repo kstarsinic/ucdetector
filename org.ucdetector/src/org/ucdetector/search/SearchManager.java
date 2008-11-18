@@ -320,13 +320,21 @@ public class SearchManager {
     updateMonitorMessage(type, Messages.SearchManager_SearchClassNameAsLiteral,
         Messages.SearchManager_Class);
     FileTextSearchScope scope = FileTextSearchScope.newWorkspaceScope(
-        filePatternLiteralSearch, true);
+        filePatternLiteralSearch, /*exclude bin dir */false);
     String searchString;
-    if (Prefs.isUCDetectionInLiteralsFullClassName()) {
+    boolean searchFullClassName = Prefs.isUCDetectionInLiteralsFullClassName();
+    if (searchFullClassName) {
       searchString = type.getFullyQualifiedName();
     }
     else {
       searchString = type.getElementName();
+    }
+    if (DEBUG) {
+      StringBuilder mes = new StringBuilder();
+      mes.append("Text search of ");//$NON-NLS-1$
+      mes.append(searchFullClassName ? "full" : "simple");//$NON-NLS-1$ //$NON-NLS-2$
+      mes.append(" classname '").append(searchString).append("'");//$NON-NLS-1$ //$NON-NLS-2$
+      Log.logDebug(mes.toString());
     }
     if (searchString == null || searchString.length() == 0) {
       return 0;
@@ -378,29 +386,30 @@ public class SearchManager {
     }
 
     /**
-     * in java files we search for "org.ucdetector.Test" 
-     * instead of org.ucdetector.Test
+     * Search for className or packageName.className, check character 
+     * before and after match, if it is a JavaIdentifier
      */
     @Override
     public boolean acceptPatternMatch(TextSearchMatchAccess matchAccess)
         throws CoreException {
-      // TODO 24.10.2008: review text search  !isUCDetectionInLiteralsFullClassName
-      String fileName = matchAccess.getFile().getName();
-      if (fileName.endsWith(".java")) { //$NON-NLS-1$
-        if (matchIsQuoted(matchAccess)) {
-          this.found++;
-        }
+      char beforeChar = getCharBefore(matchAccess);
+      char afterChar = getCharAfter(matchAccess);
+      boolean isValidCharBefore = Character.isJavaIdentifierStart(beforeChar);
+      boolean isValidCharAfter = Character.isJavaIdentifierPart(afterChar);
+      boolean isClassNamMatchOk = !isValidCharBefore && !isValidCharAfter;
+      if (DEBUG) {
+        int offset = matchAccess.getMatchOffset();
+        int length = matchAccess.getMatchLength();
+        String match = matchAccess.getFileContent(offset, length);
+        StringBuilder mes = new StringBuilder();
+        mes.append("    TEXT MATCH {").append(beforeChar).append(match);//$NON-NLS-1$
+        mes.append(afterChar).append("}"); //$NON-NLS-1$
+        mes.append(", isMatchOk=").append(isClassNamMatchOk); //$NON-NLS-1$
+        mes.append(", in=").append(matchAccess.getFile()); //$NON-NLS-1$
+        Log.logDebug(mes.toString());
       }
-      else if (Prefs.isUCDetectionInLiteralsFullClassName()) {
+      if (isClassNamMatchOk) {
         this.found++;
-      }
-      else {
-        char before = getBefore(matchAccess);
-        char after = getAfter(matchAccess);
-        if (!Character.isJavaIdentifierStart(before)
-            && !Character.isJavaIdentifierPart(after)) {
-          this.found++;
-        }
       }
       checkCancelSearch(found);
       IJavaElement matchJavaElement = JavaCore.create(matchAccess.getFile());
@@ -409,33 +418,16 @@ public class SearchManager {
       return true;
     }
 
-    /**
-     * @return <code>true</code>, when match starts with " and ends with "
-     */
-    private boolean matchIsQuoted(TextSearchMatchAccess matchAccess) {
-      int offset = matchAccess.getMatchOffset();
-      int length = matchAccess.getMatchLength();
-      boolean isLengthOk = (offset + length + 1) < matchAccess
-          .getFileContentLength();
-      if (offset > 0 && isLengthOk) {
-        String content = matchAccess.getFileContent(offset - 1, length + 2);
-        if (content.startsWith("\"") && content.endsWith("\"")) { //$NON-NLS-1$ //$NON-NLS-2$
-          return true;
-        }
-      }
-      return false;
-    }
-
-    private char getBefore(TextSearchMatchAccess match) {
+    private char getCharBefore(TextSearchMatchAccess match) {
       int offset = match.getMatchOffset();
       return (offset == 0) ? '\n' : match.getFileContentChar(offset - 1);
     }
 
-    private char getAfter(TextSearchMatchAccess match) {
+    private char getCharAfter(TextSearchMatchAccess match) {
       int offset = match.getMatchOffset();
       int length = match.getMatchLength();
-      boolean fileEnd = (offset + length + 1) >= match.getFileContentLength();
-      return fileEnd ? '\n' : match.getFileContentChar(offset + length + 1);
+      boolean fileEnd = (offset + length) >= match.getFileContentLength();
+      return fileEnd ? '\n' : match.getFileContentChar(offset + length);
     }
   }
 
