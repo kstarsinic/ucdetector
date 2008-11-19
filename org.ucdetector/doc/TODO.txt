@@ -45,7 +45,7 @@ Steps to create new Version:
 	 
 
 //------------------------------------------------------------------------------
-Troubeshooting:
+Troubleshooting:
  <eclipse-install>/.metadata/.log
 
 
