@@ -25,7 +25,7 @@
 					id="org.ucdetector.action.ExampleAction"
 					label="%ExampleAction.label"
 					tooltip="%ExampleAction.tooltip"
-					icon="icons/example.gif"
+					icon="$nl$/icons/example.gif"
 					menubarPath="ucdetectorGroup/additional"/>
 		</objectContribution>
 	</extension>

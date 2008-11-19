@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="WINDOWS-1252" standalone="no"?>
 <jardesc>
-	<jar path="org.ucdetector.additional/doc/build/org.ucdetector.additional.source_0.11.0.jar"/>
+	<jar path="org.ucdetector.additional/doc/build/org.ucdetector.additional.source_0.12.0.jar"/>
 	<options
 			buildIfNeeded="true"
 			compress="true"
