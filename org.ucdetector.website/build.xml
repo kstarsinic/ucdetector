@@ -47,6 +47,9 @@
         </filterset>
         <fileset dir="${temp.dir}" includes="*.html" />
       </copy>
+      <copy todir="@{todir}">
+        <fileset dir="${ucd.dir}" includes="icons/*" />
+      </copy>
       <delete dir="${temp.dir}" />
     </sequential>
   </macrodef>
