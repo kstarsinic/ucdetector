@@ -29,7 +29,7 @@ Ignore methods, which use the java bean convention. For example
 </p>
 </td>
 <td align="left" valign="middle">
-<img alt="UCDetector preferences"  border="1" src="images/preferences_1_filter.png"/>
+<img alt="UCDetector preferences"  border="1" src="@IMAGES_DIR@/preferences_1_filter.png"/>
 </td>
 </tr>
 
@@ -70,9 +70,9 @@ search is slow, if there are many text files!
 
 </td>
 <td align="left" valign="middle">
-<img alt="UCDetector preferences"  border="1" src="images/preferences_2_ucd.png"/>
+<img alt="UCDetector preferences"  border="1" src="@IMAGES_DIR@/preferences_2_ucd.png"/>
 <p></p>
-<img alt="UCDetector preferences"  border="1" src="images/preferences_2b_text_search.png"/>
+<img alt="UCDetector preferences"  border="1" src="@IMAGES_DIR@/preferences_2b_text_search.png"/>
 </td>
 </tr>
 
@@ -111,7 +111,7 @@ Maybe this rules are not OK for you! Anyway: Apply changes for this rule careful
 </p>
 </td>
 <td align="left" valign="middle">
-<img alt="UCDetector preferences"  border="1" src="images/preferences_3_keyword.png"/>
+<img alt="UCDetector preferences"  border="1" src="@IMAGES_DIR@/preferences_3_keyword.png"/>
 </td>
 </tr>
 
@@ -148,7 +148,7 @@ cycles in your code, a big number here makes cycle detection very slow!
 <!-- ======================================================================= -->
 </td>
 <td align="left" valign="middle">
-<img alt="UCDetector preferences"  border="1" src="images/preferences_4_other.png"/>
+<img alt="UCDetector preferences"  border="1" src="@IMAGES_DIR@/preferences_4_other.png"/>
 </td>
 </tr>
 </table>

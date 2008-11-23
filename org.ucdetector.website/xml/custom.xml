@@ -38,7 +38,7 @@
 				<a href="mailto:feedback@ucdetector.org">E-Mail </a> me your detection example!
            </td>
 			<td align="left" valign="middle">
-				<img alt="Additional" border="1" src="images/additional.png"/>
+				<img alt="Additional" border="1" src="@IMAGES_DIR@/additional.png"/>
 			</td>
 		</tr>
 	</table>

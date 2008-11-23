@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<project name="UCDetectorHomepage" default="homepage" basedir=".">
+  <description> Create UCDetector homepage and help</description>
+  <tstamp>
+    <format property="TODAY" pattern="yyyy-MM-dd" />
+    <format property="YEAR" pattern="yyyy" />
+  </tstamp>
+  <property name="xml.dir" location="${basedir}/xml" />
+  <property name="html.dir" location="${basedir}/html" />
+  <property name="temp.dir" location="${xml.dir}/temp" />
+  <property name="ucd.dir" location="${basedir}/../org.ucdetector" />
+
+  <!-- ===================================================================== -->
+  <!--                      CREATE UCD HOMEPAGE                              -->
+  <!-- ===================================================================== -->
+  <target name="homepage" depends="transform">
+    <copy-help />
+  </target>
+
+  <!-- ===================================================================== -->
+  <!--                      TRANSFORM                                        -->
+  <!-- ===================================================================== -->
+  <target name="transform">
+    <mkdir dir="${temp.dir}" />
+    <xslt destdir="${temp.dir}"
+          extension=".html"
+          basedir="${xml.dir}"
+          includes="*.xml"
+          style="${xml.dir}/ucd.xsl">
+    </xslt>
+  </target>
+
+  <!-- ===================================================================== -->
+  <!--                      COPY-HTML                                        -->
+  <!-- ===================================================================== -->
+  <macrodef name="copy-help">
+    <attribute name="images" default="images" />
+    <attribute name="icons" default="icons" />
+    <attribute name="todir" default="${html.dir}" />
+    <sequential>
+      <copy todir="@{todir}" overwrite="true">
+        <filterset>
+          <filter token="IMAGES_DIR" value="@{images}" />
+          <filter token="ICONS_DIR" value="@{icons}" />
+          <filter token="TODAY" value="${TODAY}" />
+          <filter token="YEAR" value="${YEAR}" />
+        </filterset>
+        <fileset dir="${temp.dir}" includes="*.html" />
+      </copy>
+      <delete dir="${temp.dir}" />
+    </sequential>
+  </macrodef>
+
+  <!-- ===================================================================== -->
+  <!--                      CREATE UCD HELP                                  -->
+  <!-- ===================================================================== -->
+  <target name="ucd-help" depends="transform">
+    <copy-help images="http://ucdetector.org/images"
+               icons="../../icons"
+               todir="${ucd.dir}/help/html" />
+  </target>
+
+  <!-- ===================================================================== -->
+  <!--                      SEND                                             -->
+  <!-- ===================================================================== -->
+  <target name="send">
+    <property file="${user.home}/.ucdetector.properties" />
+    <echo>Sending files to: ${server}</echo>
+
+    <ftp password="${password}"
+         server="${server}"
+         userid="${user}"
+         remotedir="${remotedir}">
+      <fileset dir="${html.dir}" includes="**" />
+    </ftp>
+    <!--
+    <property name="todir"
+              value="${userid}:${password}@${server}:${remotedir}" />
+    <scp todir="${todir}">
+      <fileset dir="..">
+        <include name="*.txt" />
+      </fileset>
+    </scp>
+-->
+  </target>
+</project>
+

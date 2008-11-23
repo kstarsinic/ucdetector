@@ -33,14 +33,10 @@
 </style>
 			</head>
 			<body>
-				
-				<h1 align="center">
-					<img alt="UCDetector" src="http://www.ucdetector.org/ucdetector.ico"/>
-UCDetector: Unnecessary Code Detector</h1>
 <!-- Navigation table -->
-				<table border="0" summary="left navigation, right text">
+				<table width="100%" border="0" summary="left navigation, right text">
 					<tr valign="top">
-						<td>
+						<td width="8%" bgcolor="#FFFFE0">
 							<table border="0">
 							<!-- ==================================== -->
 								<tr>
@@ -88,6 +84,10 @@ UCDetector: Unnecessary Code Detector</h1>
 							</table>
 						</td>
 						<td>
+							<h1 align="center">
+								<img alt="UCDetector" src="http://www.ucdetector.org/ucdetector.ico"/>
+UCDetector: Unnecessary Code Detector</h1>
+
 <!-- !!!!!!!!!!!!!!!!!!!!!!!!! START !!!!!!!!!!!!!!!!!!!!!!!!!!!! -->
 							<div align="center">
 								<h2>
@@ -98,14 +98,28 @@ UCDetector: Unnecessary Code Detector</h1>
 <!-- !!!!!!!!!!!!!!!!!!!!!!!!! END !!!!!!!!!!!!!!!!!!!!!!!!!!!! -->
 						</td>
 					</tr>
+					<!--
+					<tr>
+						<td></td>
+						<td>
+							<hr/>
+							<table width="100%" summary="footer">
+								<tr>
+									<td align="left" valign="middle">Last Update: 2008-10-12</td>
+									<td align="right" valign="middle">Copyright &#169; 2008, by Joerg Spieler</td>
+								</tr>
+							</table>
+						</td>
+					</tr>
+					-->
 				</table>
 				
 <!-- FOOTER =============================================================== -->
 				<hr/>
 				<table width="100%" summary="footer">
 					<tr>
-						<td align="left" valign="middle">Last Update: 2008-10-12</td>
-						<td align="right" valign="middle">Copyright &#169; 2008, by Joerg Spieler</td>
+						<td align="left" valign="middle">Last Update: @TODAY@</td>
+						<td align="right" valign="middle">Copyright &#169; @YEAR@, by Joerg Spieler</td>
 					</tr>
 				</table>
 				<hr/>
@@ -128,12 +142,10 @@ UCDetector: Unnecessary Code Detector</h1>
 		</html>
 	</xsl:template>
 	<!-- ================ LISTS ===============================================-->
-	
-	
+	<!-- 
 	TODO:
 	http://codexmonkey.blogspot.com/2007/02/stupid-xslt-trick-1-escape-madness.html
-	
-	
+	 -->
 	<xsl:template match="ul">
 		<ul>
 			<xsl:apply-templates/>
@@ -211,6 +223,12 @@ UCDetector: Unnecessary Code Detector</h1>
 		<p>
 			<xsl:apply-templates/>
 		</p>
+	</xsl:template>
+	
+	<xsl:template match="a">
+		<a href="{@href}">
+			<xsl:apply-templates/>
+		</a>
 	</xsl:template>
 	
 	<xsl:template match="b">
