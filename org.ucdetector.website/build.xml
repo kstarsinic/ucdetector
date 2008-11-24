@@ -13,14 +13,17 @@
   <!-- ===================================================================== -->
   <!--                      CREATE UCD HOMEPAGE                              -->
   <!-- ===================================================================== -->
-  <target name="homepage" depends="transform">
+  <target name="homepage"
+          depends="transform"
+          description="create UCDetector homepage">
     <copy-help />
+    <echo>Created UCDetector homepage in ${html.dir}</echo>
   </target>
 
   <!-- ===================================================================== -->
   <!--                      TRANSFORM                                        -->
   <!-- ===================================================================== -->
-  <target name="transform">
+  <target name="transform" description="Transform xml files to html">
     <mkdir dir="${temp.dir}" />
     <xslt destdir="${temp.dir}"
           extension=".html"
@@ -33,7 +36,8 @@
   <!-- ===================================================================== -->
   <!--                      COPY-HTML                                        -->
   <!-- ===================================================================== -->
-  <macrodef name="copy-help">
+  <macrodef name="copy-help"
+            description="Copy created html files and replace tokens">
     <attribute name="images" default="images" />
     <attribute name="icons" default="icons" />
     <attribute name="todir" default="${html.dir}" />
@@ -57,19 +61,21 @@
   <!-- ===================================================================== -->
   <!--                      CREATE UCD HELP                                  -->
   <!-- ===================================================================== -->
-  <target name="ucd-help" depends="transform">
+  <target name="ucd-help"
+          depends="transform"
+          description="Copy help to UCDetector plugin">
     <copy-help images="http://ucdetector.org/images"
                icons="../../icons"
                todir="${ucd.dir}/help/html" />
+    <echo>Created UCDetector help in plugin in ${ucd.dir}/help/html</echo>
   </target>
 
   <!-- ===================================================================== -->
   <!--                      SEND                                             -->
   <!-- ===================================================================== -->
-  <target name="send">
+  <target name="send" description="Send homepage files to homepage">
     <property file="${user.home}/.ucdetector.properties" />
-    <echo>Sending files to: ${server}</echo>
-
+    <echo>Sending homepage files to server: ${server}</echo>
     <ftp password="${password}"
          server="${server}"
          userid="${user}"
@@ -84,7 +90,7 @@
         <include name="*.txt" />
       </fileset>
     </scp>
--->
+    -->
   </target>
 </project>
 
