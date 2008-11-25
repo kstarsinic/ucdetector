@@ -117,7 +117,7 @@ public class SearchManager {
       }
       search++;
       monitor.worked(1);
-      String searchInfo = Messages.SearchManager_Class;
+      String searchInfo = JavaElementUtil.getMemberTypeString(type);
       updateMonitorMessage(type, Messages.SearchManager_SearchReferences,
           searchInfo);
       StopWatch watch = new StopWatch(type);
@@ -139,9 +139,7 @@ public class SearchManager {
       }
       search++;
       monitor.worked(1);
-      String searchInfo = method.isConstructor() ? Messages.SearchManager_Constructor
-          : Messages.SearchManager_Method;
-      updateMonitorMessage(method, Messages.SearchManager_Method, searchInfo);
+      String searchInfo = JavaElementUtil.getMemberTypeString(method);
       IType type = JavaElementUtil.getTypeFor(method);
       // Ignore types, which have no references
       if (noRefTypes.contains(type)) {
@@ -194,8 +192,7 @@ public class SearchManager {
       }
       search++;
       monitor.worked(1);
-      String searchInfo = JavaElementUtil.isConstant(field) ? Messages.SearchManager_Constant
-          : Messages.SearchManager_Field;
+      String searchInfo = JavaElementUtil.getMemberTypeString(field);
       updateMonitorMessage(field, SEARCH_FINAL_MESSAGE, searchInfo);
       StopWatch watch = new StopWatch(field);
       int line = lineManger.getLine(field);
@@ -320,8 +317,9 @@ public class SearchManager {
       return 0;
     }
     IType type = (IType) member;
+    String searchInfo = JavaElementUtil.getMemberTypeString(member);
     updateMonitorMessage(type, Messages.SearchManager_SearchClassNameAsLiteral,
-        Messages.SearchManager_Class);
+        searchInfo);
     FileTextSearchScope scope = FileTextSearchScope.newWorkspaceScope(
         filePatternLiteralSearch, /*exclude bin dir */false);
     String searchString;

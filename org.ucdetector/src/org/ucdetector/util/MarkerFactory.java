@@ -13,6 +13,7 @@ import org.eclipse.core.resources.IResource;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.jdt.core.IField;
 import org.eclipse.jdt.core.IJavaElement;
+import org.eclipse.jdt.core.IMember;
 import org.eclipse.jdt.core.IMethod;
 import org.eclipse.osgi.util.NLS;
 import org.ucdetector.Log;
@@ -79,8 +80,10 @@ public final class MarkerFactory {
    */
   public boolean createFinalMarker(IMethod method, int line)
       throws CoreException {
+    String searchInfo = JavaElementUtil.getMemberTypeString(method);
+    String elementName = JavaElementUtil.getElementName(method);
     String message = NLS.bind(Messages.SearchManager_MarkerFinalMethod,
-        new Object[] { method.getElementName() });
+        new Object[] { searchInfo, elementName });
     return createMarkerImpl(new ReportParam(method, message, line,
         UCD_MARKER_USE_FINAL));
   }
@@ -90,8 +93,10 @@ public final class MarkerFactory {
    * @return <code>true</code>, if a marker was created
    */
   public boolean createFinalMarker(IField field, int line) throws CoreException {
+    String searchInfo = JavaElementUtil.getMemberTypeString(field);
+    String elementName = JavaElementUtil.getElementName(field);
     String message = NLS.bind(Messages.SearchManager_MarkerFinalField,
-        new Object[] { field.getElementName() });
+        new Object[] { searchInfo, elementName });
     return createMarkerImpl(new ReportParam(field, message, line,
         UCD_MARKER_USE_FINAL));
   }
@@ -108,8 +113,8 @@ public final class MarkerFactory {
   /**
    * Create an eclipse marker: "Change visibility to protected"
    */
-  public boolean createVisibilityMarker(IJavaElement javaElement, String type,
-      int line) throws CoreException {
+  public boolean createVisibilityMarker(IMember member, String type, int line)
+      throws CoreException {
     String visibilityString = null;
     if (UCD_MARKER_USE_PRIVATE.equals(type)) {
       visibilityString = "private"; //$NON-NLS-1$
@@ -120,11 +125,12 @@ public final class MarkerFactory {
     else if (UCD_MARKER_USE_DEFAULT.equals(type)) {
       visibilityString = "default"; //$NON-NLS-1$
     }
-    Object[] bindings = new Object[] { javaElement.getElementName(),
-        visibilityString };
+    String searchInfo = JavaElementUtil.getMemberTypeString(member);
+    Object[] bindings = new Object[] { searchInfo,
+        JavaElementUtil.getElementName(member), visibilityString };
     String message = NLS
         .bind(Messages.SearchManager_MarkerVisibility, bindings);
-    return createMarkerImpl(new ReportParam(javaElement, message, line, type));
+    return createMarkerImpl(new ReportParam(member, message, line, type));
   }
 
   /**

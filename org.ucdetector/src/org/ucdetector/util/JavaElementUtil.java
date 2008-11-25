@@ -16,6 +16,7 @@ import org.eclipse.jdt.core.ICompilationUnit;
 import org.eclipse.jdt.core.IField;
 import org.eclipse.jdt.core.IImportContainer;
 import org.eclipse.jdt.core.IJavaElement;
+import org.eclipse.jdt.core.IMember;
 import org.eclipse.jdt.core.IMethod;
 import org.eclipse.jdt.core.IPackageFragment;
 import org.eclipse.jdt.core.IPackageFragmentRoot;
@@ -34,6 +35,7 @@ import org.eclipse.jdt.internal.ui.typehierarchy.TypeHierarchyLifeCycle;
 import org.eclipse.jdt.ui.JavaElementImageDescriptor;
 import org.eclipse.jdt.ui.OverrideIndicatorLabelDecorator;
 import org.ucdetector.Log;
+import org.ucdetector.Messages;
 import org.ucdetector.UCDetectorPlugin;
 
 /**
@@ -427,5 +429,70 @@ public class JavaElementUtil {
       }
     }
     return subPackages;
+  }
+
+  /**
+   * @return "???" if unknown, otherwise:<p>
+   * For classes:
+   * <ul>
+  * <li>"Annotation"</li>
+  * <li>"Anonymous class"</li>
+  * <li>"Enumeration"</li>
+  * <li>"Interface"</li>
+  * <li>"Local class"</li>
+  * <li>"Class"</li>
+  * </ul>
+  * For methods:
+  * <ul>
+  * <li>"Constructor"</li>
+  * <li>"Method"</li>
+  * </ul>
+  * For IField:
+  * <ul>
+  * <li>"EnumConstant"</li>
+  * <li>"Constant"</li>
+  * <li>"Field"</li>
+  * </ul>
+   */
+  public static String getMemberTypeString(IMember member)
+      throws JavaModelException {
+    if (member instanceof IType) {
+      IType type = (IType) member;
+      if (type.isAnnotation()) {
+        return "Annotation"; //$NON-NLS-1$
+      }
+      if (type.isAnonymous()) {
+        return "Anonymous class"; //$NON-NLS-1$
+      }
+      if (type.isEnum()) {
+        return "Enumeration"; //$NON-NLS-1$
+      }
+      if (type.isInterface()) {
+        return "Interface"; //$NON-NLS-1$
+      }
+      // TODO 25.11.2008: no detection of local classes
+      if (type.isLocal()) {
+        return "Local class"; //$NON-NLS-1$
+      }
+      return Messages.SearchManager_Class;
+    }
+    if (member instanceof IMethod) {
+      IMethod method = (IMethod) member;
+      if (method.isConstructor()) {
+        return Messages.SearchManager_Constructor;
+      }
+      return Messages.SearchManager_Method;
+    }
+    if (member instanceof IField) {
+      IField field = (IField) member;
+      if (field.isEnumConstant()) {
+        return "EnumConstant"; //$NON-NLS-1$
+      }
+      if (JavaElementUtil.isConstant(field)) {
+        return Messages.SearchManager_Constant;
+      }
+      return Messages.SearchManager_Field;
+    }
+    return "???"; //$NON-NLS-1$
   }
 }

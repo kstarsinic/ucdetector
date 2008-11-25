@@ -4,6 +4,7 @@ New features:
  - [ 2163715 ] eclipse update site
  - [ 2290711 ] Detect write only fields
  - [ 2180705 ] Look for just the class name without the package name
+ - Better messages for markers
 
 Bugfixes:
  - Fix Bug [ 2153699 ] Find unused interface methods, unused abstract methods
