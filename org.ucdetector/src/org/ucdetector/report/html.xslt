@@ -60,7 +60,7 @@ To create custom reports change:
 				<xsl:if test="method">
 					<xsl:value-of select="method"/>
 				</xsl:if>
-				<!-- field -->
+				<!-- field TODO: 2008.11.25: Field is not a link in Eclipse StackTraceConsole -->
 				<xsl:if test="field">
 					<xsl:value-of select="field"/>
 				</xsl:if>
