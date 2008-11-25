@@ -27,15 +27,10 @@ Steps to create new Version:
  - update org.ucdetector.website\xml\releases.xml from 
           org.ucdetector/doc/CHANGES.txt
  - update help     (run /org.ucdetector.website/build.xml:ucd-help)
- - update homepage (run /org.ucdetector.website/build.xml:send)
  - check help
  - check: Help/about Eclipse Platform/Plugin Details
  - spell check
- - SVN branch
  - CHANGES.txt
- - update site (http://ucdetector.sourceforge.net/update):
-   - update /org.ucdetector.feature/feature.xml
-   - update /org.ucdetector.update_site/site.xml
  - Create: 
    - ucdetector.jar       : /org.ucdetector/doc/build/BuildUCDetector.launch
    - source.jar           : /org.ucdetector/doc/build/org.ucdetector.source.jardesc
@@ -57,7 +52,11 @@ Steps to create new Version:
 	 - Changes
 	 - Upload
 	 - Version
-	 
+ - update site (http://ucdetector.sourceforge.net/update):
+   - update /org.ucdetector.feature/feature.xml
+   - update /org.ucdetector.update_site/site.xml
+ - SVN branch and tag
+ - update homepage (run /org.ucdetector.website/build.xml:send)
 
 //------------------------------------------------------------------------------
 Troubleshooting:
