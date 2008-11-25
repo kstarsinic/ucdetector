@@ -24,17 +24,32 @@ Steps to create new Version:
  - Apply QuickFixes to QuickFixExample
  - check UCDetector Code with: PMD, CPD, finbugs, Energy
  - check screenshots
- - update homepage and help
+ - update org.ucdetector.website\xml\releases.xml from 
+          org.ucdetector/doc/CHANGES.txt
+ - update help     (run /org.ucdetector.website/build.xml:ucd-help)
+ - update homepage (run /org.ucdetector.website/build.xml:send)
  - check help
  - check: Help/about Eclipse Platform/Plugin Details
  - spell check
  - SVN branch
  - CHANGES.txt
- - update site:
+ - update site (http://ucdetector.sourceforge.net/update):
    - update /org.ucdetector.feature/feature.xml
    - update /org.ucdetector.update_site/site.xml
+ - Create: 
+   - ucdetector.jar       : /org.ucdetector/doc/build/BuildUCDetector.launch
+   - source.jar           : /org.ucdetector/doc/build/org.ucdetector.source.jardesc
+   - additional_source.jar: /org.ucdetector.additional/doc/build/org.ucdetector.additional.source.jardesc
+   - ucdetector.test.jar  : /org.ucdetector_test/doc/build/build.xml
+ - Smoke test:
+   - deploy ucdetector.jar and ucdetector.test.jar to eclipse 3.3, java5
+   - UCDetector setting: All warning, simple class name
+   - count
+   - delete markers
+   - cycle
+   - detect: /org.ucdetector.example/cycle
+   - check UCDMarker: /org.ucdetector.example/example
  - Sourceforge:
-   - jar, source.jar, additional_source.jar
 	 - Categorization
 	 - Description
 	 - Screenshot
