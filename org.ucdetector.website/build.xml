@@ -51,9 +51,11 @@
         </filterset>
         <fileset dir="${temp.dir}" includes="*.html" />
       </copy>
+      <!--
       <copy todir="@{todir}">
         <fileset dir="${ucd.dir}" includes="icons/*" />
       </copy>
+      -->
       <delete dir="${temp.dir}" />
     </sequential>
   </macrodef>
@@ -75,7 +77,7 @@
   <!-- ===================================================================== -->
   <target name="send" description="Send homepage files to homepage">
     <property file="${user.home}/.ucdetector.properties" />
-    <echo>Sending homepage files to server: ${server}</echo>
+    <echo>Sending homepage files to server: ${server}...</echo>
     <ftp password="${password}"
          server="${server}"
          userid="${user}"
@@ -91,6 +93,7 @@
       </fileset>
     </scp>
     -->
+    <echo>Sended homepage files to server: ${server}</echo>
   </target>
 </project>
 
