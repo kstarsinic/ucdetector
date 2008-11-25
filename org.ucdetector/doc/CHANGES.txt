@@ -1,14 +1,14 @@
 // -----------------------------------------------------------------------------
-UCDetector 0.12.0 from 2008.:
+UCDetector 0.12.0 from 2008.11.25:
 New features:
- - [ 2163715 ] eclipse update site
+ - [ 2163715 ] eclipse update site: http://ucdetector.sourceforge.net/update
  - [ 2290711 ] Detect write only fields
  - [ 2180705 ] Look for just the class name without the package name
  - Better messages for markers
 
 Bugfixes:
  - Fix Bug [ 2153699 ] Find unused interface methods, unused abstract methods
- - Fix Bug [ 2269486 ] Constants in Interfaces Can't be Private
+ - Fix Bug [ 2269486 ] Constants in Interfaces Can't be private
  - Fix BUG [ 2225016 ] Don't create "0 references marker" for overridden methods
 
 // -----------------------------------------------------------------------------
