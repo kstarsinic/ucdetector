@@ -1,5 +1,34 @@
 <?xml version="1.0" encoding="ISO-8859-1"?>
-<ucd page ="Releases">
+<ucd page="Releases">
+<!--
+	<h3></h3>
+	<p>New features:</p>
+	<ul>
+		<li></li>
+	</ul>
+	<p>Bugfixes:</p>
+	<ul>
+		<li></li>
+	</ul>
+-->
+
+  <!-- ===================================================================== -->
+	<h3>UCDetector 0.12.0 from 2008.11.25:</h3>
+	<!-- ===================================================================== -->
+	<p>New features:</p>
+	<ul>
+		<li>[ 2163715 ] eclipse update site: http://ucdetector.sourceforge.net/update</li>
+		<li>[ 2290711 ] Detect write only fields</li>
+		<li>[ 2180705 ] Look for just the class name without the package name</li>
+		<li>Better messages for markers</li>
+	</ul>
+	<p>Bugfixes:</p>
+	<ul>
+		<li>Fix Bug [ 2153699 ] Find unused interface methods, unused abstract methods</li>
+		<li>Fix Bug [ 2269486 ] Constants in Interfaces Can't be private</li>
+		<li>Fix BUG [ 2225016 ] Don't create "0 references marker" for overridden methods</li>
+	</ul>
+
 	<!-- ===================================================================== -->
 	<h3>UCDetector 0.11.0 from 2008-09-30:</h3>
 	<!-- ===================================================================== -->

@@ -1,18 +1,18 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/transitional.dtd">
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/transitional.dtd">
 <html>
 <head>
 <META http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
-<meta content="text/html; charset=iso-8859-1" http-equiv="Content-Type">
-<meta content="em" http-equiv="Content-Language">
-<meta content="Joerg Spieler" http-equiv="author">
-<meta content="Eclipse PlugIn to detect unnecessary or dead java code and class cycles" http-equiv="description">
-<meta content="eclipse PlugIn" http-equiv="rating">
-<meta content="3 days" http-equiv="revisit-after">
-<meta content="no-cache" http-equiv="pragma">
-<meta content="java, eclipse, tool, PlugIn, programmer, code quality, refactoring, unused code, dead code, class cycles" http-equiv="keywords">
-<meta content="index,follow" name="robots">
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+<meta http-equiv="Content-Language" content="em">
+<meta http-equiv="author" content="Joerg Spieler">
+<meta http-equiv="description" content="Eclipse PlugIn to detect unnecessary or dead java code and class cycles">
+<meta http-equiv="rating" content="eclipse PlugIn">
+<meta http-equiv="revisit-after" content="3 days">
+<meta http-equiv="pragma" content="no-cache">
+<meta http-equiv="keywords" content="java, eclipse, tool, PlugIn, programmer, code quality, refactoring, unused code, dead code, class cycles">
+<meta name="robots" content="index,follow">
 <title>UCDetector</title>
-<link href="http://www.ucdetector.org/ucdetector.ico" rel="shortcut icon">
+<link rel="shortcut icon" href="http://www.ucdetector.org/ucdetector.ico">
 <style type="text/css">
  thead.c8 {text-align: center}
  span.c7 {color: #009917}
@@ -25,9 +25,9 @@
 </style>
 </head>
 <body>
-<table summary="left navigation, right text" border="0" width="100%">
+<table width="100%" border="0" summary="left navigation, right text">
 <tr valign="top">
-<td bgcolor="#FFFFE0" width="8%">
+<td width="8%" bgcolor="#FFFFE0">
 <table border="0">
 <tr>
 <td><a href="index.html">Start</a></td>
@@ -53,7 +53,7 @@
 </table>
 </td><td>
 <h1 align="center">
-<img src="http://www.ucdetector.org/ucdetector.ico" alt="UCDetector">
+<img alt="UCDetector" src="http://www.ucdetector.org/ucdetector.ico">
 UCDetector: Unnecessary Code Detector</h1>
 <div align="center">
 <h2>Preferences</h2>
@@ -61,10 +61,10 @@ UCDetector: Unnecessary Code Detector</h1>
 
 Select menu: Window/Preferences.../UCDetector
 
-<table summary="Preferences" border="0">
+<table border="0" summary="Preferences">
 
 
-<tr bgcolor="" valign="top">
+<tr valign="top" bgcolor="">
 
 <td valign="">
 
@@ -102,13 +102,13 @@ Ignore methods, which use the java bean convention. For example
 
 </td>
 <td valign="middle">
-<img src="images/preferences_1_filter.png" alt="UCDetector preferences">
+<img alt="UCDetector preferences" src="images/preferences_1_filter.png">
 </td>
 
 </tr>
 
 
-<tr bgcolor="" valign="top">
+<tr valign="top" bgcolor="">
 
 <td valign="">
 
@@ -170,16 +170,16 @@ search is slow, if there are many text files!
 
 </td>
 <td valign="middle">
-<img src="images/preferences_2_ucd.png" alt="UCDetector preferences">
+<img alt="UCDetector preferences" src="images/preferences_2_ucd.png">
 <p></p>
 
-<img src="images/preferences_2b_text_search.png" alt="UCDetector preferences">
+<img alt="UCDetector preferences" src="images/preferences_2b_text_search.png">
 </td>
 
 </tr>
 
 
-<tr bgcolor="" valign="top">
+<tr valign="top" bgcolor="">
 
 <td valign="">
 
@@ -230,13 +230,13 @@ Maybe this rules are not OK for you! Anyway: Apply changes for this rule careful
 
 </td>
 <td valign="middle">
-<img src="images/preferences_3_keyword.png" alt="UCDetector preferences">
+<img alt="UCDetector preferences" src="images/preferences_3_keyword.png">
 </td>
 
 </tr>
 
 
-<tr bgcolor="" valign="top">
+<tr valign="top" bgcolor="">
 
 <td valign="">
 
@@ -249,29 +249,29 @@ Enter file name, if you want to create a report like this:
 </p>
 
 
-<table summary="UCDetector report" border="1">
+<table border="1" summary="UCDetector report">
 
 <thead align="center">
 
-<tr bgcolor="#C0C0C0" valign="">
+<tr valign="" bgcolor="#C0C0C0">
 <th>Nr</th><th>Warn level</th><th>Location</th><th>Description</th>
 </tr>
 
 </thead>
 
-<tr bgcolor="" valign="">
+<tr valign="" bgcolor="">
 <td valign="">1</td><td valign="">Warning</td><td valign="">org.ucdetector.MixedExample.<br>declaration(MixedExample.java:4)</td><td valign="">Change visibility of "MixedExample" to default</td>
 </tr>
 
-<tr bgcolor="" valign="">
+<tr valign="" bgcolor="">
 <td valign="">2</td><td valign="">Warning</td><td valign="">org.ucdetector.MixedExample.<br>unusedMethod(MixedExample.java:7)</td><td valign="">Method "unusedMethod" has 0 references</td>
 </tr>
 
-<tr bgcolor="" valign="">
+<tr valign="" bgcolor="">
 <td valign="">3</td><td valign="">Warning</td><td valign="">org.ucdetector.MixedExample.<br>makePrivateMethod(MixedExample.java:10)</td><td valign="">Method "makePrivateMethod" has 0 references</td>
 </tr>
 
-<tr bgcolor="" valign="">
+<tr valign="" bgcolor="">
 <td valign="">4</td><td valign="">Warning</td><td valign="">org.ucdetector.MixedExample.<br>useFinal(MixedExample.java:5)</td><td valign="">Use "final" for field "useFinal"</td>
 </tr>
 
@@ -295,7 +295,7 @@ cycles in your code, a big number here makes cycle detection very slow!
 
 </td>
 <td valign="middle">
-<img src="images/preferences_4_other.png" alt="UCDetector preferences">
+<img alt="UCDetector preferences" src="images/preferences_4_other.png">
 </td>
 
 </tr>
@@ -306,19 +306,19 @@ cycles in your code, a big number here makes cycle detection very slow!
 </tr>
 </table>
 <hr>
-<table summary="footer" width="100%">
+<table width="100%" summary="footer">
 <tr>
-<td valign="middle" align="left">Last Update: 2008-11-24</td><td valign="middle" align="right">Copyright &copy; 2008, by Joerg Spieler</td>
+<td align="left" valign="middle">Last Update: 2008-11-26</td><td align="right" valign="middle">Copyright &copy; 2008, by Joerg Spieler</td>
 </tr>
 </table>
 <hr>
-<table summary="footer 2" width="100%">
+<table width="100%" summary="footer 2">
 <tr>
-<td valign="middle" align="left">
+<td align="left" valign="middle">
 	Page views since 2008-03-01:
-			<img src="http://www.jspieler.de/cgi-bin/counting.php.cgi?counterid=3" alt="Page views since 2008-03-01"></td><td valign="middle" align="right">
+			<img alt="Page views since 2008-03-01" src="http://www.jspieler.de/cgi-bin/counting.php.cgi?counterid=3"></td><td align="right" valign="middle">
 	Hosted by:
-	<a href="http://sourceforge.net"><img alt="SourceForge.net Logo" border="0" height="37" width="125" src="http://sflogo.sourceforge.net/sflogo.php?group_id=219599&type=2"></a></td>
+	<a href="http://sourceforge.net"><img src="http://sflogo.sourceforge.net/sflogo.php?group_id=219599&type=2" width="125" height="37" border="0" alt="SourceForge.net Logo"></a></td>
 </tr>
 </table>
 </body>
