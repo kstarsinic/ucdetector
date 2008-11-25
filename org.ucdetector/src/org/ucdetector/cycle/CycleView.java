@@ -180,8 +180,10 @@ public class CycleView extends ViewPart { //
       @Override
       public void run() {
         Cycle cycle = (Cycle) getFirstSelectedElement();
-        cycle.rotate();
-        refresh();
+        if (cycle != null) {
+          cycle.rotate();
+          refresh();
+        }
       }
     };
     rotateAction.setText(Messages.CycleView_popup_rotate);
@@ -211,6 +213,9 @@ public class CycleView extends ViewPart { //
       @Override
       public void run() {
         Object obj = getFirstSelectedElement();
+        if (obj == null) {
+          return; // 2008.11.26: npe found on smoke test
+        }
         if (obj instanceof Cycle) {
           Cycle cycle = (Cycle) obj;
           List<CycleType> types = cycle.getChildren();
