@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<project name="UCDetectorUpdate Site" default="send" basedir=".">
+  <description> Create UCDetector Update Site</description>
+
+  <!-- ===================================================================== -->
+  <!--                      SEND                                             -->
+  <!-- ===================================================================== -->
+  <target name="send" description="Send homepage files to homepage">
+    <property file="${user.home}/.ucdetector.properties" />
+    <echo>Sending udpate site to server: ${sf.server}...</echo>
+    <!--
+    <ftp password="${sf.password}"
+         server="${sf.server}"
+         userid="${sf.userid}"
+         remotedir="${sf.remotedir}">
+      <fileset dir="${basedir}">
+        <exclude name="build.xml" />
+        <exclude name="content.xml" />
+        <exclude name="artifacts.xml" />
+      </fileset>
+    </ftp>
+    -->
+    <property name="todir"
+              value="${sf.userid}:${sf.password}@${sf.server}:${sf.remotedir}" />
+    <scp todir="${todir}" >
+      <fileset dir="${basedir}">
+        <exclude name="build.xml" />
+        <exclude name="content.xml" />
+        <exclude name="artifacts.xml" />
+      </fileset>
+    </scp>
+    <echo>Sended udpate site to server: ${sf.server}</echo>
+  </target>
+</project>
+
