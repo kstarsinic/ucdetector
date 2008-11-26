@@ -45,13 +45,20 @@ Steps to create new Version:
    - detect: /org.ucdetector.example/cycle
    - check UCDMarker: /org.ucdetector.example/example
  - Sourceforge:
-	 - Categorization
-	 - Description
-	 - Screenshot
-	 - Category
-	 - Changes
-	 - Upload
-	 - Version
+		 - Categorization
+		 - Description
+		 - Screenshot
+		 - Category
+	 - Admin/File Release
+		 - Add Release: 0.12.0, Create this release
+		 - Paste The Change Log In: CHANGES.txt
+	 - Add Files To This Release
+		 - Upload: https://frs.sourceforge.net/webupload
+		 - Add files/refresh view
+	 - platform independent, jar
+	 - platform independent, source.zip
+	 - platform independent, source.zip
+	 - Create / Edit Download Page 
  - update site (http://ucdetector.sourceforge.net/update):
    - update /org.ucdetector.feature/feature.xml
    - update /org.ucdetector.update_site/site.xml
