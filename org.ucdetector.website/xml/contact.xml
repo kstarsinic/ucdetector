@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<ucd page="Contact &amp; Links">
+	<ul>
+		<li>
+			<a href="http://www.ucdetector.org">UCDetector homepage</a>
+		</li>
+		<li>
+			<a href="http://sourceforge.net/projects/ucdetector/">UCDetector sourceforge project page</a>
+		</li>
+		<li>
+			<a href="http://sourceforge.net/project/platformdownload.php?group_id=219599">UCDetector download</a>
+		</li>
+		<li>
+			Eclipse update site: http://ucdetector.sourceforge.net/update
+		</li>
+		<li>I want to create a stable UCDetector version 1.0.0. Please report
+			<a href="http://sourceforge.net/tracker/?group_id=219599&amp;atid=1046865">bugs</a> or 
+	    <a href="https://sourceforge.net/tracker/?atid=1046868&amp;group_id=219599">features requests</a>. 
+	</li>
+		<li>
+			<a href="mailto:feedback@ucdetector.org">E-Mail Feedback welcome!</a>
+			 If you want to report a bug or feature request, please use the links above.
+		</li>
+	</ul>
+</ucd>

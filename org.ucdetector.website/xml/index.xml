@@ -38,7 +38,9 @@ This cycle classes are shown in s special cycle view.
 			
 <h2>Installation</h2>
 <!-- ======================================================================= -->
-Use <a href="http://ucdetector.sourceforge.net/update">Update site </a>or:
+Use eclipse update site:<pre>http://ucdetector.sourceforge.net/update</pre>
+<br></br>
+or:
 
 <ul>
   <li>Download <a href="http://sourceforge.net/project/showfiles.php?group_id=219599">org.ucdetector_*.jar</a> or</li>
