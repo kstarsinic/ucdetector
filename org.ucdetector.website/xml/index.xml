@@ -35,6 +35,19 @@ This cycle classes are shown in s special cycle view.
 		<tr>
 <!-- left ================================================== -->
 			<td>
+			
+<h2>Installation</h2>
+<!-- ======================================================================= -->
+Use <a href="http://ucdetector.sourceforge.net/update">Update site </a>or:
+
+<ul>
+  <li>Download <a href="http://sourceforge.net/project/showfiles.php?group_id=219599">org.ucdetector_*.jar</a> or</li>
+  <li>Put the jar into your ECLIPSE_HOME/plugins directory</li>
+  <li>Restart <a href="http://www.eclipse.org/downloads/">Eclipse version >= 3.3</a></li>
+</ul>
+
+			
+			
 <h3>Quick start</h3>
 <!-- ======================================================================= -->
 Instead of clicking Shift+Ctrl+G
