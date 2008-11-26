@@ -81,19 +81,19 @@
     <ftp password="${password}"
          server="${server}"
          userid="${user}"
-         remotedir="${remotedir}">
+         remotedir="${remotedir}"
+         newer="true">
       <fileset dir="${html.dir}" includes="**" />
     </ftp>
-    <!--
-    <property name="todir"
-              value="${userid}:${password}@${server}:${remotedir}" />
-    <scp todir="${todir}">
-      <fileset dir="..">
-        <include name="*.txt" />
-      </fileset>
-    </scp>
-    -->
     <echo>Sended homepage files to server: ${server}</echo>
+  </target>
+
+  <!-- ===================================================================== -->
+  <!--                      UPDATE HOMEPAGE                                  -->
+  <!-- ===================================================================== -->
+  <target name="update"
+          depends="homepage,send"
+          description="create homepage and send it to server">
   </target>
 </project>
 
