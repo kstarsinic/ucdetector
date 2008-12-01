@@ -37,7 +37,7 @@ Ignore methods, which use the java bean convention. For example
 <td>
 <p>
 
-<h3>Detect</h3>
+<h3>What to detect</h3>
 <!-- ============================= -->
 <p><b>Detect code with max number of references:</b><br/>
 Number of found references, which are necessary to mark java code as problem.
@@ -61,12 +61,36 @@ Select what kind of code should be marked:
 	<li>Fields: Select error level for fields</li>
 </ul>
 
+
+
+<h3>File search</h3>
+<!-- version > 0.12.0: <h3>Search class name in files</h3> -->
+<!-- ============================= -->
+<p><b>Search class names in text files:</b><br/>
+Select file extension, which should be searched for class name. 
+For example "*.xml,*.jsp"
+</p>
+
+<p><b>Use full qualified class name :</b><br/>
+The character before and after the match is included in search.
+Searching for "Aplication" will NOT match "MyApplication" neither
+"ApplicationExample".<br/>
+
+Searching for "Aplication" will match:
+<ul>
+<li>"org.ucdetector.example_1.Aplication"</li> and
+<li>"org.ucdetector.example_2.Aplication"</li> and
+</ul>
+</p>
+
 <p><b>File name pattern to search:</b><br/>
 It is possible to add a file pattern. Full qualified class names (org.ucdetector.Example)
 found in this files will get no marker for "0 references found". But text
 search is slow, if there are many text files!
 </p>
 </p>
+
+
 
 </td>
 <td align="left" valign="middle">
@@ -78,7 +102,7 @@ search is slow, if there are many text files!
 
 <tr valign="top">
 <td>
-<h3>Keyword</h3>
+<h3>Keyword usage</h3>
 <!-- ============================= -->
 
 <p><b>Possible use of <font color="#006699"><strong>protected</strong></font> or
@@ -89,13 +113,10 @@ which could be <font color="#006699"><strong>protected</strong></font>, default 
 This is code, which has only references in same package or same class.
 </p>
 
-<p><b>Possible use of <font color="#006699"><strong>final</strong></font> for fields</b>:<br/>
-This option will create markers for fields, which could be
-<font color="#006699"><strong>final</strong></font>.
-This are fields, which have no write access.
-</p>
 
-<p><b>Possible use of <font color="#006699"><strong>final</strong></font> for methods</b>:<br/>
+
+<p><b>Possible use of <font color="#006699"><strong>final</strong></font>
+ for methods (don't override methods)</b>:<br/>
 This option will create markers for methods, which could be
 <font color="#006699"><strong>final</strong></font>.
 This are methods, which:
@@ -109,6 +130,16 @@ This are methods, which:
 <p>
 Maybe this rules are not OK for you! Anyway: Apply changes for this rule carefully.
 </p>
+
+
+
+<p><b>Possible use of <font color="#006699"><strong>final</strong></font>
+ for fields (read-only fields)</b>:<br/>
+This option will create markers for fields, which could be
+<font color="#006699"><strong>final</strong></font>.
+This are fields, which have no write access.
+</p>
+
 </td>
 <td align="left" valign="middle">
 <img alt="UCDetector preferences"  border="1" src="@IMAGES_DIR@/preferences_3_keyword.png"/>
@@ -119,7 +150,7 @@ Maybe this rules are not OK for you! Anyway: Apply changes for this rule careful
 <td>
 <h3>Other</h3>
 <!-- ============================= -->
-<p><b>HTML report</b>:<br></br>
+<p><b>HTML Report file</b>:<br></br>
 Enter file name, if you want to create a report like this:
 </p>
 
@@ -140,7 +171,7 @@ ECLIPSE_HOME/plugins/org.ucdetector_*.jar/org/ucdetector/report/html.xslt
 </p>
 
 
-<b>Max cycle size</b>:<br></br>
+<b>Max class cycle size</b>:<br></br>
 For cycle detection you can choose the "max cycle size". If there are many
 cycles in your code, a big number here makes cycle detection very slow!
 

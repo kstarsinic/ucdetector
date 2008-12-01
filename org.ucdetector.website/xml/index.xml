@@ -69,9 +69,9 @@ Instead of clicking Shift+Ctrl+G
     <img alt="use final" src="@ICONS_DIR@/use_final.gif"/>
 	</li>
   <li>4. Use the menu "Group By/Type" in the Problems View</li>
-  <li>5. Change code carefully</li>
+  <li>5. Change code carefully. Use  QuickFixes (right click on markers)</li>
   <li>6. Change preference "Detect code with max number of references" from 0 to 1, run UCDetector again</li>
-  <li>7. Repeat step 1. to 6.</li>
+  <li>7. Repeat step 1. to 5.</li>
 </ul>
 
 
