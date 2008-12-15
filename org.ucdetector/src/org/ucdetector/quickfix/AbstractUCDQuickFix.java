@@ -51,7 +51,11 @@ import org.ucdetector.util.MarkerFactory;
  * http://help.eclipse.org/help32/index.jsp?topic=/org.eclipse.jdt.doc.isv/reference/api/org/eclipse/jdt/core/dom/rewrite/ASTRewrite.html
  * @see http://www.eclipse.org/articles/article.php?file=Article-JavaCodeManipulation_AST/index.html
  */
-abstract class AbstractUCDQuickFix implements IMarkerResolution2 { // extends WorkbenchMarkerResolution
+abstract class AbstractUCDQuickFix 
+    // TODO 2008.12.15. [ 2417657 ] QuickFix should behave as for Java problems
+    // extends WorkbenchMarkerResolution
+    implements IMarkerResolution2
+ { 
   static enum ELEMENT {
     TYPE, METHOD, FIELD;
   }
