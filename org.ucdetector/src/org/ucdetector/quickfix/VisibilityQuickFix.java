@@ -12,6 +12,7 @@ import org.eclipse.jdt.core.dom.BodyDeclaration;
 import org.eclipse.jdt.core.dom.Modifier;
 import org.eclipse.jdt.core.dom.rewrite.ListRewrite;
 import org.eclipse.jdt.internal.ui.JavaPluginImages;
+import org.eclipse.jdt.ui.JavaUI;
 import org.eclipse.osgi.util.NLS;
 import org.eclipse.swt.graphics.Image;
 import org.ucdetector.Messages;
@@ -77,13 +78,13 @@ class VisibilityQuickFix extends AbstractUCDQuickFix {
 
   public Image getImage() {
     if (MarkerFactory.UCD_MARKER_USE_PROETECTED.equals(markerType)) {
-      return JavaPluginImages.get(JavaPluginImages.IMG_MISC_PROTECTED);
+      return JavaUI.getSharedImages().getImage(JavaPluginImages.IMG_MISC_PROTECTED);
     }
     else if (MarkerFactory.UCD_MARKER_USE_DEFAULT.equals(markerType)) {
-      return JavaPluginImages.get(JavaPluginImages.IMG_MISC_DEFAULT);
+      return JavaUI.getSharedImages().getImage(JavaPluginImages.IMG_MISC_DEFAULT);
     }
     else if (MarkerFactory.UCD_MARKER_USE_PRIVATE.equals(markerType)) {
-      return JavaPluginImages.get(JavaPluginImages.IMG_MISC_PRIVATE);
+      return JavaUI.getSharedImages().getImage(JavaPluginImages.IMG_MISC_PRIVATE);
     }
     return null;
   }

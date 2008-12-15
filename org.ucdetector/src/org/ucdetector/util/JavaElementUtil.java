@@ -183,7 +183,7 @@ public class JavaElementUtil {
   * <li>For methods: <code>ClassName.methodName(String, int, double )</code></li>
   * <li>For fields: <code>ClassName.fieldName</code></li>
   * </ul>
-  * @see org.eclipse.jdt.internal.core.JavaElement#readableName()
+  * @see org.eclipse.jdt.internal.core.JavaElement.readableName()
    */
   public static String getElementName(IJavaElement element) {
     if (element == null) {
