@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="ISO-8859-1"?>
-<project name="UCDetectorHomepage" default="homepage" basedir=".">
+<project name="UCDetectorHomepage" default="create" basedir=".">
   <description> Create UCDetector homepage and help</description>
   <tstamp>
     <format property="TODAY" pattern="yyyy-MM-dd" />
@@ -13,14 +13,13 @@
   <!-- ===================================================================== -->
   <!--                      CREATE UCD HOMEPAGE                              -->
   <!-- ===================================================================== -->
-  <target name="homepage"
-          depends="transform"
-          description="create UCDetector homepage">
+  <target name="create" description="Create UCDetector homepage">
+    <antcall target="transform" />
     <copy-help />
     <echo>Created UCDetector homepage in ${html.dir}</echo>
   </target>
 
-  <!-- ===================================================================== -->
+  <!-- =contact.html==================================================================== -->
   <!--                      TRANSFORM                                        -->
   <!-- ===================================================================== -->
   <target name="transform" description="Transform xml files to html">
@@ -36,8 +35,7 @@
   <!-- ===================================================================== -->
   <!--                      COPY-HTML                                        -->
   <!-- ===================================================================== -->
-  <macrodef name="copy-help"
-            description="Copy created html files and replace tokens">
+  <macrodef name="copy-help" description="Copy html files, replace tokens">
     <attribute name="images" default="images" />
     <attribute name="icons" default="icons" />
     <attribute name="todir" default="${html.dir}" />
@@ -63,9 +61,8 @@
   <!-- ===================================================================== -->
   <!--                      CREATE UCD HELP                                  -->
   <!-- ===================================================================== -->
-  <target name="ucd-help"
-          depends="transform"
-          description="Copy help to UCDetector plugin">
+  <target name="ucd-help" description="Copy help to UCDetector plugin">
+    <antcall target="transform" />
     <copy-help images="http://ucdetector.org/images"
                icons="../../icons"
                todir="${ucd.dir}/help/html" />
@@ -92,8 +89,8 @@
   <!--                      UPDATE HOMEPAGE                                  -->
   <!-- ===================================================================== -->
   <target name="update"
-          depends="homepage,send"
-          description="create homepage and send it to server">
+          depends="create,send"
+          description="Create homepage and send it to server">
   </target>
 </project>
 
