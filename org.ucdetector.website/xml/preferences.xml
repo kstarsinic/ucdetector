@@ -79,7 +79,7 @@ Searching for "Aplication" will NOT match "MyApplication" neither
 Searching for "Aplication" will match:
 <ul>
 <li>"org.ucdetector.example_1.Aplication"</li> and
-<li>"org.ucdetector.example_2.Aplication"</li> and
+<li>"org.ucdetector.example_2.Aplication"</li>
 </ul>
 </p>
 
@@ -150,7 +150,7 @@ This are fields, which have no write access.
 <td>
 <h3>Other</h3>
 <!-- ============================= -->
-<p><b>HTML Report file</b>:<br></br>
+<p><b>HTML (and xml) Report file</b>:<br></br>
 Enter file name, if you want to create a report like this:
 </p>
 
@@ -168,6 +168,9 @@ To create custom reports change:
 <pre>
 ECLIPSE_HOME/plugins/org.ucdetector_*.jar/org/ucdetector/report/html.xslt
 </pre>
+</p>
+<p>
+A xml report is created in the same directory as the html file.
 </p>
 
 
