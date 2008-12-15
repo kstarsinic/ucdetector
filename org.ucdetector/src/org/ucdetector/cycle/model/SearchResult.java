@@ -13,6 +13,7 @@ import java.util.List;
 import org.eclipse.jdt.core.IJavaElement;
 import org.eclipse.jdt.core.IJavaProject;
 import org.eclipse.jdt.internal.ui.JavaPluginImages;
+import org.eclipse.jdt.ui.JavaUI;
 import org.eclipse.osgi.util.NLS;
 import org.eclipse.swt.graphics.Image;
 import org.ucdetector.Messages;
@@ -48,7 +49,7 @@ public class SearchResult extends CycleBaseElement {
   }
 
   public Image getImage() {
-    return JavaPluginImages.get(JavaPluginImages.IMG_OBJS_SEARCH_REF); // IMG_OBJS_JSEARCH
+    return JavaUI.getSharedImages().getImage(JavaPluginImages.IMG_OBJS_SEARCH_REF); // IMG_OBJS_JSEARCH
   }
 
   public CycleBaseElement getParent() {

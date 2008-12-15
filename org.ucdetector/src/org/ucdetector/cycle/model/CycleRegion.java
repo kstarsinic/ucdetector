@@ -11,6 +11,7 @@ import java.util.Collections;
 import java.util.List;
 
 import org.eclipse.jdt.internal.ui.JavaPluginImages;
+import org.eclipse.jdt.ui.JavaUI;
 import org.eclipse.swt.graphics.Image;
 import org.ucdetector.Messages;
 
@@ -58,7 +59,7 @@ public class CycleRegion extends CycleBaseElement {
   }
 
   public Image getImage() {
-    return JavaPluginImages.get(JavaPluginImages.IMG_OBJS_SEARCH_OCCURRENCE);
+    return JavaUI.getSharedImages().getImage(JavaPluginImages.IMG_OBJS_SEARCH_OCCURRENCE);
   }
 
   public CycleBaseElement getParent() {
