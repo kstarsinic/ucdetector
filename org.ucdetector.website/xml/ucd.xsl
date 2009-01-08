@@ -41,53 +41,61 @@
 <!-- Navigation table -->
 				<table width="100%" border="0" summary="left navigation, right text">
 					<tr valign="top">
-						<td width="8%" bgcolor="#FFFFE0">
+						<td width="10%" bgcolor="#FFFFE0">
 							<table border="0">
 							<!-- ==================================== -->
 								<tr>
 									<td>
+										<br></br>
 										<a href="index.html">Start</a>
 									</td>
 								</tr>
 							<!-- ==================================== -->
 								<tr>
 									<td>
+										<br></br>
 										<a href="preferences.html">Preferences</a>
 									</td>
 								</tr>
 							<!-- ==================================== -->
 								<tr>
 									<td>
+										<br></br>
 										<a href="more.html">More</a>
 									</td>
 								</tr>
 							<!-- ==================================== -->
 								<tr>
 									<td>
+										<br></br>
 										<a href="releases.html">Releases</a>
 									</td>
 								</tr>
 							<!-- ==================================== -->
 								<tr>
 									<td>
+										<br></br>
 										<a href="faq.html">FAQ</a>
 									</td>
 								</tr>
 							<!-- ==================================== -->
 								<tr>
 									<td>
+										<br></br>
 										<a href="custom.html">Custom detection</a>
 									</td>
 								</tr>
 							<!-- ==================================== -->
 								<tr>
 									<td>
+										<br></br>
 										<a href="license.html">License</a>
 									</td>
 								</tr>
 							<!-- ==================================== -->
 								<tr>
 									<td>
+										<br></br>
 										<a href="contact.html">Contact &amp; Links</a>
 									</td>
 								</tr>

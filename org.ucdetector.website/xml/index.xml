@@ -36,17 +36,19 @@ This cycle classes are shown in s special cycle view.
 <!-- left ================================================== -->
 			<td>
 			
-<h2>Installation</h2>
+<h3>Download or install</h3>
+<b>Download:</b>
 <!-- ======================================================================= -->
-Use eclipse update site:<pre>http://ucdetector.sourceforge.net/update</pre>
-<br></br>
-or:
-
 <ul>
   <li>Download <a href="http://sourceforge.net/project/showfiles.php?group_id=219599">org.ucdetector_*.jar</a> or</li>
   <li>Put the jar into your ECLIPSE_HOME/plugins directory</li>
   <li>Restart <a href="http://www.eclipse.org/downloads/">Eclipse version >= 3.3</a></li>
 </ul>
+
+
+<b>Install:</b>
+<br></br>
+Use eclipse update site:<pre>http://ucdetector.sourceforge.net/update</pre>
 
 			
 			
@@ -134,7 +136,7 @@ your code. Click on the marker to see QuickFixes's to change code:
 		<tr>
 <!-- left ================================================== -->
 			<td>
-<h2>Ignore code</h2>
+<h3>Ignore code</h3>
 <!-- ======================================================================= -->
 Use "NO_UCD" tag in code, for lines, which should be ignored:
 <pre><span class="c4">/**

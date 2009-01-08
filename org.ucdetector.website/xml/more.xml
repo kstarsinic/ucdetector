@@ -3,8 +3,9 @@
 	<table summary="others"  border="0">
 		<tr>
 			<td>
-				<h2>
-					<img alt="cycle" src="@ICONS_DIR@/cycle.gif"/>Detect class cycles</h2>
+				<h3>
+					<img alt="cycle" src="@ICONS_DIR@/cycle.gif"/>Detect class cycles
+				</h3>
 				<p>Right click on classes, packages or projects, Select context menu: "UCDetector/detect cycles".
 The class cycles will appear in the Cycle View. Browse the class cycles by exploring the
 cycle tree.</p>
@@ -16,8 +17,9 @@ cycle tree.</p>
 		
 		<tr>
 			<td>
-				<h2>
-					<img alt="count" src="@ICONS_DIR@/info_obj.gif"/>Count code checked by UCDetector</h2>
+				<h3>
+					<img alt="count" src="@ICONS_DIR@/info_obj.gif"/>Count code checked by UCDetector
+				</h3>
 				<p>It is possible to count code checked by UCDetector. Select context menu: "UCDetector/count elements"</p>
 			</td>
 			<td align="left" valign="middle">
@@ -29,8 +31,9 @@ cycle tree.</p>
 		<tr>
 			<td>
 				
-				<h2>
-					<img alt="remove" src="@ICONS_DIR@/remove.gif"/>Clean markers</h2>
+				<h3>
+					<img alt="remove" src="@ICONS_DIR@/remove.gif"/>Clean markers
+				</h3>
 				<p>Delete UCDetector markers by right clicking on a java element which contains
 the markers and select:<br></br>
 "UCDetector/Clean markers"</p>
