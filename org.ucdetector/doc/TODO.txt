@@ -10,6 +10,11 @@ TODO 1.0.0:
    - local classes can be private
  - create an extension point for "org.ucdetector.additional"
  - README.txt
+ - Matching a local class "0 References" in a parent class (BException)
+ - IGnore classes with main methods
+ - Quick Fix -> Multiple Changes?
+ - FAQ: WORKSPACE_ROOT\.metadata\.log (http://stackoverflow.com/questions/369923/unused-code-plugin-in-eclipse-341#370916)
+ - UCDetector problems should have a parent in Problems View / Configure contents
  - Remove warnings: JavaUI.getSharedImages().getImage(org.eclipse.jdt.ui.ISharedImages.IMG_OBJS_JAR)
  
 //------------------------------------------------------------------------------
