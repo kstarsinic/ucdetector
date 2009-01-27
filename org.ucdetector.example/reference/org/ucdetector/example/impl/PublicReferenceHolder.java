@@ -7,6 +7,7 @@ import org.ucdetector.example.QuickFixExample;
 import org.ucdetector.example.bugs.Bug2139142Interface;
 import org.ucdetector.example.bugs.Bug2225016;
 import org.ucdetector.example.bugs.Bug2269486;
+import org.ucdetector.example.bugs.Bug2539795Main;
 import org.ucdetector.example.bugs.impl.Bug2225016Impl;
 import org.ucdetector.example.classes.AnnotationExample;
 import org.ucdetector.example.classes.AnonymousClass;
@@ -172,5 +173,7 @@ public class PublicReferenceHolder {
     FieldNeverWrite fieldNeverWrite = new FieldNeverWrite();
     System.out.println(FieldNeverWrite.NEVER_WRITE_FIELD);
     System.out.println(fieldNeverWrite.neverWriteField);
+    //
+    System.out.println(Bug2539795Main.class);
   }
 }
