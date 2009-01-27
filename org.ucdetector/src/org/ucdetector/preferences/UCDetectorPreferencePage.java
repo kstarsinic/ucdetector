@@ -24,6 +24,7 @@ import org.eclipse.swt.widgets.Label;
 import org.eclipse.ui.IWorkbench;
 import org.eclipse.ui.IWorkbenchPreferencePage;
 import org.eclipse.ui.PlatformUI;
+import org.ucdetector.Log;
 import org.ucdetector.Messages;
 import org.ucdetector.UCDetectorPlugin;
 
@@ -120,6 +121,13 @@ public class UCDetectorPreferencePage extends FieldEditorPreferencePage // NO_UC
     ComboFieldEditor analyzeFields = createCombo(Prefs.ANALYZE_FIELDS,
         Messages.PreferencePage_Fields, spacer);
     this.addField(analyzeFields);
+    // Detect code only used by tests
+    BooleanFieldEditor ignoreTestOnlyFilter = new BooleanFieldEditor(
+        Prefs.DETECT_TEST_ONLY, Messages.PreferencePage_DetectTestOnly,
+        BooleanFieldEditor.SEPARATE_LABEL, spacer);
+    ignoreTestOnlyFilter.getLabelControl(spacer).setToolTipText(
+        Messages.PreferencePage_DetectTestOnlyToolTip);
+    this.addField(ignoreTestOnlyFilter);
   }
 
   /**
@@ -346,5 +354,11 @@ public class UCDetectorPreferencePage extends FieldEditorPreferencePage // NO_UC
     gd.horizontalSpan = hspan;
     g.setLayoutData(gd);
     return g;
+  }
+
+  @Override
+  public boolean performOk() {
+    Log.logInfo(UCDetectorPlugin.getPreferencesAsString());
+    return super.performOk();
   }
 }

@@ -30,12 +30,14 @@ public final class Prefs {
   = UCDetectorPlugin.ID + ".packageFilter"; //$NON-NLS-1$
   protected static final String FILTER_CLASS //
   = UCDetectorPlugin.ID + ".classFilter"; //$NON-NLS-1$
-  protected static final String FILTER_BEAN_METHOD //
-  = UCDetectorPlugin.ID + ".beanMethodFilter"; //$NON-NLS-1$
   protected static final String FILTER_METHOD //
   = UCDetectorPlugin.ID + ".methodFilter"; //$NON-NLS-1$
   static final String FILTER_FIELD //
   = UCDetectorPlugin.ID + ".fieldFilter"; //$NON-NLS-1$
+  protected static final String FILTER_BEAN_METHOD //
+  = UCDetectorPlugin.ID + ".beanMethodFilter"; //$NON-NLS-1$
+  protected static final String DETECT_TEST_ONLY //
+  = UCDetectorPlugin.ID + ".detectTestOnly"; //$NON-NLS-1$
   // ANALYZE -------------------------------------------------------------------
   protected static final String ANALYZE_CLASSES //
   = UCDetectorPlugin.ID + ".classes"; //$NON-NLS-1$

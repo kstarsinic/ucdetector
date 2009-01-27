@@ -66,19 +66,19 @@ public class UCDetectorPlugin extends AbstractUIPlugin {
     sb.append("\r\njava=").append(System.getProperty("java.version")); //$NON-NLS-1$ //$NON-NLS-2$
     sb.append(",eclipse=").append(System.getProperty("osgi.framework.version")); //$NON-NLS-1$ //$NON-NLS-2$
     sb.append("\r\nlogfile=").append(System.getProperty("osgi.logfile")); //$NON-NLS-1$ //$NON-NLS-2$
-    sb.append("\r\n---- Plugin Preferences -------------------"); //$NON-NLS-1$
     sb.append(getPreferencesAsString());
-    sb.append("\r\n-----------------------------------------------"); //$NON-NLS-1$
     Log.logInfo(sb.toString());
   }
 
-  private static String getPreferencesAsString() {
+  public static String getPreferencesAsString() {
     StringBuilder sb = new StringBuilder();
+    sb.append("\r\n---- UCDetector Plugin Preferences -----------"); //$NON-NLS-1$
     String[] propertyNames = plugin.getPluginPreferences().propertyNames();
     for (String propertyName : propertyNames) {
       sb.append("\r\n   ").append(propertyName).append("="); //$NON-NLS-1$ //$NON-NLS-2$
       sb.append(plugin.getPluginPreferences().getString(propertyName));
     }
+    sb.append("\r\n-----------------------------------------------"); //$NON-NLS-1$
     return sb.toString();
   }
 
