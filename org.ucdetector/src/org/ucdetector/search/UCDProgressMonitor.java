@@ -2,6 +2,7 @@ package org.ucdetector.search;
 
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.ucdetector.Log;
+import org.ucdetector.UCDetectorPlugin;
 
 /**
  *
@@ -16,12 +17,15 @@ public class UCDProgressMonitor implements IProgressMonitor {
 
   public void beginTask(String beginTaskName, int totalWork) {
     this.taskName = beginTaskName;
+    Log.logDebug("\n--------------------------------------------"); //$NON-NLS-1$
     Log.logInfo("Start task: " + beginTaskName); //$NON-NLS-1$
+    Log.logDebug(UCDetectorPlugin.getPreferencesAsString());
     delegate.beginTask(beginTaskName, totalWork);
   }
 
   public void done() {
     Log.logInfo("End task: " + taskName); //$NON-NLS-1$
+    Log.logDebug("--------------------------------------------\n"); //$NON-NLS-1$
     delegate.done();
   }
 
