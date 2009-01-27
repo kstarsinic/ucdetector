@@ -495,4 +495,24 @@ public class JavaElementUtil {
     }
     return "???"; //$NON-NLS-1$
   }
+
+  public static boolean isJUnitTestMethod(IMethod method)
+      throws JavaModelException {
+    if (method == null || method.getElementName() == null) {
+      return false;
+    }
+    if (Flags.isPublic(method.getFlags()) //
+        && Signature.SIG_VOID.equals(method.getReturnType())//
+        && method.getNumberOfParameters() == 0) {
+      // JUnit 3
+      if (method.getElementName().startsWith("test")) {
+        return true;
+      }
+      // JUnit 4
+      if (false) {
+        return true;
+      }
+    }
+    return false;
+  }
 }
