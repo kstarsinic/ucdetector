@@ -20,6 +20,7 @@ import org.eclipse.jdt.core.IMember;
 import org.eclipse.jdt.core.IMethod;
 import org.eclipse.jdt.core.IPackageFragment;
 import org.eclipse.jdt.core.IPackageFragmentRoot;
+import org.eclipse.jdt.core.ISourceRange;
 import org.eclipse.jdt.core.IType;
 import org.eclipse.jdt.core.ITypeHierarchy;
 import org.eclipse.jdt.core.JavaModelException;
@@ -31,6 +32,7 @@ import org.eclipse.jdt.core.search.SearchMatch;
 import org.eclipse.jdt.core.search.SearchParticipant;
 import org.eclipse.jdt.core.search.SearchPattern;
 import org.eclipse.jdt.core.search.SearchRequestor;
+import org.eclipse.jdt.internal.core.SourceMethod;
 import org.eclipse.jdt.internal.ui.typehierarchy.TypeHierarchyLifeCycle;
 import org.eclipse.jdt.ui.JavaElementImageDescriptor;
 import org.eclipse.jdt.ui.OverrideIndicatorLabelDecorator;
@@ -496,22 +498,56 @@ public class JavaElementUtil {
     return "???"; //$NON-NLS-1$
   }
 
-  public static boolean isJUnitTestMethod(IMethod method)
-      throws JavaModelException {
+  public static boolean isJUnitTestMethod(IMethod method) {
     if (method == null || method.getElementName() == null) {
       return false;
     }
-    if (Flags.isPublic(method.getFlags()) //
-        && Signature.SIG_VOID.equals(method.getReturnType())//
-        && method.getNumberOfParameters() == 0) {
-      // JUnit 3
-      if (method.getElementName().startsWith("test")) {
-        return true;
+    try {
+
+      SourceMethod sMethod = (SourceMethod) method;
+      ICompilationUnit iCompilationUnit = sMethod.getCompilationUnit();
+
+      org.eclipse.jdt.internal.core.CompilationUnit cu = (org.eclipse.jdt.internal.core.CompilationUnit) iCompilationUnit;
+
+      //      org.eclipse.jdt.core.dom.CompilationUnit compilationUnit = (org.eclipse.jdt.core.dom.CompilationUnit) method
+      //          .getCompilationUnit();
+      //
+      //      System.out.println(compilationUnit.getClass().getName());
+      //
+      //      ASTNode findNode = sMethod.findNode(compilationUnit);
+      //      System.out.println(findNode);
+
+      //      IType parent = (IType) method.getParent();
+
+      //      AbstractTypeDeclaration firstType = (AbstractTypeDeclaration) copyUnit
+      //      .types().get(0);
+
+      String source = method.getSource();
+      System.out.println(source);
+
+      ISourceRange sourceRange = method.getSourceRange();
+      System.out.println(sourceRange);
+
+      //      ASTVisitor visitor = new ASTVisitor();
+
+      IJavaElement[] children = method.getChildren();
+      for (IJavaElement child : children) {
+        System.out.println(child);
       }
-      // JUnit 4
-      if (false) {
-        return true;
+      if (Flags.isPublic(method.getFlags()) //
+          && Signature.SIG_VOID.equals(method.getReturnType())//
+          && method.getNumberOfParameters() == 0) {
+        // JUnit 3
+        if (method.getElementName().startsWith("test")) {
+          return true;
+        }
+        // JUnit 4
+        if (false) {
+          return true;
+        }
       }
+    }
+    catch (JavaModelException e) {
     }
     return false;
   }

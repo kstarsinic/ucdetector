@@ -478,6 +478,10 @@ public class SearchManager {
       if (matchJavaElement instanceof IImportDeclaration) {
         return true;
       }
+      if (matchJavaElement instanceof IMethod) {
+        IMethod method = (IMethod) matchJavaElement;
+        JavaElementUtil.isJUnitTestMethod(method);
+      }
       // Ignore type matches referred by itself.
       // See UnusedClassUsedByItself
       if (searchStart instanceof IType) {
