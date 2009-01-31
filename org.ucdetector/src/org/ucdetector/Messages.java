@@ -107,6 +107,7 @@ public final class Messages extends NLS {
   public static String SearchManager_MarkerFinalField; // NO_UCD
   public static String SearchManager_MarkerReference; // NO_UCD
   public static String SearchManager_MarkerReferenceFieldNeverRead; // NO_UCD
+  public static String SearchManager_MarkerTestOnly; // NO_UCD
   public static String SearchManager_Monitor; // NO_UCD
   public static String SearchManager_SearchReferences; // NO_UCD
   public static String SearchManager_SearchClassNameAsLiteral; // NO_UCD
