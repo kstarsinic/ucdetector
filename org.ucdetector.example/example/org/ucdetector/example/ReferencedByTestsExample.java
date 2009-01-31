@@ -1,36 +1,36 @@
 package org.ucdetector.example;
+
 /**
- * This class contains code, which is references by
- * test code
- *
+ * This class contains code, which is references by test code
+ * 
  */
 public class ReferencedByTestsExample {
 
-  public void referencedByTestMethod() {
+	public void referencedByTestMethod() {// Marker YES: test only
 
-  }
+	}
 
-  public void referencedByWrongTestMethod() {
+	public void referencedByWrongTestMethod() {
 
-  }
+	}
 
-  public void referencedByWrongTestMethodStatic() {
+	public void referencedByWrongTestMethodStatic() {
 
-  }
+	}
 
-  public void referencedByTestClass() {
+	public void referencedByTestClass() { // Marker YES: test only
 
-  }
+	}
 
-  public void referencedByTestClassAndNormalClass() {
+	public void referencedByTestClassAndNormalClass() {
 
-  }
+	}
 
-  public void referencedByTestSourceFolder() {
+	public void referencedByTestSourceFolder() { // Marker YES: test only
 
-  }
+	}
 
-  public void noReferences() {
+	public void noReferences() { // Marker YES: unused code
 
-  }
+	}
 }

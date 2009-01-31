@@ -177,6 +177,7 @@ public class PublicReferenceHolder {
     //
     System.out.println(Bug2539795Main.class);
     //
-    System.out.println(ReferencedByTestsExample.class);
+    ReferencedByTestsExample example = new ReferencedByTestsExample();
+    example.referencedByTestClassAndNormalClass();
   }
 }
