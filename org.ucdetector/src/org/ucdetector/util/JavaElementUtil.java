@@ -20,11 +20,17 @@ import org.eclipse.jdt.core.IMember;
 import org.eclipse.jdt.core.IMethod;
 import org.eclipse.jdt.core.IPackageFragment;
 import org.eclipse.jdt.core.IPackageFragmentRoot;
-import org.eclipse.jdt.core.ISourceRange;
 import org.eclipse.jdt.core.IType;
 import org.eclipse.jdt.core.ITypeHierarchy;
 import org.eclipse.jdt.core.JavaModelException;
 import org.eclipse.jdt.core.Signature;
+import org.eclipse.jdt.core.dom.AST;
+import org.eclipse.jdt.core.dom.ASTNode;
+import org.eclipse.jdt.core.dom.ASTParser;
+import org.eclipse.jdt.core.dom.ASTVisitor;
+import org.eclipse.jdt.core.dom.Annotation;
+import org.eclipse.jdt.core.dom.MethodDeclaration;
+import org.eclipse.jdt.core.dom.Name;
 import org.eclipse.jdt.core.search.IJavaSearchConstants;
 import org.eclipse.jdt.core.search.IJavaSearchScope;
 import org.eclipse.jdt.core.search.SearchEngine;
@@ -32,7 +38,6 @@ import org.eclipse.jdt.core.search.SearchMatch;
 import org.eclipse.jdt.core.search.SearchParticipant;
 import org.eclipse.jdt.core.search.SearchPattern;
 import org.eclipse.jdt.core.search.SearchRequestor;
-import org.eclipse.jdt.internal.core.SourceMethod;
 import org.eclipse.jdt.internal.ui.typehierarchy.TypeHierarchyLifeCycle;
 import org.eclipse.jdt.ui.JavaElementImageDescriptor;
 import org.eclipse.jdt.ui.OverrideIndicatorLabelDecorator;
@@ -48,7 +53,6 @@ import org.ucdetector.UCDetectorPlugin;
  * <li>types (=classes)</li>
  * </ul>
  * Calculates inheritance for methods
- * 
  */
 public class JavaElementUtil {
 
@@ -297,6 +301,9 @@ public class JavaElementUtil {
     return requestor.found > 1;
   }
 
+  /**
+   * Run a jdt search and handle Exceptions, the Search result is found in SearchRequestor
+   */
   public static boolean runSearch(SearchPattern pattern,
       SearchRequestor requestor, IJavaSearchScope scope) throws CoreException {
     boolean isSearchException = false;
@@ -321,16 +328,23 @@ public class JavaElementUtil {
     return isSearchException;
   }
 
+  /**
+   * Count number of matches
+   */
   private static final class CountRequestor extends SearchRequestor {
     private int found = 0;
 
     @Override
     public void acceptSearchMatch(SearchMatch match) {
-      // System.out.println("~~~~~~~~~~~acceptSearchMatch=" + match.getElement());
+      // System.out.println("~~~~~~~~~~~acceptSearchMatch=" +
+      // match.getElement());
       this.found++;
     }
   }
 
+  /**
+   * @return <code>true</code>, when a method override or implements another method.
+   */
   public static boolean isOverrideOrImplements(IMethod method) {
     int flags = OVERRIDE_OR_IMPLEMENT_DETECTOR.computeAdornmentFlags(method);
     boolean isOverride = (flags == JavaElementImageDescriptor.IMPLEMENTS //
@@ -341,10 +355,16 @@ public class JavaElementUtil {
   // -------------------------------------------------------------------------
   // SUB, SUPER CLASSES
   // -------------------------------------------------------------------------
+  /**
+   * @return <code>true</code>, when a type has sub classes
+   */
   public static boolean hasSubClasses(IType type) throws JavaModelException {
     return hasXType(type, false);
   }
 
+  /**
+   * @return <code>true</code>, when a type has super classes
+   */
   public static boolean hasSuperClasses(IType type) throws JavaModelException { // NO_UCD
     return hasXType(type, true);
   }
@@ -367,10 +387,23 @@ public class JavaElementUtil {
     return true;
   }
 
+  /**
+   * 
+   * @return <code>true</code>, when a field is static and final
+   */
   public static boolean isConstant(IField field) throws JavaModelException {
     return Flags.isStatic(field.getFlags()) && Flags.isFinal(field.getFlags());
   }
 
+  /**
+   * @return <code>true</code>, when a method machtes the java bean conventions,
+   * for example:
+   *         <ul>
+   *         <li><code>public void setName(String name)</code></li>
+   *         <li><code>public String getName()</code></li>
+   *         <li><code>public boolean isValid()</code></li>
+   *         </ul>
+   */
   public static boolean isBeanMethod(IMethod method) throws JavaModelException {
     if (Flags.isPublic(method.getFlags()) && !Flags.isStatic(method.getFlags())) {
       String name = method.getElementName();
@@ -498,57 +531,112 @@ public class JavaElementUtil {
     return "???"; //$NON-NLS-1$
   }
 
-  public static boolean isJUnitTestMethod(IMethod method) {
-    if (method == null || method.getElementName() == null) {
-      return false;
+  public static String dumpJavaElement(IJavaElement javaElement) {
+    if (javaElement == null) {
+      return "null";
     }
-    try {
+    return javaElement.getElementName() + "\t["
+        + javaElement.getClass().getName() + "]";
+  }
 
-      SourceMethod sMethod = (SourceMethod) method;
-      ICompilationUnit iCompilationUnit = sMethod.getCompilationUnit();
-
-      org.eclipse.jdt.internal.core.CompilationUnit cu = (org.eclipse.jdt.internal.core.CompilationUnit) iCompilationUnit;
-
-      //      org.eclipse.jdt.core.dom.CompilationUnit compilationUnit = (org.eclipse.jdt.core.dom.CompilationUnit) method
-      //          .getCompilationUnit();
-      //
-      //      System.out.println(compilationUnit.getClass().getName());
-      //
-      //      ASTNode findNode = sMethod.findNode(compilationUnit);
-      //      System.out.println(findNode);
-
-      //      IType parent = (IType) method.getParent();
-
-      //      AbstractTypeDeclaration firstType = (AbstractTypeDeclaration) copyUnit
-      //      .types().get(0);
-
-      String source = method.getSource();
-      System.out.println(source);
-
-      ISourceRange sourceRange = method.getSourceRange();
-      System.out.println(sourceRange);
-
-      //      ASTVisitor visitor = new ASTVisitor();
-
-      IJavaElement[] children = method.getChildren();
-      for (IJavaElement child : children) {
-        System.out.println(child);
+  /**
+   * @return the PackageFragmentRoot for a javaElement.
+   * In Eclipse IDE this is called a source folder
+   * 
+   */
+  public static IPackageFragmentRoot getPackageFragmentRootFor(
+      IJavaElement javaElement) {
+    IJavaElement parent = javaElement.getParent();
+    while (true) {
+      // System.out.println("parent =\t" + dumpJavaElement(parent));
+      if (parent == null || parent instanceof IPackageFragmentRoot) {
+        return (IPackageFragmentRoot) parent;
       }
-      if (Flags.isPublic(method.getFlags()) //
-          && Signature.SIG_VOID.equals(method.getReturnType())//
-          && method.getNumberOfParameters() == 0) {
-        // JUnit 3
-        if (method.getElementName().startsWith("test")) {
-          return true;
-        }
-        // JUnit 4
-        if (false) {
-          return true;
-        }
+      parent = parent.getParent();
+    }
+  }
+
+  /**
+   * @return <code>true</code>, when:
+   * <ul>
+   * <li>the class name of the javaElement ends with "Test"</li>
+   * <li>the source folder name of the javaElement contains "test"</li>
+   * <li>the javaElement is a JUnit 3 test method: <code>public void testName()</code></li>
+   * </ul>
+   * NOTE: The @org.junit.Test annotations are ignored
+   */
+  public static boolean isTestCode(IJavaElement javaElement) {
+    // Check type -------------------------------------------------------------
+    IType type = getTypeFor(javaElement);
+    if (type != null) {
+      if (type.getElementName().endsWith("Test")) {
+        return true;
       }
     }
-    catch (JavaModelException e) {
+    // Check packageFragmentRoot ----------------------------------------------
+    IPackageFragmentRoot pfr = getPackageFragmentRootFor(javaElement);
+    if (pfr != null) {
+      if (pfr.getElementName().toLowerCase().contains("test")) {
+        return true;
+      }
+    }
+    // Check method -------------------------------------------------------------
+    if (javaElement instanceof IMethod) {
+      IMethod method = (IMethod) javaElement;
+      try {
+        if (Flags.isPublic(method.getFlags()) //
+            && Signature.SIG_VOID.equals(method.getReturnType())//
+            && method.getNumberOfParameters() == 0) {
+          // JUnit 3
+          if (method.getElementName().startsWith("test")) {
+            return true;
+          }
+          // NOT USED: JUnit 4 !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+          if (false) {
+            String annotation = getAnnotationFor(method);
+            return "Test".equals(annotation)
+                || "org.junit.Test".equals(annotation);
+          }
+        }
+      }
+      catch (JavaModelException e) {
+      }
     }
     return false;
+  }
+
+  /**
+   * @return the annoation for a method like @org.junit.Test
+   * This method seems to be slow, because it needs to parse
+   * the code of the method!
+   */
+  private static String getAnnotationFor(IMethod method)
+      throws JavaModelException {
+    ASTParser parser = ASTParser.newParser(AST.JLS3);
+    parser.setSource(method.getSource().toCharArray());
+    parser.setKind(ASTParser.K_CLASS_BODY_DECLARATIONS);
+    parser.setResolveBindings(true);
+    ASTNode createAST = parser.createAST(null);
+    FindAnnotationVisitor visitor = new FindAnnotationVisitor();
+    createAST.accept(visitor);
+    //    System.out.println(" annotation for " + method.getElementName() + "->"
+    //        + visitor.annotation.getFullyQualifiedName());
+    return visitor.annotation.getFullyQualifiedName();
+  }
+
+  private static class FindAnnotationVisitor extends ASTVisitor {
+    private Name annotation;
+
+    @Override
+    public boolean visit(MethodDeclaration node) {
+      for (Object modifier : node.modifiers()) {
+        // System.out.println("modifier=" + modifier + " [" + modifier.getClass().getName() + "]");
+        if (modifier instanceof Annotation) {
+          Annotation ma = (Annotation) modifier;
+          annotation = ma.getTypeName();
+        }
+      }
+      return false;
+    }
   }
 }
