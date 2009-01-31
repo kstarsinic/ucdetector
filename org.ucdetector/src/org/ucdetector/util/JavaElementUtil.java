@@ -586,7 +586,8 @@ public class JavaElementUtil {
       try {
         if (Flags.isPublic(method.getFlags()) //
             && Signature.SIG_VOID.equals(method.getReturnType())//
-            && method.getNumberOfParameters() == 0) {
+            && method.getNumberOfParameters() == 0 //
+            && !Flags.isStatic(method.getFlags())) {
           // JUnit 3
           if (method.getElementName().startsWith("test")) {
             return true;
