@@ -47,10 +47,9 @@ public final class MarkerFactory {
   = "org.ucdetector.analyzeMarkerVisibilityDefault"; //$NON-NLS-1$
   public static final String UCD_MARKER_USE_FINAL //
   = "org.ucdetector.analyzeMarkerFinal"; //$NON-NLS-1$
-  public static final String UCD_TEST_ONLY //
-  = "org.ucdetector.analyzeTestOnly"; //$NON-NLS-1$
+  public static final String UCD_MARKER_TEST_ONLY //
+  = "org.ucdetector.analyzeMarkerTestOnly"; //$NON-NLS-1$
   // ADDING NEW MARKER? ADD ALSO TO plugin.xml!
-
 
   /**
    * Helper attribute to transfer java element information
@@ -125,7 +124,7 @@ public final class MarkerFactory {
     String message = NLS.bind(Messages.SearchManager_MarkerTestOnly,
         new Object[] { searchInfo, elementName });
     return createMarkerImpl(new ReportParam(member, message, line,
-        UCD_TEST_ONLY));
+        UCD_MARKER_TEST_ONLY));
   }
 
   /**
