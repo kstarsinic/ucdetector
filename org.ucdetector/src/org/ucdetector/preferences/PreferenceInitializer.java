@@ -42,14 +42,15 @@ public class PreferenceInitializer extends AbstractPreferenceInitializer { // NO
     store.setDefault(Prefs.ANALYZE_FIELDS, WARNING.name());
     store.setDefault(Prefs.ANALYZE_VISIBILITY_PROTECTED, WARNING.name());
     store.setDefault(Prefs.ANALYZE_VISIBILITY_PRIVATE, WARNING.name());
-    store.setDefault(Prefs.ANALYZE_LITERALS_CHECK, Boolean.TRUE.booleanValue());
-    store.setDefault(Prefs.ANALYZE_CHECK_FULL_CLASS_NAME, Boolean.TRUE.booleanValue());
+    store.setDefault(Prefs.ANALYZE_LITERALS_CHECK, true);
+    store.setDefault(Prefs.ANALYZE_CHECK_FULL_CLASS_NAME, true);
     store.setDefault(Prefs.ANALYZE_LITERALS, FILE_PATTERN_LITERAL_SEARCH);
     // Filter ------------------------------------------------------------------
     store.setDefault(Prefs.FILTER_SOURCE_FOLDER, SOURCE_FOLDER_FILTER);
     store.setDefault(Prefs.FILTER_PACKAGE, PACKAGE_FILTER);
     store.setDefault(Prefs.FILTER_CLASS, CLASS_FILTER);
     store.setDefault(Prefs.FILTER_BEAN_METHOD, true);
+    store.setDefault(Prefs.DETECT_TEST_ONLY, true);
     store.setDefault(Prefs.FILTER_METHOD, METHOD_FILTER);
     store.setDefault(Prefs.FILTER_FIELD, FIELD_FILTER);
     // Limit -------------------------------------------------------------------

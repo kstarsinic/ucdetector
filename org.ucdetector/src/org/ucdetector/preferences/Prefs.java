@@ -114,6 +114,13 @@ public final class Prefs {
   }
 
   /**
+   * @return <code>true</code>, when code is references only by test code
+   */
+  public static boolean isDetectTestOnly() {
+    return getStore().getBoolean(Prefs.DETECT_TEST_ONLY);
+  }
+  
+  /**
    * @return <code>true</code>, when the method
    * matches the method filter
    */
