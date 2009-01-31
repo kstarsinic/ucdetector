@@ -81,6 +81,9 @@ public class SearchManager {
    * Factory to create markers
    */
   private final MarkerFactory markerFactory;
+  /**
+   * handle final stuff
+   */
   private final FinalHandler finalHandler;
 
   public SearchManager(UCDProgressMonitor monitor, int searchTotal,
@@ -225,6 +228,9 @@ public class SearchManager {
     }
   }
 
+  /**
+   * @return <code>true</code>, when a fiedl has read access
+   */
   private static boolean hasReadAccess(IField field) throws CoreException {
     SearchPattern pattern = SearchPattern.createPattern(field,
         IJavaSearchConstants.READ_ACCESSES);
@@ -234,6 +240,9 @@ public class SearchManager {
     return requestor.hasReadAccess;
   }
 
+  /**
+   * check, if a field has read access
+   */
   private static final class FieldReadRequestor extends SearchRequestor {
     private boolean hasReadAccess = false;
 
@@ -259,9 +268,18 @@ public class SearchManager {
     VisibilityHandler visibilityHandler = new VisibilityHandler(markerFactory,
         member);
 
-    int found = searchJavaImpl(member, visibilityHandler);
-    found += searchTextImpl(member, visibilityHandler, found);
+    UCDSearchRequestor foundResult = searchJavaImpl(member, visibilityHandler);
+    int found = foundResult.found;
+    System.out.println("found: " + found + " - " + foundResult.foundTest);
+    // 
     boolean created = false;
+    if (found > 0 && (found == foundResult.foundTest)) {
+      created = markerFactory.createReferenceMarkerTestOnly(member, line);
+      if (created) {
+        foundTotal++;
+      }
+    }
+    found += searchTextImpl(member, visibilityHandler, found);
     // Fix for BUG 1925549:  Exclude overridden methods from visibility detection
     if (!isOverriddenMethod) {
       created = visibilityHandler.createMarker(member, line, found);
@@ -287,8 +305,8 @@ public class SearchManager {
   /**
    * Search for java references
    */
-  private int searchJavaImpl(IMember member, VisibilityHandler visibilityHandler)
-      throws CoreException {
+  private UCDSearchRequestor searchJavaImpl(IMember member,
+      VisibilityHandler visibilityHandler) throws CoreException {
     IJavaSearchScope scope = SearchEngine.createWorkspaceScope();
     SearchPattern pattern = SearchPattern.createPattern(member,
         IJavaSearchConstants.REFERENCES);
@@ -300,12 +318,11 @@ public class SearchManager {
     if (isSearchException && requestor.found == 0) {
       requestor.found = 1;
     }
-    return requestor.found;
+    return requestor;
   }
 
   /**
    * Search in text files
-   * @param found 
    */
   private int searchTextImpl(IMember member,
       VisibilityHandler visibilityHandler, int found) throws CoreException {
@@ -412,7 +429,7 @@ public class SearchManager {
       if (isClassNamMatchOk) {
         this.found++;
       }
-      checkCancelSearch(found);
+      checkCancelSearch(found, -1);
       IJavaElement matchJavaElement = JavaCore.create(matchAccess.getFile());
       // TODO 23.10.2008: Check match for no java files!
       visibilityHandler.checkVisibility(matchJavaElement, found);
@@ -437,6 +454,7 @@ public class SearchManager {
    */
   private static final class UCDSearchRequestor extends SearchRequestor {
     private int found = 0;
+    private int foundTest = 0;
     private final IMember searchStart;
     private final VisibilityHandler visibilityHandler;
 
@@ -452,8 +470,12 @@ public class SearchManager {
         return;
       }
       this.found++;
-      checkCancelSearch(found);
       IJavaElement matchJavaElement = (IJavaElement) match.getElement();
+      if (Prefs.isDetectTestOnly()
+          && JavaElementUtil.isTestCode(matchJavaElement)) {
+        foundTest++;
+      }
+      checkCancelSearch(found, foundTest);
       visibilityHandler.checkVisibility(matchJavaElement, found);
     }
 
@@ -478,10 +500,6 @@ public class SearchManager {
       if (matchJavaElement instanceof IImportDeclaration) {
         return true;
       }
-      if (matchJavaElement instanceof IMethod) {
-        IMethod method = (IMethod) matchJavaElement;
-        JavaElementUtil.isJUnitTestMethod(method);
-      }
       // Ignore type matches referred by itself.
       // See UnusedClassUsedByItself
       if (searchStart instanceof IType) {
@@ -495,7 +513,16 @@ public class SearchManager {
     }
   }
 
-  private static void checkCancelSearch(int found) {
+  /**
+   * Check conditions from preferences and 
+   * cancel search by throwing a {@link OperationCanceledException}
+   * when necessary
+   */
+  private static void checkCancelSearch(int found, int foundTest) {
+    if (Prefs.isDetectTestOnly() && (found == foundTest)) {
+      // continue searching, because all machtes are matches in test code
+      return;
+    }
     if (found > Prefs.getWarnLimit()
         && !Prefs.isCheckIncreaseVisibilityProtected()
         && !Prefs.isCheckIncreaseVisibilityToPrivate()) {
