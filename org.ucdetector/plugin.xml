@@ -205,6 +205,16 @@
     <super type="org.ucdetector.analyzeMarker"/>
     <persistent  value="true"></persistent>
   </extension>
+   <!-- analyzeTestOnly -->
+  <extension
+      id="org.ucdetector.analyzeMarkerTestOnly"
+      name="UCDetector Marker (Test only)"
+      point="org.eclipse.core.resources.markers">
+    <super type="org.eclipse.core.resources.problemmarker"/>
+    <super type="org.eclipse.core.resources.textmarker"/>
+    <super type="org.ucdetector.analyzeMarker"/>
+    <persistent  value="true"></persistent>
+  </extension>
   
    <!-- ucd icon -->
     <!-- *** 2 *** -->
@@ -237,6 +247,11 @@
         name="org.ucdetector.analyzeAnnotationFinal"
         super="org.eclipse.ui.workbench.texteditor.warning"
         markerType="org.ucdetector.analyzeMarkerFinal"/>
+    <!-- test only -->
+    <type
+        name="org.ucdetector.analyzeAnnotationTestOnly"
+        super="org.eclipse.ui.workbench.texteditor.warning"
+        markerType="org.ucdetector.analyzeMarkerTestOnly"/>
   </extension>
   
   <!-- *** 3 *** -->
@@ -281,6 +296,13 @@
         quickFixIcon="icons/use_final.gif"
         includeOnPreferencePage="true"
         label="%specification.label.final"/>
+    <!-- -->
+    <specification
+        annotationType="org.ucdetector.analyzeAnnotationTestOnly"
+        icon="icons/junit.gif"
+        quickFixIcon="icons/testOnly.gif"
+        includeOnPreferencePage="true"
+        label="%specification.label.test.only"/>
   </extension>
 
   <!-- ===================================================================== -->
@@ -314,6 +336,11 @@
   <extension point="org.eclipse.ui.ide.markerResolution">
     <markerResolutionGenerator
      markerType="org.ucdetector.analyzeMarkerReference"
+     class="org.ucdetector.quickfix.UCDQuickGenerator"/>
+  </extension>
+  <extension point="org.eclipse.ui.ide.markerResolution">
+    <markerResolutionGenerator
+     markerType="org.ucdetector.analyzeMarkerTestOnly"
      class="org.ucdetector.quickfix.UCDQuickGenerator"/>
   </extension>
   <!-- no quickFix for few references
