@@ -64,7 +64,7 @@ class VisibilityHandler {
    * For example: Make a <code>public</code> member/method/class
    * <code>protected</code>.
    */
-  void checkVisibility(IJavaElement foundElement, int found) {
+  void checkVisibility(IJavaElement foundElement, int found, int foundTest) {
     if (!Prefs.isCheckIncreaseVisibilityProtected()
         && !Prefs.isCheckIncreaseVisibilityToPrivate()) {
       return;
@@ -87,6 +87,10 @@ class VisibilityHandler {
       return;
     }
     setMaxVisibilityFound(VISIBILITY.PUBLIC);
+    if (Prefs.isDetectTestOnly() && (found == foundTest)) {
+      // continue searching, because all machtes are matches in test code
+      return;
+    }
     if (found > Prefs.getWarnLimit()) {
       throw new OperationCanceledException("Cancel Search: public found"); //$NON-NLS-1$
     }

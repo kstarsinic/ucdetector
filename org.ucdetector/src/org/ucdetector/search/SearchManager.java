@@ -432,7 +432,7 @@ public class SearchManager {
       checkCancelSearch(found, -1);
       IJavaElement matchJavaElement = JavaCore.create(matchAccess.getFile());
       // TODO 23.10.2008: Check match for no java files!
-      visibilityHandler.checkVisibility(matchJavaElement, found);
+      visibilityHandler.checkVisibility(matchJavaElement, found, -1);
       return true;
     }
 
@@ -476,7 +476,7 @@ public class SearchManager {
         foundTest++;
       }
       checkCancelSearch(found, foundTest);
-      visibilityHandler.checkVisibility(matchJavaElement, found);
+      visibilityHandler.checkVisibility(matchJavaElement, found, foundTest);
     }
 
     /**
