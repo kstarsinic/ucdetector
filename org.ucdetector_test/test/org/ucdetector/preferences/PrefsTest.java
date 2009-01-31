@@ -38,14 +38,17 @@ public class PrefsTest extends TestCase {
             if (Prefs.ANALYZE_VISIBILITY_PRIVATE.equals(prefName)) {
               return WarnLevel.IGNORE.toString();
             }
+            if (Prefs.ANALYZE_FINAL_METHOD.equals(prefName)) {
+              return WarnLevel.WARNING.toString();
+            }
+            if (Prefs.ANALYZE_FINAL_FIELD.equals(prefName)) {
+              return WarnLevel.WARNING.toString();
+            }
             // -----------------------------------------------------
             // FILTER
             // -----------------------------------------------------
             if (Prefs.FILTER_CLASS.equals(prefName)) {
               return "*Test*,";
-            }
-            if (Prefs.FILTER_BEAN_METHOD.equals(prefName)) {
-              return Boolean.TRUE;
             }
             if (Prefs.FILTER_METHOD.equals(prefName)) {
               return "*test*,";
@@ -65,7 +68,16 @@ public class PrefsTest extends TestCase {
               return Integer.valueOf(WARN_LIMIT_VALUE);
             }
           }
-          throw new RuntimeException("Unhandeld method: " + methodName);
+          if (methodName.equals("getBoolean")) {
+            if (Prefs.FILTER_BEAN_METHOD.equals(prefName)) {
+              return Boolean.TRUE;
+            }
+            if (Prefs.DETECT_TEST_ONLY.equals(prefName)) {
+              return Boolean.TRUE;
+            }
+          }
+          throw new RuntimeException("Unhandeld method: " + methodName
+              + ", or unknown prefName: " + prefName);
         }
       };
       return (IPreferenceStore) Proxy.newProxyInstance(iPreferenceStore
@@ -142,8 +154,24 @@ public class PrefsTest extends TestCase {
     assertFalse(Prefs.isUCDetectionInFields());
   }
 
-  public final void testIsAnalyseVisibility() {
+  public final void testIsAnalyseVisibilityProtected() {
     assertFalse(Prefs.isCheckIncreaseVisibilityProtected());
+  }
+
+  public final void testIsCheckIncreaseVisibilityToPrivate() {
+    assertFalse(Prefs.isCheckIncreaseVisibilityToPrivate());
+  }
+
+  public final void testIsCheckUseFinalField() {
+    assertTrue(Prefs.isCheckUseFinalField());
+  }
+
+  public final void testIsCheckUseFinalMethod() {
+    assertTrue(Prefs.isCheckUseFinalMethod());
+  }
+
+  public final void testIsDetectTestOnly() {
+    assertTrue(Prefs.isDetectTestOnly());
   }
 
   // -------------------------------------------------------------------------
@@ -164,5 +192,13 @@ public class PrefsTest extends TestCase {
 
   public final void testGetAnalyseVisibility() {
     assertEquals(WarnLevel.IGNORE, Prefs.getCheckIncreaseVisibilityProtected());
+  }
+
+  public final void testGetheckUseFinalMethod() {
+    assertEquals(WarnLevel.WARNING, Prefs.getCheckUseFinalMethod());
+  }
+
+  public final void testGetheckUseFinalField() {
+    assertEquals(WarnLevel.WARNING, Prefs.getCheckUseFinalField());
   }
 }
