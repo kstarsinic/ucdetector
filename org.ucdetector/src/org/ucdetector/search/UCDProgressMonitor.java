@@ -5,7 +5,8 @@ import org.ucdetector.Log;
 import org.ucdetector.UCDetectorPlugin;
 
 /**
- *
+ * Wrap an IProgressMonitor and do logging, when IProgressMonitor methods
+ * are called
  */
 public class UCDProgressMonitor implements IProgressMonitor {
   private final IProgressMonitor delegate;
