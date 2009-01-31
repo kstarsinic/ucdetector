@@ -4,6 +4,7 @@ import org.ucdetector.example.Java5Example;
 import org.ucdetector.example.MixedExample;
 import org.ucdetector.example.NoUcdTagExample;
 import org.ucdetector.example.QuickFixExample;
+import org.ucdetector.example.ReferencedByTestsExample;
 import org.ucdetector.example.bugs.Bug2139142Interface;
 import org.ucdetector.example.bugs.Bug2225016;
 import org.ucdetector.example.bugs.Bug2269486;
@@ -175,5 +176,7 @@ public class PublicReferenceHolder {
     System.out.println(fieldNeverWrite.neverWriteField);
     //
     System.out.println(Bug2539795Main.class);
+    //
+    System.out.println(ReferencedByTestsExample.class);
   }
 }
