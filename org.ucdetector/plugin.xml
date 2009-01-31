@@ -299,7 +299,7 @@
     <!-- -->
     <specification
         annotationType="org.ucdetector.analyzeAnnotationTestOnly"
-        icon="icons/junit.gif"
+        icon="icons/testOnly.gif"
         quickFixIcon="icons/testOnly.gif"
         includeOnPreferencePage="true"
         label="%specification.label.test.only"/>
