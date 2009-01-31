@@ -47,6 +47,11 @@ public final class MarkerFactory {
   = "org.ucdetector.analyzeMarkerVisibilityDefault"; //$NON-NLS-1$
   public static final String UCD_MARKER_USE_FINAL //
   = "org.ucdetector.analyzeMarkerFinal"; //$NON-NLS-1$
+  public static final String UCD_TEST_ONLY //
+  = "org.ucdetector.analyzeTestOnly"; //$NON-NLS-1$
+  // ADDING NEW MARKER? ADD ALSO TO plugin.xml!
+
+
   /**
    * Helper attribute to transfer java element information
    * of a marker to QuickFix. Only String, Integer... are permitted
@@ -108,6 +113,19 @@ public final class MarkerFactory {
       String message, int line, int found) throws CoreException {
     String type = found == 0 ? UCD_MARKER_UNUSED : UCD_MARKER_USED_FEW;
     return createMarkerImpl(new ReportParam(javaElement, message, line, type));
+  }
+
+  /**
+   * Create an eclipse marker: Method "ClassName.myMethod()"  is only matched by test code
+   */
+  public boolean createReferenceMarkerTestOnly(IMember member, int line)
+      throws CoreException {
+    String searchInfo = JavaElementUtil.getMemberTypeString(member);
+    String elementName = JavaElementUtil.getElementName(member);
+    String message = NLS.bind(Messages.SearchManager_MarkerTestOnly,
+        new Object[] { searchInfo, elementName });
+    return createMarkerImpl(new ReportParam(member, message, line,
+        UCD_TEST_ONLY));
   }
 
   /**
