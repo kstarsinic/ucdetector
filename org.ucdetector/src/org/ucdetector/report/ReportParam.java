@@ -68,7 +68,7 @@ public class ReportParam {
         warnLevel = Prefs.getUCDetectionInFields();
       }
     }
-    else if (MarkerFactory.UCD_MARKER_USE_PROETECTED.equals(markerType)
+    else if (MarkerFactory.UCD_MARKER_USE_PROTECTED.equals(markerType)
         || MarkerFactory.UCD_MARKER_USE_DEFAULT.equals(markerType)) {
       warnLevel = Prefs.getCheckIncreaseVisibilityProtected();
     }

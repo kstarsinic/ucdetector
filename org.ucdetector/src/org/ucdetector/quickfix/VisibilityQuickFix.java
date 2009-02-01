@@ -39,7 +39,7 @@ class VisibilityQuickFix extends AbstractUCDQuickFix {
       modifierNew = nodeToChange.getAST().newModifier(
           Modifier.ModifierKeyword.PRIVATE_KEYWORD);
     }
-    else if (MarkerFactory.UCD_MARKER_USE_PROETECTED.equals(markerType)) {
+    else if (MarkerFactory.UCD_MARKER_USE_PROTECTED.equals(markerType)) {
       modifierNew = nodeToChange.getAST().newModifier(
           Modifier.ModifierKeyword.PROTECTED_KEYWORD);
     }
@@ -64,7 +64,7 @@ class VisibilityQuickFix extends AbstractUCDQuickFix {
 
   public String getLabel() {
     String keyword = null;
-    if (MarkerFactory.UCD_MARKER_USE_PROETECTED.equals(markerType)) {
+    if (MarkerFactory.UCD_MARKER_USE_PROTECTED.equals(markerType)) {
       keyword = "protected"; //$NON-NLS-1$
     }
     else if (MarkerFactory.UCD_MARKER_USE_DEFAULT.equals(markerType)) {
@@ -77,7 +77,7 @@ class VisibilityQuickFix extends AbstractUCDQuickFix {
   }
 
   public Image getImage() {
-    if (MarkerFactory.UCD_MARKER_USE_PROETECTED.equals(markerType)) {
+    if (MarkerFactory.UCD_MARKER_USE_PROTECTED.equals(markerType)) {
       return JavaUI.getSharedImages().getImage(JavaPluginImages.IMG_MISC_PROTECTED);
     }
     else if (MarkerFactory.UCD_MARKER_USE_DEFAULT.equals(markerType)) {

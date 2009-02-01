@@ -138,7 +138,7 @@ class VisibilityHandler {
           type = MarkerFactory.UCD_MARKER_USE_DEFAULT;
         }
         else {
-          type = MarkerFactory.UCD_MARKER_USE_PROETECTED;
+          type = MarkerFactory.UCD_MARKER_USE_PROTECTED;
         }
         break;
       default:

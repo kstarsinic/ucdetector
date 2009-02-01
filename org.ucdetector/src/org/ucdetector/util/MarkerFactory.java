@@ -41,7 +41,7 @@ public final class MarkerFactory {
   = "org.ucdetector.analyzeMarkerFewReference"; //$NON-NLS-1$
   public static final String UCD_MARKER_USE_PRIVATE //
   = "org.ucdetector.analyzeMarkerVisibilityPrivate"; //$NON-NLS-1$
-  public static final String UCD_MARKER_USE_PROETECTED //
+  public static final String UCD_MARKER_USE_PROTECTED //
   = "org.ucdetector.analyzeMarkerVisibilityProtected"; //$NON-NLS-1$
   public static final String UCD_MARKER_USE_DEFAULT //
   = "org.ucdetector.analyzeMarkerVisibilityDefault"; //$NON-NLS-1$
@@ -136,7 +136,7 @@ public final class MarkerFactory {
     if (UCD_MARKER_USE_PRIVATE.equals(type)) {
       visibilityString = "private"; //$NON-NLS-1$
     }
-    else if (UCD_MARKER_USE_PROETECTED.equals(type)) {
+    else if (UCD_MARKER_USE_PROTECTED.equals(type)) {
       visibilityString = "protected"; //$NON-NLS-1$
     }
     else if (UCD_MARKER_USE_DEFAULT.equals(type)) {

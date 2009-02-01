@@ -36,7 +36,7 @@ public class UCDQuickGenerator implements IMarkerResolutionGenerator2 { // NO_UC
         resolutions.add(new LineCommentQuickFix());
       }
       else if (MarkerFactory.UCD_MARKER_USE_PRIVATE.equals(markerType)
-          || MarkerFactory.UCD_MARKER_USE_PROETECTED.equals(markerType)
+          || MarkerFactory.UCD_MARKER_USE_PROTECTED.equals(markerType)
           || MarkerFactory.UCD_MARKER_USE_DEFAULT.equals(markerType)) {
         resolutions.add(new VisibilityQuickFix(markerType));
       }
