@@ -9,6 +9,11 @@
         class="org.ucdetector.preferences.UCDetectorPreferencePage"
         id="org.ucdetector.preferences.PreferencePage">
     </page>
+    <page name="%preferencePages.name.visibility"
+	      class="org.ucdetector.preferences.UCDetectorPreferencePageVisibility"
+        id="org.ucdetector.preferences.UCDetectorPreferencePageVisibility"
+		    category="org.ucdetector.preferences.PreferencePage">
+   	</page>
   </extension>
 
   <!-- ===================================================================== -->

@@ -41,7 +41,7 @@ public class UCDetectorPreferencePage extends FieldEditorPreferencePage // NO_UC
    * entryNames (first column) and values (second column) for the
    * ComboFieldEditor
    */
-  private static final String[][] WARN_LEVELS = new String[][] {
+  static final String[][] WARN_LEVELS = new String[][] {
       { WarnLevel.ERROR.toStringLocalized(), WarnLevel.ERROR.toString() },
       { WarnLevel.WARNING.toStringLocalized(), WarnLevel.WARNING.toString() },
       { WarnLevel.IGNORE.toStringLocalized(), WarnLevel.IGNORE.toString() } };
@@ -162,14 +162,14 @@ public class UCDetectorPreferencePage extends FieldEditorPreferencePage // NO_UC
   private void createKeywordGroup(Composite parentGroups) {
     Composite spacer = createGroup(parentGroups,
         Messages.PreferencePage_GroupKeyWord, 1, 1, GridData.FILL_HORIZONTAL);
-    ComboFieldEditor analyzeVisibility = createCombo(
-        Prefs.ANALYZE_VISIBILITY_PROTECTED,
-        Messages.PreferencePage_CheckVisibilityProtected, spacer);
-    this.addField(analyzeVisibility);
-    ComboFieldEditor analyzeVisibilityPrivate = createCombo(
-        Prefs.ANALYZE_VISIBILITY_PRIVATE,
-        Messages.PreferencePage_CheckVisibilityPrivate, spacer);
-    this.addField(analyzeVisibilityPrivate);
+    //    ComboFieldEditor analyzeVisibility = createCombo(
+    //        Prefs.ANALYZE_VISIBILITY_PROTECTED,
+    //        Messages.PreferencePage_CheckVisibilityProtected, spacer);
+    //    this.addField(analyzeVisibility);
+    //    ComboFieldEditor analyzeVisibilityPrivate = createCombo(
+    //        Prefs.ANALYZE_VISIBILITY_PRIVATE,
+    //        Messages.PreferencePage_CheckVisibilityPrivate, spacer);
+    //    this.addField(analyzeVisibilityPrivate);
     ComboFieldEditor analyzeFinalMethod = createCombo(
         Prefs.ANALYZE_FINAL_METHOD, Messages.PreferencePage_CheckFinalMethod,
         spacer);
@@ -288,7 +288,7 @@ public class UCDetectorPreferencePage extends FieldEditorPreferencePage // NO_UC
   /**
    * create an ComboFieldEditor with label, tooltip and do layout
    */
-  private static ComboFieldEditor createCombo(String name, String label,
+  static ComboFieldEditor createCombo(String name, String label,
       Composite parent) {
     ComboFieldEditor combo = new ComboFieldEditor(name, label, WARN_LEVELS,
         parent);
@@ -332,8 +332,8 @@ public class UCDetectorPreferencePage extends FieldEditorPreferencePage // NO_UC
   }
 
   // LaunchingPreferencePage
-  private static Composite createGroup(Composite parent, String text,
-      int columns, int hspan, int fill) {
+  static Composite createGroup(Composite parent, String text, int columns,
+      int hspan, int fill) {
     Group g = new Group(parent, SWT.NONE);
     g.setLayout(new GridLayout(columns, false));
     g.setText(text);
@@ -345,8 +345,8 @@ public class UCDetectorPreferencePage extends FieldEditorPreferencePage // NO_UC
   }
 
   // SWTFactory
-  private static Composite createComposite(Composite parent, int columns,
-      int hspan, int fill) {
+  static Composite createComposite(Composite parent, int columns, int hspan,
+      int fill) {
     Composite g = new Composite(parent, SWT.NONE);
     g.setLayout(new GridLayout(columns, false));
     g.setFont(parent.getFont());
