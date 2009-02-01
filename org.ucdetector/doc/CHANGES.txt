@@ -1,4 +1,11 @@
 // -----------------------------------------------------------------------------
+UCDetector 1.0.0 from 2009
+New features:
+ - [ 2409697 ] Detect code only called from tests
+
+Bugfixes:
+
+// -----------------------------------------------------------------------------
 UCDetector 0.12.0 from 2008.11.25:
 New features:
  - [ 2163715 ] eclipse update site: http://ucdetector.sourceforge.net/update
