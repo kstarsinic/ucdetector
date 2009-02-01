@@ -59,6 +59,25 @@ public final class Prefs {
   = UCDetectorPlugin.ID + ".visibility"; //$NON-NLS-1$
   protected static final String ANALYZE_VISIBILITY_PRIVATE //
   = UCDetectorPlugin.ID + ".visibilityPrivate"; //$NON-NLS-1$
+  /*
+  Feature Requests ID: 2490344:
+  filters options for visibility (fields, constants, methods)
+
+  Old:
+  Possible use of private
+  Possible use of protected
+
+  New:
+  Possible use of private for constants
+  Possible use of protected for constants
+
+  Possible use of private for fields
+  Possible use of protected for fields
+
+  Possible use of private for methods
+  Possible use of protected for methods
+  */
+
   static final String ANALYZE_FINAL_FIELD //
   = UCDetectorPlugin.ID + ".finalField"; //$NON-NLS-1$
   static final String ANALYZE_FINAL_METHOD //
@@ -119,7 +138,7 @@ public final class Prefs {
   public static boolean isDetectTestOnly() {
     return getStore().getBoolean(Prefs.DETECT_TEST_ONLY);
   }
-  
+
   /**
    * @return <code>true</code>, when the method
    * matches the method filter
