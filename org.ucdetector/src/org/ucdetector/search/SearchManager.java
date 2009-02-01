@@ -105,6 +105,7 @@ public class SearchManager {
       Log.logDebug(methods.size() + " methods to search"); //$NON-NLS-1$
       Log.logDebug(fields.size() + " fields to search"); //$NON-NLS-1$
     }
+    // first searchTypes to fill noRefTypes!
     searchTypes(types);
     searchMethods(methods);
     searchFields(fields);
@@ -371,6 +372,15 @@ public class SearchManager {
     catch (OutOfMemoryError e) {
       UCDetectorPlugin.handleOutOfMemoryError(e);
     }
+    // bug fix [ 2373808 ]:
+    // Classes found by text search should have no markers
+    if (requestor.found > 0) {
+      if (Log.DEBUG) {
+        Log.logDebug("Mathces found searching class name '" + searchString
+            + " in text files");
+      }
+      noRefTypes.add(type);
+    }
     return requestor.found;
   }
 
@@ -431,7 +441,6 @@ public class SearchManager {
       }
       checkCancelSearch(found, -1);
       IJavaElement matchJavaElement = JavaCore.create(matchAccess.getFile());
-      // TODO 23.10.2008: Check match for no java files!
       visibilityHandler.checkVisibility(matchJavaElement, found, -1);
       return true;
     }

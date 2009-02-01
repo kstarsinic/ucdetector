@@ -2,8 +2,10 @@
 UCDetector 1.0.0 from 2009
 New features:
  - [ 2409697 ] Detect code only called from tests
+ - [ 2373808 ] Classes found by text search should have no markers
 
 Bugfixes:
+ - [ 2373808 ] Classes found by text search should have no markers
 
 // -----------------------------------------------------------------------------
 UCDetector 0.12.0 from 2008.11.25:
