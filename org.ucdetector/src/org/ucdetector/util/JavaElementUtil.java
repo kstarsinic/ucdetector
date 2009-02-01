@@ -564,6 +564,9 @@ public class JavaElementUtil {
    * <li>the javaElement is a JUnit 3 test method: <code>public void testName()</code></li>
    * </ul>
    * NOTE: The @org.junit.Test annotations are ignored
+   * <p>
+   * See also feature request 2409697 "Detect code only called from tests" 
+   * https://sourceforge.net/tracker2/?func=detail&aid=2409697&group_id=219599&atid=1046868
    */
   public static boolean isTestCode(IJavaElement javaElement) {
     // Check type -------------------------------------------------------------
