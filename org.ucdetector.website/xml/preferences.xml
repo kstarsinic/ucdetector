@@ -62,6 +62,17 @@ Select what kind of code should be marked:
 </ul>
 
 
+<!--
+Detect code only called by tests
+Markers are created when a class/method/filed is only called by test code.
+Test code means:
+- class name ends with "Test"
+- source folder name contains "test"
+- JUnit 3 test method: public void testName()
+
+NOTE:- @Test Annotations  are not used to detect test code
+-->
+
 
 <h3>File search</h3>
 <!-- version > 0.12.0: <h3>Search class name in files</h3> -->
