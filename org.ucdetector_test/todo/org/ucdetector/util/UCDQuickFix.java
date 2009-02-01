@@ -91,7 +91,7 @@
 //    if (MarkerFactory.UCD_MARKER_USE_PRIVATE.equals(problem)) {
 //      return "Change visibility to private (EXPERIMENTAL)"; //$NON-NLS-1$
 //    }
-//    if (MarkerFactory.UCD_MARKER_USE_PROETECTED.equals(problem)) {
+//    if (MarkerFactory.UCD_MARKER_USE_PROTECTED.equals(problem)) {
 //      return "Change visibility to protected (EXPERIMENTAL)"; //$NON-NLS-1$
 //    }
 //    if (MarkerFactory.UCD_MARKER_USE_DEFAULT.equals(problem)) {
@@ -113,7 +113,7 @@
 //      }
 //      // ------------------------------------------------------------------
 //      else if (MarkerFactory.UCD_MARKER_USE_PRIVATE.equals(problem) || //
-//          MarkerFactory.UCD_MARKER_USE_PROETECTED.equals(problem) || //
+//          MarkerFactory.UCD_MARKER_USE_PROTECTED.equals(problem) || //
 //          MarkerFactory.UCD_MARKER_USE_DEFAULT.equals(problem)) {
 //        runSetVisibilityKeyword(marker);
 //      }

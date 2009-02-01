@@ -40,7 +40,7 @@ public class CheckUcdMarkerIterator extends AbstractUCDetectorIterator {
     markerMap.put(MarkerFactory.UCD_MARKER_UNUSED, "unused code");
     markerMap.put(MarkerFactory.UCD_MARKER_USED_FEW, "few used code");
     markerMap.put(MarkerFactory.UCD_MARKER_USE_PRIVATE, "use private");
-    markerMap.put(MarkerFactory.UCD_MARKER_USE_PROETECTED, "use protected");
+    markerMap.put(MarkerFactory.UCD_MARKER_USE_PROTECTED, "use protected");
     markerMap.put(MarkerFactory.UCD_MARKER_USE_DEFAULT, "use default");
     markerMap.put(MarkerFactory.UCD_MARKER_USE_FINAL, "use final");
     markerMap.put(MarkerFactory.UCD_MARKER_TEST_ONLY, "test only");
