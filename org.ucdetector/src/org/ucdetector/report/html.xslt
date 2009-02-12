@@ -12,7 +12,7 @@
 		<xsl:comment>
 Copyright (c) 2008 Joerg Spieler
 To create custom reports change: 
-/org.ucdetector/src/org/ucdetector/report/html.xslt
+ECLIPSE_HOME/plugins/org.ucdetector_*.jar/org/ucdetector/report/html.xslt
 		</xsl:comment>
 		<html>
 			<head>
@@ -76,9 +76,9 @@ To create custom reports change:
   <!-- =============================== statistics ========================= -->
 	<xsl:template match="statistics">
 		<h2>Search statistics</h2>
-		Search date: <xsl:value-of select="date"/>
+		Search finished: <xsl:value-of select="dateFinished"/>
 		<br></br>
-		Search duration: <xsl:value-of select="duration"/> seconds<p></p>
+		Search duration: <xsl:value-of select="searchDuration"/><p></p>
 		Searched in:
 		<ul>
 		<xsl:for-each select="searched/search">
@@ -87,6 +87,8 @@ To create custom reports change:
 				</li>
 			</xsl:for-each>
 		</ul>
+To create custom reports change:
+<pre>ECLIPSE_HOME/plugins/org.ucdetector_*.jar/org/ucdetector/report/html.xslt</pre>	
 	</xsl:template>
   <!-- :mode=xsl: -->
 </xsl:stylesheet>
