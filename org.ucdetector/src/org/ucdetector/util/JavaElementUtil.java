@@ -239,8 +239,12 @@ public class JavaElementUtil {
   }
 
   public static String getSimpleMethodName(IMethod method) {
-    String methodName = method == null ? "method?" : method.getElementName(); //$NON-NLS-1$
+    String methodName = (method == null) ? "method?" : method.getElementName(); //$NON-NLS-1$
     return ((methodName.length() == 0 ? "<init>" : methodName)); //$NON-NLS-1$
+  }
+
+  public static String getSimpleFieldName(IField field) {
+    return (field == null) ? "field?" : field.getElementName(); //$NON-NLS-1$
   }
 
   private static String getFieldName(IField field) {
