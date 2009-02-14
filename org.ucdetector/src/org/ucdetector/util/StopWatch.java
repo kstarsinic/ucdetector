@@ -7,6 +7,8 @@
  */
 package org.ucdetector.util;
 
+import java.text.DecimalFormat;
+
 import org.eclipse.jdt.core.IMember;
 import org.ucdetector.Log;
 
@@ -18,14 +20,11 @@ public class StopWatch {
       "org.ucdetector/debug/search/duration", -1); //$NON-NLS-1$
   private final String message;
   private long start = System.currentTimeMillis();
+  private static final DecimalFormat DOUBLE_FORMAT = new DecimalFormat("0.00"); //$NON-NLS-1$
 
   public StopWatch() {
     message = null;
   }
-
-  //  public StopWatch(String message) {
-  //    this.message = message;
-  //  }
 
   public StopWatch(IMember member) {
     this.message = JavaElementUtil.getElementName(member);
@@ -46,9 +45,17 @@ public class StopWatch {
       if (message != null) {
         sb.append(message);
       }
-      sb.append(": ").append(duration / 1000d); //$NON-NLS-1$
+      sb.append(": ").append(timeAsString(duration)); //$NON-NLS-1$
       sb.append(" seconds"); //$NON-NLS-1$
       Log.logDebug(sb.toString());
     }
+  }
+
+  public static String timeAsString(long millis) {
+    double seconds = millis / 1000d;
+    if (seconds <= 60) {
+      return StopWatch.DOUBLE_FORMAT.format(seconds) + " seconds";//$NON-NLS-1$
+    }
+    return StopWatch.DOUBLE_FORMAT.format(seconds / 60d) + " minutes";//$NON-NLS-1$
   }
 }
