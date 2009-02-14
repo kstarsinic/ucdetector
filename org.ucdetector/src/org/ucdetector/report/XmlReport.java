@@ -26,6 +26,7 @@ import javax.xml.transform.dom.DOMSource;
 import javax.xml.transform.stream.StreamResult;
 import javax.xml.transform.stream.StreamSource;
 
+import org.eclipse.core.resources.IContainer;
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.IResource;
 import org.eclipse.core.runtime.CoreException;
@@ -130,13 +131,8 @@ public class XmlReport implements IUCDetectorReport {
     }
     if (reportParam.javaElement instanceof IField) {
       // NODE: field
-      appendChild(marker,
-          "field", JavaElementUtil.getElementName(reportParam.javaElement));//$NON-NLS-1$
-    }
-
-    if (resource != null) {
-      // NODE: NoReferenceExample.java
-      appendChild(marker, "resource", resource.getName());//$NON-NLS-1$
+      IField field = (IField) reportParam.javaElement;
+      appendChild(marker, "field", JavaElementUtil.getSimpleFieldName(field));//$NON-NLS-1$
     }
 
     // NODE: 123
@@ -151,11 +147,14 @@ public class XmlReport implements IUCDetectorReport {
         // NODE:  F:/ws/ucd/org.ucdetector.example
         appendChild(marker, "projectLocation", project.getLocation().toString());//$NON-NLS-1$
       }
-      if (resource.getProjectRelativePath() != null) {
-        // NODE:  example/org/ucdetector/example/MixedExample.java
+      IContainer parent = resource.getParent();
+      if (parent != null && parent.getProjectRelativePath() != null) {
+        // NODE:  example/org/ucdetector/example
         appendChild(marker,
-            "resourceLocation", resource.getProjectRelativePath().toString());//$NON-NLS-1$
+            "resourceLocation", parent.getProjectRelativePath().toString());//$NON-NLS-1$
       }
+      // NODE: NoReferenceExample.java
+      appendChild(marker, "resourceName", resource.getName());//$NON-NLS-1$
     }
     appendChild(marker, "nr", String.valueOf(markerCount));//$NON-NLS-1$
   }

@@ -30,25 +30,20 @@ ECLIPSE_HOME/plugins/org.ucdetector_*.jar/org/ucdetector/report/html.xslt
 		<table border="1">
 			<thead align="center">
 				<tr bgcolor="#C0C0C0">
+					<th>Location</th>
 					<th>Nr</th>
 					<th>Warn level</th>
-					<th>Location</th>
 					<th>Description</th>
 				</tr>
 			</thead>
 			<xsl:apply-templates/>
 		</table>
+		<b>To get links to the source locations: Copy and paste this table to Eclipse "Java Stack Trace Console"</b>
 	</xsl:template>
 
   <!-- =============================== marker ========================= -->
 	<xsl:template match="marker">
 		<tr>
-			<td>
-				<xsl:value-of select="nr"/>
-			</td>
-			<td>
-				<xsl:value-of select="level"/>
-			</td>
 			<td>
 			  <!--  org.eclipse.swt.SWT.error(SWT.java:3634) -->
 				<xsl:value-of select="concat(package, '.', class, '.')"/>
@@ -60,12 +55,17 @@ ECLIPSE_HOME/plugins/org.ucdetector_*.jar/org/ucdetector/report/html.xslt
 				<xsl:if test="method">
 					<xsl:value-of select="method"/>
 				</xsl:if>
-				<!-- field TODO: 2008.11.25: Field is not a link in Eclipse StackTraceConsole -->
 				<xsl:if test="field">
 					<xsl:value-of select="field"/>
 				</xsl:if>
 				<!-- (SWT.java:3634) -->
-				<xsl:value-of select="concat('(', resource, ':', line, ')')"/>
+				<xsl:value-of select="concat('(', resourceName, ':', line, ')')"/>
+			</td>
+			<td>
+				<xsl:value-of select="nr"/>
+			</td>
+			<td>
+				<xsl:value-of select="level"/>
 			</td>
 			<td>
 				<xsl:value-of select="description"/>
@@ -78,7 +78,8 @@ ECLIPSE_HOME/plugins/org.ucdetector_*.jar/org/ucdetector/report/html.xslt
 		<h2>Search statistics</h2>
 		Search finished: <xsl:value-of select="dateFinished"/>
 		<br></br>
-		Search duration: <xsl:value-of select="searchDuration"/><p></p>
+		Search duration: <xsl:value-of select="searchDuration"/>
+		<p></p>
 		Searched in:
 		<ul>
 		<xsl:for-each select="searched/search">
@@ -88,7 +89,7 @@ ECLIPSE_HOME/plugins/org.ucdetector_*.jar/org/ucdetector/report/html.xslt
 			</xsl:for-each>
 		</ul>
 To create custom reports change:
-<pre>ECLIPSE_HOME/plugins/org.ucdetector_*.jar/org/ucdetector/report/html.xslt</pre>	
+<pre>ECLIPSE_HOME/plugins/org.ucdetector_*.jar/org/ucdetector/report/html.xslt</pre>
 	</xsl:template>
   <!-- :mode=xsl: -->
 </xsl:stylesheet>
