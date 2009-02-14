@@ -30,12 +30,14 @@ import org.eclipse.core.resources.IContainer;
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.IResource;
 import org.eclipse.core.runtime.CoreException;
+import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.jdt.core.IField;
 import org.eclipse.jdt.core.IJavaElement;
 import org.eclipse.jdt.core.IMethod;
 import org.eclipse.jdt.core.IPackageFragment;
+import org.eclipse.jdt.core.IPackageFragmentRoot;
 import org.eclipse.jdt.core.IType;
 import org.eclipse.osgi.util.NLS;
 import org.ucdetector.Log;
@@ -43,6 +45,7 @@ import org.ucdetector.Messages;
 import org.ucdetector.UCDetectorPlugin;
 import org.ucdetector.preferences.Prefs;
 import org.ucdetector.util.JavaElementUtil;
+import org.ucdetector.util.StopWatch;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
@@ -58,11 +61,8 @@ import org.w3c.dom.Element;
  */
 public class XmlReport implements IUCDetectorReport {
   private static final String EXTENSION_XML = ".xml"; //$NON-NLS-1$
-
   private static final String EXTENSION_HTML = ".html"; //$NON-NLS-1$
-
   private static final String XSL_FILE = "org/ucdetector/report/html.xslt";//$NON-NLS-1$
-
   private final DateFormat dateFormatter = DateFormat.getDateTimeInstance(
       DateFormat.SHORT, DateFormat.SHORT, Locale.getDefault());
 
@@ -110,28 +110,29 @@ public class XmlReport implements IUCDetectorReport {
     markers.appendChild(doc.createComment(" === Marker number " + markerCount));//$NON-NLS-1$
     Element marker = doc.createElement("marker"); //$NON-NLS-1$
     markers.appendChild(marker);
-    IResource resource = reportParam.javaElement.getResource();
+    IJavaElement javaElement = reportParam.javaElement;
+    IResource resource = javaElement.getResource();
 
     // NODE: "Error", "Warning"
     appendChild(marker, "level", reportParam.level.toString());//$NON-NLS-1$
 
     // NODE: org.ucdetector
-    IPackageFragment pack = JavaElementUtil
-        .getPackageFor(reportParam.javaElement);
-    appendChild(marker, "package", pack.getElementName());//$NON-NLS-1$
+    IPackageFragment pack = JavaElementUtil.getPackageFor(javaElement);
+    String packageName = pack.getElementName();
+    appendChild(marker, "package", packageName);//$NON-NLS-1$
 
     // NODE: UCDetectorPlugin
-    IType type = JavaElementUtil.getTypeFor(reportParam.javaElement);
+    IType type = JavaElementUtil.getTypeFor(javaElement);
     appendChild(marker, "class", JavaElementUtil.getElementName(type));//$NON-NLS-1$
 
-    if (reportParam.javaElement instanceof IMethod) {
+    if (javaElement instanceof IMethod) {
       // NODE: method
-      IMethod method = (IMethod) reportParam.javaElement;
+      IMethod method = (IMethod) javaElement;
       appendChild(marker, "method", JavaElementUtil.getSimpleMethodName(method));//$NON-NLS-1$
     }
-    if (reportParam.javaElement instanceof IField) {
+    if (javaElement instanceof IField) {
       // NODE: field
-      IField field = (IField) reportParam.javaElement;
+      IField field = (IField) javaElement;
       appendChild(marker, "field", JavaElementUtil.getSimpleFieldName(field));//$NON-NLS-1$
     }
 
@@ -142,16 +143,36 @@ public class XmlReport implements IUCDetectorReport {
     appendChild(marker, "description", reportParam.message);//$NON-NLS-1$
 
     if (resource != null) {
+      // F:/ws/ucd/org.ucdetector.example/src/main/org/ucdetector/example/Bbb.java
+      appendChild(marker,
+          "resourceRawLocation", resource.getRawLocation().toString());//$NON-NLS-1$
       IProject project = resource.getProject();
-      if (project.getLocation() != null) {
-        // NODE:  F:/ws/ucd/org.ucdetector.example
-        appendChild(marker, "projectLocation", project.getLocation().toString());//$NON-NLS-1$
+      if (project != null) {
+        if (project.getLocation() != null) {
+          // NODE:  F:/ws/ucd
+          String projectLoc = project.getLocation().toString();
+          int length = projectLoc.length() - project.getName().length() - 1;
+          appendChild(marker,
+              "projectLocation", projectLoc.substring(0, length));//$NON-NLS-1$
+        }
+        // org.ucdetector.example
+        appendChild(marker, "projectName", project.getName());//$NON-NLS-1$
       }
+
+      IPackageFragmentRoot sourceFolder = JavaElementUtil
+          .getPackageFragmentRootFor(javaElement);
+      if (sourceFolder != null && sourceFolder.getResource() != null) {
+        IPath path = sourceFolder.getResource().getProjectRelativePath();
+        if (path != null) {
+          // NODE:  example
+          appendChild(marker, "sourceFolder", path.toString());//$NON-NLS-1$
+        }
+      }
+
       IContainer parent = resource.getParent();
       if (parent != null && parent.getProjectRelativePath() != null) {
-        // NODE:  example/org/ucdetector/example
-        appendChild(marker,
-            "resourceLocation", parent.getProjectRelativePath().toString());//$NON-NLS-1$
+        // NODE:  org/ucdetector/example
+        appendChild(marker, "resourceLocation", packageName.replace('.', '/'));//$NON-NLS-1$
       }
       // NODE: NoReferenceExample.java
       appendChild(marker, "resourceName", resource.getName());//$NON-NLS-1$
@@ -221,15 +242,8 @@ public class XmlReport implements IUCDetectorReport {
    */
   private void appendStatistics(Object[] selected, long start) {
     appendChild(statistcs, "dateFinished", dateFormatter.format(new Date()));//$NON-NLS-1$
-    double seconds = (System.currentTimeMillis() - start) / 1000d;
-    String searchDuration;
-    if (seconds <= 60) {
-      searchDuration = seconds + " seconds";//$NON-NLS-1$
-    }
-    else {
-      searchDuration = (seconds / 60d) + " minutes";//$NON-NLS-1$
-    }
-    appendChild(statistcs, "searchDuration", searchDuration);//$NON-NLS-1$
+    long millis = (System.currentTimeMillis() - start);
+    appendChild(statistcs, "searchDuration", StopWatch.timeAsString(millis));//$NON-NLS-1$
     Element searched = appendChild(statistcs, "searched", null);//$NON-NLS-1$
     for (Object selection : selected) {
       if (selection instanceof IJavaElement) {

@@ -10,7 +10,7 @@
 	<xsl:output encoding="ISO-8859-1" indent="yes" method="html" doctype-public="-//W3C//DTD HTML 4.01 Transitional//EN" doctype-system="http://www.w3.org/TR/html4/transitional.dtd" />
 	<xsl:template match="/">
 		<xsl:comment>
-Copyright (c) 2008 Joerg Spieler
+Copyright (c) 2009 Joerg Spieler
 To create custom reports change: 
 ECLIPSE_HOME/plugins/org.ucdetector_*.jar/org/ucdetector/report/html.xslt
 		</xsl:comment>
@@ -38,35 +38,50 @@ ECLIPSE_HOME/plugins/org.ucdetector_*.jar/org/ucdetector/report/html.xslt
 			</thead>
 			<xsl:apply-templates/>
 		</table>
-		<b>To get links to the source locations: Copy and paste this table to Eclipse "Java Stack Trace Console"</b>
+		To get links to the source locations: Copy and paste this table to Eclipse "Java Stack Trace Console"
 	</xsl:template>
 
   <!-- =============================== marker ========================= -->
 	<xsl:template match="marker">
 		<tr>
+			<!--  org.eclipse.swt.SWT.error(SWT.java:3634) -->
 			<td>
-			  <!--  org.eclipse.swt.SWT.error(SWT.java:3634) -->
-				<xsl:value-of select="concat(package, '.', class, '.')"/>
+			
+			  <!-- if not default package -->
+				<xsl:if test="string-length(package) &gt; 0">
+					<xsl:value-of select="concat(package, '.')"/>
+				</xsl:if>
+				
+			  <!-- class name -->
+				<xsl:value-of select="concat(class, '.')"/>
+
 				<!-- class needs an additional string -->
 				<xsl:if test="not(method) and not(field)">
 					<xsl:text>declaration</xsl:text>
 				</xsl:if>
+				
 				<!-- method -->
 				<xsl:if test="method">
 					<xsl:value-of select="method"/>
 				</xsl:if>
+
+				<!-- filed -->
 				<xsl:if test="field">
 					<xsl:value-of select="field"/>
 				</xsl:if>
-				<!-- (SWT.java:3634) -->
+				
+				<!-- Link in Eclipse Stack Trace Console View: (SWT.java:3634) -->
 				<xsl:value-of select="concat('(', resourceName, ':', line, ')')"/>
 			</td>
+			<!-- NR -->
 			<td>
 				<xsl:value-of select="nr"/>
 			</td>
+			<!-- LEVEL -->
 			<td>
 				<xsl:value-of select="level"/>
 			</td>
+			<!-- DESCRIPTION -->
 			<td>
 				<xsl:value-of select="description"/>
 			</td>
