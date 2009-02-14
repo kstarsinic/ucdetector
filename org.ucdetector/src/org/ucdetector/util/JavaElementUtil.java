@@ -395,7 +395,7 @@ public class JavaElementUtil {
    * 
    * @return <code>true</code>, when a field is static and final
    */
-  public static boolean isConstant(IField field) throws JavaModelException {
+  public static boolean isConstant(IField field) throws JavaModelException { // NO_UCD
     return Flags.isStatic(field.getFlags()) && Flags.isFinal(field.getFlags());
   }
 
@@ -535,12 +535,12 @@ public class JavaElementUtil {
     return "???"; //$NON-NLS-1$
   }
 
-  public static String dumpJavaElement(IJavaElement javaElement) {
+  public static String dumpJavaElement(IJavaElement javaElement) { // NO_UCD
     if (javaElement == null) {
-      return "null";
+      return "null"; //$NON-NLS-1$
     }
-    return javaElement.getElementName() + "\t["
-        + javaElement.getClass().getName() + "]";
+    return javaElement.getElementName() + '\t' + '['
+        + javaElement.getClass().getName() + ']';
   }
 
   /**
@@ -576,18 +576,18 @@ public class JavaElementUtil {
     // Check type -------------------------------------------------------------
     IType type = getTypeFor(javaElement);
     if (type != null) {
-      if (type.getElementName().endsWith("Test")) {
+      if (type.getElementName().endsWith("Test")) { //$NON-NLS-1$
         return true;
       }
     }
-    // Check packageFragmentRoot ----------------------------------------------
+    // Check packageFragmentRoot -----------------------------------------------
     IPackageFragmentRoot pfr = getPackageFragmentRootFor(javaElement);
     if (pfr != null) {
-      if (pfr.getElementName().toLowerCase().contains("test")) {
+      if (pfr.getElementName().toLowerCase().contains("test")) { //$NON-NLS-1$
         return true;
       }
     }
-    // Check method -------------------------------------------------------------
+    // Check method ------------------------------------------------------------
     if (javaElement instanceof IMethod) {
       IMethod method = (IMethod) javaElement;
       try {
@@ -596,14 +596,14 @@ public class JavaElementUtil {
             && method.getNumberOfParameters() == 0 //
             && !Flags.isStatic(method.getFlags())) {
           // JUnit 3
-          if (method.getElementName().startsWith("test")) {
+          if (method.getElementName().startsWith("test")) { //$NON-NLS-1$
             return true;
           }
           // NOT USED: JUnit 4 !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
           if (false) {
             String annotation = getAnnotationFor(method);
-            return "Test".equals(annotation)
-                || "org.junit.Test".equals(annotation);
+            return "Test".equals(annotation) //$NON-NLS-1$
+                || "org.junit.Test".equals(annotation); //$NON-NLS-1$
           }
         }
       }
@@ -614,7 +614,7 @@ public class JavaElementUtil {
   }
 
   /**
-   * @return the annoation for a method like @org.junit.Test
+   * @return the annotation for a method like @org.junit.Test
    * This method seems to be slow, because it needs to parse
    * the code of the method!
    */

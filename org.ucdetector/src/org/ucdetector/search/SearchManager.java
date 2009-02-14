@@ -271,7 +271,7 @@ public class SearchManager {
 
     UCDSearchRequestor foundResult = searchJavaImpl(member, visibilityHandler);
     int found = foundResult.found;
-    System.out.println("found: " + found + " - " + foundResult.foundTest);
+    // System.out.println("found: " + found + " - " + foundResult.foundTest);
     // 
     boolean created = false;
     if (found > 0 && (found == foundResult.foundTest)) {
@@ -376,8 +376,8 @@ public class SearchManager {
     // Classes found by text search should have no markers
     if (requestor.found > 0) {
       if (Log.DEBUG) {
-        Log.logDebug("Mathces found searching class name '" + searchString
-            + " in text files");
+        Log.logDebug("Matches found searching class name '" + searchString //$NON-NLS-1$
+            + " in text files"); //$NON-NLS-1$
       }
       noRefTypes.add(type);
     }
