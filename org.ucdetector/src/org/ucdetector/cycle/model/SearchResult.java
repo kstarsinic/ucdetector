@@ -49,7 +49,8 @@ public class SearchResult extends CycleBaseElement {
   }
 
   public Image getImage() {
-    return JavaUI.getSharedImages().getImage(JavaPluginImages.IMG_OBJS_SEARCH_REF); // IMG_OBJS_JSEARCH
+    return JavaUI.getSharedImages().getImage(
+        JavaPluginImages.IMG_OBJS_SEARCH_REF); // IMG_OBJS_JSEARCH
   }
 
   public CycleBaseElement getParent() {
