@@ -32,6 +32,7 @@ public class UCDetectorPreferencePage extends UCDetectorBasePreferencePage {
     createFilterGroup(parentGroups);
     createDetectGroup(parentGroups);
     createFileSearchGroup(parentGroups);
+    createVisibilityGroup(parentGroups);
     createKeywordGroup(parentGroups);
     createOtherGroup(parentGroups);
   }
@@ -130,9 +131,42 @@ public class UCDetectorPreferencePage extends UCDetectorBasePreferencePage {
    * Create a group of keyword settings
    * (analyze visibility, try to make methods or fields final)
    */
+  private void createVisibilityGroup(Composite parentGroups) {
+    Composite spacer = createGroup(parentGroups,
+        "Increase visibility (use protected or private)"// TODO
+        , 1, 1, GridData.FILL_HORIZONTAL);
+    // VISIBILITY---------------------------------------------------------------
+    // Possible use of protected/private for 
+    ComboFieldEditor analyzeVisibilityClasses = createCombo(
+        Prefs.ANALYZE_VISIBILITY_PROTECTED,// TODO
+        "Classes",//Messages.PreferencePage_CheckVisibilityProtected
+        spacer);
+    this.addField(analyzeVisibilityClasses);
+    ComboFieldEditor analyzeVisibilityMethods = createCombo(
+        Prefs.ANALYZE_VISIBILITY_PRIVATE,// TODO
+        "Methods",//Messages.PreferencePage_CheckVisibilityPrivate, 
+        spacer);
+    this.addField(analyzeVisibilityMethods);
+    ComboFieldEditor analyzeVisibilityFields = createCombo(
+        Prefs.ANALYZE_VISIBILITY_PRIVATE,// TODO
+        "Fields",//Messages.PreferencePage_CheckVisibilityPrivate, 
+        spacer);
+    this.addField(analyzeVisibilityFields);
+    ComboFieldEditor analyzeVisibilityConstants = createCombo(
+        Prefs.ANALYZE_VISIBILITY_PRIVATE,// TODO
+        "Constants",//Messages.PreferencePage_CheckVisibilityPrivate,
+        spacer);
+    this.addField(analyzeVisibilityConstants);
+  }
+
+  /**
+   * Create a group of keyword settings
+   * (analyze visibility, try to make methods or fields final)
+   */
   private void createKeywordGroup(Composite parentGroups) {
     Composite spacer = createGroup(parentGroups,
         Messages.PreferencePage_GroupKeyWord, 1, 1, GridData.FILL_HORIZONTAL);
+    // FINAL -------------------------------------------------------------------
     ComboFieldEditor analyzeFinalMethod = createCombo(
         Prefs.ANALYZE_FINAL_METHOD, Messages.PreferencePage_CheckFinalMethod,
         spacer);

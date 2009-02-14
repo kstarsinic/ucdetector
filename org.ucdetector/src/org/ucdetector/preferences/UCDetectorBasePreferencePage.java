@@ -27,7 +27,7 @@ public abstract class UCDetectorBasePreferencePage extends
    * entryNames (first column) and values (second column) for the
    * ComboFieldEditor
    */
-  static final String[][] WARN_LEVELS = new String[][] {
+  private static final String[][] WARN_LEVELS = new String[][] {
       { WarnLevel.ERROR.toStringLocalized(), WarnLevel.ERROR.toString() },
       { WarnLevel.WARNING.toStringLocalized(), WarnLevel.WARNING.toString() },
       { WarnLevel.IGNORE.toStringLocalized(), WarnLevel.IGNORE.toString() } };
@@ -75,7 +75,7 @@ public abstract class UCDetectorBasePreferencePage extends
     return text;
   }
 
-  static void fillHorizontal(Composite parent, FieldEditor fieldEditor) {
+  private static void fillHorizontal(Composite parent, FieldEditor fieldEditor) {
     Label labelControl = fieldEditor.getLabelControl(parent);
     GridData gd = new GridData(GridData.FILL_HORIZONTAL);
     labelControl.setLayoutData(gd);
