@@ -35,7 +35,8 @@ class UseTag_NO_UCD_QuickFix extends AbstractUCDQuickFix {
 
   public Image getImage() {
     // IMG_OBJS_HTMLTAG
-    return JavaUI.getSharedImages().getImage(JavaPluginImages.IMG_OBJS_NLS_SKIP);
+    return JavaUI.getSharedImages()
+        .getImage(JavaPluginImages.IMG_OBJS_NLS_SKIP);
   }
 
   public String getLabel() {

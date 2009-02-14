@@ -57,11 +57,10 @@ import org.ucdetector.util.MarkerFactory;
  * http://help.eclipse.org/help32/index.jsp?topic=/org.eclipse.jdt.doc.isv/reference/api/org/eclipse/jdt/core/dom/rewrite/ASTRewrite.html
  * @see http://www.eclipse.org/articles/article.php?file=Article-JavaCodeManipulation_AST/index.html
  */
-abstract class AbstractUCDQuickFix 
-    // TODO 2008.12.15. [ 2417657 ] QuickFix should behave as for Java problems
+abstract class AbstractUCDQuickFix
+// TODO 2008.12.15. [ 2417657 ] QuickFix should behave as for Java problems
     // extends WorkbenchMarkerResolution
-    implements IMarkerResolution2
- { 
+    implements IMarkerResolution2 {
   static enum ELEMENT {
     TYPE, METHOD, FIELD;
   }
@@ -69,7 +68,7 @@ abstract class AbstractUCDQuickFix
   protected ASTRewrite rewrite;
   protected IDocument doc;
 
-  @SuppressWarnings("unchecked")
+  @SuppressWarnings("unchecked") //$NON-NLS-1$
   public void run(IMarker marker) {
     ITextFileBufferManager bufferManager = FileBuffers
         .getTextFileBufferManager();
@@ -274,7 +273,7 @@ abstract class AbstractUCDQuickFix
           sb.append("Lines: ").append(lineStart).append("<="); //$NON-NLS-1$ //$NON-NLS-2$
           sb.append(lineMarker).append("<=").append(lineEnd); //$NON-NLS-1$
           sb.append(", Found node=").append(found); //$NON-NLS-1$
-          Log.logDebug(sb.toString()); 
+          Log.logDebug(sb.toString());
         }
         if (found) {
           Log.logDebug("NODE FOUND: \r\n" + name.getIdentifier()); //$NON-NLS-1$
