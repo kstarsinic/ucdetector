@@ -48,8 +48,19 @@ public final class Messages extends NLS {
   public static String CountIterator_NothingFound; // NO_UCD
 
   // PreferencePage ----------------------------------------------------------
-  public static String PreferencePage_CheckVisibilityProtected; // NO_UCD
-  public static String PreferencePage_CheckVisibilityPrivate; // NO_UCD
+  public static String PreferencePage_CheckProtectedClasses; // NO_UCD
+  public static String PreferencePage_CheckPrivateClasses; // NO_UCD
+  //
+  public static String PreferencePage_CheckProtectedMethods; // NO_UCD
+  public static String PreferencePage_CheckPrivateMethods; // NO_UCD
+  //
+  public static String PreferencePage_CheckProtectedFields; // NO_UCD
+  public static String PreferencePage_CheckPrivateFields; // NO_UCD
+  //
+  public static String PreferencePage_CheckProtectedConstants; // NO_UCD
+  public static String PreferencePage_CheckPrivateConstants; // NO_UCD
+  // ------------------------------------------------------------------
+
   public static String PreferencePage_CheckFinalMethod; // NO_UCD
   public static String PreferencePage_CheckFinalField; // NO_UCD
 
@@ -88,7 +99,8 @@ public final class Messages extends NLS {
   public static String PreferencePage_GroupFileSearch; // NO_UCD
   public static String PreferencePage_GroupOthers; // NO_UCD
   public static String PreferencePage_GroupFilter; // NO_UCD
-  public static String PreferencePage_GroupKeyWord; // NO_UCD
+  public static String PreferencePage_GroupFinal; // NO_UCD
+  public static String PreferencePage_GroupVisibility; // NO_UCD
   // -------------------------------------------------------------------------
   public static String WarnLevel_Error; // NO_UCD
   public static String WarnLevel_Warning; // NO_UCD
