@@ -439,7 +439,7 @@ public class SearchManager {
       if (isClassNamMatchOk) {
         this.found++;
       }
-      checkCancelSearch(found, -1);
+      checkCancelSearch(null, found, -1);
       IJavaElement matchJavaElement = JavaCore.create(matchAccess.getFile());
       visibilityHandler.checkVisibility(matchJavaElement, found, -1);
       return true;
@@ -484,7 +484,7 @@ public class SearchManager {
           && JavaElementUtil.isTestCode(matchJavaElement)) {
         foundTest++;
       }
-      checkCancelSearch(found, foundTest);
+      checkCancelSearch(matchJavaElement, found, foundTest);
       visibilityHandler.checkVisibility(matchJavaElement, found, foundTest);
     }
 
@@ -526,15 +526,17 @@ public class SearchManager {
    * Check conditions from preferences and 
    * cancel search by throwing a {@link OperationCanceledException}
    * when necessary
+   * @param jvaElement TODO
    */
-  private static void checkCancelSearch(int found, int foundTest) {
+  private static void checkCancelSearch(IJavaElement javaElement, int found,
+      int foundTest) {
     if (Prefs.isDetectTestOnly() && (found == foundTest)) {
-      // continue searching, because all machtes are matches in test code
+      // continue searching, because all matches are matches in test code
       return;
     }
     if (found > Prefs.getWarnLimit()
-        && !Prefs.isCheckIncreaseVisibilityProtected()
-        && !Prefs.isCheckIncreaseVisibilityToPrivate()) {
+        && !Prefs.isCheckIncreaseVisibilityProtected(javaElement)
+        && !Prefs.isCheckIncreaseVisibilityToPrivate(javaElement)) {
       throw new OperationCanceledException("Cancel Search: Warn limit reached");//$NON-NLS-1$
     }
   }
