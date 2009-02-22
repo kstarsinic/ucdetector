@@ -54,6 +54,7 @@ import org.ucdetector.UCDetectorPlugin;
  * </ul>
  * Calculates inheritance for methods
  */
+@SuppressWarnings("restriction")
 public class JavaElementUtil {
 
   private JavaElementUtil() {
