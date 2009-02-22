@@ -56,13 +56,11 @@ public final class MarkerFactory {
    * of a marker to QuickFix. Only String, Integer... are permitted
    * as iMarker.setAttribute()
    **/
-  public static final String JAVA_ELEMENT_ATTRIBUTE = "JAVA_ELEMENT_ATTRIBUTE";//$NON-NLS-1$
-  /** the java element of the marker is an type */
-  public static final String JAVA_ELEMENT_TYPE = "type";//$NON-NLS-1$
-  /** the java element of the marker is an method */
-  public static final String JAVA_ELEMENT_METHOD = "method";//$NON-NLS-1$
-  /** the java element of the marker is an field */
-  public static final String JAVA_ELEMENT_FIELD = "field";//$NON-NLS-1$
+  public static final String ELEMENT_TYPE_ATTRIBUTE = "ELEMENT_TYPE_ATTRIBUTE";//$NON-NLS-1$
+
+  public static enum ElementType {
+    TYPE, METHOD, FIELD, CONSTANT
+  }
 
   private MarkerFactory(List<IUCDetectorReport> reports) {
     this.reports = reports;
