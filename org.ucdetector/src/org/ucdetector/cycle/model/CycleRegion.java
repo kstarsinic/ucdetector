@@ -27,6 +27,7 @@ import org.ucdetector.Messages;
  *         |- CycleMember<
  *           |-  <font color="red">CycleRegion</font>
  */
+@SuppressWarnings("restriction")
 public class CycleRegion extends CycleBaseElement {
   private final CycleBaseElement parent;
   private final int offset;

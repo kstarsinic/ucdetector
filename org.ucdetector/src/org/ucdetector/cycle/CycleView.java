@@ -58,6 +58,7 @@ import org.ucdetector.cycle.model.SearchResultRoot;
 /**
  * 
  */
+@SuppressWarnings("restriction")
 public class CycleView extends ViewPart { // 
   public static final String ID = "org.ucdetector.cycle.view.CycleView"; //$NON-NLS-1$
   private static CycleView INSTANCE = null;
