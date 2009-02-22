@@ -24,6 +24,7 @@ import org.ucdetector.util.MarkerFactory;
  * @see extension point="org.eclipse.ui.ide.markerResolution" in plugin.xml
  */
 public class UCDQuickGenerator implements IMarkerResolutionGenerator2 { // NO_UCD
+
   public IMarkerResolution[] getResolutions(IMarker marker) {
     try {
       String markerType = marker.getType();
@@ -32,18 +33,18 @@ public class UCDQuickGenerator implements IMarkerResolutionGenerator2 { // NO_UC
       }
       List<IMarkerResolution> resolutions = new ArrayList<IMarkerResolution>();
       if (MarkerFactory.UCD_MARKER_UNUSED.equals(markerType)) {
-        resolutions.add(new DeleteQuickFix());
-        resolutions.add(new LineCommentQuickFix());
+        resolutions.add(new DeleteQuickFix(marker));
+        resolutions.add(new LineCommentQuickFix(marker));
       }
       else if (MarkerFactory.UCD_MARKER_USE_PRIVATE.equals(markerType)
           || MarkerFactory.UCD_MARKER_USE_PROTECTED.equals(markerType)
           || MarkerFactory.UCD_MARKER_USE_DEFAULT.equals(markerType)) {
-        resolutions.add(new VisibilityQuickFix(markerType));
+        resolutions.add(new VisibilityQuickFix(marker));
       }
       else if (MarkerFactory.UCD_MARKER_USE_FINAL.equals(markerType)) {
-        resolutions.add(new UseFinalQuickFix());
+        resolutions.add(new UseFinalQuickFix(marker));
       }
-      resolutions.add(new UseTag_NO_UCD_QuickFix());
+      resolutions.add(new UseTag_NO_UCD_QuickFix(marker));
       return resolutions.toArray(new IMarkerResolution[resolutions.size()]);
     }
     catch (CoreException e) {

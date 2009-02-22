@@ -13,14 +13,20 @@ import org.eclipse.jdt.ui.JavaUI;
 import org.eclipse.jface.text.IRegion;
 import org.eclipse.swt.graphics.Image;
 import org.ucdetector.Messages;
+import org.ucdetector.util.MarkerFactory.ElementType;
 
 /**
  * 'Fixes' code by adding line comment at end of line: "// NO_UCD"
  */
+@SuppressWarnings("restriction")
 class UseTag_NO_UCD_QuickFix extends AbstractUCDQuickFix {
 
+  protected UseTag_NO_UCD_QuickFix(IMarker marker) {
+    super(marker);
+  }
+
   @Override
-  public void runImpl(IMarker marker, ELEMENT element,
+  public void runImpl(IMarker marker, ElementType elementType,
       BodyDeclaration nodeToChange) throws Exception {
     int lineNr = marker.getAttribute(IMarker.LINE_NUMBER, -1);
     if (lineNr < 1) {

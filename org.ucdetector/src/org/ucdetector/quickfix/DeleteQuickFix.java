@@ -13,13 +13,18 @@ import org.eclipse.swt.graphics.Image;
 import org.eclipse.ui.ISharedImages;
 import org.ucdetector.Messages;
 import org.ucdetector.UCDetectorPlugin;
+import org.ucdetector.util.MarkerFactory.ElementType;
 
 /**
  * Fixes code by deleting all affected lines
  */
 class DeleteQuickFix extends AbstractUCDQuickFix {
+  protected DeleteQuickFix(IMarker marker) {
+    super(marker);
+  }
+
   @Override
-  public void runImpl(IMarker marker, ELEMENT element,
+  public void runImpl(IMarker marker, ElementType elementType,
       BodyDeclaration nodeToChange) throws Exception {
     rewrite.remove(nodeToChange, null);
     commitChanges();

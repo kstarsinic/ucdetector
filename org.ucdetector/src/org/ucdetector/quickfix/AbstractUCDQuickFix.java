@@ -6,6 +6,7 @@
  */
 package org.ucdetector.quickfix;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
@@ -28,6 +29,7 @@ import org.eclipse.jdt.core.dom.ASTVisitor;
 import org.eclipse.jdt.core.dom.AbstractTypeDeclaration;
 import org.eclipse.jdt.core.dom.AnnotationTypeDeclaration;
 import org.eclipse.jdt.core.dom.BodyDeclaration;
+import org.eclipse.jdt.core.dom.ChildListPropertyDescriptor;
 import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jdt.core.dom.EnumConstantDeclaration;
 import org.eclipse.jdt.core.dom.EnumDeclaration;
@@ -45,10 +47,12 @@ import org.eclipse.jface.text.BadLocationException;
 import org.eclipse.jface.text.IDocument;
 import org.eclipse.text.edits.TextEdit;
 import org.eclipse.ui.IEditorPart;
-import org.eclipse.ui.IMarkerResolution2;
+import org.eclipse.ui.views.markers.WorkbenchMarkerResolution;
 import org.ucdetector.Log;
 import org.ucdetector.UCDetectorPlugin;
+import org.ucdetector.report.MarkerReport;
 import org.ucdetector.util.MarkerFactory;
+import org.ucdetector.util.MarkerFactory.ElementType;
 
 /**
  * Base class for all UCDetector QuickFixes. This class does all the stuff to
@@ -57,18 +61,30 @@ import org.ucdetector.util.MarkerFactory;
  * http://help.eclipse.org/help32/index.jsp?topic=/org.eclipse.jdt.doc.isv/reference/api/org/eclipse/jdt/core/dom/rewrite/ASTRewrite.html
  * @see http://www.eclipse.org/articles/article.php?file=Article-JavaCodeManipulation_AST/index.html
  */
-abstract class AbstractUCDQuickFix
-// TODO 2008.12.15. [ 2417657 ] QuickFix should behave as for Java problems
-    // extends WorkbenchMarkerResolution
-    implements IMarkerResolution2 {
-  static enum ELEMENT {
-    TYPE, METHOD, FIELD;
+@SuppressWarnings("restriction")
+abstract class AbstractUCDQuickFix extends WorkbenchMarkerResolution {
+  private final IMarker marker;
+  protected final String markerType;
+
+  protected AbstractUCDQuickFix(IMarker marker) {
+    this.marker = marker;
+    markerType = getMarkerType(marker);
+  }
+
+  private String getMarkerType(IMarker marker) {
+    try {
+      return marker.getType();
+    }
+    catch (CoreException e) {
+      Log.logError("Can't get marker type", e); //$NON-NLS-1$
+      return null;
+    }
   }
 
   protected ASTRewrite rewrite;
   protected IDocument doc;
 
-  @SuppressWarnings("unchecked") //$NON-NLS-1$
+  @SuppressWarnings("unchecked")
   public void run(IMarker marker) {
     ITextFileBufferManager bufferManager = FileBuffers
         .getTextFileBufferManager();
@@ -85,9 +101,6 @@ abstract class AbstractUCDQuickFix
       ITextFileBuffer textFileBuffer = bufferManager.getTextFileBuffer(path,
           LocationKind.NORMALIZE);
       doc = textFileBuffer.getDocument();
-      String[] elementInfos = marker.getAttribute(
-          MarkerFactory.JAVA_ELEMENT_ATTRIBUTE, "?").split(","); //$NON-NLS-1$ //$NON-NLS-2$
-      ELEMENT element = getElement(elementInfos[0]);
       // -----------------------------------------------------------------------
       ICompilationUnit originalUnit = getCompilationUnit(marker);
       CompilationUnit copyUnit = createCopy(originalUnit);
@@ -104,7 +117,9 @@ abstract class AbstractUCDQuickFix
       if (nodeToChange == null) {
         return;
       }
-      runImpl(marker, element, nodeToChange);
+      MarkerFactory.ElementType elementType = MarkerReport
+          .getElementTypeAndName(marker).elementType;//$NON-NLS-1$
+      runImpl(marker, elementType, nodeToChange);
       marker.delete();
       // -----------------------------------------------------------------------
       // see org.eclipse.jdt.internal.ui.text.correction.CorrectionMarkerResolutionGenerator
@@ -129,22 +144,6 @@ abstract class AbstractUCDQuickFix
         UCDetectorPlugin.logErrorAndStatus("Quick Fix Problems", e); //$NON-NLS-1$
       }
     }
-  }
-
-  /**
-   * @return type of java element: type, method or field
-   */
-  private ELEMENT getElement(String elementType) {
-    if (elementType.equals(MarkerFactory.JAVA_ELEMENT_TYPE)) {
-      return ELEMENT.TYPE;
-    }
-    else if (elementType.equals(MarkerFactory.JAVA_ELEMENT_METHOD)) {
-      return ELEMENT.METHOD;
-    }
-    else if (elementType.equals(MarkerFactory.JAVA_ELEMENT_FIELD)) {
-      return ELEMENT.FIELD;
-    }
-    return null;
   }
 
   /**
@@ -197,20 +196,22 @@ abstract class AbstractUCDQuickFix
    * <li>default</li>
    * </ul>
    */
-  protected final ListRewrite getModifierListRewrite(ELEMENT element,
-      BodyDeclaration nodeToChange) {
-    switch (element) {
+  protected final ListRewrite getModifierListRewrite(
+      MarkerFactory.ElementType elementType, BodyDeclaration nodeToChange) {
+    ChildListPropertyDescriptor property = null;
+    switch (elementType) {
       case TYPE:
-        return rewrite.getListRewrite(nodeToChange,
-            TypeDeclaration.MODIFIERS2_PROPERTY);
+        property = TypeDeclaration.MODIFIERS2_PROPERTY;
+        break;
       case METHOD:
-        return rewrite.getListRewrite(nodeToChange,
-            MethodDeclaration.MODIFIERS2_PROPERTY);
+        property = MethodDeclaration.MODIFIERS2_PROPERTY;
+        break;
       case FIELD:
-        return rewrite.getListRewrite(nodeToChange,
-            FieldDeclaration.MODIFIERS2_PROPERTY);
+      case CONSTANT:
+        property = FieldDeclaration.MODIFIERS2_PROPERTY;
+        break;
     }
-    return null;
+    return rewrite.getListRewrite(nodeToChange, property);
   }
 
   /**
@@ -235,11 +236,42 @@ abstract class AbstractUCDQuickFix
   // Override, implement
   // ---------------------------------------------------------------------------
 
-  public abstract void runImpl(IMarker marker, ELEMENT element,
+  public abstract void runImpl(IMarker marker, ElementType elementType,
       BodyDeclaration nodeToChange) throws Exception;
 
   public String getDescription() {
     return null;
+  }
+
+  @Override
+  public IMarker[] findOtherMarkers(IMarker[] markers) {
+    final List<IMarker> result = new ArrayList<IMarker>();
+    for (IMarker markerToCheck : markers) {
+      try {
+        if (this.marker != markerToCheck
+            && this.markerType.equals(markerToCheck.getType())) {
+          if (isElementTypeEqual(markerToCheck)) {
+            result.add(markerToCheck);
+          }
+        }
+      }
+      catch (CoreException e) {
+        Log.logError("Can't find other marker", e); //$NON-NLS-1$
+        continue;
+      }
+    }
+    return result.toArray(new IMarker[result.size()]);
+  }
+
+  /**
+   * @return <code>true</code> if FIELD and FIELD
+   */
+  private final boolean isElementTypeEqual(IMarker markerToCheck) {
+    return getElementType(marker).equals(getElementType(markerToCheck));
+  }
+
+  private static final ElementType getElementType(IMarker marker) {
+    return MarkerReport.getElementTypeAndName(marker).elementType;
   }
 
   /**

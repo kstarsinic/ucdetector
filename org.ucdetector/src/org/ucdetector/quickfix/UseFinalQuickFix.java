@@ -14,16 +14,21 @@ import org.eclipse.jdt.core.dom.rewrite.ListRewrite;
 import org.eclipse.swt.graphics.Image;
 import org.ucdetector.Messages;
 import org.ucdetector.UCDetectorPlugin;
+import org.ucdetector.util.MarkerFactory.ElementType;
 
 /**
  * Fixes code by adding keyword <code>final</code>
  */
 class UseFinalQuickFix extends AbstractUCDQuickFix {
 
+  protected UseFinalQuickFix(IMarker marker) {
+    super(marker);
+  }
+
   @Override
-  public final void runImpl(IMarker marker, ELEMENT element,
+  public final void runImpl(IMarker marker, ElementType elementType,
       BodyDeclaration nodeToChange) throws Exception {
-    ListRewrite listRewrite = getModifierListRewrite(element, nodeToChange);
+    ListRewrite listRewrite = getModifierListRewrite(elementType, nodeToChange);
     Modifier modifierFound = getModifierVisibility(nodeToChange);
     Modifier modifierFinal = nodeToChange.getAST().newModifier(
         Modifier.ModifierKeyword.FINAL_KEYWORD);

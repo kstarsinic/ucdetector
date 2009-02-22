@@ -14,18 +14,22 @@ import org.eclipse.jface.text.TextUtilities;
 import org.eclipse.swt.graphics.Image;
 import org.ucdetector.Messages;
 import org.ucdetector.UCDetectorPlugin;
+import org.ucdetector.util.MarkerFactory.ElementType;
 
 /**
  * Fixes code by commenting all affected lines
  */
 class LineCommentQuickFix extends AbstractUCDQuickFix {
-
   private static final String LINE_COMMENT = "// "; //$NON-NLS-1$
   private static final String TODO_COMMENT //
   = "TODO UCdetector: Remove unused code: "; //$NON-NLS-1$
 
+  protected LineCommentQuickFix(IMarker marker) {
+    super(marker);
+  }
+
   @Override
-  public void runImpl(IMarker marker, ELEMENT element,
+  public void runImpl(IMarker marker, ElementType elementType,
       BodyDeclaration nodeToChange) throws Exception {
     int offsetBody = nodeToChange.getStartPosition();
     int lengthBody = nodeToChange.getLength();

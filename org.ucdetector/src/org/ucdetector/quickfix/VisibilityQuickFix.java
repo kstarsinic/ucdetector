@@ -17,22 +17,23 @@ import org.eclipse.osgi.util.NLS;
 import org.eclipse.swt.graphics.Image;
 import org.ucdetector.Messages;
 import org.ucdetector.util.MarkerFactory;
+import org.ucdetector.util.MarkerFactory.ElementType;
 
 /**
  * Fixes code by changing visibility to <code>protected</code>
  * default or <code>private</code>
  */
+@SuppressWarnings("restriction")
 class VisibilityQuickFix extends AbstractUCDQuickFix {
-  private final String markerType;
 
-  VisibilityQuickFix(String markerType) {
-    this.markerType = markerType;
+  protected VisibilityQuickFix(IMarker marker) {
+    super(marker);
   }
 
   @Override
-  public void runImpl(IMarker marker, ELEMENT element,
+  public void runImpl(IMarker marker, ElementType elementType,
       BodyDeclaration nodeToChange) throws Exception {
-    ListRewrite listRewrite = getModifierListRewrite(element, nodeToChange);
+    ListRewrite listRewrite = getModifierListRewrite(elementType, nodeToChange);
     Modifier modifierFound = getModifierVisibility(nodeToChange);
     Modifier modifierNew = null;
     if (MarkerFactory.UCD_MARKER_USE_PRIVATE.equals(markerType)) {
