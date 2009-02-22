@@ -15,16 +15,19 @@ import org.eclipse.jdt.core.IField;
 import org.eclipse.jdt.core.IJavaElement;
 import org.eclipse.jdt.core.IMethod;
 import org.eclipse.jdt.core.IType;
+import org.eclipse.jdt.core.JavaModelException;
 import org.ucdetector.Log;
+import org.ucdetector.util.JavaElementUtil;
 import org.ucdetector.util.MarkerFactory;
+import org.ucdetector.util.MarkerFactory.ElementType;
 
 /**
- *
+ * Create a marker
  */
 public class MarkerReport implements IUCDetectorReport {
+  private static final String JAVA_ELEMENT_SEPARATOR_MARKER = ",";
   /**
-   * Don't create one marker each, create number of markers declared here
-   * each time!
+   * Don't create each marker. Do a batch creation instead
    */
   private static final int MARKERS_TO_CREATE_COUNT = 10;
   private final List<ReportParam> markersToCreate = new ArrayList<ReportParam>();
@@ -71,26 +74,58 @@ public class MarkerReport implements IUCDetectorReport {
     marker.setAttribute(IMarker.MESSAGE, reportParam.message);
     marker.setAttribute(IMarker.PRIORITY, IMarker.PRIORITY_HIGH);
     marker.setAttribute(IMarker.LINE_NUMBER, reportParam.line);
-    String elementString = getJavaElementString(reportParam.javaElement);
-    marker.setAttribute(MarkerFactory.JAVA_ELEMENT_ATTRIBUTE, elementString);
+    String elementString = createJavaElementString(reportParam.javaElement);
+    marker.setAttribute(MarkerFactory.ELEMENT_TYPE_ATTRIBUTE, elementString);
+  }
+
+  public static ElementTypeAndName getElementTypeAndName(IMarker marker) {
+    String attribute = marker.getAttribute(
+        MarkerFactory.ELEMENT_TYPE_ATTRIBUTE, "?");
+    String[] resultArray = attribute
+        .split(MarkerReport.JAVA_ELEMENT_SEPARATOR_MARKER); //$NON-NLS-1$
+    ElementTypeAndName result = new ElementTypeAndName();
+    result.elementType = (resultArray.length > 0 ? ElementType
+        .valueOf(resultArray[0]) : null);
+    result.name = (resultArray.length > 1 ? resultArray[1] : null);
+    return result;
   }
 
   /**
-   * @return a nice String for a class, method or field like:
-   * type,MyClass
+   * Data container, containing a elementType
+   * @see MarkerReport#createJavaElementString()
    */
-  private static String getJavaElementString(IJavaElement javaElement) {
+  // TODO 2009-02-20: UCD tells to use default visibility. But compile error
+  public static class ElementTypeAndName {
+    public ElementType elementType;
+    protected String name;
+  }
+
+  /**
+   * @return a String for a class, method or field like:
+   * <ul>
+   * <li>"type,MyClass"</li>
+   * <li>"method,calculate"</li>
+   * <li>"field,value"</li>
+   * <li>"constant,MAX_VALUE"</li>
+   * </ul>
+   *  NOTE: This string is used in other classes!
+   */
+  private static String createJavaElementString(IJavaElement javaElement)
+      throws JavaModelException {
     StringBuilder sb = new StringBuilder();
     if (javaElement instanceof IType) {
-      sb.append(MarkerFactory.JAVA_ELEMENT_TYPE);
+      sb.append(MarkerFactory.ElementType.TYPE);
     }
     else if (javaElement instanceof IMethod) {
-      sb.append(MarkerFactory.JAVA_ELEMENT_METHOD);
+      sb.append(MarkerFactory.ElementType.METHOD);
     }
     else if (javaElement instanceof IField) {
-      sb.append(MarkerFactory.JAVA_ELEMENT_FIELD);
+      boolean isConstant = JavaElementUtil.isConstant((IField) javaElement);
+      sb.append(isConstant ? MarkerFactory.ElementType.CONSTANT
+          : MarkerFactory.ElementType.FIELD);
     }
-    sb.append(',').append(javaElement.getElementName());
+    sb.append(JAVA_ELEMENT_SEPARATOR_MARKER).append(
+        javaElement.getElementName());
     return sb.toString();
   }
 
