@@ -32,12 +32,12 @@ public class PrefsTest extends TestCase {
             if (Prefs.ANALYZE_FIELDS.equals(prefName)) {
               return WarnLevel.IGNORE.toString();
             }
-            if (Prefs.ANALYZE_VISIBILITY_PROTECTED.equals(prefName)) {
-              return WarnLevel.IGNORE.toString();
-            }
-            if (Prefs.ANALYZE_VISIBILITY_PRIVATE.equals(prefName)) {
-              return WarnLevel.IGNORE.toString();
-            }
+//            if (Prefs.ANALYZE_VISIBILITY_PROTECTED.equals(prefName)) {
+//              return WarnLevel.IGNORE.toString();
+//            }
+//            if (Prefs.ANALYZE_VISIBILITY_PRIVATE.equals(prefName)) {
+//              return WarnLevel.IGNORE.toString();
+//            }
             if (Prefs.ANALYZE_FINAL_METHOD.equals(prefName)) {
               return WarnLevel.WARNING.toString();
             }
@@ -154,13 +154,13 @@ public class PrefsTest extends TestCase {
     assertFalse(Prefs.isUCDetectionInFields());
   }
 
-  public final void testIsAnalyseVisibilityProtected() {
-    assertFalse(Prefs.isCheckIncreaseVisibilityProtected());
-  }
-
-  public final void testIsCheckIncreaseVisibilityToPrivate() {
-    assertFalse(Prefs.isCheckIncreaseVisibilityToPrivate());
-  }
+//  public final void testIsAnalyseVisibilityProtected() {
+//    assertFalse(Prefs.isCheckIncreaseVisibilityProtected());
+//  }
+//
+//  public final void testIsCheckIncreaseVisibilityToPrivate() {
+//    assertFalse(Prefs.isCheckIncreaseVisibilityToPrivate());
+//  }
 
   public final void testIsCheckUseFinalField() {
     assertTrue(Prefs.isCheckUseFinalField());
@@ -190,9 +190,9 @@ public class PrefsTest extends TestCase {
     assertEquals(WarnLevel.IGNORE, Prefs.getUCDetectionInFields());
   }
 
-  public final void testGetAnalyseVisibility() {
-    assertEquals(WarnLevel.IGNORE, Prefs.getCheckIncreaseVisibilityProtected());
-  }
+//  public final void testGetAnalyseVisibility() {
+//    assertEquals(WarnLevel.IGNORE, Prefs.getCheckIncreaseVisibilityProtected());
+//  }
 
   public final void testGetheckUseFinalMethod() {
     assertEquals(WarnLevel.WARNING, Prefs.getCheckUseFinalMethod());
