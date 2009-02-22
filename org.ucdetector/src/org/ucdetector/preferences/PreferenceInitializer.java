@@ -10,6 +10,8 @@ package org.ucdetector.preferences;
 import static org.ucdetector.preferences.WarnLevel.IGNORE;
 import static org.ucdetector.preferences.WarnLevel.WARNING;
 
+import java.io.File;
+
 import org.eclipse.core.runtime.preferences.AbstractPreferenceInitializer;
 import org.eclipse.jface.preference.IPreferenceStore;
 import org.ucdetector.UCDetectorPlugin;
@@ -19,7 +21,7 @@ import org.ucdetector.UCDetectorPlugin;
  * @see org.ucdetector.preferences.Prefs.LIST_SEPARATOR
  */
 public class PreferenceInitializer extends AbstractPreferenceInitializer { // NO_UCD
-
+  private static final String WARN = WARNING.name();
   private static final String SOURCE_FOLDER_FILTER //
   = "*test*,generated,"; //$NON-NLS-1$
   private static final String PACKAGE_FILTER //
@@ -37,11 +39,19 @@ public class PreferenceInitializer extends AbstractPreferenceInitializer { // NO
   public void initializeDefaultPreferences() {
     IPreferenceStore store = UCDetectorPlugin.getDefault().getPreferenceStore();
     // Analyze -----------------------------------------------------------------
-    store.setDefault(Prefs.ANALYZE_CLASSES, WARNING.name());
-    store.setDefault(Prefs.ANALYZE_MEHTODS, WARNING.name());
-    store.setDefault(Prefs.ANALYZE_FIELDS, WARNING.name());
-    store.setDefault(Prefs.ANALYZE_VISIBILITY_PROTECTED, WARNING.name());
-    store.setDefault(Prefs.ANALYZE_VISIBILITY_PRIVATE, WARNING.name());
+    store.setDefault(Prefs.ANALYZE_CLASSES, WARN);
+    store.setDefault(Prefs.ANALYZE_MEHTODS, WARN);
+    store.setDefault(Prefs.ANALYZE_FIELDS, WARN);
+    store.setDefault(Prefs.ANALYZE_VISIBILITY_PROTECTED_CLASSES, WARN);
+    store.setDefault(Prefs.ANALYZE_VISIBILITY_PROTECTED_METHODS, WARN);
+    store.setDefault(Prefs.ANALYZE_VISIBILITY_PROTECTED_FIELDS, WARN);
+    store.setDefault(Prefs.ANALYZE_VISIBILITY_PROTECTED_CONSTANTS, WARN);
+    //
+    store.setDefault(Prefs.ANALYZE_VISIBILITY_PRIVATE_CLASSES, WARN);
+    store.setDefault(Prefs.ANALYZE_VISIBILITY_PRIVATE_METHODS, WARN);
+    store.setDefault(Prefs.ANALYZE_VISIBILITY_PRIVATE_FIELDS, WARN);
+    store.setDefault(Prefs.ANALYZE_VISIBILITY_PRIVATE_CONSTANTS, WARN);
+    //
     store.setDefault(Prefs.ANALYZE_LITERALS_CHECK, true);
     store.setDefault(Prefs.ANALYZE_CHECK_FULL_CLASS_NAME, true);
     store.setDefault(Prefs.ANALYZE_LITERALS, FILE_PATTERN_LITERAL_SEARCH);
@@ -61,6 +71,9 @@ public class PreferenceInitializer extends AbstractPreferenceInitializer { // NO
     // Cycles ------------------------------------------------------------------
     store.setDefault(Prefs.CYCLE_DEPTH, Prefs.CYCLE_DEPTH_DEFAULT);
     // Report ------------------------------------------------------------------
-    store.setDefault(Prefs.REPORT_FILE, ""); //$NON-NLS-1$
+    String REPORT_DEFAULT_NAME = "UCDetetorReport.html";
+    File report = new File(REPORT_DEFAULT_NAME);
+    System.out.println("report=" + report);
+    store.setDefault(Prefs.REPORT_FILE, report.getAbsolutePath()); //$NON-NLS-1$
   }
 }

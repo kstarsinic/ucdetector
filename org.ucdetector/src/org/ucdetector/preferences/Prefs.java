@@ -8,12 +8,17 @@ package org.ucdetector.preferences;
 
 import java.util.regex.Pattern;
 
+import org.eclipse.jdt.core.Flags;
 import org.eclipse.jdt.core.IField;
+import org.eclipse.jdt.core.IJavaElement;
+import org.eclipse.jdt.core.IMember;
 import org.eclipse.jdt.core.IMethod;
 import org.eclipse.jdt.core.IPackageFragment;
 import org.eclipse.jdt.core.IPackageFragmentRoot;
 import org.eclipse.jdt.core.IType;
+import org.eclipse.jdt.core.JavaModelException;
 import org.eclipse.jface.preference.IPreferenceStore;
+import org.ucdetector.Log;
 import org.ucdetector.UCDetectorPlugin;
 
 /**
@@ -55,28 +60,29 @@ public final class Prefs {
   protected static final String WARN_LIMIT //
   = UCDetectorPlugin.ID + ".warnLimit"; //$NON-NLS-1$
   // KEYWORD -------------------------------------------------------------------
-  protected static final String ANALYZE_VISIBILITY_PROTECTED //
-  = UCDetectorPlugin.ID + ".visibility"; //$NON-NLS-1$
-  protected static final String ANALYZE_VISIBILITY_PRIVATE //
-  = UCDetectorPlugin.ID + ".visibilityPrivate"; //$NON-NLS-1$
   /*
   Feature Requests ID: 2490344:
-  filters options for visibility (fields, constants, methods)
-
-  Old:
-  Possible use of private
-  Possible use of protected
-
-  New:
-  Possible use of private for constants
-  Possible use of protected for constants
-
-  Possible use of private for fields
-  Possible use of protected for fields
-
-  Possible use of private for methods
-  Possible use of protected for methods
   */
+  protected static final String ANALYZE_VISIBILITY_PROTECTED_CLASSES //
+  = UCDetectorPlugin.ID + ".visibility.protected.classes"; //$NON-NLS-1$
+  protected static final String ANALYZE_VISIBILITY_PRIVATE_CLASSES //
+  = UCDetectorPlugin.ID + ".visibility.private.classes"; //$NON-NLS-1$
+  //
+  protected static final String ANALYZE_VISIBILITY_PROTECTED_METHODS //
+  = UCDetectorPlugin.ID + ".visibility.protected.methods"; //$NON-NLS-1$
+  protected static final String ANALYZE_VISIBILITY_PRIVATE_METHODS //
+  = UCDetectorPlugin.ID + ".visibility.private.methods"; //$NON-NLS-1$
+  //
+  protected static final String ANALYZE_VISIBILITY_PROTECTED_FIELDS //
+  = UCDetectorPlugin.ID + ".visibility.protected.fields"; //$NON-NLS-1$
+  protected static final String ANALYZE_VISIBILITY_PRIVATE_FIELDS //
+  = UCDetectorPlugin.ID + ".visibility.private.fields"; //$NON-NLS-1$
+  //
+  protected static final String ANALYZE_VISIBILITY_PROTECTED_CONSTANTS //
+  = UCDetectorPlugin.ID + ".visibility.protected.constants"; //$NON-NLS-1$
+  protected static final String ANALYZE_VISIBILITY_PRIVATE_CONSTANTS //
+  = UCDetectorPlugin.ID + ".visibility.private.constants"; //$NON-NLS-1$
+  //
 
   static final String ANALYZE_FINAL_FIELD //
   = UCDetectorPlugin.ID + ".finalField"; //$NON-NLS-1$
@@ -248,30 +254,77 @@ public final class Prefs {
   /**
    * @return WarnLevel if we can use protected
    */
-  public static WarnLevel getCheckIncreaseVisibilityProtected() {
-    return WarnLevel.valueOf(getString(ANALYZE_VISIBILITY_PROTECTED));
+  public static WarnLevel getCheckIncreaseVisibilityProtected(
+      IJavaElement member) {
+    if (member instanceof IType) {
+      return WarnLevel.valueOf(getString(ANALYZE_VISIBILITY_PROTECTED_CLASSES));
+    }
+    if (member instanceof IMethod) {
+      return WarnLevel.valueOf(getString(ANALYZE_VISIBILITY_PROTECTED_METHODS));
+    }
+    if (member instanceof IField) {
+      IField field = (IField) member;
+      if (isConstant(field)) {
+        return WarnLevel
+            .valueOf(getString(ANALYZE_VISIBILITY_PROTECTED_CONSTANTS));
+
+      }
+      return WarnLevel.valueOf(getString(ANALYZE_VISIBILITY_PROTECTED_FIELDS));
+    }
+    // TODO: When does this happen?
+    return WarnLevel.WARNING;
   }
 
   /**
    * @return <code>true</code> if we can use protected
    */
-  public static boolean isCheckIncreaseVisibilityProtected() {
-    return !WarnLevel.IGNORE.equals(getCheckIncreaseVisibilityProtected());
+  public static boolean isCheckIncreaseVisibilityProtected(IJavaElement member) {
+    return !WarnLevel.IGNORE
+        .equals(getCheckIncreaseVisibilityProtected(member));
   }
 
   // VISIBILITY PRIVATE -----------------------
   /**
    * @return WarnLevel if we can use private
    */
-  public static WarnLevel getCheckIncreaseVisibilityToPrivate() {
-    return WarnLevel.valueOf(getString(ANALYZE_VISIBILITY_PRIVATE));
+  public static WarnLevel getCheckIncreaseVisibilityToPrivate(
+      IJavaElement member) {
+    if (member instanceof IType) {
+      return WarnLevel.valueOf(getString(ANALYZE_VISIBILITY_PRIVATE_CLASSES));
+    }
+    if (member instanceof IMethod) {
+      return WarnLevel.valueOf(getString(ANALYZE_VISIBILITY_PRIVATE_METHODS));
+    }
+    if (member instanceof IField) {
+      IField field = (IField) member;
+      if (isConstant(field)) {
+        return WarnLevel
+            .valueOf(getString(ANALYZE_VISIBILITY_PRIVATE_CONSTANTS));
+
+      }
+      return WarnLevel.valueOf(getString(ANALYZE_VISIBILITY_PRIVATE_FIELDS));
+    }
+    // TODO: When does this happen?
+    return WarnLevel.WARNING;
   }
 
   /**
    * @return <code>true</code> if we can use private
    */
-  public static boolean isCheckIncreaseVisibilityToPrivate() {
-    return !WarnLevel.IGNORE.equals(getCheckIncreaseVisibilityToPrivate());
+  public static boolean isCheckIncreaseVisibilityToPrivate(IJavaElement member) {
+    return !WarnLevel.IGNORE
+        .equals(getCheckIncreaseVisibilityToPrivate(member));
+  }
+
+  private static boolean isConstant(IMember member) {
+    try {
+      return Flags.isStatic(member.getFlags())
+          && Flags.isFinal(member.getFlags());
+    }
+    catch (JavaModelException e) {
+      Log.logError("Cant get isConstant: " + member, e);
+      return false;
+    }
   }
 
   // FINAL FIELD -----------------------

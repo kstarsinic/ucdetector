@@ -21,7 +21,7 @@ import org.ucdetector.UCDetectorPlugin;
 /**
  *
  */
-public abstract class UCDetectorBasePreferencePage extends
+abstract class UCDetectorBasePreferencePage extends
     FieldEditorPreferencePage implements IWorkbenchPreferencePage {
   /**
    * entryNames (first column) and values (second column) for the
