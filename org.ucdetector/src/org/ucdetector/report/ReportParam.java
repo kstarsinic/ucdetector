@@ -70,10 +70,10 @@ public class ReportParam {
     }
     else if (MarkerFactory.UCD_MARKER_USE_PROTECTED.equals(markerType)
         || MarkerFactory.UCD_MARKER_USE_DEFAULT.equals(markerType)) {
-      warnLevel = Prefs.getCheckIncreaseVisibilityProtected();
+      warnLevel = Prefs.getCheckIncreaseVisibilityProtected(javaElement);
     }
     else if (MarkerFactory.UCD_MARKER_USE_PRIVATE.equals(markerType)) {
-      warnLevel = Prefs.getCheckIncreaseVisibilityToPrivate();
+      warnLevel = Prefs.getCheckIncreaseVisibilityToPrivate(javaElement);
     }
     else if (MarkerFactory.UCD_MARKER_USE_FINAL.equals(markerType)) {
       if (javaElement instanceof IMethod) {
