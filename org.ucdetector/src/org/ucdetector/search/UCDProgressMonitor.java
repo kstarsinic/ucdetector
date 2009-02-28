@@ -7,6 +7,7 @@
 package org.ucdetector.search;
 
 import org.eclipse.core.runtime.IProgressMonitor;
+import org.eclipse.core.runtime.NullProgressMonitor;
 import org.ucdetector.Log;
 import org.ucdetector.UCDetectorPlugin;
 
@@ -20,6 +21,10 @@ public class UCDProgressMonitor implements IProgressMonitor {
 
   public UCDProgressMonitor(IProgressMonitor delegate) {
     this.delegate = delegate;
+  }
+
+  public UCDProgressMonitor() {
+    this(new NullProgressMonitor());
   }
 
   public void beginTask(String beginTaskName, int totalWork) {
