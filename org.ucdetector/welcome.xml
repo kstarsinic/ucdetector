@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<introContent>
+	<extensionContent id="orgucdetector-introExtension" style="css/sample.css" name="Sample Extension" path="overview/@">
+		<group style-id="content-group" id="orgucdetector-introLink-group">
+			<link label="Unnecessary Code Detector" url="http://www.ucdetector.org" id="orgucdetector-introLink" style-id="content-link">
+				<text>Find unnecessary (dead) public java code</text>
+			</link>
+		</group>
+	</extensionContent>
+</introContent>
