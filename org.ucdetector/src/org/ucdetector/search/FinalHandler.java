@@ -112,6 +112,12 @@ class FinalHandler {
     }
 
     @Override
+    public String toString() {
+      return field.getElementName() + ".hasWriteAccess="
+          + fieldHasWriteAccessFromMethod;
+    }
+
+    @Override
     public void acceptSearchMatch(SearchMatch match) {
       try {
         Object matchElement = match.getElement();
