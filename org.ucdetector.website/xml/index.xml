@@ -36,7 +36,7 @@ This cycle classes are shown in s special cycle view.
 <!-- left ================================================== -->
 			<td>
 			
-<h3>Download or install</h3>
+<h3>Download or update site</h3>
 <b>Download:</b>
 <!-- ======================================================================= -->
 <ul>
@@ -46,9 +46,9 @@ This cycle classes are shown in s special cycle view.
 </ul>
 
 
-<b>Install:</b>
+<b>Eclipse update site</b>
 <br></br>
-Use eclipse update site:<pre>http://ucdetector.sourceforge.net/update</pre>
+<pre>http://ucdetector.sourceforge.net/update</pre>
 
 			
 			
