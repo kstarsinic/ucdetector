@@ -255,6 +255,11 @@ public class SearchManager {
             "Cancel Search: Field has read access");//$NON-NLS-1$
       }
     }
+
+    @Override
+    public String toString() {
+      return "hasReadAccess=" + hasReadAccess;
+    }
   }
 
   /**
