@@ -1,3 +1,10 @@
+/**
+ * Copyright (c) 2009 Joerg Spieler
+ * All rights reserved. This program and the accompanying materials
+ * are made available under the terms of the Eclipse Public License v1.0
+ * which accompanies this distribution, and is available at
+ * http://www.eclipse.org/legal/epl-v10.html
+ */
 package org.ucdetector;
 
 import java.util.ArrayList;
@@ -8,6 +15,7 @@ import org.eclipse.core.resources.IResource;
 import org.eclipse.core.resources.IWorkspace;
 import org.eclipse.core.resources.IWorkspaceRoot;
 import org.eclipse.core.resources.ResourcesPlugin;
+import org.eclipse.core.runtime.CoreException;
 import org.eclipse.equinox.app.IApplication;
 import org.eclipse.equinox.app.IApplicationContext;
 import org.eclipse.jdt.core.IJavaProject;
@@ -16,40 +24,46 @@ import org.ucdetector.iterator.UCDetectorIterator;
 import org.ucdetector.search.UCDProgressMonitor;
 
 /**
- *
+ * Run UCDetector in headless mode. Entry point is an eclipse application.
+ * See also files: run.sh, run.bat, plugin.xml
  */
 public class UCDApplication implements IApplication {
 
   public Object start(IApplicationContext context) throws Exception {
-    System.out.println("Start: Helo World UCDetector");
+    startImpl();
+    return IApplication.EXIT_OK;
+  }
+
+  /**
+   * 
+   */
+  public static void startImpl() throws CoreException {
+    UCDetectorPlugin.setHeadlessMode(true);
     UCDProgressMonitor ucdMonitor = new UCDProgressMonitor();
-    System.out.println("Start: Refresh");
     IWorkspace workspace = ResourcesPlugin.getWorkspace();
     IWorkspaceRoot root = workspace.getRoot();
     root.refreshLocal(IResource.DEPTH_INFINITE, ucdMonitor);
 
     IProject[] projects = root.getProjects();
-    System.out.println("projects in workspace=" + projects.length);
     List<IJavaProject> openProjects = new ArrayList<IJavaProject>();
-    for (IProject tempProject : projects) {
-      IJavaProject project = JavaCore.create(tempProject);
-      if (project.exists() && !project.isOpen()) {
-        System.out.println("open project" + project.getElementName());
-        project.open(ucdMonitor);
+    Log.logInfo("Number of projects: " + projects.length);
+    for (IProject project : projects) {
+      IJavaProject javaProject = JavaCore.create(project);
+      if (javaProject.exists() && !javaProject.isOpen()) {
+        Log.logInfo("open project: " + javaProject.getElementName());
+        javaProject.open(ucdMonitor);
       }
-      if (project.isOpen()) {
-        openProjects.add(project);
+      if (javaProject.isOpen()) {
+        openProjects.add(javaProject);
       }
     }
-    System.out.println("project to iterate=" + openProjects);
     UCDetectorIterator iterator = new UCDetectorIterator();
     iterator.setMonitor(ucdMonitor);
+    Log.logInfo("Number of projects to iterate: " + openProjects.size());
     iterator.iterate(openProjects
         .toArray(new IJavaProject[openProjects.size()]));
-    return IApplication.EXIT_OK;
   }
 
   public void stop() {
-    System.out.println("Stop: Helo World UCDetector");
   }
 }
