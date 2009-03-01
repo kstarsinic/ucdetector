@@ -39,8 +39,6 @@ import org.eclipse.jdt.core.search.SearchMatch;
 import org.eclipse.jdt.core.search.SearchParticipant;
 import org.eclipse.jdt.core.search.SearchPattern;
 import org.eclipse.jdt.core.search.SearchRequestor;
-import org.eclipse.jdt.internal.corext.util.MethodOverrideTester;
-import org.eclipse.jdt.internal.corext.util.SuperTypeHierarchyCache;
 import org.ucdetector.Log;
 import org.ucdetector.Messages;
 import org.ucdetector.UCDetectorPlugin;
@@ -298,10 +296,9 @@ public class JavaElementUtil {
     return requestor.found > 1;
   }
 
-  /**
+  /*
    * @see OverrideIndicatorLabelDecorator, MethodOverrideTester
    * @return <code>true</code>, when a method override or implements another method.
-   */
   public static boolean isOverrideOrImplements(IMethod method)
       throws JavaModelException {
     int flags = method.getFlags();
@@ -317,6 +314,7 @@ public class JavaElementUtil {
     //    else {return JavaElementImageDescriptor.OVERRIDES;
     return defining != null;
   }
+   */
 
   /**
    * Run a jdt search and handle Exceptions, the Search result is found in SearchRequestor
