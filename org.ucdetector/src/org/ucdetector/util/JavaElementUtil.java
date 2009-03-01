@@ -10,6 +10,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.eclipse.core.runtime.CoreException;
+import org.eclipse.core.runtime.NullProgressMonitor;
 import org.eclipse.core.runtime.OperationCanceledException;
 import org.eclipse.jdt.core.Flags;
 import org.eclipse.jdt.core.ICompilationUnit;
@@ -38,9 +39,8 @@ import org.eclipse.jdt.core.search.SearchMatch;
 import org.eclipse.jdt.core.search.SearchParticipant;
 import org.eclipse.jdt.core.search.SearchPattern;
 import org.eclipse.jdt.core.search.SearchRequestor;
-import org.eclipse.jdt.internal.ui.typehierarchy.TypeHierarchyLifeCycle;
-import org.eclipse.jdt.ui.JavaElementImageDescriptor;
-import org.eclipse.jdt.ui.OverrideIndicatorLabelDecorator;
+import org.eclipse.jdt.internal.corext.util.MethodOverrideTester;
+import org.eclipse.jdt.internal.corext.util.SuperTypeHierarchyCache;
 import org.ucdetector.Log;
 import org.ucdetector.Messages;
 import org.ucdetector.UCDetectorPlugin;
@@ -54,23 +54,11 @@ import org.ucdetector.UCDetectorPlugin;
  * </ul>
  * Calculates inheritance for methods
  */
-@SuppressWarnings("restriction")
 public class JavaElementUtil {
+  private static NullProgressMonitor monitor = new NullProgressMonitor();
 
   private JavaElementUtil() {
   };
-
-  /**
-   * Delegate to calculate if a method override or implements a methods
-   */
-  private static final OverrideIndicatorLabelDecorator OVERRIDE_OR_IMPLEMENT_DETECTOR//
-  = new OverrideIndicatorLabelDecorator(null);
-
-  /**
-   * Delegate to calculate if a class as sub or super classes
-   */
-  private static final TypeHierarchyLifeCycle TYPE_HIERARCHY_LIFECYCLE //
-  = new TypeHierarchyLifeCycle(false);
 
   /**
    * @return the package for an class, method, or field
@@ -292,18 +280,42 @@ public class JavaElementUtil {
    * it is very expensive to call this method!!!
    */
   public static boolean isOverriddenMethod(IMethod method) throws CoreException {
-    if (method.isConstructor()) {
+    int flags = method.getFlags();
+    if (method.isConstructor() || Flags.isStatic(flags)
+        || Flags.isPrivate(flags)) {
       return false;
     }
     int limitTo = IJavaSearchConstants.DECLARATIONS
         | IJavaSearchConstants.IGNORE_DECLARING_TYPE
         | IJavaSearchConstants.IGNORE_RETURN_TYPE;
     SearchPattern pattern = SearchPattern.createPattern(method, limitTo);
-    CountRequestor requestor = new CountRequestor();
+    CountOverridingRequestor requestor = new CountOverridingRequestor();
     IType declaringType = method.getDeclaringType();
     IJavaSearchScope scope = SearchEngine.createHierarchyScope(declaringType);
     runSearch(pattern, requestor, scope);
+    // Ignore 1 match: Declaring type! 
+    // TODO: check search matches: OverrideImplExample
     return requestor.found > 1;
+  }
+
+  /**
+   * @see OverrideIndicatorLabelDecorator, MethodOverrideTester
+   * @return <code>true</code>, when a method override or implements another method.
+   */
+  public static boolean isOverrideOrImplements(IMethod method)
+      throws JavaModelException {
+    int flags = method.getFlags();
+    if (method.isConstructor() || Flags.isStatic(flags)
+        || Flags.isPrivate(flags)) {
+      return false;
+    }
+    IType type = method.getDeclaringType();
+    MethodOverrideTester methodOverrideTester = SuperTypeHierarchyCache
+        .getMethodOverrideTester(type);
+    IMethod defining = methodOverrideTester.findOverriddenMethod(method, true);
+    //    if (JdtFlags.isAbstract(defining)) { return JavaElementImageDescriptor.IMPLEMENTS;
+    //    else {return JavaElementImageDescriptor.OVERRIDES;
+    return defining != null;
   }
 
   /**
@@ -336,25 +348,19 @@ public class JavaElementUtil {
   /**
    * Count number of matches
    */
-  private static final class CountRequestor extends SearchRequestor {
+  private static final class CountOverridingRequestor extends SearchRequestor {
     private int found = 0;
 
     @Override
     public void acceptSearchMatch(SearchMatch match) {
-      // System.out.println("~~~~~~~~~~~acceptSearchMatch=" +
-      // match.getElement());
+      //      System.out.println("~~~~~~~~acceptSearchMatch=" + match.getElement());
       this.found++;
     }
-  }
 
-  /**
-   * @return <code>true</code>, when a method override or implements another method.
-   */
-  public static boolean isOverrideOrImplements(IMethod method) {
-    int flags = OVERRIDE_OR_IMPLEMENT_DETECTOR.computeAdornmentFlags(method);
-    boolean isOverride = (flags == JavaElementImageDescriptor.IMPLEMENTS //
-    || flags == JavaElementImageDescriptor.OVERRIDES);
-    return isOverride;
+    @Override
+    public String toString() {
+      return "found: " + found;
+    }
   }
 
   // -------------------------------------------------------------------------
@@ -380,8 +386,7 @@ public class JavaElementUtil {
    */
   private static boolean hasXType(IType type, boolean isSupertype)
       throws JavaModelException {
-    TYPE_HIERARCHY_LIFECYCLE.doHierarchyRefresh(type, null);
-    ITypeHierarchy hierarchy = TYPE_HIERARCHY_LIFECYCLE.getHierarchy();
+    ITypeHierarchy hierarchy = type.newTypeHierarchy(monitor);
     if (hierarchy != null) {
       IType[] types = isSupertype ? hierarchy.getSupertypes(type) : hierarchy
           .getSubtypes(type);
