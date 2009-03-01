@@ -25,6 +25,7 @@ import org.ucdetector.example.inheritance.InterfaceExample;
 import org.ucdetector.example.inheritance.InterfaceImplExample;
 import org.ucdetector.example.inheritance.InterfaceNotImplementedExample;
 import org.ucdetector.example.inheritance.OverrideExample;
+import org.ucdetector.example.inheritance.OverrideImpl2Example;
 import org.ucdetector.example.inheritance.OverrideImplExample;
 import org.ucdetector.example.methods.AbstractMethodExample;
 import org.ucdetector.example.methods.BeanExample;
@@ -49,135 +50,137 @@ import org.ucdetector.example.visibility.UseProtectedClass;
  */
 @SuppressWarnings("unused")
 public class PublicReferenceHolder {
-  @SuppressWarnings("deprecation")
-  @AnnotationExample(parameterExmaple = "1")
-  public static void main(String[] args) throws Throwable {
-    FieldExamples fieldExamples = new FieldExamples();
-    System.out.println(FieldExamples.USED_FIELD);
-    System.out.println(fieldExamples.publicUsedField);
-    // ---------------------------------------------------------------------
-    System.out.println(InterfaceExample.USED);
-    System.out.println(InterfaceImplExample.class);
-    // ---------------------------------------------------------------------
-    MethodExamples methodExamples = new MethodExamples();
-    methodExamples.usedPublicMethod();
-    methodExamples.start();
-    methodExamples.run();
-    methodExamples.append();
-    // ---------------------------------------------------------------------
-    MethodsSameNameExample sameNameExample = new MethodsSameNameExample();
-    sameNameExample.sameName();
-    sameNameExample.sameName(new Long(2L), 3);
-    // ---------------------------------------------------------------------
-    System.out.println(EnumExample.class);
-    System.out.println(EnumExample.USED);
-    System.out.println(ConstructorExample.class.getName());
-    // ---------------------------------------------------------------------
-    System.out.println(new OverrideExample());
-    System.out.println(new OverrideImplExample());
-    // ---------------------------------------------------------------------
-    FinalMethodExample finalMethodExample = new FinalMethodExample();
-    finalMethodExample.methodOverridden();
-    finalMethodExample.methodNotOverridden();
-    finalMethodExample.finalMethod();
-    FinalMethodExample.staticMethod();
-    FinalMethodImplExample finalMethodImplExample = new FinalMethodImplExample();
-    finalMethodImplExample.methodOverridden();
-    finalMethodImplExample.methodNotOverridden();
-    finalMethodImplExample.noOverrideNoOverridden();
-    // ---------------------------------------------------------------------
-    //
-    // System.out.println(new SelfReferenceExample());
-    // ---------------------------------------------------------------------
-    ProtectedReferenceHolderVisibility ref = new ProtectedReferenceHolderVisibility();
-    // ---------------------------------------------------------------------
-    System.out.println(FinalFieldExamples.class);
-    System.out.println(FinalFieldExamples.DONT_USE_FINAL);
-    System.out.println(FinalFieldExamples.USE_FINAL);
-    // ---------------------------------------------------------------------
-    System.out.println(UsePrivateClass.class);
-    UsePrivateClass usePrivateClass = new UsePrivateClass();
-    System.out.println(usePrivateClass.dontUsePrivate_public);
-    System.out.println(UsePrivateClass.DONT_USE_PRIVATE);
-    usePrivateClass.dontUsePrivate();
-    UsePrivateClass.dontUsePrivateStatic();
-    // ---------------------------------------------------------------------
-    UseProtectedClass useProtectedClass = new UseProtectedClass();
-    useProtectedClass.dontUseProtected();
-    UseProtectedClass.dontUseProtectedStatic();
-    // ---------------------------------------------------------------------
-    ObjectClassMethodsExample oc = new ObjectClassMethodsExample();
-    oc.toString();
-    // System.out.println(oc.clone("a"));
-    // System.out.println(oc.equals("s", "a"));
-    // System.out.println(oc.hashCode("a"));
-    // System.out.println(oc.toString("a"));
-    // oc.finalize("a");
-    // ---------------------------------------------------------------------
-    System.out.println(AnonymousClass.class);
-    // ---------------------------------------------------------------------
-    System.out.println(new QuickFixExample());
-    // ---------------------------------------------------------------------
-    System.out.println("org.ucdetector.example.classes.ClassNameInJavaFile");
-    // ---------------------------------------------------------------------
-    FinalFieldExamples ffe = new FinalFieldExamples();
-    ffe.getFieldSetInSetter();
-    ffe.setFieldSetInSetter(3);
-    //
-    FinalFieldExamples.geStatictFieldSetInSetter();
-    FinalFieldExamples.setStaticFieldSetInSetter(3);
-    // ---------------------------------------------------------------------
-    new MixedExample().makeFinalMethod();
-    // ---------------------------------------------------------------------
-    Java5Example java5Example = new Java5Example();
-    java5Example.annotatedMethod2();
-    java5Example.doNotUse();
-    java5Example.genericExample(null);
-    java5Example.varargExample("s", 1, 2, 3);
-    // ---------------------------------------------------------------------
-    new SerializationMethodExample();
-    // ---------------------------------------------------------------------
-    AbstractMethodExample.class.getName();
-    org.ucdetector.example.classes.InnerClassExample.class.getName();
-    JavaDocExampleMethod.class.getName();
+	@SuppressWarnings("deprecation")
+	@AnnotationExample(parameterExmaple = "1")
+	public static void main(String[] args) throws Throwable {
+		FieldExamples fieldExamples = new FieldExamples();
+		System.out.println(FieldExamples.USED_FIELD);
+		System.out.println(fieldExamples.publicUsedField);
+		// ---------------------------------------------------------------------
+		System.out.println(InterfaceExample.USED);
+		System.out.println(InterfaceImplExample.class);
+		// ---------------------------------------------------------------------
+		MethodExamples methodExamples = new MethodExamples();
+		methodExamples.usedPublicMethod();
+		methodExamples.start();
+		methodExamples.run();
+		methodExamples.append();
+		// ---------------------------------------------------------------------
+		MethodsSameNameExample sameNameExample = new MethodsSameNameExample();
+		sameNameExample.sameName();
+		sameNameExample.sameName(new Long(2L), 3);
+		// ---------------------------------------------------------------------
+		System.out.println(EnumExample.class);
+		System.out.println(EnumExample.USED);
+		System.out.println(ConstructorExample.class.getName());
+		// ---------------------------------------------------------------------
+		System.out.println(new OverrideExample());
+		System.out.println(new OverrideImplExample());
+		System.out.println(new OverrideImpl2Example());
+		// ---------------------------------------------------------------------
+		FinalMethodExample finalMethodExample = new FinalMethodExample();
+		finalMethodExample.methodOverridden();
+		finalMethodExample.methodNotOverridden();
+		finalMethodExample.finalMethod();
+		FinalMethodExample.staticMethod();
+		FinalMethodImplExample finalMethodImplExample = new FinalMethodImplExample();
+		finalMethodImplExample.methodOverridden();
+		finalMethodImplExample.methodNotOverridden();
+		finalMethodImplExample.noOverrideNoOverridden();
+		// ---------------------------------------------------------------------
+		//
+		// System.out.println(new SelfReferenceExample());
+		// ---------------------------------------------------------------------
+		ProtectedReferenceHolderVisibility ref = new ProtectedReferenceHolderVisibility();
+		// ---------------------------------------------------------------------
+		System.out.println(FinalFieldExamples.class);
+		System.out.println(FinalFieldExamples.DONT_USE_FINAL);
+		System.out.println(FinalFieldExamples.USE_FINAL);
+		// ---------------------------------------------------------------------
+		System.out.println(UsePrivateClass.class);
+		UsePrivateClass usePrivateClass = new UsePrivateClass();
+		System.out.println(usePrivateClass.dontUsePrivate_public);
+		System.out.println(UsePrivateClass.DONT_USE_PRIVATE);
+		usePrivateClass.dontUsePrivate();
+		UsePrivateClass.dontUsePrivateStatic();
+		// ---------------------------------------------------------------------
+		UseProtectedClass useProtectedClass = new UseProtectedClass();
+		useProtectedClass.dontUseProtected();
+		UseProtectedClass.dontUseProtectedStatic();
+		// ---------------------------------------------------------------------
+		ObjectClassMethodsExample oc = new ObjectClassMethodsExample();
+		oc.toString();
+		// System.out.println(oc.clone("a"));
+		// System.out.println(oc.equals("s", "a"));
+		// System.out.println(oc.hashCode("a"));
+		// System.out.println(oc.toString("a"));
+		// oc.finalize("a");
+		// ---------------------------------------------------------------------
+		System.out.println(AnonymousClass.class);
+		// ---------------------------------------------------------------------
+		System.out.println(new QuickFixExample());
+		// ---------------------------------------------------------------------
+		System.out
+				.println("org.ucdetector.example.classes.ClassNameInJavaFile");
+		// ---------------------------------------------------------------------
+		FinalFieldExamples ffe = new FinalFieldExamples();
+		ffe.getFieldSetInSetter();
+		ffe.setFieldSetInSetter(3);
+		//
+		FinalFieldExamples.geStatictFieldSetInSetter();
+		FinalFieldExamples.setStaticFieldSetInSetter(3);
+		// ---------------------------------------------------------------------
+		new MixedExample().makeFinalMethod();
+		// ---------------------------------------------------------------------
+		Java5Example java5Example = new Java5Example();
+		java5Example.annotatedMethod2();
+		java5Example.doNotUse();
+		java5Example.genericExample(null);
+		java5Example.varargExample("s", 1, 2, 3);
+		// ---------------------------------------------------------------------
+		new SerializationMethodExample();
+		// ---------------------------------------------------------------------
+		AbstractMethodExample.class.getName();
+		org.ucdetector.example.classes.InnerClassExample.class.getName();
+		JavaDocExampleMethod.class.getName();
 
-    new JavaDocExampleMethod().usedMethod();
-    // ---------------------------------------------------------------------
-    System.out.println(NoUcdTagExample.USED);
-    System.out.println(NoUcdTagExample.USED2);
-    MethodReferenceInJarExample.class.getName();
-    // ---------------------------------------------------------------------
-    BeanExample.class.getName();
-    SerializationFieldExample.class.getName();
-    // ---------------------------------------------------------------------
-    ImplementsExample.class.getName();
-    ConstructorImplExample.class.getName();
+		new JavaDocExampleMethod().usedMethod();
+		// ---------------------------------------------------------------------
+		System.out.println(NoUcdTagExample.USED);
+		System.out.println(NoUcdTagExample.USED2);
+		MethodReferenceInJarExample.class.getName();
+		// ---------------------------------------------------------------------
+		BeanExample.class.getName();
+		SerializationFieldExample.class.getName();
+		// ---------------------------------------------------------------------
+		ImplementsExample.class.getName();
+		ConstructorImplExample.class.getName();
 
-    new ConstructorImplExample(1, "2");
+		new ConstructorImplExample(1, "2");
 
-    System.out.println(QuickFixExample.USE_FINAL1);
-    System.out.println(QuickFixExample.USE_FINAL2);
-    System.out.println(QuickFixExample.USE_FINAL3);
-    System.out.println(QuickFixExample.USE_FINAL4);
-    System.out.println(QuickFixExample.USE_FINAL5);
-    // ---------------------------------------------------------------------
-    System.out.println(Bug2225016Impl.class.getName());
-    System.out.println(Bug2225016.class.getName());
-    System.out.println(InterfaceNotImplementedExample.class.getName());
-    System.out.println(Bug2139142Interface.class.getName());
-    System.out.println(Bug2269486.class.getName());
-    // ---------------------------------------------------------------------
-    FieldNeverRead fieldNeverRead = new FieldNeverRead();
-    FieldNeverRead.NEVER_READ_FIELD = "WRITE";
-    fieldNeverRead.neverReadField = "write";
-    //
-    FieldNeverWrite fieldNeverWrite = new FieldNeverWrite();
-    System.out.println(FieldNeverWrite.NEVER_WRITE_FIELD);
-    System.out.println(fieldNeverWrite.neverWriteField);
-    //
-    System.out.println(Bug2539795Main.class);
-    //
-    System.out.println(ReferencedByTestsExample.class);
-    new ReferencedByTestsExample().referencedByTestClassAndNormalClass();
-  }
+		System.out.println(QuickFixExample.USE_FINAL1);
+		System.out.println(QuickFixExample.USE_FINAL2);
+		System.out.println(QuickFixExample.USE_FINAL3);
+		System.out.println(QuickFixExample.USE_FINAL4);
+		System.out.println(QuickFixExample.USE_FINAL5);
+		// ---------------------------------------------------------------------
+		System.out.println(Bug2225016Impl.class.getName());
+		System.out.println(Bug2225016.class.getName());
+		System.out.println(InterfaceNotImplementedExample.class.getName());
+		System.out.println(Bug2139142Interface.class.getName());
+		System.out.println(Bug2269486.class.getName());
+		// ---------------------------------------------------------------------
+		FieldNeverRead fieldNeverRead = new FieldNeverRead();
+		FieldNeverRead.NEVER_READ_FIELD = "WRITE";
+		fieldNeverRead.neverReadField = "write";
+		//
+		FieldNeverWrite fieldNeverWrite = new FieldNeverWrite();
+		System.out.println(FieldNeverWrite.NEVER_WRITE_FIELD);
+		System.out.println(fieldNeverWrite.neverWriteField);
+		//
+		System.out.println(Bug2539795Main.class);
+		//
+		System.out.println(ReferencedByTestsExample.class);
+		new ReferencedByTestsExample().referencedByTestClassAndNormalClass();
+	}
 }
