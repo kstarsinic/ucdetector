@@ -1,7 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project default="plugin_export" name="build">
   <target name="plugin_export">
-    <pde.exportPlugins destination="${basedir}"
+    <!--
+    C:\eclipse\links\helper\eclipse
+    C:\eclipse\eclipse-3.3
+    -->
+    <pde.exportPlugins destination="C:\eclipse\eclipse-3.4"
                        exportSource="false"
                        exportType="directory"
                        plugins="org.ucdetector"
