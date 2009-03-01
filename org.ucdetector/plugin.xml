@@ -432,12 +432,23 @@
 
   <!-- ===================================================================== -->
   <!-- INTRO                                                                 -->
-  <!-- ===================================================================== -->
+  <!-- ===================================================================== 
+  http://www.eclipse.org/eclipse/platform-ua/proposals/shared-intro/shared-intro.htm#enhancements
+  -->
   <extension
         point="org.eclipse.ui.intro.configExtension">
-     <configExtension
+     <configExtension 
            configId="org.eclipse.ui.intro.universalConfig"
            content="welcome.xml" >
      </configExtension>
+     <theme
+           default="false"
+           id="org.ucdetector.theme"
+           name="UCDetector"
+           path="."
+           previewImage="icons/ucd.png">
+           <property name="launchbarOverviewIcon"
+            		  value="icons/ucd.png"/>
+     </theme>
   </extension>
 </plugin>
