@@ -75,14 +75,6 @@ public abstract class AbstractUCDetectorIterator extends UCDetectorHandler {
     List<IJavaProject> openProjects = new ArrayList<IJavaProject>();
     for (IProject tempProject : projects) {
       IJavaProject project = JavaCore.create(tempProject);
-      if (project.exists() && !project.isOpen()) {
-        try {
-          project.open(getMonitor());
-        }
-        catch (Exception e) {
-         System.out.println("Cant open: " + e.getMessage());
-        }
-      }
       if (project.isOpen()) {
         openProjects.add(project);
       }

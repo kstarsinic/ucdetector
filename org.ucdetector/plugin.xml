@@ -446,9 +446,15 @@
            id="org.ucdetector.theme"
            name="UCDetector"
            path="."
-           previewImage="icons/ucd.png">
+           previewImage="icons/ucd.gif">
            <property name="launchbarOverviewIcon"
             		  value="icons/ucd.png"/>
      </theme>
+  </extension>
+  <extension id="ucd"
+        point="org.eclipse.core.runtime.applications">
+     <application>
+        <run class="org.ucdetector.UCDApplication" />
+     </application>
   </extension>
 </plugin>

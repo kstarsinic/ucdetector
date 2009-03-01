@@ -1,10 +1,10 @@
-
-set launcher=C:\eclipse\eclipse-3.3\plugins\org.eclipse.equinox.launcher_1.0.0.v20070606.jar
-
-rem set launcher=C:\eclipse\eclipse-3.4\plugins/plugins/org.eclipse.equinox.launcher_1.0.100.v20080509-1800.jar
-rem export launcher=C:\eclipse\eclipse-3.4M5\plugins\org.eclipse.equinox.launcher_1.0.100.v20071211.jar
+rem set launcher=C:\eclipse\eclipse-3.3\plugins\org.eclipse.equinox.launcher_1.0.0.v20070606.jar
+set launcher=C:\eclipse\eclipse-3.4\plugins\org.eclipse.equinox.launcher_1.0.100.v20080509-1800.jar
+rem set launcher=C:\eclipse\eclipse-3.4.1\plugins\org.eclipse.equinox.launcher_1.0.101.R34x_v20080819.jar
+rem set launcher=C:\eclipse\eclipse-3.5M5\plugins\org.eclipse.equinox.launcher_1.0.200.v20090128-1500.jar
 
 set workspace=F:\ws\ucd\runtime-ucd_configuration
 
-java -jar %launcher% -application org.eclipse.ant.core.antRunner -data %workspace% -file headless.xml -consolelog -debug
-
+rem java -jar %launcher% -application org.eclipse.ant.core.antRunner -data %workspace% -file headless.xml -consolelog -debug
+java -jar %launcher% -application org.ucdetector.ucd -consolelog  -data %workspace% -debug
+                                                          
