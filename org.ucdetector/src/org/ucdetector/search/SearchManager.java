@@ -159,10 +159,10 @@ public class SearchManager {
       }
       updateMonitorMessage(method, "override/implements", searchInfo); //$NON-NLS-1$
       // Ignore methods overriding or implementing other methods
-      boolean isOverride = JavaElementUtil.isOverrideOrImplements(method);
-      if (isOverride) {
-        continue;
-      }
+      //      boolean isOverride = JavaElementUtil.isOverrideOrImplements(method);
+      //      if (isOverride) {
+      //        continue;
+      //      }
 
       // it is very expensive to call this method!!!
       StopWatch stop = new StopWatch(method);
@@ -366,10 +366,16 @@ public class SearchManager {
     Pattern searchPattern = Pattern.compile(Pattern.quote(searchString));
     UCDFileSearchRequestor requestor = new UCDFileSearchRequestor(member,
         visibilityHandler);
-    TextSearchEngine searchEngine = TextSearchEngine.create();
     try {
       // If we use monitor here, progressbar is very confusing!
-      searchEngine.search(scope, requestor, searchPattern, null);
+      // UCDTextSearchVisitor
+      if (UCDetectorPlugin.isHeadlessMode()) {
+        // special search without UI stuff, which fails in headless mode 
+        new UCDTextSearchVisitor(requestor, searchPattern).search(scope, null);
+      }
+      else {
+        TextSearchEngine.create().search(scope, requestor, searchPattern, null);
+      }
     }
     catch (OperationCanceledException e) {
       // ignore
@@ -401,9 +407,6 @@ public class SearchManager {
         javaElement, details };
     String message = NLS.bind(Messages.SearchManager_Monitor, bindings);
     monitor.subTask(message);
-    if (DEBUG) {
-      Log.logDebug(message);
-    }
   }
 
   /**

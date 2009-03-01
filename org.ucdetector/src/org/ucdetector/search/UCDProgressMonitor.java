@@ -62,6 +62,9 @@ public class UCDProgressMonitor implements IProgressMonitor {
     if (Log.DEBUG) {
       Log.logDebug(name);
     }
+    else if (UCDetectorPlugin.isHeadlessMode()) {
+      System.out.println(name);
+    }
     delegate.subTask(name);
   }
 
