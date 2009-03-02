@@ -25,7 +25,7 @@ import org.ucdetector.util.MarkerFactory.ElementType;
  * Create a marker
  */
 public class MarkerReport implements IUCDetectorReport {
-  private static final String JAVA_ELEMENT_SEPARATOR_MARKER = ",";
+  private static final String JAVA_ELEMENT_SEPARATOR_MARKER = ","; //$NON-NLS-1$
   /**
    * Don't create each marker. Do a batch creation instead
    */
@@ -80,9 +80,9 @@ public class MarkerReport implements IUCDetectorReport {
 
   public static ElementTypeAndName getElementTypeAndName(IMarker marker) {
     String attribute = marker.getAttribute(
-        MarkerFactory.ELEMENT_TYPE_ATTRIBUTE, "?");
+        MarkerFactory.ELEMENT_TYPE_ATTRIBUTE, "?"); //$NON-NLS-1$
     String[] resultArray = attribute
-        .split(MarkerReport.JAVA_ELEMENT_SEPARATOR_MARKER); //$NON-NLS-1$
+        .split(MarkerReport.JAVA_ELEMENT_SEPARATOR_MARKER);
     ElementTypeAndName result = new ElementTypeAndName();
     result.elementType = (resultArray.length > 0 ? ElementType
         .valueOf(resultArray[0]) : null);

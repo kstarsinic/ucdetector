@@ -46,11 +46,11 @@ public class UCDApplication implements IApplication {
 
     IProject[] projects = root.getProjects();
     List<IJavaProject> openProjects = new ArrayList<IJavaProject>();
-    Log.logInfo("Number of projects: " + projects.length);
+    Log.logInfo("Number of projects: " + projects.length); //$NON-NLS-1$
     for (IProject project : projects) {
       IJavaProject javaProject = JavaCore.create(project);
       if (javaProject.exists() && !javaProject.isOpen()) {
-        Log.logInfo("open project: " + javaProject.getElementName());
+        Log.logInfo("open project: " + javaProject.getElementName()); //$NON-NLS-1$
         javaProject.open(ucdMonitor);
       }
       if (javaProject.isOpen()) {
@@ -59,7 +59,7 @@ public class UCDApplication implements IApplication {
     }
     UCDetectorIterator iterator = new UCDetectorIterator();
     iterator.setMonitor(ucdMonitor);
-    Log.logInfo("Number of projects to iterate: " + openProjects.size());
+    Log.logInfo("Number of projects to iterate: " + openProjects.size()); //$NON-NLS-1$
     iterator.iterate(openProjects
         .toArray(new IJavaProject[openProjects.size()]));
   }

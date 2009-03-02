@@ -71,9 +71,8 @@ public class PreferenceInitializer extends AbstractPreferenceInitializer { // NO
     // Cycles ------------------------------------------------------------------
     store.setDefault(Prefs.CYCLE_DEPTH, Prefs.CYCLE_DEPTH_DEFAULT);
     // Report ------------------------------------------------------------------
-    String REPORT_DEFAULT_NAME = "UCDetetorReport.html";
+    String REPORT_DEFAULT_NAME = "UCDetetorReport.html"; //$NON-NLS-1$
     File report = new File(REPORT_DEFAULT_NAME);
-    System.out.println("report=" + report);
-    store.setDefault(Prefs.REPORT_FILE, report.getAbsolutePath()); //$NON-NLS-1$
+    store.setDefault(Prefs.REPORT_FILE, report.getAbsolutePath());
   }
 }

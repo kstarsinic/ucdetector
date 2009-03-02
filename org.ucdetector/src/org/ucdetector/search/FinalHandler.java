@@ -113,7 +113,7 @@ class FinalHandler {
 
     @Override
     public String toString() {
-      return field.getElementName() + ".hasWriteAccess="
+      return field.getElementName() + ".hasWriteAccess=" //$NON-NLS-1$
           + fieldHasWriteAccessFromMethod;
     }
 

@@ -21,8 +21,8 @@ import org.ucdetector.UCDetectorPlugin;
 /**
  *
  */
-abstract class UCDetectorBasePreferencePage extends
-    FieldEditorPreferencePage implements IWorkbenchPreferencePage {
+abstract class UCDetectorBasePreferencePage extends FieldEditorPreferencePage
+    implements IWorkbenchPreferencePage {
   /**
    * entryNames (first column) and values (second column) for the
    * ComboFieldEditor

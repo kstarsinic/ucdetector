@@ -258,7 +258,7 @@ public class SearchManager {
 
     @Override
     public String toString() {
-      return "hasReadAccess=" + hasReadAccess;
+      return "hasReadAccess=" + hasReadAccess; //$NON-NLS-1$
     }
   }
 

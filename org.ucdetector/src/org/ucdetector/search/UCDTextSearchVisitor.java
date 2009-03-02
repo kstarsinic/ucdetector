@@ -131,8 +131,9 @@ public class UCDTextSearchVisitor {
     for (int i = 0; i < files.length; i++) {
       fCurrentFile = files[i];
       boolean res = processFile(fCurrentFile);
-      if (!res)
+      if (!res) {
         break;
+      }
     }
   }
 

@@ -42,21 +42,23 @@ public class Log {
    * Very simple logging to System.out and System.err
    */
   private static void logImpl(String level, String message, Throwable ex) {
-    if (!Log.DEBUG) {
-      return;
-    }
-    StringBuilder sb = new StringBuilder();
-    sb.append(level).append(": ").append(message == null ? "" : message); //$NON-NLS-1$ //$NON-NLS-2$
     if (Log.DEBUG
         && (LOG_LEVEL_DEBUG.equals(level) || LOG_LEVEL_INFO.equals(level))) {
-      System.out.println(sb.toString());
+      System.out.println(createLogMessage(level, message));
     }
     else if (LOG_LEVEL_WARN.equals(level) || LOG_LEVEL_ERROR.equals(level)) {
-      System.err.println(sb.toString());
+      System.err.println(createLogMessage(level, message));
       if (ex != null) {
         ex.printStackTrace();
       }
     }
+  }
+
+  private static StringBuilder createLogMessage(String level, String message) {
+    String mes = (message == null) ? "" : message; //$NON-NLS-1$
+    StringBuilder sb = new StringBuilder(level.length() + 2 + mes.length());
+    sb.append(level).append(": ").append(mes); //$NON-NLS-1$
+    return sb;
   }
 
   /**

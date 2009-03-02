@@ -357,7 +357,7 @@ public class JavaElementUtil {
 
     @Override
     public String toString() {
-      return "found: " + found;
+      return "found: " + found; //$NON-NLS-1$
     }
   }
 

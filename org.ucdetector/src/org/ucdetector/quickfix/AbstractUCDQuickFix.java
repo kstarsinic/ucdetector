@@ -118,7 +118,7 @@ abstract class AbstractUCDQuickFix extends WorkbenchMarkerResolution {
         return;
       }
       MarkerFactory.ElementType elementType = MarkerReport
-          .getElementTypeAndName(marker).elementType;//$NON-NLS-1$
+          .getElementTypeAndName(marker).elementType;
       runImpl(marker, elementType, nodeToChange);
       marker.delete();
       // -----------------------------------------------------------------------

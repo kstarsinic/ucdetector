@@ -20,9 +20,9 @@ public class UCDetectorTask extends Task {
   @Override
   public void execute() throws BuildException {
     try {
-      Log.logInfo("Starting UCDetectorTask ");
+      Log.logInfo("Starting UCDetectorTask "); //$NON-NLS-1$
       UCDApplication.startImpl();
-      Log.logInfo("Finished UCDetectorTask ");
+      Log.logInfo("Finished UCDetectorTask "); //$NON-NLS-1$
     }
     catch (CoreException e) {
       throw new BuildException(e);
