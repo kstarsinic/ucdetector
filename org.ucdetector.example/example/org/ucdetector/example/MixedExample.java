@@ -8,6 +8,9 @@ public class MixedExample {
 
   public static final String UNUSED = "UNUSED"; // Marker YES: unused code
 
+  @SuppressWarnings("unused")
+  private static final String UNUSED_PRIVAT = "UNUSED"; // Marker YES: unused code
+
   public final void makePrivateMethod() { // Marker YES: use private
   }
 
