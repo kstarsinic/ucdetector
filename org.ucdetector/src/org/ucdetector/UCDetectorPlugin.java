@@ -26,7 +26,6 @@ import org.osgi.framework.BundleContext;
 /**
  * Default Activator-class of this plug-ins
  */
-@SuppressWarnings("restriction")
 public class UCDetectorPlugin extends AbstractUIPlugin {
   public static final String IMAGE_FINAL = "IMAGE_FINAL"; //$NON-NLS-1$
   public static final String IMAGE_CYCLE = "IMAGE_CYCLE"; //$NON-NLS-1$
