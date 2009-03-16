@@ -25,13 +25,6 @@ import org.eclipse.jdt.core.IType;
 import org.eclipse.jdt.core.ITypeHierarchy;
 import org.eclipse.jdt.core.JavaModelException;
 import org.eclipse.jdt.core.Signature;
-import org.eclipse.jdt.core.dom.AST;
-import org.eclipse.jdt.core.dom.ASTNode;
-import org.eclipse.jdt.core.dom.ASTParser;
-import org.eclipse.jdt.core.dom.ASTVisitor;
-import org.eclipse.jdt.core.dom.Annotation;
-import org.eclipse.jdt.core.dom.MethodDeclaration;
-import org.eclipse.jdt.core.dom.Name;
 import org.eclipse.jdt.core.search.IJavaSearchConstants;
 import org.eclipse.jdt.core.search.IJavaSearchScope;
 import org.eclipse.jdt.core.search.SearchEngine;
@@ -604,11 +597,11 @@ public class JavaElementUtil {
             return true;
           }
           // NOT USED: JUnit 4 !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-          if (false) {
-            String annotation = getAnnotationFor(method);
-            return "Test".equals(annotation) //$NON-NLS-1$
-                || "org.junit.Test".equals(annotation); //$NON-NLS-1$
-          }
+          // if (false) {
+          //   String annotation = getAnnotationFor(method);
+          //   return "Test".equals(annotation) //$NON-NLS-1$
+          //       || "org.junit.Test".equals(annotation); //$NON-NLS-1$
+          // }
         }
       }
       catch (JavaModelException e) {
@@ -617,11 +610,10 @@ public class JavaElementUtil {
     return false;
   }
 
-  /**
+  /*
    * @return the annotation for a method like @org.junit.Test
    * This method seems to be slow, because it needs to parse
    * the code of the method!
-   */
   private static String getAnnotationFor(IMethod method)
       throws JavaModelException {
     ASTParser parser = ASTParser.newParser(AST.JLS3);
@@ -651,4 +643,5 @@ public class JavaElementUtil {
       return false;
     }
   }
+   */
 }
