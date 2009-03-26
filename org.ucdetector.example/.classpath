@@ -5,6 +5,7 @@
 	<classpathentry kind="src" path="cylce"/>
 	<classpathentry kind="src" path="src/test"/>
 	<classpathentry kind="src" path="src/main"/>
+	<classpathentry kind="src" path="bug2715348/test/java"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
 	<classpathentry kind="lib" path="lib/example.jar"/>
 	<classpathentry kind="lib" path="lib/junit-4.5.jar"/>

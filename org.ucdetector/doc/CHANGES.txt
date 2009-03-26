@@ -8,6 +8,7 @@ New features:
 Bugfixes:
  - [ 2373808 ] Classes found by text search should have no markers
  - [ 2600845 ] UCDetector html report broken
+ - [ 2715348 ] Filter on Source folders does not work
 
 // -----------------------------------------------------------------------------
 UCDetector 0.12.0 from 2008.11.25:
