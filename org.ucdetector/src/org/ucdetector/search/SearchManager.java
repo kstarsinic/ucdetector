@@ -534,7 +534,6 @@ public class SearchManager {
    * Check conditions from preferences and 
    * cancel search by throwing a {@link OperationCanceledException}
    * when necessary
-   * @param jvaElement TODO
    */
   private static void checkCancelSearch(IJavaElement javaElement, int found,
       int foundTest) {
