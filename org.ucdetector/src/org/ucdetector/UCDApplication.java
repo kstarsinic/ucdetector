@@ -8,6 +8,7 @@
 package org.ucdetector;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import org.eclipse.core.resources.IProject;
@@ -30,14 +31,24 @@ import org.ucdetector.search.UCDProgressMonitor;
 public class UCDApplication implements IApplication {
 
   public Object start(IApplicationContext context) throws Exception {
-    startImpl();
+    List<String> projectsToIterate = null;
+    Object args = context.getArguments().get(
+        IApplicationContext.APPLICATION_ARGS);
+    if (args instanceof String[]) {
+      String[] sArgs = (String[]) args;
+      if (sArgs.length > 1 && "-projects".equals(sArgs[0])) {
+        projectsToIterate = Arrays.asList(sArgs[1].split(","));
+      }
+    }
+    startImpl(projectsToIterate);
     return IApplication.EXIT_OK;
   }
 
   /**
    * 
    */
-  public static void startImpl() throws CoreException {
+  public static void startImpl(List<String> projectsToIterate)
+      throws CoreException {
     UCDetectorPlugin.setHeadlessMode(true);
     UCDProgressMonitor ucdMonitor = new UCDProgressMonitor();
     IWorkspace workspace = ResourcesPlugin.getWorkspace();
@@ -49,8 +60,14 @@ public class UCDApplication implements IApplication {
     Log.logInfo("Number of projects: " + projects.length); //$NON-NLS-1$
     for (IProject project : projects) {
       IJavaProject javaProject = JavaCore.create(project);
+      String projectName = javaProject.getElementName();
+      Log.logInfo("projectName: " + projectName); //$NON-NLS-1$
+      if (projectsToIterate != null && !projectsToIterate.contains(projectName)) {
+        Log.logInfo("projectName: CONTINUE"); //$NON-NLS-1$
+        continue;
+      }
       if (javaProject.exists() && !javaProject.isOpen()) {
-        Log.logInfo("open project: " + javaProject.getElementName()); //$NON-NLS-1$
+        Log.logInfo("open project: " + projectName); //$NON-NLS-1$
         javaProject.open(ucdMonitor);
       }
       if (javaProject.isOpen()) {

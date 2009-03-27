@@ -21,7 +21,7 @@ public class UCDetectorTask extends Task {
   public void execute() throws BuildException {
     try {
       Log.logInfo("Starting UCDetectorTask "); //$NON-NLS-1$
-      UCDApplication.startImpl();
+      UCDApplication.startImpl(null);
       Log.logInfo("Finished UCDetectorTask "); //$NON-NLS-1$
     }
     catch (CoreException e) {
