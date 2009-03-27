@@ -1,0 +1,3 @@
+# Show UCDetector traces during detection
+org.ucdetector/debug=true
+
