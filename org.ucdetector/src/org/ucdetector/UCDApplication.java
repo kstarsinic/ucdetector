@@ -36,8 +36,8 @@ public class UCDApplication implements IApplication {
         IApplicationContext.APPLICATION_ARGS);
     if (args instanceof String[]) {
       String[] sArgs = (String[]) args;
-      if (sArgs.length > 1 && "-projects".equals(sArgs[0])) {
-        projectsToIterate = Arrays.asList(sArgs[1].split(","));
+      if (sArgs.length > 1 && "-projects".equals(sArgs[0])) { //$NON-NLS-1$
+        projectsToIterate = Arrays.asList(sArgs[1].split(",")); //$NON-NLS-1$
       }
     }
     startImpl(projectsToIterate);
