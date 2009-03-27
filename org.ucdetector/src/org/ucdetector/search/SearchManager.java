@@ -100,11 +100,9 @@ public class SearchManager {
    */
   public final void search(List<IType> types, List<IMethod> methods,
       List<IField> fields, Object[] selected) throws CoreException {
-    if (DEBUG) {
-      Log.logDebug(types.size() + " types to search"); //$NON-NLS-1$
-      Log.logDebug(methods.size() + " methods to search"); //$NON-NLS-1$
-      Log.logDebug(fields.size() + " fields to search"); //$NON-NLS-1$
-    }
+    Log.logInfo(types.size() + " types to search"); //$NON-NLS-1$
+    Log.logInfo(methods.size() + " methods to search"); //$NON-NLS-1$
+    Log.logInfo(fields.size() + " fields to search"); //$NON-NLS-1$
     // first searchTypes to fill noRefTypes!
     searchTypes(types);
     searchMethods(methods);
