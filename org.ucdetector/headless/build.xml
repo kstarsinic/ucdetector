@@ -11,25 +11,11 @@
 
   <target name="detect">
     <java jar="${launcher}" fork="true">
-      <jvmarg line="-Dorg.ucdetector/debug=true" />
       <arg line="-application org.ucdetector.ucd" />
       <arg line="-consolelog" />
       <arg line="-debug" />
       <arg line="-data ${workspace}" />
       <arg line="-projects org.ucdetector.example,org.ucdetector" />
     </java>
-  </target>
-
-  <target name="detect-ant">
-    <!--ucdetector.detect
-    <echo>refreshLocal...</echo>
-    <eclipse.refreshLocal resource="org.ucdetector.example" depth="infinite" />
-    <echo>incrementalBuild</echo>
-    <eclipse.incrementalBuild project="org.ucdetector.example" />
-    <echo>helo 3</echo>
-      -->
-    <echo>helo detect start</echo>
-    <ucdetector />
-    <echo>helo detect end</echo>
   </target>
 </project>
