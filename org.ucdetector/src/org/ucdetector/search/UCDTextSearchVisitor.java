@@ -81,8 +81,8 @@ public class UCDTextSearchVisitor {
           IFile file = fCurrentFile;
           if (file != null) {
             String fileName = file.getName();
-            Object[] args = { fileName, new Integer(fNumberOfScannedFiles),
-                new Integer(fNumberOfFilesToScan) };
+            Object[] args = { fileName, Integer.valueOf(fNumberOfScannedFiles),
+                Integer.valueOf(fNumberOfFilesToScan) };
             fProgressMonitor.subTask(Messages.format(
                 SearchMessages.TextSearchVisitor_scanning, args));
             int steps = fNumberOfScannedFiles - fLastNumberOfScannedFiles;
