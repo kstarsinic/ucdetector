@@ -23,7 +23,6 @@ import org.ucdetector.util.MarkerFactory.ElementType;
  * Fixes code by changing visibility to <code>protected</code>
  * default or <code>private</code>
  */
-@SuppressWarnings("restriction")
 class VisibilityQuickFix extends AbstractUCDQuickFix {
 
   protected VisibilityQuickFix(IMarker marker) {

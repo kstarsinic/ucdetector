@@ -46,6 +46,7 @@ public class CheckUcdMarkerIterator extends AbstractUCDetectorIterator {
     markerMap.put(MarkerFactory.UCD_MARKER_TEST_ONLY, "test only");
   }
 
+  @SuppressWarnings("unchecked")
   @Override
   protected void handleCompilationUnit(ICompilationUnit unit)
       throws CoreException {

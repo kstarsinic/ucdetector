@@ -36,7 +36,6 @@ import org.eclipse.search.ui.NewSearchUI;
 /**
  * Do text search headless (no ui stuff)
  */
-@SuppressWarnings("restriction")
 public class UCDTextSearchVisitor {
   private final TextSearchRequestor fCollector;
   private final Matcher fMatcher;

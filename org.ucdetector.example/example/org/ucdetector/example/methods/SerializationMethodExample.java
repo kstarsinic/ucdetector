@@ -1,5 +1,6 @@
 package org.ucdetector.example.methods;
 
+import java.io.File;
 import java.io.IOException;
 import java.io.InvalidClassException;
 import java.io.ObjectInputStream;
@@ -12,38 +13,27 @@ import java.io.ObjectStreamException;
 public class SerializationMethodExample {
 
   /* private */void writeObject(ObjectOutputStream stream) throws IOException {
-    if (false) {
+    if (true) {
       throw new IOException();
     }
   }
 
   /* private */void readObject(ObjectInputStream stream) throws IOException,
       ClassNotFoundException {
-    if (false) {
-      throw new IOException();
-    }
-    else if (false) {
-      throw new ClassNotFoundException();
-    }
+    new File("a").getCanonicalFile();
+    throw new ClassNotFoundException();
   }
 
   public Object writeReplace() throws ObjectStreamException {
-    if (false) {
-      throw new InvalidClassException("Test");
-    }
-    return null;
+    throw new InvalidClassException("Test");
   }
 
   public Object readResolve() throws ObjectStreamException {
-    if (false) {
-      throw new InvalidClassException("Test");
-    }
-    return null;
-
+    throw new InvalidClassException("Test");
   };
 
   /* private */void readObjectNoData() throws ObjectStreamException {
-    if (false) {
+    if (true) {
       throw new InvalidClassException("Test");
     }
   };

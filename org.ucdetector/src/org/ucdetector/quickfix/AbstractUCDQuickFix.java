@@ -61,13 +61,12 @@ import org.ucdetector.util.MarkerFactory.ElementType;
  * http://help.eclipse.org/help32/index.jsp?topic=/org.eclipse.jdt.doc.isv/reference/api/org/eclipse/jdt/core/dom/rewrite/ASTRewrite.html
  * @see http://www.eclipse.org/articles/article.php?file=Article-JavaCodeManipulation_AST/index.html
  */
-@SuppressWarnings("restriction")
 abstract class AbstractUCDQuickFix extends WorkbenchMarkerResolution {
-  private final IMarker marker;
+  private final IMarker quickFixMarker;
   protected final String markerType;
 
   protected AbstractUCDQuickFix(IMarker marker) {
-    this.marker = marker;
+    this.quickFixMarker = marker;
     markerType = getMarkerType(marker);
   }
 
@@ -248,7 +247,7 @@ abstract class AbstractUCDQuickFix extends WorkbenchMarkerResolution {
     final List<IMarker> result = new ArrayList<IMarker>();
     for (IMarker markerToCheck : markers) {
       try {
-        if (this.marker != markerToCheck
+        if (this.quickFixMarker != markerToCheck
             && this.markerType.equals(markerToCheck.getType())) {
           if (isElementTypeEqual(markerToCheck)) {
             result.add(markerToCheck);
@@ -267,7 +266,7 @@ abstract class AbstractUCDQuickFix extends WorkbenchMarkerResolution {
    * @return <code>true</code> if FIELD and FIELD
    */
   private final boolean isElementTypeEqual(IMarker markerToCheck) {
-    return getElementType(marker).equals(getElementType(markerToCheck));
+    return getElementType(quickFixMarker).equals(getElementType(markerToCheck));
   }
 
   private static final ElementType getElementType(IMarker marker) {

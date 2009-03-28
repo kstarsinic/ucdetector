@@ -18,7 +18,6 @@ import org.ucdetector.util.MarkerFactory.ElementType;
 /**
  * 'Fixes' code by adding line comment at end of line: "// NO_UCD"
  */
-@SuppressWarnings("restriction")
 class UseTag_NO_UCD_QuickFix extends AbstractUCDQuickFix {
 
   protected UseTag_NO_UCD_QuickFix(IMarker marker) {

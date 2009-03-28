@@ -30,7 +30,6 @@ import org.ucdetector.Messages;
  *           |- CycleRegion
  * </pre>
  */
-@SuppressWarnings("restriction")
 public class SearchResult extends CycleBaseElement {
   // private final Date created = new Date();
   private List<Cycle> cycles = Collections.emptyList();
