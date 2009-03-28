@@ -11,8 +11,12 @@ import java.text.DateFormat;
 import java.util.Date;
 
 import org.eclipse.core.runtime.CoreException;
+import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.IStatus;
+import org.eclipse.core.runtime.Path;
 import org.eclipse.core.runtime.Status;
+import org.eclipse.jdt.internal.ui.JavaPluginImages;
+import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.jface.resource.ImageRegistry;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.widgets.Shell;
@@ -70,11 +74,14 @@ public class UCDetectorPlugin extends AbstractUIPlugin {
 
   public static String getPreferencesAsString() {
     StringBuilder sb = new StringBuilder();
-    sb.append("\r\n---- UCDetector Plugin Preferences -----------"); //$NON-NLS-1$
+    sb.append("\r\n---- UCDetector Plugin Preferences -----------\r\n"); //$NON-NLS-1$
     String[] propertyNames = plugin.getPluginPreferences().propertyNames();
+    sb.append(propertyNames.length);//$NON-NLS-1$
+    sb.append(" preferences are different from default preferences\r\n"); //$NON-NLS-1$
     for (String propertyName : propertyNames) {
-      sb.append("\r\n   ").append(propertyName).append("="); //$NON-NLS-1$ //$NON-NLS-2$
+      sb.append("   ").append(propertyName).append("="); //$NON-NLS-1$ //$NON-NLS-2$
       sb.append(plugin.getPluginPreferences().getString(propertyName));
+      sb.append("\r\n");//$NON-NLS-1$
     }
     sb.append("\r\n-----------------------------------------------"); //$NON-NLS-1$
     return sb.toString();
@@ -113,16 +120,16 @@ public class UCDetectorPlugin extends AbstractUIPlugin {
   @Override
   protected void initializeImageRegistry(ImageRegistry registry) {
     super.initializeImageRegistry(registry);
-    //    registry.put(IMAGE_CYCLE, getUcdImage("cycle.gif")); //$NON-NLS-1$
-    //    registry.put(IMAGE_COMMENT, getUcdImage("comment_edit.gif")); //$NON-NLS-1$
-    //    registry.put(IMAGE_FINAL, JavaPluginImages.DESC_OVR_FINAL);
+    registry.put(IMAGE_CYCLE, getUcdImage("cycle.gif")); //$NON-NLS-1$
+    registry.put(IMAGE_COMMENT, getUcdImage("comment_edit.gif")); //$NON-NLS-1$
+    registry.put(IMAGE_FINAL, JavaPluginImages.DESC_OVR_FINAL);
   }
 
-  //  private ImageDescriptor getUcdImage(String icon) {
-  //    IPath path = new Path("icons").append("/" + icon); //$NON-NLS-1$ //$NON-NLS-2$
-  //    return JavaPluginImages.createImageDescriptor(getDefault().getBundle(),
-  //        path, true);
-  //  }
+  private ImageDescriptor getUcdImage(String icon) {
+    IPath path = new Path("icons").append("/" + icon); //$NON-NLS-1$ //$NON-NLS-2$
+    return JavaPluginImages.createImageDescriptor(getDefault().getBundle(),
+        path, true);
+  }
 
   /**
    * @param status which is be logged to default log
