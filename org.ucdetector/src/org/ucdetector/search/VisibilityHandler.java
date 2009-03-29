@@ -116,13 +116,19 @@ class VisibilityHandler {
         return false;
       }
     }
-    if (startElement instanceof IMethod) {
+    else if (startElement instanceof IMethod) {
       IMethod method = (IMethod) startElement;
       if (method.isMainMethod()) {
         return false;
       }
       if (isParentInterface(method)) {
         // fix bug [ 2269486 ] Constants in Interfaces Can't be Private
+        return false;
+      }
+    }
+    else if (startElement instanceof IType) {
+      // Bug 2539795: Wrong default visibility marker for classes
+      if (hasPublicChild((IType) startElement)) {
         return false;
       }
     }
@@ -143,6 +149,17 @@ class VisibilityHandler {
         return false;
     }
     return markerFactory.createVisibilityMarker(member, type, line);
+  }
+
+  private boolean hasPublicChild(IType type) throws JavaModelException {
+    for (IJavaElement element : type.getChildren()) {
+      if (element instanceof IMember) {
+        if (Flags.isPublic(((IMember) element).getFlags())) {
+          return true;
+        }
+      }
+    }
+    return false;
   }
 
   private static boolean isParentInterface(IJavaElement element)

@@ -1,7 +1,7 @@
 package org.ucdetector.example.methods;
 /**
  */
-public class ConstructorNoDefaultExample {  // Marker YES: use default
+public class ConstructorNoDefaultExample { 
  
 
   /** we dont't ignore constructors with parameter! */
