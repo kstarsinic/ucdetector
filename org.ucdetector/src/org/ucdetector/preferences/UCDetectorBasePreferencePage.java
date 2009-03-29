@@ -42,7 +42,8 @@ abstract class UCDetectorBasePreferencePage extends FieldEditorPreferencePage
 
   @Override
   public boolean performOk() {
-    Log.logInfo(UCDetectorPlugin.getPreferencesAsString());
+    Log.logInfo("New preferences: "// //$NON-NLS-1$
+        + UCDetectorPlugin.getPreferencesAsString());
     return super.performOk();
   }
 
