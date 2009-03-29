@@ -30,58 +30,58 @@ public final class Prefs {
   }
 
   // FILTER --------------------------------------------------------------------
-  protected static final String FILTER_SOURCE_FOLDER//
+  static final String FILTER_SOURCE_FOLDER//
   = UCDetectorPlugin.ID + ".sourceFolderFilter"; //$NON-NLS-1$
-  protected static final String FILTER_PACKAGE//
+  static final String FILTER_PACKAGE//
   = UCDetectorPlugin.ID + ".packageFilter"; //$NON-NLS-1$
-  protected static final String FILTER_CLASS //
+  static final String FILTER_CLASS //
   = UCDetectorPlugin.ID + ".classFilter"; //$NON-NLS-1$
-  protected static final String FILTER_METHOD //
+  static final String FILTER_METHOD //
   = UCDetectorPlugin.ID + ".methodFilter"; //$NON-NLS-1$
   static final String FILTER_FIELD //
   = UCDetectorPlugin.ID + ".fieldFilter"; //$NON-NLS-1$
-  protected static final String FILTER_BEAN_METHOD //
+  static final String FILTER_BEAN_METHOD //
   = UCDetectorPlugin.ID + ".beanMethodFilter"; //$NON-NLS-1$
-  protected static final String DETECT_TEST_ONLY //
+  static final String DETECT_TEST_ONLY //
   = UCDetectorPlugin.ID + ".detectTestOnly"; //$NON-NLS-1$
   // ANALYZE -------------------------------------------------------------------
-  protected static final String ANALYZE_CLASSES //
+  static final String ANALYZE_CLASSES //
   = UCDetectorPlugin.ID + ".classes"; //$NON-NLS-1$
-  protected static final String ANALYZE_MEHTODS //
+  static final String ANALYZE_MEHTODS //
   = UCDetectorPlugin.ID + ".methods"; //$NON-NLS-1$
-  protected static final String ANALYZE_FIELDS //
+  static final String ANALYZE_FIELDS //
   = UCDetectorPlugin.ID + ".member"; //$NON-NLS-1$
-  protected static final String ANALYZE_LITERALS_CHECK //
+  static final String ANALYZE_LITERALS_CHECK //
   = UCDetectorPlugin.ID + ".literalsCheck"; //$NON-NLS-1$
-  protected static final String ANALYZE_CHECK_FULL_CLASS_NAME //
+  static final String ANALYZE_CHECK_FULL_CLASS_NAME //
   = UCDetectorPlugin.ID + ".checkFullClassName"; //$NON-NLS-1$
-  protected static final String ANALYZE_LITERALS //
+  static final String ANALYZE_LITERALS //
   = UCDetectorPlugin.ID + ".literals"; //$NON-NLS-1$
   // WARN_LIMIT ----------------------------------------------------------------
-  protected static final String WARN_LIMIT //
+  static final String WARN_LIMIT //
   = UCDetectorPlugin.ID + ".warnLimit"; //$NON-NLS-1$
   // KEYWORD -------------------------------------------------------------------
   /*
   Feature Requests ID: 2490344:
   */
-  protected static final String ANALYZE_VISIBILITY_PROTECTED_CLASSES //
+  static final String ANALYZE_VISIBILITY_PROTECTED_CLASSES //
   = UCDetectorPlugin.ID + ".visibility.protected.classes"; //$NON-NLS-1$
-  protected static final String ANALYZE_VISIBILITY_PRIVATE_CLASSES //
+  static final String ANALYZE_VISIBILITY_PRIVATE_CLASSES //
   = UCDetectorPlugin.ID + ".visibility.private.classes"; //$NON-NLS-1$
   //
-  protected static final String ANALYZE_VISIBILITY_PROTECTED_METHODS //
+  static final String ANALYZE_VISIBILITY_PROTECTED_METHODS //
   = UCDetectorPlugin.ID + ".visibility.protected.methods"; //$NON-NLS-1$
-  protected static final String ANALYZE_VISIBILITY_PRIVATE_METHODS //
+  static final String ANALYZE_VISIBILITY_PRIVATE_METHODS //
   = UCDetectorPlugin.ID + ".visibility.private.methods"; //$NON-NLS-1$
   //
-  protected static final String ANALYZE_VISIBILITY_PROTECTED_FIELDS //
+  static final String ANALYZE_VISIBILITY_PROTECTED_FIELDS //
   = UCDetectorPlugin.ID + ".visibility.protected.fields"; //$NON-NLS-1$
-  protected static final String ANALYZE_VISIBILITY_PRIVATE_FIELDS //
+  static final String ANALYZE_VISIBILITY_PRIVATE_FIELDS //
   = UCDetectorPlugin.ID + ".visibility.private.fields"; //$NON-NLS-1$
   //
-  protected static final String ANALYZE_VISIBILITY_PROTECTED_CONSTANTS //
+  static final String ANALYZE_VISIBILITY_PROTECTED_CONSTANTS //
   = UCDetectorPlugin.ID + ".visibility.protected.constants"; //$NON-NLS-1$
-  protected static final String ANALYZE_VISIBILITY_PRIVATE_CONSTANTS //
+  static final String ANALYZE_VISIBILITY_PRIVATE_CONSTANTS //
   = UCDetectorPlugin.ID + ".visibility.private.constants"; //$NON-NLS-1$
   //
 
@@ -90,13 +90,13 @@ public final class Prefs {
   static final String ANALYZE_FINAL_METHOD //
   = UCDetectorPlugin.ID + ".finalMethod"; //$NON-NLS-1$
   // CYCLE ---------------------------------------------------------------------
-  protected static final String CYCLE_DEPTH //
+  static final String CYCLE_DEPTH //
   = UCDetectorPlugin.ID + ".cycleDepth"; //$NON-NLS-1$
-  protected static final int CYCLE_DEPTH_MIN = 2; //
-  protected static final int CYCLE_DEPTH_DEFAULT = 4; //
-  protected static final int CYCLE_DEPTH_MAX = 8; //
+  static final int CYCLE_DEPTH_MIN = 2; //
+  static final int CYCLE_DEPTH_DEFAULT = 4; //
+  static final int CYCLE_DEPTH_MAX = 8; //
   // REPORT --------------------------------------------------------------------
-  protected static final String REPORT_FILE //
+  static final String REPORT_FILE //
   = UCDetectorPlugin.ID + ".reportFile"; //$NON-NLS-1$
   // ---------------------------------------------------------------------------
   private static final String[] EMPTY_ARRAY = new String[0];
