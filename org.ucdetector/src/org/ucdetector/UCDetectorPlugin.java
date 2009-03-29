@@ -59,31 +59,30 @@ public class UCDetectorPlugin extends AbstractUIPlugin {
   }
 
   private void dumpInformation() {
-    StringBuilder sb = new StringBuilder();
-    sb.append("-----------------------------------------------"); //$NON-NLS-1$
     Object version = getBundle().getHeaders().get("Bundle-Version"); //$NON-NLS-1$
-    sb.append("\r\nStarting UCDetector version ").append(version); //$NON-NLS-1$
-    sb.append(" at ").append( //$NON-NLS-1$
+    Log.logInfo("\tUCD version : " + version); //$NON-NLS-1$
+    Log.logInfo("\tTime        : " + //  //$NON-NLS-1$
         DateFormat.getDateTimeInstance().format(new Date()));
-    sb.append("\r\njava=").append(System.getProperty("java.version")); //$NON-NLS-1$ //$NON-NLS-2$
-    sb.append(",eclipse=").append(System.getProperty("osgi.framework.version")); //$NON-NLS-1$ //$NON-NLS-2$
-    sb.append("\r\nlogfile=").append(System.getProperty("osgi.logfile")); //$NON-NLS-1$ //$NON-NLS-2$
-    sb.append(getPreferencesAsString());
-    Log.logInfo(sb.toString());
+    Log.logInfo("\tjava.version: " + // //$NON-NLS-1$
+        System.getProperty("java.version")); //$NON-NLS-1$
+    Log.logInfo("\tEclipse     : " + // //$NON-NLS-1$
+        System.getProperty("osgi.framework.version")); //$NON-NLS-1$
+    Log.logInfo("\tLogfile     : " + // //$NON-NLS-1$
+        System.getProperty("osgi.logfile")); //$NON-NLS-1$
+    Log.logInfo(getPreferencesAsString());
   }
 
   public static String getPreferencesAsString() {
     StringBuilder sb = new StringBuilder();
-    sb.append("\r\n---- UCDetector Plugin Preferences -----------\r\n"); //$NON-NLS-1$
+    sb.append("\r\nUCDetector Plugin Preferences:\r\n"); //$NON-NLS-1$
     String[] propertyNames = plugin.getPluginPreferences().propertyNames();
     sb.append(propertyNames.length);//$NON-NLS-1$
-    sb.append(" preferences are different from default preferences\r\n"); //$NON-NLS-1$
+    sb.append(" preferences are different from default preferences:\r\n"); //$NON-NLS-1$
     for (String propertyName : propertyNames) {
-      sb.append("   ").append(propertyName).append("="); //$NON-NLS-1$ //$NON-NLS-2$
+      sb.append("\t").append(propertyName).append("="); //$NON-NLS-1$ //$NON-NLS-2$
       sb.append(plugin.getPluginPreferences().getString(propertyName));
       sb.append("\r\n");//$NON-NLS-1$
     }
-    sb.append("\r\n-----------------------------------------------"); //$NON-NLS-1$
     return sb.toString();
   }
 

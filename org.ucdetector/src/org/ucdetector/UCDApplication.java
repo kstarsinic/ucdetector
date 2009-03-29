@@ -57,17 +57,27 @@ public class UCDApplication implements IApplication {
 
     IProject[] projects = root.getProjects();
     List<IJavaProject> openProjects = new ArrayList<IJavaProject>();
-    Log.logInfo("Number of projects: " + projects.length); //$NON-NLS-1$
+    Log.logInfo("Run UCDetector"); //$NON-NLS-1$
+    Log.logInfo("\tWorkspace: " + root.getLocation()); //$NON-NLS-1$
+    if (projectsToIterate != null && projectsToIterate.size() > 0) {
+      Log.logInfo("\tprojects to detect: " + projectsToIterate); //$NON-NLS-1$
+    }
+    else {
+      Log.logInfo("\tstart parameter '-projects' not found." //$NON-NLS-1$
+          + " Run UCDetector for all projects"); //$NON-NLS-1$
+    }
+    Log.logInfo("\tprojects found in workspace: " + projects.length); //$NON-NLS-1$
     for (IProject project : projects) {
       IJavaProject javaProject = JavaCore.create(project);
       String projectName = javaProject.getElementName();
-      Log.logInfo("projectName: " + projectName); //$NON-NLS-1$
       if (projectsToIterate != null && !projectsToIterate.contains(projectName)) {
-        Log.logInfo("projectName: CONTINUE"); //$NON-NLS-1$
+        Log.logInfo("\t\tIGNORE: " + projectName // //$NON-NLS-1$
+            + " (found in start parameter '-projects')"); //$NON-NLS-1$
         continue;
       }
+      Log.logInfo("\t\t" + projectName); //$NON-NLS-1$
       if (javaProject.exists() && !javaProject.isOpen()) {
-        Log.logInfo("open project: " + projectName); //$NON-NLS-1$
+        Log.logInfo("\t\topen project: " + projectName); //$NON-NLS-1$
         javaProject.open(ucdMonitor);
       }
       if (javaProject.isOpen()) {
