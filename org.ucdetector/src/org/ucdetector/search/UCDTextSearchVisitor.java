@@ -59,7 +59,7 @@ class UCDTextSearchVisitor {
         SearchMessages.TextSearchEngine_statusMessage, null);
 
     fMatcher = searchPattern.pattern().length() == 0 ? null : searchPattern
-        .matcher(new String());
+        .matcher(""); //$NON-NLS-1$
 
     fFileCharSequenceProvider = new FileCharSequenceProvider();
     fMatchAccess = new TextSearchMatchAccessImpl();
@@ -231,7 +231,7 @@ class UCDTextSearchVisitor {
       }
     }
     finally {
-      fMatchAccess.initialize(null, 0, 0, new String()); // clear references
+      fMatchAccess.initialize(null, 0, 0, ""); // clear references //$NON-NLS-1$
     }
   }
 
