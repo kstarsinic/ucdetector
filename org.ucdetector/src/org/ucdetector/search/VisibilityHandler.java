@@ -88,7 +88,7 @@ class VisibilityHandler {
     }
     setMaxVisibilityFound(VISIBILITY.PUBLIC);
     if (Prefs.isDetectTestOnly() && (found == foundTest)) {
-      // continue searching, because all machtes are matches in test code
+      // continue searching, because all matches are matches in test code
       return;
     }
     if (found > Prefs.getWarnLimit()) {
@@ -111,8 +111,7 @@ class VisibilityHandler {
         // EnumConstant can not be private
         return false;
       }
-      IJavaElement parent = field.getParent();
-      if (parent instanceof IType && ((IType) parent).isInterface()) {
+      if (isParentInterface(field)) {
         // fix bug [ 2269486 ] Constants in Interfaces Can't be Private
         return false;
       }
@@ -122,8 +121,7 @@ class VisibilityHandler {
       if (method.isMainMethod()) {
         return false;
       }
-      IJavaElement parent = method.getParent();
-      if (parent instanceof IType && ((IType) parent).isInterface()) {
+      if (isParentInterface(method)) {
         // fix bug [ 2269486 ] Constants in Interfaces Can't be Private
         return false;
       }
@@ -145,6 +143,15 @@ class VisibilityHandler {
         return false;
     }
     return markerFactory.createVisibilityMarker(member, type, line);
+  }
+
+  private static boolean isParentInterface(IJavaElement element)
+      throws JavaModelException {
+    IJavaElement parent = element.getParent();
+    if (parent instanceof IType && ((IType) parent).isInterface()) {
+      return true;
+    }
+    return false;
   }
 
   /**
