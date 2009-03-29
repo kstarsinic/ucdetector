@@ -197,7 +197,7 @@ abstract class AbstractUCDQuickFix extends WorkbenchMarkerResolution {
    */
   protected final ListRewrite getModifierListRewrite(
       MarkerFactory.ElementType elementType, BodyDeclaration nodeToChange) {
-    ChildListPropertyDescriptor property = null;
+    ChildListPropertyDescriptor property;
     switch (elementType) {
       case TYPE:
         property = TypeDeclaration.MODIFIERS2_PROPERTY;
@@ -209,6 +209,8 @@ abstract class AbstractUCDQuickFix extends WorkbenchMarkerResolution {
       case CONSTANT:
         property = FieldDeclaration.MODIFIERS2_PROPERTY;
         break;
+      default:
+        property = null;
     }
     return rewrite.getListRewrite(nodeToChange, property);
   }
