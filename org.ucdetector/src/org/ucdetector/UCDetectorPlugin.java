@@ -179,7 +179,7 @@ public class UCDetectorPlugin extends AbstractUIPlugin {
     return getActiveWorkbenchWindow().getShell();
   }
 
-  public static void setHeadlessMode(boolean isHeadlessMode) {
+  protected static void setHeadlessMode(boolean isHeadlessMode) {
     UCDetectorPlugin.isHeadlessMode = isHeadlessMode;
   }
 
