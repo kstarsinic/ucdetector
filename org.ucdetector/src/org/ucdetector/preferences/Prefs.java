@@ -8,8 +8,6 @@ package org.ucdetector.preferences;
 
 import java.util.regex.Pattern;
 
-import org.eclipse.core.resources.IResource;
-import org.eclipse.core.runtime.IPath;
 import org.eclipse.jdt.core.Flags;
 import org.eclipse.jdt.core.IField;
 import org.eclipse.jdt.core.IJavaElement;
@@ -22,6 +20,7 @@ import org.eclipse.jdt.core.JavaModelException;
 import org.eclipse.jface.preference.IPreferenceStore;
 import org.ucdetector.Log;
 import org.ucdetector.UCDetectorPlugin;
+import org.ucdetector.util.JavaElementUtil;
 
 /**
  * Constant definitions for plug-in preferences, offer access to preferences
@@ -113,14 +112,10 @@ public final class Prefs {
    * matches the source folder filter
    */
   public static boolean filterPackageFragmentRoot(IPackageFragmentRoot root) {
-    // bug [ 2715348 ] Filter on Source folders does not work
-    // Match project relative path, not only last path element 
-    IResource resource = root.getResource();
-    if (resource != null && resource.getProjectRelativePath() != null) {
-      IPath path = resource.getProjectRelativePath();
-      return Prefs.matchFilter(Prefs.FILTER_SOURCE_FOLDER, path.toOSString());
-    }
-    return true;
+    String sourceFolder = JavaElementUtil
+        .getSourceFolderProjectRelativePath(root);
+    return sourceFolder == null
+        || Prefs.matchFilter(Prefs.FILTER_SOURCE_FOLDER, sourceFolder);
   }
 
   /**
