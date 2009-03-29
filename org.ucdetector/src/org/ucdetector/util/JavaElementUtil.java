@@ -9,6 +9,7 @@ package org.ucdetector.util;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.eclipse.core.resources.IResource;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.NullProgressMonitor;
 import org.eclipse.core.runtime.OperationCanceledException;
@@ -46,7 +47,7 @@ import org.ucdetector.UCDetectorPlugin;
  * Calculates inheritance for methods
  */
 public class JavaElementUtil {
-  private static NullProgressMonitor monitor = new NullProgressMonitor();
+  private final static NullProgressMonitor monitor = new NullProgressMonitor();
 
   private JavaElementUtil() {
   };
@@ -558,10 +559,24 @@ public class JavaElementUtil {
   }
 
   /**
+   * Bug [ 2715348 ] Filter on Source folders does not work.
+   * Match project relative path, not only last path element 
+   * @return "src/java/test" instead of only "test"
+   */
+  public static String getSourceFolderProjectRelativePath(
+      IPackageFragmentRoot root) {
+    IResource resource = root.getResource();
+    if (resource != null && resource.getProjectRelativePath() != null) {
+      return resource.getProjectRelativePath().toOSString();
+    }
+    return null;
+  }
+
+  /**
    * @return <code>true</code>, when:
    * <ul>
    * <li>the class name of the javaElement ends with "Test"</li>
-   * <li>the source folder name of the javaElement contains "test"</li>
+   * <li>the source folder name of the javaElement contains "test" or "junit"</li>
    * <li>the javaElement is a JUnit 3 test method: <code>public void testName()</code></li>
    * </ul>
    * NOTE: The @org.junit.Test annotations are ignored
@@ -580,8 +595,12 @@ public class JavaElementUtil {
     // Check packageFragmentRoot -----------------------------------------------
     IPackageFragmentRoot pfr = getPackageFragmentRootFor(javaElement);
     if (pfr != null) {
-      if (pfr.getElementName().toLowerCase().contains("test")) { //$NON-NLS-1$
-        return true;
+      String sourceFolder = getSourceFolderProjectRelativePath(pfr);
+      if (sourceFolder != null) {
+        String sf = sourceFolder.toLowerCase();
+        if (sf.contains("test") || sf.contains("junit")) { //$NON-NLS-1$  //$NON-NLS-2$
+          return true;
+        }
       }
     }
     // Check method ------------------------------------------------------------
