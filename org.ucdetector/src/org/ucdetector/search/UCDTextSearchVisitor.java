@@ -36,7 +36,7 @@ import org.eclipse.search.ui.NewSearchUI;
 /**
  * Do text search headless (no ui stuff)
  */
-public class UCDTextSearchVisitor {
+class UCDTextSearchVisitor {
   private final TextSearchRequestor fCollector;
   private final Matcher fMatcher;
 
@@ -52,7 +52,7 @@ public class UCDTextSearchVisitor {
 
   private final TextSearchMatchAccessImpl fMatchAccess;
 
-  public UCDTextSearchVisitor(TextSearchRequestor collector,
+  protected UCDTextSearchVisitor(TextSearchRequestor collector,
       Pattern searchPattern) {
     fCollector = collector;
     fStatus = new MultiStatus(NewSearchUI.PLUGIN_ID, IStatus.OK,
@@ -65,7 +65,7 @@ public class UCDTextSearchVisitor {
     fMatchAccess = new TextSearchMatchAccessImpl();
   }
 
-  public IStatus search(IFile[] files, IProgressMonitor monitor) {
+  private IStatus search(IFile[] files, IProgressMonitor monitor) {
     fProgressMonitor = monitor == null ? new NullProgressMonitor() : monitor;
     fNumberOfScannedFiles = 0;
     fNumberOfFilesToScan = files.length;
@@ -123,7 +123,7 @@ public class UCDTextSearchVisitor {
     }
   }
 
-  public IStatus search(TextSearchScope scope, IProgressMonitor monitor) {
+  protected IStatus search(TextSearchScope scope, IProgressMonitor monitor) {
     return search(scope.evaluateFilesInScope(fStatus), monitor);
   }
 
@@ -137,7 +137,7 @@ public class UCDTextSearchVisitor {
     }
   }
 
-  public boolean processFile(IFile file) {
+  private boolean processFile(IFile file) {
     try {
       if (!fCollector.acceptFile(file) || fMatcher == null) {
         return true;
@@ -235,14 +235,14 @@ public class UCDTextSearchVisitor {
     }
   }
 
-  public static class TextSearchMatchAccessImpl extends TextSearchMatchAccess {
+  private static class TextSearchMatchAccessImpl extends TextSearchMatchAccess {
 
     private int fOffset;
     private int fLength;
     private IFile fFile;
     private CharSequence fContent;
 
-    public void initialize(IFile file, int offset, int length,
+    private void initialize(IFile file, int offset, int length,
         CharSequence content) {
       fFile = file;
       fOffset = offset;
