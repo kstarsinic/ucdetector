@@ -1,7 +1,7 @@
 package org.ucdetector.example.methods;
 /**
  */
-public class ConstructorNoDefaultExample { 
+public class ConstructorNoDefaultExample {  // Marker YES: use default
  
 
   /** we dont't ignore constructors with parameter! */
@@ -10,5 +10,5 @@ public class ConstructorNoDefaultExample {
 
   
   public ConstructorNoDefaultExample(int i,String parameter) { // Marker YES: use protected
-  }
+	}
 }
