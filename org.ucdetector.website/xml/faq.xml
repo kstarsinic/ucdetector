@@ -12,13 +12,13 @@
 	
 	<b>How do I get rid of all this UCDetector warnings?</b>
 	<br/>
-  <ul>
-    <li>Run UCDetector/clean markers</li>
+	<ul>
+		<li>Run UCDetector/clean markers</li>
 		<li>Group warnings by type</li>
 		<li>Filter UCDetector warinigs: Configure Contens.../Types</li>
 	</ul>
 	<p/>
-		
+	
 	<b>How do I fix a OutOfMemoryError?</b>
 	<br/>
 		Increase java heap space by declaring vm parameter: -Xmx500m -XX:MaxPermSize=256m<p/>
@@ -42,7 +42,7 @@ Or check out org.ucdetector.additional and write your own detection.<p/>
 	
 	<b>Is there a ANT task to create UCDetector reports?</b>
 	<br/>
-		No. <!-- It's planned. It will need a headless eclipse to work.-->
+		Yes. Unzip folder org.ucdetector.jar/ant, check README.txt
 	<p/>
 	
 	
@@ -53,9 +53,9 @@ Or check out org.ucdetector.additional and write your own detection.<p/>
 	
 	<b>How can I see UCDetector traces?</b>
 	<br/>
-		Add programm parameter "-debug" to eclipse.ini, put org.ucdetector.jar\.options
-		file in your eclipse install directory.<p/>
-		
+		Add a new line '-debug' to ECLIPSE_HOME/eclipse.ini. Unzip org.ucdetector.jar/.options
+		file to ECLIPSE_HOME<p/>
+	
 	<b>Where can I find UCDetector Exceptions?</b>
 	<br/>
 		Check the eclipse error log view and the eclipse log file at: ECLIPSE_WORKSPACE/.metadata/.log<p/>
