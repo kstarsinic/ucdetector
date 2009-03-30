@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="ISO-8859-1"?>
 <!-- 
- Copyright (c) 2008 Joerg Spieler All rights reserved. This program and the
+ Copyright (c) 2009 Joerg Spieler All rights reserved. This program and the
  accompanying materials are made available under the terms of the Eclipse
  Public License v1.0 which accompanies this distribution, and is available at
  http://www.eclipse.org/legal/epl-v10.html
@@ -9,11 +9,19 @@
 <!--  <xsl:strip-space elements="*"/>  -->
 	<xsl:output encoding="ISO-8859-1" indent="yes" method="html" doctype-public="-//W3C//DTD HTML 4.01 Transitional//EN" doctype-system="http://www.w3.org/TR/html4/transitional.dtd" />
 	<xsl:template match="/">
+	
 		<xsl:comment>
-Copyright (c) 2009 Joerg Spieler
+ Copyright (c) 2009 Joerg Spieler All rights reserved. This program and the
+ accompanying materials are made available under the terms of the Eclipse
+ Public License v1.0 which accompanies this distribution, and is available at
+ http://www.eclipse.org/legal/epl-v10.html
+		</xsl:comment>
+		
+		<xsl:comment>
 To create custom reports change: 
 ECLIPSE_HOME/plugins/org.ucdetector_*.jar/org/ucdetector/report/html.xslt
 		</xsl:comment>
+		
 		<html>
 			<head>
 				<title>UCDetector Report</title>
