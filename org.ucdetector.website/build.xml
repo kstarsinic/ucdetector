@@ -16,7 +16,7 @@
   <target name="create" description="Create UCDetector homepage">
     <antcall target="transform" />
     <copy-help />
-    <echo>Created UCDetector homepage in ${html.dir}</echo>
+    <echo>Created UCDetector homepage. See: ${html.dir}/index.html</echo>
   </target>
 
   <!-- =contact.html==================================================================== -->
