@@ -10,6 +10,7 @@ Bugfixes:
  - [ 2600845 ] UCDetector html report broken
  - [ 2715348 ] Filter on Source folders does not work
  - [ 2539795 ] Wrong default visibility marker for classes
+ - [ 2721955 ] On QuickFix the direct sibling marker gets deleted too
 
 // -----------------------------------------------------------------------------
 UCDetector 0.12.0 from 2008.11.25:
