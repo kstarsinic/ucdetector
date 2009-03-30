@@ -359,5 +359,10 @@ abstract class AbstractUCDQuickFix extends WorkbenchMarkerResolution {
       visitImpl(declaration, declaration.getName());
       return false;
     }
+
+    @Override
+    public String toString() {
+      return "nodeFound='" + nodeFound + "'";
+    }
   }
 }

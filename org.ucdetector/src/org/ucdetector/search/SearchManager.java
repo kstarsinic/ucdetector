@@ -362,8 +362,8 @@ public class SearchManager {
       return 0;
     }
     Pattern searchPattern = Pattern.compile(Pattern.quote(searchString));
-    UCDFileSearchRequestor requestor = new UCDFileSearchRequestor(member,
-        visibilityHandler);
+    UCDFileSearchRequestor requestor = new UCDFileSearchRequestor(searchString,
+        member, visibilityHandler);
     try {
       // If we use monitor here, progressbar is very confusing!
       // UCDTextSearchVisitor
@@ -413,9 +413,16 @@ public class SearchManager {
   private static final class UCDFileSearchRequestor extends TextSearchRequestor {
     private int found = 0;
     private final VisibilityHandler visibilityHandler;
+    private final String searchString;
 
-    private UCDFileSearchRequestor(IMember searchStart,
+    @Override
+    public String toString() {
+      return "'" + searchString + "' found=" + found;
+    }
+
+    private UCDFileSearchRequestor(String searchString, IMember searchStart,
         VisibilityHandler visibilityHandler) {
+      this.searchString = searchString;
       this.visibilityHandler = visibilityHandler;
     }
 
@@ -472,6 +479,12 @@ public class SearchManager {
     private int foundTest = 0;
     private final IMember searchStart;
     private final VisibilityHandler visibilityHandler;
+
+    @Override
+    public String toString() {
+      return searchStart.getElementName() + " found=" + found + ", foundTest="
+          + foundTest;
+    }
 
     private UCDSearchRequestor(IMember searchStart,
         VisibilityHandler visibilityHandler) {
