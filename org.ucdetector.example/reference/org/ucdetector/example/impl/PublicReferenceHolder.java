@@ -9,6 +9,7 @@ import org.ucdetector.example.bugs.Bug2139142Interface;
 import org.ucdetector.example.bugs.Bug2225016;
 import org.ucdetector.example.bugs.Bug2269486;
 import org.ucdetector.example.bugs.Bug2539795Main;
+import org.ucdetector.example.bugs.Bug2721955;
 import org.ucdetector.example.bugs.impl.Bug2225016Impl;
 import org.ucdetector.example.classes.AnnotationExample;
 import org.ucdetector.example.classes.AnonymousClass;
@@ -181,6 +182,7 @@ public class PublicReferenceHolder {
 		System.out.println(Bug2539795Main.class);
 		//
 		System.out.println(ReferencedByTestsExample.class);
+		System.out.println(Bug2721955.class);
 		new ReferencedByTestsExample().referencedByTestClassAndNormalClass();
 	}
 }
