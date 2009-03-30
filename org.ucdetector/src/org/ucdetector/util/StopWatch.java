@@ -19,7 +19,7 @@ import org.ucdetector.Log;
  */
 public class StopWatch {
   private static final int MINIMUM_DURATION = Log.getDebugOption(
-      "org.ucdetector/debug/search/duration", -1); //$NON-NLS-1$
+      "org.ucdetector/debug/search/duration", 1000); //$NON-NLS-1$
   private final String message;
   private long start = System.currentTimeMillis();
   private static final DecimalFormat DOUBLE_FORMAT = new DecimalFormat(
