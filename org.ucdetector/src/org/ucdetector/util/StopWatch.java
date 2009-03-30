@@ -8,6 +8,8 @@
 package org.ucdetector.util;
 
 import java.text.DecimalFormat;
+import java.text.DecimalFormatSymbols;
+import java.util.Locale;
 
 import org.eclipse.jdt.core.IMember;
 import org.ucdetector.Log;
@@ -20,7 +22,8 @@ public class StopWatch {
       "org.ucdetector/debug/search/duration", -1); //$NON-NLS-1$
   private final String message;
   private long start = System.currentTimeMillis();
-  private static final DecimalFormat DOUBLE_FORMAT = new DecimalFormat("0.00"); //$NON-NLS-1$
+  private static final DecimalFormat DOUBLE_FORMAT = new DecimalFormat(
+      "0.00", new DecimalFormatSymbols(Locale.US)); //$NON-NLS-1$
 
   public StopWatch() {
     message = null;
@@ -46,7 +49,6 @@ public class StopWatch {
         sb.append(message);
       }
       sb.append(": ").append(timeAsString(duration)); //$NON-NLS-1$
-      sb.append(" seconds"); //$NON-NLS-1$
       Log.logDebug(sb.toString());
     }
   }
