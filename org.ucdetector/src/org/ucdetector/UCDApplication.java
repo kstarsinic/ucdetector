@@ -26,7 +26,16 @@ import org.ucdetector.search.UCDProgressMonitor;
 
 /**
  * Run UCDetector in headless mode. Entry point is an eclipse application.
- * See also files: run.sh, run.bat, plugin.xml
+ * <p>
+ * See also files:
+ * <ul>
+ * <li>ant/detect.sh</li>
+ * <li>ant/detect.bat</li>
+ * <li>ant/build.xml</li>
+ * </ul>
+ * <p>
+ * See feature request: [ 2653112 ] UCDetector should run as a ant task in
+ * headless mode
  */
 public class UCDApplication implements IApplication {
 
