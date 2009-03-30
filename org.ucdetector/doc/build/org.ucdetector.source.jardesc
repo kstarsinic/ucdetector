@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="WINDOWS-1252"?>
 <jardesc>
-<jar path="org.ucdetector/doc/build/plugins/org.ucdetector.source_0.12.0.jar"/>
+<jar path="org.ucdetector/doc/build/plugins/org.ucdetector.source_1.0.0.jar"/>
 <options buildIfNeeded="true" compress="true" descriptionLocation="/org.ucdetector/doc/build/org.ucdetector.source.jardesc" exportErrors="true" exportWarnings="true" includeDirectoryEntries="true" overwrite="false" saveDescription="true" storeRefactorings="false" useSourceFolders="true"/>
 <storedRefactorings deprecationInfo="true" structuralOnly="false"/>
 <selectedProjects/>
