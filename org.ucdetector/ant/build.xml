@@ -10,17 +10,17 @@
   /opt/eclipse-3.3/plugins/org.eclipse.equinox.launcher_1.0.0.v20070606.jar
   /opt/eclipse-3.4M5/plugins/org.eclipse.equinox.launcher_1.0.100.v20071211.jar
   -->
-  <property name="launcher"
+  <property name="LAUNCHER"
             location="/opt/eclipse-3.4/plugins/org.eclipse.equinox.launcher_1.0.100.v20080509-1800.jar" />
-  <property name="workspace"
+  <property name="WORKSPACE"
             location="/home/js/workspace/runtime-EclipseApplication" />
 
   <target name="detect">
-    <java jar="${launcher}" fork="true">
+    <java jar="${LAUNCHER}" fork="true">
       <arg line="-application org.ucdetector.ucd" />
       <arg line="-consolelog" />
       <arg line="-debug" />
-      <arg line="-data ${workspace}" />
+      <arg line="-data ${WORKSPACE}" />
       <arg line="-projects org.ucdetector.example,org.ucdetector" />
     </java>
   </target>
