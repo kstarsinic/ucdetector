@@ -445,7 +445,7 @@
      <theme
            default="false"
            id="org.ucdetector.theme"
-           name="UCDetector"
+           name="%theme.name.0"
            path="."
            previewImage="icons/ucd.gif">
            <property name="launchbarOverviewIcon"
