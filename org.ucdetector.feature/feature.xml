@@ -2,7 +2,7 @@
 <feature
       id="org.ucdetector.feature"
       label="UCDetector"
-      version="0.12.0"
+      version="1.0.0"
       provider-name="Joerg Spieler">
 
    <description url="http://www.ucdetector.org/">
@@ -45,7 +45,7 @@ If you did not receive this Content directly from the Eclipse Foundation, the Co
          id="org.ucdetector"
          download-size="150"
          install-size="150"
-         version="0.12.0"
+         version="1.0.0"
          unpack="false"/>
 
 </feature>
