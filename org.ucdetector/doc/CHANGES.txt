@@ -9,7 +9,7 @@ Bugfixes:
  - [ 2373808 ] Classes found by text search should have no markers
  - [ 2600845 ] UCDetector html report broken
  - [ 2715348 ] Filter on Source folders does not work
- - [ 2539795 ] Wrong default visibility marker for classes
+ - [ 2539795 ] Added marker warning for: Wrong default visibility marker for classes
  - [ 2721955 ] On QuickFix the direct sibling marker gets deleted too
 
 // -----------------------------------------------------------------------------

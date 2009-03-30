@@ -127,9 +127,10 @@ class VisibilityHandler {
       }
     }
     else if (startElement instanceof IType) {
-      // Bug 2539795: Wrong default visibility marker for classes
       if (hasPublicChild((IType) startElement)) {
-        return false;
+        // The return line does not resolve
+        // Bug 2539795: Wrong default visibility marker for classes
+        // return false;
       }
     }
     String type;

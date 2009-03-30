@@ -15,6 +15,7 @@ import org.eclipse.jdt.core.IField;
 import org.eclipse.jdt.core.IJavaElement;
 import org.eclipse.jdt.core.IMember;
 import org.eclipse.jdt.core.IMethod;
+import org.eclipse.jdt.core.IType;
 import org.eclipse.osgi.util.NLS;
 import org.ucdetector.Log;
 import org.ucdetector.Messages;
@@ -141,6 +142,10 @@ public final class MarkerFactory {
       visibilityString = "default"; //$NON-NLS-1$
     }
     String searchInfo = JavaElementUtil.getMemberTypeString(member);
+    if (member instanceof IType) {
+      // [2539795] Visibility marker for classes causes compilation error
+      visibilityString += Messages.SearchManager_VisibilityCompileErrorForClass;
+    }
     Object[] bindings = new Object[] { searchInfo,
         JavaElementUtil.getElementName(member), visibilityString };
     String message = NLS
