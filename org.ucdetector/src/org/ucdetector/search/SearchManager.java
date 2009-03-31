@@ -420,7 +420,8 @@ public class SearchManager {
       return "'" + searchString + "' found=" + found; //$NON-NLS-1$ //$NON-NLS-2$
     }
 
-    private UCDFileSearchRequestor(String searchString, VisibilityHandler visibilityHandler) {
+    private UCDFileSearchRequestor(String searchString,
+        VisibilityHandler visibilityHandler) {
       this.searchString = searchString;
       this.visibilityHandler = visibilityHandler;
     }
