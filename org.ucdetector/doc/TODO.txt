@@ -35,15 +35,13 @@ Steps to create new Version:
  - Create: 
    - ucdetector.jar       : /org.ucdetector/doc/build/BuildUCDetector.launch
    - source.jar           : /org.ucdetector/doc/build/org.ucdetector.source.jardesc
-   - additional_source.jar: /org.ucdetector.additional/doc/build/org.ucdetector.additional.source.jardesc
    - ucdetector.test.jar  : /org.ucdetector_test/doc/build/build.xml
  - Smoke test:
    - deploy ucdetector.jar and ucdetector.test.jar to eclipse 3.3, java5
    - UCDetector setting: All warning, simple class name
    - count
    - delete markers
-   - cycle
-   - detect: /org.ucdetector.example/cycle
+   - cycle detect: /org.ucdetector.example/cycle
    - check UCDMarker: /org.ucdetector.example/example
  - Sourceforge:
 		 - Categorization
@@ -65,11 +63,5 @@ Steps to create new Version:
    - update /org.ucdetector.update_site/site.xml
  - SVN branch and tag
  - update homepage (run /org.ucdetector.website/build.xml:send)
-
-//------------------------------------------------------------------------------
-Troubleshooting:
- <eclipse-install>/.metadata/.log
-
-
 //------------------------------------------------------------------------------
 // :mode=java:
