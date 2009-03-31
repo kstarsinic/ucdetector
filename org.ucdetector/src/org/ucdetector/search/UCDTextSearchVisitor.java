@@ -32,6 +32,7 @@ import org.eclipse.search.internal.ui.Messages;
 import org.eclipse.search.internal.ui.SearchMessages;
 import org.eclipse.search.internal.ui.SearchPlugin;
 import org.eclipse.search.ui.NewSearchUI;
+import org.ucdetector.Log;
 
 /**
  * Do text search headless (no ui stuff)
@@ -128,8 +129,8 @@ class UCDTextSearchVisitor {
   }
 
   private void processFiles(IFile[] files) {
-    for (int i = 0; i < files.length; i++) {
-      fCurrentFile = files[i];
+    for (IFile file : files) {
+      fCurrentFile = file;
       boolean res = processFile(fCurrentFile);
       if (!res) {
         break;
@@ -202,6 +203,7 @@ class UCDTextSearchVisitor {
       }
     }
     catch (IndexOutOfBoundsException e) {
+      Log.logError("Problems in hasBinaryContent: ", e); //$NON-NLS-1$
     }
     return false;
   }

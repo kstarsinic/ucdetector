@@ -50,7 +50,8 @@ public class JavaElementUtil {
   private final static NullProgressMonitor monitor = new NullProgressMonitor();
 
   private JavaElementUtil() {
-  };
+    //
+  }
 
   /**
    * @return the package for an class, method, or field
@@ -624,6 +625,7 @@ public class JavaElementUtil {
         }
       }
       catch (JavaModelException e) {
+        Log.logError("Cant run isTestCode()", e); //$NON-NLS-1$
       }
     }
     return false;
