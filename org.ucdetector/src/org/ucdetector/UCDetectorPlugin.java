@@ -76,7 +76,7 @@ public class UCDetectorPlugin extends AbstractUIPlugin {
     StringBuilder sb = new StringBuilder();
     sb.append("\r\nUCDetector Plugin Preferences:\r\n"); //$NON-NLS-1$
     String[] propertyNames = plugin.getPluginPreferences().propertyNames();
-    sb.append(propertyNames.length);//$NON-NLS-1$
+    sb.append(propertyNames.length);
     sb.append(" preferences are different from default preferences:\r\n"); //$NON-NLS-1$
     for (String propertyName : propertyNames) {
       sb.append("\t").append(propertyName).append("="); //$NON-NLS-1$ //$NON-NLS-2$
