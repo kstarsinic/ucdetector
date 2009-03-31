@@ -111,7 +111,7 @@ abstract class AbstractUCDQuickFix extends WorkbenchMarkerResolution {
       firstType.accept(visitor);
       BodyDeclaration nodeToChange = visitor.nodeFound;
       if (Log.DEBUG) {
-        Log.logDebug("Node to change:\r\n'" + nodeToChange + "'"); //$NON-NLS-1$
+        Log.logDebug("Node to change:\r\n'" + nodeToChange + "'"); //$NON-NLS-1$ //$NON-NLS-2$
       }
       if (nodeToChange == null) {
         return;
@@ -362,7 +362,7 @@ abstract class AbstractUCDQuickFix extends WorkbenchMarkerResolution {
 
     @Override
     public String toString() {
-      return "nodeFound='" + nodeFound + "'";
+      return "nodeFound='" + nodeFound + "'"; //$NON-NLS-1$ //$NON-NLS-2$
     }
   }
 }
