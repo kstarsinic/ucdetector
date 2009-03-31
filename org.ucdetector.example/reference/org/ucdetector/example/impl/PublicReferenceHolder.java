@@ -131,7 +131,12 @@ public class PublicReferenceHolder {
 		FinalFieldExamples.geStatictFieldSetInSetter();
 		FinalFieldExamples.setStaticFieldSetInSetter(3);
 		// ---------------------------------------------------------------------
-		new MixedExample().makeFinalMethod();
+		new MixedExample().helper();
+		new MixedExample().helper();
+		String s = new MixedExample().readOnlyField;
+		s = new MixedExample().readOnlyField;
+		// System.out.println(new MixedExample().exampleField);
+		MixedExample.usedOnceMethod();
 		// ---------------------------------------------------------------------
 		Java5Example java5Example = new Java5Example();
 		java5Example.annotatedMethod2();
