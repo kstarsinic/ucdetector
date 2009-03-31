@@ -27,6 +27,7 @@ import org.ucdetector.util.JavaElementUtil;
  */
 public final class Prefs {
   private Prefs() {
+    // avoid instantiation
   }
 
   // FILTER --------------------------------------------------------------------

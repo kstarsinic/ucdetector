@@ -172,6 +172,7 @@ public class UCDetectorPreferencePage extends UCDetectorBasePreferencePage {
    * */
   @Override
   protected void adjustGridLayout() {
+    //
   }
 
   /**

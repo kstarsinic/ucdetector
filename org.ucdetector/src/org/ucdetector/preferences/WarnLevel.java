@@ -29,6 +29,7 @@ public enum WarnLevel {
   IGNORE();
 
   private WarnLevel() {
+    //
   }
 
   String toStringLocalized() {

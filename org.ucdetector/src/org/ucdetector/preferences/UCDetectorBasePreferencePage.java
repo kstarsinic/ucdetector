@@ -44,6 +44,7 @@ abstract class UCDetectorBasePreferencePage extends FieldEditorPreferencePage
   }
 
   public void init(IWorkbench workbench) {
+    //
   }
 
   @Override
