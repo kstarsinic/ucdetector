@@ -99,7 +99,7 @@ public class SearchManager {
    * Start searching for classes, methods, fields
    */
   public final void search(List<IType> types, List<IMethod> methods,
-      List<IField> fields, Object[] selected) throws CoreException {
+      List<IField> fields) throws CoreException {
     Log.logInfo(types.size() + " types to search"); //$NON-NLS-1$
     Log.logInfo(methods.size() + " methods to search"); //$NON-NLS-1$
     Log.logInfo(fields.size() + " fields to search"); //$NON-NLS-1$
@@ -363,7 +363,7 @@ public class SearchManager {
     }
     Pattern searchPattern = Pattern.compile(Pattern.quote(searchString));
     UCDFileSearchRequestor requestor = new UCDFileSearchRequestor(searchString,
-        member, visibilityHandler);
+        visibilityHandler);
     try {
       // If we use monitor here, progressbar is very confusing!
       // UCDTextSearchVisitor
@@ -417,11 +417,10 @@ public class SearchManager {
 
     @Override
     public String toString() {
-      return "'" + searchString + "' found=" + found;
+      return "'" + searchString + "' found=" + found; //$NON-NLS-1$ //$NON-NLS-2$
     }
 
-    private UCDFileSearchRequestor(String searchString, IMember searchStart,
-        VisibilityHandler visibilityHandler) {
+    private UCDFileSearchRequestor(String searchString, VisibilityHandler visibilityHandler) {
       this.searchString = searchString;
       this.visibilityHandler = visibilityHandler;
     }
@@ -482,7 +481,7 @@ public class SearchManager {
 
     @Override
     public String toString() {
-      return searchStart.getElementName() + " found=" + found + ", foundTest="
+      return searchStart.getElementName() + " found=" + found + ", foundTest=" //$NON-NLS-1$ //$NON-NLS-2$
           + foundTest;
     }
 
