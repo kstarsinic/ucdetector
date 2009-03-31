@@ -5,8 +5,10 @@
     C:\eclipse\links\helper\eclipse
     C:\eclipse\eclipse-3.3
     C:\eclipse\eclipse-3.4
+    
+    /opt/eclipse-3.4
     -->
-    <pde.exportPlugins destination="/opt/eclipse-3.4"
+    <pde.exportPlugins destination="C:\eclipse\eclipse-3.4"
                        exportSource="false"
                        exportType="directory"
                        plugins="org.ucdetector"
