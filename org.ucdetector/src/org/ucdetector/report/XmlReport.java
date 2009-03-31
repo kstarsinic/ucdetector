@@ -60,16 +60,16 @@ import org.w3c.dom.Element;
 * @see /org.ucdetector/src/org/ucdetector/report/html.xslt
  */
 public class XmlReport implements IUCDetectorReport {
-  private static final String COPY_RIGHT = 
-    "Copyright (c) 2009 Joerg Spieler All rights reserved. This program and the\n"+//$NON-NLS-1$
-    "accompanying materials are made available under the terms of the Eclipse\n"+//$NON-NLS-1$
-    " Public License v1.0 which accompanies this distribution, and is available at\n"+//$NON-NLS-1$
-    "http://www.eclipse.org/legal/epl-v10.html";//$NON-NLS-1$
+  private static final String COPY_RIGHT = //
+  "Copyright (c) 2009 Joerg Spieler All rights reserved. This program and the\n" + //$NON-NLS-1$
+      "accompanying materials are made available under the terms of the Eclipse\n" //$NON-NLS-1$
+      + " Public License v1.0 which accompanies this distribution, and is available at\n" //$NON-NLS-1$
+      + "http://www.eclipse.org/legal/epl-v10.html\n";//$NON-NLS-1$
   //
   private static final String EXTENSION_XML = ".xml"; //$NON-NLS-1$
   private static final String EXTENSION_HTML = ".html"; //$NON-NLS-1$
   private static final String XSL_FILE = "org/ucdetector/report/html.xslt";//$NON-NLS-1$
-    
+
   private final DateFormat dateFormatter = DateFormat.getDateTimeInstance(
       DateFormat.SHORT, DateFormat.SHORT, Locale.getDefault());
 
