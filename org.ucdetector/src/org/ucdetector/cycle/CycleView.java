@@ -340,6 +340,7 @@ public class CycleView extends ViewPart { //
       IStructuredContentProvider, ITreeContentProvider {
 
     public void dispose() {
+      //
     }
 
     public Object[] getElements(Object parent) {
@@ -359,6 +360,7 @@ public class CycleView extends ViewPart { //
     }
 
     public void inputChanged(Viewer v, Object oldInput, Object newInput) {
+      //
     }
   }
 }

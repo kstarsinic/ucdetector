@@ -36,111 +36,170 @@ public class UCDetectorHandler { // NO_UCD
   // ---------------------------------------------------------------------------
   // GENERIC HANDLERS
   // ---------------------------------------------------------------------------
-  /** @throws CoreException in classes overriding this method */
+  /** 
+   * @param objects 
+   * @throws CoreException in classes overriding this method */
   public void handleStartGlobal(IJavaElement[] objects) throws CoreException {
+    //
   }
 
-  /** @throws CoreException in classes overriding this method */
+  /** 
+   * @param objects 
+   * @throws CoreException in classes overriding this method */
   public void handleEndGlobal(IJavaElement[] objects) throws CoreException {
+    //
   }
 
-  /** @throws CoreException in classes overriding this method */
+  /**  @param javaElement 
+   * @throws CoreException in classes overriding this method */
   public void handleStartSelectedElement(IJavaElement javaElement)
       throws CoreException {
+    //
   }
 
-  /** @throws CoreException in classes overriding this method */
+  /**  @param javaElement 
+   * @throws CoreException in classes overriding this method */
   public void handleEndSelectedElement(IJavaElement javaElement)
       throws CoreException {
+    //
   }
 
-  /** @throws CoreException in classes overriding this method */
+  /** 
+   * @param javaElement 
+   * @throws CoreException in classes overriding this method */
   public void handleStartElement(IJavaElement javaElement) throws CoreException {
     // Dumping all javaElements
     // System.out.println(JavaElementUtil.asString(javaElement));
   }
 
-  /** @throws CoreException in classes overriding this method */
+  /** 
+   * @param javaElement 
+   * @throws CoreException in classes overriding this method */
   public void handleEndElement(IJavaElement javaElement) throws CoreException {
+    //
   }
 
   // ---------------------------------------------------------------------------
   // JAVA ELEMENT HANDLERS
   // ---------------------------------------------------------------------------
 
-  protected void handleJavaModel(IJavaModel model) {// 
+  /**
+   * @param model  
+   */
+  protected void handleJavaModel(IJavaModel model) {
+    //
   }
 
+  /**
+   * @param project  
+   */
   protected void handleJavaProject(IJavaProject project) {
+    //
+
   }
 
-  protected void handlePackageFragmentRoot(IPackageFragmentRoot root) {// 
+  /**
+   * @param root  
+   */
+  protected void handlePackageFragmentRoot(IPackageFragmentRoot root) {
+    // 
   }
 
+  /**
+   * @param packageFragment  
+   */
   protected void handlePackageFragment(IPackageFragment packageFragment) {
+    //
   }
 
-  /** @throws CoreException in classes overriding this method */
+  /** @param classFile 
+   * @throws CoreException in classes overriding this method */
   // CLASS ---------------------------------------------------------------------
-  protected void handleClassFile(IClassFile classFile) throws CoreException {// 
+  protected void handleClassFile(IClassFile classFile) throws CoreException {
+    //
+
   }
 
-  /** @throws CoreException in classes overriding this method */
-  protected void handleCompilationUnit(ICompilationUnit unit)// 
+  /** @param unit 
+   * @throws CoreException in classes overriding this method */
+  protected void handleCompilationUnit(ICompilationUnit unit)
       throws CoreException {
+    //
   }
 
-  /** @throws CoreException in classes overriding this method */
+  /** @param type 
+   * @throws CoreException in classes overriding this method */
   protected void handleType(IType type) throws CoreException {
+    //
   }
 
   // SUP CLASS -----------------------------------------------------------------
-  /** @throws CoreException */
-  protected void handlePackageDeclaration(IPackageDeclaration packageDeclaration)// 
+  /** @param packageDeclaration 
+   * @throws CoreException */
+  protected void handlePackageDeclaration(IPackageDeclaration packageDeclaration)
       throws CoreException {
+    //
   }
 
-  /** @throws CoreException */
+  /** @param importContainer 
+   * @throws CoreException */
   protected void handleImportContainer(IImportContainer importContainer)// 
       throws CoreException {
+    //
   }
 
-  /** @throws CoreException */
+  /** @param importDeclaration 
+   * @throws CoreException */
   protected void handleImportDeclaration(IImportDeclaration importDeclaration)// 
       throws CoreException {
+    //
   }
 
-  /** @throws CoreException */
+  /** @param field 
+   * @throws CoreException */
   protected void handleField(IField field) throws CoreException {
+    //
   }
 
-  /** @throws CoreException */
+  /** @param initializer 
+   * @throws CoreException */
   protected void handleInitializer(IInitializer initializer)// 
       throws CoreException {
+    //
   }
 
-  /** @throws CoreException */
+  /** @param method 
+   * @throws CoreException */
   protected void handleMethod(IMethod method) throws CoreException {
+    //
   }
 
   // ---------------------------------------------------------------------------
   // RESOURCE HANDLERS
   // ---------------------------------------------------------------------------
-  /** @throws CoreException */
+  /** @param file 
+   * @throws CoreException */
   protected void handleResourceFile(IFile file) throws CoreException {
+    //
   }
 
-  /** @throws CoreException */
+  /** @param folder 
+   * @throws CoreException */
   protected void handleResourceFolder(IFolder folder) throws CoreException {
+    //
   }
 
-  /** @throws CoreException */
+  /** @param project 
+   * @throws CoreException */
   protected void handleResourceProject(IProject project) throws CoreException {
+    //
   }
 
-  /** @throws CoreException */
+  /** @param workspaceRoot 
+   * @throws CoreException */
   protected void handleResourceWorkspaceRoot(IWorkspaceRoot workspaceRoot)
       throws CoreException {
+    //
   }
 
   // ---------------------------------------------------------------------------
@@ -190,6 +249,7 @@ public class UCDetectorHandler { // NO_UCD
   /**
    * Override and return <code>true</code>, if you don't want to iterate
    * children of importContainer, which are all imports.
+   * @param importContainer 
    */
   protected boolean doImportContainerChildren(IImportContainer importContainer) {
     return false;
