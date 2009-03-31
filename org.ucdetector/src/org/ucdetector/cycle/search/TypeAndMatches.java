@@ -72,7 +72,7 @@ class TypeAndMatches {
     }
     int offset = match.getOffset();
     int length = match.getLength();
-    String codeLine = lineManger.getPieceOfCode(matchElement, offset, length);
+    String codeLine = lineManger.getPieceOfCode(matchElement, offset);
     List<CycleRegion> cycleRegions = cycleMember.getChildren();
     CycleRegion cycleRegion = new CycleRegion(cycleMember, offset, length,
         lineNr, codeLine);
