@@ -36,19 +36,21 @@ This cycle classes are shown in s special cycle view.
 <!-- left ================================================== -->
 			<td>
 			
-<h3>Download or update site</h3>
+<h3>Get UCDetector</h3>
+UCDetector needs Eclipse >= 3.3 
+<br></br>
 <b>Download:</b>
 <!-- ======================================================================= -->
 <ul>
-  <li>Download <a href="http://sourceforge.net/project/showfiles.php?group_id=219599">org.ucdetector_*.jar</a> or</li>
-  <li>Put the jar into your ECLIPSE_HOME/plugins directory</li>
-  <li>Restart <a href="http://www.eclipse.org/downloads/">Eclipse version >= 3.3</a></li>
+  <li>Download <a href="http://sourceforge.net/project/showfiles.php?group_id=219599">org.ucdetector_*.jar</a></li>
+  <li>Put the jar into <code>ECLIPSE_HOME/plugins</code> directory</li>
+  <li>Restart Eclipse</li>
 </ul>
 
 
-<b>Eclipse update site</b>
+<b>Eclipse update site:</b>
 <br></br>
-<pre>http://ucdetector.sourceforge.net/update</pre>
+<code>http://ucdetector.sourceforge.net/update</code>
 
 			
 			
@@ -56,25 +58,26 @@ This cycle classes are shown in s special cycle view.
 <!-- ======================================================================= -->
 Instead of clicking Shift+Ctrl+G
       (search references in workspace) all the time, follow the next steps:
-<ul>
-  <li>1. Right click on a project or package in the eclipse package explorer</li>
-  <li>2. 
-	Select the context menu: UCDetector/detect unnecessary code
+<ol>
+  <li>In the package explorer right click on a project, package or class</li>
+  <li>Select the context menu: UCDetector/detect unnecessary code
 	  <img alt="run UCDetector" src="@ICONS_DIR@/ucd.gif" />
   </li>
-  <li>3.
-     Check warnings in the eclipse java editor and the eclipse problem view
+  <li>Check warnings in java editor and Problems View
     <img alt="not found" src="@ICONS_DIR@/not_found_obj.gif" />
     <img alt="use private" src="@ICONS_DIR@/use_private.gif"/>
     <img alt="use default" src="@ICONS_DIR@/use_default.gif"/>
     <img alt="use protected" src="@ICONS_DIR@/use_protected.gif"/>
     <img alt="use final" src="@ICONS_DIR@/use_final.gif"/>
+    <img alt="test only" src="@ICONS_DIR@/testOnly.gif"/>
+    <img alt="test only" src="@ICONS_DIR@/testOnly.gif"/>
+    <img alt="few found" src="@ICONS_DIR@/few_found_obj.gif"/>
 	</li>
-  <li>4. Use the menu "Group By/Type" in the Problems View</li>
-  <li>5. Change code carefully. Use  QuickFixes (right click on markers)</li>
-  <li>6. Change preference "Detect code with max number of references" from 0 to 1, run UCDetector again</li>
-  <li>7. Repeat step 1. to 5.</li>
-</ul>
+  <li>Use the menu "Group By/Type" in Problems View</li>
+  <li>Change code carefully. Use QuickFixes (right click on markers)</li>
+  <li>Change preference "Detect code with max number of references" from 0 to 1, run UCDetector again</li>
+  <li>Repeat step 1. to 5.</li>
+</ol>
 
 
 <h3>Really want to change code?</h3>
