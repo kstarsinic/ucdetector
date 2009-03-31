@@ -143,9 +143,9 @@ public class LineManger {
   }
 
   /**
-   * @return Piece of code contained in offset and length
+   * @return Piece of code contained in offset
    */
-  public String getPieceOfCode(IJavaElement element, int offset, int length) {
+  public String getPieceOfCode(IJavaElement element, int offset) {
     IType type = JavaElementUtil.getTypeFor(element);
     ICompilationUnit unit = type.getCompilationUnit();
     int[] lineEnds = lineEndsMap.get(unit);
