@@ -20,6 +20,7 @@ public final class Messages extends NLS {
   }
 
   private Messages() {
+    // avoid instantiation
   }
 
   // ACTIONS -----------------------------------------------------------------

@@ -101,5 +101,6 @@ public class UCDApplication implements IApplication {
   }
 
   public void stop() {
+    Log.logInfo("Finished UCDetector"); //$NON-NLS-1$
   }
 }
