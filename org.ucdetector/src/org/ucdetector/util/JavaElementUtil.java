@@ -128,7 +128,7 @@ public class JavaElementUtil {
    * <li><code>private void readObjectNoData() throws ObjectStreamException;</code></li>
    * <li></li>
    * </ul>
-   * @see http://java.sun.com/javase/6/docs/platform/serialization/spec/output.html
+   * @see "http://java.sun.com/javase/6/docs/platform/serialization/spec/output.html"
    */
   public static boolean isSerializationMethod(IMethod method) {
     String methodName = method.getElementName();
@@ -154,7 +154,7 @@ public class JavaElementUtil {
    *         <li><code>static final long serialVersionUID</code></li>
    *         <li><code>private static final ObjectStreamField[] serialPersistentFields</code></li>
    * </ul>
-   * @see http://java.sun.com/javase/6/docs/platform/serialization/spec/output.html
+   * @see "http://java.sun.com/javase/6/docs/platform/serialization/spec/output.html"
    */
   public static boolean isSerializationField(IField field)
       throws JavaModelException {
@@ -171,7 +171,7 @@ public class JavaElementUtil {
   * <li>For methods: <code>ClassName.methodName(String, int, double )</code></li>
   * <li>For fields: <code>ClassName.fieldName</code></li>
   * </ul>
-  * @see org.eclipse.jdt.internal.core.JavaElement.readableName()
+  * @see org.eclipse.jdt.internal.core.JavaElement#readableName()
    */
   public static String getElementName(IJavaElement element) {
     if (element == null) {
@@ -244,7 +244,7 @@ public class JavaElementUtil {
    *         <code>public void foo(String text, int length)<code> will create <br>
    *         <code>"String,int"<code><br>
    *         if the parameter list is to long, a short form will be returned: <br><code>"String,int,*,*,*,"
-   * @see org.eclipse.jdt.internal.core.SourceMethod.toStringName(StringBuffer, int)
+   * @see org.eclipse.jdt.internal.core.SourceMethod#toStringInfo(int, StringBuffer)
    */
   private static String parametersToString(IMethod method) {
     StringBuffer sb = new StringBuffer();
@@ -268,7 +268,7 @@ public class JavaElementUtil {
 
   /**
    * @see org.eclipse.jdt.ui.actions.FindDeclarationsAction
-   * @see http://help.eclipse.org/stable/index.jsp?topic=/org.eclipse.jdt.doc.isv/guide/jdt_api_search.htm
+   * @see "http://help.eclipse.org/stable/index.jsp?topic=/org.eclipse.jdt.doc.isv/guide/jdt_api_search.htm"
    * @return <code>true</code> if a method is overridden<br>
    * it is very expensive to call this method!!!
    */

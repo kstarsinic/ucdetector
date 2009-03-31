@@ -92,7 +92,7 @@ public class MarkerReport implements IUCDetectorReport {
 
   /**
    * Data container, containing a elementType
-   * @see MarkerReport#createJavaElementString()
+   * @see MarkerReport#createJavaElementString(IJavaElement)
    */
   // TODO 2009-02-20: UCD tells to use default visibility. But compile error
   public static class ElementTypeAndName {

@@ -21,7 +21,7 @@ import org.ucdetector.Messages;
  * Create the UCDetector preference page:<br>
  * Values are stored in:
  * <code>RUNTIME_WORSPACE_DIR\.metadata\.plugins\org.eclipse.core.runtime\.settings\org.ucdetector.prefs</code>
- * @see example in http://www.eclipsepluginsite.com/preference-pages.html
+ * @see "http://www.eclipsepluginsite.com/preference-pages.html"
  */
 public class UCDetectorPreferencePage extends UCDetectorBasePreferencePage {
 
@@ -152,7 +152,8 @@ public class UCDetectorPreferencePage extends UCDetectorBasePreferencePage {
     IntegerFieldEditor cycleDepth = new IntegerFieldEditor(Prefs.CYCLE_DEPTH,
         Messages.PreferencePage_MaxCycleSize, spacer) {
       /** 
-       * Hack for layout problems. See also: adjustGridLayout()
+       * Hack for layout problems. 
+       * @see #adjustGridLayout()
        * */
       @Override
       public int getNumberOfControls() {

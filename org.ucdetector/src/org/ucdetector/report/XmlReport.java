@@ -52,12 +52,12 @@ import org.w3c.dom.Element;
 /**
  * Creates text report files like:
  * <ul>
-* <li>html-file</li>
-* <li>xml-file</li>
-* </ul>
-* This class uses xslt transformation.<br>
-* This class tries to not throw Exceptions.
-* @see /org.ucdetector/src/org/ucdetector/report/html.xslt
+ * <li>html-file</li>
+ * <li>xml-file</li>
+ * </ul>
+ * This class uses xslt transformation.<br>
+ * This class tries to not throw Exceptions.
+ * @see "file://org.ucdetector/src/org/ucdetector/report/html.xslt"
  */
 public class XmlReport implements IUCDetectorReport {
   private static final String COPY_RIGHT = //

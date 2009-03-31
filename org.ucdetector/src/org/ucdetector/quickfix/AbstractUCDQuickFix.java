@@ -58,8 +58,8 @@ import org.ucdetector.util.MarkerFactory.ElementType;
  * Base class for all UCDetector QuickFixes. This class does all the stuff to
  * change a java file.
  * 
- * http://help.eclipse.org/help32/index.jsp?topic=/org.eclipse.jdt.doc.isv/reference/api/org/eclipse/jdt/core/dom/rewrite/ASTRewrite.html
- * @see http://www.eclipse.org/articles/article.php?file=Article-JavaCodeManipulation_AST/index.html
+ * @see "http://help.eclipse.org/help32/index.jsp?topic=/org.eclipse.jdt.doc.isv/reference/api/org/eclipse/jdt/core/dom/rewrite/ASTRewrite.html"
+ * @see "http://www.eclipse.org/articles/article.php?file=Article-JavaCodeManipulation_AST/index.html"
  */
 abstract class AbstractUCDQuickFix extends WorkbenchMarkerResolution {
   private final IMarker quickFixMarker;

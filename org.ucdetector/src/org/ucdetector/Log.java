@@ -9,7 +9,7 @@ package org.ucdetector;
 import org.eclipse.core.runtime.Platform;
 
 /**
- * @see http://wiki.eclipse.org/FAQ_How_do_I_write_to_the_console_from_a_plug-in_%3F
+ * @see "http://wiki.eclipse.org/FAQ_How_do_I_write_to_the_console_from_a_plug-in_%3F"
  */
 public class Log {
 
@@ -93,7 +93,7 @@ public class Log {
    * <pre>org.ucdetector/debug=true</pre>
    * to file ECLIPSE_INSTALL_DIR\.options
    * 
-   * @see http://wiki.eclipse.org/FAQ_How_do_I_use_the_platform_debug_tracing_facility%3F
+   * @see "http://wiki.eclipse.org/FAQ_How_do_I_use_the_platform_debug_tracing_facility%3F"
    */
   public static final boolean DEBUG = isDebugOption("org.ucdetector/debug"); //$NON-NLS-1$
 }
