@@ -4,14 +4,25 @@
 		<tr valign="top">
 			<td>
 <!-- ======================================================================= -->
-				<p><a href="http://sourceforge.net/svn/?group_id=219599">Check out</a>
-				project "org.ucdetector.additional" from SVN:</p>
-				<pre>svn co https://ucdetector.svn.sourceforge.net/svnroot/ucdetector ucdetector</pre>
+     <h3>Get Code</h3>
 
+				<p>
+				- Import UCDetector projects using 
+				<a href="http://ucdetector.svn.sourceforge.net/viewvc/ucdetector/trunk/org.ucdetector/doc/UCDetector.psf">eclipse project set</a>.
+				</p>
+				Or:
+				<p>
+				- <a href="http://sourceforge.net/svn/?group_id=219599">Check out</a>
+				projects <code>org.ucdetector</code> and <code>org.ucdetector.additional</code> from SVN:<pre>
+svn co https://ucdetector.svn.sourceforge.net/svnroot/ucdetector/trunk/org.ucdetector org.ucdetector
+svn co https://ucdetector.svn.sourceforge.net/svnroot/ucdetector/trunk/org.ucdetector.additional org.ucdetector.additional</pre>
+</p>
+
+      <h3>Create custom marker</h3>
 				<p>Create your own problem markers! I already provided example code for</p>
 				
 				<ul>
-					<li>Detect naming conventions for classes/methods/fields and create markers</li>
+					<li>Detect naming conventions for classes, methods or fields and create markers</li>
 					<li>Detect class names which are not unique</li>
 					<li>Detect no java files</li>
 					<li>Find all comments which contain "TODO"</li>
@@ -29,9 +40,9 @@
 
 				<p>To create your own detector:</p>
 				<ul>
-					<li>Change code of example above found in CheckNameConventionIterator.java</li>
-					<li>Create plugin running ant build file in Eclipse: /org.ucdetector.additional/doc/build.xml</li>
-					<li>Put create plugins in ECLIPSE_HOME/plugins directory</li>
+					<li>Change code of example above found in <code>CheckNameConventionIterator.java</code></li>
+					<li>Create plugin running ant build file in Eclipse: <code>org.ucdetector.additional/doc/build.xml</code></li>
+					<li>Put create plugins in <code>ECLIPSE_HOME/plugins</code> directory</li>
 					<li>Restart Eclipse</li>
 				</ul>
 				

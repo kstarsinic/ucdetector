@@ -37,7 +37,7 @@
 					<tr valign="top">
 						<td width="10%" bgcolor="#FFFFE0">
 							<table border="0">
-								<tr height="150">
+								<tr height="100">
 									<td></td>
 								</tr>
 							<!-- ==================================== -->

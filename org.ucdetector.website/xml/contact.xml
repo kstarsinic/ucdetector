@@ -2,27 +2,36 @@
 <ucd page="Contact &amp; Links">
 	<ul>
 		<li>
-			<a href="http://www.ucdetector.org">UCDetector homepage</a>
+			<a href="http://www.ucdetector.org">Homepage</a>
 		</li>
 		<li>
-			<a href="http://sourceforge.net/projects/ucdetector/">UCDetector sourceforge project page</a>
+			<a href="http://sourceforge.net/projects/ucdetector/">Sourceforge project page</a>
 		</li>
 		<li>
-			<a href="http://sourceforge.net/project/platformdownload.php?group_id=219599">UCDetector download</a>
+			<a href="http://sourceforge.net/project/platformdownload.php?group_id=219599">Downloads</a>
+		</li>
+		<li>Report a <a href="http://sourceforge.net/tracker/?group_id=219599&amp;atid=1046865">bugs</a>
+		</li>
+		<li>Report a <a href="https://sourceforge.net/tracker/?atid=1046868&amp;group_id=219599">features requests</a>
 		</li>
 		<li>
-			Eclipse update site: http://ucdetector.sourceforge.net/update
-		</li>
-		<li>I want to create a stable UCDetector version 1.0.0. Please report
-			<a href="http://sourceforge.net/tracker/?group_id=219599&amp;atid=1046865">bugs</a> or 
-	    <a href="https://sourceforge.net/tracker/?atid=1046868&amp;group_id=219599">features requests</a>. 
-	</li>
-		<li>
-			<a href="http://www.eclipseplugincentral.com/Web_Links-index-req-ratelink-lid-1123.html">Rate this plugin @ Eclipse Plugin Central</a>
+			<a href="http://sourceforge.net/forum/forum.php?forum_id=791296">Discussion Forums</a>
 		</li>
 		<li>
-			<a href="mailto:feedback@ucdetector.org">E-Mail Feedback welcome!</a>
+			<a href="http://ucdetector.svn.sourceforge.net/viewvc/ucdetector/trunk/">Browse sources</a>
+		</li>
+		<li>
+			<a href="http://ucdetector.svn.sourceforge.net/viewvc/ucdetector/trunk/org.ucdetector/doc/UCDetector.psf">Get all sources</a>
+		</li>
+		<li>
+			<a href="http://www.eclipseplugincentral.com/Web_Links-index-req-ratelink-lid-1123.html">Rate</a> this plugin at Eclipse Plugin Central
+		</li>
+		<li>
+			<a href="mailto:feedback@ucdetector.org">E-Mail </a> feedback welcome!
 			 If you want to report a bug or feature request, please use the links above.
+		</li>
+		<li>
+			Eclipse update site: <code>http://ucdetector.sourceforge.net/update</code>
 		</li>
 	</ul>
 </ucd>
