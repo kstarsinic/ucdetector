@@ -259,8 +259,7 @@ public final class Prefs {
   /**
    * @return WarnLevel if we can use protected
    */
-  public static WarnLevel getCheckIncreaseVisibilityProtected(
-      IJavaElement member) {
+  public static WarnLevel getCheckReduceVisibilityProtected(IJavaElement member) {
     if (member instanceof IType) {
       return WarnLevel.valueOf(getString(ANALYZE_VISIBILITY_PROTECTED_CLASSES));
     }
@@ -283,17 +282,15 @@ public final class Prefs {
   /**
    * @return <code>true</code> if we can use protected
    */
-  public static boolean isCheckIncreaseVisibilityProtected(IJavaElement member) {
-    return !WarnLevel.IGNORE
-        .equals(getCheckIncreaseVisibilityProtected(member));
+  public static boolean isCheckReduceVisibilityProtected(IJavaElement member) {
+    return !WarnLevel.IGNORE.equals(getCheckReduceVisibilityProtected(member));
   }
 
   // VISIBILITY PRIVATE -----------------------
   /**
    * @return WarnLevel if we can use private
    */
-  public static WarnLevel getCheckIncreaseVisibilityToPrivate(
-      IJavaElement member) {
+  public static WarnLevel getCheckReduceVisibilityToPrivate(IJavaElement member) {
     if (member instanceof IType) {
       return WarnLevel.valueOf(getString(ANALYZE_VISIBILITY_PRIVATE_CLASSES));
     }
@@ -316,9 +313,8 @@ public final class Prefs {
   /**
    * @return <code>true</code> if we can use private
    */
-  public static boolean isCheckIncreaseVisibilityToPrivate(IJavaElement member) {
-    return !WarnLevel.IGNORE
-        .equals(getCheckIncreaseVisibilityToPrivate(member));
+  public static boolean isCheckReduceVisibilityToPrivate(IJavaElement member) {
+    return !WarnLevel.IGNORE.equals(getCheckReduceVisibilityToPrivate(member));
   }
 
   private static boolean isConstant(IMember member) {

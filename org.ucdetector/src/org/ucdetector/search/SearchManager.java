@@ -553,8 +553,8 @@ public class SearchManager {
       return;
     }
     if (found > Prefs.getWarnLimit()
-        && !Prefs.isCheckIncreaseVisibilityProtected(javaElement)
-        && !Prefs.isCheckIncreaseVisibilityToPrivate(javaElement)) {
+        && !Prefs.isCheckReduceVisibilityProtected(javaElement)
+        && !Prefs.isCheckReduceVisibilityToPrivate(javaElement)) {
       throw new OperationCanceledException("Cancel Search: Warn limit reached");//$NON-NLS-1$
     }
   }

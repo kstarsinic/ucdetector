@@ -60,13 +60,13 @@ class VisibilityHandler {
   }
 
   /**
-   * Tries to detect if it is possible to increase visibility<br>
+   * Tries to detect if it is possible to reduce visibility<br>
    * For example: Make a <code>public</code> member/method/class
    * <code>protected</code>.
    */
   void checkVisibility(IJavaElement foundElement, int found, int foundTest) {
-    if (!Prefs.isCheckIncreaseVisibilityProtected(foundElement)
-        && !Prefs.isCheckIncreaseVisibilityToPrivate(foundElement)) {
+    if (!Prefs.isCheckReduceVisibilityProtected(foundElement)
+        && !Prefs.isCheckReduceVisibilityToPrivate(foundElement)) {
       return;
     }
     IType startType = JavaElementUtil.getTypeFor(startElement);
@@ -194,9 +194,9 @@ class VisibilityHandler {
     boolean decreaseVisibility = visibilityStart.value > visibilityMaxFound.value;
     return found > 0
         && decreaseVisibility
-        && (Prefs.isCheckIncreaseVisibilityProtected(member)
+        && (Prefs.isCheckReduceVisibilityProtected(member)
             && visibilityMaxFound == VISIBILITY.PROTECTED || Prefs
-            .isCheckIncreaseVisibilityToPrivate(member)
+            .isCheckReduceVisibilityToPrivate(member)
             && visibilityMaxFound == VISIBILITY.PRIVATE);
   }
 
