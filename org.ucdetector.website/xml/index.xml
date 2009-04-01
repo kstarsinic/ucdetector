@@ -122,11 +122,12 @@ your code. Click on the marker to see QuickFixes's to change code:
 <ul>
   <li>Delete code: When UCDetector tells you that there are no references</li>
   <li>Move code: When UCDetector tells you that there is only
-    1 reference (change "Limit" to 1 in "Window/Preferences")</li>
+    1 reference (change UCDetector preference "Detect code with max number of references" to 1</li>
   <li>Change visibility: Use <font color="#006699"><strong>protected</strong></font>
 	   , default or <font color="#006699"><strong>private</strong></font></li>
   <li>Use <font color="#006699"><strong>final</strong></font></li>
-</ul>			
+</ul>	
+It is possible to change several problems at once using quick fix dialog.
 			</td>
 <!-- right ================================================== -->
 			<td align="left" valign="middle"><img alt="UCDetector QuickFix"  border="1" src="@IMAGES_DIR@/quickfix.png"/></td>

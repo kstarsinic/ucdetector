@@ -56,23 +56,22 @@ Select how problems should be marked. There are 3 possibilities:
 Select what kind of code should be marked:
 </p>
 <ul>
-	<li>Classes: Select error level for classes</li>
-	<li>Methods: Select error level for methods</li>
-	<li>Fields: Select error level for fields</li>
+	<li><b>Classes</b>: Select error level for classes</li>
+	<li><b>Methods</b>: Select error level for methods</li>
+	<li><b>Fields</b>: Select error level for fields</li>
 </ul>
 
 
-<!--
-Detect code only called by tests
-Markers are created when a class/method/filed is only called by test code.
+<p><b>Detect code only called by tests</b><br/>
+Markers are created when a class, method or filed is only called by test code.
 Test code means:
-- class name ends with "Test"
-- source folder name contains "test"
-- JUnit 3 test method: public void testName()
-
-NOTE:- @Test Annotations  are not used to detect test code
--->
-
+<ul>
+	<li>Class name ends with "Test"</li>
+	<li>Source folder name contains "test" or "junit"</li>
+	<li>Method is a JUnit 3 test method:<code>public void testName()</code> </li>
+</ul>
+NOTE: <code>@org.junit.Test</code> annotations are ignored.
+</p>
 
 <h3>File search</h3>
 <!-- version > 0.12.0: <h3>Search class name in files</h3> -->
@@ -115,24 +114,21 @@ Even for unsed methods or fields!
 
 <tr valign="top">
 <td>
-<h3>Keyword usage</h3>
+<h3>Keywords</h3>
 <!-- ============================= -->
-
-<p><b>Possible use of <font color="#006699"><strong>protected</strong></font> or
-  <font color="#006699"><strong>private</strong></font></b>:<br/>
-Select error level for visibility. This option will create markers for code
-which could be <font color="#006699"><strong>protected</strong></font>, default or
-  <font color="#006699"><strong>private</strong></font>. 
-This is code, which has only references in same package or same class.
-</p>
-
-
 
 <p><b>Possible use of <font color="#006699"><strong>final</strong></font>
  for methods (don't override methods)</b>:<br/>
 This option will create markers for methods, which could be
 <font color="#006699"><strong>final</strong></font>.
 This are methods, which:
+</p>
+
+<p><b>Possible use of <font color="#006699"><strong>final</strong></font>
+ for fields (read-only fields)</b>:<br/>
+This option will create markers for fields, which could be
+<font color="#006699"><strong>final</strong></font>.
+This are fields, which have no write access.
 </p>
 <ul>
   <li>Don't implement interfaces</li>
@@ -145,13 +141,14 @@ Maybe this rules are not OK for you! Anyway: Apply changes for this rule careful
 </p>
 
 
-
-<p><b>Possible use of <font color="#006699"><strong>final</strong></font>
- for fields (read-only fields)</b>:<br/>
-This option will create markers for fields, which could be
-<font color="#006699"><strong>final</strong></font>.
-This are fields, which have no write access.
+<p><b>Reduce visibility to <font color="#006699"><strong>protected</strong></font> or
+  <font color="#006699"><strong>private</strong></font></b>:<br/>
+Select error level for visibility. This option will create markers for code
+which could be <font color="#006699"><strong>protected</strong></font>, default or
+  <font color="#006699"><strong>private</strong></font>. 
+This is code, which has only references in same package or same class.
 </p>
+
 
 </td>
 <td align="left" valign="middle">
