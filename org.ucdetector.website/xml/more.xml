@@ -1,8 +1,27 @@
 <?xml version="1.0" encoding="ISO-8859-1"?>
 <ucd page="More">
-	<table summary="others"  border="0">
+	<table summary="others" border="0">
 		<tr>
 			<td>
+				
+				<tr>
+					<td>
+						<h3>Run UCDetector with ANT (experimental!)</h3>
+						<p>
+It is possible to call UCDetector from ANT and run it in headless mode
+(no user interface). This may be interesting, for build manager to create the html reports.
+</p>
+						<p>
+Unzip folder <code>org.ucdetector_x.y.z.jar/ant</code>, check README.txt
+						</p>
+					</td>
+					<td align="left" valign="middle"></td>
+				</tr>
+				
+				
+				
+				
+				
 				<h3>
 					<img alt="cycle" src="@ICONS_DIR@/cycle.gif"/>Detect class cycles
 				</h3>
