@@ -67,10 +67,12 @@ Steps to create new Version:
    - update /org.ucdetector.feature/feature.xml
    - update /org.ucdetector.update_site/site.xml
 	 - site.xml click: synchronize, build all
-	 - /org.ucdetector.update_site/build.xml:send
+	 - /org.ucdetector.update_site/build.xml:send -d
+	 - check if update site works
 
  - SVN commit
  - SVN branch and tag
- - update homepage (run /org.ucdetector.website/build.xml:send)
+ - update homepage: run /org.ucdetector.website/build.xml:update -d
+ - check homepage
 //------------------------------------------------------------------------------
 // :mode=java:
