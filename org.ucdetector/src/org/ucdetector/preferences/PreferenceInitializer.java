@@ -12,6 +12,7 @@ import static org.ucdetector.preferences.WarnLevel.WARNING;
 
 import java.io.File;
 
+import org.eclipse.core.runtime.Platform;
 import org.eclipse.core.runtime.preferences.AbstractPreferenceInitializer;
 import org.eclipse.jface.preference.IPreferenceStore;
 import org.ucdetector.UCDetectorPlugin;
@@ -34,6 +35,7 @@ public class PreferenceInitializer extends AbstractPreferenceInitializer { // NO
   = "test*,*Test"; //$NON-NLS-1$
   private static final String FILE_PATTERN_LITERAL_SEARCH //
   = "*.xml,"; //$NON-NLS-1$
+  private static final String REPORT_DEFAULT_NAME = "UCDetetorReport.html"; //$NON-NLS-1$
 
   @Override
   public void initializeDefaultPreferences() {
@@ -71,8 +73,15 @@ public class PreferenceInitializer extends AbstractPreferenceInitializer { // NO
     // Cycles ------------------------------------------------------------------
     store.setDefault(Prefs.CYCLE_DEPTH, Prefs.CYCLE_DEPTH_DEFAULT);
     // Report ------------------------------------------------------------------
-    String REPORT_DEFAULT_NAME = "UCDetetorReport.html"; //$NON-NLS-1$
-    File report = new File(REPORT_DEFAULT_NAME);
-    store.setDefault(Prefs.REPORT_FILE, report.getAbsolutePath());
+    // TODO: Clean up this code
+    String report = REPORT_DEFAULT_NAME;
+    try {
+      File workspace = Platform.getLocation().toFile();
+      report = new File(workspace, REPORT_DEFAULT_NAME).getAbsolutePath();
+    }
+    catch (Exception e) {
+      System.err.println(e.getMessage());
+    }
+    store.setDefault(Prefs.REPORT_FILE, report);
   }
 }
