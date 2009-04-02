@@ -74,7 +74,7 @@
   <!-- ===================================================================== -->
   <target name="send" description="Send homepage files to homepage">
     <property file="${user.home}/.ucdetector.properties" />
-    <echo>Sending homepage files to server: ${server}...</echo>
+    <echo>Sending homepage files to: ${user}@${server}/${remotedir}</echo>
     <ftp password="${password}"
          server="${server}"
          userid="${user}"
@@ -83,7 +83,7 @@
       <fileset dir="${basedir}/../org.ucdetector" includes="icons/*" />
       <fileset dir="${html.dir}" includes="**" />
     </ftp>
-    <echo>Sended homepage files to server: ${server}</echo>
+    <echo>Sended homepage files to server</echo>
   </target>
 
   <!-- ===================================================================== -->

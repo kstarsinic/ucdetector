@@ -17,14 +17,14 @@
         <exclude name="artifacts.xml" />
       </fileset>
     </scp>
-    <echo>Finished sending udpate site to server
+    <echo>Finished sending udpate site.</echo>
   </target>
-  </project>
-  <!--
+</project>
+<!--
     don't forget to have a look at the trust and knownhosts attributes in the  scp task's description if you receive an exception like this:
      com.jcraft.jsch.JSchException: reject HostKey
     -->
-  <!--
+<!--
     <ftp password="${sf.password}"
          server="${sf.server}"
          userid="${sf.userid}"
