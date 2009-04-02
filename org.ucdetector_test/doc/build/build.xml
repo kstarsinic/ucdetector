@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project default="plugin_export" name="build">
   <target name="plugin_export">
-    <pde.exportPlugins destination="${basedir}"
+    <pde.exportPlugins destination="e:\ucd"
                        exportSource="false"
                        exportType="directory"
                        plugins="org.ucdetector_test"
