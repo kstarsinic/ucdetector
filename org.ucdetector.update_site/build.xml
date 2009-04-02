@@ -7,8 +7,24 @@
   <!-- ===================================================================== -->
   <target name="send" description="Send homepage files to homepage">
     <property file="${user.home}/.ucdetector.properties" />
-    <echo>Sending udpate site to server: ${sf.server}...</echo>
-    <!--
+    <property name="todir"
+              value="${sf.userid}:${sf.password}@${sf.server}:${sf.remotedir}" />
+    <echo>Sending udpate site to: ${todir}...</echo>
+    <scp todir="${todir}" trust="true">
+      <fileset dir="${basedir}">
+        <exclude name="build.xml" />
+        <exclude name="content.xml" />
+        <exclude name="artifacts.xml" />
+      </fileset>
+    </scp>
+    <echo>Finished sending udpate site to server
+  </target>
+  </project>
+  <!--
+    don't forget to have a look at the trust and knownhosts attributes in the  scp task's description if you receive an exception like this:
+     com.jcraft.jsch.JSchException: reject HostKey
+    -->
+  <!--
     <ftp password="${sf.password}"
          server="${sf.server}"
          userid="${sf.userid}"
@@ -20,16 +36,3 @@
       </fileset>
     </ftp>
     -->
-    <property name="todir"
-              value="${sf.userid}:${sf.password}@${sf.server}:${sf.remotedir}" />
-    <scp todir="${todir}" >
-      <fileset dir="${basedir}">
-        <exclude name="build.xml" />
-        <exclude name="content.xml" />
-        <exclude name="artifacts.xml" />
-      </fileset>
-    </scp>
-    <echo>Sended udpate site to server: ${sf.server}</echo>
-  </target>
-</project>
-
