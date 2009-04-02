@@ -8,7 +8,7 @@
     
     /opt/eclipse-3.4
     -->
-    <pde.exportPlugins destination="C:\eclipse\eclipse-3.4"
+    <pde.exportPlugins destination="e:\ucd"
                        exportSource="false"
                        exportType="directory"
                        plugins="org.ucdetector"
