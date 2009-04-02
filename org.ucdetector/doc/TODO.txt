@@ -12,53 +12,63 @@ Steps to create new Version:
    - run pde tools on MANIFEST.MF
 	 - run source ... popup menus on UCDetector project
    - check TODO's in code
- - check build.properties
- - check MANIFEST.MF
- - change version number in MANIFEST.MF
- - search old version number "0.11." in files
- - use java 5, eclipse 3.3
- - create jar, install in eclipse, run UCDetector
- - run UCDetector with: org.ucdetector_test, jEdit, JUnit
- - run UCDetector with: change warn limit to 2
- - Apply QuickFixes to QuickFixExample
- - check UCDetector Code with: PMD, CPD, finbugs, Energy
- - check screenshots
- - update org.ucdetector.website\xml\releases.xml from 
-          org.ucdetector/doc/CHANGES.txt
- - update help     (run /org.ucdetector.website/build.xml:ucd-help)
- - check help
- - check: Help/about Eclipse Platform/Plugin Details
- - spell check
- - CHANGES.txt
+   - check build.properties
+   - check MANIFEST.MF
+   - search old version number "1.0.0" in files
+   - spell check
+   - check UCDetector Code with: PMD, CPD, finbugs, Energy
+   - Update CHANGES.txt from bug/feature list from sourceforge
+
+ - HELP
+   - check screenshots
+   - add new features, bug fixes to help 
+   - update org.ucdetector.website\xml\releases.xml from 
+            org.ucdetector/doc/CHANGES.txt
+   - update help     (run /org.ucdetector.website/build.xml:ucd-help)
+   - check help
+   - check: Help/about Eclipse Platform/Plugin Details
+
  - Create: 
    - ucdetector.jar       : /org.ucdetector/doc/build/BuildUCDetector.launch
    - source.jar           : /org.ucdetector/doc/build/org.ucdetector.source.jardesc
    - ucdetector.test.jar  : /org.ucdetector_test/doc/build/build.xml
+	 - check contents of source.jar, ucdetector.jar (help up to date?)
+
  - Smoke test:
-   - deploy ucdetector.jar and ucdetector.test.jar to eclipse 3.3, java5
+   - deploy ucdetector.jar and ucdetector.test.jar to a CLEAN eclipse 3.3, java5
+	 - Run UCDetector detecting code in org.ucdetector_test, jEdit, JUnit
+	 - run UCDetector with: change warn limit to 2
+	 - Apply QuickFixes to QuickFixExample
    - UCDetector setting: All warning, simple class name
    - count
    - delete markers
    - cycle detect: /org.ucdetector.example/cycle
    - check UCDMarker: /org.ucdetector.example/example
+	 - check html report
+
  - Sourceforge:
-		 - Categorization
+     - https://sourceforge.net/account/login.php
+		 - "project Admin": Categorization
 		 - Description
 		 - Screenshot
 		 - Category
-	 - Admin/File Release
-		 - Add Release: 0.12.0, Create this release
+	 - "Download"/"Manage Packages / Releases"/"add release"
+		 - Add Release: 1.0.0, Create this release
 		 - Paste The Change Log In: CHANGES.txt
-	 - Add Files To This Release
-		 - Upload: https://frs.sourceforge.net/webupload
+	 - 3: Add Files To This Release
+		 - Upload use this link: https://frs.sourceforge.net/webupload
 		 - Add files/refresh view
-	 - platform independent, jar
-	 - platform independent, source.zip
-	 - platform independent, source.zip
-	 - Create / Edit Download Page 
+	 - platform independent, jar   udpate/refresh
+	 - platform independent, source.zip    udpate/refresh
+	 - Create / Edit Download Page
+	 - run /org.ucdetector.update_site/build.xml:send
+
  - update site (http://ucdetector.sourceforge.net/update):
    - update /org.ucdetector.feature/feature.xml
    - update /org.ucdetector.update_site/site.xml
+	 - site.xml click: synchronize, build all
+
+ - SVN commit
  - SVN branch and tag
  - update homepage (run /org.ucdetector.website/build.xml:send)
 //------------------------------------------------------------------------------
