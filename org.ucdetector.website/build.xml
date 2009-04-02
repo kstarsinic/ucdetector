@@ -80,6 +80,7 @@
          userid="${user}"
          remotedir="${remotedir}"
          newer="true">
+      <fileset dir="${basedir}/../org.ucdetector" includes="icons/*" />
       <fileset dir="${html.dir}" includes="**" />
     </ftp>
     <echo>Sended homepage files to server: ${server}</echo>
