@@ -1,4 +1,4 @@
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/transitional.dtd">
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN""http://www.w3.org/TR/html4/transitional.dtd">
 <html>
 <head>
 <META http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
@@ -27,8 +27,11 @@
 <body>
 <table width="100%" border="0" summary="left navigation, right text">
 <tr valign="top">
-<td width="8%" bgcolor="#FFFFE0">
+<td width="10%" bgcolor="#FFFFE0">
 <table border="0">
+<tr height="100">
+<td></td>
+</tr>
 <tr>
 <td><a href="index.html">Start</a></td>
 </tr>
@@ -50,6 +53,9 @@
 <tr>
 <td><a href="license.html">License</a></td>
 </tr>
+<tr>
+<td><a href="contact.html">Contact &amp; Links</a></td>
+</tr>
 </table>
 </td><td>
 <h1 align="center">
@@ -58,18 +64,19 @@ UCDetector: Unnecessary Code Detector</h1>
 <div align="center">
 <h2>Preferences</h2>
 </div>
-
+<ucd page="Preferences">
+<!-- ======================================================================= -->
 Select menu: Window/Preferences.../UCDetector
 
-<table border="0" summary="Preferences">
+<table summary="Preferences" border="0">
 
 
-<tr valign="top" bgcolor="">
+<tr valign="top">
 
-<td valign="">
+<td>
 
 <h3>Filter</h3>
-
+<!-- ============================= -->
 It is possible to filter java elements (and all its children),
 which should not be checked by UCDetector. A simple regular expression is used:
 <ul>
@@ -101,22 +108,22 @@ Ignore methods, which use the java bean convention. For example
 </p>
 
 </td>
-<td valign="middle">
-<img alt="UCDetector preferences" src="http://ucdetector.org/images/preferences_1_filter.png">
+<td align="left" valign="middle">
+<img alt="UCDetector preferences" border="1" src="http://ucdetector.org/images/preferences_1_filter.png">
 </td>
 
 </tr>
 
 
-<tr valign="top" bgcolor="">
+<tr valign="top">
 
-<td valign="">
+<td>
 
 <p>
 
 
-<h3>Detect</h3>
-
+<h3>What to detect</h3>
+<!-- ============================= -->
 
 <p>
 <b>Detect code with max number of references:</b>
@@ -148,13 +155,66 @@ Select what kind of code should be marked:
 
 <ul>
 	
-<li>Classes: Select error level for classes</li>
+<li>
+<b>Classes</b>: Select error level for classes</li>
 	
-<li>Methods: Select error level for methods</li>
+<li>
+<b>Methods</b>: Select error level for methods</li>
 	
-<li>Fields: Select error level for fields</li>
+<li>
+<b>Fields</b>: Select error level for fields</li>
 
 </ul>
+
+
+
+<p>
+<b>Detect code only called by tests</b>
+<br>
+Markers are created when a class, method or filed is only called by test code.
+Test code means:
+<ul>
+	
+<li>Class name ends with "Test"</li>
+	
+<li>Source folder name contains "test" or "junit"</li>
+	
+<li>Method is a JUnit 3 test method:<code>public void testName()</code> 
+</li>
+
+</ul>
+NOTE: <code>@org.junit.Test</code> annotations are ignored.
+</p>
+
+
+<h3>File search</h3>
+<!-- version > 0.12.0: <h3>Search class name in files</h3> -->
+<!-- ============================= -->
+
+<p>
+<b>Search class names in text files:</b>
+<br>
+Select file extension, which should be searched for class name. 
+For example "*.xml,*.jsp"
+</p>
+
+
+<p>
+<b>Use full qualified class name :</b>
+<br>
+The character before and after the match is included in search.
+Searching for "Aplication" will NOT match "MyApplication" neither
+"ApplicationExample".<br>
+
+Searching for "Aplication" will match:
+<ul>
+
+<li>"org.ucdetector.example_1.Aplication"</li> and
+<li>"org.ucdetector.example_2.Aplication"</li>
+
+</ul>
+
+</p>
 
 
 <p>
@@ -164,52 +224,47 @@ It is possible to add a file pattern. Full qualified class names (org.ucdetector
 found in this files will get no marker for "0 references found". But text
 search is slow, if there are many text files!
 </p>
-
+If a class is found by text search, this class will have NO markers.
+Even for unsed methods or fields!
 </p>
 
 
+
+
 </td>
-<td valign="middle">
-<img alt="UCDetector preferences" src="http://ucdetector.org/images/preferences_2_ucd.png">
+<td align="left" valign="middle">
+<img alt="UCDetector preferences" border="1" src="http://ucdetector.org/images/preferences_2_ucd.png">
 <p></p>
 
-<img alt="UCDetector preferences" src="http://ucdetector.org/images/preferences_2b_text_search.png">
+<img alt="UCDetector preferences" border="1" src="http://ucdetector.org/images/preferences_2b_text_search.png">
 </td>
 
 </tr>
 
 
-<tr valign="top" bgcolor="">
+<tr valign="top">
 
-<td valign="">
+<td>
 
-<h3>Keyword</h3>
-
-
-
-<p>
-<b>Possible use of <font color="#006699"><strong>protected</strong></font> or
-  <font color="#006699"><strong>private</strong></font></b>:<br>
-Select error level for visibility. This option will create markers for code
-which could be <font color="#006699"><strong>protected</strong></font>, default or
-  <font color="#006699"><strong>private</strong></font>. 
-This is code, which has only references in same package or same class.
-</p>
+<h3>Keywords</h3>
+<!-- ============================= -->
 
 
 <p>
-<b>Possible use of <font color="#006699"><strong>final</strong></font> for fields</b>:<br>
-This option will create markers for fields, which could be
-<font color="#006699"><strong>final</strong></font>.
-This are fields, which have no write access.
-</p>
-
-
-<p>
-<b>Possible use of <font color="#006699"><strong>final</strong></font> for methods</b>:<br>
+<b>Possible use of <font color="#006699"><strong>final</strong></font>
+ for methods (don't override methods)</b>:<br>
 This option will create markers for methods, which could be
 <font color="#006699"><strong>final</strong></font>.
 This are methods, which:
+</p>
+
+
+<p>
+<b>Possible use of <font color="#006699"><strong>final</strong></font>
+ for fields (read-only fields)</b>:<br>
+This option will create markers for fields, which could be
+<font color="#006699"><strong>final</strong></font>.
+This are fields, which have no write access.
 </p>
 
 <ul>
@@ -228,23 +283,36 @@ This are methods, which:
 Maybe this rules are not OK for you! Anyway: Apply changes for this rule carefully.
 </p>
 
+
+
+<p>
+<b>Reduce visibility to <font color="#006699"><strong>protected</strong></font> or
+  <font color="#006699"><strong>private</strong></font></b>:<br>
+Select error level for visibility. This option will create markers for code
+which could be <font color="#006699"><strong>protected</strong></font>, default or
+  <font color="#006699"><strong>private</strong></font>. 
+This is code, which has only references in same package or same class.
+</p>
+
+
+
 </td>
-<td valign="middle">
-<img alt="UCDetector preferences" src="http://ucdetector.org/images/preferences_3_keyword.png">
+<td align="left" valign="middle">
+<img alt="UCDetector preferences" border="1" src="http://ucdetector.org/images/preferences_3_keyword.png">
 </td>
 
 </tr>
 
 
-<tr valign="top" bgcolor="">
+<tr valign="top">
 
-<td valign="">
+<td>
 
 <h3>Other</h3>
-
+<!-- ============================= -->
 
 <p>
-<b>HTML report</b>:<br>
+<b>HTML and XML Report file</b>:<br>
 Enter file name, if you want to create a report like this:
 </p>
 
@@ -253,26 +321,26 @@ Enter file name, if you want to create a report like this:
 
 <thead align="center">
 
-<tr valign="" bgcolor="#C0C0C0">
+<tr bgcolor="#C0C0C0">
 <th>Nr</th><th>Warn level</th><th>Location</th><th>Description</th>
 </tr>
 
 </thead>
 
-<tr valign="" bgcolor="">
-<td valign="">1</td><td valign="">Warning</td><td valign="">org.ucdetector.MixedExample.<br>declaration(MixedExample.java:4)</td><td valign="">Change visibility of "MixedExample" to default</td>
+<tr>
+<td>1</td><td>Warning</td><td>org.ucdetector.MixedExample.<br>declaration(MixedExample.java:4)</td><td>Change visibility of "MixedExample" to default</td>
 </tr>
 
-<tr valign="" bgcolor="">
-<td valign="">2</td><td valign="">Warning</td><td valign="">org.ucdetector.MixedExample.<br>unusedMethod(MixedExample.java:7)</td><td valign="">Method "unusedMethod" has 0 references</td>
+<tr>
+<td>2</td><td>Warning</td><td>org.ucdetector.MixedExample.<br>unusedMethod(MixedExample.java:7)</td><td>Method "unusedMethod" has 0 references</td>
 </tr>
 
-<tr valign="" bgcolor="">
-<td valign="">3</td><td valign="">Warning</td><td valign="">org.ucdetector.MixedExample.<br>makePrivateMethod(MixedExample.java:10)</td><td valign="">Method "makePrivateMethod" has 0 references</td>
+<tr>
+<td>3</td><td>Warning</td><td>org.ucdetector.MixedExample.<br>makePrivateMethod(MixedExample.java:10)</td><td>Method "makePrivateMethod" has 0 references</td>
 </tr>
 
-<tr valign="" bgcolor="">
-<td valign="">4</td><td valign="">Warning</td><td valign="">org.ucdetector.MixedExample.<br>useFinal(MixedExample.java:5)</td><td valign="">Use "final" for field "useFinal"</td>
+<tr>
+<td>4</td><td>Warning</td><td>org.ucdetector.MixedExample.<br>useFinal(MixedExample.java:5)</td><td>Use "final" for field "useFinal"</td>
 </tr>
 
 </table>
@@ -285,30 +353,35 @@ ECLIPSE_HOME/plugins/org.ucdetector_*.jar/org/ucdetector/report/html.xslt
 
 </p>
 
+<p>
+A xml report is created in the same directory as the html file.
+</p>
 
 
-<b>Max cycle size</b>:<br>
+
+<b>Max class cycle size</b>:<br>
 For cycle detection you can choose the "max cycle size". If there are many
 cycles in your code, a big number here makes cycle detection very slow!
 
 
-
+<!-- ======================================================================= -->
 </td>
-<td valign="middle">
-<img alt="UCDetector preferences" src="http://ucdetector.org/images/preferences_4_other.png">
+<td align="left" valign="middle">
+<img alt="UCDetector preferences" border="1" src="http://ucdetector.org/images/preferences_4_other.png">
 </td>
 
 </tr>
 
 </table>
 
+</ucd>
 </td>
 </tr>
 </table>
 <hr>
 <table width="100%" summary="footer">
 <tr>
-<td align="left" valign="middle">Last Update: 2008-11-26</td><td align="right" valign="middle">Copyright &copy; 2008, by Joerg Spieler</td>
+<td align="left" valign="middle">Last Update: 2009-04-03</td><td align="right" valign="middle">Copyright &copy; 2009, by <a href="mailto:feedback@ucdetector.org">J&ouml;rg Spieler</a></td>
 </tr>
 </table>
 <hr>
