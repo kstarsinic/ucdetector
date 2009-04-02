@@ -70,7 +70,6 @@ Instead of clicking Shift+Ctrl+G
     <img alt="use protected" src="@ICONS_DIR@/use_protected.gif"/>
     <img alt="use final" src="@ICONS_DIR@/use_final.gif"/>
     <img alt="test only" src="@ICONS_DIR@/testOnly.gif"/>
-    <img alt="test only" src="@ICONS_DIR@/testOnly.gif"/>
     <img alt="few found" src="@ICONS_DIR@/few_found_obj.gif"/>
 	</li>
   <li>Use the menu "Group By/Type" in Problems View</li>
