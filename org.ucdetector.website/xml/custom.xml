@@ -7,7 +7,7 @@
      <h3>Get Code</h3>
 
 				<p>
-				- Import UCDetector projects using 
+				- Import all UCDetector projects using this 
 				<a href="http://ucdetector.svn.sourceforge.net/viewvc/ucdetector/trunk/org.ucdetector/doc/UCDetector.psf">eclipse project set</a>.
 				</p>
 				Or:
@@ -38,7 +38,7 @@ svn co https://ucdetector.svn.sourceforge.net/svnroot/ucdetector/trunk/org.ucdet
     <font color="#000000"><strong>}</strong></font>
 </font></pre>
 
-				<p>To create your own detector:</p>
+				<h3>To create your own detector plugin:</h3>
 				<ul>
 					<li>Change code of example above found in <code>CheckNameConventionIterator.java</code></li>
 					<li>Create plugin running ant build file in Eclipse: <code>org.ucdetector.additional/doc/build.xml</code></li>
