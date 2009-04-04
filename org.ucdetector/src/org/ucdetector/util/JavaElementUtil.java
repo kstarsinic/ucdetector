@@ -442,8 +442,8 @@ public class JavaElementUtil {
    * parent of code>IPackageFragment</code> 
    * which is a <code>IPackageFragmentRoot</code> and call
    * <code>IPackageFragmentRoot.getChildren()</code>
-   * When a name of a subpackage starts with package name + "." it is a
-   * subpackage
+   * When a name of a sub package starts with package name + "." it is a
+   * sub package
    * 
    * @return a list of all sub packages for the input package. For example input 
    * <pre>org.ucdetector.cycle</pre>
@@ -625,7 +625,7 @@ public class JavaElementUtil {
         }
       }
       catch (JavaModelException e) {
-        Log.logError("Cant run isTestCode()", e); //$NON-NLS-1$
+        Log.logError("Can't run isTestCode()", e); //$NON-NLS-1$
       }
     }
     return false;

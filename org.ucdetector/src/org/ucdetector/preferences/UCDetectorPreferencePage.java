@@ -128,7 +128,7 @@ public class UCDetectorPreferencePage extends UCDetectorBasePreferencePage {
   /**
    * Create a group of other settings
    */
-  // dont fileFieldEditor in ohter group: Layout problems!
+  // Don't use fileFieldEditor in other group: Layout problems!
   private void createOtherGroup(Composite parentGroups) {
     Composite spacer = createGroup(parentGroups,
         Messages.PreferencePage_GroupOthers, 1, 1, GridData.FILL_HORIZONTAL);

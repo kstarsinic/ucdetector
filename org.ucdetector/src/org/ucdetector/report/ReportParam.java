@@ -16,7 +16,7 @@ import org.ucdetector.preferences.WarnLevel;
 import org.ucdetector.util.MarkerFactory;
 
 /**
- *
+ * This class contains parameters for a report (for a marker)
  */
 public class ReportParam {
   public final IJavaElement javaElement;

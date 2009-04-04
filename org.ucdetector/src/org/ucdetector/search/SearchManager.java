@@ -228,7 +228,7 @@ public class SearchManager {
   }
 
   /**
-   * @return <code>true</code>, when a fiedl has read access
+   * @return <code>true</code>, when a field has read access
    */
   private static boolean hasReadAccess(IField field) throws CoreException {
     SearchPattern pattern = SearchPattern.createPattern(field,
@@ -295,7 +295,7 @@ public class SearchManager {
         JavaElementUtil.getElementName(member), Integer.valueOf(found) };
     String markerMessage = NLS.bind(Messages.SearchManager_MarkerReference,
         bindings);
-    // Fix for BUG 2225016:  Dont create "0 references marker" for overridden methods
+    // Fix for BUG 2225016:  Don't create "0 references marker" for overridden methods
     if (found <= Prefs.getWarnLimit() && !isOverriddenMethod) {
       created = markerFactory.createReferenceMarker(member, markerMessage,
           line, found);

@@ -35,7 +35,7 @@ import org.eclipse.search.ui.NewSearchUI;
 import org.ucdetector.Log;
 
 /**
- * Do text search headless (no ui stuff)
+ * Do text search headless (no UI stuff)
  */
 class UCDTextSearchVisitor {
   private final TextSearchRequestor fCollector;

@@ -130,7 +130,7 @@ public final class Messages extends NLS {
   public static String SearchResult_get_text; // NO_UCD
   public static String Cycle_Name; // NO_UCD
   public static String CycleRegion_Line; // NO_UCD
-  public static String CycleType_machtes; // NO_UCD
+  public static String CycleType_matches; // NO_UCD
   public static String CycleType_match; // NO_UCD
   // -------------------------------------------------------------------------
   public static String CycleView_popup_copy_clipboard; // NO_UCD

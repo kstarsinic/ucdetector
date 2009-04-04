@@ -61,9 +61,9 @@ import org.w3c.dom.Element;
  */
 public class XmlReport implements IUCDetectorReport {
   private static final String COPY_RIGHT = //
-  "Copyright (c) 2009 Joerg Spieler All rights reserved. This program and the\n" + //$NON-NLS-1$
-      "accompanying materials are made available under the terms of the Eclipse\n" //$NON-NLS-1$
-      + " Public License v1.0 which accompanies this distribution, and is available at\n" //$NON-NLS-1$
+  /*  */"Copyright (c) 2009 Joerg Spieler All rights reserved. This program and the\n" //$NON-NLS-1$
+      + "accompanying materials are made available under the terms of the Eclipse\n" //$NON-NLS-1$
+      + "Public License v1.0 which accompanies this distribution, and is available at\n" //$NON-NLS-1$
       + "http://www.eclipse.org/legal/epl-v10.html\n";//$NON-NLS-1$
   //
   private static final String EXTENSION_XML = ".xml"; //$NON-NLS-1$
