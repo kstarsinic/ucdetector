@@ -48,7 +48,7 @@ Or check out org.ucdetector.additional and write your own detection.<p/>
 	
 	<b>Is there a ANT task to create UCDetector reports?</b>
 	<br/>
-		Yes. Unzip folder <code>org.ucdetector_x.y.z.jar/ant/ant</code>, check <code>README.txt</code>
+		Yes. Unzip folder <code>org.ucdetector_x.y.z.jar/ant</code>, check <code>README.txt</code>
 	<p/>
 
 	

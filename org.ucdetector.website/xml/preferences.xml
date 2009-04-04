@@ -83,13 +83,13 @@ For example "*.xml,*.jsp"
 
 <p><b>Use full qualified class name :</b><br/>
 The character before and after the match is included in search.
-Searching for "Aplication" will NOT match "MyApplication" neither
+Searching for "Application" will NOT match "MyApplication" neither
 "ApplicationExample".<br/>
 
-Searching for "Aplication" will match:
+Searching for "Application" will match:
 <ul>
-<li>"org.ucdetector.example_1.Aplication"</li> and
-<li>"org.ucdetector.example_2.Aplication"</li>
+<li>"org.ucdetector.example_1.Application"</li> and
+<li>"org.ucdetector.example_2.Application"</li>
 </ul>
 </p>
 
@@ -99,7 +99,7 @@ found in this files will get no marker for "0 references found". But text
 search is slow, if there are many text files!
 </p>
 If a class is found by text search, this class will have NO markers.
-Even for unsed methods or fields!
+Even for unused methods or fields!
 </p>
 
 
