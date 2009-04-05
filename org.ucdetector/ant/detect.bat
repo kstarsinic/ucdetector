@@ -1,3 +1,4 @@
+
 REM ----------------------------------------------------------------------------
 REM  Copyright (c) 2009 Joerg Spieler All rights reserved. This program and the
 REM  accompanying materials are made available under the terms of the Eclipse
@@ -13,6 +14,8 @@ REM set LAUNCHER=C:\eclipse\eclipse-3.5M5\plugins\org.eclipse.equinox.launcher_1
 
 REM WORKSPACE must point to your workspace directory (usuall parent directory of java projects)
 set WORKSPACE=F:\ws\ucd\runtime-ucd_configuration
+
+set PROJECTS=org.ucdetector.example,org.ucdetector
 
 REM To run UCDetector for all projects: remove parameter: '-projects'
 REM To run UCDetector for listet projects use: '-projects org.example.project1,org.example.project2'
