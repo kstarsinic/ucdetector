@@ -130,7 +130,7 @@
 		       id="org.ucdetector.definitionId.ucd"> 
 		</command>
 	</extension>
-	<extension point="org.eclipse.ui.bindings" name="UCDetector binding"> 
+	<extension point="org.eclipse.ui.bindings" name="%extension.name.0"> 
     <key commandId="org.ucdetector.definitionId.ucd" 
          contextId="org.eclipse.ui.contexts.window" 
          schemeId="org.eclipse.ui.defaultAcceleratorConfiguration" 
@@ -146,7 +146,7 @@
   <!-- *** 1 *** -->
   <extension
       id="org.ucdetector.analyzeMarker"
-      name="UCDetector Marker"
+      name="%extension.name.1"
       point="org.eclipse.core.resources.markers">
     <persistent value="true"/>
     <super type="org.eclipse.core.resources.problemmarker"/>
@@ -155,7 +155,7 @@
   <!-- References -->
   <extension
       id="org.ucdetector.analyzeMarkerReference"
-      name="UCDetector Marker (References)"
+      name="%extension.name.2"
       point="org.eclipse.core.resources.markers">
     <super type="org.eclipse.core.resources.problemmarker"/>
     <super type="org.eclipse.core.resources.textmarker"/>
@@ -166,7 +166,7 @@
   <!-- Few references -->
   <extension
       id="org.ucdetector.analyzeMarkerFewReference"
-      name="UCDetector Marker (Few references)"
+      name="%extension.name.3"
       point="org.eclipse.core.resources.markers">
     <super type="org.eclipse.core.resources.problemmarker"/>
     <super type="org.eclipse.core.resources.textmarker"/>
@@ -177,7 +177,7 @@
    <!-- visibility -->
   <extension
       id="org.ucdetector.analyzeMarkerVisibilityPrivate"
-      name="UCDetector Marker (Visibility: Use private)"
+      name="%extension.name.4"
       point="org.eclipse.core.resources.markers">
     <super type="org.eclipse.core.resources.problemmarker"/>
     <super type="org.eclipse.core.resources.textmarker"/>
@@ -186,7 +186,7 @@
   </extension>
   <extension
       id="org.ucdetector.analyzeMarkerVisibilityProtected"
-      name="UCDetector Marker (Visibility: Use protected)"
+      name="%extension.name.5"
       point="org.eclipse.core.resources.markers">
     <super type="org.eclipse.core.resources.problemmarker"/>
     <super type="org.eclipse.core.resources.textmarker"/>
@@ -195,7 +195,7 @@
   </extension>
   <extension
       id="org.ucdetector.analyzeMarkerVisibilityDefault"
-      name="UCDetector Marker (Visibility: Use default)"
+      name="%extension.name.6"
       point="org.eclipse.core.resources.markers">
     <super type="org.eclipse.core.resources.problemmarker"/>
     <super type="org.eclipse.core.resources.textmarker"/>
@@ -205,7 +205,7 @@
    <!-- final -->
   <extension
       id="org.ucdetector.analyzeMarkerFinal"
-      name="UCDetector Marker (Final)"
+      name="%extension.name.7"
       point="org.eclipse.core.resources.markers">
     <super type="org.eclipse.core.resources.problemmarker"/>
     <super type="org.eclipse.core.resources.textmarker"/>
@@ -215,7 +215,7 @@
    <!-- analyzeTestOnly -->
   <extension
       id="org.ucdetector.analyzeMarkerTestOnly"
-      name="UCDetector Marker (Test only)"
+      name="%extension.name.8"
       point="org.eclipse.core.resources.markers">
     <super type="org.eclipse.core.resources.problemmarker"/>
     <super type="org.eclipse.core.resources.textmarker"/>
