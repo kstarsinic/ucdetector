@@ -73,7 +73,7 @@ public class CycleType extends CycleBaseElement {
     sb.append(super.getDefaultText(type)).append(' ');
     int size = getMatchCount();
     sb.append('(').append(size);
-    sb.append(size < 2 ? Messages.CycleType_match : Messages.CycleType_match);
+    sb.append(size < 2 ? Messages.CycleType_match : Messages.CycleType_matches);
     sb.append(')');
     return sb.toString();
   }
