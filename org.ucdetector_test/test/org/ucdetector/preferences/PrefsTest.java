@@ -154,14 +154,6 @@ public class PrefsTest extends TestCase {
     assertFalse(Prefs.isUCDetectionInFields());
   }
 
-//  public final void testIsAnalyseVisibilityProtected() {
-//    assertFalse(Prefs.isCheckIncreaseVisibilityProtected());
-//  }
-//
-//  public final void testIsCheckIncreaseVisibilityToPrivate() {
-//    assertFalse(Prefs.isCheckIncreaseVisibilityToPrivate());
-//  }
-
   public final void testIsCheckUseFinalField() {
     assertTrue(Prefs.isCheckUseFinalField());
   }
@@ -189,10 +181,6 @@ public class PrefsTest extends TestCase {
   public final void testGetAnalyseFields() {
     assertEquals(WarnLevel.IGNORE, Prefs.getUCDetectionInFields());
   }
-
-//  public final void testGetAnalyseVisibility() {
-//    assertEquals(WarnLevel.IGNORE, Prefs.getCheckIncreaseVisibilityProtected());
-//  }
 
   public final void testGetheckUseFinalMethod() {
     assertEquals(WarnLevel.WARNING, Prefs.getCheckUseFinalMethod());
