@@ -148,6 +148,16 @@ which could be <font color="#006699"><strong>protected</strong></font>, default 
   <font color="#006699"><strong>private</strong></font>. 
 This is code, which has only references in same package or same class.
 </p>
+In some cases this may cause <font color="red">compile errors</font>
+for classes, if there is code like this:
+<pre>
+new A().getB().toString();
+</pre>
+For more details, check bug: 
+	<a href="http://sourceforge.net/tracker/?func=detail&amp;aid=2539795&amp;group_id=219599&amp;atid=1046865">
+	  Wrong default visibility marker for classes - ID: 2539795
+	</a>
+
 
 
 </td>
