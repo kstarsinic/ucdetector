@@ -19,5 +19,9 @@ set PROJECTS=org.ucdetector.example,org.ucdetector
 
 REM To run UCDetector for all projects: remove parameter: '-projects'
 REM To run UCDetector for listet projects use: '-projects org.example.project1,org.example.project2'
-java -jar %LAUNCHER% -application org.ucdetector.ucd -consolelog  -data %WORKSPACE% -debug -projects org.ucdetector.example,org.ucdetector
+java -jar %LAUNCHER% -application org.ucdetector.ucd -consolelog  -data %WORKSPACE% -debug -projects %PROJECTS%
+
+
+REM OR USE eclipse executable:
+C:\eclipse\eclipse-3.4\eclipse.exe -application org.ucdetector.ucd -nosplash -data %WORKSPACE% -debug -projects %PROJECTS%
 
