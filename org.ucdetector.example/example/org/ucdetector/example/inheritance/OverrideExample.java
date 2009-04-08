@@ -1,4 +1,7 @@
 package org.ucdetector.example.inheritance;
+
+import java.util.ArrayList;
+
 /**
  *
  */
@@ -11,6 +14,16 @@ public class OverrideExample {
     overrideExample.methodToOverrideProtected();
     overrideExample.methodToOverridePrivate();
     overrideExample.makePrivate();
+    new MyList().toString();
+  }
+
+  private static class MyList extends ArrayList<Object> {
+    private static final long serialVersionUID = 1L;
+
+    @Override
+    public int size() {
+      return super.size();
+    }
   }
 
   // NO marker here, because method is overridden!
