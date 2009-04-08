@@ -1,3 +1,10 @@
+UCDetector 1.1.0 from 2009.??.??:
+New features:
+
+Bugfixes:
+ - [ 2743872 ] Don't check for constructors called only 1 time
+ - TODO: [ 2743908 ] Methods only called from inner class could be private
+
 // -----------------------------------------------------------------------------
 UCDetector 1.0.0 from 2009.04.03:
 New features:
