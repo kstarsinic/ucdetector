@@ -79,8 +79,9 @@ public class CheckUcdMarkerIterator extends AbstractUCDetectorIterator {
         String problemMarker = markerMap.get(marker.getType());
         List<String> problemsExpected = commentForLine.commentList;
         if (!problemsExpected.contains(problemMarker)) {
-          createMarker(resource, "Wrong marker. Expected: '" + problemsExpected
-              + "'. Found: '" + problemMarker + "'", markerLineFound);
+          String message = "Wrong marker. Expected: '" + problemsExpected
+              + "'. Found: '" + problemMarker + "'";
+          createMarker(resource, message, markerLineFound);
         }
       }
       // -----------------------------------------------------------------------
@@ -177,7 +178,7 @@ public class CheckUcdMarkerIterator extends AbstractUCDetectorIterator {
     private final List<String> commentList = new ArrayList<String>();
     private final Integer lineNr;
 
-    public LineNrComments(Integer lineNr, String comment) {
+    private LineNrComments(Integer lineNr, String comment) {
       this.lineNr = lineNr;
       String[] comments = comment.split(",");
       for (String com : comments) {
