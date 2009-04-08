@@ -113,6 +113,10 @@ public class CheckUcdMarkerIterator extends AbstractUCDetectorIterator {
     return sb.toString();
   }
 
+  public int getBadMarkerCount() {
+    return badMarkerCount;
+  }
+
   private void createMarker(IResource resource, String message, Integer line)
       throws CoreException {
     IMarker marker = resource.createMarker(ANALYZE_MARKER_CHECK_UCD_MARKERS);
