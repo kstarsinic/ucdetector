@@ -222,6 +222,7 @@ public class SearchManager {
         String message = NLS.bind(
             Messages.SearchManager_MarkerReferenceFieldNeverRead,
             new Object[] { JavaElementUtil.getElementName(field) });
+        // found=0 needed here, to create reference marker!
         markerFactory.createReferenceMarker(field, message, line, 0);
       }
     }
@@ -295,13 +296,20 @@ public class SearchManager {
         JavaElementUtil.getElementName(member), Integer.valueOf(found) };
     String markerMessage = NLS.bind(Messages.SearchManager_MarkerReference,
         bindings);
-    // Fix for BUG 2225016:  Don't create "0 references marker" for overridden methods
-    if (found <= Prefs.getWarnLimit() && !isOverriddenMethod) {
-      created = markerFactory.createReferenceMarker(member, markerMessage,
-          line, found);
-      if (created) {
-        foundTotal++;
+    // BUG: Don't check for constructors called only 1 time - ID: 2743872
+    if (member instanceof IMethod) {
+      if (((IMethod) member).isConstructor() && found > 0) {
+        return found;
       }
+    }
+    // Fix for BUG 2225016:  Don't create "0 references marker" for overridden methods
+    if (found > Prefs.getWarnLimit() || isOverriddenMethod) {
+      return found;
+    }
+    created = markerFactory.createReferenceMarker(member, markerMessage, line,
+        found);
+    if (created) {
+      foundTotal++;
     }
     return found;
   }
