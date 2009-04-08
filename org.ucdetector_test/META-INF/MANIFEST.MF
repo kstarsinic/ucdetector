@@ -16,5 +16,4 @@ Bundle-ClassPath: .
 Export-Package: org.ucdetector.action;uses:="org.eclipse.core.runtime,org.ucdetector.iterator",
  org.ucdetector.iterator;uses:="org.eclipse.jdt.core,org.eclipse.core.resources",
  org.ucdetector.jar,
- org.ucdetector.preferences;uses:="junit.framework",
- org.ucdetector.util;uses:="org.eclipse.ui,org.eclipse.core.resources"
+ org.ucdetector.preferences;uses:="junit.framework"
