@@ -11,6 +11,7 @@ import org.ucdetector.example.bugs.Bug2269486;
 import org.ucdetector.example.bugs.Bug2539795Main;
 import org.ucdetector.example.bugs.Bug2721955;
 import org.ucdetector.example.bugs.Bug2743872;
+import org.ucdetector.example.bugs.Bug2743908;
 import org.ucdetector.example.bugs.impl.Bug2225016Impl;
 import org.ucdetector.example.classes.AnnotationExample;
 import org.ucdetector.example.classes.AnonymousClass;
@@ -55,6 +56,7 @@ public class PublicReferenceHolder {
   @SuppressWarnings("deprecation")
   @AnnotationExample(parameterExmaple = "1")
   public static void main(String[] args) throws Throwable {
+    System.out.println(Bug2743908.class.getName());
     System.out.println(Bug2743872.class.getName());
     new Bug2743872(1);
     //    new Bug2743872();
