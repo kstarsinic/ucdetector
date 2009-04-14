@@ -514,9 +514,11 @@ public class JavaElementUtil {
       if (type.isInterface()) {
         return "Interface"; //$NON-NLS-1$
       }
-      // TODO 25.11.2008: no detection of local classes
       if (type.isLocal()) {
         return "Local class"; //$NON-NLS-1$
+      }
+      if (type.isMember()) {
+        return "Member class"; //$NON-NLS-1$
       }
       return Messages.SearchManager_Class;
     }
