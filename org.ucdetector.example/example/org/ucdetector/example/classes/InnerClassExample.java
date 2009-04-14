@@ -22,7 +22,7 @@ public class InnerClassExample {
 
   }
 
-  static class MyArrayList2<E> extends ArrayList<E> {
+  static class MyArrayList2<E> extends ArrayList<E> {  // Marker YES: use private
     public void unused() {// Marker YES: unused code
       Map<String, String> map = new HashMap<String, String>() {
         @Override

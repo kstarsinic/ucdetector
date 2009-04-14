@@ -11,20 +11,24 @@ package org.ucdetector.example.bugs;
  */
 public class Bug2743908 {
 
-  // TODO Bug 2743908
-  public void usedOnlyFromInnerClass() { // Marker YES: use private
+	// TODO Bug 2743908
+	public void usedOnlyFromInnerClass() { // Marker YES: use private
 
-  }
+	}
 
-  private class MyClass {
-    private void test() {
-      usedOnlyFromInnerClass();
-    }
-  }
+	private class MyMemberClass {
+		private void test() {
+			usedOnlyFromInnerClass();
+		}
+	}
 
-  public static void main(String[] args) {
-    Bug2743908 bug = new Bug2743908();
-    MyClass myClass = bug.new MyClass();
-    myClass.test();
-  }
+	public static void main(String[] args) {
+		Bug2743908 bug = new Bug2743908();
+		MyMemberClass myClass = bug.new MyMemberClass();
+		myClass.test();
+		new MyLocalClass();
+	}
+}
+
+class MyLocalClass {
 }
