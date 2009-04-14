@@ -62,7 +62,7 @@ public class CycleMember extends CycleBaseElement {
   }
 
   public String getText() {
-    IType typeFor = JavaElementUtil.getTypeFor(match);
+    IType typeFor = JavaElementUtil.getTypeFor(match, false);
     StringBuilder sb = new StringBuilder();
     sb.append(super.getDefaultText(typeFor));
     if (match instanceof IImportDeclaration) {

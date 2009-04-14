@@ -146,7 +146,7 @@ public class LineManger {
    * @return Piece of code contained in offset
    */
   public String getPieceOfCode(IJavaElement element, int offset) {
-    IType type = JavaElementUtil.getTypeFor(element);
+    IType type = JavaElementUtil.getTypeFor(element, false);
     ICompilationUnit unit = type.getCompilationUnit();
     int[] lineEnds = lineEndsMap.get(unit);
     char[] chars = contentsMap.get(unit);

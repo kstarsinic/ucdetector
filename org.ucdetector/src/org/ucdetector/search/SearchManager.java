@@ -142,7 +142,7 @@ public class SearchManager {
       search++;
       monitor.worked(1);
       String searchInfo = JavaElementUtil.getMemberTypeString(method);
-      IType type = JavaElementUtil.getTypeFor(method);
+      IType type = JavaElementUtil.getTypeFor(method, false);
       // Ignore types, which have no references
       if (noRefTypes.contains(type)) {
         continue;
@@ -210,7 +210,7 @@ public class SearchManager {
       if (Flags.isPrivate(field.getFlags())) {
         continue;
       }
-      IType type = JavaElementUtil.getTypeFor(field);
+      IType type = JavaElementUtil.getTypeFor(field, false);
       if (noRefTypes.contains(type)) {
         continue;
       }
@@ -540,7 +540,7 @@ public class SearchManager {
       // See UnusedClassUsedByItself
       if (searchStart instanceof IType) {
         IType searchStartType = (IType) searchStart;
-        IType typeFor = JavaElementUtil.getTypeFor(matchJavaElement);
+        IType typeFor = JavaElementUtil.getTypeFor(matchJavaElement, false);
         if (typeFor.equals(searchStartType)) {
           return true;
         }

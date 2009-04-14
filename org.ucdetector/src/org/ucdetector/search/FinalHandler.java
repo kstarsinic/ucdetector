@@ -53,7 +53,7 @@ class FinalHandler {
     ) {
       return false;
     }
-    IType type = JavaElementUtil.getTypeFor(method);
+    IType type = JavaElementUtil.getTypeFor(method, false);
     if (!JavaElementUtil.hasSubClasses(type)) {
       return false;
     }

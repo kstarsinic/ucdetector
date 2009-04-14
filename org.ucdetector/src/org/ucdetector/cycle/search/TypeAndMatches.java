@@ -53,7 +53,7 @@ class TypeAndMatches {
   void addMatch(SearchMatch match) {
     IJavaElement matchElement = (IJavaElement) match.getElement();
 
-    IType matchtedType = JavaElementUtil.getTypeFor(matchElement);
+    IType matchtedType = JavaElementUtil.getTypeFor(matchElement, false);
     if (matchtedType.equals(this.root)) {
       return; // ignore matches in same class
     }

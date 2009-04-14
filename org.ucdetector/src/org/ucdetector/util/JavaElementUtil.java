@@ -67,18 +67,24 @@ public class JavaElementUtil {
   }
 
   /**
+   * @param isPrimary type with the same name as the compilation unit, or the type of a class file
    * @return the class for an class, method, or field,
    * or return <code>null</code> if there is no type, for example a package
    * has no type.
    */
-  public static IType getTypeFor(IJavaElement javaElement) {
+  // TODO 2009-04-12: review all isPrimary
+  public static IType getTypeFor(IJavaElement javaElement, boolean isPrimary) {
     IJavaElement parent = javaElement;
     while (true) {
       if (parent == null) {
         return null;
       }
       if (parent instanceof IType) {
-        return (IType) parent;
+        IType type = (IType) parent;
+        if (isPrimary && type.getCompilationUnit() != null) {
+          return type.getCompilationUnit().findPrimaryType();
+        }
+        return type;
       }
       if (parent instanceof ICompilationUnit) {
         ICompilationUnit cu = (ICompilationUnit) parent;
@@ -587,7 +593,7 @@ public class JavaElementUtil {
    */
   public static boolean isTestCode(IJavaElement javaElement) {
     // Check type -------------------------------------------------------------
-    IType type = getTypeFor(javaElement);
+    IType type = getTypeFor(javaElement, false);
     if (type != null) {
       if (type.getElementName().endsWith("Test")) { //$NON-NLS-1$
         return true;

@@ -69,8 +69,9 @@ class VisibilityHandler {
         && !Prefs.isCheckReduceVisibilityToPrivate(foundElement)) {
       return;
     }
-    IType startType = JavaElementUtil.getTypeFor(startElement);
-    IType foundType = JavaElementUtil.getTypeFor(foundElement);
+    //  [ 2743908 ] Methods only called from inner class could be private
+    IType startType = JavaElementUtil.getTypeFor(startElement, true);
+    IType foundType = JavaElementUtil.getTypeFor(foundElement, true);
     if (startType == null || foundType == null) {
       // reference in xml file found!
       setMaxVisibilityFound(VISIBILITY.PUBLIC);

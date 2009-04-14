@@ -130,7 +130,7 @@ public class XmlReport implements IUCDetectorReport {
     appendChild(marker, "package", packageName);//$NON-NLS-1$
 
     // NODE: UCDetectorPlugin
-    IType type = JavaElementUtil.getTypeFor(javaElement);
+    IType type = JavaElementUtil.getTypeFor(javaElement, false);
     appendChild(marker, "class", JavaElementUtil.getElementName(type));//$NON-NLS-1$
 
     if (javaElement instanceof IMethod) {
