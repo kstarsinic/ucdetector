@@ -11,7 +11,6 @@ package org.ucdetector.example.bugs;
  */
 public class Bug2743908 {
 
-	// TODO Bug 2743908
 	public void usedOnlyFromInnerClass() { // Marker YES: use private
 
 	}
@@ -31,4 +30,7 @@ public class Bug2743908 {
 }
 
 class MyLocalClass {
+}
+
+class MyLocalClassUnused { // Marker YES: unused code
 }
