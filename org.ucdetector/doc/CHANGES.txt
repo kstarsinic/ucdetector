@@ -1,13 +1,11 @@
-UCDetector 1.1.0 from 2009.??.??:
-New features:
-
+UCDetector 1.1.0 from 2009-04-15:
 Bugfixes:
  - [ 2743872 ] Don't check for constructors called only 1 time
  - [ 2743908 ] Methods only called from inner class could be private
  - [ 2762967 ] XmlReport: Problems running UCDetector
 
 // -----------------------------------------------------------------------------
-UCDetector 1.0.0 from 2009.04.03:
+UCDetector 1.0.0 from 2009-04-03:
 New features:
  - [ 2409697 ] Detect code only called from tests
  - [ 2373808 ] Classes found by text search should have no markers
@@ -23,7 +21,7 @@ Bugfixes:
  - [ 2721955 ] On QuickFix the direct sibling marker gets deleted too
 
 // -----------------------------------------------------------------------------
-UCDetector 0.12.0 from 2008.11.25:
+UCDetector 0.12.0 from 2008-11-25:
 New features:
  - [ 2163715 ] eclipse update site: http://ucdetector.sourceforge.net/update
  - [ 2290711 ] Detect write only fields
@@ -36,7 +34,7 @@ Bugfixes:
  - [ 2225016 ] Don't create "0 references marker" for overridden methods
 
 // -----------------------------------------------------------------------------
-UCDetector 0.11.0 from 2008.09.30:
+UCDetector 0.11.0 from 2008-09-30:
 New features:
  - QuickFixes
  - Checkbox "Ignore bean methods"

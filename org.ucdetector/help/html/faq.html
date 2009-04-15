@@ -1,4 +1,4 @@
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN""http://www.w3.org/TR/html4/transitional.dtd">
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/transitional.dtd">
 <html>
 <head>
 <META http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
@@ -24,7 +24,20 @@
  h1.c1 {text-align: center}
 </style>
 </head>
-<body>
+<script type="text/javascript">
+var pkBaseURL = (("https:" == document.location.protocol) ? "https://apps.sourceforge.net/piwik/ucdetector/" : "http://apps.sourceforge.net/piwik/ucdetector/");
+document.write(unescape("%3Cscript src='" + pkBaseURL + "piwik.js' type='text/javascript'%3E%3C/script%3E"));
+</script><script type="text/javascript">
+piwik_action_name = '';
+piwik_idsite = 1;
+piwik_url = pkBaseURL + "piwik.php";
+piwik_log(piwik_action_name, piwik_idsite, piwik_url);
+</script><object>
+<noscript>
+<p>
+<img src="http://apps.sourceforge.net/piwik/ucdetector/piwik.php?idsite=1" alt="piwik"></p>
+</noscript>
+</object><body>
 <table width="100%" border="0" summary="left navigation, right text">
 <tr valign="top">
 <td width="10%" bgcolor="#FFFFE0">
@@ -93,7 +106,7 @@ UCDetector: Unnecessary Code Detector</h1>
 		
 <li>Group warnings by type</li>
 		
-<li>Filter UCDetector warinigs: Configure Contens.../Types</li>
+<li>Filter UCDetector warnings: Configure Contens.../Types</li>
 	
 </ul>
 	
@@ -103,7 +116,14 @@ UCDetector: Unnecessary Code Detector</h1>
 <b>How do I fix a OutOfMemoryError?</b>
 	
 <br>
-		Increase java heap space by declaring vm parameter: -Xmx500m -XX:MaxPermSize=256m<p></p>
+		Increase java heap space by declaring vm parameter in <code>ECLIPSE_HOME/eclipse.ini</code>:
+		<pre>
+-vmargs
+-Xmx500m
+-XX:MaxPermSize=256m
+</pre>
+	
+<p></p>
 	
 	
 <b>Does UCDetector find unnecessary private code?</b>
@@ -134,9 +154,10 @@ Or check out org.ucdetector.additional and write your own detection.<p></p>
 <b>Is there a ANT task to create UCDetector reports?</b>
 	
 <br>
-		Yes. Unzip folder org.ucdetector_x.y.z.jar/ant/ant, check README.txt
-	<p></p>
+		Yes. Unzip folder <code>org.ucdetector_x.y.z.jar/ant</code>, check <code>README.txt</code>
 	
+<p></p>
+
 	
 	
 <b>Why did you create UCDetector?</b>
@@ -149,14 +170,18 @@ Or check out org.ucdetector.additional and write your own detection.<p></p>
 <b>How can I see UCDetector traces?</b>
 	
 <br>
-		Add a new line '-debug' to ECLIPSE_HOME/eclipse.ini. Unzip file org.ucdetector_x.y.z.jar/.options
-		file to ECLIPSE_HOME<p></p>
+		Add a new line '-debug' to <code>ECLIPSE_HOME/eclipse.ini</code>. Unzip file <code>org.ucdetector_x.y.z.jar/.options</code>
+		file to <code>ECLIPSE_HOME</code>
+	
+<p></p>
 	
 	
 <b>Where can I find UCDetector Exceptions?</b>
 	
 <br>
-		Check the eclipse error log view and the eclipse log file at: ECLIPSE_WORKSPACE/.metadata/.log<p></p>
+		Check the eclipse error log view and the eclipse log file at: <code>ECLIPSE_WORKSPACE/.metadata/.log</code>
+	
+<p></p>
 
 
 
@@ -167,7 +192,7 @@ Or check out org.ucdetector.additional and write your own detection.<p></p>
 <hr>
 <table width="100%" summary="footer">
 <tr>
-<td align="left" valign="middle">Last Update: 2009-04-03</td><td align="right" valign="middle">Copyright &copy; 2009, by <a href="mailto:feedback@ucdetector.org">J&ouml;rg Spieler</a></td>
+<td align="left" valign="middle">Last Update: 2009-04-15</td><td align="right" valign="middle">Copyright &copy; 2009, by <a href="mailto:feedback@ucdetector.org">J&Atilde;&para;rg Spieler</a></td>
 </tr>
 </table>
 <hr>

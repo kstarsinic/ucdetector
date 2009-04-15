@@ -1,4 +1,4 @@
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN""http://www.w3.org/TR/html4/transitional.dtd">
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/transitional.dtd">
 <html>
 <head>
 <META http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
@@ -24,7 +24,20 @@
  h1.c1 {text-align: center}
 </style>
 </head>
-<body>
+<script type="text/javascript">
+var pkBaseURL = (("https:" == document.location.protocol) ? "https://apps.sourceforge.net/piwik/ucdetector/" : "http://apps.sourceforge.net/piwik/ucdetector/");
+document.write(unescape("%3Cscript src='" + pkBaseURL + "piwik.js' type='text/javascript'%3E%3C/script%3E"));
+</script><script type="text/javascript">
+piwik_action_name = '';
+piwik_idsite = 1;
+piwik_url = pkBaseURL + "piwik.php";
+piwik_log(piwik_action_name, piwik_idsite, piwik_url);
+</script><object>
+<noscript>
+<p>
+<img src="http://apps.sourceforge.net/piwik/ucdetector/piwik.php?idsite=1" alt="piwik"></p>
+</noscript>
+</object><body>
 <table width="100%" border="0" summary="left navigation, right text">
 <tr valign="top">
 <td width="10%" bgcolor="#FFFFE0">
@@ -203,14 +216,14 @@ For example "*.xml,*.jsp"
 <b>Use full qualified class name :</b>
 <br>
 The character before and after the match is included in search.
-Searching for "Aplication" will NOT match "MyApplication" neither
+Searching for "Application" will NOT match "MyApplication" neither
 "ApplicationExample".<br>
 
-Searching for "Aplication" will match:
+Searching for "Application" will match:
 <ul>
 
-<li>"org.ucdetector.example_1.Aplication"</li> and
-<li>"org.ucdetector.example_2.Aplication"</li>
+<li>"org.ucdetector.example_1.Application"</li> and
+<li>"org.ucdetector.example_2.Application"</li>
 
 </ul>
 
@@ -225,7 +238,7 @@ found in this files will get no marker for "0 references found". But text
 search is slow, if there are many text files!
 </p>
 If a class is found by text search, this class will have NO markers.
-Even for unsed methods or fields!
+Even for unused methods or fields!
 </p>
 
 
@@ -293,6 +306,15 @@ which could be <font color="#006699"><strong>protected</strong></font>, default 
   <font color="#006699"><strong>private</strong></font>. 
 This is code, which has only references in same package or same class.
 </p>
+In some cases this may cause <font color="red">compile errors</font>
+for classes, if there is code like this:
+<pre>
+new A().getB().toString();
+</pre>
+For more details, check bug: 
+	<a href="http://sourceforge.net/tracker/?func=detail&aid=2539795&group_id=219599&atid=1046865">
+	  Wrong default visibility marker for classes - ID: 2539795
+	</a>
 
 
 
@@ -381,7 +403,7 @@ cycles in your code, a big number here makes cycle detection very slow!
 <hr>
 <table width="100%" summary="footer">
 <tr>
-<td align="left" valign="middle">Last Update: 2009-04-03</td><td align="right" valign="middle">Copyright &copy; 2009, by <a href="mailto:feedback@ucdetector.org">J&ouml;rg Spieler</a></td>
+<td align="left" valign="middle">Last Update: 2009-04-15</td><td align="right" valign="middle">Copyright &copy; 2009, by <a href="mailto:feedback@ucdetector.org">J&Atilde;&para;rg Spieler</a></td>
 </tr>
 </table>
 <hr>
