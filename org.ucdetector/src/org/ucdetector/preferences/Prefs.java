@@ -275,7 +275,7 @@ public final class Prefs {
       }
       return WarnLevel.valueOf(getString(ANALYZE_VISIBILITY_PROTECTED_FIELDS));
     }
-    // TODO: When does this happen?
+    // Text search: member == null, initializer
     return WarnLevel.WARNING;
   }
 
@@ -306,7 +306,7 @@ public final class Prefs {
       }
       return WarnLevel.valueOf(getString(ANALYZE_VISIBILITY_PRIVATE_FIELDS));
     }
-    // TODO: When does this happen?
+    // Text search: member == null, initializer
     return WarnLevel.WARNING;
   }
 

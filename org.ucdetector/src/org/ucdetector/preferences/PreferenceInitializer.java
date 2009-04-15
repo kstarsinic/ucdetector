@@ -15,6 +15,7 @@ import java.io.File;
 import org.eclipse.core.runtime.Platform;
 import org.eclipse.core.runtime.preferences.AbstractPreferenceInitializer;
 import org.eclipse.jface.preference.IPreferenceStore;
+import org.ucdetector.Log;
 import org.ucdetector.UCDetectorPlugin;
 
 /**
@@ -73,14 +74,14 @@ public class PreferenceInitializer extends AbstractPreferenceInitializer { // NO
     // Cycles ------------------------------------------------------------------
     store.setDefault(Prefs.CYCLE_DEPTH, Prefs.CYCLE_DEPTH_DEFAULT);
     // Report ------------------------------------------------------------------
-    // TODO: Clean up this code
-    String report = REPORT_DEFAULT_NAME;
+    String report;
     try {
       File workspace = Platform.getLocation().toFile();
-      report = new File(workspace, REPORT_DEFAULT_NAME).getAbsolutePath();
+      report = new File(workspace, REPORT_DEFAULT_NAME).getCanonicalPath();
     }
     catch (Exception e) {
-      System.err.println(e.getMessage());
+      report = REPORT_DEFAULT_NAME;
+      Log.logError("Can't get report file name", e); //$NON-NLS-1$
     }
     store.setDefault(Prefs.REPORT_FILE, report);
   }
