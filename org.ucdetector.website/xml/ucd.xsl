@@ -126,7 +126,7 @@ UCDetector: Unnecessary Code Detector</h1>
 				<table width="100%" summary="footer">
 					<tr>
 						<td align="left" valign="middle">Last Update: @TODAY@</td>
-						<td align="right" valign="middle">Copyright &#169; @YEAR@, by <a href="mailto:feedback@ucdetector.org">JÃ¶rg Spieler</a></td>
+						<td align="right" valign="middle">Copyright &#169; @YEAR@, by <a href="mailto:feedback@ucdetector.org">Jörg Spieler</a></td>
 					</tr>
 				</table>
 				<hr/>
