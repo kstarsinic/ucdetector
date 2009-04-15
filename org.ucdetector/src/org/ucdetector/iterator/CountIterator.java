@@ -45,6 +45,7 @@ public class CountIterator extends AbstractUCDetectorIterator {
 
   @Override
   public void handleStartGlobal(IJavaElement[] objects) throws CoreException {
+    getMonitor().beginTask(getJobName(), 10);
     selectedAsString = getSelectedString(objects);
     super.handleStartGlobal(objects);
   }

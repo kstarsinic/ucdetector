@@ -113,11 +113,12 @@ public class SearchManager {
    * Search types
    */
   private void searchTypes(List<IType> types) throws CoreException {
+    Log.logInfo("Start searching " + types.size() + " types..."); //$NON-NLS-1$ //$NON-NLS-2$
     for (IType type : types) {
       if (monitor.isCanceled()) {
         return;
       }
-      search++;
+      incrementSearch();
       monitor.worked(1);
       String searchInfo = JavaElementUtil.getMemberTypeString(type);
       updateMonitorMessage(type, Messages.SearchManager_SearchReferences,
@@ -131,15 +132,23 @@ public class SearchManager {
     }
   }
 
+  private void incrementSearch() {
+    search++;
+    if (search % 100 == 0) {
+      Log.logInfo("\tsearched " + search + " of " + searchTotal); //$NON-NLS-1$ //$NON-NLS-2$ 
+    }
+  }
+
   /**
    * Search methods
    */
   private void searchMethods(List<IMethod> methods) throws CoreException {
+    Log.logInfo("Start searching " + methods.size() + " methods..."); //$NON-NLS-1$ //$NON-NLS-2$
     for (IMethod method : methods) {
       if (monitor.isCanceled()) {
         return;
       }
-      search++;
+      incrementSearch();
       monitor.worked(1);
       String searchInfo = JavaElementUtil.getMemberTypeString(method);
       IType type = JavaElementUtil.getTypeFor(method, false);
@@ -188,11 +197,12 @@ public class SearchManager {
    * Search fields
    */
   private void searchFields(List<IField> fields) throws CoreException {
+    Log.logInfo("Start searching " + fields.size() + " fields..."); //$NON-NLS-1$ //$NON-NLS-2$
     for (IField field : fields) {
       if (monitor.isCanceled()) {
         return;
       }
-      search++;
+      incrementSearch();
       monitor.worked(1);
       String searchInfo = JavaElementUtil.getMemberTypeString(field);
       updateMonitorMessage(field, SEARCH_FINAL_MESSAGE, searchInfo);

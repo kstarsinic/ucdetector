@@ -42,8 +42,8 @@ public class Log {
    * Very simple logging to System.out and System.err
    */
   private static void logImpl(String level, String message, Throwable ex) {
-    if (Log.DEBUG
-        && (LOG_LEVEL_DEBUG.equals(level) || LOG_LEVEL_INFO.equals(level))) {
+    if ((Log.DEBUG && LOG_LEVEL_DEBUG.equals(level))
+        || LOG_LEVEL_INFO.equals(level)) {
       System.out.println(createLogMessage(level, message));
     }
     else if (LOG_LEVEL_WARN.equals(level) || LOG_LEVEL_ERROR.equals(level)) {
