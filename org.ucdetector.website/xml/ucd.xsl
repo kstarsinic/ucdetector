@@ -1,7 +1,7 @@
-<?xml version="1.0" encoding="ISO-8859-1"?>
+<?xml version="1.0" encoding="UTF-8"?>
 <xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
 <!--  <xsl:strip-space elements="*"/>  -->
-	<xsl:output encoding="ISO-8859-1" indent="yes" method="html" doctype-public="-//W3C//DTD HTML 4.01 Transitional//EN" doctype-system="http://www.w3.org/TR/html4/transitional.dtd" />
+	<xsl:output encoding="UTF-8" indent="yes" method="html" doctype-public="-//W3C//DTD HTML 4.01 Transitional//EN" doctype-system="http://www.w3.org/TR/html4/transitional.dtd" />
 
   <!-- =============================== ROOT ================================ -->
 	<xsl:template match="/">
@@ -126,7 +126,7 @@ UCDetector: Unnecessary Code Detector</h1>
 				<table width="100%" summary="footer">
 					<tr>
 						<td align="left" valign="middle">Last Update: @TODAY@</td>
-						<td align="right" valign="middle">Copyright &#169; @YEAR@, by <a href="mailto:feedback@ucdetector.org">Jörg Spieler</a></td>
+						<td align="right" valign="middle">Copyright &#169; @YEAR@, by <a href="mailto:feedback@ucdetector.org">JÃ¶rg Spieler</a></td>
 					</tr>
 				</table>
 				<hr/>
