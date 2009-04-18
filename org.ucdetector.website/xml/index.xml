@@ -37,7 +37,7 @@ This cycle classes are shown in s special cycle view.
 			<td>
 			
 <h3>Get UCDetector</h3>
-UCDetector needs Eclipse >= 3.3 
+UCDetector needs Eclipse >= 3.3 and java >= 5.0
 <br></br>
 <b>Download:</b>
 <!-- ======================================================================= -->
