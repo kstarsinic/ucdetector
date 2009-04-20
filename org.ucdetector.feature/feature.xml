@@ -2,7 +2,7 @@
 <feature
       id="org.ucdetector.feature"
       label="UCDetector"
-      version="1.1.0"
+      version="0.12.0"
       provider-name="Joerg Spieler">
 
    <description url="http://www.ucdetector.org/">
@@ -17,7 +17,7 @@ eclipse problem view.
    </description>
 
    <copyright>
-      Copyright (c) 2008 Joerg Spieler
+      Copyright (c) 2009 Joerg Spieler
    </copyright>
 
    <license url="http://www.eclipse.org/legal/epl-v10.html">
@@ -45,7 +45,7 @@ If you did not receive this Content directly from the Eclipse Foundation, the Co
          id="org.ucdetector"
          download-size="150"
          install-size="150"
-         version="1.1.0"
+         version="0.12.0"
          unpack="false"/>
 
 </feature>
