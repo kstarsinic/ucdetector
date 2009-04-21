@@ -403,6 +403,10 @@ public final class Prefs {
     return getStore().getString(name);
   }
 
+  public static void setValue(String name, String value) {
+    getStore().setValue(name, value);
+  }
+
   /**
    * @return <code>true</code>, when the name matches one of the Strings
    * found in the preference filteName.<br>
