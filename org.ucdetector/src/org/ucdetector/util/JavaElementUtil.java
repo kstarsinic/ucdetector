@@ -332,14 +332,16 @@ public class JavaElementUtil {
     catch (OperationCanceledException e) {
       // ignore
     }
-    catch (RuntimeException rte) {
-      isSearchException = true;
-      // Java Search throws an NullPointerException in Eclipse 3.4M5
-      Log.logError("Java search problems", rte); //$NON-NLS-1$
-    }
     catch (OutOfMemoryError e) {
       isSearchException = true;
       UCDetectorPlugin.handleOutOfMemoryError(e);
+    }
+    catch (Throwable throwable) {
+      isSearchException = true;
+      // Java Search throws an NullPointerException in Eclipse 3.4M5
+      Log.logError("Java search problems." //$NON-NLS-1$
+          + "UCDetecor will ignore this exception. " //$NON-NLS-1$
+          + "Maybe a 'org.eclipse.jdt.core.search' bug!", throwable); //$NON-NLS-1$
     }
     return isSearchException;
   }
