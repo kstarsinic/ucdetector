@@ -14,7 +14,7 @@
   <!--                      CREATE UCD HOMEPAGE                              -->
   <!-- ===================================================================== -->
   <target name="create" description="Create UCDetector homepage">
-    <antcall target="transform" />
+    <antcall target="-transform" />
     <copy-help />
     <echo>Created UCDetector homepage. See: ${html.dir}/index.html</echo>
   </target>
@@ -22,7 +22,7 @@
   <!-- =contact.html==================================================================== -->
   <!--                      TRANSFORM                                        -->
   <!-- ===================================================================== -->
-  <target name="transform" description="Transform xml files to html">
+  <target name="-transform" description="Transform xml files to html">
     <mkdir dir="${temp.dir}" />
     <xslt destdir="${temp.dir}"
           extension=".html"
@@ -62,7 +62,7 @@
   <!--                      CREATE UCD HELP                                  -->
   <!-- ===================================================================== -->
   <target name="ucd-help" description="Copy help to UCDetector plugin">
-    <antcall target="transform" />
+    <antcall target="-transform" />
     <copy-help images="http://ucdetector.org/images"
                icons="../../icons"
                todir="${ucd.dir}/help/html" />
@@ -79,9 +79,10 @@
          server="${server}"
          userid="${user}"
          remotedir="${remotedir}"
-         newer="true">
-      <fileset dir="${basedir}/../org.ucdetector" includes="icons/*" />
+         newer="true"
+         verbose="treu">
       <fileset dir="${html.dir}" includes="**" />
+      <fileset dir="${basedir}/../org.ucdetector" includes="icons/*" />
     </ftp>
     <echo>Sended homepage files to server</echo>
   </target>
@@ -89,9 +90,9 @@
   <!-- ===================================================================== -->
   <!--                      UPDATE HOMEPAGE                                  -->
   <!-- ===================================================================== -->
-  <target name="update"
-          depends="create,send"
-          description="Create homepage and send it to server">
+  <target name="homepage" description="Create homepage and send it to server">
+    <antcall target="create" />
+    <antcall target="send" />
   </target>
 </project>
 
