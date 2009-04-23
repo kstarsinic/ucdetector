@@ -1,26 +1,29 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!--
+<!-- ====================================================================
   Copyright (c) 2009 Joerg Spieler All rights reserved. This program and the
   accompanying materials are made available under the terms of the Eclipse
   Public License v1.0 which accompanies this distribution, and is available at
   http://www.eclipse.org/legal/epl-v10.html
--->
+  ========================================================================= -->
 <project name="org.ucdetector" default="detect" basedir=".">
   <!--  
   /opt/eclipse-3.3/plugins/org.eclipse.equinox.launcher_1.0.0.v20070606.jar
   /opt/eclipse-3.4M5/plugins/org.eclipse.equinox.launcher_1.0.100.v20071211.jar
   -->
-  <property name="LAUNCHER"
-            location="/opt/eclipse-3.4/plugins/org.eclipse.equinox.launcher_1.0.100.v20080509-1800.jar" />
   <property name="WORKSPACE"
             location="${user.home}/workspace/runtime-EclipseApplication" />
 
-  <target name="detect">
+  <!-- ==================================================================== -->
+  <!-- DETECT                                                               -->
+  <!-- ==================================================================== -->
+  <target name="detect" description="Run UCDetector using java">
+    <property name="LAUNCHER"
+              location="/opt/eclipse-3.4/plugins/org.eclipse.equinox.launcher_1.0.100.v20080509-1800.jar" />
     <echo>LAUNCHER  = ${LAUNCHER}</echo>
     <echo>WORKSPACE = ${WORKSPACE}</echo>
     <!-- Use next lines, to show properties
-    <echoproperties />
-    -->
+    <echoproperties /> -->
+
     <java jar="${LAUNCHER}" fork="true">
       <arg line="-application org.ucdetector.ucd" />
       <arg line="-consolelog" />
@@ -28,5 +31,27 @@
       <arg line="-data ${WORKSPACE}" />
       <arg line="-projects org.ucdetector.example,org.ucdetector" />
     </java>
+  </target>
+
+  <!-- ==================================================================== -->
+  <!-- DETECT 2                                                             -->
+  <!-- ==================================================================== -->
+  <target name="detect-exe"
+          description="Run UCDetector using eclipse executable">
+    <property name="EXCECUTABLE" location="/opt/eclipse-3.4/eclipse" />
+    <echo>EXCECUTABLE = ${EXCECUTABLE}</echo>
+    <echo>WORKSPACE   = ${WORKSPACE}</echo>
+
+    <exec executable="${EXCECUTABLE}">
+      <arg value="-application" />
+      <arg value="org.ucdetector.ucd" />
+      <arg value="-consolelog" />
+      <arg value="-debug" />
+      <arg value="-nosplash" />
+      <arg value="-data" />
+      <arg value="-${WORKSPACE}" />
+      <arg value="-projects" />
+      <arg value="org.ucdetector.example,org.ucdetector" />
+    </exec>
   </target>
 </project>
