@@ -12,7 +12,7 @@ REM set LAUNCHER=C:\eclipse\eclipse-3.3\plugins\org.eclipse.equinox.launcher_1.0
 REM set LAUNCHER=C:\eclipse\eclipse-3.4.1\plugins\org.eclipse.equinox.launcher_1.0.101.R34x_v20080819.jar
 REM set LAUNCHER=C:\eclipse\eclipse-3.5M5\plugins\org.eclipse.equinox.launcher_1.0.200.v20090128-1500.jar
 
-REM WORKSPACE must point to your workspace directory (usuall parent directory of java projects)
+REM WORKSPACE must point to your workspace directory (usually parent directory of java projects)
 set WORKSPACE=F:\ws\ucd\runtime-ucd_configuration
 
 set PROJECTS=org.ucdetector.example,org.ucdetector
@@ -23,5 +23,5 @@ java -jar %LAUNCHER% -application org.ucdetector.ucd -consolelog  -data %WORKSPA
 
 
 REM OR USE eclipse executable:
-C:\eclipse\eclipse-3.4\eclipse.exe -application org.ucdetector.ucd -nosplash -data %WORKSPACE% -debug -projects %PROJECTS%
+REM C:\eclipse\eclipse-3.4\eclipse.exe -application org.ucdetector.ucd -nosplash -data %WORKSPACE% -debug -projects %PROJECTS%
 
