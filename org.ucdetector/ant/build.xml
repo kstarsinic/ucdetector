@@ -13,9 +13,14 @@
   <property name="LAUNCHER"
             location="/opt/eclipse-3.4/plugins/org.eclipse.equinox.launcher_1.0.100.v20080509-1800.jar" />
   <property name="WORKSPACE"
-            location="/home/js/workspace/runtime-EclipseApplication" />
+            location="${user.home}/workspace/runtime-EclipseApplication" />
 
   <target name="detect">
+    <echo>LAUNCHER  = ${LAUNCHER}</echo>
+    <echo>WORKSPACE = ${WORKSPACE}</echo>
+    <!-- Use next lines, to show properties
+    <echoproperties />
+    -->
     <java jar="${LAUNCHER}" fork="true">
       <arg line="-application org.ucdetector.ucd" />
       <arg line="-consolelog" />
