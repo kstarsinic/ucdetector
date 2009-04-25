@@ -9,15 +9,15 @@ package org.ucdetector.search;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.NullProgressMonitor;
 import org.ucdetector.Log;
-import org.ucdetector.UCDetectorPlugin;
 
 /**
  * Wrap an IProgressMonitor and do logging, when IProgressMonitor methods
  * are called
  */
 public class UCDProgressMonitor implements IProgressMonitor {
+  private String taskName = ""; //$NON-NLS-1$
   private final IProgressMonitor delegate;
-  private String taskName = "?"; //$NON-NLS-1$
+  private double lastWork;
 
   public UCDProgressMonitor(IProgressMonitor delegate) {
     this.delegate = delegate;
@@ -27,18 +27,23 @@ public class UCDProgressMonitor implements IProgressMonitor {
     this(new NullProgressMonitor());
   }
 
-  public void beginTask(String beginTaskName, int totalWork) {
-    this.taskName = beginTaskName;
-    Log.logInfo("Start task: " + beginTaskName); //$NON-NLS-1$
-    delegate.beginTask(beginTaskName, totalWork);
+  public void beginTask(String name, int totalWork) {
+    Log.logInfo("Task.beginTask " + name); //$NON-NLS-1$
+    this.taskName = name;
+    delegate.beginTask(taskName, totalWork);
   }
 
   public void done() {
-    Log.logInfo("End task: " + taskName); //$NON-NLS-1$
+    Log.logInfo("Task.done " + taskName); //$NON-NLS-1$
     delegate.done();
   }
 
   public void internalWorked(double work) {
+    // nothing useful!
+    if (work != lastWork) {
+      Log.logInfo("Task.internalWorked " + work); //$NON-NLS-1$
+    }
+    lastWork = work;
     delegate.internalWorked(work);
   }
 
@@ -47,40 +52,29 @@ public class UCDProgressMonitor implements IProgressMonitor {
   }
 
   public void setCanceled(boolean value) {
-    Log.logInfo("Task canceled: " + taskName); //$NON-NLS-1$
+    Log.logInfo("Task.setCanceled: " + value); //$NON-NLS-1$
     delegate.setCanceled(value);
   }
 
   public void setTaskName(String name) {
+    Log.logInfo("Task.setTaskName " + name); //$NON-NLS-1$
+    this.taskName = name;
     delegate.setTaskName(name);
   }
 
   public void subTask(String name) {
-    if (Log.DEBUG) {
-      Log.logDebug(name);
-    }
-    else if (UCDetectorPlugin.isHeadlessMode()) {
-      Log.logInfo(name);
-    }
+    Log.logInfo("Task.subTask: '" + name);//$NON-NLS-1$ 
+    //    if (Log.DEBUG) {
+    //      Log.logDebug(name);
+    //    }
+    //    else if (UCDetectorPlugin.isHeadlessMode()) {
+    //    }
     delegate.subTask(name);
   }
 
   public void worked(int work) {
+    // nothing usefull!
+    // Log.logInfo("Task.worked: " + work);//$NON-NLS-1$
     delegate.worked(work);
-  }
-
-  @Override
-  public String toString() {
-    return delegate.toString();
-  }
-
-  @Override
-  public boolean equals(Object obj) {
-    return delegate.equals(obj);
-  }
-
-  @Override
-  public int hashCode() {
-    return delegate.hashCode();
   }
 }
