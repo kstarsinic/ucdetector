@@ -15,6 +15,7 @@ import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.IResource;
 import org.eclipse.core.resources.IWorkspace;
 import org.eclipse.core.resources.IWorkspaceRoot;
+import org.eclipse.core.resources.IncrementalProjectBuilder;
 import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.equinox.app.IApplication;
@@ -58,15 +59,21 @@ public class UCDApplication implements IApplication {
    */
   public static void startImpl(List<String> projectsToIterate)
       throws CoreException {
+    Log.logInfo("Run UCDetector"); //$NON-NLS-1$
     UCDetectorPlugin.setHeadlessMode(true);
     UCDProgressMonitor ucdMonitor = new UCDProgressMonitor();
     IWorkspace workspace = ResourcesPlugin.getWorkspace();
+
     IWorkspaceRoot root = workspace.getRoot();
+    Log.logInfo("Refresh workspace..."); //$NON-NLS-1$
     root.refreshLocal(IResource.DEPTH_INFINITE, ucdMonitor);
+
+    Log.logInfo("Build workspace..."); //$NON-NLS-1$
+    workspace.build(IncrementalProjectBuilder.INCREMENTAL_BUILD, ucdMonitor);
+    //    workspace.build(IncrementalProjectBuilder.INCREMENTAL_BUILD, ucdMonitor);
 
     IProject[] projects = root.getProjects();
     List<IJavaProject> openProjects = new ArrayList<IJavaProject>();
-    Log.logInfo("Run UCDetector"); //$NON-NLS-1$
     Log.logInfo("\tWorkspace: " + root.getLocation()); //$NON-NLS-1$
     if (projectsToIterate != null && projectsToIterate.size() > 0) {
       Log.logInfo("\tprojects to detect: " + projectsToIterate); //$NON-NLS-1$
