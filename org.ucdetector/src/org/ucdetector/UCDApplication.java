@@ -65,10 +65,10 @@ public class UCDApplication implements IApplication {
     IWorkspace workspace = ResourcesPlugin.getWorkspace();
 
     IWorkspaceRoot root = workspace.getRoot();
-    Log.logInfo("Refresh workspace..."); //$NON-NLS-1$
+    Log.logInfo("Refresh workspace...Please wait...!"); //$NON-NLS-1$
     root.refreshLocal(IResource.DEPTH_INFINITE, ucdMonitor);
 
-    Log.logInfo("Build workspace..."); //$NON-NLS-1$
+    Log.logInfo("Build workspace... Please wait...!"); //$NON-NLS-1$
     workspace.build(IncrementalProjectBuilder.INCREMENTAL_BUILD, ucdMonitor);
     //    workspace.build(IncrementalProjectBuilder.INCREMENTAL_BUILD, ucdMonitor);
 
