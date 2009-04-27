@@ -403,8 +403,11 @@ public final class Prefs {
     return getStore().getString(name);
   }
 
-  public static void setValue(String name, String value) {
-    getStore().setValue(name, value);
+  /**
+   * @param name prefix "org.ucdetector." is added
+   */
+  public static void setUcdValue(String name, String value) {
+    getStore().setValue("org.ucdetector." + name, value); //$NON-NLS-1$
   }
 
   /**
