@@ -89,7 +89,7 @@ public class UCDApplication implements IApplication {
           i++;
         }
       }
-      if (sArgs[i].equals("-options")) { //$NON-NLS-1$
+      if (sArgs[i].equals("-ucdoptions")) { //$NON-NLS-1$
         if (hasOptionValue(sArgs, i)) {
           List<String> keyValues = Arrays.asList(sArgs[i + 1].split(",")); //$NON-NLS-1$
           for (String keyValue : keyValues) {
@@ -111,7 +111,7 @@ public class UCDApplication implements IApplication {
     sBuildType = (sBuildType == null) ? "AUTO_BUILD" : sBuildType; //$NON-NLS-1$
     Log.logInfo("\tBuildType         : " + sBuildType); //$NON-NLS-1$
     if (buildTypes.containsKey(sBuildType)) {
-      buildType = buildTypes.get(buildTypes);
+      buildType = buildTypes.get(sBuildType);
     }
     else {
       buildType = IncrementalProjectBuilder.AUTO_BUILD;
@@ -122,8 +122,13 @@ public class UCDApplication implements IApplication {
       String key = option.getKey();
       String value = option.getValue();
       Log.logInfo("\tSet ucd option    : " + (key + "->" + value)); //$NON-NLS-1$ //$NON-NLS-2$
-      Prefs.setValue(key, value);
+      Prefs.setUcdValue(key, value);
     }
+    String[] avaiable = UCDetectorPlugin.getDefault().getPluginPreferences()
+        .defaultPropertyNames();
+    String prefs = UCDetectorPlugin.getPreferencesAsString();
+    Log.logInfo(prefs.replace(", ", "\n\t")); //$NON-NLS-1$//$NON-NLS-2$
+    Log.logInfo("\tAvaiable Options  : " + Arrays.asList(avaiable)); //$NON-NLS-1$
   }
 
   private boolean hasOptionValue(String[] sArgs, int i) {
@@ -150,7 +155,7 @@ public class UCDApplication implements IApplication {
       String projectName = javaProject.getElementName();
       boolean ignore = projectsToIterate != null
           && !projectsToIterate.contains(projectName);
-      Log.logInfo("\t\t" + projectName + " ignore=" + ignore); //$NON-NLS-1$ //$NON-NLS-2$
+      Log.logInfo("\t\tRun UCDetector " + !ignore + " for " + projectName); //$NON-NLS-1$ //$NON-NLS-2$
       if (ignore) {
         continue;
       }
