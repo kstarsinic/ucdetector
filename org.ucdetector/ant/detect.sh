@@ -12,16 +12,15 @@ export LAUNCHER=/opt/eclipse-3.4/plugins/org.eclipse.equinox.launcher_1.0.100.v2
 #export LAUNCHER=/opt/eclipse-3.4M5/plugins/org.eclipse.equinox.launcher_1.0.100.v20071211.jar
 
 
-# WORKSPACE must point to your workspace directory (usuall parent directory of java projects)
+# WORKSPACE must point to your workspace directory (usually parent directory of java projects)
 export WORKSPACE=~/workspace/runtime-EclipseApplication
 
-export PROJECTS=org.ucdetector.example,org.ucdetector
-
-# To run UCDetector for all projects: remove parameter: '-projects'
-# To run UCDetector for listet projects use: '-projects org.example.project1,org.example.project2'
-java -jar $LAUNCHER -application org.ucdetector.ucd -consolelog  -data $WORKSPACE -debug -projects $PROJECTS
+REM ----------------------------------------------------------------------------
+REM FOR MORE OPTIONS, CHECK build.xml!
+REM ----------------------------------------------------------------------------
+java -jar $LAUNCHER -application org.ucdetector.ucd -consolelog  -data $WORKSPACE -debug
 
 
 # OR USE eclipse executable:
-# /opt/eclipse-3.5M6/eclipse -application org.ucdetector.ucd -nosplash -data $WORKSPACE -projects $PROJECTS
+# /opt/eclipse-3.5M6/eclipse -application org.ucdetector.ucd -nosplash -data $WORKSPACE
 

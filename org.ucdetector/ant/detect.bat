@@ -15,13 +15,12 @@ REM set LAUNCHER=C:\eclipse\eclipse-3.5M5\plugins\org.eclipse.equinox.launcher_1
 REM WORKSPACE must point to your workspace directory (usually parent directory of java projects)
 set WORKSPACE=F:\ws\ucd\runtime-ucd_configuration
 
-set PROJECTS=org.ucdetector.example,org.ucdetector
-
-REM To run UCDetector for all projects: remove parameter: '-projects'
-REM To run UCDetector for listet projects use: '-projects org.example.project1,org.example.project2'
-java -jar %LAUNCHER% -application org.ucdetector.ucd -consolelog  -data %WORKSPACE% -debug -projects %PROJECTS%
+REM ----------------------------------------------------------------------------
+REM FOR MORE OPTIONS, CHECK build.xml!
+REM ----------------------------------------------------------------------------
+java -jar %LAUNCHER% -application org.ucdetector.ucd -consolelog -data %WORKSPACE% -debug
 
 
 REM OR USE eclipse executable:
-REM C:\eclipse\eclipse-3.4\eclipse.exe -application org.ucdetector.ucd -nosplash -data %WORKSPACE% -debug -projects %PROJECTS%
+REM C:\eclipse\eclipse-3.4\eclipse.exe -application org.ucdetector.ucd -nosplash -data %WORKSPACE% -debug
 

@@ -28,13 +28,37 @@
       <arg line="-consolelog" />
       <arg line="-debug" />
       <arg line="-data ${WORKSPACE}" />
+
+      <!-- ============================================================= 
+            THERE AR 2 WAYS TO SET OPTIONS:
+             - SET OPTIONS IN ECLIPSE
+             - SET OPTIONS HERE
+          ============================================================= -->
+
+      <!-- OPTION: -projects
+           remove argument to build ALL projects 
       <arg line="-projects org.ucdetector.example,org.ucdetector" />
+      -->
+
+      <!-- OPTION: -buildtype
+           One of:
+           FULL_BUILD, AUTO_BUILD, CLEAN_BUILD, INCREMENTAL_BUILD.
+           Default is AUTO_BUILD
+           See: org.eclipse.core.resources.IncrementalProjectBuilder
+      <arg line="-buildtype CLEAN_BUILD" />
+       -->
+
+      <!-- OPTION: -buildtype
+           Usage: key1=value1,key2=value2
+           For more details see: org.ucdetector.preferences.Prefs
+      <arg line="-ucdoptions warnLimit=1,finalMethod=IGNORE" />
+       -->
     </java>
   </target>
 
   <!-- ==================================================================== -->
   <!-- DETECT 2                                                             -->
-  <!-- ==================================================================== -->
+  <!-- ==================================================================== 
   <target name="detect-exe"
           description="Run UCDetector using eclipse executable">
     <property name="EXCECUTABLE" location="/opt/eclipse-3.4/eclipse" />
@@ -49,8 +73,7 @@
       <arg value="-nosplash" />
       <arg value="-data" />
       <arg value="-${WORKSPACE}" />
-      <arg value="-projects" />
-      <arg value="org.ucdetector.example,org.ucdetector" />
     </exec>
   </target>
+  -->
 </project>
