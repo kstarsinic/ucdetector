@@ -2,31 +2,25 @@
 <feature
       id="org.ucdetector.feature"
       label="UCDetector"
-      version="0.12.0"
-      provider-name="Joerg Spieler">
+      version="1.1.0"
+      plugin="org.ucdetector"
+      provider-name="%providerName" 
+      image="ucd.gif">
 
    <description url="http://www.ucdetector.org/">
-      UCDetector (Unnecessary Code Detector) is a eclipse PlugIn tool
-to find unnecessary (dead) public java code. For example public
-classes, methods or fields which have no references. UCDetector
-creates markers for the following problems, which appear in the
-eclipse problem view.
- - Unnecessary (dead) code
- - Code where the visibility could be changed to protected, default or  - private 
- - Methods of fields, which can be final
+    %description
    </description>
 
    <copyright>
-      Copyright (c) 2009 Joerg Spieler
+      %copyright
    </copyright>
 
-   <license url="http://www.eclipse.org/legal/epl-v10.html">
-      The Eclipse Foundation makes available all content in this plug-in (&quot;Content&quot;). Unless otherwise indicated below, the Content is provided to you under the terms and conditions of the Eclipse Public License Version 1.0 (&quot;EPL&quot;). A copy of the EPL is available at http://www.eclipse.org/legal/epl-v10.html. For purposes of the EPL, &quot;Program&quot; will mean the Content.
-If you did not receive this Content directly from the Eclipse Foundation, the Content is being redistributed by another party (&quot;Redistributor&quot;) and different terms and conditions may apply to your use of any object code in the Content. Check the Redistributor&apos;s license that was provided with the Content. If no such license exists, contact the Redistributor. Unless otherwise indicated below, the terms and conditions of the EPL still apply to any source code in the Content and such source code may be obtained at http://www.eclipse.org.
+   <license url="%licenseURL">
+      %license
    </license>
 
    <url>
-      <update label="UCDetector update site" url="http://ucdetector.sourceforge.net/update"/>
+      <update label="Unnecessary Code Detector Updates" url="http://ucdetector.sourceforge.net/update"/>
    </url>
 
    <requires>
@@ -43,9 +37,8 @@ If you did not receive this Content directly from the Eclipse Foundation, the Co
 
    <plugin
          id="org.ucdetector"
-         download-size="150"
-         install-size="150"
-         version="0.12.0"
+         download-size="200"
+         install-size="200"
+         version="1.1.0"
          unpack="false"/>
-
 </feature>
