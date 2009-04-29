@@ -1,3 +1,11 @@
+UCDetector 1.2.0 from 2009-:
+Bugfixes:
+ - [ 2783734 ] Static imports are not recognized
+
+New features:
+ - Improved running UCDetector with ANT: Options, refresh/compile workspace 
+
+// -----------------------------------------------------------------------------
 UCDetector 1.1.0 from 2009-04-15:
 Bugfixes:
  - [ 2743872 ] Don't check for constructors called only 1 time
