@@ -20,6 +20,7 @@ import org.eclipse.jdt.core.IMember;
 import org.eclipse.jdt.core.IMethod;
 import org.eclipse.jdt.core.IType;
 import org.eclipse.jdt.core.JavaCore;
+import org.eclipse.jdt.core.JavaModelException;
 import org.eclipse.jdt.core.search.IJavaSearchConstants;
 import org.eclipse.jdt.core.search.IJavaSearchScope;
 import org.eclipse.jdt.core.search.SearchEngine;
@@ -544,7 +545,17 @@ public class SearchManager {
       // Ignore import, because it maybe an unnecessary import!
       // See OnlyImportDeclarationReferenceExample
       if (matchJavaElement instanceof IImportDeclaration) {
-        return true;
+        IImportDeclaration importDecl = (IImportDeclaration) matchJavaElement;
+        try {
+          // Bug fix: Static imports are not recognized - ID: 2783734
+          boolean isStatic = Flags.isStatic(importDecl.getFlags());
+          return !isStatic;
+        }
+        catch (JavaModelException ex) {
+          Log.logError("Can't get flags of: " + importDecl.getElementName(), //$NON-NLS-1$
+              ex);
+          return false;
+        }
       }
       // Ignore type matches referred by itself.
       // See UnusedClassUsedByItself
