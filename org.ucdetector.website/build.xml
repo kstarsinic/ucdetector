@@ -80,7 +80,7 @@
          userid="${user}"
          remotedir="${remotedir}"
          newer="true"
-         verbose="treu">
+         verbose="true">
       <fileset dir="${html.dir}" includes="**" />
       <fileset dir="${basedir}/../org.ucdetector" includes="icons/*" />
     </ftp>
