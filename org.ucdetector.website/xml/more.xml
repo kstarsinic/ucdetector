@@ -14,50 +14,51 @@ Unzip folder <code>org.ucdetector_x.y.z.jar/ant</code>, check README.txt
 						</p>
 				<p>
 					<a href="http://ucdetector.svn.sourceforge.net/viewvc/ucdetector/trunk/org.ucdetector/ant/README.txt?view=markup">See last version from README.txt</a>
-			</p>
-			
+				</p>
+UCDetector 1.1.0: If you want to use this feature, please checkout UCDetector and create ucdetector.jar yourself.
+There are some bugfixes in Subversion!
 		</td>
-		<td align="left" valign="middle"></td>
-	</tr>
+			<td align="left" valign="middle"></td>
+		</tr>
 		
-	<tr>
-		<td>
-			<h3>
-				<img alt="cycle" src="@ICONS_DIR@/cycle.gif"/>Detect class cycles
+		<tr>
+			<td>
+				<h3>
+					<img alt="cycle" src="@ICONS_DIR@/cycle.gif"/>Detect class cycles
 				</h3>
-			<p>Right click on classes, packages or projects, Select context menu: "UCDetector/detect cycles".
+				<p>Right click on classes, packages or projects, Select context menu: "UCDetector/detect cycles".
 The class cycles will appear in the Cycle View. Browse the class cycles by exploring the
 cycle tree.</p>
-		</td>
-		<td align="left" valign="middle">
-			<img alt="UCDetector cycle" border="1" src="@IMAGES_DIR@/cycles.png" />
-		</td>
-	</tr>
+			</td>
+			<td align="left" valign="middle">
+				<img alt="UCDetector cycle" border="1" src="@IMAGES_DIR@/cycles.png" />
+			</td>
+		</tr>
 		
-	<tr>
-		<td>
-			<h3>
-				<img alt="count" src="@ICONS_DIR@/info_obj.gif"/>Count code checked by UCDetector
+		<tr>
+			<td>
+				<h3>
+					<img alt="count" src="@ICONS_DIR@/info_obj.gif"/>Count code checked by UCDetector
 				</h3>
-			<p>It is possible to count code checked by UCDetector. Select context menu: "UCDetector/count elements"</p>
-		</td>
-		<td align="left" valign="middle">
-			<img alt="UCDetector count" border="1" src="@IMAGES_DIR@/count.png"/>
-		</td>
-	</tr>
+				<p>It is possible to count code checked by UCDetector. Select context menu: "UCDetector/count elements"</p>
+			</td>
+			<td align="left" valign="middle">
+				<img alt="UCDetector count" border="1" src="@IMAGES_DIR@/count.png"/>
+			</td>
+		</tr>
 		
 		
-	<tr>
-		<td>
+		<tr>
+			<td>
 				
-			<h3>
-				<img alt="remove" src="@ICONS_DIR@/remove.gif"/>Clean markers
+				<h3>
+					<img alt="remove" src="@ICONS_DIR@/remove.gif"/>Clean markers
 				</h3>
-			<p>Delete UCDetector markers by right clicking on a java element which contains
+				<p>Delete UCDetector markers by right clicking on a java element which contains
 the markers and select:<br></br>
 "UCDetector/Clean markers"</p>
-		</td>
-		<td></td>
-	</tr>
-</table>
+			</td>
+			<td></td>
+		</tr>
+	</table>
 </ucd>
