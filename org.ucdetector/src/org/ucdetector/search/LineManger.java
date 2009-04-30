@@ -182,6 +182,15 @@ public class LineManger {
         return Integer.valueOf(line);
       }
     }
+    /*
+    if (nextToken == ITerminalSymbols.TokenNameAT) {
+      scanner.getCurrentTokenSource(); // @
+      scanner.getNextToken(); // SurpressWarnings
+      scanner.getNextToken(); // (
+      scanner.getNextToken(); // "unchecked"
+      scanner.getNextToken(); // )
+    }
+    */
     return null;
   }
 
