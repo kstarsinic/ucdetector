@@ -151,7 +151,6 @@ public class SearchManager {
       }
       incrementSearch();
       monitor.worked(1);
-      String searchInfo = JavaElementUtil.getMemberTypeString(method);
       IType type = JavaElementUtil.getTypeFor(method, false);
       // Ignore types, which have no references
       if (noRefTypes.contains(type)) {
@@ -165,6 +164,11 @@ public class SearchManager {
       if (JavaElementUtil.isSerializationMethod(method)) {
         continue;
       }
+      int line = lineManger.getLine(method);
+      if (line == LineManger.LINE_NOT_FOUND) {
+        continue;
+      }
+      String searchInfo = JavaElementUtil.getMemberTypeString(method);
       updateMonitorMessage(method, "override/implements", searchInfo); //$NON-NLS-1$
       // Ignore methods overriding or implementing other methods
       //      boolean isOverride = JavaElementUtil.isOverrideOrImplements(method);
@@ -177,7 +181,6 @@ public class SearchManager {
       boolean isOverriddenMethod = JavaElementUtil.isOverriddenMethod(method);
       stop.end("    Calculate if is overridden method"); //$NON-NLS-1$
 
-      int line = lineManger.getLine(method);
       StopWatch watch = new StopWatch(method);
       if (!isOverriddenMethod) {
         updateMonitorMessage(method, SEARCH_FINAL_MESSAGE, searchInfo);
@@ -205,10 +208,13 @@ public class SearchManager {
       }
       incrementSearch();
       monitor.worked(1);
+      int line = lineManger.getLine(field);
+      if (line == LineManger.LINE_NOT_FOUND) {
+        continue;
+      }
       String searchInfo = JavaElementUtil.getMemberTypeString(field);
       updateMonitorMessage(field, SEARCH_FINAL_MESSAGE, searchInfo);
       StopWatch watch = new StopWatch(field);
-      int line = lineManger.getLine(field);
       if (JavaElementUtil.isSerializationField(field)) {
         continue;
       }
