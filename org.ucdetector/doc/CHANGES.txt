@@ -4,6 +4,7 @@ Bugfixes:
 
 New features:
  - Improved running UCDetector with ANT: Options, refresh/compile workspace 
+ - [ 2658675 ] Want annotations, not comments, to indicate non-dead code
 
 // -----------------------------------------------------------------------------
 UCDetector 1.1.0 from 2009-04-15:

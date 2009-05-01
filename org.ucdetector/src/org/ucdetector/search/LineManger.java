@@ -9,6 +9,7 @@ package org.ucdetector.search;
 
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
@@ -25,8 +26,19 @@ import org.eclipse.jdt.core.ToolFactory;
 import org.eclipse.jdt.core.compiler.IScanner;
 import org.eclipse.jdt.core.compiler.ITerminalSymbols;
 import org.eclipse.jdt.core.compiler.InvalidInputException;
+import org.eclipse.jdt.core.dom.AST;
+import org.eclipse.jdt.core.dom.ASTNode;
+import org.eclipse.jdt.core.dom.ASTParser;
+import org.eclipse.jdt.core.dom.Annotation;
+import org.eclipse.jdt.core.dom.ArrayInitializer;
+import org.eclipse.jdt.core.dom.BodyDeclaration;
+import org.eclipse.jdt.core.dom.Expression;
+import org.eclipse.jdt.core.dom.SimpleName;
+import org.eclipse.jdt.core.dom.SingleMemberAnnotation;
+import org.eclipse.jdt.core.dom.StringLiteral;
 import org.ucdetector.Log;
 import org.ucdetector.UCDetectorPlugin;
+import org.ucdetector.quickfix.ASTMemberVisitor;
 import org.ucdetector.util.JavaElementUtil;
 
 /**
@@ -94,6 +106,79 @@ public class LineManger {
   }
 
   /**
+   * Get the lines for which the @SuppressWarnings annotations are<p>
+   * See feature request: Want annotations, not comments, to indicate non-dead code - ID: 2658675
+   */
+  private static Set<Integer> findUcdSuppressWarningLines(IScanner scanner) {
+    ASTParser parser = ASTParser.newParser(AST.JLS3);
+    parser.setSource(scanner.getSource());
+    parser.setKind(ASTParser.K_COMPILATION_UNIT);
+    parser.setResolveBindings(true);
+    ASTNode createAST = parser.createAST(null);
+    FindUcdSuppressWarningsVisitor visitor = new FindUcdSuppressWarningsVisitor(
+        scanner);
+    createAST.accept(visitor);
+    return visitor.ignoreLines;
+    //    System.out.println("FindUcdSuppressWarningsVisitor.ignoreLines="
+    //        + visitor.ignoreLines);
+  }
+
+  private static class FindUcdSuppressWarningsVisitor extends ASTMemberVisitor {
+    private final Set<Integer> ignoreLines = new HashSet<Integer>();
+    private final IScanner scanner;
+
+    public FindUcdSuppressWarningsVisitor(IScanner scanner) {
+      this.scanner = scanner;
+    }
+
+    @Override
+    protected boolean visitImpl(BodyDeclaration declaration, SimpleName name) {
+      // System.out.println("declaration=" + declaration);
+      for (Object modifier : declaration.modifiers()) {
+        // System.out.println("modifier=" + modifier + " [" + modifier.getClass().getName() + "]");
+        if (modifier instanceof Annotation) {
+          Annotation annotation = (Annotation) modifier;
+          String fullName = annotation.getTypeName().getFullyQualifiedName();
+          if ("SuppressWarnings".equals(fullName) //$NON-NLS-1$
+              || "java.lang.SuppressWarnings".equals(fullName)) { //$NON-NLS-1$
+            if (ucdSuppressWarningFound(annotation)) {
+              int startPos = name.getStartPosition();
+              ignoreLines.add(Integer.valueOf(scanner.getLineNumber(startPos)));
+            }
+          }
+        }
+      }
+      return true;
+    }
+
+    private boolean ucdSuppressWarningFound(Annotation annotation) {
+      if (annotation instanceof SingleMemberAnnotation) {
+        Expression value = ((SingleMemberAnnotation) annotation).getValue();
+        if (value instanceof ArrayInitializer) {
+          ArrayInitializer arrayInitializer = (ArrayInitializer) value;
+          List<?> expressions = arrayInitializer.expressions();
+          for (Object oExpression : expressions) {
+            if (isUcdTag((StringLiteral) oExpression)) {
+              return true;
+            }
+          }
+        }
+        else if (value instanceof StringLiteral) {
+          if (isUcdTag((StringLiteral) value)) {
+            return true;
+          }
+        }
+      }
+      return false;
+    }
+
+    private boolean isUcdTag(StringLiteral literal) {
+      //      System.out.println("\tliteralValue=" + literal.getLiteralValue());
+      return literal.getLiteralValue().equals(NO_UCD_TAG);
+    }
+  }
+
+  /**
    * Parse the java code
    */
   private IScanner createScanner(IJavaElement javaElement) throws CoreException {
@@ -139,6 +224,8 @@ public class LineManger {
     }
     scannerMap.put(compilationUnit, new ScannerTimestamp(scanner, timeStamp));
     lineEndsMap.put(compilationUnit, scanner.getLineEnds());
+    Set<Integer> annotationsIgnoreLines = findUcdSuppressWarningLines(scanner);
+    ignoreLines.addAll(annotationsIgnoreLines);
     return scanner;
   }
 

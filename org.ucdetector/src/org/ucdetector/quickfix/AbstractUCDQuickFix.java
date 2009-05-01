@@ -25,20 +25,15 @@ import org.eclipse.jdt.core.JavaCore;
 import org.eclipse.jdt.core.JavaModelException;
 import org.eclipse.jdt.core.dom.AST;
 import org.eclipse.jdt.core.dom.ASTParser;
-import org.eclipse.jdt.core.dom.ASTVisitor;
 import org.eclipse.jdt.core.dom.AbstractTypeDeclaration;
-import org.eclipse.jdt.core.dom.AnnotationTypeDeclaration;
 import org.eclipse.jdt.core.dom.BodyDeclaration;
 import org.eclipse.jdt.core.dom.ChildListPropertyDescriptor;
 import org.eclipse.jdt.core.dom.CompilationUnit;
-import org.eclipse.jdt.core.dom.EnumConstantDeclaration;
-import org.eclipse.jdt.core.dom.EnumDeclaration;
 import org.eclipse.jdt.core.dom.FieldDeclaration;
 import org.eclipse.jdt.core.dom.MethodDeclaration;
 import org.eclipse.jdt.core.dom.Modifier;
 import org.eclipse.jdt.core.dom.SimpleName;
 import org.eclipse.jdt.core.dom.TypeDeclaration;
-import org.eclipse.jdt.core.dom.VariableDeclarationFragment;
 import org.eclipse.jdt.core.dom.Modifier.ModifierKeyword;
 import org.eclipse.jdt.core.dom.rewrite.ASTRewrite;
 import org.eclipse.jdt.core.dom.rewrite.ListRewrite;
@@ -142,6 +137,58 @@ abstract class AbstractUCDQuickFix extends WorkbenchMarkerResolution {
       catch (CoreException e) {
         UCDetectorPlugin.logErrorAndStatus("Quick Fix Problems", e); //$NON-NLS-1$
       }
+    }
+  }
+
+  /**
+   * Find a ASTNode by line number
+   */
+  private static class FindNodeToChangeVisitor extends ASTMemberVisitor {
+    BodyDeclaration nodeFound = null;
+    private final IDocument doc;
+    private final int lineMarker;
+
+    protected FindNodeToChangeVisitor(IDocument doc, int lineNrMarker) {
+      this.doc = doc;
+      this.lineMarker = lineNrMarker;
+    }
+
+    @Override
+    protected boolean visitImpl(BodyDeclaration declaration, SimpleName name) {
+      if (nodeFound != null) {
+        return false;
+      }
+      try {
+        // start of javadoc, before return type
+        int startPos = declaration.getStartPosition();
+        // end of class/method/field name
+        int endPos = name.getStartPosition() + name.getLength();
+        int lineStart = doc.getLineOfOffset(startPos) + 1;
+        int lineEnd = doc.getLineOfOffset(endPos) + 1;
+        boolean found = lineStart <= lineMarker && lineMarker <= lineEnd;
+        if (Log.DEBUG) {
+          StringBuilder sb = new StringBuilder();
+          sb.append("\r\n").append(declaration); //$NON-NLS-1$
+          sb.append("Lines: ").append(lineStart).append("<="); //$NON-NLS-1$ //$NON-NLS-2$
+          sb.append(lineMarker).append("<=").append(lineEnd); //$NON-NLS-1$
+          sb.append(", Found node=").append(found); //$NON-NLS-1$
+          Log.logDebug(sb.toString());
+        }
+        if (found) {
+          Log.logDebug("NODE FOUND: \r\n" + name.getIdentifier()); //$NON-NLS-1$
+          nodeFound = declaration;
+        }
+      }
+      catch (BadLocationException e) {
+        Log.logError("Can't get line", e); //$NON-NLS-1$
+        return false;
+      }
+      return nodeFound == null;
+    }
+
+    @Override
+    public String toString() {
+      return "nodeFound='" + nodeFound + "'"; //$NON-NLS-1$ //$NON-NLS-2$
     }
   }
 
@@ -273,96 +320,5 @@ abstract class AbstractUCDQuickFix extends WorkbenchMarkerResolution {
 
   private static final ElementType getElementType(IMarker marker) {
     return MarkerReport.getElementTypeAndName(marker).elementType;
-  }
-
-  /**
-   * Find a ASTNode by line number
-   */
-  private static final class FindNodeToChangeVisitor extends ASTVisitor {
-    private BodyDeclaration nodeFound = null;
-    private final IDocument doc;
-    private final int lineMarker;
-
-    protected FindNodeToChangeVisitor(IDocument doc, int lineNrMarker) {
-      this.doc = doc;
-      this.lineMarker = lineNrMarker;
-    }
-
-    private boolean visitImpl(BodyDeclaration declaration, SimpleName name) {
-      if (nodeFound != null) {
-        return false;
-      }
-      try {
-        // start of javadoc, before return type
-        int startPos = declaration.getStartPosition();
-        // end of class/method/field name
-        int endPos = name.getStartPosition() + name.getLength();
-        int lineStart = doc.getLineOfOffset(startPos) + 1;
-        int lineEnd = doc.getLineOfOffset(endPos) + 1;
-        boolean found = lineStart <= lineMarker && lineMarker <= lineEnd;
-        if (Log.DEBUG) {
-          StringBuilder sb = new StringBuilder();
-          sb.append("\r\n").append(declaration); //$NON-NLS-1$
-          sb.append("Lines: ").append(lineStart).append("<="); //$NON-NLS-1$ //$NON-NLS-2$
-          sb.append(lineMarker).append("<=").append(lineEnd); //$NON-NLS-1$
-          sb.append(", Found node=").append(found); //$NON-NLS-1$
-          Log.logDebug(sb.toString());
-        }
-        if (found) {
-          Log.logDebug("NODE FOUND: \r\n" + name.getIdentifier()); //$NON-NLS-1$
-          nodeFound = declaration;
-        }
-      }
-      catch (BadLocationException e) {
-        Log.logError("Can't get line", e); //$NON-NLS-1$
-        return false;
-      }
-      return nodeFound == null;
-    }
-
-    @Override
-    public boolean visit(TypeDeclaration declaration) {
-      return visitImpl(declaration, declaration.getName());
-    }
-
-    @Override
-    public boolean visit(MethodDeclaration declaration) {
-      return visitImpl(declaration, declaration.getName());
-    }
-
-    /**
-     * Use name of last VariableDeclarationFragment for SimpleName
-     */
-    @Override
-    public boolean visit(FieldDeclaration declaration) {
-      List<?> fragments = declaration.fragments();
-      if (fragments.size() > 0) {
-        Object last = fragments.get(fragments.size() - 1);
-        SimpleName name = ((VariableDeclarationFragment) last).getName();
-        visitImpl(declaration, name);
-      }
-      return false;
-    }
-
-    @Override
-    public boolean visit(EnumDeclaration declaration) {
-      return visitImpl(declaration, declaration.getName());
-    }
-
-    @Override
-    public boolean visit(AnnotationTypeDeclaration declaration) {
-      return visitImpl(declaration, declaration.getName());
-    }
-
-    @Override
-    public boolean visit(EnumConstantDeclaration declaration) {
-      visitImpl(declaration, declaration.getName());
-      return false;
-    }
-
-    @Override
-    public String toString() {
-      return "nodeFound='" + nodeFound + "'"; //$NON-NLS-1$ //$NON-NLS-2$
-    }
   }
 }
