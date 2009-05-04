@@ -5,22 +5,28 @@
   Public License v1.0 which accompanies this distribution, and is available at
   http://www.eclipse.org/legal/epl-v10.html
   ========================================================================= -->
-<project name="org.ucdetector" default="detect" basedir=".">
-  <!-- ~ does not work on Linx. Use ${user.home} instead! -->
-  <property name="WORKSPACE"
-            location="${user.home}/workspace/runtime-EclipseApplication" />
 
+<project name="org.ucdetector" default="detect" basedir=".">
   <!-- ==================================================================== -->
   <!-- DETECT                                                               -->
   <!-- ==================================================================== -->
   <target name="detect" description="Run UCDetector using java">
-    <!--  /opt/eclipse-3.3/plugins/org.eclipse.equinox.launcher_1.0.0.v20070606.jar
-          /opt/eclipse-3.4M5/plugins/org.eclipse.equinox.launcher_1.0.100.v20071211.jar  -->
-    <property name="LAUNCHER"
-              location="/opt/eclipse-3.4/plugins/org.eclipse.equinox.launcher_1.0.100.v20080509-1800.jar" />
-    <echo>LAUNCHER  = ${LAUNCHER}</echo>
-    <echo>WORKSPACE = ${WORKSPACE}</echo>
-    <!-- Use next lines, to show properties
+    <property file="build.properties" />
+    <echo>
+--------------------------------------------------------------------------------
+LAUNCHER  = ${LAUNCHER}
+WORKSPACE = ${WORKSPACE}
+projects  = ${ucd.projects}
+buildtype = ${ucd.buildtype}
+ucdoption = ${ucd.options}
+--------------------------------------------------------------------------------
+</echo>
+    <fail unless="LAUNCHER">Can't find build.properties, or build.properties does not contain "LAUNCHER"
+use      : ${basedir}\build.properties_template
+to create: ${basedir}\build.properties
+    </fail>
+    <!-- Use next lines, to show more properties
+    <property environment="env"/>
     <echoproperties /> -->
 
     <java jar="${LAUNCHER}" fork="true">
@@ -28,37 +34,16 @@
       <arg line="-consolelog" />
       <arg line="-debug" />
       <arg line="-data ${WORKSPACE}" />
-
-      <!-- ============================================================= 
-            THERE AR 2 WAYS TO SET OPTIONS:
-             - SET OPTIONS IN ECLIPSE
-             - SET OPTIONS HERE
-          ============================================================= -->
-
-      <!-- OPTION: -projects
-           remove argument to build ALL projects 
-      <arg line="-projects org.ucdetector.example,org.ucdetector" />
-      -->
-
-      <!-- OPTION: -buildtype
-           One of:
-           FULL_BUILD, AUTO_BUILD, CLEAN_BUILD, INCREMENTAL_BUILD.
-           Default is AUTO_BUILD
-           See: org.eclipse.core.resources.IncrementalProjectBuilder
-      <arg line="-buildtype CLEAN_BUILD" />
-       -->
-
-      <!-- OPTION: -buildtype
-           Usage: key1=value1,key2=value2
-           For more details see: org.ucdetector.preferences.Prefs
-      <arg line="-ucdoptions warnLimit=1,finalMethod=IGNORE" />
-       -->
+      <arg line="-projects ${ucd.projects}" />
+      <arg line="-buildtype ${ucd.buildtype}" />
+      <arg line="-ucdoptions ${ucd.options}" />
     </java>
   </target>
+</project>
 
-  <!-- ==================================================================== -->
-  <!-- DETECT 2                                                             -->
-  <!-- ==================================================================== 
+<!-- ==================================================================== -->
+<!-- DETECT 2                                                             -->
+<!-- ==================================================================== 
   <target name="detect-exe"
           description="Run UCDetector using eclipse executable">
     <property name="EXCECUTABLE" location="/opt/eclipse-3.4/eclipse" />
@@ -76,4 +61,3 @@
     </exec>
   </target>
   -->
-</project>

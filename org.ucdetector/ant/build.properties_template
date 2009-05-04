@@ -1,0 +1,41 @@
+# =============================================================================
+# ~ does not work on Linx. Use ${user.home} instead! -->
+WORKSPACE=${user.home}/workspace/runtime-EclipseApplication
+
+
+# =============================================================================
+#   /opt/eclipse-3.3/plugins/org.eclipse.equinox.launcher_1.0.0.v20070606.jar
+# /opt/eclipse-3.4M5/plugins/org.eclipse.equinox.launcher_1.0.100.v20071211.jar  -->
+ECLIPSE_HOME=C:/eclipse/eclipse-3.3
+LAUNCHER=${ECLIPSE_HOME}/plugins/org.eclipse.equinox.launcher_1.0.0.v20070606.jar
+
+
+# =============================================================================
+# THERE AR 2 WAYS TO SET OPTIONS:
+#   - SET OPTIONS IN ECLIPSE
+#   - SET OPTIONS HERE
+# =============================================================================
+
+# =============================================================================
+# OPTION: -projects
+# leave empty, to build ALL projects
+# ucd.projects=org.ucdetector.example,org.ucdetector
+ucd.projects=
+
+
+# =============================================================================
+# OPTION: -buildtype
+# One of:
+# FULL_BUILD, AUTO_BUILD, CLEAN_BUILD, INCREMENTAL_BUILD.
+# Default is AUTO_BUILD
+# See: org.eclipse.core.resources.IncrementalProjectBuilder
+# ucd.buildtype=AUTO_BUILD
+ucd.buildtype=
+
+
+# =============================================================================
+# OPTION: -ucdoptions
+# Usage: key1=value1,key2=value2
+# For more details see class: org.ucdetector.preferences.Prefs
+# ucd.options=warnLimit=1,finalMethod=IGNORE
+ucd.options=
