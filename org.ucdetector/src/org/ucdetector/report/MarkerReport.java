@@ -29,15 +29,19 @@ public class MarkerReport implements IUCDetectorReport {
   /**
    * Don't create each marker. Do a batch creation instead
    */
-  private static final int MARKERS_TO_CREATE_COUNT = 10;
-  private final List<ReportParam> markersToCreate = new ArrayList<ReportParam>();
+  private static final int MARKERS_FLASH_LIMIT = 10;
+  private final List<ReportParam> markersToFlash = new ArrayList<ReportParam>();
+  private int totalMarkerCount = 0;
 
   public void reportMarker(ReportParam reportParam) throws CoreException {
     if (Log.DEBUG) {
       Log.logDebug("    Add to queue: " + reportParam); //$NON-NLS-1$
     }
-    markersToCreate.add(reportParam);
-    if (markersToCreate.size() >= MARKERS_TO_CREATE_COUNT) {
+    markersToFlash.add(reportParam);
+    totalMarkerCount++;
+    // Flush all markers at the begin, so users can start using UCDetector results
+    if (totalMarkerCount < MARKERS_FLASH_LIMIT
+        || markersToFlash.size() >= MARKERS_FLASH_LIMIT) {
       flushReport();
     }
   }
@@ -47,13 +51,13 @@ public class MarkerReport implements IUCDetectorReport {
    */
   private void flushReport() throws CoreException {
     if (Log.DEBUG) {
-      Log.logDebug(" FlushMarkers: Create : " + markersToCreate.size() //$NON-NLS-1$
+      Log.logDebug(" FlushMarkers: Create : " + markersToFlash.size() //$NON-NLS-1$
           + " markers"); //$NON-NLS-1$
     }
-    for (ReportParam reportParamToCreate : markersToCreate) {
+    for (ReportParam reportParamToCreate : markersToFlash) {
       createMarker(reportParamToCreate);
     }
-    markersToCreate.clear();
+    markersToFlash.clear();
   }
 
   private void createMarker(ReportParam reportParam) throws CoreException {
@@ -131,5 +135,6 @@ public class MarkerReport implements IUCDetectorReport {
 
   public void endReport(Object[] selected, long start) throws CoreException {
     flushReport();
+    Log.logInfo(totalMarkerCount + " markers created"); //$NON-NLS-1$
   }
 }
