@@ -8,7 +8,9 @@ package org.ucdetector.search;
 
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.NullProgressMonitor;
+import org.eclipse.core.runtime.OperationCanceledException;
 import org.ucdetector.Log;
+import org.ucdetector.UCDetectorPlugin;
 
 /**
  * Wrap an IProgressMonitor and do logging, when IProgressMonitor methods
@@ -40,7 +42,7 @@ public class UCDProgressMonitor implements IProgressMonitor {
 
   public void internalWorked(double work) {
     // nothing useful!
-    if (work != lastWork) {
+    if (work != lastWork && UCDetectorPlugin.isHeadlessMode()) {
       Log.logInfo("Task.internalWorked " + work); //$NON-NLS-1$
     }
     lastWork = work;
@@ -49,6 +51,12 @@ public class UCDProgressMonitor implements IProgressMonitor {
 
   public boolean isCanceled() {
     return delegate.isCanceled();
+  }
+
+  public void throwIfIsCanceled() {
+    if (isCanceled()) {
+      throw new OperationCanceledException();
+    }
   }
 
   public void setCanceled(boolean value) {
@@ -63,12 +71,12 @@ public class UCDProgressMonitor implements IProgressMonitor {
   }
 
   public void subTask(String name) {
-    Log.logInfo("Task.subTask: '" + name);//$NON-NLS-1$ 
-    //    if (Log.DEBUG) {
-    //      Log.logDebug(name);
-    //    }
-    //    else if (UCDetectorPlugin.isHeadlessMode()) {
-    //    }
+    if (Log.DEBUG) {
+      Log.logDebug("Task.subTask: '" + name);//$NON-NLS-1$ 
+    }
+    else if (UCDetectorPlugin.isHeadlessMode()) {
+      Log.logInfo("Task.subTask: '" + name);//$NON-NLS-1$ 
+    }
     delegate.subTask(name);
   }
 

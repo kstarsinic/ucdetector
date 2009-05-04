@@ -105,9 +105,14 @@ public class SearchManager {
     Log.logInfo(methods.size() + " methods to search"); //$NON-NLS-1$
     Log.logInfo(fields.size() + " fields to search"); //$NON-NLS-1$
     // first searchTypes to fill noRefTypes!
-    searchTypes(types);
-    searchMethods(methods);
-    searchFields(fields);
+    try {
+      searchTypes(types);
+      searchMethods(methods);
+      searchFields(fields);
+    }
+    catch (OperationCanceledException e) {
+      Log.logInfo("Search canceled by user"); //$NON-NLS-1$
+    }
   }
 
   /**
@@ -116,10 +121,7 @@ public class SearchManager {
   private void searchTypes(List<IType> types) throws CoreException {
     Log.logInfo("Start searching " + types.size() + " types..."); //$NON-NLS-1$ //$NON-NLS-2$
     for (IType type : types) {
-      if (monitor.isCanceled()) {
-        return;
-      }
-      incrementSearch();
+      incrementSearchOrCancel();
       monitor.worked(1);
       String searchInfo = JavaElementUtil.getMemberTypeString(type);
       updateMonitorMessage(type, Messages.SearchManager_SearchReferences,
@@ -133,11 +135,16 @@ public class SearchManager {
     }
   }
 
-  private void incrementSearch() {
+  private void incrementSearchOrCancel() {
+    checkForCancel();
     search++;
     if (search % 100 == 0) {
       Log.logInfo("\tsearched " + search + " of " + searchTotal); //$NON-NLS-1$ //$NON-NLS-2$ 
     }
+  }
+
+  private void checkForCancel() {
+    monitor.throwIfIsCanceled();
   }
 
   /**
@@ -146,10 +153,7 @@ public class SearchManager {
   private void searchMethods(List<IMethod> methods) throws CoreException {
     Log.logInfo("Start searching " + methods.size() + " methods..."); //$NON-NLS-1$ //$NON-NLS-2$
     for (IMethod method : methods) {
-      if (monitor.isCanceled()) {
-        return;
-      }
-      incrementSearch();
+      incrementSearchOrCancel();
       monitor.worked(1);
       IType type = JavaElementUtil.getTypeFor(method, false);
       // Ignore types, which have no references
@@ -203,10 +207,7 @@ public class SearchManager {
   private void searchFields(List<IField> fields) throws CoreException {
     Log.logInfo("Start searching " + fields.size() + " fields..."); //$NON-NLS-1$ //$NON-NLS-2$
     for (IField field : fields) {
-      if (monitor.isCanceled()) {
-        return;
-      }
-      incrementSearch();
+      incrementSearchOrCancel();
       monitor.worked(1);
       int line = lineManger.getLine(field);
       if (line == LineManger.LINE_NOT_FOUND) {
@@ -284,7 +285,8 @@ public class SearchManager {
   private int searchImpl(IMember member, String searchInfo,
       boolean isOverriddenMethod) throws CoreException {
     int line = lineManger.getLine(member);
-    if (monitor.isCanceled() || line == LineManger.LINE_NOT_FOUND) {
+    checkForCancel();
+    if (line == LineManger.LINE_NOT_FOUND) {
       return 0;
     }
     VisibilityHandler visibilityHandler = new VisibilityHandler(markerFactory,
@@ -336,6 +338,7 @@ public class SearchManager {
    */
   private UCDSearchRequestor searchJavaImpl(IMember member,
       VisibilityHandler visibilityHandler) throws CoreException {
+    checkForCancel();
     IJavaSearchScope scope = SearchEngine.createWorkspaceScope();
     SearchPattern pattern = SearchPattern.createPattern(member,
         IJavaSearchConstants.REFERENCES);
@@ -355,8 +358,10 @@ public class SearchManager {
    */
   private int searchTextImpl(IMember member,
       VisibilityHandler visibilityHandler, int found) throws CoreException {
+    checkForCancel();
     if (!Prefs.isUCDetectionInLiterals() || !(member instanceof IType)) {
       return 0;
+
     }
     // Only search if nothing is found and visibility is public
     if (found > 0 && visibilityHandler.isMaxVisibilityFoundPublic()) {
@@ -424,6 +429,7 @@ public class SearchManager {
    */
   private void updateMonitorMessage(IJavaElement element, String details,
       String searchInfo) {
+    checkForCancel();
     String javaElement = JavaElementUtil.getElementName(element);
     Object[] bindings = new Object[] { Integer.valueOf(foundTotal),
         Integer.valueOf(search), Integer.valueOf(searchTotal), searchInfo,
