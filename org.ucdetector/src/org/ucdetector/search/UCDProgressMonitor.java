@@ -6,6 +6,8 @@
  */
 package org.ucdetector.search;
 
+import java.text.DecimalFormat;
+
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.NullProgressMonitor;
 import org.eclipse.core.runtime.OperationCanceledException;
@@ -19,7 +21,8 @@ import org.ucdetector.UCDetectorPlugin;
 public class UCDProgressMonitor implements IProgressMonitor {
   private String taskName = ""; //$NON-NLS-1$
   private final IProgressMonitor delegate;
-  private double lastWork;
+  private String lastWork;
+  private static final DecimalFormat FORMAT_DOUBLE = new DecimalFormat("0.0000"); //$NON-NLS-1$
 
   public UCDProgressMonitor(IProgressMonitor delegate) {
     this.delegate = delegate;
@@ -41,11 +44,11 @@ public class UCDProgressMonitor implements IProgressMonitor {
   }
 
   public void internalWorked(double work) {
-    // nothing useful!
-    if (work != lastWork && UCDetectorPlugin.isHeadlessMode()) {
-      Log.logInfo("Task.internalWorked " + work); //$NON-NLS-1$
+    String sWork = FORMAT_DOUBLE.format(work);
+    if (UCDetectorPlugin.isHeadlessMode() && !sWork.equals(lastWork)) {
+      Log.logInfo("Task.internalWorked " + sWork); //$NON-NLS-1$
     }
-    lastWork = work;
+    lastWork = sWork;
     delegate.internalWorked(work);
   }
 
@@ -72,10 +75,10 @@ public class UCDProgressMonitor implements IProgressMonitor {
 
   public void subTask(String name) {
     if (Log.DEBUG) {
-      Log.logDebug("Task.subTask: '" + name);//$NON-NLS-1$ 
+      Log.logDebug(/*"Task.subTask: " + */name);
     }
     else if (UCDetectorPlugin.isHeadlessMode()) {
-      Log.logInfo("Task.subTask: '" + name);//$NON-NLS-1$ 
+      Log.logInfo(/*"Task.subTask: " + */name);
     }
     delegate.subTask(name);
   }
