@@ -32,7 +32,7 @@ to create: ${basedir}\build.properties
     <java jar="${LAUNCHER}" fork="true">
       <arg line="-application org.ucdetector.ucd" />
       <arg line="-consolelog" />
-      <arg line="-debug" />
+      <arg line="${ucd.debug}" />
       <arg line="-data ${WORKSPACE}" />
       <arg line="-projects ${ucd.projects}" />
       <arg line="-buildtype ${ucd.buildtype}" />

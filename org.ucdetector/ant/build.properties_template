@@ -9,6 +9,8 @@ WORKSPACE=${user.home}/workspace/runtime-EclipseApplication
 ECLIPSE_HOME=C:/eclipse/eclipse-3.3
 LAUNCHER=${ECLIPSE_HOME}/plugins/org.eclipse.equinox.launcher_1.0.0.v20070606.jar
 
+# remove, for less logging:
+ucd.debug=-debug
 
 # =============================================================================
 # THERE AR 2 WAYS TO SET OPTIONS:
