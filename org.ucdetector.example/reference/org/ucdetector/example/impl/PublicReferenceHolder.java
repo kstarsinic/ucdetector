@@ -5,6 +5,7 @@ import static org.ucdetector.example.bugs.Bug2783734StaticImports.staticImportMe
 
 import org.ucdetector.example.Java5Example;
 import org.ucdetector.example.MixedExample;
+import org.ucdetector.example.NoUcdAnnotationExample;
 import org.ucdetector.example.NoUcdTagExample;
 import org.ucdetector.example.QuickFixExample;
 import org.ucdetector.example.ReferencedByTestsExample;
@@ -61,7 +62,8 @@ public class PublicReferenceHolder {
   @SuppressWarnings("deprecation")
   @AnnotationExample(parameterExmaple = "1")
   public static void main(String[] args) throws Throwable {
-
+	System.out.println(NoUcdAnnotationExample.class.getName());
+	  // ---------------------------------------------------------------------
     System.out.println(STATIC_IMPORT_USED);
     staticImportMethod();
     //    System.out.println(Bug2783734StaticImports.class.getName());
