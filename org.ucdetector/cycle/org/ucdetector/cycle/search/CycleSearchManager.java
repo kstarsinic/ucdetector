@@ -149,7 +149,7 @@ public class CycleSearchManager {
   private static final class ReferenceSearchRequestor extends SearchRequestor {
     private final TypeAndMatches typeAndMatches;
 
-    ReferenceSearchRequestor(TypeAndMatches typeAndMatches) {
+    private ReferenceSearchRequestor(TypeAndMatches typeAndMatches) {
       this.typeAndMatches = typeAndMatches;
     }
 

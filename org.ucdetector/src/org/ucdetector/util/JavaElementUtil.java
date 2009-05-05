@@ -454,11 +454,11 @@ public class JavaElementUtil {
    * sub package
    * 
    * @return a list of all sub packages for the input package. For example input 
-   * <pre>org.ucdetector.cycle</pre>
+   * <pre>org.ucdetector</pre>
    * return a list with:
    * <ul>
-   * <li><code>org.ucdetector.cycle.model</code></li>
-   * <li><code>org.ucdetector.cycle.search</code></li>
+   * <li><code>org.ucdetector.action</code></li>
+   * <li><code>org.ucdetector.iterator</code></li>
    * </ul>
    */
   public static List<IPackageFragment> getSubPackages(

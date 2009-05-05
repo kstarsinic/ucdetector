@@ -72,7 +72,7 @@ public class PreferenceInitializer extends AbstractPreferenceInitializer { // NO
     store.setDefault(Prefs.ANALYZE_FINAL_FIELD, IGNORE.name());
     store.setDefault(Prefs.ANALYZE_FINAL_METHOD, IGNORE.name());
     // Cycles ------------------------------------------------------------------
-    store.setDefault(Prefs.CYCLE_DEPTH, Prefs.CYCLE_DEPTH_DEFAULT);
+    store.setDefault(CyclePrefs.CYCLE_DEPTH, CyclePrefs.CYCLE_DEPTH_DEFAULT);
     // Report ------------------------------------------------------------------
     String report;
     try {

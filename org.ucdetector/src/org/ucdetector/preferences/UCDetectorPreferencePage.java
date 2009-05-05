@@ -149,7 +149,7 @@ public class UCDetectorPreferencePage extends UCDetectorBasePreferencePage {
         Messages.PreferencePage_ReportFileToolTip);
     this.addField(fileFieldEditor);
     //
-    IntegerFieldEditor cycleDepth = new IntegerFieldEditor(Prefs.CYCLE_DEPTH,
+    IntegerFieldEditor cycleDepth = new IntegerFieldEditor(CyclePrefs.CYCLE_DEPTH,
         Messages.PreferencePage_MaxCycleSize, spacer) {
       /** 
        * Hack for layout problems. 
@@ -160,7 +160,7 @@ public class UCDetectorPreferencePage extends UCDetectorBasePreferencePage {
         return 3;
       }
     };
-    cycleDepth.setValidRange(Prefs.CYCLE_DEPTH_MIN, Prefs.CYCLE_DEPTH_MAX);
+    cycleDepth.setValidRange(CyclePrefs.CYCLE_DEPTH_MIN, CyclePrefs.CYCLE_DEPTH_MAX);
     cycleDepth.setEmptyStringAllowed(false);
     cycleDepth.getLabelControl(spacer).setToolTipText(
         Messages.PreferencePage_MaxCycleSizeToolTip);

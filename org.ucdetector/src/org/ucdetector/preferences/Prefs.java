@@ -90,12 +90,6 @@ public final class Prefs {
   = UCDetectorPlugin.ID + ".finalField"; //$NON-NLS-1$
   static final String ANALYZE_FINAL_METHOD //
   = UCDetectorPlugin.ID + ".finalMethod"; //$NON-NLS-1$
-  // CYCLE ---------------------------------------------------------------------
-  static final String CYCLE_DEPTH //
-  = UCDetectorPlugin.ID + ".cycleDepth"; //$NON-NLS-1$
-  static final int CYCLE_DEPTH_MIN = 2; //
-  static final int CYCLE_DEPTH_DEFAULT = 4; //
-  static final int CYCLE_DEPTH_MAX = 8; //
   // REPORT --------------------------------------------------------------------
   static final String REPORT_FILE //
   = UCDetectorPlugin.ID + ".reportFile"; //$NON-NLS-1$
@@ -356,16 +350,6 @@ public final class Prefs {
    */
   public static boolean isCheckUseFinalMethod() {
     return !WarnLevel.IGNORE.equals(getCheckUseFinalMethod());
-  }
-
-  // CYCLE ---------------------------------------------------------------------
-  /**
-   * @return Maximum depth of searching for class cycles
-   */
-  public static int getCycleDepth() {
-    int cycleDepth = getStore().getInt(CYCLE_DEPTH);
-    return cycleDepth < CYCLE_DEPTH_MIN ? CYCLE_DEPTH_MIN
-        : cycleDepth > CYCLE_DEPTH_MAX ? CYCLE_DEPTH_MAX : cycleDepth;
   }
 
   // REPORT --------------------------------------------------------------------

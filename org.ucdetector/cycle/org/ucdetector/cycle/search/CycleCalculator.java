@@ -22,7 +22,7 @@ import org.ucdetector.Messages;
 import org.ucdetector.cycle.model.Cycle;
 import org.ucdetector.cycle.model.CycleType;
 import org.ucdetector.cycle.model.SearchResult;
-import org.ucdetector.preferences.Prefs;
+import org.ucdetector.preferences.CyclePrefs;
 import org.ucdetector.search.UCDProgressMonitor;
 
 /**
@@ -150,7 +150,7 @@ class CycleCalculator {
     path.push(typeAndMatches);
     Set<IType> references = typeAndMatches.getTypeSearchMatches();
     for (IType reference : references) {
-      if (path.size() > Prefs.getCycleDepth()) {
+      if (path.size() > CyclePrefs.getCycleDepth()) {
         continue; // stop recursion
       }
       TypeAndMatches first = path.firstElement();
