@@ -51,7 +51,7 @@
   <extension point="org.eclipse.ui.popupMenus">
   
   <!-- =====================================================================
-      see: SynchronizeAction
+    To show also for WorkingSet, use:
     objectClass=org.eclipse.core.resources.mapping.ResourceMapping
    -->
     <objectContribution

@@ -111,6 +111,7 @@ public abstract class AbstractUCDetectorAction extends ActionDelegate { // NO_UC
    */
   @Override
   public void selectionChanged(IAction action, ISelection selection) {
+    // System.out.println("action=" + action.getText());
     if (action == null) {
       return;
     }
@@ -120,7 +121,7 @@ public abstract class AbstractUCDetectorAction extends ActionDelegate { // NO_UC
     // Collect selections
     collectJavaElementSelections(selection);
 
-    if (selections == null) {
+    if (selections == null || selections.length == 0) {
       action.setEnabled(false);
       return;
     }
