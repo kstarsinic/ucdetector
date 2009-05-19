@@ -4,7 +4,7 @@ package org.ucdetector.example.methods;
  */
 public class JavaDocExampleMethod {
 
-  void documentedUnusedMethod() {// Marker YES: unused code
+  public void documentedUnusedMethod() {// Marker YES: unused code
   }
 
   public void usedMethod() {

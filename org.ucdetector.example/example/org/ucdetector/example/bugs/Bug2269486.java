@@ -12,7 +12,7 @@ public interface Bug2269486 {
    * 
    *   UCDetector proposes to make constants in interfaces private. This will
    *   produce invalid Java source.
-   * @see https://sourceforge.net/tracker/index.php?func=detail&aid=2269486&group_id=219599&atid=1046865
+   * @see "https://sourceforge.net/tracker/index.php?func=detail&aid=2269486&group_id=219599&atid=1046865"
    */
   public static final String BUG_2269486 = "USED";
 

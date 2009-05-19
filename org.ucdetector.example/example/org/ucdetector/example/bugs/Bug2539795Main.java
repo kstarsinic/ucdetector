@@ -3,7 +3,7 @@ package org.ucdetector.example.bugs;
 import org.ucdetector.example.bugs.impl.Bug2539795Container;
 
 /**
- * @see https://sourceforge.net/tracker2/index.php?func=detail&aid=2539795&group_id=219599&atid=1046865
+ * @see "https://sourceforge.net/tracker2/index.php?func=detail&aid=2539795&group_id=219599&atid=1046865"
  * 
  * Details:
  *
