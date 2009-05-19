@@ -39,6 +39,7 @@ public class MarkerReport implements IUCDetectorReport {
     }
     markersToFlash.add(reportParam);
     totalMarkerCount++;
+    // Waiting for first 10 markers - ID: 2787576
     // Flush all markers at the begin, so users can start using UCDetector results
     if (totalMarkerCount < MARKERS_FLASH_LIMIT
         || markersToFlash.size() >= MARKERS_FLASH_LIMIT) {
