@@ -80,7 +80,6 @@ public class LineManger {
   /**
    * @return the line number of a class, method, field in a file, or -1 if the
    *         line could not be found
-   * @throws CoreException
    */
   public int getLine(IMember element) throws CoreException {
     ISourceRange sourceRange = element.getNameRange();

@@ -37,27 +37,27 @@ public class UCDetectorHandler { // NO_UCD
   // GENERIC HANDLERS
   // ---------------------------------------------------------------------------
   /** 
-   * @param objects 
+   * @param objects to handle
    * @throws CoreException in classes overriding this method */
   public void handleStartGlobal(IJavaElement[] objects) throws CoreException {
     //
   }
 
   /** 
-   * @param objects 
+   * @param objects to handle
    * @throws CoreException in classes overriding this method */
   public void handleEndGlobal(IJavaElement[] objects) throws CoreException {
     //
   }
 
-  /**  @param javaElement 
+  /**  @param javaElement to handle
    * @throws CoreException in classes overriding this method */
   public void handleStartSelectedElement(IJavaElement javaElement)
       throws CoreException {
     //
   }
 
-  /**  @param javaElement 
+  /**  @param javaElement to handle
    * @throws CoreException in classes overriding this method */
   public void handleEndSelectedElement(IJavaElement javaElement)
       throws CoreException {
@@ -65,7 +65,7 @@ public class UCDetectorHandler { // NO_UCD
   }
 
   /** 
-   * @param javaElement 
+   * @param javaElement to handle
    * @throws CoreException in classes overriding this method */
   public void handleStartElement(IJavaElement javaElement) throws CoreException {
     // Dumping all javaElements
@@ -73,7 +73,7 @@ public class UCDetectorHandler { // NO_UCD
   }
 
   /** 
-   * @param javaElement 
+   * @param javaElement to handle
    * @throws CoreException in classes overriding this method */
   public void handleEndElement(IJavaElement javaElement) throws CoreException {
     //

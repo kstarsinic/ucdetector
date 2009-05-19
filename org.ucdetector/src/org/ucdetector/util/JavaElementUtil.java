@@ -420,7 +420,7 @@ public class JavaElementUtil {
   }
 
   /**
-   * @return <code>true</code>, when a method machtes the java bean conventions,
+   * @return <code>true</code>, when a method matches the java bean conventions,
    * for example:
    *         <ul>
    *         <li><code>public void setName(String name)</code></li>

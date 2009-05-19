@@ -106,7 +106,7 @@ public class UCDetectorIterator extends AbstractUCDetectorIterator {
 
   /**
    * Call searchManager for collected elements
-   * @throws CoreException
+   * @throws CoreException if the search failed 
    */
   @Override
   public void handleEndGlobal(IJavaElement[] objects) throws CoreException {

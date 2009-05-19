@@ -20,7 +20,7 @@ import org.ucdetector.UCDetectorPlugin;
 
 /**
  * Class used to initialize default preference values.
- * @see org.ucdetector.preferences.Prefs#LIST_SEPARATOR
+ * See: {@link  org.ucdetector.preferences.Prefs#LIST_SEPARATOR}
  */
 public class PreferenceInitializer extends AbstractPreferenceInitializer { // NO_UCD
   private static final String WARN = WARNING.name();
