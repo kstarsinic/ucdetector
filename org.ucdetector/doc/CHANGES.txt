@@ -2,6 +2,8 @@ UCDetector 1.2.0 from 2009-:
 Bugfixes:
  - [ 2783734 ] Static imports are not recognized
  - [ 2787576 ] Waiting for first 10 markers
+ - [ 2787576 ] Waiting for first 10 markers
+ - [ 2776029 ] Final for fields initialized in subclass constructors
 
 New features:
  - Improved running UCDetector with ANT: Options, refresh/compile workspace 

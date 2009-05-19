@@ -95,6 +95,19 @@ public class JavaElementUtil {
   }
 
   /**
+   * @return <code>true</code>, when the type of element1 and element2 is the same class
+   */
+  public static boolean isInSameType(IJavaElement element1,
+      IJavaElement element2) {
+    IType type1 = JavaElementUtil.getTypeFor(element1, false);
+    IType type2 = JavaElementUtil.getTypeFor(element2, false);
+    if (type1 == null || type2 == null) {
+      return false;
+    }
+    return type1.equals(type2);
+  }
+
+  /**
    * @return <code>true</code>, if the method is one of Object methods:<br>
    *         <ul>
    *         <li><code>hashCode()</code></li>

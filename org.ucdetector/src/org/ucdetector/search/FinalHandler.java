@@ -88,26 +88,26 @@ class FinalHandler {
   private static boolean canMakeFinal(IField field) throws CoreException {
     SearchPattern pattern = SearchPattern.createPattern(field,
         IJavaSearchConstants.WRITE_ACCESSES);
-    FieldWriteRequestor requestor = new FieldWriteRequestor(field);
+    CanMakeFinalRequestor requestor = new CanMakeFinalRequestor(field);
     JavaElementUtil.runSearch(pattern, requestor, SearchEngine
         .createWorkspaceScope());
     return !requestor.fieldHasWriteAccessFromMethod;
   }
 
   /**
-   * Checks, if a field has write access excluded:
+   * Checks, if a field has write access from the same class excluded:
    * <ul>
-   * <li>write access by constructors</li>
-   * <li>ignore write access by field declaration</li>
-   * <li>ignore write access by static initializer: <code>static {CONSTANT=1}</code></li>
-   * <li>ignore write access by instance initializer: <code>{field = 1}</code></li>
+   * <li>Write access by constructors</li>
+   * <li>Ignore write access by field declaration</li>
+   * <li>Ignore write access by static initializer: <code>static {CONSTANT=1}</code></li>
+   * <li>Ignore write access by instance initializer: <code>{field = 1}</code></li>
    * </ul>
    */
-  private static final class FieldWriteRequestor extends SearchRequestor {
+  private static final class CanMakeFinalRequestor extends SearchRequestor {
     private boolean fieldHasWriteAccessFromMethod = false;
     private final IField field;
 
-    private FieldWriteRequestor(IField field) {
+    private CanMakeFinalRequestor(IField field) {
       this.field = field;
     }
 
@@ -127,9 +127,12 @@ class FinalHandler {
         IJavaElement javaElement = (IJavaElement) matchElement;
         if (javaElement instanceof IMethod) {
           IMethod method = (IMethod) javaElement;
-          // ignore write access from a constructor to a instance variable
+          // 2776029  final for fields initialized in subclass constructors
+          // ignore write access from a constructor to a instance variable in the same class
           if (!Flags.isStatic(field.getFlags()) && method.isConstructor()) {
-            return;
+            if (JavaElementUtil.isInSameType(field, javaElement)) {
+              return;
+            }
           }
         }
         // ignore write access from the field declaration
