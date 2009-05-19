@@ -16,6 +16,8 @@ import org.ucdetector.example.bugs.Bug2539795Main;
 import org.ucdetector.example.bugs.Bug2721955;
 import org.ucdetector.example.bugs.Bug2743872;
 import org.ucdetector.example.bugs.Bug2743908;
+import org.ucdetector.example.bugs.Bug2776029FinalFieldBase;
+import org.ucdetector.example.bugs.Bug2776029FinalField;
 import org.ucdetector.example.bugs.impl.Bug2225016Impl;
 import org.ucdetector.example.classes.AnnotationExample;
 import org.ucdetector.example.classes.AnonymousClass;
@@ -62,8 +64,11 @@ public class PublicReferenceHolder {
   @SuppressWarnings("deprecation")
   @AnnotationExample(parameterExmaple = "1")
   public static void main(String[] args) throws Throwable {
-	System.out.println(NoUcdAnnotationExample.class.getName());
-	  // ---------------------------------------------------------------------
+    System.out.println(Bug2776029FinalField.class.getName());
+    System.out.println(Bug2776029FinalFieldBase.class.getName());
+    // ---------------------------------------------------------------------
+    System.out.println(NoUcdAnnotationExample.class.getName());
+    // ---------------------------------------------------------------------
     System.out.println(STATIC_IMPORT_USED);
     staticImportMethod();
     //    System.out.println(Bug2783734StaticImports.class.getName());
