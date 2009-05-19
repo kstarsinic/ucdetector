@@ -54,6 +54,7 @@ public class JavaElementUtil {
   }
 
   /**
+   * @param javaElement element to find package for
    * @return the package for an class, method, or field
    */
   public static IPackageFragment getPackageFor(IJavaElement javaElement) {
@@ -67,6 +68,7 @@ public class JavaElementUtil {
   }
 
   /**
+   * @param javaElement to find class for
    * @param isPrimary type with the same name as the compilation unit, or the type of a class file
    * @return the class for an class, method, or field,
    * or return <code>null</code> if there is no type, for example a package
@@ -95,6 +97,8 @@ public class JavaElementUtil {
   }
 
   /**
+   * @param element1 method, class or field to check if it is in same class
+   * @param element2 method, class or field to check if it is in same class
    * @return <code>true</code>, when the type of element1 and element2 is the same class
    */
   public static boolean isInSameType(IJavaElement element1,
@@ -108,6 +112,7 @@ public class JavaElementUtil {
   }
 
   /**
+   * @param method method to check
    * @return <code>true</code>, if the method is one of Object methods:<br>
    *         <ul>
    *         <li><code>hashCode()</code></li>
@@ -138,6 +143,7 @@ public class JavaElementUtil {
 
   /**
    * Ignore methods used for Object Serialization:
+   * @param method java method to check
    * @return <code>true</code> if method is like
    * <ul>
    * <li><code>private void writeObject(ObjectOutputStream stream) throws IOException;</code></li>
@@ -168,11 +174,14 @@ public class JavaElementUtil {
 
   /**
    * Ignore fields used for Object Serialization:
+   * @param field to check
    * @return <code>true</code> if field is like
    * <ul>
    *         <li><code>static final long serialVersionUID</code></li>
    *         <li><code>private static final ObjectStreamField[] serialPersistentFields</code></li>
    * </ul>
+   * @throws JavaModelException if this element does not exist or if an
+  *      exception occurs while accessing its corresponding resource. 
    * @see "http://java.sun.com/javase/6/docs/platform/serialization/spec/output.html"
    */
   public static boolean isSerializationField(IField field)
@@ -185,6 +194,7 @@ public class JavaElementUtil {
   }
 
   /**
+   * @param element to get name for
    * @return <ul>
   * <li>For classes: <code>ClassName</code></li>
   * <li>For methods: <code>ClassName.methodName(String, int, double )</code></li>
@@ -286,10 +296,14 @@ public class JavaElementUtil {
   // -------------------------------------------------------------------------
 
   /**
+   * @param method  to check if it is overridden
    * @see org.eclipse.jdt.ui.actions.FindDeclarationsAction
    * @see "http://help.eclipse.org/stable/index.jsp?topic=/org.eclipse.jdt.doc.isv/guide/jdt_api_search.htm"
    * @return <code>true</code> if a method is overridden<br>
    * it is very expensive to call this method!!!
+   * @throws CoreException when problems found during search
+   * @throws JavaModelException if this element does not exist or if an
+  *      exception occurs while accessing its corresponding resource. 
    */
   public static boolean isOverriddenMethod(IMethod method) throws CoreException {
     int flags = method.getFlags();
@@ -331,7 +345,13 @@ public class JavaElementUtil {
    */
 
   /**
-   * Run a jdt search and handle Exceptions, the Search result is found in SearchRequestor
+   * Run a jdt (java development toolkit) search and handle Exceptions, <br>
+   * the Search result is found in SearchRequestor
+   * @param pattern search pattern
+   * @param requestor contains result after search
+   * @param scope scope to search
+   * @return true, when a {@link Exception} happend
+   * @throws CoreException when there is a OutOfMemoryError
    */
   public static boolean runSearch(SearchPattern pattern,
       SearchRequestor requestor, IJavaSearchScope scope) throws CoreException {
@@ -381,14 +401,20 @@ public class JavaElementUtil {
   // SUB, SUPER CLASSES
   // -------------------------------------------------------------------------
   /**
+   * @param type to check for subclasses
    * @return <code>true</code>, when a type has sub classes
+   * @throws JavaModelException if this element does not exist or if an
+  *      exception occurs while accessing its corresponding resource. 
    */
   public static boolean hasSubClasses(IType type) throws JavaModelException {
     return hasXType(type, false);
   }
 
   /**
+   * @param type to check for super classes
    * @return <code>true</code>, when a type has super classes
+   * @throws JavaModelException if this element does not exist or if an
+  *      exception occurs while accessing its corresponding resource. 
    */
   public static boolean hasSuperClasses(IType type) throws JavaModelException { // NO_UCD
     return hasXType(type, true);
@@ -413,13 +439,17 @@ public class JavaElementUtil {
 
   /**
    * 
+   * @param field to check if it is a constant
    * @return <code>true</code>, when a field is static and final
+   * @throws JavaModelException if this element does not exist or if an
+  *      exception occurs while accessing its corresponding resource.
    */
   public static boolean isConstant(IField field) throws JavaModelException { // NO_UCD
     return Flags.isStatic(field.getFlags()) && Flags.isFinal(field.getFlags());
   }
 
   /**
+   * @param method to check for java bean conventions
    * @return <code>true</code>, when a method matches the java bean conventions,
    * for example:
    *         <ul>
@@ -427,6 +457,8 @@ public class JavaElementUtil {
    *         <li><code>public String getName()</code></li>
    *         <li><code>public boolean isValid()</code></li>
    *         </ul>
+   * @throws JavaModelException if this element does not exist or if an
+  *      exception occurs while accessing its corresponding resource. 
    */
   public static boolean isBeanMethod(IMethod method) throws JavaModelException {
     if (Flags.isPublic(method.getFlags()) && !Flags.isStatic(method.getFlags())) {
@@ -465,6 +497,7 @@ public class JavaElementUtil {
    * <code>IPackageFragmentRoot.getChildren()</code>
    * When a name of a sub package starts with package name + "." it is a
    * sub package
+   * @param packageFragment package to find sub packages
    * 
    * @return a list of all sub packages for the input package. For example input 
    * <pre>org.ucdetector</pre>
@@ -473,6 +506,7 @@ public class JavaElementUtil {
    * <li><code>org.ucdetector.action</code></li>
    * <li><code>org.ucdetector.iterator</code></li>
    * </ul>
+   * @throws CoreException when there are problems finding sub packages
    */
   public static List<IPackageFragment> getSubPackages(
       IPackageFragment packageFragment) throws CoreException {
@@ -491,6 +525,7 @@ public class JavaElementUtil {
   }
 
   /**
+   * @param member to crate a string for
    * @return "???" if unknown, otherwise:<p>
    * For classes:
    * <ul>
@@ -512,6 +547,8 @@ public class JavaElementUtil {
   * <li>"Constant"</li>
   * <li>"Field"</li>
   * </ul>
+   * @throws JavaModelException if this element does not exist or if an
+  *      exception occurs while accessing its corresponding resource. 
    */
   public static String getMemberTypeString(IMember member)
       throws JavaModelException {
@@ -566,6 +603,7 @@ public class JavaElementUtil {
   }
 
   /**
+   * @param javaElement to find source folder for
    * @return the PackageFragmentRoot for a javaElement.
    * In Eclipse IDE this is called a source folder
    * 
@@ -585,6 +623,7 @@ public class JavaElementUtil {
   /**
    * Bug [ 2715348 ] Filter on Source folders does not work.
    * Match project relative path, not only last path element 
+   * @param root source folder
    * @return "src/java/test" instead of only "test"
    */
   public static String getSourceFolderProjectRelativePath(
@@ -597,6 +636,7 @@ public class JavaElementUtil {
   }
 
   /**
+   * @param javaElement to check, if it is test code
    * @return <code>true</code>, when:
    * <ul>
    * <li>the class name of the javaElement ends with "Test"</li>

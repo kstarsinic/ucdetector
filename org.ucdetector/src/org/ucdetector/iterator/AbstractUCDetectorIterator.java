@@ -68,6 +68,7 @@ public abstract class AbstractUCDetectorIterator extends UCDetectorHandler {
   // -------------------------------------------------------------------------
   /**
    * If there is nothing to iterate, iterate all projects
+   * @throws CoreException when a problems happened during iteration
    */
   public final void iterateAll() throws CoreException { // NO_UCD
     IProject[] projects = ResourcesPlugin.getWorkspace().getRoot()
@@ -84,6 +85,8 @@ public abstract class AbstractUCDetectorIterator extends UCDetectorHandler {
 
   /**
    * Start point for all for all iterations
+   * @param selectionsUI elements selected in user interface (projects, packages, classes, methods, fields)
+   * @throws CoreException when a problems happened during iteration
    */
   public final void iterate(IJavaElement[] selectionsUI) throws CoreException {
     if (DEBUG) {

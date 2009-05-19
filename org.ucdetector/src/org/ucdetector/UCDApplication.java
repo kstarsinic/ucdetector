@@ -136,7 +136,8 @@ public class UCDApplication implements IApplication {
   }
 
   /**
-   * 
+   * @throws CoreException if an error occurs accessing the contents
+   *    of its underlying resource
    */
   public void startImpl() throws CoreException {
     Log.logInfo("Run UCDetector"); //$NON-NLS-1$

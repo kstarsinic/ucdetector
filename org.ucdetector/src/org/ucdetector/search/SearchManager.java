@@ -98,6 +98,10 @@ public class SearchManager {
 
   /**
    * Start searching for classes, methods, fields
+   * @param types classes to search
+   * @param methods methods to search
+   * @param fields fields to search
+   * @throws CoreException, when a problems happens during search 
    */
   public final void search(List<IType> types, List<IMethod> methods,
       List<IField> fields) throws CoreException {
@@ -601,6 +605,7 @@ public class SearchManager {
   }
 
   /**
+   * @param match search match, which should be checked
    * @return <code>true</code> if the found match should be ignored
    * Ignore matches:
    * <ul>

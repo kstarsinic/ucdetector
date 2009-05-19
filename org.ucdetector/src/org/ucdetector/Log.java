@@ -62,7 +62,8 @@ public class Log {
   }
 
   /**
-   * "org.ucdetector/debug/search"
+   * @param key found in .options, for example "org.ucdetector/debug/search"
+   * @return  <code>true</code> when debug option is set
    */
   public static boolean isDebugOption(String key) {
     String option = Platform.getDebugOption(key);

@@ -103,6 +103,7 @@ public final class Prefs {
 
   // FILTER GROUP --------------------------------------------------------------
   /**
+   * @param root package fragment root (source folder), which should be checked for filtering
    * @return <code>true</code>, when the IPackageFragmentRoot
    * matches the source folder filter
    */
@@ -114,6 +115,7 @@ public final class Prefs {
   }
 
   /**
+   * @param packageFragment package, which should be checked for filtering
    * @return <code>true</code>, when the IPackageFragment
    * matches the package filter
    */
@@ -123,6 +125,7 @@ public final class Prefs {
   }
 
   /**
+   * @param type type (class), which should be checked for filtering
    * @return <code>true</code>, when the type
    * matches the type filter
    */
@@ -145,6 +148,7 @@ public final class Prefs {
   }
 
   /**
+   * @param method  which should be checked for reduce visibility
    * @return <code>true</code>, when the method
    * matches the method filter
    */
@@ -153,6 +157,7 @@ public final class Prefs {
   }
 
   /**
+   * @param field field which should be checked for filtering
    * @return <code>true</code>, when the field
    * matches the field filter
    */
@@ -251,6 +256,7 @@ public final class Prefs {
   // KEYWORD GROUP -------------------------------------------------------------
   // VISIBILITY PROTECTED -----------------------
   /**
+   * @param member which should be checked for reduce visibility
    * @return WarnLevel if we can use protected
    */
   public static WarnLevel getCheckReduceVisibilityProtected(IJavaElement member) {
@@ -274,6 +280,7 @@ public final class Prefs {
   }
 
   /**
+   * @param member  which should be checked for reduce visibility
    * @return <code>true</code> if we can use protected
    */
   public static boolean isCheckReduceVisibilityProtected(IJavaElement member) {
@@ -282,6 +289,7 @@ public final class Prefs {
 
   // VISIBILITY PRIVATE -----------------------
   /**
+   * @param member  which should be checked for reduce visibility
    * @return WarnLevel if we can use private
    */
   public static WarnLevel getCheckReduceVisibilityToPrivate(IJavaElement member) {
@@ -305,6 +313,7 @@ public final class Prefs {
   }
 
   /**
+   * @param member  which should be checked for reduce visibility
    * @return <code>true</code> if we can use private
    */
   public static boolean isCheckReduceVisibilityToPrivate(IJavaElement member) {
@@ -389,6 +398,7 @@ public final class Prefs {
 
   /**
    * @param name prefix "org.ucdetector." is added
+   * @param value , which should changed in preference store
    */
   public static void setUcdValue(String name, String value) {
     getStore().setValue("org.ucdetector." + name, value); //$NON-NLS-1$

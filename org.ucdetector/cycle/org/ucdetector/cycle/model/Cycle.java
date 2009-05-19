@@ -42,7 +42,8 @@ public class Cycle extends CycleBaseElement {
   }
 
   /**
-   * A-B-C-A contains C-A
+   * @param other cycle which may be included
+   * @return <code>true</code> when A-B-C-A contains C-A
    */
   public boolean contains(Cycle other) {
     if (other.cycleList.size() > cycleList.size()) {

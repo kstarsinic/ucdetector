@@ -35,6 +35,7 @@ public class StopWatch {
 
   /**
    * Prints a message to UCDetectorPlugin logging
+   * @param info String to append to message
    */
   public void end(String info) {
     long duration = System.currentTimeMillis() - start;

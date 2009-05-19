@@ -79,7 +79,10 @@ public final class MarkerFactory {
 
   /**
    * Create a marker: "Use final for method myMethod()"
+   * @param method method to create marker for
+   * @param line line to create marker for
    * @return <code>true</code>, if a marker was created
+   * @throws CoreException when there are problem creating marker
    */
   public boolean createFinalMarker(IMethod method, int line)
       throws CoreException {
@@ -93,7 +96,10 @@ public final class MarkerFactory {
 
   /**
    * Create a marker: "Use final for method myMethod()"
+   * @param field to create marker for
+   * @param line to create marker for
    * @return <code>true</code>, if a marker was created
+   * @throws CoreException when there are problem creating marker
    */
   public boolean createFinalMarker(IField field, int line) throws CoreException {
     String searchInfo = JavaElementUtil.getMemberTypeString(field);
@@ -106,6 +112,12 @@ public final class MarkerFactory {
 
   /**
    * Create an eclipse marker: "Class MyClass has {0} references"
+   * @param javaElement  to create marker for
+   * @param message  to create marker for
+   * @param line  to create marker for
+   * @param found number of found elements
+   * @return <code>true</code>, if a marker was created
+   * @throws CoreException when there are problem creating marker
    */
   public boolean createReferenceMarker(IJavaElement javaElement,
       String message, int line, int found) throws CoreException {
@@ -115,6 +127,10 @@ public final class MarkerFactory {
 
   /**
    * Create an eclipse marker: Method "ClassName.myMethod()"  is only matched by test code
+   * @param member  to create marker for
+   * @param line  to create marker for
+   * @return <code>true</code>, if a marker was created
+   * @throws CoreException when there are problem creating marker
    */
   public boolean createReferenceMarkerTestOnly(IMember member, int line)
       throws CoreException {
@@ -128,6 +144,11 @@ public final class MarkerFactory {
 
   /**
    * Create an eclipse marker: "Change visibility to protected"
+   * @param member  to create marker for
+   * @param type  to create marker for
+   * @param line  to create marker for
+   * @return <code>true</code>, if a marker was created
+   * @throws CoreException when there are problem creating marker
    */
   public boolean createVisibilityMarker(IMember member, String type, int line)
       throws CoreException {
@@ -155,6 +176,9 @@ public final class MarkerFactory {
 
   /**
    * Create any eclipse marker
+   * @param reportParam report parameter to create marker for
+   * @return <code>true</code>, if a marker was created
+   * @throws CoreException when there are problem creating marker
    */
   public boolean createMarker(ReportParam reportParam) throws CoreException {
     return createMarkerImpl(reportParam);
@@ -182,6 +206,8 @@ public final class MarkerFactory {
 
   /**
    * Delete markers of the javaElement and all of its children
+   * @param javaElement  to create marker for
+   * @throws CoreException when there are problem creating marker
    */
   public static void deleteMarkers(IJavaElement javaElement)
       throws CoreException {

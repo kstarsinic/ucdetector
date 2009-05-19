@@ -98,6 +98,8 @@ public class UCDetectorPlugin extends AbstractUIPlugin {
   /**
    * During search there can be <code>OutOfMemoryErrors</code>.
    * This method creates an messages for the user.
+   * @param e {@link OutOfMemoryError} , which is wrapped in a {@link CoreException}
+   * @throws CoreException which contains the {@link OutOfMemoryError}
    */
   public static void handleOutOfMemoryError(OutOfMemoryError e)
       throws CoreException {

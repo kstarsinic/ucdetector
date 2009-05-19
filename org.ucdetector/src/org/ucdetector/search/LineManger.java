@@ -78,8 +78,10 @@ public class LineManger {
   = new HashMap<ICompilationUnit, char[]>();
 
   /**
+   * @param element class, method or field to get the line in source code
    * @return the line number of a class, method, field in a file, or -1 if the
    *         line could not be found
+   * @throws CoreException when there are problem in scanning java files
    */
   public int getLine(IMember element) throws CoreException {
     ISourceRange sourceRange = element.getNameRange();
@@ -89,7 +91,10 @@ public class LineManger {
   }
 
   /**
+   * @param element to create a scanner
+   * @param offset char position in the file
    * @return The source code line from the offset (position in file)
+   * @throws CoreException when there are problem in scanning java files
    */
   public int getLine(IMember element, int offset) throws CoreException {
     IScanner scanner = createScanner(element);
@@ -229,6 +234,8 @@ public class LineManger {
   }
 
   /**
+   * @param element to create a scanner
+   * @param offset char position in the file
    * @return Piece of code contained in offset
    */
   public String getPieceOfCode(IJavaElement element, int offset) {
