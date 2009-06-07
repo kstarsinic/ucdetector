@@ -57,7 +57,9 @@ public abstract class AbstractUCDetectorAction extends ActionDelegate { // NO_UC
           if (ucdMonitor.isCanceled()) {
             return Status.CANCEL_STATUS;
           }
-          showNothingToDetectMessage(iterator);
+          if (iterator.getElelementsToDetectCount() == 0) {
+            showNothingToDetectMessage();
+          }
           IStatus status = postIteration();
           if (status != null) {
             return status;
@@ -76,16 +78,14 @@ public abstract class AbstractUCDetectorAction extends ActionDelegate { // NO_UC
         return Status.OK_STATUS;
       }
 
-      private void showNothingToDetectMessage(AbstractUCDetectorIterator iter) {
-        if (iter.getElelementsToDetectCount() == 0) {
-          Display.getDefault().asyncExec(new Runnable() {
-            public void run() {
-              MessageDialog.openWarning(UCDetectorPlugin.getShell(),
-                  Messages.AbstractUCDetectorIterator_NothingToDetectTitle,
-                  Messages.AbstractUCDetectorIterator_NothingToDetect);
-            }
-          });
-        }
+      private void showNothingToDetectMessage() {
+        Display.getDefault().asyncExec(new Runnable() {
+          public void run() {
+            MessageDialog.openWarning(UCDetectorPlugin.getShell(),
+                Messages.AbstractUCDetectorIterator_NothingToDetectTitle,
+                Messages.AbstractUCDetectorIterator_NothingToDetect);
+          }
+        });
       }
     };
     // http://www.eclipse.org/articles/Article-Concurrency/jobs-api.html
