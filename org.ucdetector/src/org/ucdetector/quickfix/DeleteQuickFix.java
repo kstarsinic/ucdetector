@@ -10,6 +10,7 @@ package org.ucdetector.quickfix;
 import org.eclipse.core.resources.IMarker;
 import org.eclipse.jdt.core.dom.BodyDeclaration;
 import org.eclipse.jdt.core.dom.LineComment;
+import org.eclipse.jface.text.BadLocationException;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.ui.ISharedImages;
 import org.ucdetector.Messages;
@@ -26,7 +27,7 @@ class DeleteQuickFix extends AbstractUCDQuickFix {
 
   @Override
   public void runImpl(IMarker marker, ElementType elementType,
-      BodyDeclaration nodeToChange) throws Exception {
+      BodyDeclaration nodeToChange) throws BadLocationException {
     // [ 2721955 ] On QuickFix the direct sibling marker gets deleted too
     // rewrite.remove(nodeToChange, null); // This line did not work
     // Hack: replace deleted note by a comment

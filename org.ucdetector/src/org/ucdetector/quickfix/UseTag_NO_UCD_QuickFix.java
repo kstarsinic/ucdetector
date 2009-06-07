@@ -10,6 +10,7 @@ import org.eclipse.core.resources.IMarker;
 import org.eclipse.jdt.core.dom.BodyDeclaration;
 import org.eclipse.jdt.internal.ui.JavaPluginImages;
 import org.eclipse.jdt.ui.JavaUI;
+import org.eclipse.jface.text.BadLocationException;
 import org.eclipse.jface.text.IRegion;
 import org.eclipse.swt.graphics.Image;
 import org.ucdetector.Messages;
@@ -26,7 +27,7 @@ class UseTag_NO_UCD_QuickFix extends AbstractUCDQuickFix {
 
   @Override
   public void runImpl(IMarker marker, ElementType elementType,
-      BodyDeclaration nodeToChange) throws Exception {
+      BodyDeclaration nodeToChange) throws BadLocationException {
     int lineNr = marker.getAttribute(IMarker.LINE_NUMBER, -1);
     if (lineNr < 1) {
       return;

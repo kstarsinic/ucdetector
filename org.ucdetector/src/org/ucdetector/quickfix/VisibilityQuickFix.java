@@ -13,6 +13,7 @@ import org.eclipse.jdt.core.dom.Modifier;
 import org.eclipse.jdt.core.dom.rewrite.ListRewrite;
 import org.eclipse.jdt.internal.ui.JavaPluginImages;
 import org.eclipse.jdt.ui.JavaUI;
+import org.eclipse.jface.text.BadLocationException;
 import org.eclipse.osgi.util.NLS;
 import org.eclipse.swt.graphics.Image;
 import org.ucdetector.Messages;
@@ -31,18 +32,10 @@ class VisibilityQuickFix extends AbstractUCDQuickFix {
 
   @Override
   public void runImpl(IMarker marker, ElementType elementType,
-      BodyDeclaration nodeToChange) throws Exception {
+      BodyDeclaration nodeToChange) throws BadLocationException {
     ListRewrite listRewrite = getModifierListRewrite(elementType, nodeToChange);
     Modifier modifierFound = getModifierVisibility(nodeToChange);
-    Modifier modifierNew = null;
-    if (MarkerFactory.UCD_MARKER_USE_PRIVATE.equals(markerType)) {
-      modifierNew = nodeToChange.getAST().newModifier(
-          Modifier.ModifierKeyword.PRIVATE_KEYWORD);
-    }
-    else if (MarkerFactory.UCD_MARKER_USE_PROTECTED.equals(markerType)) {
-      modifierNew = nodeToChange.getAST().newModifier(
-          Modifier.ModifierKeyword.PROTECTED_KEYWORD);
-    }
+    Modifier modifierNew = getModifierNew(nodeToChange);
     // default -> default
     if (modifierFound == null && modifierNew == null) {
       return; // nothing
@@ -60,6 +53,18 @@ class VisibilityQuickFix extends AbstractUCDQuickFix {
       listRewrite.replace(modifierFound, modifierNew, null);
     }
     commitChanges();
+  }
+
+  private Modifier getModifierNew(BodyDeclaration nodeToChange) {
+    if (MarkerFactory.UCD_MARKER_USE_PRIVATE.equals(markerType)) {
+      return nodeToChange.getAST().newModifier(
+          Modifier.ModifierKeyword.PRIVATE_KEYWORD);
+    }
+    else if (MarkerFactory.UCD_MARKER_USE_PROTECTED.equals(markerType)) {
+      return nodeToChange.getAST().newModifier(
+          Modifier.ModifierKeyword.PROTECTED_KEYWORD);
+    }
+    return null;
   }
 
   public String getLabel() {

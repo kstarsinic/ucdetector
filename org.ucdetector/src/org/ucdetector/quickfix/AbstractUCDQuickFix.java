@@ -59,6 +59,8 @@ import org.ucdetector.util.MarkerFactory.ElementType;
 abstract class AbstractUCDQuickFix extends WorkbenchMarkerResolution {
   private final IMarker quickFixMarker;
   protected final String markerType;
+  protected ASTRewrite rewrite;
+  protected IDocument doc;
 
   protected AbstractUCDQuickFix(IMarker marker) {
     this.quickFixMarker = marker;
@@ -74,9 +76,6 @@ abstract class AbstractUCDQuickFix extends WorkbenchMarkerResolution {
       return null;
     }
   }
-
-  protected ASTRewrite rewrite;
-  protected IDocument doc;
 
   @SuppressWarnings("unchecked")
   public void run(IMarker marker) {
@@ -285,7 +284,7 @@ abstract class AbstractUCDQuickFix extends WorkbenchMarkerResolution {
   // ---------------------------------------------------------------------------
 
   public abstract void runImpl(IMarker marker, ElementType elementType,
-      BodyDeclaration nodeToChange) throws Exception;
+      BodyDeclaration nodeToChange) throws BadLocationException;
 
   public String getDescription() {
     return null;

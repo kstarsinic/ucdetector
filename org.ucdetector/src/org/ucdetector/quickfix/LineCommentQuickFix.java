@@ -30,7 +30,7 @@ class LineCommentQuickFix extends AbstractUCDQuickFix {
 
   @Override
   public void runImpl(IMarker marker, ElementType elementType,
-      BodyDeclaration nodeToChange) throws Exception {
+      BodyDeclaration nodeToChange) throws BadLocationException {
     int offsetBody = nodeToChange.getStartPosition();
     int lengthBody = nodeToChange.getLength();
     int lineStart = doc.getLineOfOffset(offsetBody);
