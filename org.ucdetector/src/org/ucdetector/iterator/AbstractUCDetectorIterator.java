@@ -93,7 +93,7 @@ public abstract class AbstractUCDetectorIterator extends UCDetectorHandler {
       StringBuilder sb = new StringBuilder();
       sb.append(selectionsUI.length).append(" selections to iterate: ");//$NON-NLS-1$
       sb.append(getSelectedString(selectionsUI));
-      Log.logInfo(sb.toString());
+      Log.logDebug(sb.toString());
     }
     this.selections = selectionsUI;
     handleStartGlobal(selections);
@@ -291,7 +291,7 @@ public abstract class AbstractUCDetectorIterator extends UCDetectorHandler {
   public abstract String getJobName();
 
   /**
-   * @return creates a String for all selected javaElents
+   * @return creates a String for all selected javaElements
    */
   protected final String getSelectedString(IJavaElement[] javaElements) {
     StringBuffer selectedAsString = new StringBuffer();
