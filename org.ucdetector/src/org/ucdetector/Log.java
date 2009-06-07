@@ -9,9 +9,19 @@ package org.ucdetector;
 import org.eclipse.core.runtime.Platform;
 
 /**
+ * Simple logging API for UCDetector.
+ * <p>
  * @see "http://wiki.eclipse.org/FAQ_How_do_I_write_to_the_console_from_a_plug-in_%3F"
  */
 public class Log {
+  /**
+   * To activate debug traces add line
+   * <pre>org.ucdetector/debug=true</pre>
+   * to file ECLIPSE_INSTALL_DIR\.options
+   * 
+   * @see "http://wiki.eclipse.org/FAQ_How_do_I_use_the_platform_debug_tracing_facility%3F"
+   */
+  public static final boolean DEBUG = isDebugOption("org.ucdetector/debug"); //$NON-NLS-1$
 
   private static final String LOG_LEVEL_DEBUG = "DEBUG"; //$NON-NLS-1$
   private static final String LOG_LEVEL_INFO = "INFO "; //$NON-NLS-1$
@@ -84,17 +94,11 @@ public class Log {
   }
 
   public static String getClassName(Object o) {
+    if (o == null) {
+      return "[?]";//$NON-NLS-1$
+    }
     StringBuilder sb = new StringBuilder();
-    sb.append('[').append(o == null ? "?" : o.getClass().getName()).append(']');//$NON-NLS-1$
+    sb.append('[').append(o.getClass().getName()).append(']');
     return sb.toString();
   }
-
-  /**
-   * To activate debug traces add line
-   * <pre>org.ucdetector/debug=true</pre>
-   * to file ECLIPSE_INSTALL_DIR\.options
-   * 
-   * @see "http://wiki.eclipse.org/FAQ_How_do_I_use_the_platform_debug_tracing_facility%3F"
-   */
-  public static final boolean DEBUG = isDebugOption("org.ucdetector/debug"); //$NON-NLS-1$
 }
