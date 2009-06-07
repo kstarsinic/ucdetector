@@ -41,39 +41,24 @@ public class PreferenceInitializer extends AbstractPreferenceInitializer { // NO
   @Override
   public void initializeDefaultPreferences() {
     IPreferenceStore store = UCDetectorPlugin.getDefault().getPreferenceStore();
-    // Analyze -----------------------------------------------------------------
-    store.setDefault(Prefs.ANALYZE_CLASSES, WARN);
-    store.setDefault(Prefs.ANALYZE_MEHTODS, WARN);
-    store.setDefault(Prefs.ANALYZE_FIELDS, WARN);
-    store.setDefault(Prefs.ANALYZE_VISIBILITY_PROTECTED_CLASSES, WARN);
-    store.setDefault(Prefs.ANALYZE_VISIBILITY_PROTECTED_METHODS, WARN);
-    store.setDefault(Prefs.ANALYZE_VISIBILITY_PROTECTED_FIELDS, WARN);
-    store.setDefault(Prefs.ANALYZE_VISIBILITY_PROTECTED_CONSTANTS, WARN);
-    //
-    store.setDefault(Prefs.ANALYZE_VISIBILITY_PRIVATE_CLASSES, WARN);
-    store.setDefault(Prefs.ANALYZE_VISIBILITY_PRIVATE_METHODS, WARN);
-    store.setDefault(Prefs.ANALYZE_VISIBILITY_PRIVATE_FIELDS, WARN);
-    store.setDefault(Prefs.ANALYZE_VISIBILITY_PRIVATE_CONSTANTS, WARN);
-    //
-    store.setDefault(Prefs.ANALYZE_LITERALS_CHECK, true);
-    store.setDefault(Prefs.ANALYZE_CHECK_FULL_CLASS_NAME, true);
-    store.setDefault(Prefs.ANALYZE_LITERALS, FILE_PATTERN_LITERAL_SEARCH);
-    // Filter ------------------------------------------------------------------
+    // FILTER ------------------------------------------------------------------
     store.setDefault(Prefs.FILTER_SOURCE_FOLDER, SOURCE_FOLDER_FILTER);
     store.setDefault(Prefs.FILTER_PACKAGE, PACKAGE_FILTER);
     store.setDefault(Prefs.FILTER_CLASS, CLASS_FILTER);
-    store.setDefault(Prefs.FILTER_BEAN_METHOD, true);
-    store.setDefault(Prefs.DETECT_TEST_ONLY, true);
     store.setDefault(Prefs.FILTER_METHOD, METHOD_FILTER);
     store.setDefault(Prefs.FILTER_FIELD, FIELD_FILTER);
-    // Limit -------------------------------------------------------------------
+    store.setDefault(Prefs.FILTER_BEAN_METHOD, true);
+    // WHAT TO DETECT ----------------------------------------------------------
     store.setDefault(Prefs.WARN_LIMIT, 0);
-    // final -------------------------------------------------------------------
-    store.setDefault(Prefs.ANALYZE_FINAL_FIELD, IGNORE.name());
-    store.setDefault(Prefs.ANALYZE_FINAL_METHOD, IGNORE.name());
-    // Cycles ------------------------------------------------------------------
-    store.setDefault(CyclePrefs.CYCLE_DEPTH, CyclePrefs.CYCLE_DEPTH_DEFAULT);
-    // Report ------------------------------------------------------------------
+    store.setDefault(Prefs.ANALYZE_CLASSES, WARN);
+    store.setDefault(Prefs.ANALYZE_MEHTODS, WARN);
+    store.setDefault(Prefs.ANALYZE_FIELDS, WARN);
+    store.setDefault(Prefs.DETECT_TEST_ONLY, true);
+    // CLASS NAMES IN FILES ----------------------------------------------------
+    store.setDefault(Prefs.ANALYZE_LITERALS_CHECK, true);
+    store.setDefault(Prefs.ANALYZE_CHECK_FULL_CLASS_NAME, true);
+    store.setDefault(Prefs.ANALYZE_LITERALS, FILE_PATTERN_LITERAL_SEARCH);
+    // OTHER -------------------------------------------------------------------
     String report;
     try {
       File workspace = Platform.getLocation().toFile();
@@ -84,5 +69,22 @@ public class PreferenceInitializer extends AbstractPreferenceInitializer { // NO
       Log.logError("Can't get report file name", e); //$NON-NLS-1$
     }
     store.setDefault(Prefs.REPORT_FILE, report);
+    store.setDefault(CyclePrefs.CYCLE_DEPTH, CyclePrefs.CYCLE_DEPTH_DEFAULT);
+    // KEYWORDS ----------------------------------------------------------------
+    store.setDefault(Prefs.ANALYZE_FINAL_METHOD, IGNORE.name());
+    store.setDefault(Prefs.ANALYZE_FINAL_FIELD, IGNORE.name());
+    // VISIBILITY --------------------------------------------------------------
+    // methods
+    store.setDefault(Prefs.ANALYZE_VISIBILITY_PROTECTED_CLASSES, WARN);
+    store.setDefault(Prefs.ANALYZE_VISIBILITY_PRIVATE_CLASSES, WARN);
+    // classes
+    store.setDefault(Prefs.ANALYZE_VISIBILITY_PROTECTED_METHODS, WARN);
+    store.setDefault(Prefs.ANALYZE_VISIBILITY_PRIVATE_METHODS, WARN);
+    // fields
+    store.setDefault(Prefs.ANALYZE_VISIBILITY_PROTECTED_FIELDS, WARN);
+    store.setDefault(Prefs.ANALYZE_VISIBILITY_PRIVATE_FIELDS, WARN);
+    // constants
+    store.setDefault(Prefs.ANALYZE_VISIBILITY_PROTECTED_CONSTANTS, WARN);
+    store.setDefault(Prefs.ANALYZE_VISIBILITY_PRIVATE_CONSTANTS, WARN);
   }
 }
