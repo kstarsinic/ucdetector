@@ -461,29 +461,30 @@ public class JavaElementUtil {
   *      exception occurs while accessing its corresponding resource. 
    */
   public static boolean isBeanMethod(IMethod method) throws JavaModelException {
-    if (Flags.isPublic(method.getFlags()) && !Flags.isStatic(method.getFlags())) {
-      String name = method.getElementName();
-      if (name.length() > 3
-          && name.startsWith("set") //$NON-NLS-1$
-          && Character.isUpperCase(name.charAt(3))
-          && Signature.SIG_VOID.equals(method.getReturnType())
-          && method.getNumberOfParameters() == 1) {
-        return true;
-      }
-      if (name.length() > 3
-          && name.startsWith("get") //$NON-NLS-1$
-          && Character.isUpperCase(name.charAt(3))
-          && !Signature.SIG_VOID.equals(method.getReturnType())
-          && method.getNumberOfParameters() == 0) {
-        return true;
-      }
-      if (name.length() > 2
-          && name.startsWith("is") //$NON-NLS-1$
-          && Character.isUpperCase(name.charAt(2))
-          && Signature.SIG_BOOLEAN.equals(method.getReturnType())
-          && method.getNumberOfParameters() == 0) {
-        return true;
-      }
+    if (!Flags.isPublic(method.getFlags()) || Flags.isStatic(method.getFlags())) {
+      return false;
+    }
+    String name = method.getElementName();
+    if (Signature.SIG_VOID.equals(method.getReturnType())
+        && name.startsWith("set") //$NON-NLS-1$
+        && name.length() > 3 //
+        && Character.isUpperCase(name.charAt(3))
+        && method.getNumberOfParameters() == 1) {
+      return true;
+    }
+    if (!Signature.SIG_VOID.equals(method.getReturnType())
+        && name.startsWith("get") //$NON-NLS-1$
+        && name.length() > 3 //
+        && Character.isUpperCase(name.charAt(3))
+        && method.getNumberOfParameters() == 0) {
+      return true;
+    }
+    if (Signature.SIG_BOOLEAN.equals(method.getReturnType())
+        && name.startsWith("is") //$NON-NLS-1$
+        && name.length() > 2 //
+        && Character.isUpperCase(name.charAt(2))
+        && method.getNumberOfParameters() == 0) {
+      return true;
     }
     return false;
   }
@@ -598,8 +599,10 @@ public class JavaElementUtil {
     if (javaElement == null) {
       return "null"; //$NON-NLS-1$
     }
-    return javaElement.getElementName() + '\t' + '['
-        + javaElement.getClass().getName() + ']';
+    StringBuilder sb = new StringBuilder();
+    sb.append(javaElement.getElementName()).append("\t["); //$NON-NLS-1$
+    sb.append(javaElement.getClass().getName()).append("]"); //$NON-NLS-1$
+    return sb.toString();
   }
 
   /**
@@ -650,19 +653,17 @@ public class JavaElementUtil {
    */
   public static boolean isTestCode(IJavaElement javaElement) {
     // Check type -------------------------------------------------------------
-    IType type = getTypeFor(javaElement, false);
-    if (type != null) {
-      if (type.getElementName().endsWith("Test")) { //$NON-NLS-1$
-        return true;
-      }
+    IType type = getTypeFor(javaElement, true);
+    if (type != null && type.getElementName().endsWith("Test")) { //$NON-NLS-1$
+      return true;
     }
     // Check packageFragmentRoot -----------------------------------------------
     IPackageFragmentRoot pfr = getPackageFragmentRootFor(javaElement);
     if (pfr != null) {
       String sourceFolder = getSourceFolderProjectRelativePath(pfr);
       if (sourceFolder != null) {
-        String sf = sourceFolder.toLowerCase();
-        if (sf.contains("test") || sf.contains("junit")) { //$NON-NLS-1$  //$NON-NLS-2$
+        sourceFolder = sourceFolder.toLowerCase();
+        if (sourceFolder.contains("test") || sourceFolder.contains("junit")) { //$NON-NLS-1$  //$NON-NLS-2$
           return true;
         }
       }
@@ -671,10 +672,10 @@ public class JavaElementUtil {
     if (javaElement instanceof IMethod) {
       IMethod method = (IMethod) javaElement;
       try {
-        if (Flags.isPublic(method.getFlags()) //
-            && Signature.SIG_VOID.equals(method.getReturnType())//
-            && method.getNumberOfParameters() == 0 //
-            && !Flags.isStatic(method.getFlags())) {
+        if (Signature.SIG_VOID.equals(method.getReturnType())
+            && Flags.isPublic(method.getFlags())
+            && !Flags.isStatic(method.getFlags())
+            && method.getNumberOfParameters() == 0) {
           // JUnit 3
           if (method.getElementName().startsWith("test")) { //$NON-NLS-1$
             return true;
@@ -693,7 +694,6 @@ public class JavaElementUtil {
     }
     return false;
   }
-
   /*
    * @return the annotation for a method like @org.junit.Test
    * This method seems to be slow, because it needs to parse
