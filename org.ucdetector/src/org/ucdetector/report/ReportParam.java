@@ -24,6 +24,7 @@ public class ReportParam {
   public final int line;
   protected final String markerType;
   protected final WarnLevel level;
+  protected final int referenceCount;
 
   @Override
   public String toString() {
@@ -42,16 +43,27 @@ public class ReportParam {
 
   public ReportParam(IJavaElement javaElement, String message, int line,
       String markerType) {
-    this(javaElement, message, line, markerType, null);
+    this(javaElement, message, line, markerType, null, -1);
+  }
+
+  public ReportParam(IJavaElement javaElement, String message, int line,
+      String markerType, int referenceCount) {
+    this(javaElement, message, line, markerType, null, referenceCount);
   }
 
   public ReportParam(IJavaElement javaElement, String message, int line,
       String markerType, WarnLevel warnLevel) {
+    this(javaElement, message, line, markerType, warnLevel, -1);
+  }
+
+  private ReportParam(IJavaElement javaElement, String message, int line,
+      String markerType, WarnLevel warnLevel, int referenceCount) {
     this.javaElement = javaElement;
     this.message = message;
     this.line = line;
     this.markerType = markerType;
     this.level = warnLevel == null ? calculateWarnLevel() : warnLevel;
+    this.referenceCount = referenceCount;
   }
 
   private WarnLevel calculateWarnLevel() {

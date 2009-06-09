@@ -9,7 +9,7 @@
 <!--  <xsl:strip-space elements="*"/>  -->
 	<xsl:output encoding="ISO-8859-1" indent="yes" method="html" doctype-public="-//W3C//DTD HTML 4.01 Transitional//EN" doctype-system="http://www.w3.org/TR/html4/transitional.dtd" />
 	<xsl:template match="/">
-	
+		
 		<xsl:comment>
  Copyright (c) 2009 Joerg Spieler All rights reserved. This program and the
  accompanying materials are made available under the terms of the Eclipse
@@ -42,6 +42,7 @@ ECLIPSE_HOME/plugins/org.ucdetector_*.jar/org/ucdetector/report/html.xslt
 					<th>Nr</th>
 					<th>Warn level</th>
 					<th>Description</th>
+					<th>Reference Count</th>
 				</tr>
 			</thead>
 			<xsl:apply-templates/>
@@ -92,6 +93,15 @@ ECLIPSE_HOME/plugins/org.ucdetector_*.jar/org/ucdetector/report/html.xslt
 			<!-- DESCRIPTION -->
 			<td>
 				<xsl:value-of select="description"/>
+			</td>
+			<!-- Reference Count -->
+			<td>
+				<xsl:if test="string-length(referenceCount) &gt; 0">
+					<xsl:value-of select="referenceCount"/>
+				</xsl:if>
+				<xsl:if test="string-length(referenceCount) = 0">
+					<xsl:text>-</xsl:text>
+				</xsl:if>
 			</td>
 		</tr>
 	</xsl:template>

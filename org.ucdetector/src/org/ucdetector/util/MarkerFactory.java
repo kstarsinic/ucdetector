@@ -122,7 +122,8 @@ public final class MarkerFactory {
   public boolean createReferenceMarker(IJavaElement javaElement,
       String message, int line, int found) throws CoreException {
     String type = found == 0 ? UCD_MARKER_UNUSED : UCD_MARKER_USED_FEW;
-    return createMarkerImpl(new ReportParam(javaElement, message, line, type));
+    return createMarkerImpl(new ReportParam(javaElement, message, line, type,
+        found));
   }
 
   /**
