@@ -96,12 +96,7 @@ ECLIPSE_HOME/plugins/org.ucdetector_*.jar/org/ucdetector/report/html.xslt
 			</td>
 			<!-- Reference Count -->
 			<td>
-				<xsl:if test="string-length(referenceCount) &gt; 0">
-					<xsl:value-of select="referenceCount"/>
-				</xsl:if>
-				<xsl:if test="string-length(referenceCount) = 0">
-					<xsl:text>-</xsl:text>
-				</xsl:if>
+				<xsl:value-of select="referenceCount"/>
 			</td>
 		</tr>
 	</xsl:template>

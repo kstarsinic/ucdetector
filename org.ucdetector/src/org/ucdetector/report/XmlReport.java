@@ -160,7 +160,7 @@ public class XmlReport implements IUCDetectorReport {
 
       // NODE: Change visibility of MixedExample to default
       appendChild(marker, "description", reportParam.message);//$NON-NLS-1$
-      String sReferenceCount = (reportParam.referenceCount == -1) ? "" : "" //$NON-NLS-1$ //$NON-NLS-2$
+      String sReferenceCount = (reportParam.referenceCount == -1) ? "-" : "" //$NON-NLS-1$ //$NON-NLS-2$
           + reportParam.referenceCount;
       appendChild(marker, "referenceCount", sReferenceCount);//$NON-NLS-1$
 
