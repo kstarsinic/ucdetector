@@ -24,6 +24,7 @@ public class ReportParam {
   public final int line;
   protected final String markerType;
   protected final WarnLevel level;
+  /**  2803618  Add number of references to report */
   protected final int referenceCount;
 
   @Override
