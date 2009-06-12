@@ -5,7 +5,7 @@ Bugfixes:
  - [ 2776029 ] Final for fields initialized in subclass constructors
 
 New features:
- - Improved running UCDetector with ANT: Options, refresh/compile workspace 
+ - Improved running UCDetector headless: More Options. Refresh/compile workspace 
  - [ 2658675 ] Want annotations, not comments, to indicate non-dead code
  - [ 2803618 ] Add number of references to report
 
