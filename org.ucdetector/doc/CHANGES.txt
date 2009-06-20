@@ -3,11 +3,12 @@ Bugfixes:
  - [ 2783734 ] Static imports are not recognized
  - [ 2787576 ] Waiting for first 10 markers
  - [ 2776029 ] Final for fields initialized in subclass constructors
+ - [ 2808853 ] Don't create "0 references marker" for classes with main methods
 
 New features:
  - Improved running UCDetector headless: More Options. Refresh/compile workspace 
- - [ 2658675 ] Want annotations, not comments, to indicate non-dead code
  - [ 2803618 ] Add number of references to report
+ - TODO ---------- [ 2658675 ] Want annotations, not comments, to indicate non-dead code
 
 // -----------------------------------------------------------------------------
 UCDetector 1.1.0 from 2009-04-15:

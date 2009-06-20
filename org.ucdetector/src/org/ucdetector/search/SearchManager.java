@@ -329,12 +329,28 @@ public class SearchManager {
     if (found > Prefs.getWarnLimit() || isOverriddenMethod) {
       return found;
     }
+    // Fix for BUG 2808853: Don't create "0 references marker" for classes with main methods
+    if (member instanceof IType) {
+      if (hasMainMethod((IType) member)) {
+        return found;
+      }
+    }
     created = markerFactory.createReferenceMarker(member, markerMessage, line,
         found);
     if (created) {
       foundTotal++;
     }
     return found;
+  }
+
+  private static boolean hasMainMethod(IType member) throws JavaModelException {
+    IMethod[] methods = member.getMethods();
+    for (IMethod method : methods) {
+      if (method.isMainMethod()) {
+        return true;
+      }
+    }
+    return false;
   }
 
   /**
