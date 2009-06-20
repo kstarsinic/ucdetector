@@ -23,8 +23,13 @@ import org.ucdetector.util.StopWatch;
 
 /**
  * Unnecessary Code Detector Iterator Collect types, methods an fields which
- * must be searched, run detection afterward */
+ * must be searched, run detection afterward 
+ * */
 public class UCDetectorIterator extends AbstractUCDetectorIterator {
+  private static final String FIELD = "field"; //$NON-NLS-1$
+  private static final String METHOD = "method"; //$NON-NLS-1$
+  private static final String TYPE = "type"; //$NON-NLS-1$
+  //
   private final List<IType> types = new ArrayList<IType>();
   private final List<IMethod> methods = new ArrayList<IMethod>();
   private final List<IField> fields = new ArrayList<IField>();
@@ -39,67 +44,74 @@ public class UCDetectorIterator extends AbstractUCDetectorIterator {
 
   @Override
   protected void handleType(IType type) throws CoreException {
-    if (isPrivate(type) || type.isAnonymous()) {
-      debugNotHandle("type", type, "isPrivate || isAnonymous"); //$NON-NLS-1$ //$NON-NLS-2$
+    if (isPrivate(type)) {
+      debugNotHandle(TYPE, type, "isPrivate"); //$NON-NLS-1$ 
+      return;
+    }
+    if (type.isAnonymous()) {
+      debugNotHandle(TYPE, type, "isAnonymous"); //$NON-NLS-1$ 
       return;
     }
     if (!Prefs.isUCDetectionInClasses()) {
-      debugNotHandle("type", type, "!isUCDetectionInClasses"); //$NON-NLS-1$ //$NON-NLS-2$
+      debugNotHandle(TYPE, type, "!isUCDetectionInClasses"); //$NON-NLS-1$ 
       return;
     }
     if (Prefs.filterType(type)) {
-      debugNotHandle("type", type, "filterType"); //$NON-NLS-1$ //$NON-NLS-2$
+      debugNotHandle(TYPE, type, "filterType"); //$NON-NLS-1$ 
       return;
     }
-    debugHandle("type", type); //$NON-NLS-1$
+    debugHandle(TYPE, type);
     types.add(type);
   }
 
   @Override
   protected void handleMethod(IMethod method) throws CoreException {
     // Fix Bug [ 2153699 ] Find unused abstract methods
-    if (isPrivate(method) || method.isMainMethod()) {
-      debugNotHandle("method", method, //$NON-NLS-1$
-          "isPrivate || isMainMethod"); //$NON-NLS-1$
+    if (isPrivate(method)) {
+      debugNotHandle(METHOD, method, "isPrivate");//$NON-NLS-1$ 
+      return;
+    }
+    if (method.isMainMethod()) {
+      debugNotHandle(METHOD, method, "isMainMethod"); //$NON-NLS-1$ 
       return;
     }
     if (!Prefs.isUCDetectionInMethods()) {
-      debugNotHandle("method", method, "!isUCDetectionInMethods"); //$NON-NLS-1$ //$NON-NLS-2$
+      debugNotHandle(METHOD, method, "!isUCDetectionInMethods"); //$NON-NLS-1$ 
       return;
     }
     if (Prefs.filterMethod(method)) {
-      debugNotHandle("method", method, "filterMethod"); //$NON-NLS-1$ //$NON-NLS-2$
+      debugNotHandle(METHOD, method, "filterMethod"); //$NON-NLS-1$ 
       return;
     }
     // ignore default constructors
     if (method.isConstructor() && method.getNumberOfParameters() == 0) {
-      debugNotHandle("method", method, "default constructor"); //$NON-NLS-1$ //$NON-NLS-2$
+      debugNotHandle(METHOD, method, "default constructor"); //$NON-NLS-1$ 
       return;
     }
     if (Prefs.isFilterBeanMethod() && JavaElementUtil.isBeanMethod(method)) {
-      debugNotHandle("method", method, "bean method"); //$NON-NLS-1$ //$NON-NLS-2$
+      debugNotHandle(METHOD, method, "bean method"); //$NON-NLS-1$
       return;
     }
-    debugHandle("method", method); //$NON-NLS-1$
+    debugHandle(METHOD, method);
     methods.add(method);
   }
 
   @Override
   protected void handleField(IField field) throws CoreException {
     if (Prefs.filterField(field)) {
-      debugNotHandle("field", field, "filterField"); //$NON-NLS-1$ //$NON-NLS-2$
+      debugNotHandle(FIELD, field, "filterField"); //$NON-NLS-1$ 
     }
     else if (Prefs.isCheckUseFinalField()) {
       // we need even private fields here!
-      debugHandle("field", field); //$NON-NLS-1$
+      debugHandle(FIELD, field);
       fields.add(field);
     }
     else if (Prefs.isUCDetectionInFields() && !isPrivate(field)) {
-      debugHandle("field", field); //$NON-NLS-1$
+      debugHandle(FIELD, field);
       fields.add(field);
     }
     else {
-      debugNotHandle("field", field, //$NON-NLS-1$
+      debugNotHandle(FIELD, field,
           "!isCheckUseFinalField || isUCDetectionInFields"); //$NON-NLS-1$
     }
   }
