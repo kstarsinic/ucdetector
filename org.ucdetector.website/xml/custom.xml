@@ -52,6 +52,23 @@ svn co https://ucdetector.svn.sourceforge.net/svnroot/ucdetector/trunk/org.ucdet
 				<img alt="Additional" border="1" src="@IMAGES_DIR@/additional.png"/>
 			</td>
 		</tr>
+		
+		<tr valign="top">
+		  <td>
+		  	<h3>Debug your changes</h3>
+		  	Cool: Debug a running eclipse IDE.<br></br>
+			Create a new Eclipse run configuration. Menu:
+				<ul>
+					<li>Run</li>
+					<li>Run Configurations...</li>
+					<li>Eclipse Application</li>
+					<li>See screenshots</li>
+					<li>Click button 'Debug'</li>
+				</ul>
+      <img alt="Main" border="1" src="@IMAGES_DIR@/run_main.png"/>
+      <img alt="Arguments" border="1" src="@IMAGES_DIR@/run_arguments.png"/>
+      <img alt="Plugins" border="1" src="@IMAGES_DIR@/run_plugins.png"/>
+    </td>
+   </tr>
 	</table>
-
 </ucd>
