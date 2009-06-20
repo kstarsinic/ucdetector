@@ -38,16 +38,17 @@ ECLIPSE_HOME/plugins/org.ucdetector_*.jar/org/ucdetector/report/html.xslt
 		<table border="1">
 			<thead align="center">
 				<tr bgcolor="#C0C0C0">
-					<th>Location</th>
+					<th>Location*</th>
 					<th>Nr</th>
 					<th>Warn level</th>
 					<th>Description</th>
-					<th>Reference Count</th>
+					<th>Reference Count**</th>
 				</tr>
 			</thead>
 			<xsl:apply-templates/>
 		</table>
-		To get links to the source locations: Copy and paste this table to Eclipse "Java Stack Trace Console"
+*Column 'Location': To get links to the source locations: Copy and paste this table to Eclipse "Java Stack Trace Console"<br></br>
+**Column 'Reference Count': Set 'Detect code with max number of references' &gt; 0 <br></br>
 	</xsl:template>
 
   <!-- =============================== marker ========================= -->
