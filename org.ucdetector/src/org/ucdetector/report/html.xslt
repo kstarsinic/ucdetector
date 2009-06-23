@@ -27,7 +27,7 @@ ECLIPSE_HOME/plugins/org.ucdetector_*.jar/org/ucdetector/report/html.xslt
 				<title>UCDetector Report</title>
 				<link rel="icon" href="http://www.ucdetector.org/ucdetector.ico" type="image/x-icon"/>
 			</head>
-			<body>
+			<body bgcolor="#FFFFE0">
 				<xsl:apply-templates/>
 			</body>
 		</html>
@@ -45,7 +45,7 @@ Searched in:
 		  <xsl:value-of select="."/>
 			<xsl:text>, </xsl:text>
 		</xsl:for-each>
-			
+		
 		<table border="1">
 			<thead align="center">
 				<tr bgcolor="#C0C0C0">
@@ -56,75 +56,65 @@ Searched in:
 					<th>Reference Count**</th>
 				</tr>
 			</thead>
-			<xsl:apply-templates/>
-		</table>
-		<p></p>
-* To get links to the source locations, copy and paste this table to Eclipse 'Java Stack Trace Console'<br></br>
-** Set 'Detect code with max number of references' &gt; 0<br></br>
-To create custom reports change: ECLIPSE_HOME/plugins/org.ucdetector_*.jar/org/ucdetector/report/html.xslt
-	</xsl:template>
-
-  <!-- =============================== marker ========================= -->
-	<xsl:template match="marker">
-		<tr>
-			<!--  org.eclipse.swt.SWT.error(SWT.java:3634) -->
-			<td>
-			
+			<xsl:for-each select="/ucdetector/markers/marker">
+				<xsl:variable name="color">
+					<xsl:choose>
+						<xsl:when test="position() mod 2 = 0">#E6E6FA</xsl:when>
+						<xsl:otherwise>#FFFACD</xsl:otherwise>
+					</xsl:choose>
+				</xsl:variable>
+				<tr bgcolor="{$color}">
+					<td>
+  			<!--  org.eclipse.swt.SWT.error(SWT.java:3634) -->
 			  <!-- if not default package -->
-				<xsl:if test="string-length(package) &gt; 0">
-					<xsl:value-of select="concat(package, '.')"/>
-				</xsl:if>
+						<xsl:if test="string-length(package) &gt; 0">
+							<xsl:value-of select="concat(package, '.')"/>
+						</xsl:if>
 				
 			  <!-- class name -->
-				<xsl:value-of select="concat(class, '.')"/>
+						<xsl:value-of select="concat(class, '.')"/>
 
 				<!-- class needs an additional string -->
-				<xsl:if test="not(method) and not(field)">
-					<xsl:text>declaration</xsl:text>
-				</xsl:if>
+						<xsl:if test="not(method) and not(field)">
+							<xsl:text>declaration</xsl:text>
+						</xsl:if>
 				
 				<!-- method -->
-				<xsl:if test="method">
-					<xsl:value-of select="method"/>
-				</xsl:if>
+						<xsl:if test="method">
+							<xsl:value-of select="method"/>
+						</xsl:if>
 
 				<!-- filed -->
-				<xsl:if test="field">
-					<xsl:value-of select="field"/>
-				</xsl:if>
+						<xsl:if test="field">
+							<xsl:value-of select="field"/>
+						</xsl:if>
 				
 				<!-- Link in Eclipse Stack Trace Console View: (SWT.java:3634) -->
-				<xsl:value-of select="concat('(', resourceName, ':', line, ')')"/>
-			</td>
+						<xsl:value-of select="concat('(', resourceName, ':', line, ')')"/>
+					</td>
 			<!-- NR -->
-			<td align="right">
-				<xsl:value-of select="nr"/>
-			</td>
+					<td align="right">
+						<xsl:value-of select="nr"/>
+					</td>
 			<!-- LEVEL -->
-			<td>
-				<xsl:value-of select="level"/>
-			</td>
+					<td>
+						<xsl:value-of select="level"/>
+					</td>
 			<!-- DESCRIPTION -->
-			<td>
-				<xsl:value-of select="description"/>
-			</td>
+					<td>
+						<xsl:value-of select="description"/>
+					</td>
 			<!-- Reference Count -->
-			<td align="right">
-				<xsl:value-of select="referenceCount"/>
-			</td>
-		</tr>
+					<td align="right">
+						<xsl:value-of select="referenceCount"/>
+					</td>
+				</tr>
+			</xsl:for-each>
+		</table>
+		<p></p>
+* To get links to the source locations, copy and paste table to Eclipse 'Java Stack Trace Console'<br></br>
+** Set 'Detect code with max number of references' &gt; 0<br></br>
+To create custom reports change ECLIPSE_HOME/plugins/org.ucdetector_*.jar/org/ucdetector/report/html.xslt
 	</xsl:template>
-	
-  <!-- =============================== statistics =========================  	 -->
-	<xsl:template match="statistics">
-	<!--
-		<h2>Search statistics</h2>
-		Searched from <xsl:value-of select="dateStarted"/> to <xsl:value-of select="dateFinished"/> (<xsl:value-of select="searchDuration"/>)<br></br>
-		Searched in:
-		<xsl:for-each select="searched/search">
-		  <xsl:value-of select="."/>
-			<xsl:text>, </xsl:text>
-		</xsl:for-each>
-		--></xsl:template>                 
-  <!-- :mode=xsl: -->
 </xsl:stylesheet>
+<!-- :mode=xsl: -->
