@@ -34,12 +34,12 @@ ECLIPSE_HOME/plugins/org.ucdetector_*.jar/org/ucdetector/report/html.xslt
 	</xsl:template>
 
   <!-- =============================== markers ========================= -->
-	<xsl:template match="markers">
+	<xsl:template match="markers">     
 		<h1 align="center">UCDetector Report</h1>
 
 Searched started <xsl:value-of select="/ucdetector/statistics/dateStarted"/>. 
 <!-- finished <xsl:value-of select="/ucdetector/statistics/dateFinished"/> -->
-Duration <xsl:value-of select="/ucdetector/statistics/searchDuration"/>.
+Duration <xsl:value-of select="/ucdetector/statistics/searchDuration"/>.<br></br>
 Searched in:
 		<xsl:for-each select="/ucdetector/statistics/searched/search">
 		  <xsl:value-of select="."/>
@@ -111,10 +111,28 @@ Searched in:
 				</tr>
 			</xsl:for-each>
 		</table>
-		<p></p>
+		<p>
 * To get links to the source locations, copy and paste table to Eclipse 'Java Stack Trace Console'<br></br>
 ** Set 'Detect code with max number of references' &gt; 0<br></br>
 To create custom reports change ECLIPSE_HOME/plugins/org.ucdetector_*.jar/org/ucdetector/report/html.xslt
+</p>
+		
+		<xsl:if test="count(/ucdetector/problems/problem) &gt; 0">
+			<h3>Problems during Detection</h3>
+			<ul>
+				<xsl:for-each select="/ucdetector/problems/problem">
+					<li>
+						<xsl:value-of select="status"/>
+						<pre>
+							<xsl:value-of select="exception"/>
+						</pre>
+					</li>
+				</xsl:for-each>
+			</ul>
+		</xsl:if>
 	</xsl:template>
+	
+	<xsl:template match="problem"></xsl:template>
+	<xsl:template match="search"></xsl:template>
 </xsl:stylesheet>
 <!-- :mode=xsl: -->
