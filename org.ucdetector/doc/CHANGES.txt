@@ -8,6 +8,7 @@ Bugfixes:
 
 New features:
  - Improved running UCDetector headless: More Options. Refresh/compile workspace 
+ - Removed method/field detection of anonymous classes. Already done by eclipse, slow
  - [ 2803618 ] Add number of references to report
  - TODO ---------- [ 2658675 ] Want annotations, not comments, to indicate non-dead code
 

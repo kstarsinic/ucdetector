@@ -160,6 +160,10 @@ public class SearchManager {
       incrementSearchOrCancel();
       monitor.worked(1);
       IType type = JavaElementUtil.getTypeFor(method, false);
+      // Ignore anonymous classes
+      if (type.isAnonymous()) {
+        continue;
+      }
       // Ignore types, which have no references
       if (noRefTypes.contains(type)) {
         continue;
@@ -234,6 +238,10 @@ public class SearchManager {
       }
       IType type = JavaElementUtil.getTypeFor(field, false);
       if (noRefTypes.contains(type)) {
+        continue;
+      }
+      // Ignore anonymous classes
+      if (type.isAnonymous()) {
         continue;
       }
       updateMonitorMessage(field, Messages.SearchManager_SearchReferences,

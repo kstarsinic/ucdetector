@@ -28,7 +28,8 @@ public class ImplementsExample implements Observer {
       }
 
       @SuppressWarnings("unused")
-      public int compareUnused(String s1, String s2) { // Marker YES: unused code
+      // 2009-06-23 Removed detection of anonymous classes
+      public int compareUnused(String s1, String s2) {
         return s1.length() - s2.length();
       }
     });
