@@ -95,28 +95,32 @@ public abstract class AbstractUCDetectorIterator extends UCDetectorHandler {
       sb.append(getSelectedString(selectionsUI));
       Log.logDebug(sb.toString());
     }
-    this.selections = selectionsUI;
-    handleStartGlobal(selections);
-    for (IJavaElement selection : selections) {
-      if (selection instanceof IPackageFragment) {
-        activePackage = (IPackageFragment) selection;
+    try {
+      this.selections = selectionsUI;
+      handleStartGlobal(selections);
+      for (IJavaElement selection : selections) {
+        if (selection instanceof IPackageFragment) {
+          activePackage = (IPackageFragment) selection;
+        }
+        else {
+          activePackage = null;
+        }
+        handleStartSelectedElement(selection);
+        if (doSelectedElement()) {
+          iterate(selection);
+        }
+        IResource resource = selection.getCorrespondingResource();
+        if (doResources() && resource != null) {
+          iterateResource(resource);
+        }
+        handleEndSelectedElement(selection);
       }
-      else {
-        activePackage = null;
-      }
-      handleStartSelectedElement(selection);
-      if (doSelectedElement()) {
-        iterate(selection);
-      }
-      IResource resource = selection.getCorrespondingResource();
-      if (doResources() && resource != null) {
-        iterateResource(resource);
-      }
-      handleEndSelectedElement(selection);
+      handleEndGlobal(selections);
     }
-    handleEndGlobal(selections);
-    if (markerFactory != null) {
-      markerFactory.endReport(selections, start);
+    finally {
+      if (markerFactory != null) {
+        markerFactory.endReport(selections, start);
+      }
     }
   }
 
