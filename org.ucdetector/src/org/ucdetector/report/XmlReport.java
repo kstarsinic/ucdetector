@@ -10,6 +10,7 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.InputStream;
 import java.text.DateFormat;
+import java.text.DecimalFormat;
 import java.util.Date;
 import java.util.Locale;
 
@@ -72,6 +73,8 @@ public class XmlReport implements IUCDetectorReport {
 
   private final DateFormat dateFormatter = DateFormat.getDateTimeInstance(
       DateFormat.SHORT, DateFormat.SHORT, Locale.getDefault());
+  private static final DecimalFormat FORMAT_REPORT_NUMBER = new DecimalFormat(
+      "000"); //$NON-NLS-1$
 
   private Document doc;
   private Element markers;
@@ -230,7 +233,7 @@ public class XmlReport implements IUCDetectorReport {
     if (!Prefs.isWriteReportFile()) {
       return;
     }
-    String htmlFileName = Prefs.getReportFile();
+    String htmlFileName = appendFreeNumber(Prefs.getReportFile());
     if (initXMLException != null) {
       logEndReportMessage(Messages.XMLReportWriteError, IStatus.ERROR,
           initXMLException, htmlFileName);
@@ -256,6 +259,28 @@ public class XmlReport implements IUCDetectorReport {
       logEndReportMessage(Messages.XMLReportWriteError, IStatus.ERROR, e,
           htmlFileName);
     }
+  }
+
+  /**
+   * @return File name, with does not exist, containing a number.
+   * UCDetetorReport.html -&gt; UCDetetorReport_001.html
+   */
+  // Fix [2811049]  Html report is overridden each run
+  private String appendFreeNumber(String reportFile) {
+    int posDot = reportFile.lastIndexOf('.');
+    posDot = (posDot == -1) ? reportFile.length() : posDot;
+    String nameStart = reportFile.substring(0, posDot);
+    String nameEnd = reportFile.substring(posDot);
+    for (int i = 1; i < 1000; i++) {
+      StringBuilder numberName = new StringBuilder();
+      numberName.append(nameStart).append('_');
+      numberName.append(FORMAT_REPORT_NUMBER.format(i)).append(nameEnd);
+      String sNumberName = numberName.toString();
+      if (!new File(sNumberName).exists()) {
+        return sNumberName;
+      }
+    }
+    return reportFile;
   }
 
   /**

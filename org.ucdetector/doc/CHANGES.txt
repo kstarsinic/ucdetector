@@ -4,6 +4,7 @@ Bugfixes:
  - [ 2787576 ] Waiting for first 10 markers
  - [ 2776029 ] Final for fields initialized in subclass constructors
  - [ 2808853 ] Don't create "0 references marker" for classes with main methods
+ - [ 2811049 ] Html report is overridden each run
 
 New features:
  - Improved running UCDetector headless: More Options. Refresh/compile workspace 
