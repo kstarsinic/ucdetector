@@ -232,8 +232,8 @@ public class XmlReport implements IUCDetectorReport {
     }
     String htmlFileName = Prefs.getReportFile();
     if (initXMLException != null) {
-      logEndReportMessage(Messages.XMLReportWriteError, htmlFileName,
-          IStatus.ERROR, initXMLException);
+      logEndReportMessage(Messages.XMLReportWriteError, IStatus.ERROR,
+          initXMLException, htmlFileName);
       return;
     }
     appendStatistics(selected, start);
@@ -248,22 +248,22 @@ public class XmlReport implements IUCDetectorReport {
       File xmlFile = writeDocumentToFile(doc, xmlFileName);
       Document htmlDocument = transformXSLT(xmlFile);
       File htmlFile = writeDocumentToFile(htmlDocument, htmlFileName);
-      logEndReportMessage(Messages.XMLReportWriteOk, htmlFile.getAbsoluteFile()
-          .toString(), IStatus.INFO, null);
+      logEndReportMessage(Messages.XMLReportWriteOk, IStatus.INFO, null, String
+          .valueOf(markerCount), htmlFile.getAbsoluteFile().toString());
 
     }
     catch (Exception e) {
-      logEndReportMessage(Messages.XMLReportWriteError, htmlFileName,
-          IStatus.ERROR, e);
+      logEndReportMessage(Messages.XMLReportWriteError, IStatus.ERROR, e,
+          htmlFileName);
     }
   }
 
   /**
    * Create a <code>Status</code> and log it to the Eclipse log
    */
-  private static void logEndReportMessage(String message, String parm,
-      int iStatus, Throwable ex) {
-    String mes = NLS.bind(message, new Object[] { parm });
+  private static void logEndReportMessage(String message, int iStatus,
+      Throwable ex, String... parms) {
+    String mes = NLS.bind(message, parms);
     Status status = new Status(iStatus, UCDetectorPlugin.ID, iStatus, mes, ex);
     UCDetectorPlugin.logStatus(status);
   }
