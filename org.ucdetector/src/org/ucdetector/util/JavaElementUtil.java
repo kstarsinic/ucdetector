@@ -548,49 +548,51 @@ public class JavaElementUtil {
   * <li>"Constant"</li>
   * <li>"Field"</li>
   * </ul>
-   * @throws JavaModelException if this element does not exist or if an
-  *      exception occurs while accessing its corresponding resource. 
-   */
-  public static String getMemberTypeString(IMember member)
-      throws JavaModelException {
-    if (member instanceof IType) {
-      IType type = (IType) member;
-      if (type.isAnnotation()) {
-        return "Annotation"; //$NON-NLS-1$
+  */
+  public static String getMemberTypeString(IMember member) {
+    try {
+      if (member instanceof IType) {
+        IType type = (IType) member;
+        if (type.isAnnotation()) {
+          return "Annotation"; //$NON-NLS-1$
+        }
+        if (type.isAnonymous()) {
+          return "Anonymous class"; //$NON-NLS-1$
+        }
+        if (type.isEnum()) {
+          return "Enumeration"; //$NON-NLS-1$
+        }
+        if (type.isInterface()) {
+          return "Interface"; //$NON-NLS-1$
+        }
+        if (type.isLocal()) {
+          return "Local class"; //$NON-NLS-1$
+        }
+        if (type.isMember()) {
+          return "Member class"; //$NON-NLS-1$
+        }
+        return Messages.SearchManager_Class;
       }
-      if (type.isAnonymous()) {
-        return "Anonymous class"; //$NON-NLS-1$
+      if (member instanceof IMethod) {
+        IMethod method = (IMethod) member;
+        if (method.isConstructor()) {
+          return Messages.SearchManager_Constructor;
+        }
+        return Messages.SearchManager_Method;
       }
-      if (type.isEnum()) {
-        return "Enumeration"; //$NON-NLS-1$
+      if (member instanceof IField) {
+        IField field = (IField) member;
+        if (field.isEnumConstant()) {
+          return "EnumConstant"; //$NON-NLS-1$
+        }
+        if (JavaElementUtil.isConstant(field)) {
+          return Messages.SearchManager_Constant;
+        }
+        return Messages.SearchManager_Field;
       }
-      if (type.isInterface()) {
-        return "Interface"; //$NON-NLS-1$
-      }
-      if (type.isLocal()) {
-        return "Local class"; //$NON-NLS-1$
-      }
-      if (type.isMember()) {
-        return "Member class"; //$NON-NLS-1$
-      }
-      return Messages.SearchManager_Class;
     }
-    if (member instanceof IMethod) {
-      IMethod method = (IMethod) member;
-      if (method.isConstructor()) {
-        return Messages.SearchManager_Constructor;
-      }
-      return Messages.SearchManager_Method;
-    }
-    if (member instanceof IField) {
-      IField field = (IField) member;
-      if (field.isEnumConstant()) {
-        return "EnumConstant"; //$NON-NLS-1$
-      }
-      if (JavaElementUtil.isConstant(field)) {
-        return Messages.SearchManager_Constant;
-      }
-      return Messages.SearchManager_Field;
+    catch (JavaModelException ex) {
+      Log.logError("Can't get gmemberTypeString", ex); //$NON-NLS-1$
     }
     return "???"; //$NON-NLS-1$
   }
