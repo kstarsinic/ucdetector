@@ -239,6 +239,11 @@ public class XmlReport implements IUCDetectorReport {
           initXMLException, htmlFileName);
       return;
     }
+    if (markerCount == 0) {
+      logEndReportMessage(Messages.XMLReportWriteNoWarnings, IStatus.INFO,
+          initXMLException);
+      return;
+    }
     appendStatistics(selected, start);
     String xmlFileName;
     if (htmlFileName.endsWith(EXTENSION_HTML)) {

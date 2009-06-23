@@ -149,6 +149,7 @@ public final class Messages extends NLS {
   public static String CycleView_run_ucd_for_results;// NO_UCD
   // REPORT --------------------------------------------------------------------
   public static String XMLReportWriteOk; // NO_UCD
+  public static String XMLReportWriteNoWarnings; // NO_UCD
   public static String XMLReportWriteError; // NO_UCD
   // QuickFix ------------------------------------------------------------------
   public static String UseFinalQuickFix_label;// NO_UCD
