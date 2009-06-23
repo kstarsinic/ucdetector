@@ -60,10 +60,6 @@ public abstract class AbstractUCDetectorAction extends ActionDelegate { // NO_UC
           if (iterator.getElelementsToDetectCount() == 0) {
             showNothingToDetectMessage();
           }
-          IStatus status = postIteration();
-          if (status != null) {
-            return status;
-          }
         }
         catch (CoreException e) {
           return e.getStatus();
@@ -73,7 +69,15 @@ public abstract class AbstractUCDetectorAction extends ActionDelegate { // NO_UC
               Messages.AbstractUCDetectorAction_AnalyzeFailedText, e);
         }
         finally {
-          ucdMonitor.done();
+          try {
+            IStatus status = postIteration();
+            if (status != null) {
+              return status;
+            }
+          }
+          finally {
+            ucdMonitor.done();
+          }
         }
         return Status.OK_STATUS;
       }
