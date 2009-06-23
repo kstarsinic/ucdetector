@@ -7,7 +7,7 @@
 -->
 <xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
 <!--  <xsl:strip-space elements="*"/>  -->
-	<xsl:output encoding="ISO-8859-1" indent="yes" method="html" doctype-public="-//W3C//DTD HTML 4.01 Transitional//EN" doctype-system="http://www.w3.org/TR/html4/transitional.dtd" />
+	<xsl:output encoding="UTF-8" indent="yes" method="html" doctype-public="-//W3C//DTD HTML 4.01 Transitional//EN" doctype-system="http://www.w3.org/TR/html4/transitional.dtd" />
 	<xsl:template match="/">
 		
 		<xsl:comment>
@@ -25,6 +25,7 @@ ECLIPSE_HOME/plugins/org.ucdetector_*.jar/org/ucdetector/report/html.xslt
 		<html>
 			<head>
 				<title>UCDetector Report</title>
+				<link rel="icon" href="http://www.ucdetector.org/ucdetector.ico" type="image/x-icon"/>
 			</head>
 			<body>
 				<xsl:apply-templates/>
@@ -34,7 +35,17 @@ ECLIPSE_HOME/plugins/org.ucdetector_*.jar/org/ucdetector/report/html.xslt
 
   <!-- =============================== markers ========================= -->
 	<xsl:template match="markers">
-		<h1>UCDetector report</h1>
+		<h1 align="center">UCDetector Report</h1>
+
+Searched started <xsl:value-of select="/ucdetector/statistics/dateStarted"/>. 
+<!-- finished <xsl:value-of select="/ucdetector/statistics/dateFinished"/> -->
+Duration <xsl:value-of select="/ucdetector/statistics/searchDuration"/>.
+Searched in:
+		<xsl:for-each select="/ucdetector/statistics/searched/search">
+		  <xsl:value-of select="."/>
+			<xsl:text>, </xsl:text>
+		</xsl:for-each>
+			
 		<table border="1">
 			<thead align="center">
 				<tr bgcolor="#C0C0C0">
@@ -47,8 +58,10 @@ ECLIPSE_HOME/plugins/org.ucdetector_*.jar/org/ucdetector/report/html.xslt
 			</thead>
 			<xsl:apply-templates/>
 		</table>
-*Column 'Location': To get links to the source locations: Copy and paste this table to Eclipse "Java Stack Trace Console"<br></br>
-**Column 'Reference Count': Set 'Detect code with max number of references' &gt; 0 <br></br>
+		<p></p>
+* To get links to the source locations, copy and paste this table to Eclipse 'Java Stack Trace Console'<br></br>
+** Set 'Detect code with max number of references' &gt; 0<br></br>
+To create custom reports change: ECLIPSE_HOME/plugins/org.ucdetector_*.jar/org/ucdetector/report/html.xslt
 	</xsl:template>
 
   <!-- =============================== marker ========================= -->
@@ -84,7 +97,7 @@ ECLIPSE_HOME/plugins/org.ucdetector_*.jar/org/ucdetector/report/html.xslt
 				<xsl:value-of select="concat('(', resourceName, ':', line, ')')"/>
 			</td>
 			<!-- NR -->
-			<td>
+			<td align="right">
 				<xsl:value-of select="nr"/>
 			</td>
 			<!-- LEVEL -->
@@ -96,29 +109,22 @@ ECLIPSE_HOME/plugins/org.ucdetector_*.jar/org/ucdetector/report/html.xslt
 				<xsl:value-of select="description"/>
 			</td>
 			<!-- Reference Count -->
-			<td>
+			<td align="right">
 				<xsl:value-of select="referenceCount"/>
 			</td>
 		</tr>
 	</xsl:template>
 	
-  <!-- =============================== statistics ========================= -->
+  <!-- =============================== statistics =========================  	 -->
 	<xsl:template match="statistics">
+	<!--
 		<h2>Search statistics</h2>
-		Search finished: <xsl:value-of select="dateFinished"/>
-		<br></br>
-		Search duration: <xsl:value-of select="searchDuration"/>
-		<p></p>
+		Searched from <xsl:value-of select="dateStarted"/> to <xsl:value-of select="dateFinished"/> (<xsl:value-of select="searchDuration"/>)<br></br>
 		Searched in:
-		<ul>
 		<xsl:for-each select="searched/search">
-	   	<li>
-			<xsl:value-of select="."/>
-				</li>
-			</xsl:for-each>
-		</ul>
-To create custom reports change:
-<pre>ECLIPSE_HOME/plugins/org.ucdetector_*.jar/org/ucdetector/report/html.xslt</pre>
-	</xsl:template>
+		  <xsl:value-of select="."/>
+			<xsl:text>, </xsl:text>
+		</xsl:for-each>
+		--></xsl:template>                 
   <!-- :mode=xsl: -->
 </xsl:stylesheet>
