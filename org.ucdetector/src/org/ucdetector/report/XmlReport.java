@@ -83,6 +83,7 @@ public class XmlReport implements IUCDetectorReport {
   private Element problems;
   private Element statistcs;
   private int markerCount;
+  private int detectionProblemCount;
   private Throwable initXMLException;
 
   public XmlReport() {
@@ -224,6 +225,7 @@ public class XmlReport implements IUCDetectorReport {
   }
 
   public void reportDetectionProblem(IStatus status) {
+    detectionProblemCount++;
     Element problem = doc.createElement("problem"); //$NON-NLS-1$
     problems.appendChild(problem);
     appendChild(problem, "status", status.toString());//$NON-NLS-1$
@@ -262,7 +264,7 @@ public class XmlReport implements IUCDetectorReport {
           initXMLException, htmlFileName);
       return;
     }
-    if (markerCount == 0) {
+    if (markerCount == 0 && detectionProblemCount == 0) {
       logEndReportMessage(Messages.XMLReportWriteNoWarnings, IStatus.INFO,
           initXMLException);
       return;
