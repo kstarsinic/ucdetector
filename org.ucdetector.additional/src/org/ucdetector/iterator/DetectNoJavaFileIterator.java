@@ -13,6 +13,7 @@ import org.eclipse.jdt.core.IJavaElement;
 /**
  * Detect no java files
  */
+@SuppressWarnings("nls")
 public class DetectNoJavaFileIterator extends AdditionalIterator {
   private final StringBuilder report = new StringBuilder("No java files:\r\n");
   private int noJavaFileCount = 0;

@@ -20,6 +20,7 @@ import org.ucdetector.util.MarkerFactory;
 /**
  * Detect double class names
  */
+@SuppressWarnings("nls")
 public class DetectDoubleClassNameIterator extends AdditionalIterator {
 
   private final Map<String, Set<IType>> typeMap //

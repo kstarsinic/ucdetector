@@ -28,11 +28,12 @@ import org.ucdetector.UCDetectorPlugin;
  *   <li>blockComments: <code>/** javadoc comment</code></li>
  * </ul>
  */
+@SuppressWarnings("nls")
 public class CommentIterator extends AdditionalIterator {
-  private List<String> lineComments = new ArrayList<String>();
-  private List<String> blockComments = new ArrayList<String>();
-  private List<String> javadocComments = new ArrayList<String>();
-  private List<String> todoComments = new ArrayList<String>();
+  private final List<String> lineComments = new ArrayList<String>();
+  private final List<String> blockComments = new ArrayList<String>();
+  private final List<String> javadocComments = new ArrayList<String>();
+  private final List<String> todoComments = new ArrayList<String>();
 
   @Override
   protected void handleCompilationUnit(ICompilationUnit unit)

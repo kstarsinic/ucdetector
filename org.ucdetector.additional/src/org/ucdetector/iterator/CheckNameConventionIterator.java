@@ -17,6 +17,7 @@ import org.ucdetector.util.MarkerFactory;
 /**
  * Detect naming conventions for classes/methods/fields
  */
+@SuppressWarnings("nls")
 public class CheckNameConventionIterator extends AdditionalIterator {
   private int typeCount;
 
