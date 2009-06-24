@@ -104,7 +104,6 @@ class CycleCalculator {
     }
     // small cycles first
     Collections.sort(cyclesFound, new Comparator<Cycle>() {
-      // TODO sometimes a wrong UCDetector marker appears here!
       public int compare(Cycle o1, Cycle o2) {
         return o1.getChildrenSize() - o2.getChildrenSize();
       }

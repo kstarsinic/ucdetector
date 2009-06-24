@@ -21,8 +21,6 @@ public class ImplementsExample implements Observer {
       /**
        * Implemented method
        */
-      // TODO: 2009-04-08: Broken no marker should be here!
-      // problem fixed: use SDK instead of JRE???
       public int compare(String s1, String s2) {
         return s1.length() - s2.length();
       }
