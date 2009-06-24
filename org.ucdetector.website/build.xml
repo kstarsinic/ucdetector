@@ -10,6 +10,15 @@
   <property name="temp.dir" location="${xml.dir}/temp" />
   <property name="ucd.dir" location="${basedir}/../org.ucdetector" />
 
+
+  <!-- ===================================================================== -->
+  <!--                      UPDATE HOMEPAGE                                  -->
+  <!-- ===================================================================== -->
+  <target name="homepage" description="Create homepage and send it to server">
+    <antcall target="create" />
+    <antcall target="send" />
+  </target>
+
   <!-- ===================================================================== -->
   <!--                      CREATE UCD HOMEPAGE                              -->
   <!-- ===================================================================== -->
@@ -85,14 +94,6 @@
       <fileset dir="${basedir}/../org.ucdetector" includes="icons/*" />
     </ftp>
     <echo>Sended homepage files to server</echo>
-  </target>
-
-  <!-- ===================================================================== -->
-  <!--                      UPDATE HOMEPAGE                                  -->
-  <!-- ===================================================================== -->
-  <target name="homepage" description="Create homepage and send it to server">
-    <antcall target="create" />
-    <antcall target="send" />
   </target>
 </project>
 
