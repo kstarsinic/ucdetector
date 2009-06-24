@@ -7,12 +7,15 @@
 package org.ucdetector.report;
 
 import org.eclipse.core.runtime.CoreException;
+import org.eclipse.core.runtime.IStatus;
 
 /**
  *
  */
 public interface IUCDetectorReport {
-  void reportMarker(ReportParam reportParam) throws CoreException;
+  boolean reportMarker(ReportParam reportParam) throws CoreException;
+
+  void reportDetectionProblem(IStatus status);
 
   void endReport(Object[] selected, long start) throws CoreException;
 }

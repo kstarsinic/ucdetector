@@ -11,6 +11,7 @@ import java.util.List;
 
 import org.eclipse.core.resources.IResource;
 import org.eclipse.core.runtime.CoreException;
+import org.eclipse.core.runtime.IStatus;
 import org.eclipse.jdt.core.IField;
 import org.eclipse.jdt.core.IJavaElement;
 import org.eclipse.jdt.core.IMember;
@@ -28,7 +29,7 @@ import org.ucdetector.search.LineManger;
  * 
  * CALL endReport() TO FLUSH MARKERS!!!
  */
-public final class MarkerFactory {
+public final class MarkerFactory implements IUCDetectorReport {
   private final List<IUCDetectorReport> reports;
 
   /**
@@ -71,6 +72,40 @@ public final class MarkerFactory {
     return new MarkerFactory(reports);
   }
 
+  /**
+   * Create any eclipse marker
+   * @param reportParam report parameter to create marker for
+   * @throws CoreException when there are problem creating marker
+   */
+  //  public void reportMarker(ReportParam reportParam) throws CoreException {
+  //    createMarkerImpl(reportParam);
+  //  }
+
+  /**
+   * This method does the work and creates an marker
+   * @return <code>true</code>, if a marker was created
+   */
+  public boolean reportMarker(ReportParam reportParam) throws CoreException {
+    if (reportParam.line == LineManger.LINE_NOT_FOUND) {
+      Log.logError("createMarkerImpl: Line not found"); //$NON-NLS-1$
+      return false;
+    }
+    if (reportParam.javaElement.getResource() == null) {
+      Log.logError("createMarkerImpl: Resource is null"); //$NON-NLS-1$
+      return false;
+    }
+    for (IUCDetectorReport report : reports) {
+      report.reportMarker(reportParam);
+    }
+    return true;
+  }
+
+  public void reportDetectionProblem(IStatus status) {
+    for (IUCDetectorReport report : reports) {
+      report.reportDetectionProblem(status);
+    }
+  }
+
   public void endReport(Object[] selected, long start) throws CoreException {
     for (IUCDetectorReport report : reports) {
       report.endReport(selected, start);
@@ -90,7 +125,7 @@ public final class MarkerFactory {
     String elementName = JavaElementUtil.getElementName(method);
     String message = NLS.bind(Messages.SearchManager_MarkerFinalMethod,
         new Object[] { searchInfo, elementName });
-    return createMarkerImpl(new ReportParam(method, message, line,
+    return reportMarker(new ReportParam(method, message, line,
         UCD_MARKER_USE_FINAL));
   }
 
@@ -106,7 +141,7 @@ public final class MarkerFactory {
     String elementName = JavaElementUtil.getElementName(field);
     String message = NLS.bind(Messages.SearchManager_MarkerFinalField,
         new Object[] { searchInfo, elementName });
-    return createMarkerImpl(new ReportParam(field, message, line,
+    return reportMarker(new ReportParam(field, message, line,
         UCD_MARKER_USE_FINAL));
   }
 
@@ -122,8 +157,7 @@ public final class MarkerFactory {
   public boolean createReferenceMarker(IJavaElement javaElement,
       String message, int line, int found) throws CoreException {
     String type = found == 0 ? UCD_MARKER_UNUSED : UCD_MARKER_USED_FEW;
-    return createMarkerImpl(new ReportParam(javaElement, message, line, type,
-        found));
+    return reportMarker(new ReportParam(javaElement, message, line, type, found));
   }
 
   /**
@@ -139,7 +173,7 @@ public final class MarkerFactory {
     String elementName = JavaElementUtil.getElementName(member);
     String message = NLS.bind(Messages.SearchManager_MarkerTestOnly,
         new Object[] { searchInfo, elementName });
-    return createMarkerImpl(new ReportParam(member, message, line,
+    return reportMarker(new ReportParam(member, message, line,
         UCD_MARKER_TEST_ONLY));
   }
 
@@ -172,37 +206,7 @@ public final class MarkerFactory {
         JavaElementUtil.getElementName(member), visibilityString };
     String message = NLS
         .bind(Messages.SearchManager_MarkerVisibility, bindings);
-    return createMarkerImpl(new ReportParam(member, message, line, type));
-  }
-
-  /**
-   * Create any eclipse marker
-   * @param reportParam report parameter to create marker for
-   * @return <code>true</code>, if a marker was created
-   * @throws CoreException when there are problem creating marker
-   */
-  public boolean createMarker(ReportParam reportParam) throws CoreException {
-    return createMarkerImpl(reportParam);
-  }
-
-  /**
-   * This method does the work and creates an marker
-   * @return <code>true</code>, if a marker was created
-   */
-  private boolean createMarkerImpl(ReportParam reportParam)
-      throws CoreException {
-    if (reportParam.line == LineManger.LINE_NOT_FOUND) {
-      Log.logError("createMarkerImpl: Line not found"); //$NON-NLS-1$
-      return false;
-    }
-    if (reportParam.javaElement.getResource() == null) {
-      Log.logError("createMarkerImpl: Resource is null"); //$NON-NLS-1$
-      return false;
-    }
-    for (IUCDetectorReport report : reports) {
-      report.reportMarker(reportParam);
-    }
-    return true;
+    return reportMarker(new ReportParam(member, message, line, type));
   }
 
   /**

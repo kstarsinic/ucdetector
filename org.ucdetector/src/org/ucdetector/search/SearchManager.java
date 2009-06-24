@@ -129,9 +129,6 @@ public class SearchManager {
           .size()]);
       MultiStatus status = new MultiStatus(UCDetectorPlugin.ID, IStatus.ERROR,
           stati, stati.length + " errors happened during UCDetection", null); //$NON-NLS-1$
-
-      System.out.println(status.toString());
-
       throw new CoreException(status);
     }
   }
@@ -143,9 +140,6 @@ public class SearchManager {
     Log.logInfo("Start searching " + types.size() + " types..."); //$NON-NLS-1$ //$NON-NLS-2$
     for (IType type : types) {
       try {
-        if (true) {
-          // throw new NullPointerException("Test Josp");
-        }
         incrementSearchOrCancel();
         monitor.worked(1);
         String searchInfo = JavaElementUtil.getMemberTypeString(type);
@@ -172,8 +166,10 @@ public class SearchManager {
     String elementName = JavaElementUtil.getElementName(member);
     String message = "Problems searching " + searchInfo + " " + elementName; //$NON-NLS-1$ //$NON-NLS-2$
     Log.logError(message, ex);
-    searchProblems.add(new Status(IStatus.ERROR, UCDetectorPlugin.ID,
-        IStatus.ERROR, message, ex));
+    Status status = new Status(IStatus.ERROR, UCDetectorPlugin.ID,
+        IStatus.ERROR, message, ex);
+    markerFactory.reportDetectionProblem(status);
+    searchProblems.add(status);
   }
 
   private void incrementSearchOrCancel() {

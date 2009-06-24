@@ -9,6 +9,8 @@ package org.ucdetector.report;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.InputStream;
+import java.io.PrintWriter;
+import java.io.StringWriter;
 import java.text.DateFormat;
 import java.text.DecimalFormat;
 import java.util.Date;
@@ -78,6 +80,7 @@ public class XmlReport implements IUCDetectorReport {
 
   private Document doc;
   private Element markers;
+  private Element problems;
   private Element statistcs;
   private int markerCount;
   private Throwable initXMLException;
@@ -99,8 +102,13 @@ public class XmlReport implements IUCDetectorReport {
       Element root = doc.createElement("ucdetector");//$NON-NLS-1$
       root.appendChild(doc.createComment(COPY_RIGHT));
       doc.appendChild(root);
+      //
       markers = doc.createElement("markers");//$NON-NLS-1$
       root.appendChild(markers);
+      //
+      problems = doc.createElement("problems");//$NON-NLS-1$
+      root.appendChild(problems);
+      //
       statistcs = doc.createElement("statistics");//$NON-NLS-1$
       root.appendChild(statistcs);
     }
@@ -113,17 +121,17 @@ public class XmlReport implements IUCDetectorReport {
   /**
    * creates for each marker a xml element and its children
    */
-  public void reportMarker(ReportParam reportParam) throws CoreException {
+  public boolean reportMarker(ReportParam reportParam) throws CoreException {
     if (initXMLException != null || !Prefs.isWriteReportFile()) {
-      return;
+      return true;
     }
-    reportMarkerImpl(reportParam);
+    return reportMarkerImpl(reportParam);
   }
 
   /**
    * If there are problem creating xml report, ignore all exceptions!
    */
-  private void reportMarkerImpl(ReportParam reportParam) {
+  private boolean reportMarkerImpl(ReportParam reportParam) {
     Element marker = null;
     try {
       markerCount++;
@@ -212,6 +220,21 @@ public class XmlReport implements IUCDetectorReport {
         appendChild(marker, "ExceptionForCreatingMarker", ex.getMessage());//$NON-NLS-1$
       }
     }
+    return true;
+  }
+
+  public void reportDetectionProblem(IStatus status) {
+    Element problem = doc.createElement("problem"); //$NON-NLS-1$
+    problems.appendChild(problem);
+    appendChild(problem, "status", status.toString());//$NON-NLS-1$
+    Throwable ex = status.getException();
+    String exString = ""; //$NON-NLS-1$
+    if (ex != null) {
+      StringWriter writer = new StringWriter();
+      ex.printStackTrace(new PrintWriter(writer));
+      exString = writer.toString().replace("\r\n", "\n"); //$NON-NLS-1$//$NON-NLS-2$
+    }
+    appendChild(problem, "exception", exString);//$NON-NLS-1$
   }
 
   /**

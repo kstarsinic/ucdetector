@@ -11,6 +11,7 @@ import java.util.List;
 
 import org.eclipse.core.resources.IMarker;
 import org.eclipse.core.runtime.CoreException;
+import org.eclipse.core.runtime.IStatus;
 import org.eclipse.jdt.core.IField;
 import org.eclipse.jdt.core.IJavaElement;
 import org.eclipse.jdt.core.IMethod;
@@ -33,7 +34,7 @@ public class MarkerReport implements IUCDetectorReport {
   private final List<ReportParam> markersToFlash = new ArrayList<ReportParam>();
   private int totalMarkerCount = 0;
 
-  public void reportMarker(ReportParam reportParam) throws CoreException {
+  public boolean reportMarker(ReportParam reportParam) throws CoreException {
     if (Log.DEBUG) {
       Log.logDebug("    Add to queue: " + reportParam); //$NON-NLS-1$
     }
@@ -45,6 +46,7 @@ public class MarkerReport implements IUCDetectorReport {
         || markersToFlash.size() >= MARKERS_FLASH_LIMIT) {
       flushReport();
     }
+    return true;
   }
 
   /**
@@ -137,5 +139,9 @@ public class MarkerReport implements IUCDetectorReport {
   public void endReport(Object[] selected, long start) throws CoreException {
     flushReport();
     Log.logInfo(totalMarkerCount + " markers created"); //$NON-NLS-1$
+  }
+
+  public void reportDetectionProblem(IStatus status) {
+    // 
   }
 }
