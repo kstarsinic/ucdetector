@@ -4,8 +4,11 @@
   <!-- EXPORT UCDETECTOR                                                    -->
   <!-- ==================================================================== -->
   <target name="plugin_export">
-    <property file="${basedir}/../../ant/build.properties" />
-    <echo>ECLIPSE_HOME = ${ECLIPSE_HOME}</echo>
+    <property name="build.properties"
+              location="${basedir}/../../ant/build.properties" />
+    <property file="${build.properties}" />
+    <echo>build.properties = ${build.properties}</echo>
+    <echo>ECLIPSE_HOME     = ${ECLIPSE_HOME}</echo>
     <pde.exportPlugins destination="${ECLIPSE_HOME}"
                        exportSource="false"
                        exportType="directory"

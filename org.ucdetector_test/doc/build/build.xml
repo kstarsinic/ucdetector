@@ -1,7 +1,15 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project default="plugin_export" name="build">
+  <!-- ==================================================================== -->
+  <!-- EXPORT UCDETECTOR TEST                                               -->
+  <!-- ==================================================================== -->
   <target name="plugin_export">
-    <pde.exportPlugins destination="/home/js/ucd_version"
+    <property name="build.properties"
+              location="${basedir}/../../../org.ucdetector/ant/build.properties" />
+    <property file="${build.properties}" />
+    <echo>build.properties = ${build.properties}</echo>
+    <echo>ECLIPSE_HOME     = ${ECLIPSE_HOME}</echo>
+    <pde.exportPlugins destination="${ECLIPSE_HOME}"
                        exportSource="false"
                        exportType="directory"
                        plugins="org.ucdetector_test"
