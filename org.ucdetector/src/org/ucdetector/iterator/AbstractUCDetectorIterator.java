@@ -285,7 +285,7 @@ public abstract class AbstractUCDetectorIterator extends UCDetectorHandler {
     this.monitor = monitor;
   }
 
-  protected final UCDProgressMonitor getMonitor() {
+  public final UCDProgressMonitor getMonitor() {
     return monitor;
   }
 

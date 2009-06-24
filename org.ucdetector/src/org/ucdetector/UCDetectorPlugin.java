@@ -33,6 +33,7 @@ import org.osgi.framework.BundleContext;
 public class UCDetectorPlugin extends AbstractUIPlugin {
   public static final String IMAGE_FINAL = "IMAGE_FINAL"; //$NON-NLS-1$
   public static final String IMAGE_CYCLE = "IMAGE_CYCLE"; //$NON-NLS-1$
+  public static final String IMAGE_UCD = "IMAGE_UCD"; //$NON-NLS-1$
   /** org.eclipse.jdt.ui\etool16\comment_edit.gif */
   public static final String IMAGE_COMMENT = "IMAGE_COMMENT"; //$NON-NLS-1$
   /**
@@ -123,6 +124,7 @@ public class UCDetectorPlugin extends AbstractUIPlugin {
     super.initializeImageRegistry(registry);
     registry.put(IMAGE_CYCLE, getUcdImage("cycle.gif")); //$NON-NLS-1$
     registry.put(IMAGE_COMMENT, getUcdImage("comment_edit.gif")); //$NON-NLS-1$
+    registry.put(IMAGE_UCD, getUcdImage("ucd.gif")); //$NON-NLS-1$
     registry.put(IMAGE_FINAL, JavaPluginImages.DESC_OVR_FINAL);
   }
 
@@ -164,6 +166,10 @@ public class UCDetectorPlugin extends AbstractUIPlugin {
 
   public static Image getImage(String key) {
     return getDefault().getImageRegistry().get(key);
+  }
+
+  public static ImageDescriptor getImageDescriptor(String key) {
+    return getDefault().getImageRegistry().getDescriptor(key);
   }
 
   // -------------------------------------------------------------------------

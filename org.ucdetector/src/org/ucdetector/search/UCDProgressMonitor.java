@@ -11,6 +11,7 @@ import java.text.DecimalFormat;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.NullProgressMonitor;
 import org.eclipse.core.runtime.OperationCanceledException;
+import org.eclipse.jdt.core.IMember;
 import org.ucdetector.Log;
 import org.ucdetector.UCDetectorPlugin;
 
@@ -23,6 +24,7 @@ public class UCDProgressMonitor implements IProgressMonitor {
   private final IProgressMonitor delegate;
   private String lastWork;
   private static final DecimalFormat FORMAT_DOUBLE = new DecimalFormat("0.0000"); //$NON-NLS-1$
+  private IMember activeSearchElement = null;
 
   public UCDProgressMonitor(IProgressMonitor delegate) {
     this.delegate = delegate;
@@ -87,5 +89,13 @@ public class UCDProgressMonitor implements IProgressMonitor {
     // nothing usefull!
     // Log.logInfo("Task.worked: " + work);//$NON-NLS-1$
     delegate.worked(work);
+  }
+
+  public void setActiveSearchElement(IMember activeSearchElement) {
+    this.activeSearchElement = activeSearchElement;
+  }
+
+  public IMember getActiveSearchElement() {
+    return activeSearchElement;
   }
 }

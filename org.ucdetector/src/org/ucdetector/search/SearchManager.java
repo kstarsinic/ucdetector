@@ -140,7 +140,7 @@ public class SearchManager {
     Log.logInfo("Start searching " + types.size() + " types..."); //$NON-NLS-1$ //$NON-NLS-2$
     for (IType type : types) {
       try {
-        incrementSearchOrCancel();
+        startSearch(type);
         monitor.worked(1);
         String searchInfo = JavaElementUtil.getMemberTypeString(type);
         updateMonitorMessage(type, Messages.SearchManager_SearchReferences,
@@ -178,7 +178,8 @@ public class SearchManager {
     }
   }
 
-  private void incrementSearchOrCancel() {
+  private void startSearch(IMember member) {
+    monitor.setActiveSearchElement(member);
     checkForCancel();
     search++;
     if (search % 100 == 0) {
@@ -197,7 +198,7 @@ public class SearchManager {
     Log.logInfo("Start searching " + methods.size() + " methods..."); //$NON-NLS-1$ //$NON-NLS-2$
     for (IMethod method : methods) {
       try {
-        incrementSearchOrCancel();
+        startSearch(method);
         monitor.worked(1);
         IType type = JavaElementUtil.getTypeFor(method, false);
         // Ignore anonymous classes
@@ -260,7 +261,7 @@ public class SearchManager {
     Log.logInfo("Start searching " + fields.size() + " fields..."); //$NON-NLS-1$ //$NON-NLS-2$
     for (IField field : fields) {
       try {
-        incrementSearchOrCancel();
+        startSearch(field);
         monitor.worked(1);
         int line = lineManger.getLine(field);
         if (line == LineManger.LINE_NOT_FOUND) {
