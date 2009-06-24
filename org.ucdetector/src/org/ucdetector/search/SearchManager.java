@@ -122,7 +122,7 @@ public class SearchManager {
       searchFields(fields);
     }
     catch (OperationCanceledException e) {
-      Log.logInfo("Search canceled by user"); //$NON-NLS-1$
+      Log.logInfo("Search canceled: " + e.getMessage()); //$NON-NLS-1$
     }
     if (searchProblems.size() > 0) {
       IStatus[] stati = searchProblems.toArray(new IStatus[searchProblems
@@ -162,6 +162,9 @@ public class SearchManager {
    * Fix [ 2810802 ] UCDetector crashes with an Exception
    */
   private void handleSearchException(IMember member, Exception ex) {
+    if (ex instanceof OperationCanceledException) {
+      throw (OperationCanceledException) ex;
+    }
     String searchInfo = JavaElementUtil.getMemberTypeString(member);
     String elementName = JavaElementUtil.getElementName(member);
     String message = "Problems searching " + searchInfo + " " + elementName; //$NON-NLS-1$ //$NON-NLS-2$
@@ -170,6 +173,9 @@ public class SearchManager {
         IStatus.ERROR, message, ex);
     markerFactory.reportDetectionProblem(status);
     searchProblems.add(status);
+    if (searchProblems.size() > 100) {
+      throw new OperationCanceledException("Stopped searching. To many errors!"); //$NON-NLS-1$
+    }
   }
 
   private void incrementSearchOrCancel() {
