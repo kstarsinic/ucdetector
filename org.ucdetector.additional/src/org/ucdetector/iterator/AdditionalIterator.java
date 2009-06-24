@@ -24,7 +24,7 @@ public abstract class AdditionalIterator extends AbstractUCDetectorIterator {
     int line = lineManger.getLine(element);
     ReportParam reportParam = new ReportParam(element, message, line,
         ANALYZE_MARKER_EXAMPLE, WarnLevel.WARNING);
-    getMarkerFactory().createMarker(reportParam);
+    getMarkerFactory().reportMarker(reportParam);
   }
   
   public abstract String getMessage();
