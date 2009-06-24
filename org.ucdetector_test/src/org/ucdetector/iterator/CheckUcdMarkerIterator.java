@@ -24,7 +24,17 @@ import org.ucdetector.UCDetectorPlugin;
 import org.ucdetector.util.MarkerFactory;
 
 /**
- *
+ * To 'test' UCDetector
+ * <ul>
+ * <li>Run UCDetector in directory /org.ucdetector.example/example</li>
+ * <li>Run this class (pop up menu 'Check UCD Markers') in directory /org.ucdetector.example/example</li>
+ * <li>Markers will be created, if the expected markers are different from the created markers</li>
+ * </ul>
+ * The example code classes contain comments, to indicate which markers must be created.
+ * For Example:
+ * <pre>
+ * public static int USE_FINAL = 1; // <b>Marker YES: use final,unused code</b>
+ * </pre>
  */
 public class CheckUcdMarkerIterator extends AbstractUCDetectorIterator {
   /** human readable String to use for marker tags  */
@@ -174,6 +184,13 @@ public class CheckUcdMarkerIterator extends AbstractUCDetectorIterator {
     return null;
   }
 
+  /**
+   * line number and the comments for this line number.
+   * <pre>
+   *   // Marker YES: use final,unused code
+   * </pre>
+   * Will be converted to: 20 (line number) and 'use final,unused code'
+   */
   private static final class LineNrComments {
     private final List<String> commentList = new ArrayList<String>();
     private final Integer lineNr;
