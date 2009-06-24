@@ -1,9 +1,9 @@
 //------------------------------------------------------------------------------
 TODO:
+ - Visibility: Switch all with one combo
+ - 	GOTO action: /org.eclipse.team.ui/src/org/eclipse/team/ui/TeamOperation.java
+    Job	job.setProperty(IProgressConstants.ACTION_PROPERTY, gotoAction);
  - move cycle stuff to examples (prefs, plugin.xml...) 
- - check local/anonymous types:
-   - local classes can be private
  - create an extension point for "org.ucdetector.additional"
  - Matching a local class "0 References" in a parent class (BException)
  - UCDetector problems should have a parent in Problems View / Configure contents
- 
