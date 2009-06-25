@@ -258,7 +258,8 @@ public class UCDetectorHandler { // NO_UCD
   // ---------------------------------------------------------------------------
   // HELPER
   // ---------------------------------------------------------------------------
-  static final boolean isPrivate(IMember member) throws JavaModelException {
+  protected static final boolean isPrivate(IMember member)
+      throws JavaModelException {
     return Flags.isPrivate(member.getFlags());
   }
 }

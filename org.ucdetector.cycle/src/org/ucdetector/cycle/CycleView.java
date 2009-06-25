@@ -46,7 +46,6 @@ import org.eclipse.ui.IWorkbenchActionConstants;
 import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.part.ViewPart;
 import org.ucdetector.Log;
-import org.ucdetector.Messages;
 import org.ucdetector.UCDetectorPlugin;
 import org.ucdetector.cycle.model.Cycle;
 import org.ucdetector.cycle.model.CycleRegion;

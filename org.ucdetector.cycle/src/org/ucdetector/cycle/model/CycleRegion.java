@@ -13,7 +13,7 @@ import java.util.List;
 import org.eclipse.jdt.internal.ui.JavaPluginImages;
 import org.eclipse.jdt.ui.JavaUI;
 import org.eclipse.swt.graphics.Image;
-import org.ucdetector.Messages;
+import org.ucdetector.cycle.Messages;
 
 /**
  * A region in a java file, for example the name of the method starts at offset

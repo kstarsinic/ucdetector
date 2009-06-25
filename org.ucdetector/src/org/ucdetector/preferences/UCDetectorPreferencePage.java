@@ -148,24 +148,6 @@ public class UCDetectorPreferencePage extends UCDetectorBasePreferencePage {
     fileFieldEditor.getLabelControl(spacer).setToolTipText(
         Messages.PreferencePage_ReportFileToolTip);
     this.addField(fileFieldEditor);
-    //
-    IntegerFieldEditor cycleDepth = new IntegerFieldEditor(CyclePrefs.CYCLE_DEPTH,
-        Messages.PreferencePage_MaxCycleSize, spacer) {
-      /** 
-       * Hack for layout problems. 
-       * @see #adjustGridLayout()
-       * */
-      @Override
-      public int getNumberOfControls() {
-        return 3;
-      }
-    };
-    cycleDepth.setValidRange(CyclePrefs.CYCLE_DEPTH_MIN, CyclePrefs.CYCLE_DEPTH_MAX);
-    cycleDepth.setEmptyStringAllowed(false);
-    cycleDepth.getLabelControl(spacer).setToolTipText(
-        Messages.PreferencePage_MaxCycleSizeToolTip);
-    this.addField(cycleDepth);
-
   }
 
   /** 

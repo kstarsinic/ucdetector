@@ -5,7 +5,7 @@
  * which accompanies this distribution, and is available at
  * http://www.eclipse.org/legal/epl-v10.html
  */
-package org.ucdetector.iterator;
+package org.ucdetector.cycle;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -14,8 +14,8 @@ import org.eclipse.core.runtime.CoreException;
 import org.eclipse.jdt.core.ICompilationUnit;
 import org.eclipse.jdt.core.IJavaElement;
 import org.eclipse.jdt.core.IType;
-import org.ucdetector.Messages;
 import org.ucdetector.cycle.search.CycleSearchManager;
+import org.ucdetector.iterator.AbstractUCDetectorIterator;
 import org.ucdetector.preferences.Prefs;
 
 /**

@@ -27,8 +27,8 @@ import org.ucdetector.UCDetectorPlugin;
 /**
  *
  */
-abstract class UCDetectorBasePreferencePage extends FieldEditorPreferencePage
-    implements IWorkbenchPreferencePage {
+public abstract class UCDetectorBasePreferencePage extends
+    FieldEditorPreferencePage implements IWorkbenchPreferencePage {
   /**
    * entryNames (first column) and values (second column) for the
    * ComboFieldEditor
@@ -118,7 +118,7 @@ abstract class UCDetectorBasePreferencePage extends FieldEditorPreferencePage
   }
 
   // SWTFactory
-  static Composite createComposite(Composite parent, int columns, int hspan,
+  public static Composite createComposite(Composite parent, int columns, int hspan,
       int fill) {
     Composite g = new Composite(parent, SWT.NONE);
     g.setLayout(new GridLayout(columns, false));

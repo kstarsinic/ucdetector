@@ -26,14 +26,10 @@ public final class Messages extends NLS {
   // ACTIONS -----------------------------------------------------------------
   public static String AbstractUCDetectorAction_AnalyzeFailedText; // NO_UCD
   public static String CountAction_ResultTitle; // NO_UCD
-  public static String CycleAction_cant_open_editor; // NO_UCD
 
   // ITERATORS ---------------------------------------------------------------
   public static String UCDetectorIterator_JobName; // NO_UCD
   public static String CleanMarkersIterator_JobName; // NO_UCD
-  // cycle
-  public static String CycleIterator_JobName; // NO_UCD
-  public static String CycleIterator_MONITOR_INFO; // NO_UCD
 
   public static String UCDetectorIterator_MONITOR_INFO; // NO_UCD
   public static String AbstractUCDetectorIterator_NothingToDetectTitle; // NO_UCD
@@ -91,8 +87,6 @@ public final class Messages extends NLS {
   public static String PreferencePage_LiteralsCheckToolTip; // NO_UCD
   public static String PreferencePage_Literals; // NO_UCD
   public static String PreferencePage_LiteralsToolTip; // NO_UCD
-  public static String PreferencePage_MaxCycleSize; // NO_UCD
-  public static String PreferencePage_MaxCycleSizeToolTip; // NO_UCD
   public static String PreferencePage_WarnLimit; // NO_UCD
   public static String PreferencePage_WarnLimitToolTip; // NO_UCD
 
@@ -125,29 +119,7 @@ public final class Messages extends NLS {
   public static String SearchManager_Monitor; // NO_UCD
   public static String SearchManager_SearchReferences; // NO_UCD
   public static String SearchManager_SearchClassNameAsLiteral; // NO_UCD
-  // MODEL -------------------------------------------------------------------
-  public static String SearchResultRoot_Name; // NO_UCD
-  public static String SearchResult_get_text; // NO_UCD
-  public static String Cycle_Name; // NO_UCD
-  public static String CycleRegion_Line; // NO_UCD
-  public static String CycleType_matches; // NO_UCD
-  public static String CycleType_match; // NO_UCD
-  // -------------------------------------------------------------------------
-  public static String CycleView_popup_copy_clipboard; // NO_UCD
-  public static String CycleView_popup_open; // NO_UCD
-  public static String CycleView_popup_refresh; // NO_UCD
-  public static String CycleView_popup_remove; // NO_UCD
-  public static String CycleView_popup_rotate; // NO_UCD
-  // -------------------------------------------------------------------------
-  public static String CycleSearchManager_Monitor; // NO_UCD
-  public static String CycleSearchManager_MonitorProject; // NO_UCD
-  public static String CycleSearchManager_OutOfMemoryError_Hint; // NO_UCD
-  public static String CycleSearchManager_Project_Info; // NO_UCD
-  // -------------------------------------------------------------------------
-  public static String CycleCalculator_Monitor; // NO_UCD
-  public static String CycleCalculator_removeDoubleCycles; // NO_UCD
-  public static String CycleView_run_ucd_for_results;// NO_UCD
-  // REPORT --------------------------------------------------------------------
+  // XML -----------------------------------------------------------------------
   public static String XMLReportWriteOk; // NO_UCD
   public static String XMLReportWriteNoWarnings; // NO_UCD
   public static String XMLReportWriteError; // NO_UCD
@@ -157,4 +129,7 @@ public final class Messages extends NLS {
   public static String LineCommentQuickFix_label;// NO_UCD
   public static String NoUcdTagQuickFix_label; // NO_UCD
   public static String VisibilityQuickFix_label; // NO_UCD
+
+  public static String OutOfMemoryError_Hint; // NO_UCD
+
 }

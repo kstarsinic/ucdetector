@@ -11,8 +11,8 @@ import java.util.LinkedList;
 import java.util.List;
 
 import org.eclipse.swt.graphics.Image;
-import org.ucdetector.Messages;
-import org.ucdetector.UCDetectorPlugin;
+import org.ucdetector.cycle.CyclePlugin;
+import org.ucdetector.cycle.Messages;
 
 /**
  * A Cycle holds a List of classes. This classes build a circular reference
@@ -98,7 +98,7 @@ public class Cycle extends CycleBaseElement {
   }
 
   public Image getImage() {
-    return UCDetectorPlugin.getImage(UCDetectorPlugin.IMAGE_CYCLE);
+    return CyclePlugin.getImage(CyclePlugin.IMAGE_CYCLE);
   }
 
   public CycleBaseElement getParent() {

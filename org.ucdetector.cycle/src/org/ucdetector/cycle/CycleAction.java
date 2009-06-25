@@ -5,18 +5,16 @@
  * which accompanies this distribution, and is available at
  * http://www.eclipse.org/legal/epl-v10.html
  */
-package org.ucdetector.action;
+package org.ucdetector.cycle;
 
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.jdt.core.IJavaElement;
 import org.eclipse.jface.action.IAction;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.ui.PartInitException;
-import org.ucdetector.Messages;
 import org.ucdetector.UCDetectorPlugin;
-import org.ucdetector.cycle.CycleView;
+import org.ucdetector.action.AbstractUCDetectorAction;
 import org.ucdetector.iterator.AbstractUCDetectorIterator;
-import org.ucdetector.iterator.CycleIterator;
 
 /**
  * Run detect cycles action

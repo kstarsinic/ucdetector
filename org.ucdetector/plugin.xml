@@ -106,20 +106,6 @@
           menubarPath="ucdetectorGroup/ucdetector"
           definitionId="org.ucdetector.definitionId.ucd"/>
     </objectContribution>
-
-    <!-- DETECT CYCLE ============================ -->
-    <objectContribution
-        adaptable="true"
-        id="org.ucdetector.popupMenus.project.Analyze"
-        objectClass="org.eclipse.jdt.core.IJavaElement">
-      <action class="org.ucdetector.action.CycleAction"
-          enablesFor="+"
-          id="org.ucdetector.cycle.CycleAction"
-          label="%CycleAction.label"
-          tooltip="%CycleAction.tooltip"
-          icon="$nl$/icons/cycle.gif"
-          menubarPath="ucdetectorGroup/cycle"/>
-    </objectContribution>
   </extension>
   
   <!-- ===================================================================== -->
@@ -311,30 +297,6 @@
         includeOnPreferencePage="true"
         label="%specification.label.test.only"/>
   </extension>
-
-  <!-- ===================================================================== -->
-  <!-- VIEW                                                                  -->
-  <!-- ===================================================================== -->
-   <extension point="org.eclipse.ui.views">
-      <category  name="%category.name.CycleView" id="org.ucdetector.cycle.CycleView">
-      </category>
-      <view name="%view.name.CycleView"
-            icon="$nl$/icons/cycle.gif"
-            category="org.ucdetector.cycle.CycleView"
-            class="org.ucdetector.cycle.CycleView"
-            id="org.ucdetector.cycle.view.CycleView">
-      </view>
-   </extension>
-   <extension point="org.eclipse.ui.perspectiveExtensions">
-      <perspectiveExtension
-            targetID="org.eclipse.jdt.ui.JavaPerspective">
-         <view ratio="0.5"
-               relative="org.eclipse.ui.views.TaskList"
-               relationship="right"
-               id="org.ucdetector.cycle.view.CycleView">
-         </view>
-      </perspectiveExtension>
-   </extension>
 
   <!-- ===================================================================== -->
   <!-- QUICK FIX                                                          -->

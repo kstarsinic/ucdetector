@@ -26,7 +26,7 @@ import org.eclipse.jdt.core.search.SearchPattern;
 import org.eclipse.jdt.core.search.SearchRequestor;
 import org.eclipse.osgi.util.NLS;
 import org.ucdetector.Log;
-import org.ucdetector.Messages;
+import org.ucdetector.cycle.Messages;
 import org.ucdetector.cycle.model.Cycle;
 import org.ucdetector.cycle.model.SearchResult;
 import org.ucdetector.cycle.model.SearchResultRoot;

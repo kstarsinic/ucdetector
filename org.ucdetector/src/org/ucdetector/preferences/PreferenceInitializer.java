@@ -69,7 +69,6 @@ public class PreferenceInitializer extends AbstractPreferenceInitializer { // NO
       Log.logError("Can't get report file name", e); //$NON-NLS-1$
     }
     store.setDefault(Prefs.REPORT_FILE, report);
-    store.setDefault(CyclePrefs.CYCLE_DEPTH, CyclePrefs.CYCLE_DEPTH_DEFAULT);
     // KEYWORDS ----------------------------------------------------------------
     store.setDefault(Prefs.ANALYZE_FINAL_METHOD, IGNORE.name());
     store.setDefault(Prefs.ANALYZE_FINAL_FIELD, IGNORE.name());

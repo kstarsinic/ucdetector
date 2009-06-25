@@ -7,6 +7,7 @@ Get all sources: Import this file using File/Import.../Team/Team Project Set
 	<provider id="org.tigris.subversion.subclipse.core.svnnature">
 		<project reference="0.9.3,https://ucdetector.svn.sourceforge.net/svnroot/ucdetector/trunk/org.ucdetector,org.ucdetector"/>
 		<project reference="0.9.3,https://ucdetector.svn.sourceforge.net/svnroot/ucdetector/trunk/org.ucdetector.additional,org.ucdetector.additional"/>
+		<project reference="0.9.3,https://ucdetector.svn.sourceforge.net/svnroot/ucdetector/trunk/org.ucdetector.cycle,org.ucdetector.cycle"/>
 		<project reference="0.9.3,https://ucdetector.svn.sourceforge.net/svnroot/ucdetector/trunk/org.ucdetector.example,org.ucdetector.example"/>
 		<project reference="0.9.3,https://ucdetector.svn.sourceforge.net/svnroot/ucdetector/trunk/org.ucdetector.website,org.ucdetector.website"/>
 		<project reference="0.9.3,https://ucdetector.svn.sourceforge.net/svnroot/ucdetector/trunk/org.ucdetector_test,org.ucdetector_test"/>

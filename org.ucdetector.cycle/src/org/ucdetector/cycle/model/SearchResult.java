@@ -16,7 +16,7 @@ import org.eclipse.jdt.internal.ui.JavaPluginImages;
 import org.eclipse.jdt.ui.JavaUI;
 import org.eclipse.osgi.util.NLS;
 import org.eclipse.swt.graphics.Image;
-import org.ucdetector.Messages;
+import org.ucdetector.cycle.Messages;
 
 /**
  * Contains cycles found by a search

@@ -11,7 +11,7 @@ import java.util.List;
 
 import org.eclipse.jdt.core.IType;
 import org.eclipse.swt.graphics.Image;
-import org.ucdetector.Messages;
+import org.ucdetector.cycle.Messages;
 
 /**
  * This is a class, making part of a cycle

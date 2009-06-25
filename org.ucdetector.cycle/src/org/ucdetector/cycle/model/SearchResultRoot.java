@@ -12,7 +12,7 @@ import java.util.List;
 
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.ui.ISharedImages;
-import org.ucdetector.Messages;
+import org.ucdetector.cycle.Messages;
 
 /**
  * Contains all search results
