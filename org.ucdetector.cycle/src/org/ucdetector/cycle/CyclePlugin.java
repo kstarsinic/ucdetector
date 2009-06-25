@@ -21,6 +21,7 @@ import org.osgi.framework.BundleContext;
  */
 public class CyclePlugin extends AbstractUIPlugin {
   public static final String IMAGE_CYCLE = "IMAGE_CYCLE"; //$NON-NLS-1$
+  public static final String ID = "org.ucdetector.cycle"; //$NON-NLS-1$
   private static CyclePlugin plugin;
 
   public CyclePlugin() {

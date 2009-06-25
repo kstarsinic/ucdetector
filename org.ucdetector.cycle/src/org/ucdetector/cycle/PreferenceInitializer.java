@@ -9,7 +9,6 @@ package org.ucdetector.cycle;
 
 import org.eclipse.core.runtime.preferences.AbstractPreferenceInitializer;
 import org.eclipse.jface.preference.IPreferenceStore;
-import org.ucdetector.UCDetectorPlugin;
 
 /**
  * Class used to initialize default preference values.
@@ -19,7 +18,7 @@ public class PreferenceInitializer extends AbstractPreferenceInitializer { // NO
 
   @Override
   public void initializeDefaultPreferences() {
-    IPreferenceStore store = UCDetectorPlugin.getDefault().getPreferenceStore();
+    IPreferenceStore store = CyclePlugin.getDefault().getPreferenceStore();
     store.setDefault(CyclePrefs.CYCLE_DEPTH, CyclePrefs.CYCLE_DEPTH_DEFAULT);
   }
 }

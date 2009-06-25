@@ -43,4 +43,22 @@
          </view>
       </perspectiveExtension>
    </extension>
+   
+  <!-- ===================================================================== -->
+  <!-- PREFERENCE PAGE                                                       -->
+  <!-- ===================================================================== -->
+  <extension point="org.eclipse.ui.preferencePages">
+    <page name="cycles"
+        class="org.ucdetector.cycle.CylePreferencePage"
+        id="org.ucdetector.cycle.preferences.PreferencePage"
+        category="org.ucdetector.preferences.PreferencePage">
+    </page>
+  </extension>
+  
+  <!-- ===================================================================== -->
+  <!-- PREFERENCES                                                           -->
+  <!-- ===================================================================== -->
+  <extension point="org.eclipse.core.runtime.preferences">
+    <initializer class="org.ucdetector.cycle.PreferenceInitializer"/>
+  </extension>
 </plugin>

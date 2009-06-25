@@ -6,12 +6,11 @@
  */
 package org.ucdetector.cycle;
 
-import org.ucdetector.UCDetectorPlugin;
 
 public class CyclePrefs {
   // CYCLE ---------------------------------------------------------------------
   public static final String CYCLE_DEPTH //
-  = UCDetectorPlugin.ID + ".cycleDepth"; //$NON-NLS-1$
+  = CyclePlugin.ID + ".cycleDepth"; //$NON-NLS-1$
   public static final int CYCLE_DEPTH_MIN = 2; // // NO_UCD
   public static final int CYCLE_DEPTH_DEFAULT = 4; //
   public static final int CYCLE_DEPTH_MAX = 8; //
@@ -21,7 +20,7 @@ public class CyclePrefs {
    * @return Maximum depth of searching for class cycles
    */
   public static int getCycleDepth() {
-    int cycleDepth = UCDetectorPlugin.getDefault().getPreferenceStore().getInt(
+    int cycleDepth = CyclePlugin.getDefault().getPreferenceStore().getInt(
         CYCLE_DEPTH);
     return cycleDepth < CYCLE_DEPTH_MIN ? CYCLE_DEPTH_MIN
         : cycleDepth > CYCLE_DEPTH_MAX ? CYCLE_DEPTH_MAX : cycleDepth;
