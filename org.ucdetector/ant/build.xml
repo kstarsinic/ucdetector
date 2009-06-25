@@ -5,11 +5,14 @@
   Public License v1.0 which accompanies this distribution, and is available at
   http://www.eclipse.org/legal/epl-v10.html
   ========================================================================= -->
+<project name="Run UCDetector" default="detect" basedir=".">
+  <description>Run UCDetector in headless mode</description>
 
-<project name="org.ucdetector" default="detect" basedir=".">
-  <!-- ==================================================================== -->
-  <!-- DETECT                                                               -->
-  <!-- ==================================================================== -->
+  <property name="build.properties" location="build.properties" />
+
+  <!-- ===================================================================== -->
+  <!-- DETECT                                                                -->
+  <!-- ===================================================================== -->
   <target name="detect" description="Run UCDetector using java">
     <property file="build.properties" />
     <echo>
@@ -21,13 +24,12 @@ buildtype = ${ucd.buildtype}
 ucdoption = ${ucd.options}
 --------------------------------------------------------------------------------
 </echo>
-    <fail unless="LAUNCHER">Can't find build.properties, or build.properties does not contain "LAUNCHER"
-use      : ${basedir}\build.properties_template
-to create: ${basedir}\build.properties
-    </fail>
     <!-- Use next lines, to show more properties
     <property environment="env"/>
-    <echoproperties /> -->
+    <echoproperties /> 
+    -->
+    <available file="${build.properties}" property="build.properties.present" />
+    <antcall target="create-build.properties" />
 
     <java jar="${LAUNCHER}" fork="true">
       <arg line="-application org.ucdetector.ucd" />
@@ -38,6 +40,15 @@ to create: ${basedir}\build.properties
       <arg line="-buildtype ${ucd.buildtype}" />
       <arg line="-ucdoptions ${ucd.options}" />
     </java>
+  </target>
+
+  <!-- ===================================================================== -->
+  <!-- CREATE-BUILD.PROPERTIES                                               -->
+  <!-- ===================================================================== -->
+  <target name="create-build.properties" unless="build.properties.present">
+    <copy file="build.properties_template" tofile="${build.properties}" />
+    <echo>Created ${build.properties}</echo>
+    <fail>Please edit new file ${build.properties}</fail>
   </target>
 </project>
 
