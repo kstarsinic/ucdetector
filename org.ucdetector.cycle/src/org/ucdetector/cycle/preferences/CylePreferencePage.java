@@ -4,11 +4,12 @@
  * Public License v1.0 which accompanies this distribution, and is available at
  * http://www.eclipse.org/legal/epl-v10.html
  */
-package org.ucdetector.cycle;
+package org.ucdetector.cycle.preferences;
 
 import org.eclipse.jface.preference.IntegerFieldEditor;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.widgets.Composite;
+import org.ucdetector.cycle.Messages;
 import org.ucdetector.preferences.UCDetectorBasePreferencePage;
 
 /**

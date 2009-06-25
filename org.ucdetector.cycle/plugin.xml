@@ -6,7 +6,7 @@
   <!-- ===================================================================== -->
   <extension point="org.eclipse.ui.preferencePages">
     <page name="%page.name.0"
-        class="org.ucdetector.cycle.CylePreferencePage"
+        class="org.ucdetector.cycle.preferences.CylePreferencePage"
         id="org.ucdetector.cycle.preferences.PreferencePage"
         category="org.ucdetector.preferences.PreferencePage">
     </page>
@@ -16,7 +16,7 @@
   <!-- PREFERENCES                                                           -->
   <!-- ===================================================================== -->
   <extension point="org.eclipse.core.runtime.preferences">
-    <initializer class="org.ucdetector.cycle.CyclePreferenceInitializer"/>
+    <initializer class="org.ucdetector.cycle.preferences.CyclePreferenceInitializer"/>
   </extension>
 
   <!-- ===================================================================== -->

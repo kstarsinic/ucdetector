@@ -19,11 +19,11 @@ import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.jdt.core.IType;
 import org.eclipse.osgi.util.NLS;
 import org.ucdetector.Log;
-import org.ucdetector.cycle.CyclePrefs;
 import org.ucdetector.cycle.Messages;
 import org.ucdetector.cycle.model.Cycle;
 import org.ucdetector.cycle.model.CycleType;
 import org.ucdetector.cycle.model.SearchResult;
+import org.ucdetector.cycle.preferences.CyclePrefs;
 
 /**
  * Calculate Cycles based on typeAndRefs List
