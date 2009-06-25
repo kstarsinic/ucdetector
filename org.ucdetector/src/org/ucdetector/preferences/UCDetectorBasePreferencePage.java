@@ -118,8 +118,8 @@ public abstract class UCDetectorBasePreferencePage extends
   }
 
   // SWTFactory
-  public static Composite createComposite(Composite parent, int columns, int hspan,
-      int fill) {
+  public static Composite createComposite(Composite parent, int columns,
+      int hspan, int fill) {
     Composite g = new Composite(parent, SWT.NONE);
     g.setLayout(new GridLayout(columns, false));
     g.setFont(parent.getFont());

@@ -6,7 +6,6 @@
  */
 package org.ucdetector.cycle;
 
-
 public class CyclePrefs {
   // CYCLE ---------------------------------------------------------------------
   public static final String CYCLE_DEPTH //
