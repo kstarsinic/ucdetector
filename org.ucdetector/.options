@@ -12,7 +12,7 @@ org.ucdetector/debug/iterator=true
 org.ucdetector/debug/search=true
 
 # Turn on debugging for search: Minimum milliseconds to show duration traces
-org.ucdetector/debug/search/duration=500
+org.ucdetector/debug/search/duration=1000
 
 # ------------------------------------------------------------------------------
 #             OTHER PLUGINS
