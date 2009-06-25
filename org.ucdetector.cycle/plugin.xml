@@ -59,6 +59,6 @@
   <!-- PREFERENCES                                                           -->
   <!-- ===================================================================== -->
   <extension point="org.eclipse.core.runtime.preferences">
-    <initializer class="org.ucdetector.cycle.PreferenceInitializer"/>
+    <initializer class="org.ucdetector.cycle.CyclePreferenceInitializer"/>
   </extension>
 </plugin>

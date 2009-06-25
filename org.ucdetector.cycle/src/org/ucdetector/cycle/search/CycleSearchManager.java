@@ -15,6 +15,7 @@ import java.util.Set;
 import java.util.Map.Entry;
 
 import org.eclipse.core.runtime.CoreException;
+import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.jdt.core.IJavaElement;
 import org.eclipse.jdt.core.IJavaProject;
 import org.eclipse.jdt.core.IType;
@@ -31,14 +32,13 @@ import org.ucdetector.cycle.model.Cycle;
 import org.ucdetector.cycle.model.SearchResult;
 import org.ucdetector.cycle.model.SearchResultRoot;
 import org.ucdetector.search.SearchManager;
-import org.ucdetector.search.UCDProgressMonitor;
 import org.ucdetector.util.JavaElementUtil;
 
 /**
  * Use eclipse search to find references of classes
  */
 public class CycleSearchManager {
-  private final UCDProgressMonitor monitor;
+  private final IProgressMonitor monitor;
   /**
    * We search cycles for each project, because there should be no
    * cycles between project A and project B!
@@ -46,7 +46,7 @@ public class CycleSearchManager {
   private final Map<IJavaProject, List<IType>> typesMap = new HashMap<IJavaProject, List<IType>>();
   private final IJavaElement[] selections;
 
-  public CycleSearchManager(UCDProgressMonitor monitor, List<IType> types,
+  public CycleSearchManager(IProgressMonitor monitor, List<IType> types,
       IJavaElement[] selections) {
     this.monitor = monitor;
     this.selections = selections;

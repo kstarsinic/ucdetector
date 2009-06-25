@@ -15,6 +15,7 @@ import java.util.List;
 import java.util.Set;
 import java.util.Stack;
 
+import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.jdt.core.IType;
 import org.eclipse.osgi.util.NLS;
 import org.ucdetector.Log;
@@ -23,7 +24,6 @@ import org.ucdetector.cycle.Messages;
 import org.ucdetector.cycle.model.Cycle;
 import org.ucdetector.cycle.model.CycleType;
 import org.ucdetector.cycle.model.SearchResult;
-import org.ucdetector.search.UCDProgressMonitor;
 
 /**
  * Calculate Cycles based on typeAndRefs List
@@ -31,10 +31,10 @@ import org.ucdetector.search.UCDProgressMonitor;
 class CycleCalculator {
   private final List<TypeAndMatches> typeAndMatchesList;
   private final SearchResult searchResult;
-  private final UCDProgressMonitor monitor;
+  private final IProgressMonitor monitor;
 
   CycleCalculator(SearchResult searchResult,
-      List<TypeAndMatches> typeAndRefsList, UCDProgressMonitor monitor) {
+      List<TypeAndMatches> typeAndRefsList, IProgressMonitor monitor) {
     this.searchResult = searchResult;
     this.typeAndMatchesList = typeAndRefsList;
     this.monitor = monitor;

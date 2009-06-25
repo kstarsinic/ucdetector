@@ -12,9 +12,8 @@ import org.eclipse.jface.preference.IPreferenceStore;
 
 /**
  * Class used to initialize default preference values.
- * See: {@link  org.ucdetector.preferences.Prefs#LIST_SEPARATOR}
  */
-public class PreferenceInitializer extends AbstractPreferenceInitializer { // NO_UCD
+public class CyclePreferenceInitializer extends AbstractPreferenceInitializer { // NO_UCD
 
   @Override
   public void initializeDefaultPreferences() {

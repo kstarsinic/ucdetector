@@ -28,7 +28,6 @@ public class CylePreferencePage extends UCDetectorBasePreferencePage {
         parentGroups) {
       /** 
        * Hack for layout problems. 
-       * @see #adjustGridLayout()
        * */
       @Override
       public int getNumberOfControls() {

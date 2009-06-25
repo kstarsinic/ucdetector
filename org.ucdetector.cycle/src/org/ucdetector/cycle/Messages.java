@@ -6,7 +6,19 @@
  */
 package org.ucdetector.cycle;
 
-public class Messages {
+import org.eclipse.osgi.util.NLS;
+
+public final class Messages extends NLS {
+  private static final String BUNDLE_NAME = "org.ucdetector.cycle.messages"; //$NON-NLS-1$
+  static {
+    // initialize resource bundle
+    NLS.initializeMessages(BUNDLE_NAME, Messages.class);
+  }
+
+  private Messages() {
+    // avoid instantiation
+  }
+
   public static String CycleAction_cant_open_editor; // NO_UCD
   public static String CycleIterator_JobName; // NO_UCD
   public static String CycleIterator_MONITOR_INFO; // NO_UCD
