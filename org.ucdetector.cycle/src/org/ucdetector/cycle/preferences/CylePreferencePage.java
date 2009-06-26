@@ -6,9 +6,11 @@
  */
 package org.ucdetector.cycle.preferences;
 
+import org.eclipse.jface.preference.FieldEditorPreferencePage;
 import org.eclipse.jface.preference.IntegerFieldEditor;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.widgets.Composite;
+import org.ucdetector.cycle.CyclePlugin;
 import org.ucdetector.cycle.Messages;
 import org.ucdetector.preferences.UCDetectorBasePreferencePage;
 
@@ -19,6 +21,12 @@ import org.ucdetector.preferences.UCDetectorBasePreferencePage;
  * @see "http://www.eclipsepluginsite.com/preference-pages.html"
  */
 public class CylePreferencePage extends UCDetectorBasePreferencePage {
+
+  public CylePreferencePage() {
+    super(FieldEditorPreferencePage.GRID, CyclePlugin.getDefault()
+        .getPreferenceStore());
+  }
+
   @Override
   public void createFieldEditors() {
     Composite parentGroups = createComposite(getFieldEditorParent(), 1, 1,

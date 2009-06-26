@@ -9,6 +9,7 @@ package org.ucdetector.preferences;
 import org.eclipse.jface.preference.ComboFieldEditor;
 import org.eclipse.jface.preference.FieldEditor;
 import org.eclipse.jface.preference.FieldEditorPreferencePage;
+import org.eclipse.jface.preference.IPreferenceStore;
 import org.eclipse.jface.preference.StringFieldEditor;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.layout.GridData;
@@ -38,9 +39,9 @@ public abstract class UCDetectorBasePreferencePage extends
       { WarnLevel.WARNING.toStringLocalized(), WarnLevel.WARNING.toString() },
       { WarnLevel.IGNORE.toStringLocalized(), WarnLevel.IGNORE.toString() } };
 
-  public UCDetectorBasePreferencePage() {
-    super(FieldEditorPreferencePage.GRID);
-    this.setPreferenceStore(Prefs.getStore());
+  public UCDetectorBasePreferencePage(int style, IPreferenceStore store) {
+    super(style);
+    this.setPreferenceStore(store);
   }
 
   public void init(IWorkbench workbench) {

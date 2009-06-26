@@ -7,6 +7,7 @@
 package org.ucdetector.preferences;
 
 import org.eclipse.jface.preference.ComboFieldEditor;
+import org.eclipse.jface.preference.FieldEditorPreferencePage;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.widgets.Composite;
@@ -21,6 +22,10 @@ import org.ucdetector.Messages;
  */
 public class UCDetectorPreferencePageKeywords extends
     UCDetectorBasePreferencePage {
+
+  public UCDetectorPreferencePageKeywords() {
+    super(FieldEditorPreferencePage.GRID, Prefs.getStore());
+  }
 
   @Override
   public void createFieldEditors() {
