@@ -1,7 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <contexts>
    <context id="ucd_context_id">
-      <description>UCDetector finds unnecessary Code.</description>
+      <description>UCDetector Unnecessary Code Detector.</description>
       <topic href="help/html/index.html" label="UCDetector" />
+   </context>
+   <context id="ucd_context_id_preferences">
+      <description>UCDetector preferences</description>
+      <topic href="help/html/preferences.html" label="Preferences" />
    </context>
 </contexts>

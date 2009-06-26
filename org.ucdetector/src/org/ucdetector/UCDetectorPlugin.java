@@ -44,9 +44,13 @@ public class UCDetectorPlugin extends AbstractUIPlugin {
   private static boolean isHeadlessMode = false;
 
   /**
-   * internal id for eclipse help
+   * Internal id for eclipse help
+   * see /org.ucdetector/help/contexts.xml
+   * http://www.eclipse.org/articles/article.php?file=Article-AddingHelpToRCP/index.html
    */
-  public static final String HELP_ID = "org.ucdetector.ucd_context_id";//$NON-NLS-1$
+  public static final String HELP_ID = ID + ".ucd_context_id";//$NON-NLS-1$
+  public static final String HELP_ID_PREFERENCES = ID
+      + ".ucd_context_id_preferences";//$NON-NLS-1$
 
   public UCDetectorPlugin() {
     UCDetectorPlugin.plugin = this;

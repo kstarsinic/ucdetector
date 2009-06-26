@@ -50,9 +50,10 @@ public abstract class UCDetectorBasePreferencePage extends
 
   @Override
   public boolean performOk() {
+    boolean result = super.performOk();
     Log.logInfo("New preferences: "// //$NON-NLS-1$
         + UCDetectorPlugin.getPreferencesAsString());
-    return super.performOk();
+    return result;
   }
 
   // -------------------------------------------------------------------------
@@ -101,7 +102,7 @@ public abstract class UCDetectorBasePreferencePage extends
   // org.eclipse.help.ui.internal.preferences.HelpContentPreferencePage
   protected Control createContents(Composite parent) {
     PlatformUI.getWorkbench().getHelpSystem().setHelp(parent,
-        UCDetectorPlugin.HELP_ID);
+        UCDetectorPlugin.HELP_ID_PREFERENCES);
     return super.createContents(parent);
   }
 
