@@ -47,8 +47,10 @@ import org.ucdetector.util.MarkerFactory;
 
 /**
  * Base Class to iterate over projects, packages, classes, methods, fields...
+ * Extend this class, to create your custom detector. Override methods found
+ * in {@link UCDetectorCallBack}
  */
-public abstract class AbstractUCDetectorIterator extends UCDetectorHandler {
+public abstract class AbstractUCDetectorIterator extends UCDetectorCallBack {
   static final boolean DEBUG = "true".equalsIgnoreCase(Platform //$NON-NLS-1$ NO_UCD
       .getDebugOption("org.ucdetector/debug/iterator")); //$NON-NLS-1$
   static final String SEP = ", "; //$NON-NLS-1$

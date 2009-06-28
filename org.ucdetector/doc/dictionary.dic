@@ -27,3 +27,5 @@ enum
 xslt
 timestamp
 progressbar
+tooltip
+callback

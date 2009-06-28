@@ -31,8 +31,10 @@ import org.eclipse.jdt.core.IType;
 import org.eclipse.jdt.core.JavaModelException;
 import org.ucdetector.preferences.Prefs;
 
-public class UCDetectorHandler { // NO_UCD
-
+/**
+ * Callback methods for classes extending {@link AbstractUCDetectorIterator}
+ */
+public class UCDetectorCallBack { // NO_UCD
   // ---------------------------------------------------------------------------
   // GENERIC HANDLERS
   // ---------------------------------------------------------------------------
