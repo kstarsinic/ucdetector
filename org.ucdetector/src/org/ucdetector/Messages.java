@@ -26,11 +26,9 @@ public final class Messages extends NLS {
   // ACTIONS -----------------------------------------------------------------
   public static String AbstractUCDetectorAction_AnalyzeFailedText; // NO_UCD
   public static String CountAction_ResultTitle; // NO_UCD
-
   // ITERATORS ---------------------------------------------------------------
   public static String UCDetectorIterator_JobName; // NO_UCD
   public static String CleanMarkersIterator_JobName; // NO_UCD
-
   public static String UCDetectorIterator_MONITOR_INFO; // NO_UCD
   public static String AbstractUCDetectorIterator_NothingToDetectTitle; // NO_UCD
   public static String AbstractUCDetectorIterator_NothingToDetect; // NO_UCD
@@ -75,7 +73,7 @@ public final class Messages extends NLS {
   public static String PreferencePage_IgnoreFieldFilterToolTip; // NO_UCD
   public static String PreferencePage_IgnoreBeanMethods; // NO_UCD
   public static String PreferencePage_IgnoreBeanMethodsToolTip;// NO_UCD
-
+  //
   public static String PreferencePage_Classes; // NO_UCD
   public static String PreferencePage_Methods; // NO_UCD
   public static String PreferencePage_Fields; // NO_UCD
@@ -89,7 +87,7 @@ public final class Messages extends NLS {
   public static String PreferencePage_LiteralsToolTip; // NO_UCD
   public static String PreferencePage_WarnLimit; // NO_UCD
   public static String PreferencePage_WarnLimitToolTip; // NO_UCD
-
+  //
   public static String PreferencePage_GroupDetect; // NO_UCD
   public static String PreferencePage_GroupFileSearch; // NO_UCD
   public static String PreferencePage_GroupOthers; // NO_UCD
@@ -104,30 +102,32 @@ public final class Messages extends NLS {
   public static String PreferencePage_ReportFile; // NO_UCD
   public static String PreferencePage_ReportFileToolTip; // NO_UCD
   // SearchManager -----------------------------------------------------------
-  public static String SearchManager_Class; // NO_UCD
-  public static String SearchManager_Constructor; // NO_UCD
-  public static String SearchManager_Field; // NO_UCD
-  public static String SearchManager_Constant; // NO_UCD
-  public static String SearchManager_Method; // NO_UCD
-  public static String SearchManager_MarkerVisibility; // NO_UCD
-  public static String SearchManager_VisibilityCompileErrorForClass; // NO_UCD
-  public static String SearchManager_MarkerFinalMethod; // NO_UCD
-  public static String SearchManager_MarkerFinalField; // NO_UCD
-  public static String SearchManager_MarkerReference; // NO_UCD
-  public static String SearchManager_MarkerReferenceFieldNeverRead; // NO_UCD
-  public static String SearchManager_MarkerTestOnly; // NO_UCD
+  public static String JavaElementUtil_Class; // NO_UCD
+  public static String JavaElementUtil_Constructor; // NO_UCD
+  public static String JavaElementUtil_Field; // NO_UCD
+  public static String JavaElementUtil_Constant; // NO_UCD
+  public static String JavaElementUtil_Method; // NO_UCD
+  //
+  public static String MarkerFactory_MarkerVisibility; // NO_UCD
+  public static String MarkerFactory_VisibilityCompileErrorForClass; // NO_UCD
+  public static String MarkerFactory_MarkerFinalMethod; // NO_UCD
+  public static String MarkerFactory_MarkerFinalField; // NO_UCD
+  public static String MarkerFactory_MarkerReference; // NO_UCD
+  public static String MarkerFactory_MarkerReferenceFieldNeverRead; // NO_UCD
+  public static String MarkerFactory_MarkerTestOnly; // NO_UCD
+  //
   public static String SearchManager_Monitor; // NO_UCD
   public static String SearchManager_SearchReferences; // NO_UCD
   public static String SearchManager_SearchClassNameAsLiteral; // NO_UCD
   // XML -----------------------------------------------------------------------
-  public static String XMLReportWriteOk; // NO_UCD
-  public static String XMLReportWriteNoWarnings; // NO_UCD
-  public static String XMLReportWriteError; // NO_UCD
+  public static String XMLReport_WriteOk; // NO_UCD
+  public static String XMLReport_WriteNoWarnings; // NO_UCD
+  public static String XMLReport_WriteError; // NO_UCD
   // QuickFix ------------------------------------------------------------------
   public static String UseFinalQuickFix_label;// NO_UCD
   public static String DeleteQuickFix_label;// NO_UCD
   public static String LineCommentQuickFix_label;// NO_UCD
-  public static String NoUcdTagQuickFix_label; // NO_UCD
+  public static String UseTag_NO_UCD_QuickFix_label; // NO_UCD
   public static String VisibilityQuickFix_label; // NO_UCD
 
   public static String OutOfMemoryError_Hint; // NO_UCD

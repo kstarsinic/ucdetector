@@ -296,7 +296,7 @@ public class SearchManager {
         watch.end("    searchImpl"); //$NON-NLS-1$
         if (found > 0 && !hasReadAccess(field)) {
           String message = NLS.bind(
-              Messages.SearchManager_MarkerReferenceFieldNeverRead,
+              Messages.MarkerFactory_MarkerReferenceFieldNeverRead,
               new Object[] { JavaElementUtil.getElementName(field) });
           // found=0 needed here, to create reference marker!
           markerFactory.createReferenceMarker(field, message, line, 0);
@@ -375,7 +375,7 @@ public class SearchManager {
     }
     Object[] bindings = new Object[] { searchInfo,
         JavaElementUtil.getElementName(member), Integer.valueOf(found) };
-    String markerMessage = NLS.bind(Messages.SearchManager_MarkerReference,
+    String markerMessage = NLS.bind(Messages.MarkerFactory_MarkerReference,
         bindings);
     // BUG: Don't check for constructors called only 1 time - ID: 2743872
     if (member instanceof IMethod) {

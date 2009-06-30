@@ -260,12 +260,12 @@ public class XmlReport implements IUCDetectorReport {
     }
     String htmlFileName = appendFreeNumber(Prefs.getReportFile());
     if (initXMLException != null) {
-      logEndReportMessage(Messages.XMLReportWriteError, IStatus.ERROR,
+      logEndReportMessage(Messages.XMLReport_WriteError, IStatus.ERROR,
           initXMLException, htmlFileName);
       return;
     }
     if (markerCount == 0 && detectionProblemCount == 0) {
-      logEndReportMessage(Messages.XMLReportWriteNoWarnings, IStatus.INFO,
+      logEndReportMessage(Messages.XMLReport_WriteNoWarnings, IStatus.INFO,
           initXMLException);
       return;
     }
@@ -281,12 +281,12 @@ public class XmlReport implements IUCDetectorReport {
       File xmlFile = writeDocumentToFile(doc, xmlFileName);
       Document htmlDocument = transformXSLT(xmlFile);
       File htmlFile = writeDocumentToFile(htmlDocument, htmlFileName);
-      logEndReportMessage(Messages.XMLReportWriteOk, IStatus.INFO, null, String
+      logEndReportMessage(Messages.XMLReport_WriteOk, IStatus.INFO, null, String
           .valueOf(markerCount), htmlFile.getAbsoluteFile().toString());
 
     }
     catch (Exception e) {
-      logEndReportMessage(Messages.XMLReportWriteError, IStatus.ERROR, e,
+      logEndReportMessage(Messages.XMLReport_WriteError, IStatus.ERROR, e,
           htmlFileName);
     }
   }

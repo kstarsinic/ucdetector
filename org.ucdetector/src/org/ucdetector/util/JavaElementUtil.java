@@ -571,14 +571,14 @@ public class JavaElementUtil {
         if (type.isMember()) {
           return "Member class"; //$NON-NLS-1$
         }
-        return Messages.SearchManager_Class;
+        return Messages.JavaElementUtil_Class;
       }
       if (member instanceof IMethod) {
         IMethod method = (IMethod) member;
         if (method.isConstructor()) {
-          return Messages.SearchManager_Constructor;
+          return Messages.JavaElementUtil_Constructor;
         }
-        return Messages.SearchManager_Method;
+        return Messages.JavaElementUtil_Method;
       }
       if (member instanceof IField) {
         IField field = (IField) member;
@@ -586,9 +586,9 @@ public class JavaElementUtil {
           return "EnumConstant"; //$NON-NLS-1$
         }
         if (JavaElementUtil.isConstant(field)) {
-          return Messages.SearchManager_Constant;
+          return Messages.JavaElementUtil_Constant;
         }
-        return Messages.SearchManager_Field;
+        return Messages.JavaElementUtil_Field;
       }
     }
     catch (JavaModelException ex) {

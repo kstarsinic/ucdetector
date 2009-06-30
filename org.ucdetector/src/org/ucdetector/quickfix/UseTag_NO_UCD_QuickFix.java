@@ -46,6 +46,6 @@ class UseTag_NO_UCD_QuickFix extends AbstractUCDQuickFix {
   }
 
   public String getLabel() {
-    return Messages.NoUcdTagQuickFix_label;
+    return Messages.UseTag_NO_UCD_QuickFix_label;
   }
 }

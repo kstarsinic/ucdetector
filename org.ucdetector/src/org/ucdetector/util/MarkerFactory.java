@@ -123,7 +123,7 @@ public final class MarkerFactory implements IUCDetectorReport {
       throws CoreException {
     String searchInfo = JavaElementUtil.getMemberTypeString(method);
     String elementName = JavaElementUtil.getElementName(method);
-    String message = NLS.bind(Messages.SearchManager_MarkerFinalMethod,
+    String message = NLS.bind(Messages.MarkerFactory_MarkerFinalMethod,
         new Object[] { searchInfo, elementName });
     return reportMarker(new ReportParam(method, message, line,
         UCD_MARKER_USE_FINAL));
@@ -139,7 +139,7 @@ public final class MarkerFactory implements IUCDetectorReport {
   public boolean createFinalMarker(IField field, int line) throws CoreException {
     String searchInfo = JavaElementUtil.getMemberTypeString(field);
     String elementName = JavaElementUtil.getElementName(field);
-    String message = NLS.bind(Messages.SearchManager_MarkerFinalField,
+    String message = NLS.bind(Messages.MarkerFactory_MarkerFinalField,
         new Object[] { searchInfo, elementName });
     return reportMarker(new ReportParam(field, message, line,
         UCD_MARKER_USE_FINAL));
@@ -171,7 +171,7 @@ public final class MarkerFactory implements IUCDetectorReport {
       throws CoreException {
     String searchInfo = JavaElementUtil.getMemberTypeString(member);
     String elementName = JavaElementUtil.getElementName(member);
-    String message = NLS.bind(Messages.SearchManager_MarkerTestOnly,
+    String message = NLS.bind(Messages.MarkerFactory_MarkerTestOnly,
         new Object[] { searchInfo, elementName });
     return reportMarker(new ReportParam(member, message, line,
         UCD_MARKER_TEST_ONLY));
@@ -200,12 +200,12 @@ public final class MarkerFactory implements IUCDetectorReport {
     String searchInfo = JavaElementUtil.getMemberTypeString(member);
     if (member instanceof IType) {
       // [2539795] Visibility marker for classes causes compilation error
-      visibilityString += Messages.SearchManager_VisibilityCompileErrorForClass;
+      visibilityString += Messages.MarkerFactory_VisibilityCompileErrorForClass;
     }
     Object[] bindings = new Object[] { searchInfo,
         JavaElementUtil.getElementName(member), visibilityString };
     String message = NLS
-        .bind(Messages.SearchManager_MarkerVisibility, bindings);
+        .bind(Messages.MarkerFactory_MarkerVisibility, bindings);
     return reportMarker(new ReportParam(member, message, line, type));
   }
 
