@@ -39,7 +39,7 @@ ECLIPSE_HOME/plugins/org.ucdetector_*.jar/org/ucdetector/report/html.xslt
 						<tr bgcolor="#C0C0C0">
 							<th>Location*</th>
 							<th>Nr</th>
-							<th>Warn level</th>
+							<!-- <th>Warn level</th> -->
 							<th>Description</th>
 							<th>References**</th>
 							<th>Type</th>
@@ -85,10 +85,11 @@ ECLIPSE_HOME/plugins/org.ucdetector_*.jar/org/ucdetector/report/html.xslt
 							<td align="right">
 								<xsl:value-of select="nr"/>
 							</td>
-							<!-- LEVEL -->
+							<!-- LEVEL
 							<td>
 								<xsl:value-of select="level"/>
 							</td>
+							 -->
 							<!-- DESCRIPTION -->
 							<td>
 								<xsl:value-of select="description"/>
