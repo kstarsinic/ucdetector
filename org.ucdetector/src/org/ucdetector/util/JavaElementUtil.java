@@ -17,6 +17,7 @@ import org.eclipse.jdt.core.Flags;
 import org.eclipse.jdt.core.ICompilationUnit;
 import org.eclipse.jdt.core.IField;
 import org.eclipse.jdt.core.IImportContainer;
+import org.eclipse.jdt.core.IInitializer;
 import org.eclipse.jdt.core.IJavaElement;
 import org.eclipse.jdt.core.IMember;
 import org.eclipse.jdt.core.IMethod;
@@ -593,6 +594,32 @@ public class JavaElementUtil {
     }
     catch (JavaModelException ex) {
       Log.logError("Can't get gmemberTypeString", ex); //$NON-NLS-1$
+    }
+    return "???"; //$NON-NLS-1$
+  }
+
+  /**
+   * @param member to crate a string for
+   * @return "???" if unknown, otherwise:<p>
+   * <ul>
+   * <li>"class"</li>
+   * <li>"method"</li>
+   * <li>"field"</li>
+   * <li>"initializer"</li>
+   * </ul>
+   */
+  public static String getMemberTypeStringSimple(IMember member) {
+    if (member instanceof IType) {
+      return Messages.JavaElementUtil_Class;
+    }
+    if (member instanceof IMethod) {
+      return Messages.JavaElementUtil_Method;
+    }
+    if (member instanceof IField) {
+      return Messages.JavaElementUtil_Field;
+    }
+    if (member instanceof IInitializer) {
+      return Messages.JavaElementUtil_Initializer;
     }
     return "???"; //$NON-NLS-1$
   }
