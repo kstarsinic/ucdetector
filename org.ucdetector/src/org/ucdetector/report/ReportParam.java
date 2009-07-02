@@ -8,7 +8,7 @@ package org.ucdetector.report;
 
 import org.eclipse.core.resources.IResource;
 import org.eclipse.jdt.core.IField;
-import org.eclipse.jdt.core.IJavaElement;
+import org.eclipse.jdt.core.IMember;
 import org.eclipse.jdt.core.IMethod;
 import org.eclipse.jdt.core.IType;
 import org.ucdetector.preferences.Prefs;
@@ -19,7 +19,7 @@ import org.ucdetector.util.MarkerFactory;
  * This class contains parameters for a report (for a marker)
  */
 public class ReportParam {
-  private final IJavaElement javaElement;
+  private final IMember javaElement;
   private final String message;
   private final int line;
   private final String markerType;
@@ -42,22 +42,22 @@ public class ReportParam {
     return sb.toString();
   }
 
-  public ReportParam(IJavaElement javaElement, String message, int line,
+  public ReportParam(IMember javaElement, String message, int line,
       String markerType) {
     this(javaElement, message, line, markerType, null, -1);
   }
 
-  public ReportParam(IJavaElement javaElement, String message, int line,
+  public ReportParam(IMember javaElement, String message, int line,
       String markerType, int referenceCount) {
     this(javaElement, message, line, markerType, null, referenceCount);
   }
 
-  public ReportParam(IJavaElement javaElement, String message, int line,
+  public ReportParam(IMember javaElement, String message, int line,
       String markerType, WarnLevel warnLevel) {
     this(javaElement, message, line, markerType, warnLevel, -1);
   }
 
-  private ReportParam(IJavaElement javaElement, String message, int line,
+  private ReportParam(IMember javaElement, String message, int line,
       String markerType, WarnLevel warnLevel, int referenceCount) {
     this.javaElement = javaElement;
     this.message = message;
@@ -99,7 +99,7 @@ public class ReportParam {
     return warnLevel == null ? WarnLevel.WARNING : warnLevel;
   }
 
-  public IJavaElement getJavaElement() {
+  public IMember getJavaElement() {
     return javaElement;
   }
 

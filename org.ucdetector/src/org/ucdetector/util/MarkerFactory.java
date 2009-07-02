@@ -154,8 +154,8 @@ public final class MarkerFactory implements IUCDetectorReport {
    * @return <code>true</code>, if a marker was created
    * @throws CoreException when there are problem creating marker
    */
-  public boolean createReferenceMarker(IJavaElement javaElement,
-      String message, int line, int found) throws CoreException {
+  public boolean createReferenceMarker(IMember javaElement, String message,
+      int line, int found) throws CoreException {
     String type = found == 0 ? UCD_MARKER_UNUSED : UCD_MARKER_USED_FEW;
     return reportMarker(new ReportParam(javaElement, message, line, type, found));
   }
