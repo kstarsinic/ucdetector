@@ -41,7 +41,8 @@ ECLIPSE_HOME/plugins/org.ucdetector_*.jar/org/ucdetector/report/html.xslt
 							<th>Nr</th>
 							<th>Warn level</th>
 							<th>Description</th>
-							<th>Reference Count**</th>
+							<th>References**</th>
+							<th>Type</th>
 						</tr>
 					</thead>
 					<xsl:for-each select="/ucdetector/markers/marker">
@@ -95,6 +96,10 @@ ECLIPSE_HOME/plugins/org.ucdetector_*.jar/org/ucdetector/report/html.xslt
 							<!-- Reference Count -->
 							<td align="right">
 								<xsl:value-of select="referenceCount"/>
+							</td>
+							<!-- JAVA TYPE -->
+							<td>
+								<xsl:value-of select="javaType"/>
 							</td>
 						</tr>
 					</xsl:for-each>

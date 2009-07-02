@@ -38,6 +38,7 @@ import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.jdt.core.IField;
 import org.eclipse.jdt.core.IJavaElement;
+import org.eclipse.jdt.core.IMember;
 import org.eclipse.jdt.core.IMethod;
 import org.eclipse.jdt.core.IPackageFragment;
 import org.eclipse.jdt.core.IPackageFragmentRoot;
@@ -48,6 +49,7 @@ import org.ucdetector.Messages;
 import org.ucdetector.UCDetectorPlugin;
 import org.ucdetector.preferences.Prefs;
 import org.ucdetector.util.JavaElementUtil;
+import org.ucdetector.util.MarkerFactory;
 import org.ucdetector.util.StopWatch;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
@@ -140,7 +142,7 @@ public class XmlReport implements IUCDetectorReport {
           .createComment(" === Marker number " + markerCount));//$NON-NLS-1$
       marker = doc.createElement("marker"); //$NON-NLS-1$
       markers.appendChild(marker);
-      IJavaElement javaElement = reportParam.getJavaElement();
+      IMember javaElement = reportParam.getJavaElement();
       IResource resource = javaElement.getResource();
 
       // NODE: "Error", "Warning"
@@ -151,9 +153,15 @@ public class XmlReport implements IUCDetectorReport {
       String packageName = pack.getElementName();
       appendChild(marker, "package", packageName);//$NON-NLS-1$
 
-      // NODE: UCDetectorPlugin
       IType type = JavaElementUtil.getTypeFor(javaElement, true);
+      // NODE: UCDetectorPlugin
       appendChild(marker, "class", JavaElementUtil.getElementName(type));//$NON-NLS-1$
+      // NODE: Class, Annotation, Constructor...
+      appendChild(
+          marker,
+          "javaTypeSimple", JavaElementUtil.getMemberTypeStringSimple(javaElement));//$NON-NLS-1$
+      appendChild(marker,
+          "javaType", JavaElementUtil.getMemberTypeString(javaElement));//$NON-NLS-1$
 
       if (javaElement instanceof IMethod) {
         // NODE: method
@@ -170,11 +178,15 @@ public class XmlReport implements IUCDetectorReport {
       // NODE: 123
       appendChild(marker, "line", String.valueOf(reportParam.getLine()));//$NON-NLS-1$
 
-      appendChild(marker, "markerType", reportParam.getMarkerType());//$NON-NLS-1$
+      String markerType = reportParam.getMarkerType();
+      if (markerType.startsWith(MarkerFactory.UCD_MARKER)) {
+        markerType = markerType.substring(MarkerFactory.UCD_MARKER.length());
+      }
+      appendChild(marker, "markerType", markerType);//$NON-NLS-1$
       // NODE: Change visibility of MixedExample to default
       appendChild(marker, "description", reportParam.getMessage());//$NON-NLS-1$
       String sReferenceCount = (reportParam.getReferenceCount() == -1) ? "-" : "" //$NON-NLS-1$ //$NON-NLS-2$
-          + reportParam.getReferenceCount();
+              + reportParam.getReferenceCount();
       appendChild(marker, "referenceCount", sReferenceCount);//$NON-NLS-1$
 
       if (resource != null) {
