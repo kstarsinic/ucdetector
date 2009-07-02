@@ -86,11 +86,11 @@ public final class MarkerFactory implements IUCDetectorReport {
    * @return <code>true</code>, if a marker was created
    */
   public boolean reportMarker(ReportParam reportParam) throws CoreException {
-    if (reportParam.line == LineManger.LINE_NOT_FOUND) {
+    if (reportParam.getLine() == LineManger.LINE_NOT_FOUND) {
       Log.logError("createMarkerImpl: Line not found"); //$NON-NLS-1$
       return false;
     }
-    if (reportParam.javaElement.getResource() == null) {
+    if (reportParam.getJavaElement().getResource() == null) {
       Log.logError("createMarkerImpl: Resource is null"); //$NON-NLS-1$
       return false;
     }

@@ -19,26 +19,26 @@ import org.ucdetector.util.MarkerFactory;
  * This class contains parameters for a report (for a marker)
  */
 public class ReportParam {
-  public final IJavaElement javaElement;
-  protected final String message;
-  public final int line;
-  protected final String markerType;
-  protected final WarnLevel level;
+  private final IJavaElement javaElement;
+  private final String message;
+  private final int line;
+  private final String markerType;
+  private final WarnLevel level;
   /**  2803618  Add number of references to report */
-  protected final int referenceCount;
+  private final int referenceCount;
 
   @Override
   public String toString() {
     StringBuilder sb = new StringBuilder();
-    sb.append("MARKER{").append(level).append(';').append(message); //$NON-NLS-1$
-    IResource resource = javaElement.getResource();
+    sb.append("MARKER{").append(getLevel()).append(';').append(getMessage()); //$NON-NLS-1$
+    IResource resource = getJavaElement().getResource();
     if (resource != null) {
-      sb.append(';').append(resource.getFullPath()).append(':').append(line);
+      sb.append(';').append(resource.getFullPath()).append(':').append(getLine());
     }
     else {
-      sb.append(";line=").append(line); //$NON-NLS-1$
+      sb.append(";line=").append(getLine()); //$NON-NLS-1$
     }
-    sb.append(';').append(markerType).append('}');
+    sb.append(';').append(getMarkerType()).append('}');
     return sb.toString();
   }
 
@@ -69,33 +69,57 @@ public class ReportParam {
 
   private WarnLevel calculateWarnLevel() {
     WarnLevel warnLevel = null;
-    if (MarkerFactory.UCD_MARKER_UNUSED.equals(markerType)
-        || MarkerFactory.UCD_MARKER_USED_FEW.equals(markerType)) {
-      if (javaElement instanceof IType) {
+    if (MarkerFactory.UCD_MARKER_UNUSED.equals(getMarkerType())
+        || MarkerFactory.UCD_MARKER_USED_FEW.equals(getMarkerType())) {
+      if (getJavaElement() instanceof IType) {
         warnLevel = Prefs.getUCDetectionInClasses();
       }
-      else if (javaElement instanceof IMethod) {
+      else if (getJavaElement() instanceof IMethod) {
         warnLevel = Prefs.getUCDetectionInMethods();
       }
-      else if (javaElement instanceof IField) {
+      else if (getJavaElement() instanceof IField) {
         warnLevel = Prefs.getUCDetectionInFields();
       }
     }
-    else if (MarkerFactory.UCD_MARKER_USE_PROTECTED.equals(markerType)
-        || MarkerFactory.UCD_MARKER_USE_DEFAULT.equals(markerType)) {
-      warnLevel = Prefs.getCheckReduceVisibilityProtected(javaElement);
+    else if (MarkerFactory.UCD_MARKER_USE_PROTECTED.equals(getMarkerType())
+        || MarkerFactory.UCD_MARKER_USE_DEFAULT.equals(getMarkerType())) {
+      warnLevel = Prefs.getCheckReduceVisibilityProtected(getJavaElement());
     }
-    else if (MarkerFactory.UCD_MARKER_USE_PRIVATE.equals(markerType)) {
-      warnLevel = Prefs.getCheckReduceVisibilityToPrivate(javaElement);
+    else if (MarkerFactory.UCD_MARKER_USE_PRIVATE.equals(getMarkerType())) {
+      warnLevel = Prefs.getCheckReduceVisibilityToPrivate(getJavaElement());
     }
-    else if (MarkerFactory.UCD_MARKER_USE_FINAL.equals(markerType)) {
-      if (javaElement instanceof IMethod) {
+    else if (MarkerFactory.UCD_MARKER_USE_FINAL.equals(getMarkerType())) {
+      if (getJavaElement() instanceof IMethod) {
         warnLevel = Prefs.getCheckUseFinalMethod();
       }
-      else if (javaElement instanceof IField) {
+      else if (getJavaElement() instanceof IField) {
         warnLevel = Prefs.getCheckUseFinalField();
       }
     }
     return warnLevel == null ? WarnLevel.WARNING : warnLevel;
+  }
+
+  public IJavaElement getJavaElement() {
+    return javaElement;
+  }
+
+  protected String getMessage() {
+    return message;
+  }
+
+  public int getLine() {
+    return line;
+  }
+
+  protected String getMarkerType() {
+    return markerType;
+  }
+
+  protected WarnLevel getLevel() {
+    return level;
+  }
+
+  protected int getReferenceCount() {
+    return referenceCount;
   }
 }

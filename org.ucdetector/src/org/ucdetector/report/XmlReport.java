@@ -140,11 +140,11 @@ public class XmlReport implements IUCDetectorReport {
           .createComment(" === Marker number " + markerCount));//$NON-NLS-1$
       marker = doc.createElement("marker"); //$NON-NLS-1$
       markers.appendChild(marker);
-      IJavaElement javaElement = reportParam.javaElement;
+      IJavaElement javaElement = reportParam.getJavaElement();
       IResource resource = javaElement.getResource();
 
       // NODE: "Error", "Warning"
-      appendChild(marker, "level", reportParam.level.toString());//$NON-NLS-1$
+      appendChild(marker, "level", reportParam.getLevel().toString());//$NON-NLS-1$
 
       // NODE: org.ucdetector
       IPackageFragment pack = JavaElementUtil.getPackageFor(javaElement);
@@ -168,12 +168,13 @@ public class XmlReport implements IUCDetectorReport {
       }
 
       // NODE: 123
-      appendChild(marker, "line", String.valueOf(reportParam.line));//$NON-NLS-1$
+      appendChild(marker, "line", String.valueOf(reportParam.getLine()));//$NON-NLS-1$
 
+      appendChild(marker, "markerType", reportParam.getMarkerType());//$NON-NLS-1$
       // NODE: Change visibility of MixedExample to default
-      appendChild(marker, "description", reportParam.message);//$NON-NLS-1$
-      String sReferenceCount = (reportParam.referenceCount == -1) ? "-" : "" //$NON-NLS-1$ //$NON-NLS-2$
-          + reportParam.referenceCount;
+      appendChild(marker, "description", reportParam.getMessage());//$NON-NLS-1$
+      String sReferenceCount = (reportParam.getReferenceCount() == -1) ? "-" : "" //$NON-NLS-1$ //$NON-NLS-2$
+          + reportParam.getReferenceCount();
       appendChild(marker, "referenceCount", sReferenceCount);//$NON-NLS-1$
 
       if (resource != null) {
@@ -281,8 +282,8 @@ public class XmlReport implements IUCDetectorReport {
       File xmlFile = writeDocumentToFile(doc, xmlFileName);
       Document htmlDocument = transformXSLT(xmlFile);
       File htmlFile = writeDocumentToFile(htmlDocument, htmlFileName);
-      logEndReportMessage(Messages.XMLReport_WriteOk, IStatus.INFO, null, String
-          .valueOf(markerCount), htmlFile.getAbsoluteFile().toString());
+      logEndReportMessage(Messages.XMLReport_WriteOk, IStatus.INFO, null,
+          String.valueOf(markerCount), htmlFile.getAbsoluteFile().toString());
 
     }
     catch (Exception e) {

@@ -65,7 +65,7 @@ public class MarkerReport implements IUCDetectorReport {
 
   private void createMarker(ReportParam reportParam) throws CoreException {
     int severity;
-    switch (reportParam.level) {
+    switch (reportParam.getLevel()) {
       case ERROR:
         severity = IMarker.SEVERITY_ERROR;
         break;
@@ -75,13 +75,13 @@ public class MarkerReport implements IUCDetectorReport {
       default:
         return;
     }
-    IMarker marker = reportParam.javaElement.getResource().createMarker(
-        reportParam.markerType);
+    IMarker marker = reportParam.getJavaElement().getResource().createMarker(
+        reportParam.getMarkerType());
     marker.setAttribute(IMarker.SEVERITY, severity);
-    marker.setAttribute(IMarker.MESSAGE, reportParam.message);
+    marker.setAttribute(IMarker.MESSAGE, reportParam.getMessage());
     marker.setAttribute(IMarker.PRIORITY, IMarker.PRIORITY_HIGH);
-    marker.setAttribute(IMarker.LINE_NUMBER, reportParam.line);
-    String elementString = createJavaElementString(reportParam.javaElement);
+    marker.setAttribute(IMarker.LINE_NUMBER, reportParam.getLine());
+    String elementString = createJavaElementString(reportParam.getJavaElement());
     marker.setAttribute(MarkerFactory.ELEMENT_TYPE_ATTRIBUTE, elementString);
   }
 
