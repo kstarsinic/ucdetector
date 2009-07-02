@@ -35,13 +35,13 @@ public class UCDProgressMonitor implements IProgressMonitor {
   }
 
   public void beginTask(String name, int totalWork) {
-    Log.logInfo("Task.beginTask " + name); //$NON-NLS-1$
+    Log.logInfo("Task.beginTask '" + name + "'"); //$NON-NLS-1$ //$NON-NLS-2$
     this.taskName = name;
     delegate.beginTask(taskName, totalWork);
   }
 
   public void done() {
-    Log.logInfo("Task.done " + taskName); //$NON-NLS-1$
+    Log.logInfo("Task.done '" + taskName + "'"); //$NON-NLS-1$ //$NON-NLS-2$
     delegate.done();
   }
 
@@ -86,7 +86,7 @@ public class UCDProgressMonitor implements IProgressMonitor {
   }
 
   public void worked(int work) {
-    // nothing usefull!
+    // not useful!
     // Log.logInfo("Task.worked: " + work);//$NON-NLS-1$
     delegate.worked(work);
   }
