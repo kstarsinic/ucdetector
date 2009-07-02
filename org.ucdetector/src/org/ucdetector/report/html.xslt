@@ -32,11 +32,8 @@ ECLIPSE_HOME/plugins/org.ucdetector_*.jar/org/ucdetector/report/html.xslt
 				<!-- ===================================================================
 				     ABOUT SEARCH
 				     =============================================================== -->
-				<xsl:text>
-Searched started <xsl:value-of select="/ucdetector/statistics/dateStarted"/>. 
-<!-- finished <xsl:value-of select="/ucdetector/statistics/dateFinished"/> -->
-Duration <xsl:value-of select="/ucdetector/statistics/searchDuration"/>.
-</xsl:text>
+				
+				<xsl:value-of select="concat('Searched started: ', /ucdetector/statistics/dateStarted, '. Duration: ', /ucdetector/statistics/searchDuration)"/>
 				<table border="1">
 					<thead align="center">
 						<tr bgcolor="#C0C0C0">
