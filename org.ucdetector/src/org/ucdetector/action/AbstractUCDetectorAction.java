@@ -30,6 +30,7 @@ import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Event;
 import org.eclipse.ui.IEditorPart;
+import org.eclipse.ui.IPageLayout;
 import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.actions.ActionDelegate;
 import org.eclipse.ui.progress.IProgressConstants;
@@ -38,7 +39,6 @@ import org.ucdetector.Messages;
 import org.ucdetector.UCDetectorPlugin;
 import org.ucdetector.iterator.AbstractUCDetectorIterator;
 import org.ucdetector.search.UCDProgressMonitor;
-import org.ucdetector.util.JavaElementUtil;
 
 /**
  * Base class for actions in this plugin
@@ -123,17 +123,23 @@ public abstract class AbstractUCDetectorAction extends ActionDelegate {
 
     @Override
     public void run() {
-      UCDProgressMonitor monitor = iterator.getMonitor();
-      IJavaElement element = monitor.getActiveSearchElement();
-      if (element != null) {
-        try {
+      try {
+        UCDProgressMonitor monitor = iterator.getMonitor();
+        if (monitor.isFinished()) {
+          // See org.eclipse.ui.views.markers.MarkerViewUtil.getViewId()
+          UCDetectorPlugin.getActivePage()
+              .showView(IPageLayout.ID_PROBLEM_VIEW);
+          return;
+        }
+        IJavaElement element = monitor.getActiveSearchElement();
+        if (element != null) {
           IEditorPart part = JavaUI.openInEditor(element, true, false);
           JavaUI.revealInEditor(part, element);
         }
-        catch (Exception ex) {
-          Log.logError("Can't open in editor: " //$NON-NLS-1$
-              + JavaElementUtil.getElementName(element), ex);
-        }
+      }
+      catch (Exception ex) {
+        Log.logError("Can't open view", //$NON-NLS-1$
+            ex);
       }
     }
   }

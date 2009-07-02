@@ -25,6 +25,11 @@ public class UCDProgressMonitor implements IProgressMonitor {
   private String lastWork;
   private static final DecimalFormat FORMAT_DOUBLE = new DecimalFormat("0.0000"); //$NON-NLS-1$
   private IMember activeSearchElement = null;
+  private boolean isFinished = false;
+
+  public boolean isFinished() {
+    return isFinished;
+  }
 
   public UCDProgressMonitor(IProgressMonitor delegate) {
     this.delegate = delegate;
@@ -43,6 +48,7 @@ public class UCDProgressMonitor implements IProgressMonitor {
   public void done() {
     Log.logInfo("Task.done '" + taskName + "'"); //$NON-NLS-1$ //$NON-NLS-2$
     delegate.done();
+    isFinished = true;
   }
 
   public void internalWorked(double work) {
