@@ -107,6 +107,7 @@ public final class Messages extends NLS {
   public static String JavaElementUtil_Field; // NO_UCD
   public static String JavaElementUtil_Constant; // NO_UCD
   public static String JavaElementUtil_Method; // NO_UCD
+  public static String JavaElementUtil_Initializer; // NO_UCD
   //
   public static String MarkerFactory_MarkerVisibility; // NO_UCD
   public static String MarkerFactory_VisibilityCompileErrorForClass; // NO_UCD
