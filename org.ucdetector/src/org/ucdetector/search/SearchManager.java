@@ -6,6 +6,7 @@
  */
 package org.ucdetector.search;
 
+import java.text.MessageFormat;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.regex.Pattern;
@@ -47,6 +48,7 @@ import org.ucdetector.util.StopWatch;
  * Search for class, methods, fields using the eclipse search mechanism
  */
 public class SearchManager {
+  private static final String START_SEARCHING = "\nStart searching {0} {1}..."; //$NON-NLS-1$
   private static final boolean DEBUG = Log
       .isDebugOption("org.ucdetector/debug/search"); //$NON-NLS-1$
   /**
@@ -137,7 +139,8 @@ public class SearchManager {
    * Search types
    */
   private void searchTypes(List<IType> types) {
-    Log.logInfo("Start searching " + types.size() + " types..."); //$NON-NLS-1$ //$NON-NLS-2$
+    Log.logInfo(MessageFormat.format(START_SEARCHING,
+        "" + types.size(), "types")); //$NON-NLS-1$ //$NON-NLS-2$
     for (IType type : types) {
       try {
         startSearch(type);
@@ -183,7 +186,7 @@ public class SearchManager {
     checkForCancel();
     search++;
     if (search % 100 == 0) {
-      Log.logInfo("\tsearched " + search + " of " + searchTotal); //$NON-NLS-1$ //$NON-NLS-2$ 
+      Log.logInfo("    searched " + search + " of " + searchTotal); //$NON-NLS-1$ //$NON-NLS-2$ 
     }
   }
 
@@ -195,7 +198,8 @@ public class SearchManager {
    * Search methods
    */
   private void searchMethods(List<IMethod> methods) {
-    Log.logInfo("Start searching " + methods.size() + " methods..."); //$NON-NLS-1$ //$NON-NLS-2$
+    Log.logInfo(MessageFormat.format(START_SEARCHING,
+        "" + methods.size(), "methods")); //$NON-NLS-1$ //$NON-NLS-2$
     for (IMethod method : methods) {
       try {
         startSearch(method);
@@ -258,7 +262,8 @@ public class SearchManager {
    * Search fields
    */
   private void searchFields(List<IField> fields) {
-    Log.logInfo("Start searching " + fields.size() + " fields..."); //$NON-NLS-1$ //$NON-NLS-2$
+    Log.logInfo(MessageFormat.format(START_SEARCHING,
+        "" + fields.size(), "fields")); //$NON-NLS-1$ //$NON-NLS-2$
     for (IField field : fields) {
       try {
         startSearch(field);
