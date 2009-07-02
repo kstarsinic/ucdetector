@@ -28,6 +28,8 @@ public class CycleAction extends AbstractUCDetectorAction { // NO_UCD
     return new CycleIterator();
   }
 
+  private IStatus status = null;
+
   @Override
   protected IStatus postIteration() {
     Display.getDefault().asyncExec(new Runnable() {
@@ -40,12 +42,12 @@ public class CycleAction extends AbstractUCDetectorAction { // NO_UCD
           }
         }
         catch (PartInitException e) {
-          UCDetectorPlugin.logErrorAndStatus(
+          status = UCDetectorPlugin.logErrorAndStatus(
               Messages.CycleAction_cant_open_editor, e);
         }
       }
     });
-    return null;
+    return status;
   }
 
   /**

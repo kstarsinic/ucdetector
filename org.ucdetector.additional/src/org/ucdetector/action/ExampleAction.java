@@ -9,6 +9,7 @@
 package org.ucdetector.action;
 
 import org.eclipse.core.runtime.IStatus;
+import org.eclipse.core.runtime.Status;
 import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.swt.widgets.Display;
 import org.ucdetector.UCDetectorPlugin;
@@ -30,15 +31,19 @@ public class ExampleAction extends AbstractUCDetectorAction {// NO_UCD
     return iterator;
   }
 
+  private IStatus status = null;
+
   @Override
   protected IStatus postIteration() {
     // show message dialog
     Display.getDefault().asyncExec(new Runnable() {
       public void run() {
+        status = new Status(IStatus.INFO, UCDetectorPlugin.ID, IStatus.INFO,
+            iterator.getMessage(), null);
         MessageDialog.openInformation(UCDetectorPlugin.getShell(), iterator
             .getJobName(), iterator.getMessage());
       }
     });
-    return null;
+    return status;
   }
 }
