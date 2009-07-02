@@ -26,6 +26,8 @@ public final class Messages extends NLS {
   // ACTIONS -----------------------------------------------------------------
   public static String AbstractUCDetectorAction_AnalyzeFailedText; // NO_UCD
   public static String CountAction_ResultTitle; // NO_UCD
+  public static String UCDetectorAction_ResultMessage; // NO_UCD
+  public static String UCDetectorAction_ResultReport; // NO_UCD
   // ITERATORS ---------------------------------------------------------------
   public static String UCDetectorIterator_JobName; // NO_UCD
   public static String CleanMarkersIterator_JobName; // NO_UCD

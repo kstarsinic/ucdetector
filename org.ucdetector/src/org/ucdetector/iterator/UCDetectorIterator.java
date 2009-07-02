@@ -35,6 +35,11 @@ public class UCDetectorIterator extends AbstractUCDetectorIterator {
   private final List<IField> fields = new ArrayList<IField>();
 
   private final StopWatch stopWatch = new StopWatch();
+  private int markerCreated;
+
+  public int getMarkerCreated() {
+    return markerCreated;
+  }
 
   @Override
   public void handleStartSelectedElement(IJavaElement javaElement)
@@ -129,6 +134,7 @@ public class UCDetectorIterator extends AbstractUCDetectorIterator {
         getMarkerFactory());
     searchManager.search(types, methods, fields);
     stopWatch.end("Time to run UCDetector"); //$NON-NLS-1$
+    markerCreated = searchManager.getMarkerCreated();
   }
 
   @Override

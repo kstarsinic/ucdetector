@@ -70,7 +70,8 @@ public class SearchManager {
   /**
    * Number UCDetector problems already found
    */
-  private int foundTotal;
+  private int markerCreated;
+
   /**
    * Number of classes, methods, fields already searched
    */
@@ -194,6 +195,10 @@ public class SearchManager {
     monitor.throwIfIsCanceled();
   }
 
+  public int getMarkerCreated() {
+    return markerCreated;
+  }
+
   /**
    * Search methods
    */
@@ -244,7 +249,7 @@ public class SearchManager {
           boolean created = finalHandler.createFinalMarker(method, line);
           watch.end("    Calculate method final marker"); //$NON-NLS-1$
           if (created) {
-            foundTotal++;
+            markerCreated++;
           }
         }
         updateMonitorMessage(method, Messages.SearchManager_SearchReferences,
@@ -282,7 +287,7 @@ public class SearchManager {
         boolean created = finalHandler.createFinalMarker(field, line);
         watch.end("    Calculate field final marker"); //$NON-NLS-1$
         if (created) {
-          foundTotal++;
+          markerCreated++;
         }
         if (Flags.isPrivate(field.getFlags())) {
           continue;
@@ -367,7 +372,7 @@ public class SearchManager {
     if (found > 0 && (found == foundResult.foundTest)) {
       created = markerFactory.createReferenceMarkerTestOnly(member, line);
       if (created) {
-        foundTotal++;
+        markerCreated++;
       }
     }
     found += searchTextImpl(member, visibilityHandler, found);
@@ -375,7 +380,7 @@ public class SearchManager {
     if (!isOverriddenMethod) {
       created = visibilityHandler.createMarker(member, line, found);
       if (created) {
-        foundTotal++;
+        markerCreated++;
       }
     }
     Object[] bindings = new Object[] { searchInfo,
@@ -401,7 +406,7 @@ public class SearchManager {
     created = markerFactory.createReferenceMarker(member, markerMessage, line,
         found);
     if (created) {
-      foundTotal++;
+      markerCreated++;
     }
     return found;
   }
@@ -514,7 +519,7 @@ public class SearchManager {
       String searchInfo) {
     checkForCancel();
     String javaElement = JavaElementUtil.getElementName(element);
-    Object[] bindings = new Object[] { Integer.valueOf(foundTotal),
+    Object[] bindings = new Object[] { Integer.valueOf(markerCreated),
         Integer.valueOf(search), Integer.valueOf(searchTotal), searchInfo,
         javaElement, details };
     String message = NLS.bind(Messages.SearchManager_Monitor, bindings);

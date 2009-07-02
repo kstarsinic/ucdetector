@@ -6,6 +6,7 @@
  */
 package org.ucdetector.preferences;
 
+import java.io.File;
 import java.util.regex.Pattern;
 
 import org.eclipse.jdt.core.Flags;
@@ -367,6 +368,15 @@ public final class Prefs {
    */
   public static String getReportFile() {
     return getString(REPORT_FILE);
+  }
+
+  public static String getReportFolder() {
+    String fileName = getReportFile();
+    if (fileName == null || fileName.length() == 0) {
+      return null;
+    }
+    File report = new File(fileName);
+    return report.getParent();
   }
 
   /**
