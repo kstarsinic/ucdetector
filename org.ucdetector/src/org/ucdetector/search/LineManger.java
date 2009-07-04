@@ -9,6 +9,7 @@ package org.ucdetector.search;
 
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -53,7 +54,12 @@ public class LineManger {
    * If this String is found in an comment, the source code line will be
    * ignored by UCDetector
    */
-  private static final String NO_UCD_TAG = "NO_UCD"; //$NON-NLS-1$
+  private static final String NO_UCD_COMMENT = "NO_UCD"; //$NON-NLS-1$
+  /**
+   * If this String is found like @SuppressWarnings("ucd"),
+   * the source code line will be ignored by UCDetector
+   */
+  private static final String UCD_ANNOTATION_VALUE = "UCD"; //$NON-NLS-1$
   /**
    * parsed java files
    */
@@ -122,19 +128,24 @@ public class LineManger {
     FindUcdSuppressWarningsVisitor visitor = new FindUcdSuppressWarningsVisitor(
         scanner);
     createAST.accept(visitor);
+    // System.out.println("ignoreLines=" + visitor.ignoreLines);
     return visitor.ignoreLines;
-    //    System.out.println("FindUcdSuppressWarningsVisitor.ignoreLines="
-    //        + visitor.ignoreLines);
   }
 
   private static class FindUcdSuppressWarningsVisitor extends ASTMemberVisitor {
-    private final Set<Integer> ignoreLines = new HashSet<Integer>();
+    private final Set<Integer> ignoreLines = new LinkedHashSet<Integer>();
     private final IScanner scanner;
 
     public FindUcdSuppressWarningsVisitor(IScanner scanner) {
       this.scanner = scanner;
     }
 
+    /**
+     * We start at a bodyDeclaration (=declaration of a class, method, field...)
+     * like 'private in i = 0'<br>
+     * Then we try to find @SuppressWarnings<br>
+     * then we look for the value of the annotation like @SuppressWarnings("ucd")
+     */
     @Override
     protected boolean visitImpl(BodyDeclaration declaration, SimpleName name) {
       // System.out.println("declaration=" + declaration);
@@ -145,7 +156,7 @@ public class LineManger {
           String fullName = annotation.getTypeName().getFullyQualifiedName();
           if ("SuppressWarnings".equals(fullName) //$NON-NLS-1$
               || "java.lang.SuppressWarnings".equals(fullName)) { //$NON-NLS-1$
-            if (ucdSuppressWarningFound(annotation)) {
+            if (isIgnoreUCDetector(annotation)) {
               int startPos = name.getStartPosition();
               ignoreLines.add(Integer.valueOf(scanner.getLineNumber(startPos)));
             }
@@ -155,7 +166,7 @@ public class LineManger {
       return true;
     }
 
-    private boolean ucdSuppressWarningFound(Annotation annotation) {
+    private boolean isIgnoreUCDetector(Annotation annotation) {
       if (annotation instanceof SingleMemberAnnotation) {
         Expression value = ((SingleMemberAnnotation) annotation).getValue();
         if (value instanceof ArrayInitializer) {
@@ -178,7 +189,7 @@ public class LineManger {
 
     private boolean isUcdTag(StringLiteral literal) {
       //      System.out.println("\tliteralValue=" + literal.getLiteralValue());
-      return literal.getLiteralValue().equals(NO_UCD_TAG);
+      return literal.getLiteralValue().equalsIgnoreCase(UCD_ANNOTATION_VALUE);
     }
   }
 
@@ -215,7 +226,8 @@ public class LineManger {
     int nextToken;
     try {
       while ((nextToken = scanner.getNextToken()) != ITerminalSymbols.TokenNameEOF) {
-        Integer ignoreLine = findTagInComment(scanner, NO_UCD_TAG, nextToken);
+        Integer ignoreLine = findTagInComment(scanner, NO_UCD_COMMENT,
+            nextToken);
         if (ignoreLine != null) {
           ignoreLines.add(ignoreLine);
         }
