@@ -10,7 +10,6 @@ import org.eclipse.core.resources.IMarker;
 import org.eclipse.jdt.core.dom.BodyDeclaration;
 import org.eclipse.jface.text.BadLocationException;
 import org.eclipse.jface.text.IRegion;
-import org.eclipse.jface.text.TextUtilities;
 import org.eclipse.swt.graphics.Image;
 import org.ucdetector.Messages;
 import org.ucdetector.UCDetectorPlugin;
@@ -89,15 +88,6 @@ class LineCommentQuickFix extends AbstractUCDQuickFix {
       replace.append(LINE_COMMENT).append(strLine);
       doc.replace(offsetLine, lengthLine, replace.toString());
     }
-  }
-
-  /**
-   * Inserting new lines confuses markers.line
-   * We need to call IEditorPart.doSave() the buffer later, to avoid this problem
-   * @return lineDelimitter at lineNr or line separator from system
-   */
-  private String getLineDelimitter() {
-    return TextUtilities.getDefaultLineDelimiter(doc);
   }
 
   /**

@@ -131,6 +131,7 @@ public final class Messages extends NLS {
   public static String DeleteQuickFix_label;// NO_UCD
   public static String LineCommentQuickFix_label;// NO_UCD
   public static String UseTag_NO_UCD_QuickFix_label; // NO_UCD
+  public static String UseAnnotation_UCD_QuickFix_label; // NO_UCD
   public static String VisibilityQuickFix_label; // NO_UCD
 
   public static String OutOfMemoryError_Hint; // NO_UCD

@@ -40,6 +40,7 @@ import org.eclipse.jdt.core.dom.rewrite.ListRewrite;
 import org.eclipse.jdt.internal.ui.javaeditor.EditorUtility;
 import org.eclipse.jface.text.BadLocationException;
 import org.eclipse.jface.text.IDocument;
+import org.eclipse.jface.text.TextUtilities;
 import org.eclipse.text.edits.TextEdit;
 import org.eclipse.ui.IEditorPart;
 import org.eclipse.ui.views.markers.WorkbenchMarkerResolution;
@@ -315,6 +316,15 @@ abstract class AbstractUCDQuickFix extends WorkbenchMarkerResolution {
    */
   private final boolean isElementTypeEqual(IMarker markerToCheck) {
     return getElementType(quickFixMarker).equals(getElementType(markerToCheck));
+  }
+
+  /**
+   * Inserting new lines confuses markers.line
+   * We need to call IEditorPart.doSave() the buffer later, to avoid this problem
+   * @return lineDelimitter at lineNr or line separator from system
+   */
+  protected String getLineDelimitter() {
+    return TextUtilities.getDefaultLineDelimiter(doc);
   }
 
   private static final ElementType getElementType(IMarker marker) {
