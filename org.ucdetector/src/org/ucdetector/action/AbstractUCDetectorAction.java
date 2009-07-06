@@ -57,32 +57,27 @@ public abstract class AbstractUCDetectorAction extends ActionDelegate {
         iterator.setMonitor(ucdMonitor);
         try {
           iterator.iterate(selections);
-          if (ucdMonitor.isCanceled()) {
-            return Status.CANCEL_STATUS;
-          }
           if (iterator.getElelementsToDetectCount() == 0) {
             showNothingToDetectMessage();
           }
         }
         catch (CoreException e) {
-          return e.getStatus();
+          UCDetectorPlugin.logStatus(e.getStatus());
+          //          return e.getStatus();
         }
         catch (Throwable e) {
-          return UCDetectorPlugin.logErrorAndStatus(
+          UCDetectorPlugin.logErrorAndStatus(
               Messages.AbstractUCDetectorAction_AnalyzeFailedText, e);
         }
-        finally {
-          try {
-            IStatus status = postIteration();
-            if (status != null) {
-              return status;
-            }
-          }
-          finally {
-            ucdMonitor.done();
-          }
+        IStatus status = null;
+        try {
+          status = postIteration();
         }
-        return Status.OK_STATUS;
+        finally {
+          ucdMonitor.done();
+        }
+        return status != null ? status
+            : ucdMonitor.isCanceled() ? Status.CANCEL_STATUS : Status.OK_STATUS;
       }
 
       private void showNothingToDetectMessage() {
