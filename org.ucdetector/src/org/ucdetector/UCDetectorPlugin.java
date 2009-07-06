@@ -9,6 +9,7 @@ package org.ucdetector;
 
 import java.text.DateFormat;
 import java.util.Date;
+import java.util.Locale;
 
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IPath;
@@ -51,6 +52,8 @@ public class UCDetectorPlugin extends AbstractUIPlugin {
   public static final String HELP_ID = ID + ".ucd_context_id";//$NON-NLS-1$
   public static final String HELP_ID_PREFERENCES = ID
       + ".ucd_context_id_preferences";//$NON-NLS-1$
+  public static final DateFormat DATE_FORMAT = DateFormat.getDateTimeInstance(
+      DateFormat.SHORT, DateFormat.SHORT, Locale.getDefault());
 
   public UCDetectorPlugin() {
     UCDetectorPlugin.plugin = this;
@@ -66,7 +69,7 @@ public class UCDetectorPlugin extends AbstractUIPlugin {
     Object version = getBundle().getHeaders().get("Bundle-Version"); //$NON-NLS-1$
     Log.logInfo("\tUCD version : " + version); //$NON-NLS-1$
     Log.logInfo("\tTime        : " + //  //$NON-NLS-1$
-        DateFormat.getDateTimeInstance().format(new Date()));
+        DATE_FORMAT.format(new Date()));
     Log.logInfo("\tjava.version: " + // //$NON-NLS-1$
         System.getProperty("java.version")); //$NON-NLS-1$
     Log.logInfo("\tEclipse     : " + // //$NON-NLS-1$
@@ -171,6 +174,10 @@ public class UCDetectorPlugin extends AbstractUIPlugin {
 
   public static ImageDescriptor getImageDescriptor(String key) {
     return getDefault().getImageRegistry().getDescriptor(key);
+  }
+
+  public static String getNow() {
+    return DATE_FORMAT.format(new Date());
   }
 
   // -------------------------------------------------------------------------

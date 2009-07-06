@@ -11,10 +11,8 @@ import java.io.FileInputStream;
 import java.io.InputStream;
 import java.io.PrintWriter;
 import java.io.StringWriter;
-import java.text.DateFormat;
 import java.text.DecimalFormat;
 import java.util.Date;
-import java.util.Locale;
 
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
@@ -75,8 +73,6 @@ public class XmlReport implements IUCDetectorReport {
   private static final String EXTENSION_HTML = ".html"; //$NON-NLS-1$
   private static final String XSL_FILE = "org/ucdetector/report/html.xslt";//$NON-NLS-1$
 
-  private final DateFormat dateFormatter = DateFormat.getDateTimeInstance(
-      DateFormat.SHORT, DateFormat.SHORT, Locale.getDefault());
   private static final DecimalFormat FORMAT_REPORT_NUMBER = new DecimalFormat(
       "000"); //$NON-NLS-1$
 
@@ -340,8 +336,9 @@ public class XmlReport implements IUCDetectorReport {
    * Append statistics like: date, searchDuration, searched elements
    */
   private void appendStatistics(Object[] selected, long start) {
-    appendChild(statistcs, "dateStarted", dateFormatter.format(new Date(start)));//$NON-NLS-1$
-    appendChild(statistcs, "dateFinished", dateFormatter.format(new Date()));//$NON-NLS-1$
+    appendChild(statistcs,
+        "dateStarted", UCDetectorPlugin.DATE_FORMAT.format(new Date(start)));//$NON-NLS-1$
+    appendChild(statistcs, "dateFinished", UCDetectorPlugin.getNow());//$NON-NLS-1$
     long millis = (System.currentTimeMillis() - start);
     appendChild(statistcs, "searchDuration", StopWatch.timeAsString(millis));//$NON-NLS-1$
     Element searched = appendChild(statistcs, "searched", null);//$NON-NLS-1$
