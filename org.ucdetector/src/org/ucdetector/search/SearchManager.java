@@ -115,6 +115,7 @@ public class SearchManager {
    */
   public final void search(List<IType> types, List<IMethod> methods,
       List<IField> fields) throws CoreException {
+    Log.logInfo("Search start: " + UCDetectorPlugin.getNow()); //$NON-NLS-1$
     Log.logInfo(types.size() + " types to search"); //$NON-NLS-1$
     Log.logInfo(methods.size() + " methods to search"); //$NON-NLS-1$
     Log.logInfo(fields.size() + " fields to search"); //$NON-NLS-1$
@@ -127,6 +128,7 @@ public class SearchManager {
     catch (OperationCanceledException e) {
       Log.logInfo("Search canceled: " + e.getMessage()); //$NON-NLS-1$
     }
+    Log.logInfo("Search end: " + UCDetectorPlugin.getNow()); //$NON-NLS-1$
     if (searchProblems.size() > 0) {
       IStatus[] stati = searchProblems.toArray(new IStatus[searchProblems
           .size()]);
@@ -187,7 +189,10 @@ public class SearchManager {
     checkForCancel();
     search++;
     if (search % 100 == 0) {
-      Log.logInfo("    searched " + search + " of " + searchTotal); //$NON-NLS-1$ //$NON-NLS-2$ 
+      Log.logInfo("    searched " + search + " of " + searchTotal //$NON-NLS-1$ //$NON-NLS-2$
+          + ", markers: " //$NON-NLS-1$ 
+          + markerCreated + ", problems: " + searchProblems.size() //$NON-NLS-1$ 
+          + " - " + UCDetectorPlugin.getNow()); //$NON-NLS-1$ 
     }
   }
 
