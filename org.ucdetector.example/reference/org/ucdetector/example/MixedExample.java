@@ -19,6 +19,8 @@ public class MixedExample {
   public static void usedOnlyByTests() {}
 	
   public void helper() {}
+  
+  public class UnusedClass{}
 
   public int unusedIgnore = 0; // NO_UCD
 
