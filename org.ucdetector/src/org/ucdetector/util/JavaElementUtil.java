@@ -757,4 +757,14 @@ public class JavaElementUtil {
     }
   }
    */
+
+  public static boolean hasMainMethod(IType member) throws JavaModelException {
+    IMethod[] methods = member.getMethods();
+    for (IMethod method : methods) {
+      if (method.isMainMethod()) {
+        return true;
+      }
+    }
+    return false;
+  }
 }
