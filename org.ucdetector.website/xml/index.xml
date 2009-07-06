@@ -141,14 +141,24 @@ It is possible to change several problems at once using quick fix dialog.
 			<td>
 <h3>Ignore code</h3>
 <!-- ======================================================================= -->
-Use "NO_UCD" tag in code, for lines, which should be ignored:
+Use // NO_UCD comment for lines, which should be ignored:
 <pre><span class="c4">/**
  * Class is only used by reflection.
- * Write a <strong>"NO_UCD"</strong> comment at the end of the line.
+ * Write a <strong>// NO_UCD</strong> comment at the end of the line.
  * This line will be ignored by UCDetector.
  */</span>
 <span class="c2"><strong>public</strong></span> <span class="c5"><strong>class</strong></span> BeanExample <span class="c6"><strong>{</strong></span> <span class="c7">// <strong>NO_UCD</strong></span></pre>
-			</td>
+
+Or use @SuppressWarnings("ucd") annotation for code, which should be ignored:
+<pre><span class="c4">/**
+ * Class is only used by reflection.
+ * Add a <strong>@SuppressWarnings("ucd")</strong> annotation.
+ * This line will be ignored by UCDetector.
+ */</span>
+<strong>@SuppressWarnings("ucd")</strong>
+<span class="c2"><strong>public</strong></span> <span class="c5"><strong>class</strong></span> BeanExample <span class="c6"><strong>{</strong></span></pre>
+
+</td>
 <!-- right ================================================== -->
 			<td></td>
 		</tr>
