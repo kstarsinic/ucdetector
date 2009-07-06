@@ -51,50 +51,27 @@ public class SearchManager {
   private static final String START_SEARCHING = "\nStart searching {0} {1}..."; //$NON-NLS-1$
   private static final boolean DEBUG = Log
       .isDebugOption("org.ucdetector/debug/search"); //$NON-NLS-1$
-  /**
-   * Information for user, that we are searching for final stuff
-   */
+  /** Information for user, that we are searching for final stuff */
   private static final String SEARCH_FINAL_MESSAGE = "final"; //$NON-NLS-1$
-  /**
-   * Get Information about code lines in source code files
-   */
+  /** Get Information about code lines in source code files   */
   private final LineManger lineManger = new LineManger();
-  /**
-   * Show progress to user
-   */
+  /** Show progress to user */
   private final UCDProgressMonitor monitor;
-  /**
-   * Number of classes, methods, fields to search
-   */
+  /** Number of classes, methods, fields to search */
   private final int searchTotal;
-  /**
-   * Number UCDetector problems already found
-   */
+  /** Number UCDetector problems already found */
   private int markerCreated;
-
-  /**
-   * Number of classes, methods, fields already searched
-   */
+  /** Number of classes, methods, fields already searched */
   private int search = 0;
-  /**
-   * Pattern for text file search like *.xml;*.java
-   */
+  /** Pattern for text file search like *.xml;*.java  */
   private final String[] filePatternLiteralSearch;
-  /**
-   * shortcut to skip methods and fields of classes which have no references
-   */
+  /** shortcut to skip methods and fields of classes which have no references */
   private final List<IType> noRefTypes = new ArrayList<IType>();
-  /**
-   * contains all exceptions happened during search
-   */
+  /** contains all exceptions happened during search */
   private final List<IStatus> searchProblems = new ArrayList<IStatus>();
-  /**
-   * Factory to create markers
-   */
+  /** Factory to create markers */
   private final MarkerFactory markerFactory;
-  /**
-   * handle final stuff
-   */
+  /** handle final stuff   */
   private final FinalHandler finalHandler;
 
   public SearchManager(UCDProgressMonitor monitor, int searchTotal,
@@ -111,17 +88,15 @@ public class SearchManager {
    * @param types classes to search
    * @param methods methods to search
    * @param fields fields to search
-   * @throws CoreException, when a problems happens during search 
    */
   public final void search(List<IType> types, List<IMethod> methods,
-      List<IField> fields) throws CoreException {
+      List<IField> fields) {
     Log.logInfo("Search start: " + UCDetectorPlugin.getNow()); //$NON-NLS-1$
     Log.logInfo(types.size() + " types to search"); //$NON-NLS-1$
     Log.logInfo(methods.size() + " methods to search"); //$NON-NLS-1$
     Log.logInfo(fields.size() + " fields to search"); //$NON-NLS-1$
-    // first searchTypes to fill noRefTypes!
     try {
-      searchTypes(types);
+      searchTypes(types); // first searchTypes to fill noRefTypes!
       searchMethods(methods);
       searchFields(fields);
     }
@@ -134,7 +109,7 @@ public class SearchManager {
           .size()]);
       MultiStatus status = new MultiStatus(UCDetectorPlugin.ID, IStatus.ERROR,
           stati, stati.length + " errors happened during UCDetection", null); //$NON-NLS-1$
-      throw new CoreException(status);
+      UCDetectorPlugin.logStatus(status);
     }
   }
 
@@ -165,46 +140,6 @@ public class SearchManager {
   }
 
   /**
-   * Fix [ 2810802 ] UCDetector crashes with an Exception
-   */
-  private void handleSearchException(IMember member, Exception ex) {
-    if (ex instanceof OperationCanceledException) {
-      throw (OperationCanceledException) ex;
-    }
-    String searchInfo = JavaElementUtil.getMemberTypeString(member);
-    String elementName = JavaElementUtil.getElementName(member);
-    String message = "Problems searching " + searchInfo + " " + elementName; //$NON-NLS-1$ //$NON-NLS-2$
-    Log.logError(message, ex);
-    Status status = new Status(IStatus.ERROR, UCDetectorPlugin.ID,
-        IStatus.ERROR, message, ex);
-    markerFactory.reportDetectionProblem(status);
-    searchProblems.add(status);
-    if (searchProblems.size() > 100) {
-      throw new OperationCanceledException("Stopped searching. To many errors!"); //$NON-NLS-1$
-    }
-  }
-
-  private void startSearch(IMember member) {
-    monitor.setActiveSearchElement(member);
-    checkForCancel();
-    search++;
-    if (search % 100 == 0) {
-      Log.logInfo("    searched " + search + " of " + searchTotal //$NON-NLS-1$ //$NON-NLS-2$
-          + ", markers: " //$NON-NLS-1$ 
-          + markerCreated + ", problems: " + searchProblems.size() //$NON-NLS-1$ 
-          + " - " + UCDetectorPlugin.getNow()); //$NON-NLS-1$ 
-    }
-  }
-
-  private void checkForCancel() {
-    monitor.throwIfIsCanceled();
-  }
-
-  public int getMarkerCreated() {
-    return markerCreated;
-  }
-
-  /**
    * Search methods
    */
   private void searchMethods(List<IMethod> methods) {
@@ -215,21 +150,18 @@ public class SearchManager {
         startSearch(method);
         monitor.worked(1);
         IType type = JavaElementUtil.getTypeFor(method, false);
-        // Ignore anonymous classes
         if (type.isAnonymous()) {
-          continue;
+          continue; // first searchTypes to fill noRefTypes!
         }
-        // Ignore types, which have no references
         if (noRefTypes.contains(type)) {
-          continue;
+          continue; // Ignore types, which have no references
         }
-        // Ignore methods overriding java.lang.Object methods
         if (JavaElementUtil.isMethodOfJavaLangObject(method)) {
-          continue;
+          continue; // Ignore types, which have no references
         }
-        // Ignore serialization methods
+
         if (JavaElementUtil.isSerializationMethod(method)) {
-          continue;
+          continue; // Ignore serialization methods
         }
         int line = lineManger.getLine(method);
         if (line == LineManger.LINE_NOT_FOUND) {
@@ -237,11 +169,6 @@ public class SearchManager {
         }
         String searchInfo = JavaElementUtil.getMemberTypeString(method);
         updateMonitorMessage(method, "override/implements", searchInfo); //$NON-NLS-1$
-        // Ignore methods overriding or implementing other methods
-        //      boolean isOverride = JavaElementUtil.isOverrideOrImplements(method);
-        //      if (isOverride) {
-        //        continue;
-        //      }
 
         // it is very expensive to call this method!!!
         StopWatch stop = new StopWatch(method);
@@ -301,9 +228,8 @@ public class SearchManager {
         if (noRefTypes.contains(type)) {
           continue;
         }
-        // Ignore anonymous classes
         if (type.isAnonymous()) {
-          continue;
+          continue; // Ignore anonymous classes
         }
         updateMonitorMessage(field, Messages.SearchManager_SearchReferences,
             searchInfo);
@@ -321,6 +247,47 @@ public class SearchManager {
         handleSearchException(field, ex);
       }
     }
+  }
+
+  /**
+   * Fix [ 2810802 ] UCDetector crashes with an Exception
+   */
+  private void handleSearchException(IMember member, Exception ex) {
+    if (ex instanceof OperationCanceledException) {
+      throw (OperationCanceledException) ex;
+    }
+    String searchInfo = JavaElementUtil.getMemberTypeString(member);
+    String elementName = JavaElementUtil.getElementName(member);
+    String message = "Problems searching " + searchInfo + " " + elementName; //$NON-NLS-1$ //$NON-NLS-2$
+    Log.logError(message, ex);
+    Status status = new Status(IStatus.ERROR, UCDetectorPlugin.ID,
+        IStatus.ERROR, message, ex);
+    markerFactory.reportDetectionProblem(status);
+    searchProblems.add(status);
+    if (searchProblems.size() > 100) {
+      throw new OperationCanceledException("Stopped searching. To many errors!"); //$NON-NLS-1$
+    }
+  }
+
+  private void startSearch(IMember member) {
+    monitor.setActiveSearchElement(member);
+    checkForCancel();
+    search++;
+    if (search % 100 == 0) {
+      Log.logInfo("    searched " + search //$NON-NLS-1$ 
+          + " of " + searchTotal //$NON-NLS-1$ 
+          + ", markers: " + markerCreated + //$NON-NLS-1$ 
+          ", problems: " + searchProblems.size() //$NON-NLS-1$ 
+          + " - " + UCDetectorPlugin.getNow()); //$NON-NLS-1$ 
+    }
+  }
+
+  private void checkForCancel() {
+    monitor.throwIfIsCanceled();
+  }
+
+  public int getMarkerCreated() {
+    return markerCreated;
   }
 
   /**
@@ -368,11 +335,9 @@ public class SearchManager {
     }
     VisibilityHandler visibilityHandler = new VisibilityHandler(markerFactory,
         member);
-
     UCDSearchRequestor foundResult = searchJavaImpl(member, visibilityHandler);
     int found = foundResult.found;
     // System.out.println("found: " + found + " - " + foundResult.foundTest);
-    // 
     boolean created = false;
     if (found > 0 && (found == foundResult.foundTest)) {
       created = markerFactory.createReferenceMarkerTestOnly(member, line);
@@ -404,7 +369,7 @@ public class SearchManager {
     }
     // Fix for BUG 2808853: Don't create "0 references marker" for classes with main methods
     if (member instanceof IType) {
-      if (hasMainMethod((IType) member)) {
+      if (JavaElementUtil.hasMainMethod((IType) member)) {
         return found;
       }
     }
@@ -414,16 +379,6 @@ public class SearchManager {
       markerCreated++;
     }
     return found;
-  }
-
-  private static boolean hasMainMethod(IType member) throws JavaModelException {
-    IMethod[] methods = member.getMethods();
-    for (IMethod method : methods) {
-      if (method.isMainMethod()) {
-        return true;
-      }
-    }
-    return false;
   }
 
   /**
@@ -489,7 +444,6 @@ public class SearchManager {
         visibilityHandler);
     try {
       // If we use monitor here, progressbar is very confusing!
-      // UCDTextSearchVisitor
       if (UCDetectorPlugin.isHeadlessMode()) {
         // special search without UI stuff, which fails in headless mode 
         new UCDTextSearchVisitor(requestor, searchPattern).search(scope, null);
@@ -504,8 +458,7 @@ public class SearchManager {
     catch (OutOfMemoryError e) {
       UCDetectorPlugin.handleOutOfMemoryError(e);
     }
-    // bug fix [ 2373808 ]:
-    // Classes found by text search should have no markers
+    // bug fix [ 2373808 ]: Classes found by text search should have no markers
     if (requestor.found > 0) {
       if (Log.DEBUG) {
         Log.logDebug("Matches found searching class name '" + searchString //$NON-NLS-1$
@@ -722,4 +675,3 @@ public class SearchManager {
     return (IJavaElement) matchElement;
   }
 }
-// 467
