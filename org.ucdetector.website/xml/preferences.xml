@@ -171,27 +171,27 @@ For more details, check bug:
 <h3>Other</h3>
 <!-- ============================= -->
 <p><b>HTML and XML Report file</b>:<br></br>
+A xml report is created in the same directory as the html file.<br></br>
 Enter file name, if you want to create a report like this:
 </p>
 
-<table border="1"  summary="UCDetector report">
-<thead align="center">
-<tr bgcolor="#C0C0C0"><th>Nr</th><th>Warn level</th><th>Location</th><th>Description</th></tr>
-</thead>
-<tr><td>1</td><td>Warning</td><td>org.ucdetector.MixedExample.<br></br>declaration(MixedExample.java:4)</td><td>Change visibility of "MixedExample" to default</td></tr>
-<tr><td>2</td><td>Warning</td><td>org.ucdetector.MixedExample.<br></br>unusedMethod(MixedExample.java:7)</td><td>Method "unusedMethod" has 0 references</td></tr>
-<tr><td>3</td><td>Warning</td><td>org.ucdetector.MixedExample.<br></br>makePrivateMethod(MixedExample.java:10)</td><td>Method "makePrivateMethod" has 0 references</td></tr>
-<tr><td>4</td><td>Warning</td><td>org.ucdetector.MixedExample.<br></br>useFinal(MixedExample.java:5)</td><td>Use "final" for field "useFinal"</td></tr>
+Searched started: 06.07.09 23:58. Duration: 2.18 seconds
+<table border="1"><thead align="center"><tr bgcolor="#C0C0C0"><th>Location*</th><th>Nr</th><th>Description</th><th>References**</th><th>Type</th></tr>
+</thead><tr bgcolor="#FFFACD"><td>org.ucdetector.example.MixedExample.declaration(MixedExample.java:23)</td><td align="right">1</td><td>Member class "MixedExample$UnusedClass" has 0 references</td><td align="right">0</td><td>Member class</td></tr>
+<tr bgcolor="#E6E6FA"><td>org.ucdetector.example.MixedExample.localMethod(MixedExample.java:15)</td><td align="right">2</td><td>Change visibility of Method "MixedExample.localMethod()" to private</td><td align="right">-</td><td>Method</td></tr>
+<tr bgcolor="#FFFACD"><td>org.ucdetector.example.MixedExample.usedOnceMethod(MixedExample.java:17)</td><td align="right">3</td><td>Method "MixedExample.usedOnceMethod()" has 1 references</td><td align="right">1</td><td>Method</td></tr>
+<tr bgcolor="#E6E6FA"><td>org.ucdetector.example.MixedExample.usedOnlyByTests(MixedExample.java:19)</td><td align="right">4</td><td>Method "MixedExample.usedOnlyByTests()" is only called from tests</td><td align="right">-</td><td>Method</td></tr>
+<tr bgcolor="#FFFACD"><td>org.ucdetector.example.MixedExample.helper(MixedExample.java:21)</td><td align="right">5</td><td>Use "final" for Method "MixedExample.helper()" - apply carefully!</td><td align="right">-</td><td>Method</td></tr>
+<tr bgcolor="#E6E6FA"><td>org.ucdetector.example.MixedExample.localField(MixedExample.java:9)</td><td align="right">6</td><td>Change visibility of Field "MixedExample.localField" to private</td><td align="right">-</td><td>Field</td></tr>
+<tr bgcolor="#FFFACD"><td>org.ucdetector.example.MixedExample.readOnlyField(MixedExample.java:11)</td><td align="right">7</td><td>Use "final" for  Field "MixedExample.readOnlyField"</td><td align="right">-</td><td>Field</td></tr>
+<tr bgcolor="#E6E6FA"><td>org.ucdetector.example.MixedExample.UNUSED(MixedExample.java:13)</td><td align="right">8</td><td>Constant "MixedExample.UNUSED" has 0 references</td><td align="right">0</td><td>Constant</td></tr>
 </table>
 <p>
-To create custom reports change:
-<pre>
-ECLIPSE_HOME/plugins/org.ucdetector_*.jar/org/ucdetector/report/html.xslt
-</pre>
-</p>
-<p>
-A xml report is created in the same directory as the html file.
-</p>
+* To get links to the source locations, copy and paste table to Eclipse 'Java Stack Trace Console'<br/>
+** Set 'Detect code with max number of references' &gt; 0<br/>
+To create custom reports change ECLIPSE_HOME/plugins/org.ucdetector_*.jar/org/ucdetector/report/html.xslt       
+</p>Searched in:<ul><li>MixedExample.java</li></ul>
+
 
 
 <b>Max class cycle size</b>:<br></br>
