@@ -53,7 +53,7 @@ public class UCDetectorPlugin extends AbstractUIPlugin {
   public static final String HELP_ID_PREFERENCES = ID
       + ".ucd_context_id_preferences";//$NON-NLS-1$
   public static final DateFormat DATE_FORMAT = DateFormat.getDateTimeInstance(
-      DateFormat.SHORT, DateFormat.SHORT, Locale.getDefault());
+      DateFormat.MEDIUM, DateFormat.MEDIUM, Locale.getDefault());
 
   public UCDetectorPlugin() {
     UCDetectorPlugin.plugin = this;
