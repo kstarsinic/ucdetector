@@ -20,8 +20,6 @@ import org.eclipse.jdt.core.IJavaElement;
 import org.eclipse.jdt.core.IMember;
 import org.eclipse.jdt.core.IPackageFragmentRoot;
 import org.eclipse.jdt.core.JavaModelException;
-import org.eclipse.jdt.ui.JavaUI;
-import org.eclipse.jface.action.Action;
 import org.eclipse.jface.action.IAction;
 import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.jface.resource.ImageDescriptor;
@@ -29,8 +27,6 @@ import org.eclipse.jface.viewers.ISelection;
 import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Event;
-import org.eclipse.ui.IEditorPart;
-import org.eclipse.ui.IPageLayout;
 import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.actions.ActionDelegate;
 import org.eclipse.ui.progress.IProgressConstants;
@@ -99,49 +95,19 @@ public abstract class AbstractUCDetectorAction extends ActionDelegate {
         });
       }
     };
-    job.setProperty(IProgressConstants.KEEP_PROPERTY, Boolean.TRUE);
-    ImageDescriptor ucdIcon = UCDetectorPlugin
-        .getImageDescriptor(UCDetectorPlugin.IMAGE_UCD);
-    job.setProperty(IProgressConstants.ICON_PROPERTY, ucdIcon);
-    IAction openEditor = new OpenInEditorAction(iterator);
-    job.setProperty(IProgressConstants.ACTION_PROPERTY, openEditor);
-    // http://www.eclipse.org/articles/Article-Concurrency/jobs-api.html
-    //    job.setRule(ResourcesPlugin.getWorkspace().getRoot());
-    job.setUser(true);
+    setJobProperty(job);
     job.schedule();
   }
 
   /**
-   * Open the element UCDetetor detects in the java editor
+   * Override, to set custom job properties!
    */
-  private final class OpenInEditorAction extends Action {
-    private final AbstractUCDetectorIterator iterator;
-
-    public OpenInEditorAction(AbstractUCDetectorIterator iterator) {
-      this.iterator = iterator;
-    }
-
-    @Override
-    public void run() {
-      try {
-        UCDProgressMonitor monitor = iterator.getMonitor();
-        if (monitor.isFinished()) {
-          // See org.eclipse.ui.views.markers.MarkerViewUtil.getViewId()
-          UCDetectorPlugin.getActivePage()
-              .showView(IPageLayout.ID_PROBLEM_VIEW);
-          return;
-        }
-        IJavaElement element = monitor.getActiveSearchElement();
-        if (element != null) {
-          IEditorPart part = JavaUI.openInEditor(element, true, false);
-          JavaUI.revealInEditor(part, element);
-        }
-      }
-      catch (Exception ex) {
-        Log.logError("Can't open view", //$NON-NLS-1$
-            ex);
-      }
-    }
+  protected void setJobProperty(Job job) {
+    job.setProperty(IProgressConstants.KEEP_PROPERTY, Boolean.TRUE);
+    ImageDescriptor ucdIcon = UCDetectorPlugin
+        .getImageDescriptor(UCDetectorPlugin.IMAGE_UCD);
+    job.setProperty(IProgressConstants.ICON_PROPERTY, ucdIcon);
+    job.setProperty(IProgressConstants.KEEP_PROPERTY, Boolean.TRUE);
   }
 
   /**

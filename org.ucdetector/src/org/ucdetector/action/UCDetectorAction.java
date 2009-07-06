@@ -9,12 +9,22 @@ package org.ucdetector.action;
 
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
+import org.eclipse.core.runtime.jobs.Job;
+import org.eclipse.jdt.core.IJavaElement;
+import org.eclipse.jdt.ui.JavaUI;
+import org.eclipse.jface.action.Action;
+import org.eclipse.jface.action.IAction;
 import org.eclipse.osgi.util.NLS;
+import org.eclipse.ui.IEditorPart;
+import org.eclipse.ui.IPageLayout;
+import org.eclipse.ui.progress.IProgressConstants;
+import org.ucdetector.Log;
 import org.ucdetector.Messages;
 import org.ucdetector.UCDetectorPlugin;
 import org.ucdetector.iterator.AbstractUCDetectorIterator;
 import org.ucdetector.iterator.UCDetectorIterator;
 import org.ucdetector.preferences.Prefs;
+import org.ucdetector.search.UCDProgressMonitor;
 
 /**
  * Run "detect"
@@ -26,6 +36,39 @@ public class UCDetectorAction extends AbstractUCDetectorAction {// NO_UCD
   protected AbstractUCDetectorIterator createIterator() {
     iterator = new UCDetectorIterator();
     return iterator;
+  }
+
+  @Override
+  protected void setJobProperty(Job job) {
+    super.setJobProperty(job);
+    IAction openEditor = new OpenInEditorAction();
+    job.setProperty(IProgressConstants.ACTION_PROPERTY, openEditor);
+  }
+
+  /**
+   * Open the element UCDetetor detects in the java editor
+   */
+  private final class OpenInEditorAction extends Action {
+    @Override
+    public void run() {
+      try {
+        UCDProgressMonitor monitor = iterator.getMonitor();
+        if (monitor.isFinished()) {
+          // See org.eclipse.ui.views.markers.MarkerViewUtil.getViewId()
+          UCDetectorPlugin.getActivePage()
+              .showView(IPageLayout.ID_PROBLEM_VIEW);
+          return;
+        }
+        IJavaElement element = monitor.getActiveSearchElement();
+        if (element != null) {
+          IEditorPart part = JavaUI.openInEditor(element, true, false);
+          JavaUI.revealInEditor(part, element);
+        }
+      }
+      catch (Exception ex) {
+        Log.logError("Can't open view", ex);//$NON-NLS-1$
+      }
+    }
   }
 
   @Override
