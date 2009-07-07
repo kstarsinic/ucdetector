@@ -34,7 +34,8 @@ public class ReportParam {
     sb.append("MARKER{").append(getLevel()).append(';').append(getMessage()); //$NON-NLS-1$
     IResource resource = getJavaElement().getResource();
     if (resource != null) {
-      sb.append(';').append(resource.getFullPath()).append(':').append(getLine());
+      sb.append(';').append(resource.getFullPath()).append(':').append(
+          getLine());
     }
     else {
       sb.append(";line=").append(getLine()); //$NON-NLS-1$

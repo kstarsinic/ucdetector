@@ -724,6 +724,7 @@ public class JavaElementUtil {
     }
     return false;
   }
+
   /*
    * @return the annotation for a method like @org.junit.Test
    * This method seems to be slow, because it needs to parse
