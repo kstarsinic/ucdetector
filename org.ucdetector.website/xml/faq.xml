@@ -5,7 +5,7 @@
 		Check problems view filters:
   <ul>
     <li>Click the small triangle in Problems View</li>
-		<li>Configure Contens...</li>
+		<li>Configure Contents...</li>
 		<li>Use "Group by type"</li>
 		<li>Preferences/marker limit</li>
 	</ul>
@@ -15,13 +15,13 @@
 	<ul>
 		<li>Run UCDetector/clean markers</li>
 		<li>Group warnings by type</li>
-		<li>Filter UCDetector warnings: Configure Contens.../Types</li>
+		<li>Filter UCDetector warnings: Configure Contents.../Types</li>
 	</ul>
 	<p/>
 	
 	<b>How do I fix a OutOfMemoryError?</b>
 	<br/>
-		Increase java heap space by declaring vm parameter in <code>ECLIPSE_HOME/eclipse.ini</code>:
+		Increase java heap space by declaring VM parameter in <code>ECLIPSE_HOME/eclipse.ini</code>:
 		<pre>
 -vmargs
 -Xmx500m
