@@ -152,13 +152,13 @@ public class SearchManager {
         monitor.worked(1);
         IType type = JavaElementUtil.getTypeFor(method, false);
         if (type.isAnonymous()) {
-          continue; // first searchTypes to fill noRefTypes!
+          continue;// Ignore anonymous types
         }
         if (noRefTypes.contains(type)) {
           continue; // Ignore types, which have no references
         }
         if (JavaElementUtil.isMethodOfJavaLangObject(method)) {
-          continue; // Ignore types, which have no references
+          continue; // Ignore methods from java.lang.Object
         }
 
         if (JavaElementUtil.isSerializationMethod(method)) {
