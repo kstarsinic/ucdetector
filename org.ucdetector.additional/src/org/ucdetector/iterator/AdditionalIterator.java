@@ -27,6 +27,6 @@ public abstract class AdditionalIterator extends AbstractUCDetectorIterator {
         ANALYZE_MARKER_EXAMPLE, WarnLevel.WARNING);
     getMarkerFactory().reportMarker(reportParam);
   }
-  
+
   public abstract String getMessage();
 }

@@ -52,7 +52,7 @@
 	<extension point="org.eclipse.ui.editors.markerAnnotationSpecification">
 		<specification
 				annotationType="org.ucdetector.analyzeMarkerExample"
-				icon="icons/example.gif"
+				icon="icons/help_search.gif"
 				includeOnPreferencePage="true"
 				label="%specification.label.0"/>
 	</extension>
@@ -75,6 +75,7 @@
        <action
              class="org.ucdetector.action.CheckUcdMarkerAction"
              enablesFor="+"
+             icon="$nl$/icons/help_search.gif"
              id="org.ucdetector.action.CheckUcdMarkerAction"
              label="%action.label.0"
              menubarPath="ucdetectorGroup/additional">
@@ -110,7 +111,7 @@
        point="org.eclipse.ui.editors.markerAnnotationSpecification">
     <specification
           annotationType="org.ucdetector.analyzeMarkerCheckUcdMarkers"
-          icon="icons/example.gif"
+          icon="icons/help_search.gif"
           includeOnPreferencePage="true"
           label="%specification.label.0">
     </specification>
