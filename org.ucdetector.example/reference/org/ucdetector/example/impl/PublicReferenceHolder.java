@@ -16,11 +16,12 @@ import org.ucdetector.example.bugs.Bug2539795Main;
 import org.ucdetector.example.bugs.Bug2721955;
 import org.ucdetector.example.bugs.Bug2743872;
 import org.ucdetector.example.bugs.Bug2743908;
-import org.ucdetector.example.bugs.Bug2776029FinalFieldBase;
 import org.ucdetector.example.bugs.Bug2776029FinalField;
+import org.ucdetector.example.bugs.Bug2776029FinalFieldBase;
 import org.ucdetector.example.bugs.impl.Bug2225016Impl;
 import org.ucdetector.example.classes.AnnotationExample;
 import org.ucdetector.example.classes.AnonymousClass;
+import org.ucdetector.example.classes.ClassInJarExample;
 import org.ucdetector.example.classes.EnumExample;
 import org.ucdetector.example.classes.LocalClassExample;
 import org.ucdetector.example.classes.MemberClassExample;
@@ -64,6 +65,7 @@ public class PublicReferenceHolder {
   @SuppressWarnings("deprecation")
   @AnnotationExample(parameterExmaple = "1")
   public static void main(String[] args) throws Throwable {
+    System.out.println(ClassInJarExample.class.getName());
     System.out.println(Bug2776029FinalField.class.getName());
     System.out.println(Bug2776029FinalFieldBase.class.getName());
     // ---------------------------------------------------------------------
