@@ -56,4 +56,63 @@
 				includeOnPreferencePage="true"
 				label="%specification.label.0"/>
 	</extension>
+ <extension
+       point="org.eclipse.ui.popupMenus">
+    <objectContribution
+          adaptable="true"
+          id="org.ucdetector.popupMenus.project"
+          objectClass="org.eclipse.jdt.core.IJavaElement">
+       <menu
+             id="ucdetectorGroup"
+             label="%popupMenus.root"
+             path="additions">
+       </menu>
+    </objectContribution>
+    <objectContribution
+          adaptable="true"
+          id="org.ucdetector.popupMenus.project.Analyze"
+          objectClass="org.eclipse.jdt.core.IJavaElement">
+       <action
+             class="org.ucdetector.action.CheckUcdMarkerAction"
+             enablesFor="+"
+             id="org.ucdetector.action.CheckUcdMarkerAction"
+             label="%action.label.0"
+             menubarPath="ucdetectorGroup/additional">
+       </action>
+    </objectContribution>
+ </extension>
+ <extension
+       id="org.ucdetector.analyzeMarkerCheckUcdMarkers"
+       name="UCDetector Marker (Check Ucd Markers)"
+       point="org.eclipse.core.resources.markers">
+    <super
+          type="org.eclipse.core.resources.problemmarker">
+    </super>
+    <super
+          type="org.eclipse.core.resources.textmarker">
+    </super>
+    <super
+          type="org.ucdetector.analyzeMarker">
+    </super>
+    <persistent
+          value="true">
+    </persistent>
+ </extension>
+ <extension
+       point="org.eclipse.ui.editors.annotationTypes">
+    <type
+          markerType="org.ucdetector.analyzeMarkerCheckUcdMarkers"
+          name="org.ucdetector.analyzeMarkerCheckUcdMarkers"
+          super="org.eclipse.ui.workbench.texteditor.warning">
+    </type>
+ </extension>
+ <extension
+       point="org.eclipse.ui.editors.markerAnnotationSpecification">
+    <specification
+          annotationType="org.ucdetector.analyzeMarkerCheckUcdMarkers"
+          icon="icons/example.gif"
+          includeOnPreferencePage="true"
+          label="%specification.label.0">
+    </specification>
+ </extension>
 </plugin>

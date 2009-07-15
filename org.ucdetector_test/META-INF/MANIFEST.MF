@@ -7,13 +7,7 @@ Bundle-Vendor: %providerName
 Bundle-Localization: plugin
 Bundle-RequiredExecutionEnvironment: J2SE-1.5
 Require-Bundle: org.eclipse.ui,
- org.eclipse.core.runtime,
- org.eclipse.core.resources,
- org.eclipse.jdt.core,
  org.junit,
  org.ucdetector
 Bundle-ClassPath: .
-Export-Package: org.ucdetector.action;uses:="org.eclipse.core.runtime,org.ucdetector.iterator",
- org.ucdetector.iterator;uses:="org.eclipse.jdt.core,org.eclipse.core.resources",
- org.ucdetector.jar,
- org.ucdetector.preferences;uses:="junit.framework"
+
