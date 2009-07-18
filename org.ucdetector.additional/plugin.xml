@@ -5,8 +5,7 @@
   <!-- POP UP                                                                -->
   <!-- ===================================================================== -->
 	<extension point="org.eclipse.ui.popupMenus">
-		<objectContribution
-				adaptable="true"
+		<objectContribution	adaptable="true"
 				objectClass="org.eclipse.jdt.core.IJavaElement"
 				id="org.ucdetector.popupMenus.project">
 			<menu label="%popupMenus.root"
@@ -28,46 +27,7 @@
 					icon="$nl$/icons/example.gif"
 					menubarPath="ucdetectorGroup/additional"/>
 		</objectContribution>
-	</extension>
-
-  <!-- ===================================================================== -->
-   <!-- MARKER                                                               -->
-  <!-- ===================================================================== -->
-	<extension
-			id="org.ucdetector.analyzeMarkerExample"
-			name="UCDetector Marker (Example)"
-			point="org.eclipse.core.resources.markers">
-		<super type="org.eclipse.core.resources.problemmarker"/>
-		<super type="org.eclipse.core.resources.textmarker"/>
-		<super type="org.ucdetector.analyzeMarker"/>
-		<persistent value="true"></persistent>
-	</extension>
-
-	<extension point="org.eclipse.ui.editors.annotationTypes">
-		<type name="org.ucdetector.analyzeMarkerExample"
-				super="org.eclipse.ui.workbench.texteditor.warning"
-				markerType="org.ucdetector.analyzeMarkerExample"/>
-	</extension>
- 
-	<extension point="org.eclipse.ui.editors.markerAnnotationSpecification">
-		<specification
-				annotationType="org.ucdetector.analyzeMarkerExample"
-				icon="icons/help_search.gif"
-				includeOnPreferencePage="true"
-				label="%specification.label.0"/>
-	</extension>
- <extension
-       point="org.eclipse.ui.popupMenus">
-    <objectContribution
-          adaptable="true"
-          id="org.ucdetector.popupMenus.project"
-          objectClass="org.eclipse.jdt.core.IJavaElement">
-       <menu
-             id="ucdetectorGroup"
-             label="%popupMenus.root"
-             path="additions">
-       </menu>
-    </objectContribution>
+    <!-- CheckUcdMarkerAction ====================== -->
     <objectContribution
           adaptable="true"
           id="org.ucdetector.popupMenus.project.Analyze"
@@ -77,43 +37,59 @@
              enablesFor="+"
              icon="$nl$/icons/help_search.gif"
              id="org.ucdetector.action.CheckUcdMarkerAction"
-             label="%action.label.0"
+             label="%check.ucd.action.label"
              menubarPath="ucdetectorGroup/additional">
        </action>
-    </objectContribution>
- </extension>
- <extension
+		 </objectContribution>
+	</extension>
+
+  <!-- ===================================================================== -->
+  <!-- MARKER                                                                -->
+  <!-- ===================================================================== -->
+  <!-- Example ====================== -->
+	<extension point="org.eclipse.core.resources.markers"
+			id="org.ucdetector.analyzeMarkerExample"
+			name="UCDetector Marker (Example)"			>
+		<super type="org.eclipse.core.resources.problemmarker"/>
+		<super type="org.eclipse.core.resources.textmarker"/>
+		<super type="org.ucdetector.analyzeMarker"/>
+		<persistent value="true"></persistent>
+	</extension>
+
+  <!-- Check ====================== -->
+ <extension point="org.eclipse.core.resources.markers"
        id="org.ucdetector.analyzeMarkerCheckUcdMarkers"
-       name="UCDetector Marker (Check Ucd Markers)"
-       point="org.eclipse.core.resources.markers">
-    <super
-          type="org.eclipse.core.resources.problemmarker">
-    </super>
-    <super
-          type="org.eclipse.core.resources.textmarker">
-    </super>
-    <super
-          type="org.ucdetector.analyzeMarker">
-    </super>
-    <persistent
-          value="true">
-    </persistent>
+       name="UCDetector Marker (Check Ucd Markers)"      >
+    <super type="org.eclipse.core.resources.problemmarker"></super>
+    <super type="org.eclipse.core.resources.textmarker"></super>
+    <super type="org.ucdetector.analyzeMarker"></super>
+    <persistent value="true"></persistent>
  </extension>
- <extension
-       point="org.eclipse.ui.editors.annotationTypes">
-    <type
-          markerType="org.ucdetector.analyzeMarkerCheckUcdMarkers"
+
+  <!-- ===================================================================== -->
+  <!-- ANNOTATION TYPES                                                      -->
+  <!-- ===================================================================== -->
+	<extension point="org.eclipse.ui.editors.annotationTypes">
+		<type name="org.ucdetector.analyzeMarkerExample"
+				super="org.eclipse.ui.workbench.texteditor.warning"
+				markerType="org.ucdetector.analyzeMarkerExample"/>
+    <type  markerType="org.ucdetector.analyzeMarkerCheckUcdMarkers"
           name="org.ucdetector.analyzeMarkerCheckUcdMarkers"
-          super="org.eclipse.ui.workbench.texteditor.warning">
-    </type>
- </extension>
- <extension
-       point="org.eclipse.ui.editors.markerAnnotationSpecification">
+          super="org.eclipse.ui.workbench.texteditor.warning" />
+	</extension>
+ 
+  <!-- ===================================================================== -->
+  <!-- ANNOTATION SPECIFICATION                                              -->
+  <!-- ===================================================================== -->
+	<extension point="org.eclipse.ui.editors.markerAnnotationSpecification">
+		<specification annotationType="org.ucdetector.analyzeMarkerExample"
+				icon="icons/help_search.gif"
+				includeOnPreferencePage="true"
+				label="%example.specification.label"/>
     <specification
           annotationType="org.ucdetector.analyzeMarkerCheckUcdMarkers"
           icon="icons/help_search.gif"
           includeOnPreferencePage="true"
-          label="%specification.label.0">
-    </specification>
- </extension>
+          label="%check.ucd.specification.label"/>
+	</extension>
 </plugin>
