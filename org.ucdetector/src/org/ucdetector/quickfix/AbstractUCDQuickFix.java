@@ -324,7 +324,7 @@ abstract class AbstractUCDQuickFix extends WorkbenchMarkerResolution {
    * We need to call IEditorPart.doSave() the buffer later, to avoid this problem
    * @return lineDelimitter at lineNr or line separator from system
    */
-  protected String getLineDelimitter() {
+  protected final String getLineDelimitter() {
     return TextUtilities.getDefaultLineDelimiter(doc);
   }
 

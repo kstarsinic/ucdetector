@@ -101,7 +101,7 @@ public final class Prefs {
   /**
    * Separator used in text fields, which contain lists. Value is ","
    */
-  static final String LIST_SEPARATOR = ","; //$NON-NLS-1$
+  private static final String LIST_SEPARATOR = ","; //$NON-NLS-1$
 
   // FILTER GROUP --------------------------------------------------------------
   /**
