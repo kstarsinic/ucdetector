@@ -18,7 +18,7 @@ import org.ucdetector.Messages;
 import org.ucdetector.util.MarkerFactory.ElementType;
 
 /**
- * 'Fixes' code by adding @SuppressWarnings("UCD")
+ * 'Fixes' code by adding @SuppressWarnings("ucd")
  */
 class UseSuppressWarningsQuickFix extends AbstractUCDQuickFix {
 
@@ -44,7 +44,7 @@ class UseSuppressWarningsQuickFix extends AbstractUCDQuickFix {
     IRegion region = doc.getLineInformation(lineNr - 1);
     String indent = guessIndent(region);
     String declarationLine = doc.get(region.getOffset(), 0);
-    String twoLines = indent + "@SuppressWarnings(\"UCD\")" //$NON-NLS-1$
+    String twoLines = indent + "@SuppressWarnings(\"ucd\")" //$NON-NLS-1$
         + getLineDelimitter() + declarationLine;
     doc.replace(region.getOffset(), 0, twoLines);
   }
