@@ -103,6 +103,7 @@ public class MarkerReport implements IUCDetectorReport {
    * See:  {@link MarkerReport#createJavaElementString(IJavaElement)}
    */
   // TODO 2009-02-20: UCD tells to use default visibility. But compile error
+  @SuppressWarnings("ucd")
   public static class ElementTypeAndName {
     public ElementType elementType;
     protected String name;
