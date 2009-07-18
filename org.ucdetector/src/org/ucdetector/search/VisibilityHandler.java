@@ -17,7 +17,6 @@ import org.eclipse.jdt.core.IMethod;
 import org.eclipse.jdt.core.IPackageFragment;
 import org.eclipse.jdt.core.IType;
 import org.eclipse.jdt.core.JavaModelException;
-import org.ucdetector.Log;
 import org.ucdetector.preferences.Prefs;
 import org.ucdetector.util.JavaElementUtil;
 import org.ucdetector.util.MarkerFactory;
@@ -70,25 +69,32 @@ class VisibilityHandler {
         && !Prefs.isCheckReduceVisibilityToPrivate(startElement)) {
       return;
     }
-    IType startElementsType = JavaElementUtil.getTypeFor(startElement, true);
-    IType foundElementsType = JavaElementUtil.getTypeFor(foundElement, true);
-    if (startElementsType == null || foundElementsType == null) {
+    IType startPrimaryType = JavaElementUtil.getTypeFor(startElement, true);
+    IType foundPrimaryType = JavaElementUtil.getTypeFor(foundElement, true);
+    //
+    if (startPrimaryType == null || foundPrimaryType == null) {
       // reference in xml file found!
       setMaxVisibilityFound(VISIBILITY.PUBLIC);
       return;
     }
     // [ 2743908 ] Methods only called from inner class could be private
-    if (startElementsType.equals(foundElementsType)) {
-      if (startElement instanceof IType) {
-        try {
-          IType type = (IType) startElement;
-          setMaxVisibilityFound(type.isMember() && !type.isLocal() ? VISIBILITY.PRIVATE
-              : VISIBILITY.PROTECTED);
-        }
-        catch (JavaModelException e) {
-          Log.logError("Can't check visibility", e); //$NON-NLS-1$
-        }
-      }
+    if (startPrimaryType.equals(foundPrimaryType)) {
+      IType startType = JavaElementUtil.getTypeFor(startElement, false);
+      IType foundType = JavaElementUtil.getTypeFor(foundElement, false);
+      // [ 2804064 ] Access to enclosing type - make 2743908 configurable
+      boolean isPrimaryStart = startPrimaryType.equals(startType);
+      boolean isPrimaryFound = foundPrimaryType.equals(foundType);
+      setMaxVisibilityFound(isPrimaryStart && isPrimaryFound ? VISIBILITY.PRIVATE
+          : VISIBILITY.PROTECTED);
+      //      try {
+      //        boolean isMember = startType.isMember() || foundType.isMember();
+      //        boolean isLocal = startType.isLocal() || foundType.isLocal();
+      //        //            && !foundType.isLocal();
+      //      }
+      //      catch (JavaModelException e) {
+      //        Log.logError("Can't check visibility", e); //$NON-NLS-1$
+      //      }
+      //      }
       return;
     }
     IPackageFragment startPackage = JavaElementUtil.getPackageFor(startElement);

@@ -6,6 +6,7 @@ Bugfixes:
  - [ 2808853 ] Don't create "0 references marker" for classes with main methods
  - [ 2811049 ] Html report is overridden each run
  - [ 2810802 ] UCDetector crashes with an Exception
+ - [ 2804064 ] Access to enclosing type - make 2743908 configurable
 
 New features:
  - Improved running UCDetector headless: More Options. Refresh/compile workspace 

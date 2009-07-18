@@ -21,17 +21,14 @@ import org.eclipse.jdt.core.IPackageFragment;
 import org.ucdetector.util.JavaElementUtil;
 import org.ucdetector.util.MarkerFactory;
 
-public class MoveHandler {
+class MoveHandler {
   private final MarkerFactory markerFactory;
-  private final IMember startElement;
   private final Map<IPackageFragment, Integer> matchPerPackage = new HashMap<IPackageFragment, Integer>();
   private final IPackageFragment startPackage;
 
   MoveHandler(MarkerFactory markerFactory, IMember startElement) {
     this.markerFactory = markerFactory;
-    this.startElement = startElement;
-    startPackage = JavaElementUtil.getPackageFor(startElement);
-
+    this.startPackage = JavaElementUtil.getPackageFor(startElement);
   }
 
   void addMatch(IJavaElement match) {
@@ -42,6 +39,9 @@ public class MoveHandler {
   }
 
   boolean createMarker(IMember member, int line) throws CoreException {
+    if (matchPerPackage.isEmpty()) {
+      return false;
+    }
     Collection<Integer> matchCounts = matchPerPackage.values();
     int maxMatchCount = 0;
     for (Integer matchCount : matchCounts) {
