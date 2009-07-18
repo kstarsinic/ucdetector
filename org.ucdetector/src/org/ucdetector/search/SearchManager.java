@@ -89,15 +89,16 @@ public class SearchManager {
   public final void search(List<TypeContainer> typeContainers) {
     Log.logInfo("Search start: " + UCDetectorPlugin.getNow()); //$NON-NLS-1$
     try {
-      for (int i = 0; i < (typeContainers.size() - 1); i++) {
-        if (i % 10 == 0 || i == typeContainers.size()) {
-          Log.logInfo("Search " + fill(i + 1, 4) // //$NON-NLS-1$
+      int pos = 0;
+      for (TypeContainer container : typeContainers) {
+        pos++;
+        if (pos == 1 || pos % 10 == 0 || pos == typeContainers.size()) {
+          Log.logInfo("Search " + fill(pos, 4) // //$NON-NLS-1$
               + " of " + fill(typeContainers.size(), 4) //$NON-NLS-1$ 
               + " types. Markers " + fill(markerCreated, 4) //$NON-NLS-1$ 
               + ". Exceptions " + fill(searchProblems.size(), 2) //$NON-NLS-1$ 
               + " - " + UCDetectorPlugin.getNow()); //$NON-NLS-1$ 
         }
-        TypeContainer container = typeContainers.get(i);
         searchAndHandleException(container.getType());
         for (IMethod method : container.getMethods()) {
           searchAndHandleException(method);
