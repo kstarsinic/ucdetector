@@ -143,7 +143,7 @@ public abstract class AbstractUCDetectorAction extends ActionDelegate {
    * @return <code>true</code> when all javaElements are accessible.
    *         Accessibility is necessary to create markers.
    */
-  protected final boolean allAccessible() { // 
+  private final boolean allAccessible() { // 
     for (IJavaElement javaElement : selections) {
       try {
         if (javaElement instanceof IMember) {
