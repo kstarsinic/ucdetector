@@ -133,7 +133,7 @@ public class LineManger {
   }
 
   private static class FindUcdSuppressWarningsVisitor extends ASTMemberVisitor {
-    private final Set<Integer> ignoreLines = new LinkedHashSet<Integer>();
+    final Set<Integer> ignoreLines = new LinkedHashSet<Integer>();
     private final IScanner scanner;
 
     public FindUcdSuppressWarningsVisitor(IScanner scanner) {
@@ -304,8 +304,8 @@ public class LineManger {
    * Update scanner, if file has changed!
    */
   private static final class ScannerTimestamp {
-    private final long timeStamp;
-    private final IScanner scanner;
+    final long timeStamp;
+    final IScanner scanner;
 
     ScannerTimestamp(IScanner scanner, long timeStamp) {
       this.scanner = scanner;

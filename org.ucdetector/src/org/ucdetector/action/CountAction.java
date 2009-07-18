@@ -20,8 +20,8 @@ import org.ucdetector.iterator.CountIterator;
 /**
  * Run "count", show a dialog about counted classes, methods, fields...
  */
-public class CountAction extends AbstractUCDetectorAction {// NO_UCD
-  private CountIterator iterator;
+public class CountAction extends AbstractUCDetectorAction {
+  CountIterator iterator;
 
   @Override
   protected AbstractUCDetectorIterator createIterator() {

@@ -172,7 +172,7 @@ public class UCDetectorPreferencePage extends UCDetectorBasePreferencePage {
     private StringFieldEditor analyzeLiterals;
     private BooleanFieldEditor checkFullClassName;
 
-    private SynchBooleanFieldEditor(Composite parent) {
+    SynchBooleanFieldEditor(Composite parent) {
       super(Prefs.ANALYZE_LITERALS_CHECK,
           Messages.PreferencePage_LiteralsCheck, parent);
       this.parent = parent;
@@ -184,11 +184,11 @@ public class UCDetectorPreferencePage extends UCDetectorBasePreferencePage {
      * Necessary, because first "literal check box" must be created, then
      * analyzeLiterals
      */
-    private void setAnalyzeLiterals(StringFieldEditor analyzeLiterals) {
+    void setAnalyzeLiterals(StringFieldEditor analyzeLiterals) {
       this.analyzeLiterals = analyzeLiterals;
     }
 
-    private void setCheckFullClassName(BooleanFieldEditor checkFullClassName) {
+    void setCheckFullClassName(BooleanFieldEditor checkFullClassName) {
       this.checkFullClassName = checkFullClassName;
     }
 

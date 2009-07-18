@@ -105,10 +105,10 @@ class FinalHandler {
    * </ul>
    */
   private static final class CanMakeFinalRequestor extends SearchRequestor {
-    private boolean fieldHasWriteAccessFromMethod = false;
+    boolean fieldHasWriteAccessFromMethod = false;
     private final IField field;
 
-    private CanMakeFinalRequestor(IField field) {
+    CanMakeFinalRequestor(IField field) {
       this.field = field;
     }
 

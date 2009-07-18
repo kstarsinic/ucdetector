@@ -29,8 +29,8 @@ import org.ucdetector.search.UCDProgressMonitor;
 /**
  * Run "detect"
  */
-public class UCDetectorAction extends AbstractUCDetectorAction {// NO_UCD
-  private UCDetectorIterator iterator;
+public class UCDetectorAction extends AbstractUCDetectorAction {
+  UCDetectorIterator iterator;
 
   @Override
   protected AbstractUCDetectorIterator createIterator() {
@@ -48,7 +48,7 @@ public class UCDetectorAction extends AbstractUCDetectorAction {// NO_UCD
   /**
    * Open the element UCDetetor detects in the java editor
    */
-  private final class OpenInEditorAction extends Action {
+  final class OpenInEditorAction extends Action {
     @Override
     public void run() {
       try {

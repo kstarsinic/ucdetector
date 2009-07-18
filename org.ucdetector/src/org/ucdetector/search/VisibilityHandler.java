@@ -30,7 +30,7 @@ import org.ucdetector.util.MarkerFactory;
 class VisibilityHandler {
   private enum VISIBILITY {
     PRIVATE(0), PROTECTED(1), PUBLIC(2);
-    private final int value;
+    final int value;
 
     private VISIBILITY(int value) {
       this.value = value;

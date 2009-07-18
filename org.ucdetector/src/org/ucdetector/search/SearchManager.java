@@ -49,8 +49,7 @@ import org.ucdetector.util.StopWatch;
  * Search for class, methods, fields using the eclipse search mechanism
  */
 public class SearchManager {
-  private static final boolean DEBUG = Log
-      .isDebugOption("org.ucdetector/debug/search"); //$NON-NLS-1$
+  static final boolean DEBUG = Log.isDebugOption("org.ucdetector/debug/search"); //$NON-NLS-1$
   /** Information for user, that we are searching for final stuff */
   private static final String SEARCH_FINAL_MESSAGE = "final"; //$NON-NLS-1$
   /** Get Information about code lines in source code files   */
@@ -296,8 +295,8 @@ public class SearchManager {
   /**
    * check, if a field has read access
    */
-  private static final class FieldReadRequestor extends SearchRequestor {
-    private boolean hasReadAccess = false;
+  static final class FieldReadRequestor extends SearchRequestor {
+    boolean hasReadAccess = false;
 
     @Override
     public void acceptSearchMatch(SearchMatch match) {
@@ -478,17 +477,17 @@ public class SearchManager {
   /**
    * text search in files
    */
-  private static final class UCDFileSearchRequestor extends TextSearchRequestor {
-    private int found = 0;
-    private final VisibilityHandler visibilityHandler;
-    private final String searchString;
+  final class UCDFileSearchRequestor extends TextSearchRequestor {
+    int found = 0;
+    final VisibilityHandler visibilityHandler;
+    final String searchString;
 
     @Override
     public String toString() {
       return "'" + searchString + "' found=" + found; //$NON-NLS-1$ //$NON-NLS-2$
     }
 
-    private UCDFileSearchRequestor(String searchString,
+    UCDFileSearchRequestor(String searchString,
         VisibilityHandler visibilityHandler) {
       this.searchString = searchString;
       this.visibilityHandler = visibilityHandler;
@@ -542,9 +541,9 @@ public class SearchManager {
   /**
    * search java references
    */
-  private static final class UCDSearchRequestor extends SearchRequestor {
-    private int found = 0;
-    private int foundTest = 0;
+  static final class UCDSearchRequestor extends SearchRequestor {
+    int found = 0;
+    int foundTest = 0;
     private final IMember searchStart;
     private final VisibilityHandler visibilityHandler;
 
@@ -554,8 +553,7 @@ public class SearchManager {
           + foundTest;
     }
 
-    private UCDSearchRequestor(IMember searchStart,
-        VisibilityHandler visibilityHandler) {
+    UCDSearchRequestor(IMember searchStart, VisibilityHandler visibilityHandler) {
       this.searchStart = searchStart;
       this.visibilityHandler = visibilityHandler;
     }
@@ -624,7 +622,7 @@ public class SearchManager {
    * cancel search by throwing a {@link OperationCanceledException}
    * when necessary
    */
-  private static void checkCancelSearch(IJavaElement javaElement, int found,
+  static void checkCancelSearch(IJavaElement javaElement, int found,
       int foundTest) {
     if (Prefs.isDetectTestOnly() && (found == foundTest)) {
       // continue searching, because all matches are matches in test code
