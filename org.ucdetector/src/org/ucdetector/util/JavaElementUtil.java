@@ -631,8 +631,12 @@ public class JavaElementUtil {
     }
     StringBuilder sb = new StringBuilder();
     sb.append(javaElement.getElementName()).append("\t["); //$NON-NLS-1$
-    sb.append(javaElement.getClass().getName()).append("]"); //$NON-NLS-1$
+    sb.append(getClassName(javaElement)).append("]"); //$NON-NLS-1$
     return sb.toString();
+  }
+
+  public static String getClassName(IJavaElement javaElement) {
+    return javaElement == null ? "null" : javaElement.getClass().getName(); //$NON-NLS-1$
   }
 
   /**
