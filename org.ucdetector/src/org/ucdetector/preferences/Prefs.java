@@ -390,6 +390,7 @@ public final class Prefs {
   // ---------------------------------------------------------------------------
   // HELPER
   // ---------------------------------------------------------------------------
+  @SuppressWarnings("ucd")
   protected static void setStore_FOR_TEST(IPreferenceStore store_FOR_TEST) {
     Prefs.store_FOR_TEST = store_FOR_TEST;
   }
