@@ -67,11 +67,16 @@ public class UCDetectorCallBack { // NO_UCD
   }
 
   /** 
+   * #########################################################
+   * OVERRIDE THIS METHOD, TO DUMP ALL ITERATED IJavaElement's 
+   * #########################################################
+   * 
    * @param javaElement to handle
    * @throws CoreException in classes overriding this method */
   public void handleStartElement(IJavaElement javaElement) throws CoreException {
     // Dumping all javaElements
-    // System.out.println(JavaElementUtil.asString(javaElement));
+    // System.out.println(JavaElementUtil.getElementName(javaElement) + " - "
+    //    + JavaElementUtil.getClassName(javaElement));
   }
 
   /** 
