@@ -325,6 +325,8 @@ public class SearchManager {
     }
     VisibilityHandler visibilityHandler = new VisibilityHandler(markerFactory,
         member);
+    // TODO
+    MoveHandler moveHandler = new MoveHandler(markerFactory, member);
     UCDSearchRequestor foundResult = searchJavaImpl(member, visibilityHandler);
     int found = foundResult.found;
     // System.out.println("found: " + found + " - " + foundResult.foundTest);
