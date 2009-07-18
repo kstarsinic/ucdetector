@@ -43,7 +43,6 @@ import org.ucdetector.search.UCDProgressMonitor;
  * See feature request: [ 2653112 ] UCDetector should run as a ant task in
  * headless mode
  */
-@SuppressWarnings("boxing")
 public class UCDApplication implements IApplication {
   /**
    * @see org.eclipse.core.resources.IncrementalProjectBuilder
@@ -54,11 +53,14 @@ public class UCDApplication implements IApplication {
   private int buildType = 0;
 
   static {
-    buildTypes.put("FULL_BUILD", IncrementalProjectBuilder.FULL_BUILD);//$NON-NLS-1$
-    buildTypes.put("AUTO_BUILD", IncrementalProjectBuilder.AUTO_BUILD);//$NON-NLS-1$
-    buildTypes.put("CLEAN_BUILD", IncrementalProjectBuilder.CLEAN_BUILD);//$NON-NLS-1$
-    buildTypes.put(
-        "INCREMENTAL_BUILD", IncrementalProjectBuilder.INCREMENTAL_BUILD);//$NON-NLS-1$
+    buildTypes.put("FULL_BUILD" //$NON-NLS-1$
+        , Integer.valueOf(IncrementalProjectBuilder.FULL_BUILD));
+    buildTypes.put("AUTO_BUILD"//$NON-NLS-1$
+        , Integer.valueOf(IncrementalProjectBuilder.AUTO_BUILD));
+    buildTypes.put("CLEAN_BUILD"//$NON-NLS-1$
+        , Integer.valueOf(IncrementalProjectBuilder.CLEAN_BUILD));
+    buildTypes.put("INCREMENTAL_BUILD"//$NON-NLS-1$
+        , Integer.valueOf(IncrementalProjectBuilder.INCREMENTAL_BUILD));
   }
 
   public Object start(IApplicationContext context) throws Exception {
@@ -111,7 +113,7 @@ public class UCDApplication implements IApplication {
     sBuildType = (sBuildType == null) ? "AUTO_BUILD" : sBuildType; //$NON-NLS-1$
     Log.logInfo("\tBuildType         : " + sBuildType); //$NON-NLS-1$
     if (buildTypes.containsKey(sBuildType)) {
-      buildType = buildTypes.get(sBuildType);
+      buildType = buildTypes.get(sBuildType).intValue();
     }
     else {
       buildType = IncrementalProjectBuilder.AUTO_BUILD;
