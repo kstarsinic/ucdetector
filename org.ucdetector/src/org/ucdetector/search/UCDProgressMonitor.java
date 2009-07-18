@@ -65,7 +65,7 @@ public class UCDProgressMonitor implements IProgressMonitor {
     return delegate.isCanceled();
   }
 
-  public void throwIfIsCanceled() {
+  protected void throwIfIsCanceled() {
     if (isCanceled()) {
       throw new OperationCanceledException();
     }
