@@ -21,6 +21,7 @@ public class TypeContainer {
   private final List<IField> fields = new ArrayList<IField>();
   private final List<IMethod> methods = new ArrayList<IMethod>();
 
+  @SuppressWarnings("ucd")
   public TypeContainer(IType type) {
     this.type = type;
   }
@@ -37,6 +38,7 @@ public class TypeContainer {
     return methods;
   }
 
+  @SuppressWarnings("ucd")
   public int size() {
     return 1 + getFields().size() + getMethods().size();
   }
