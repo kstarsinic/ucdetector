@@ -26,6 +26,9 @@ public class TypeContainer {
     this.type = type;
   }
 
+  /**
+   * @return null, when we only search a method or field, a type otherwise
+   */
   public IType getType() {
     return type;
   }
