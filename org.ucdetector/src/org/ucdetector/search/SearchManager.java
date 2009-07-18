@@ -7,7 +7,6 @@
  */
 package org.ucdetector.search;
 
-import java.text.MessageFormat;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.regex.Pattern;
@@ -40,6 +39,7 @@ import org.eclipse.search.ui.text.FileTextSearchScope;
 import org.ucdetector.Log;
 import org.ucdetector.Messages;
 import org.ucdetector.UCDetectorPlugin;
+import org.ucdetector.iterator.TypeContainer;
 import org.ucdetector.preferences.Prefs;
 import org.ucdetector.util.JavaElementUtil;
 import org.ucdetector.util.MarkerFactory;
@@ -49,7 +49,6 @@ import org.ucdetector.util.StopWatch;
  * Search for class, methods, fields using the eclipse search mechanism
  */
 public class SearchManager {
-  private static final String START_SEARCHING = "\nStart searching {0} {1}..."; //$NON-NLS-1$
   private static final boolean DEBUG = Log
       .isDebugOption("org.ucdetector/debug/search"); //$NON-NLS-1$
   /** Information for user, that we are searching for final stuff */
@@ -86,20 +85,28 @@ public class SearchManager {
 
   /**
    * Start searching for classes, methods, fields
-   * @param types classes to search
-   * @param methods methods to search
-   * @param fields fields to search
+   * @param typeContainers classes to search
    */
-  public final void search(List<IType> types, List<IMethod> methods,
-      List<IField> fields) {
+  public final void search(List<TypeContainer> typeContainers) {
     Log.logInfo("Search start: " + UCDetectorPlugin.getNow()); //$NON-NLS-1$
-    Log.logInfo(types.size() + " types to search"); //$NON-NLS-1$
-    Log.logInfo(methods.size() + " methods to search"); //$NON-NLS-1$
-    Log.logInfo(fields.size() + " fields to search"); //$NON-NLS-1$
     try {
-      searchTypes(types); // first searchTypes to fill noRefTypes!
-      searchMethods(methods);
-      searchFields(fields);
+      for (int i = 0; i < (typeContainers.size() - 1); i++) {
+        if (i % 10 == 0 || i == typeContainers.size()) {
+          Log.logInfo("Search " + fill(i + 1, 4) // //$NON-NLS-1$
+              + " of " + fill(typeContainers.size(), 4) //$NON-NLS-1$ 
+              + " types. Markers " + fill(markerCreated, 4) //$NON-NLS-1$ 
+              + ". Exceptions " + fill(searchProblems.size(), 2) //$NON-NLS-1$ 
+              + " - " + UCDetectorPlugin.getNow()); //$NON-NLS-1$ 
+        }
+        TypeContainer container = typeContainers.get(i);
+        searchAndHandleException(container.getType());
+        for (IMethod method : container.getMethods()) {
+          searchAndHandleException(method);
+        }
+        for (IField field : container.getFields()) {
+          searchAndHandleException(field);
+        }
+      }
     }
     catch (OperationCanceledException e) {
       Log.logInfo("Search canceled: " + e.getMessage()); //$NON-NLS-1$
@@ -114,172 +121,155 @@ public class SearchManager {
     }
   }
 
-  /**
-   * Search types
-   */
-  private void searchTypes(List<IType> types) {
-    Log.logInfo(MessageFormat.format(START_SEARCHING,
-        "" + types.size(), "types")); //$NON-NLS-1$ //$NON-NLS-2$
-    for (IType type : types) {
-      try {
-        startSearch(type);
-        monitor.worked(1);
-        String searchInfo = JavaElementUtil.getMemberTypeString(type);
-        updateMonitorMessage(type, Messages.SearchManager_SearchReferences,
-            searchInfo);
-        StopWatch watch = new StopWatch(type);
-        int found = searchImpl(type, searchInfo, false);
-        watch.end("    Calculate reference marker"); //$NON-NLS-1$
-        if (found == 0) {
-          noRefTypes.add(type);
-        }
-      }
-      catch (Exception ex) {
-        handleSearchException(type, ex);
-      }
+  private String fill(int i, int length) {
+    String result = "" + i; //$NON-NLS-1$
+    while (result.length() < length) {
+      result = " " + result; //$NON-NLS-1$
     }
+    return result;
   }
 
   /**
-   * Search methods
+   * Search a member
    */
-  private void searchMethods(List<IMethod> methods) {
-    Log.logInfo(MessageFormat.format(START_SEARCHING,
-        "" + methods.size(), "methods")); //$NON-NLS-1$ //$NON-NLS-2$
-    for (IMethod method : methods) {
-      try {
-        startSearch(method);
-        monitor.worked(1);
-        IType type = JavaElementUtil.getTypeFor(method, false);
-        if (type.isAnonymous()) {
-          continue;// Ignore anonymous types
-        }
-        if (noRefTypes.contains(type)) {
-          continue; // Ignore types, which have no references
-        }
-        if (JavaElementUtil.isMethodOfJavaLangObject(method)) {
-          continue; // Ignore methods from java.lang.Object
-        }
-
-        if (JavaElementUtil.isSerializationMethod(method)) {
-          continue; // Ignore serialization methods
-        }
-        int line = lineManger.getLine(method);
-        if (line == LineManger.LINE_NOT_FOUND) {
-          continue;
-        }
-        String searchInfo = JavaElementUtil.getMemberTypeString(method);
-        updateMonitorMessage(method, "override/implements", searchInfo); //$NON-NLS-1$
-
-        // it is very expensive to call this method!!!
-        StopWatch stop = new StopWatch(method);
-        boolean isOverriddenMethod = JavaElementUtil.isOverriddenMethod(method);
-        stop.end("    Calculate if is overridden method"); //$NON-NLS-1$
-
-        StopWatch watch = new StopWatch(method);
-        if (!isOverriddenMethod) {
-          updateMonitorMessage(method, SEARCH_FINAL_MESSAGE, searchInfo);
-          boolean created = finalHandler.createFinalMarker(method, line);
-          watch.end("    Calculate method final marker"); //$NON-NLS-1$
-          if (created) {
-            markerCreated++;
-          }
-        }
-        updateMonitorMessage(method, Messages.SearchManager_SearchReferences,
-            searchInfo);
-        searchImpl(method, searchInfo, isOverriddenMethod);
-        watch.end("    searchImpl"); //$NON-NLS-1$
-      }
-      catch (Exception ex) {
-        handleSearchException(method, ex);
-      }
-    }
-  }
-
-  /**
-   * Search fields
-   */
-  private void searchFields(List<IField> fields) {
-    Log.logInfo(MessageFormat.format(START_SEARCHING,
-        "" + fields.size(), "fields")); //$NON-NLS-1$ //$NON-NLS-2$
-    for (IField field : fields) {
-      try {
-        startSearch(field);
-        monitor.worked(1);
-        int line = lineManger.getLine(field);
-        if (line == LineManger.LINE_NOT_FOUND) {
-          continue;
-        }
-        String searchInfo = JavaElementUtil.getMemberTypeString(field);
-        updateMonitorMessage(field, SEARCH_FINAL_MESSAGE, searchInfo);
-        StopWatch watch = new StopWatch(field);
-        if (JavaElementUtil.isSerializationField(field)) {
-          continue;
-        }
-        // We create final markers even for classes which have no references
-        boolean created = finalHandler.createFinalMarker(field, line);
-        watch.end("    Calculate field final marker"); //$NON-NLS-1$
-        if (created) {
-          markerCreated++;
-        }
-        if (Flags.isPrivate(field.getFlags())) {
-          continue;
-        }
-        IType type = JavaElementUtil.getTypeFor(field, false);
-        if (noRefTypes.contains(type)) {
-          continue;
-        }
-        if (type.isAnonymous()) {
-          continue; // Ignore anonymous classes
-        }
-        updateMonitorMessage(field, Messages.SearchManager_SearchReferences,
-            searchInfo);
-        int found = searchImpl(field, searchInfo, false);
-        watch.end("    searchImpl"); //$NON-NLS-1$
-        if (found > 0 && !hasReadAccess(field)) {
-          String message = NLS.bind(
-              Messages.MarkerFactory_MarkerReferenceFieldNeverRead,
-              new Object[] { JavaElementUtil.getElementName(field) });
-          // found=0 needed here, to create reference marker!
-          markerFactory.createReferenceMarker(field, message, line, 0);
-        }
-      }
-      catch (Exception ex) {
-        handleSearchException(field, ex);
-      }
-    }
-  }
-
-  /**
-   * Fix [ 2810802 ] UCDetector crashes with an Exception
-   */
-  private void handleSearchException(IMember member, Exception ex) {
-    if (ex instanceof OperationCanceledException) {
-      throw (OperationCanceledException) ex;
-    }
-    String searchInfo = JavaElementUtil.getMemberTypeString(member);
-    String elementName = JavaElementUtil.getElementName(member);
-    String message = "Problems searching " + searchInfo + " " + elementName; //$NON-NLS-1$ //$NON-NLS-2$
-    Log.logError(message, ex);
-    Status status = new Status(IStatus.ERROR, UCDetectorPlugin.ID,
-        IStatus.ERROR, message, ex);
-    markerFactory.reportDetectionProblem(status);
-    searchProblems.add(status);
-    if (searchProblems.size() > 100) {
-      throw new OperationCanceledException("Stopped searching. To many errors!"); //$NON-NLS-1$
-    }
-  }
-
-  private void startSearch(IMember member) {
+  private void searchAndHandleException(IMember member) {
     monitor.setActiveSearchElement(member);
     checkForCancel();
     search++;
-    if (search % 100 == 0) {
-      Log.logInfo("    searched " + search //$NON-NLS-1$ 
-          + " of " + searchTotal //$NON-NLS-1$ 
-          + ", markers: " + markerCreated + //$NON-NLS-1$ 
-          ", problems: " + searchProblems.size() //$NON-NLS-1$ 
-          + " - " + UCDetectorPlugin.getNow()); //$NON-NLS-1$ 
+    try {
+      if (member instanceof IType) {
+        searchSpecific((IType) member);
+      }
+      else if (member instanceof IMethod) {
+        searchSpecific((IMethod) member);
+      }
+      else if (member instanceof IField) {
+        searchSpecific((IField) member);
+      }
+    }
+    //  Fix [ 2810802 ] UCDetector crashes with an Exception
+    catch (Exception ex) {
+      if (ex instanceof OperationCanceledException) {
+        throw (OperationCanceledException) ex;
+      }
+      String message = "Problems searching " //$NON-NLS-1$
+          + JavaElementUtil.getMemberTypeString(member)//
+          + " " + JavaElementUtil.getElementName(member); //$NON-NLS-1$ 
+      Log.logError(message, ex);
+      Status status = new Status(IStatus.ERROR, UCDetectorPlugin.ID,
+          IStatus.ERROR, message, ex);
+      markerFactory.reportDetectionProblem(status);
+      searchProblems.add(status);
+      if (searchProblems.size() > 100) {
+        throw new OperationCanceledException(
+            "Stopped searching. To many Exceptions!"); //$NON-NLS-1$
+      }
+    }
+  }
+
+  /**
+   * Search types
+   */
+  private void searchSpecific(IType type) throws CoreException {
+    monitor.worked(1);
+    String searchInfo = JavaElementUtil.getMemberTypeString(type);
+    updateMonitorMessage(type, Messages.SearchManager_SearchReferences,
+        searchInfo);
+    StopWatch watch = new StopWatch(type);
+    int found = searchImpl(type, searchInfo, false);
+    watch.end("    Calculate reference marker"); //$NON-NLS-1$
+    if (found == 0) {
+      noRefTypes.add(type);
+    }
+  }
+
+  /**
+   * Search method
+   */
+  private void searchSpecific(IMethod method) throws CoreException {
+    monitor.worked(1);
+    IType type = JavaElementUtil.getTypeFor(method, false);
+    if (type.isAnonymous()) {
+      return;// Ignore anonymous types
+    }
+    if (noRefTypes.contains(type)) {
+      return; // Ignore types, which have no references
+    }
+    if (JavaElementUtil.isMethodOfJavaLangObject(method)) {
+      return; // Ignore methods from java.lang.Object
+    }
+
+    if (JavaElementUtil.isSerializationMethod(method)) {
+      return; // Ignore serialization methods
+    }
+    int line = lineManger.getLine(method);
+    if (line == LineManger.LINE_NOT_FOUND) {
+      return;
+    }
+    String searchInfo = JavaElementUtil.getMemberTypeString(method);
+    updateMonitorMessage(method, "override/implements", searchInfo); //$NON-NLS-1$
+
+    // it is very expensive to call this method!!!
+    StopWatch stop = new StopWatch(method);
+    boolean isOverriddenMethod = JavaElementUtil.isOverriddenMethod(method);
+    stop.end("    Calculate if is overridden method"); //$NON-NLS-1$
+
+    StopWatch watch = new StopWatch(method);
+    if (!isOverriddenMethod) {
+      updateMonitorMessage(method, SEARCH_FINAL_MESSAGE, searchInfo);
+      boolean created = finalHandler.createFinalMarker(method, line);
+      watch.end("    Calculate method final marker"); //$NON-NLS-1$
+      if (created) {
+        markerCreated++;
+      }
+    }
+    updateMonitorMessage(method, Messages.SearchManager_SearchReferences,
+        searchInfo);
+    searchImpl(method, searchInfo, isOverriddenMethod);
+    watch.end("    searchImpl"); //$NON-NLS-1$
+  }
+
+  /**
+   * Search field
+   */
+  private void searchSpecific(IField field) throws CoreException {
+    monitor.worked(1);
+    int line = lineManger.getLine(field);
+    if (line == LineManger.LINE_NOT_FOUND) {
+      return;
+    }
+    String searchInfo = JavaElementUtil.getMemberTypeString(field);
+    updateMonitorMessage(field, SEARCH_FINAL_MESSAGE, searchInfo);
+    StopWatch watch = new StopWatch(field);
+    if (JavaElementUtil.isSerializationField(field)) {
+      return;
+    }
+    // We create final markers even for classes which have no references
+    boolean created = finalHandler.createFinalMarker(field, line);
+    watch.end("    Calculate field final marker"); //$NON-NLS-1$
+    if (created) {
+      markerCreated++;
+    }
+    if (Flags.isPrivate(field.getFlags())) {
+      return;
+    }
+    IType type = JavaElementUtil.getTypeFor(field, false);
+    if (noRefTypes.contains(type)) {
+      return;
+    }
+    if (type.isAnonymous()) {
+      return; // Ignore anonymous classes
+    }
+    updateMonitorMessage(field, Messages.SearchManager_SearchReferences,
+        searchInfo);
+    int found = searchImpl(field, searchInfo, false);
+    watch.end("    searchImpl"); //$NON-NLS-1$
+    if (found > 0 && !hasReadAccess(field)) {
+      String message = NLS.bind(
+          Messages.MarkerFactory_MarkerReferenceFieldNeverRead,
+          new Object[] { JavaElementUtil.getElementName(field) });
+      // found=0 needed here, to create reference marker!
+      markerFactory.createReferenceMarker(field, message, line, 0);
     }
   }
 

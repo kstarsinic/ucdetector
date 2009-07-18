@@ -31,9 +31,8 @@ public class UCDetectorIterator extends AbstractUCDetectorIterator {
   private static final String METHOD = "method"; //$NON-NLS-1$
   private static final String TYPE = "type"; //$NON-NLS-1$
   //
-  private final List<IType> types = new ArrayList<IType>();
-  private final List<IMethod> methods = new ArrayList<IMethod>();
-  private final List<IField> fields = new ArrayList<IField>();
+  private final List<TypeContainer> typeContainers = new ArrayList<TypeContainer>();
+  private TypeContainer iteratedTypeContainer = null;
 
   private final StopWatch stopWatch = new StopWatch();
   private int markerCreated;
@@ -67,7 +66,8 @@ public class UCDetectorIterator extends AbstractUCDetectorIterator {
       return;
     }
     debugHandle(TYPE, type);
-    types.add(type);
+    iteratedTypeContainer = new TypeContainer(type);
+    typeContainers.add(iteratedTypeContainer);
   }
 
   @Override
@@ -99,7 +99,7 @@ public class UCDetectorIterator extends AbstractUCDetectorIterator {
       return;
     }
     debugHandle(METHOD, method);
-    methods.add(method);
+    iteratedTypeContainer.getMethods().add(method);
   }
 
   @Override
@@ -110,11 +110,11 @@ public class UCDetectorIterator extends AbstractUCDetectorIterator {
     else if (Prefs.isCheckUseFinalField()) {
       // we need even private fields here!
       debugHandle(FIELD, field);
-      fields.add(field);
+      iteratedTypeContainer.getFields().add(field);
     }
     else if (Prefs.isUCDetectionInFields() && !isPrivate(field)) {
       debugHandle(FIELD, field);
-      fields.add(field);
+      iteratedTypeContainer.getFields().add(field);
     }
     else {
       debugNotHandle(FIELD, field,
@@ -134,7 +134,7 @@ public class UCDetectorIterator extends AbstractUCDetectorIterator {
     SearchManager searchManager = new SearchManager(getMonitor(), totalSize,
         getMarkerFactory());
     try {
-      searchManager.search(types, methods, fields);
+      searchManager.search(typeContainers);
     }
     finally {
       stopWatch.end("Time to run UCDetector"); //$NON-NLS-1$
@@ -144,7 +144,11 @@ public class UCDetectorIterator extends AbstractUCDetectorIterator {
 
   @Override
   public int getElelementsToDetectCount() {
-    return types.size() + methods.size() + fields.size();
+    int result = 0;
+    for (TypeContainer typeContainer : typeContainers) {
+      result += typeContainer.size();
+    }
+    return result;
   }
 
   @Override
