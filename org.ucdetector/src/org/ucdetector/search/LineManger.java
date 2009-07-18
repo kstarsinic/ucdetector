@@ -136,7 +136,7 @@ public class LineManger {
     final Set<Integer> ignoreLines = new LinkedHashSet<Integer>();
     private final IScanner scanner;
 
-    public FindUcdSuppressWarningsVisitor(IScanner scanner) {
+    protected FindUcdSuppressWarningsVisitor(IScanner scanner) {
       this.scanner = scanner;
     }
 
