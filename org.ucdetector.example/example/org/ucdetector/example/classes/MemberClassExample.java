@@ -26,7 +26,12 @@ public class MemberClassExample {
     private static final long serialVersionUID = 1L;
   }
 
-  static class MemberClassUsed<E> extends ArrayList<E> { // Marker YES: use private
+  // [ 2804064 ] Access to enclosing type - make 2743908 configurable
+  // no private marker here, because of warning:
+  // Access to enclosing constructor MemberClassExample.MemberClassUsed<E>() 
+  // is emulated by a synthetic accessor method. Increasing its visibility will
+  // improve your performance
+  static class MemberClassUsed<E> extends ArrayList<E> {
     private static final long serialVersionUID = 1L;
 
     public void unused() {// Marker YES: unused code

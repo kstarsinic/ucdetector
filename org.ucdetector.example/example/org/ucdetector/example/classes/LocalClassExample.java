@@ -3,7 +3,9 @@ package org.ucdetector.example.classes;
 public class LocalClassExample {
 
   public static void main(String[] args) {
-    new LocalClassExample().used();
+    LocalClassExample localClassExample = new LocalClassExample();
+    localClassExample.used();
+    localClassExample.new MemberClass().toString();
   }
 
   private void used() {
@@ -11,5 +13,9 @@ public class LocalClassExample {
 
     }
     new LocalClass().getClass();
+  }
+
+  class MemberClass {
+
   }
 }

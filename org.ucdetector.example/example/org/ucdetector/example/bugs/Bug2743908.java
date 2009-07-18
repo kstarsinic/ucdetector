@@ -11,12 +11,13 @@ package org.ucdetector.example.bugs;
  */
 public class Bug2743908 {
 
-	public void usedOnlyFromInnerClass() { // Marker YES: use private
+  // [ 2804064 ] Access to enclosing type - make 2743908 configurable
+	public void usedOnlyFromInnerClass() { // Marker YES: use protected
 
 	}
 
-	private class MyMemberClass {
-		private void test() {
+	class MyMemberClass {
+		void test() {
 			usedOnlyFromInnerClass();
 		}
 	}
