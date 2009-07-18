@@ -635,6 +635,7 @@ public class JavaElementUtil {
     return sb.toString();
   }
 
+  @SuppressWarnings("ucd")
   public static String getClassName(IJavaElement javaElement) {
     return javaElement == null ? "null" : javaElement.getClass().getName(); //$NON-NLS-1$
   }
