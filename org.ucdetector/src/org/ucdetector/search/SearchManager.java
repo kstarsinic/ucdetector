@@ -9,6 +9,7 @@ package org.ucdetector.search;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 import java.util.regex.Pattern;
 
 import org.eclipse.core.runtime.CoreException;
@@ -86,7 +87,7 @@ public class SearchManager {
    * Start searching for classes, methods, fields
    * @param typeContainers classes to search
    */
-  public final void search(List<TypeContainer> typeContainers) {
+  public final void search(Set<TypeContainer> typeContainers) {
     Log.logInfo("Search start: " + UCDetectorPlugin.getNow()); //$NON-NLS-1$
     try {
       int pos = 0;
@@ -99,7 +100,9 @@ public class SearchManager {
               + ". Exceptions " + fill(searchProblems.size(), 2) //$NON-NLS-1$ 
               + " - " + UCDetectorPlugin.getNow()); //$NON-NLS-1$ 
         }
-        searchAndHandleException(container.getType());
+        if (container.getType() != null) {
+          searchAndHandleException(container.getType());
+        }
         for (IMethod method : container.getMethods()) {
           searchAndHandleException(method);
         }
