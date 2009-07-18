@@ -59,7 +59,7 @@ public class LineManger {
    * If this String is found like @SuppressWarnings("ucd"),
    * the source code line will be ignored by UCDetector
    */
-  private static final String UCD_ANNOTATION_VALUE = "UCD"; //$NON-NLS-1$
+  private static final String UCD_ANNOTATION_VALUE = "ucd"; //$NON-NLS-1$
   /**
    * parsed java files
    */
