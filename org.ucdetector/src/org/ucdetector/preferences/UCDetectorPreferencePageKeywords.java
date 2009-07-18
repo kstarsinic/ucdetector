@@ -10,8 +10,12 @@ package org.ucdetector.preferences;
 import org.eclipse.jface.preference.ComboFieldEditor;
 import org.eclipse.jface.preference.FieldEditorPreferencePage;
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.events.SelectionAdapter;
+import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.layout.GridData;
+import org.eclipse.swt.widgets.Combo;
 import org.eclipse.swt.widgets.Composite;
+import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Label;
 import org.ucdetector.Messages;
 
@@ -23,6 +27,7 @@ import org.ucdetector.Messages;
  */
 public class UCDetectorPreferencePageKeywords extends
     UCDetectorBasePreferencePage {
+  Combo changeAllVisibiliyCombo;
 
   public UCDetectorPreferencePageKeywords() {
     super(FieldEditorPreferencePage.GRID, Prefs.getStore());
@@ -60,6 +65,9 @@ public class UCDetectorPreferencePageKeywords extends
   private void createVisibilityGroupClasses(Composite parentGroups) {
     Composite spacer = createGroup(parentGroups,
         Messages.PreferencePage_GroupVisibility, 1, 1, GridData.FILL_HORIZONTAL);
+    //
+    addChangeAllVisibiliyCombo(spacer);
+    //
     addLineHack(spacer);
     this.addField(createCombo(Prefs.ANALYZE_VISIBILITY_PROTECTED_CLASSES,
         Messages.PreferencePage_CheckProtectedClasses, spacer));
@@ -83,7 +91,30 @@ public class UCDetectorPreferencePageKeywords extends
         Messages.PreferencePage_CheckProtectedConstants, spacer));
     this.addField(createCombo(Prefs.ANALYZE_VISIBILITY_PRIVATE_CONSTANTS,
         Messages.PreferencePage_CheckPrivateConstants, spacer));
+  }
 
+  // [2810803] Change visibility options more comfortable
+  private void addChangeAllVisibiliyCombo(Composite parent) {
+    Label label = new Label(parent, SWT.LEFT);
+    label.setText(Messages.UCDetectorPreferencePageKeywords_ChangeAllCombos);
+    changeAllVisibiliyCombo = new Combo(parent, SWT.READ_ONLY);
+    changeAllVisibiliyCombo.setItems(new String[] {
+        WarnLevel.ERROR.toStringLocalized(),
+        WarnLevel.WARNING.toStringLocalized(),
+        WarnLevel.IGNORE.toStringLocalized() });
+    changeAllVisibiliyCombo.setText(WarnLevel.WARNING.toStringLocalized());
+    changeAllVisibiliyCombo.addSelectionListener(new SelectionAdapter() {
+      @Override
+      public void widgetSelected(SelectionEvent evt) {
+        Control[] children = changeAllVisibiliyCombo.getParent().getChildren();
+        for (Control control : children) {
+          if (control instanceof Combo) {
+            Combo visibilityCombo = (Combo) control;
+            visibilityCombo.setText(changeAllVisibiliyCombo.getText());
+          }
+        }
+      }
+    });
   }
 
   private void addLineHack(Composite spacer) {
