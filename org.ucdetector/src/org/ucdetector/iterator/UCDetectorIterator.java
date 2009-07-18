@@ -7,12 +7,13 @@
  */
 package org.ucdetector.iterator;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.LinkedHashSet;
+import java.util.Set;
 
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.jdt.core.IField;
 import org.eclipse.jdt.core.IJavaElement;
+import org.eclipse.jdt.core.IMember;
 import org.eclipse.jdt.core.IMethod;
 import org.eclipse.jdt.core.IType;
 import org.ucdetector.Messages;
@@ -30,9 +31,18 @@ public class UCDetectorIterator extends AbstractUCDetectorIterator {
   private static final String FIELD = "field"; //$NON-NLS-1$
   private static final String METHOD = "method"; //$NON-NLS-1$
   private static final String TYPE = "type"; //$NON-NLS-1$
-  //
-  private final List<TypeContainer> typeContainers = new ArrayList<TypeContainer>();
+  private final Set<TypeContainer> typeContainers = new LinkedHashSet<TypeContainer>();
   private TypeContainer iteratedTypeContainer = null;
+
+  /**
+   * Avoid NPE for missing type, eg. detection for only one method
+  */
+  private TypeContainer getIteratedTypeContainer(IMember member) {
+    if (iteratedTypeContainer != null) {
+      return iteratedTypeContainer;
+    }
+    return addType(null);
+  }
 
   private final StopWatch stopWatch = new StopWatch();
   private int markerCreated;
@@ -66,8 +76,13 @@ public class UCDetectorIterator extends AbstractUCDetectorIterator {
       return;
     }
     debugHandle(TYPE, type);
+    addType(type);
+  }
+
+  private TypeContainer addType(IType type) {
     iteratedTypeContainer = new TypeContainer(type);
     typeContainers.add(iteratedTypeContainer);
+    return iteratedTypeContainer;
   }
 
   @Override
@@ -99,7 +114,7 @@ public class UCDetectorIterator extends AbstractUCDetectorIterator {
       return;
     }
     debugHandle(METHOD, method);
-    iteratedTypeContainer.getMethods().add(method);
+    getIteratedTypeContainer(method).getMethods().add(method);
   }
 
   @Override
@@ -110,11 +125,11 @@ public class UCDetectorIterator extends AbstractUCDetectorIterator {
     else if (Prefs.isCheckUseFinalField()) {
       // we need even private fields here!
       debugHandle(FIELD, field);
-      iteratedTypeContainer.getFields().add(field);
+      getIteratedTypeContainer(field).getFields().add(field);
     }
     else if (Prefs.isUCDetectionInFields() && !isPrivate(field)) {
       debugHandle(FIELD, field);
-      iteratedTypeContainer.getFields().add(field);
+      getIteratedTypeContainer(field).getFields().add(field);
     }
     else {
       debugNotHandle(FIELD, field,
