@@ -93,6 +93,13 @@ public class UCDetectorPlugin extends AbstractUIPlugin {
     return sb.toString();
   }
 
+  public static void dumpList(String listString, String separator) {
+    System.out.println(listString //
+        .replace("[", separator) //$NON-NLS-1$ 
+        .replace(", ", separator) //$NON-NLS-1$
+        .replace("]", "")); //$NON-NLS-1$ //$NON-NLS-2$
+  }
+
   /**
    * This method is called when the plug-in is stopped
    */
