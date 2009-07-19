@@ -6,10 +6,9 @@
  */
 package org.ucdetector.search;
 
-import java.util.ArrayList;
 import java.util.Collection;
-import java.util.HashMap;
-import java.util.List;
+import java.util.HashSet;
+import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.Set;
 import java.util.Map.Entry;
@@ -17,25 +16,32 @@ import java.util.Map.Entry;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.jdt.core.IJavaElement;
 import org.eclipse.jdt.core.IMember;
-import org.eclipse.jdt.core.IPackageFragment;
+import org.eclipse.jdt.core.IType;
 import org.ucdetector.util.JavaElementUtil;
 import org.ucdetector.util.MarkerFactory;
 
 class MoveHandler {
   private final MarkerFactory markerFactory;
-  private final Map<IPackageFragment, Integer> matchPerPackage = new HashMap<IPackageFragment, Integer>();
-  private final IPackageFragment startPackage;
+  private final Map<String, Integer> matchPerPackage = new LinkedHashMap<String, Integer>();
+  private final String startPackage;
+  private final IMember startElement;
 
   MoveHandler(MarkerFactory markerFactory, IMember startElement) {
     this.markerFactory = markerFactory;
-    this.startPackage = JavaElementUtil.getPackageFor(startElement);
+    this.startElement = startElement;
+    this.startPackage = JavaElementUtil.getPackageFor(startElement)
+        .getElementName();
   }
 
   void addMatch(IJavaElement match) {
-    IPackageFragment pakage = JavaElementUtil.getPackageFor(match);
+    if (!(startElement instanceof IType)) {
+      return;
+    }
+    String pakage = JavaElementUtil.getPackageFor(match).getElementName();
     Integer matchCount = matchPerPackage.get(pakage);
     int iMatchCount = (matchCount == null ? 0 : matchCount.intValue()) + 1;
     matchPerPackage.put(pakage, Integer.valueOf(iMatchCount));
+    //    System.out.println("matchPerPackage=" + toString(matchPerPackage)); //$NON-NLS-1$
   }
 
   boolean createMarker(IMember member, int line) throws CoreException {
@@ -47,9 +53,9 @@ class MoveHandler {
     for (Integer matchCount : matchCounts) {
       maxMatchCount = Math.max(maxMatchCount, matchCount.intValue());
     }
-    List<IPackageFragment> mostMatchedPackages = new ArrayList<IPackageFragment>();
-    Set<Entry<IPackageFragment, Integer>> entrySet = matchPerPackage.entrySet();
-    for (Entry<IPackageFragment, Integer> packageAndMatch : entrySet) {
+    Set<String> mostMatchedPackages = new HashSet<String>();
+    Set<Entry<String, Integer>> entrySet = matchPerPackage.entrySet();
+    for (Entry<String, Integer> packageAndMatch : entrySet) {
       if (packageAndMatch.getValue().intValue() == maxMatchCount) {
         mostMatchedPackages.add(packageAndMatch.getKey());
       }
@@ -57,8 +63,40 @@ class MoveHandler {
     if (mostMatchedPackages.contains(startPackage)) {
       return false;
     }
+    //    System.out.println("mostMatchedPackages=" + toString(mostMatchedPackages)
+    //        + "->" + maxMatchCount);
+    System.out.println("Move class "
+        + JavaElementUtil.getTypeName(startElement) + " to "
+        + mostMatchedPackages.toString() + " (" + maxMatchCount + ")");
+    System.out
+        .println("\tmatchPerPackage=\n\t\t" + matchPerPackage.toString().replace(", ", "\n\t\t")); //$NON-NLS-1$
     // TODO: new type
-    return markerFactory.createVisibilityMarker(member,
-        MarkerFactory.UCD_MARKER_USE_DEFAULT, line);
+    return false; //markerFactory.createVisibilityMarker(member,
+    //        MarkerFactory.UCD_MARKER_USE_DEFAULT, line);
   }
+
+  //  private String toString(Set<IPackageFragment> mostMatchedPackages) {
+  //    StringBuffer buf = new StringBuffer();
+  //    for (IPackageFragment pack : mostMatchedPackages) {
+  //      buf.append(pack.getElementName()).append(", ");
+  //    }
+  //    return buf.toString();
+  //  }
+  //
+  //  private static String toString(Map<IPackageFragment, Integer> map) {
+  //    StringBuffer buf = new StringBuffer();
+  //    for (Entry<IPackageFragment, Integer> entry : map.entrySet()) {
+  //      buf.append(entry.getKey().getElementName());
+  //      buf.append("->").append(entry.getValue()).append(", ");
+  //    }
+  //    return buf.toString();
+  //  }
+
+  //
+  //  static class MatchPerPackageMap<IPackageFragment, Integer> extends
+  //      LinkedHashMap {
+  //    private static final long serialVersionUID = 1L;
+  //
+  //    @Override
+  //  }
 }

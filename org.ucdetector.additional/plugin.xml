@@ -40,6 +40,20 @@
              label="%check.ucd.action.label"
              menubarPath="ucdetectorGroup/additional">
        </action>
+		</objectContribution>
+    <!-- MoveAction ====================== -->
+    <objectContribution
+          adaptable="true"
+          id="org.ucdetector.popupMenus.project.Analyze"
+          objectClass="org.eclipse.jdt.core.IJavaElement">
+       <action
+             class="org.ucdetector.action.MoveAction"
+             enablesFor="+"
+             icon="$nl$/icons/help_search.gif"
+             id="org.ucdetector.action.MoveAction"
+             label="%move.ucd.action.label"
+             menubarPath="ucdetectorGroup/additional">
+       </action>
 		 </objectContribution>
 	</extension>
 
