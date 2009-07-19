@@ -108,7 +108,7 @@ public class UCDetectorPreferencePageKeywords extends
       public void widgetSelected(SelectionEvent evt) {
         Control[] children = changeAllVisibiliyCombo.getParent().getChildren();
         for (Control control : children) {
-          if (control instanceof Combo) {
+          if (control instanceof Combo && control != changeAllVisibiliyCombo) {
             Combo visibilityCombo = (Combo) control;
             visibilityCombo.setText(changeAllVisibiliyCombo.getText());
           }
