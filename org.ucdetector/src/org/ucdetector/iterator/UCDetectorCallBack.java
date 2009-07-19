@@ -269,4 +269,9 @@ public class UCDetectorCallBack { // NO_UCD
       throws JavaModelException {
     return Flags.isPrivate(member.getFlags());
   }
+
+  protected static final boolean isPublic(IMember member)
+      throws JavaModelException {
+    return Flags.isPublic(member.getFlags());
+  }
 }
