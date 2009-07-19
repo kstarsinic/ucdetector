@@ -49,7 +49,7 @@
        <action
              class="org.ucdetector.action.MoveAction"
              enablesFor="+"
-             icon="$nl$/icons/help_search.gif"
+             icon="$nl$/icons/correction_move.gif"
              id="org.ucdetector.action.MoveAction"
              label="%move.ucd.action.label"
              menubarPath="ucdetectorGroup/additional">
