@@ -7,6 +7,7 @@ Bugfixes:
  - [ 2811049 ] Html report is overridden each run
  - [ 2810802 ] UCDetector crashes with an Exception
  - [ 2804064 ] Access to enclosing type - make 2743908 configurable
+ - [ 2779970 ] Compile error for: static variable
 
 New features:
  - Improved running UCDetector headless: More Options. Refresh/compile workspace 

@@ -13,7 +13,6 @@ import java.util.Set;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.jdt.core.IField;
 import org.eclipse.jdt.core.IJavaElement;
-import org.eclipse.jdt.core.IMember;
 import org.eclipse.jdt.core.IMethod;
 import org.eclipse.jdt.core.IType;
 import org.ucdetector.Messages;
@@ -37,7 +36,7 @@ public class UCDetectorIterator extends AbstractUCDetectorIterator {
   /**
    * Avoid NPE for missing type, eg. detection for only one method
   */
-  private TypeContainer getIteratedTypeContainer(IMember member) {
+  private TypeContainer getIteratedTypeContainer() {
     if (iteratedTypeContainer != null) {
       return iteratedTypeContainer;
     }
@@ -114,7 +113,7 @@ public class UCDetectorIterator extends AbstractUCDetectorIterator {
       return;
     }
     debugHandle(METHOD, method);
-    getIteratedTypeContainer(method).getMethods().add(method);
+    getIteratedTypeContainer().getMethods().add(method);
   }
 
   @Override
@@ -125,11 +124,11 @@ public class UCDetectorIterator extends AbstractUCDetectorIterator {
     else if (Prefs.isCheckUseFinalField()) {
       // we need even private fields here!
       debugHandle(FIELD, field);
-      getIteratedTypeContainer(field).getFields().add(field);
+      getIteratedTypeContainer().getFields().add(field);
     }
     else if (Prefs.isUCDetectionInFields() && !isPrivate(field)) {
       debugHandle(FIELD, field);
-      getIteratedTypeContainer(field).getFields().add(field);
+      getIteratedTypeContainer().getFields().add(field);
     }
     else {
       debugNotHandle(FIELD, field,

@@ -86,15 +86,6 @@ class VisibilityHandler {
       boolean isPrimaryFound = foundPrimaryType.equals(foundType);
       setMaxVisibilityFound(isPrimaryStart && isPrimaryFound ? VISIBILITY.PRIVATE
           : VISIBILITY.PROTECTED);
-      //      try {
-      //        boolean isMember = startType.isMember() || foundType.isMember();
-      //        boolean isLocal = startType.isLocal() || foundType.isLocal();
-      //        //            && !foundType.isLocal();
-      //      }
-      //      catch (JavaModelException e) {
-      //        Log.logError("Can't check visibility", e); //$NON-NLS-1$
-      //      }
-      //      }
       return;
     }
     IPackageFragment startPackage = JavaElementUtil.getPackageFor(startElement);
