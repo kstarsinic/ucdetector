@@ -8,13 +8,10 @@
 package org.ucdetector.iterator;
 
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.HashSet;
-import java.util.LinkedHashMap;
 import java.util.List;
-import java.util.Map;
 import java.util.Set;
-import java.util.Map.Entry;
+import java.util.TreeSet;
 
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.jdt.core.IJavaElement;
@@ -52,39 +49,24 @@ public class MoveIterator extends AdditionalIterator {
     }
   }
 
-  boolean createMarker(Map<String, Integer> matchPerPackage, IType type) {
+  private boolean createMarker(MatchPerPackageList matchPerPackage, IType type) {
     if (matchPerPackage.isEmpty()) {
       return false;
     }
+    Set<String> mostMatchedPackages = matchPerPackage.getMostMatchedPackages();
     String startPackage = JavaElementUtil.getPackageFor(type).getElementName();
-
-    Collection<Integer> matchCounts = matchPerPackage.values();
-    int maxMatchCount = 0;
-    for (Integer matchCount : matchCounts) {
-      maxMatchCount = Math.max(maxMatchCount, matchCount.intValue());
-    }
-    Set<String> mostMatchedPackages = new HashSet<String>();
-    for (Entry<String, Integer> packageAndMatch : matchPerPackage.entrySet()) {
-      if (packageAndMatch.getValue().intValue() == maxMatchCount) {
-        mostMatchedPackages.add(packageAndMatch.getKey());
-      }
-    }
     if (mostMatchedPackages.contains(startPackage)) {
       return false;
     }
-    //    System.out.println("mostMatchedPackages=" + toString(mostMatchedPackages)
-    //        + "->" + maxMatchCount);
     System.out.println("Move class " + JavaElementUtil.getTypeName(type)
-        + " to " + mostMatchedPackages.toString() + " (" + maxMatchCount + ")");
+        + " to " + mostMatchedPackages.toString());
     System.out
         .println("\tmatchPerPackage=\n\t\t" + matchPerPackage.toString().replace(", ", "\n\t\t")); //$NON-NLS-1$
-    // TODO: new type
-    return false; //markerFactory.createVisibilityMarker(member,
-    //        MarkerFactory.UCD_MARKER_USE_DEFAULT, line);
+    return false;
   }
 
   private static final class MatchPerPackageRequestor extends SearchRequestor {
-    private final Map<String, Integer> matchPerPackage = new LinkedHashMap<String, Integer>();
+    private final MatchPerPackageList matchPerPackage = new MatchPerPackageList();
 
     @Override
     public void acceptSearchMatch(SearchMatch match) {
@@ -93,10 +75,80 @@ public class MoveIterator extends AdditionalIterator {
         return;
       }
       String pakage = JavaElementUtil.getPackageFor(javaMatch).getElementName();
-      Integer matchCount = matchPerPackage.get(pakage);
-      int iMatchCount = (matchCount == null ? 0 : matchCount.intValue()) + 1;
-      matchPerPackage.put(pakage, Integer.valueOf(iMatchCount));
+      matchPerPackage.add(pakage);
       //    System.out.println("matchPerPackage=" + toString(matchPerPackage)); //$NON-NLS-1$
+    }
+  }
+
+  private static final class MatchPerPackageList {
+    private final TreeSet<MatchPerPackage> delegate = new TreeSet<MatchPerPackage>();
+
+    private void add(String pakage) {
+      MatchPerPackage found = null;
+      for (MatchPerPackage matchPerPackage : delegate) {
+        if (matchPerPackage.pakage.equals(pakage)) {
+          found = matchPerPackage;
+          break;
+        }
+      }
+      if (found != null) {
+        delegate.remove(found);
+        found.incrementMatch();
+        delegate.add(found);
+        return;
+      }
+      delegate.add(new MatchPerPackage(pakage));
+    }
+
+    private int getMaxMatchCount() {
+      int result = 0;
+      for (MatchPerPackage matchPerPackage : delegate) {
+        result = Math.max(result, matchPerPackage.match);
+      }
+      return result;
+    }
+
+    private Set<String> getMostMatchedPackages() {
+      int maxMatchCount = getMaxMatchCount();
+      Set<String> result = new HashSet<String>();
+      for (MatchPerPackage matchPerPackage : delegate) {
+        if (matchPerPackage.match == maxMatchCount) {
+          result.add(matchPerPackage.pakage);
+        }
+      }
+      return result;
+    }
+
+    public boolean isEmpty() {
+      return delegate.isEmpty();
+    }
+
+    @Override
+    public String toString() {
+      return delegate.toString();
+    }
+  }
+
+  private static final class MatchPerPackage implements
+      Comparable<MatchPerPackage> {
+    private final String pakage;
+    private int match = 1;
+
+    private MatchPerPackage(String pakage) {
+      this.pakage = pakage;
+    }
+
+    @Override
+    public String toString() {
+      return pakage + ": " + match;
+    }
+
+    private void incrementMatch() {
+      match++;
+    }
+
+    public int compareTo(MatchPerPackage other) {
+      return match < other.match ? 1 : (match == other.match ? 0 : -1);
     }
   }
 
