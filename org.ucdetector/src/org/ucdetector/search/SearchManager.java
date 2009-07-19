@@ -93,12 +93,17 @@ public class SearchManager {
       int pos = 0;
       for (TypeContainer container : typeContainers) {
         pos++;
-        if (pos == 1 || pos % 10 == 0 || pos == typeContainers.size()) {
-          Log.logInfo("Search " + fill(pos, 4) // //$NON-NLS-1$
-              + " of " + fill(typeContainers.size(), 4) //$NON-NLS-1$ 
-              + " types. Markers " + fill(markerCreated, 4) //$NON-NLS-1$ 
-              + ". Exceptions " + fill(searchProblems.size(), 2) //$NON-NLS-1$ 
-              + " - " + UCDetectorPlugin.getNow()); //$NON-NLS-1$ 
+        String message = "Search " + fill(pos, 4) // //$NON-NLS-1$
+            + " of " + fill(typeContainers.size(), 4) //$NON-NLS-1$ 
+            + " types. Markers " + fill(markerCreated, 4) //$NON-NLS-1$ 
+            + ". Exceptions " + fill(searchProblems.size(), 2) //$NON-NLS-1$ 
+            + ". Class " + JavaElementUtil.getTypeName(container.getType()) //$NON-NLS-1$ 
+            + " - " + UCDetectorPlugin.getNow(); //$NON-NLS-1$
+        if (Log.DEBUG) {
+          Log.logDebug(message);
+        }
+        else if (pos == 1 || pos % 10 == 0 || pos == typeContainers.size()) {
+          Log.logInfo(message);
         }
         if (container.getType() != null) {
           searchAndHandleException(container.getType());
