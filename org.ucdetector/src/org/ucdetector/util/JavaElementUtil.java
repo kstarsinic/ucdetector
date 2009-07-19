@@ -76,7 +76,6 @@ public class JavaElementUtil {
    * or return <code>null</code> if there is no type, for example a package
    * has no type.
    */
-  // TODO 2009-04-12: review all isPrimary
   public static IType getTypeFor(IJavaElement javaElement, boolean isPrimary) {
     IJavaElement parent = javaElement;
     while (true) {
@@ -96,6 +95,22 @@ public class JavaElementUtil {
       }
       parent = parent.getParent();
     }
+  }
+
+  /**
+   * @param type check this type, if it is a primary type
+   * @return <code>true</code>, when the class has the same name as the java file
+   */
+  public static boolean isPrimary(IType type) {
+    ICompilationUnit cu = type.getCompilationUnit();
+    if (cu == null) {
+      return false;
+    }
+    IType primaryType = cu.findPrimaryType();
+    if (primaryType == null) {
+      return false;
+    }
+    return primaryType.equals(type);
   }
 
   /**
