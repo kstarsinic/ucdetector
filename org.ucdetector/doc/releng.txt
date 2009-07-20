@@ -23,7 +23,7 @@ Steps to create new Version:
    - check help
 
  - Create: 
-   - ucd.jar, source.jar      : /org.ucdetector/build/build.xml -> run as Ant Build
+   - ucd.jar, source.jar, additional: /org.ucdetector/build/build.xml -> run as Ant Build
 	 - check contents of source.jar, ucdetector.jar (help up to date?)
 
  - Smoke test:
