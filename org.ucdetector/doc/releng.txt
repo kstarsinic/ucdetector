@@ -23,13 +23,11 @@ Steps to create new Version:
    - check help
 
  - Create: 
-   - ucdetector.jar       : /org.ucdetector/doc/build.xml -> run as Ant Build
-   - source.jar           : /org.ucdetector/doc/build/org.ucdetector.source.jardesc -> Create JAR
-   - ucdetector.test.jar  : /org.ucdetector_test/doc/build/build.xml -> run as Ant Build
+   - ucd.jar, source.jar      : /org.ucdetector/build/build.xml -> run as Ant Build
 	 - check contents of source.jar, ucdetector.jar (help up to date?)
 
  - Smoke test:
-   - deploy ucdetector.jar and ucdetector.test.jar to a CLEAN eclipse 3.3, java5
+   - deploy ucdetector.jar and ucdetector.additional.jar to a CLEAN eclipse 3.3, java5
 	 - Run UCDetector detecting code in org.ucdetector_test, jEdit, JUnit
 	 - run UCDetector with: change warn limit to 2
 	 - Apply QuickFixes to QuickFixExample
@@ -39,9 +37,10 @@ Steps to create new Version:
    - UCDetector setting: All warning, simple class name
    - count
    - delete markers
-   - cycle detect: /org.ucdetector.example/cycle
+   - [cycle detect: /org.ucdetector.example/cycle]
    - check UCDMarker: /org.ucdetector.example/example
 	 - check html report
+	 - Commit html/xml report to: /org.ucdetector_test/reports/
 
  - Sourceforge:
      - https://sourceforge.net/account/login.php
@@ -49,7 +48,7 @@ Steps to create new Version:
 		 - Description
 		 - Screenshot
 		 - Category
-	 - "Download"/"Manage Packages / Releases"/"add release"
+	 - Firefox! project Admin/Download (popup)/Manage Packages / Releases/add release
 		 - Add Release: 1.0.0, Create this release
 		 - Paste The Change Log In: CHANGES.txt
 	 - 3: Add Files To This Release
@@ -60,6 +59,8 @@ Steps to create new Version:
 	 - platform independent, source.zip    udpate/refresh
 	 - send E-Mail
 	 - Create / Edit Download Page
+	   - Eclipse PlugIn: 
+	   - Eclipse PlugIn java sources: 
 	 - Preview
 	 - Save
 	 - Browse all packages
@@ -70,7 +71,8 @@ Steps to create new Version:
 	 - /org.ucdetector.update_site/build.xml:send -d
 	 - check if update site works
 
- - SVN commit
- - SVN branch and tag
  - update homepage: run /org.ucdetector.website/build.xml:update -d
  - check homepage
+
+ - SVN commit
+ - SVN branch and tag: 
