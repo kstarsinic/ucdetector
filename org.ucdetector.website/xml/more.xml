@@ -15,8 +15,6 @@ Unzip folder <code>org.ucdetector_x.y.z.jar/ant</code>, check README.txt
 				<p>
 					<a href="http://ucdetector.svn.sourceforge.net/viewvc/ucdetector/trunk/org.ucdetector/ant/README.txt?view=markup">See last version from README.txt</a>
 				</p>
-UCDetector 1.1.0: If you want to use this feature, please checkout UCDetector and create ucdetector.jar yourself.
-There are some bugfixes in Subversion!
 		</td>
 			<td align="left" valign="middle"></td>
 		</tr>
@@ -24,8 +22,12 @@ There are some bugfixes in Subversion!
 		<tr>
 			<td>
 				<h3>
-					<img alt="cycle" src="@ICONS_DIR@/cycle.gif"/>Detect class cycles
+					<img alt="cycle" src="@ICONS_DIR@/cycle.gif"/>Detect class cycles - removed!
 				</h3>
+Moved from ucdetector release, because 'detect class cycles', does not fit to 'detect unnecessary code'.<br></br>
+Detect class cycles is now only avaiable as source from svn: <br></br>
+<code>https://ucdetector.svn.sourceforge.net/svnroot/ucdetector/trunk/org.ucdetector.cycle</code>
+
 				<p>Right click on classes, packages or projects, Select context menu: "UCDetector/detect cycles".
 The class cycles will appear in the Cycle View. Browse the class cycles by exploring the
 cycle tree.</p>

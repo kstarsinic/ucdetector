@@ -1,18 +1,18 @@
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/transitional.dtd">
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/transitional.dtd">
 <html>
 <head>
-<META http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
-<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
-<meta http-equiv="Content-Language" content="em">
-<meta http-equiv="author" content="Joerg Spieler">
-<meta http-equiv="description" content="Eclipse PlugIn to detect unnecessary or dead java code and class cycles">
-<meta http-equiv="rating" content="eclipse PlugIn">
-<meta http-equiv="revisit-after" content="3 days">
-<meta http-equiv="pragma" content="no-cache">
-<meta http-equiv="keywords" content="java, eclipse, tool, PlugIn, programmer, code quality, refactoring, unused code, dead code, class cycles">
-<meta name="robots" content="index,follow">
+<META http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta content="text/html; charset=iso-8859-1" http-equiv="Content-Type">
+<meta content="em" http-equiv="Content-Language">
+<meta content="Joerg Spieler" http-equiv="author">
+<meta content="Eclipse PlugIn to detect unnecessary or dead java code and class cycles" http-equiv="description">
+<meta content="eclipse PlugIn" http-equiv="rating">
+<meta content="3 days" http-equiv="revisit-after">
+<meta content="no-cache" http-equiv="pragma">
+<meta content="java, eclipse, tool, PlugIn, programmer, code quality, refactoring, unused code, dead code, class cycles" http-equiv="keywords">
+<meta content="index,follow" name="robots">
 <title>UCDetector</title>
-<link rel="shortcut icon" href="http://www.ucdetector.org/ucdetector.ico">
+<link href="http://www.ucdetector.org/ucdetector.ico" rel="shortcut icon">
 <style type="text/css">
  thead.c8 {text-align: center}
  span.c7 {color: #009917}
@@ -35,12 +35,12 @@ piwik_log(piwik_action_name, piwik_idsite, piwik_url);
 </script><object>
 <noscript>
 <p>
-<img src="http://apps.sourceforge.net/piwik/ucdetector/piwik.php?idsite=1" alt="piwik"></p>
+<img alt="piwik" src="http://apps.sourceforge.net/piwik/ucdetector/piwik.php?idsite=1"></p>
 </noscript>
 </object><body>
-<table width="100%" border="0" summary="left navigation, right text">
+<table summary="left navigation, right text" border="0" width="100%">
 <tr valign="top">
-<td width="10%" bgcolor="#FFFFE0">
+<td bgcolor="#FFFFE0" width="10%">
 <table border="0">
 <tr height="100">
 <td></td>
@@ -72,7 +72,7 @@ piwik_log(piwik_action_name, piwik_idsite, piwik_url);
 </table>
 </td><td>
 <h1 align="center">
-<img alt="UCDetector" src="http://www.ucdetector.org/ucdetector.ico">
+<img src="http://www.ucdetector.org/ucdetector.ico" alt="UCDetector">
 UCDetector: Unnecessary Code Detector</h1>
 <div align="center">
 <h2>Preferences</h2>
@@ -335,49 +335,60 @@ For more details, check bug:
 
 <p>
 <b>HTML and XML Report file</b>:<br>
+A xml report is created in the same directory as the html file.<br>
 Enter file name, if you want to create a report like this:
 </p>
 
-
-<table border="1" summary="UCDetector report">
-
+Searched started: 06.07.09 23:58. Duration: 2.18 seconds
+<table border="1">
 <thead align="center">
-
 <tr bgcolor="#C0C0C0">
-<th>Nr</th><th>Warn level</th><th>Location</th><th>Description</th>
+<th>Location*</th><th>Nr</th><th>Description</th><th>References**</th><th>Type</th>
 </tr>
 
 </thead>
-
-<tr>
-<td>1</td><td>Warning</td><td>org.ucdetector.MixedExample.<br>declaration(MixedExample.java:4)</td><td>Change visibility of "MixedExample" to default</td>
+<tr bgcolor="#FFFACD">
+<td>org.ucdetector.example.MixedExample.declaration(MixedExample.java:23)</td><td align="right">1</td><td>Member class "MixedExample$UnusedClass" has 0 references</td><td align="right">0</td><td>Member class</td>
 </tr>
 
-<tr>
-<td>2</td><td>Warning</td><td>org.ucdetector.MixedExample.<br>unusedMethod(MixedExample.java:7)</td><td>Method "unusedMethod" has 0 references</td>
+<tr bgcolor="#E6E6FA">
+<td>org.ucdetector.example.MixedExample.localMethod(MixedExample.java:15)</td><td align="right">2</td><td>Change visibility of Method "MixedExample.localMethod()" to private</td><td align="right">-</td><td>Method</td>
 </tr>
 
-<tr>
-<td>3</td><td>Warning</td><td>org.ucdetector.MixedExample.<br>makePrivateMethod(MixedExample.java:10)</td><td>Method "makePrivateMethod" has 0 references</td>
+<tr bgcolor="#FFFACD">
+<td>org.ucdetector.example.MixedExample.usedOnceMethod(MixedExample.java:17)</td><td align="right">3</td><td>Method "MixedExample.usedOnceMethod()" has 1 references</td><td align="right">1</td><td>Method</td>
 </tr>
 
-<tr>
-<td>4</td><td>Warning</td><td>org.ucdetector.MixedExample.<br>useFinal(MixedExample.java:5)</td><td>Use "final" for field "useFinal"</td>
+<tr bgcolor="#E6E6FA">
+<td>org.ucdetector.example.MixedExample.usedOnlyByTests(MixedExample.java:19)</td><td align="right">4</td><td>Method "MixedExample.usedOnlyByTests()" is only called from tests</td><td align="right">-</td><td>Method</td>
+</tr>
+
+<tr bgcolor="#FFFACD">
+<td>org.ucdetector.example.MixedExample.helper(MixedExample.java:21)</td><td align="right">5</td><td>Use "final" for Method "MixedExample.helper()" - apply carefully!</td><td align="right">-</td><td>Method</td>
+</tr>
+
+<tr bgcolor="#E6E6FA">
+<td>org.ucdetector.example.MixedExample.localField(MixedExample.java:9)</td><td align="right">6</td><td>Change visibility of Field "MixedExample.localField" to private</td><td align="right">-</td><td>Field</td>
+</tr>
+
+<tr bgcolor="#FFFACD">
+<td>org.ucdetector.example.MixedExample.readOnlyField(MixedExample.java:11)</td><td align="right">7</td><td>Use "final" for  Field "MixedExample.readOnlyField"</td><td align="right">-</td><td>Field</td>
+</tr>
+
+<tr bgcolor="#E6E6FA">
+<td>org.ucdetector.example.MixedExample.UNUSED(MixedExample.java:13)</td><td align="right">8</td><td>Constant "MixedExample.UNUSED" has 0 references</td><td align="right">0</td><td>Constant</td>
 </tr>
 
 </table>
 
 <p>
-To create custom reports change:
-<pre>
-ECLIPSE_HOME/plugins/org.ucdetector_*.jar/org/ucdetector/report/html.xslt
-</pre>
+* To get links to the source locations, copy and paste table to Eclipse 'Java Stack Trace Console'<br>
+** Set 'Detect code with max number of references' &gt; 0<br>
+To create custom reports change ECLIPSE_HOME/plugins/org.ucdetector_*.jar/org/ucdetector/report/html.xslt       
+</p>Searched in:<ul>
+<li>MixedExample.java</li>
+</ul>
 
-</p>
-
-<p>
-A xml report is created in the same directory as the html file.
-</p>
 
 
 
@@ -401,19 +412,19 @@ cycles in your code, a big number here makes cycle detection very slow!
 </tr>
 </table>
 <hr>
-<table width="100%" summary="footer">
+<table summary="footer" width="100%">
 <tr>
-<td align="left" valign="middle">Last Update: 2009-04-15</td><td align="right" valign="middle">Copyright &copy; 2009, by <a href="mailto:feedback@ucdetector.org">J&Atilde;&para;rg Spieler</a></td>
+<td valign="middle" align="left">Last Update: 2009-07-20</td><td valign="middle" align="right">Copyright &copy; 2009, by <a href="mailto:feedback@ucdetector.org">J&ouml;rg Spieler</a></td>
 </tr>
 </table>
 <hr>
-<table width="100%" summary="footer 2">
+<table summary="footer 2" width="100%">
 <tr>
-<td align="left" valign="middle">
+<td valign="middle" align="left">
 	Page views since 2008-03-01:
-			<img alt="Page views since 2008-03-01" src="http://www.jspieler.de/cgi-bin/counting.php.cgi?counterid=3"></td><td align="right" valign="middle">
+			<img src="http://www.jspieler.de/cgi-bin/counting.php.cgi?counterid=3" alt="Page views since 2008-03-01"></td><td valign="middle" align="right">
 	Hosted by:
-	<a href="http://sourceforge.net"><img src="http://sflogo.sourceforge.net/sflogo.php?group_id=219599&type=2" width="125" height="37" border="0" alt="SourceForge.net Logo"></a></td>
+	<a href="http://sourceforge.net"><img alt="SourceForge.net Logo" border="0" height="37" width="125" src="http://sflogo.sourceforge.net/sflogo.php?group_id=219599&type=2"></a></td>
 </tr>
 </table>
 </body>

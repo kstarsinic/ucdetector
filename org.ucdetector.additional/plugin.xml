@@ -63,7 +63,7 @@
   <!-- Example ====================== -->
 	<extension point="org.eclipse.core.resources.markers"
 			id="org.ucdetector.analyzeMarkerExample"
-			name="UCDetector Marker (Example)"			>
+			name="%extension.name.0"			>
 		<super type="org.eclipse.core.resources.problemmarker"/>
 		<super type="org.eclipse.core.resources.textmarker"/>
 		<super type="org.ucdetector.analyzeMarker"/>
@@ -73,7 +73,7 @@
   <!-- Check ====================== -->
  <extension point="org.eclipse.core.resources.markers"
        id="org.ucdetector.analyzeMarkerCheckUcdMarkers"
-       name="UCDetector Marker (Check Ucd Markers)"      >
+       name="%extension.name.1"      >
     <super type="org.eclipse.core.resources.problemmarker"></super>
     <super type="org.eclipse.core.resources.textmarker"></super>
     <super type="org.ucdetector.analyzeMarker"></super>

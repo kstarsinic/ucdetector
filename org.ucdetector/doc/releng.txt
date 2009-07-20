@@ -21,7 +21,6 @@ Steps to create new Version:
             org.ucdetector/doc/CHANGES.txt
    - update help     (run /org.ucdetector.website/build.xml:ucd-help)
    - check help
-   - check: Help/about Eclipse Platform/Plugin Details
 
  - Create: 
    - ucdetector.jar       : /org.ucdetector/doc/build.xml -> run as Ant Build
@@ -34,6 +33,7 @@ Steps to create new Version:
 	 - Run UCDetector detecting code in org.ucdetector_test, jEdit, JUnit
 	 - run UCDetector with: change warn limit to 2
 	 - Apply QuickFixes to QuickFixExample
+   - check: Help/about Eclipse Platform/Plugin Details
    - check help
    - check about dialog entry
    - UCDetector setting: All warning, simple class name

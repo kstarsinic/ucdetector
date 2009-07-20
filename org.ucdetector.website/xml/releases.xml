@@ -11,6 +11,32 @@
 		<li></li>
 	</ul>
 -->
+
+  <!-- ===================================================================== -->
+	<h3>1.2.0 from 2009-07-21:</h3>
+  <!-- ===================================================================== -->
+	<h3></h3>
+	<p>New features:</p>
+	<ul>
+		<li>Improved running UCDetector headless: More Options. Refresh/compile workspace </li>
+		<li>Detect order changed: Detect a complete class, then detect next class</li>
+		<li>Removed method/field detection of anonymous classes. Already done by eclipse, slow</li>
+		<li>[ 2803618 ] Add number of references to report</li>
+		<li>[ 2658675 ] Want annotations, not comments, to indicate non-dead code</li>
+		<li>[ 2810803 ] Change visibility options more comfortable</li>
+	</ul>
+	<p>Bugfixes:</p>
+	<ul>
+		<li>[ 2783734 ] Static imports are not recognized</li>
+		<li>[ 2787576 ] Waiting for first 10 markers</li>
+		<li>[ 2776029 ] Final for fields initialized in subclass constructors</li>
+		<li>[ 2808853 ] Don't create "0 references marker" for classes with main methods</li>
+		<li>[ 2811049 ] Html report is overridden each run</li>
+		<li>[ 2810802 ] UCDetector crashes with an Exception</li>
+		<li>[ 2804064 ] Access to enclosing type - make 2743908 configurable</li>
+		<li>[ 2779970 ] Compile error for: static variable</li>
+	</ul>
+
   <!-- ===================================================================== -->
 	<h3>1.1.0 from 2009-04-15:</h3>
   <!-- ===================================================================== -->
