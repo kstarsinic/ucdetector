@@ -51,6 +51,7 @@ Steps to create new Version:
 	 - Firefox! project Admin/Download (popup)/Manage Packages / Releases/add release
 		 - Add Release: 1.0.0, Create this release
 		 - Paste The Change Log In: CHANGES.txt
+		 - Preserve my pre-formatted text.
 	 - 3: Add Files To This Release
 		 - Upload use this link: https://frs.sourceforge.net/webupload
 		 - Add files/refresh view
