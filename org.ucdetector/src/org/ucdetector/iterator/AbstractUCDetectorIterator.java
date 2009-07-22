@@ -44,6 +44,7 @@ import org.ucdetector.report.XmlReport;
 import org.ucdetector.search.UCDProgressMonitor;
 import org.ucdetector.util.JavaElementUtil;
 import org.ucdetector.util.MarkerFactory;
+import org.ucdetector.util.StopWatch;
 
 /**
  * Base Class to iterate over projects, packages, classes, methods, fields...
@@ -62,7 +63,8 @@ public abstract class AbstractUCDetectorIterator extends UCDetectorCallBack {
   private final List<IPackageFragment> visitedPackages //
   = new ArrayList<IPackageFragment>();
 
-  private final long start = System.currentTimeMillis();
+  final long timeStart = System.currentTimeMillis();
+  long timeEnd = 0;
   private MarkerFactory markerFactory = null;
 
   // -------------------------------------------------------------------------
@@ -121,7 +123,10 @@ public abstract class AbstractUCDetectorIterator extends UCDetectorCallBack {
     }
     finally {
       if (markerFactory != null) {
-        markerFactory.endReport(selections, start);
+        markerFactory.endReport(selections, timeStart);
+        timeEnd = System.currentTimeMillis();
+        Log.logInfo("Detection time: "
+            + StopWatch.timeAsString(timeEnd - timeStart));
       }
     }
   }
