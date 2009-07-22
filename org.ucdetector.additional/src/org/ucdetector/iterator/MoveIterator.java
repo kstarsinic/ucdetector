@@ -8,9 +8,8 @@
 package org.ucdetector.iterator;
 
 import java.util.ArrayList;
-import java.util.HashSet;
+import java.util.Iterator;
 import java.util.List;
-import java.util.Set;
 import java.util.TreeSet;
 
 import org.eclipse.core.runtime.CoreException;
@@ -24,6 +23,7 @@ import org.eclipse.jdt.core.search.SearchPattern;
 import org.eclipse.jdt.core.search.SearchRequestor;
 import org.ucdetector.UCDetectorPlugin;
 import org.ucdetector.search.SearchManager;
+import org.ucdetector.search.UCDProgressMonitor;
 import org.ucdetector.util.JavaElementUtil;
 import org.ucdetector.util.MarkerFactory;
 
@@ -43,63 +43,62 @@ public class MoveIterator extends AdditionalIterator {
 
   @Override
   public void handleEndGlobal(IJavaElement[] objects) throws CoreException {
+    List<MatchPerPackageList> allMatchPerPackages = new ArrayList<MatchPerPackageList>();
     IJavaSearchScope scope = SearchEngine.createWorkspaceScope();
+    UCDProgressMonitor monitor = getMonitor();
+    monitor.beginTask(getJobName(), types.size());
     for (IType type : types) {
+      monitor.worked(1);
+      monitor.subTask(JavaElementUtil.getTypeName(type));
       SearchPattern pattern = SearchPattern.createPattern(type,
           IJavaSearchConstants.REFERENCES);
       MatchPerPackageRequestor requestor = new MatchPerPackageRequestor(type);
       JavaElementUtil.runSearch(pattern, requestor, scope);
-      System.out.println("---------------------------------------------------");
       createMarker(requestor.matchPerPackage, type);
+      allMatchPerPackages.add(requestor.matchPerPackage);
+    }
+    for (MatchPerPackageList matchPerPackageList : allMatchPerPackages) {
+      UCDetectorPlugin.dumpList(matchPerPackageList.toString(), "\n\t");
     }
   }
 
   private boolean createMarker(MatchPerPackageList matchPerPackage, IType type) {
-    if (matchPerPackage.isEmpty()) {
-      return false;
+    if (matchPerPackage.matchInOneOtherPackage()) {
+      MatchPerPackage targetPackageMatch = matchPerPackage.iterator().next();
+      System.out.println("Move class " + JavaElementUtil.getTypeNameFull(type) //
+          + " to " + targetPackageMatch.pakage);
+      return true;
     }
-    String packageName = JavaElementUtil.getPackageFor(type).getElementName();
-    System.out.print(packageName + "." + type.getElementName());
-    UCDetectorPlugin.dumpList(matchPerPackage.toString(), "\n\t");
-    Set<String> mostMatchedPackages = matchPerPackage.getMostMatchedPackages();
-    if (mostMatchedPackages.contains(packageName)) {
-      return false;
-    }
-    System.out.println("\nMove class " //
-        + JavaElementUtil.getTypeName(type) //
-        + " from " + packageName//
-        + " to " + mostMatchedPackages.toString());
-    return true;
+    return false;
   }
 
   /**
    * Count matches per package
    */
   private static final class MatchPerPackageRequestor extends SearchRequestor {
-    private final MatchPerPackageList matchPerPackage = new MatchPerPackageList();
-    private final IType startPrimaryType;
+    private final MatchPerPackageList matchPerPackage;
 
-    public MatchPerPackageRequestor(IType type) {
-      this.startPrimaryType = JavaElementUtil.getTypeFor(type, true);
+    protected MatchPerPackageRequestor(IType type) {
+      this.matchPerPackage = new MatchPerPackageList(JavaElementUtil
+          .getTypeFor(type, true));
     }
 
     @Override
     public void acceptSearchMatch(SearchMatch match) {
       IJavaElement javaMatch = SearchManager.defaultIgnoreMatch(match);
-      if (javaMatch == null) {
-        return;
-      }
-      if (JavaElementUtil.isTestCode(javaMatch)) {
+      if (javaMatch == null || JavaElementUtil.isTestCode(javaMatch)) {
         return;
       }
       IType matchPrimaryType = JavaElementUtil.getTypeFor(javaMatch, true);
-      // Ignore matches in same class
-      if (matchPrimaryType.equals(startPrimaryType)) {
-        return;
+      if (matchPrimaryType.equals(matchPerPackage.getBaseType())) {
+        return;// Ignore matches in same class
       }
       String pakage = JavaElementUtil.getPackageFor(javaMatch).getElementName();
       matchPerPackage.add(pakage);
-      //      System.out.println("matchPerPackage=" + matchPerPackage); //$NON-NLS-1$
+      if (matchPerPackage.getForeignPackageCount() > 1) {
+        //        throw new OperationCanceledException(
+        //            "Type found in more then 1 other package");
+      }
     }
   }
 
@@ -109,50 +108,64 @@ public class MoveIterator extends AdditionalIterator {
    */
   private static final class MatchPerPackageList {
     private final TreeSet<MatchPerPackage> delegate = new TreeSet<MatchPerPackage>();
+    private final IType baseType;
+    private final String basePackage;
+
+    protected MatchPerPackageList(IType forType) {
+      this.baseType = forType;
+      basePackage = JavaElementUtil.getPackageFor(forType).getElementName();
+    }
+
+    public IType getBaseType() {
+      return baseType;
+    }
 
     private void add(String pakage) {
-      MatchPerPackage found = null;
       for (MatchPerPackage matchPerPackage : delegate) {
         if (matchPerPackage.pakage.equals(pakage)) {
-          found = matchPerPackage;
-          break;
+          delegate.remove(matchPerPackage);
+          matchPerPackage.incrementMatch();
+          delegate.add(matchPerPackage);
+          return; // found!
         }
       }
-      if (found != null) {
-        delegate.remove(found);
-        found.incrementMatch();
-        delegate.add(found);
-        return;
-      }
+      // not found
       delegate.add(new MatchPerPackage(pakage));
     }
 
-    private int getMaxMatchCount() {
-      int result = 0;
-      for (MatchPerPackage matchPerPackage : delegate) {
-        result = Math.max(result, matchPerPackage.match);
-      }
-      return result;
+    public Iterator<MatchPerPackage> iterator() {
+      return delegate.iterator();
     }
 
-    private Set<String> getMostMatchedPackages() {
-      int maxMatchCount = getMaxMatchCount();
-      Set<String> result = new HashSet<String>();
+    public int getPackageMatchCount() {
+      return delegate.size();
+    }
+
+    public boolean matchInOneOtherPackage() {
+      return !containsPackageForType() && getPackageMatchCount() == 1;
+    }
+
+    protected boolean containsPackage(String packageName) {
       for (MatchPerPackage matchPerPackage : delegate) {
-        if (matchPerPackage.match == maxMatchCount) {
-          result.add(matchPerPackage.pakage);
+        if (matchPerPackage.pakage.equals(packageName)) {
+          return true;
         }
       }
-      return result;
+      return false;
     }
 
-    public boolean isEmpty() {
-      return delegate.isEmpty();
+    protected boolean containsPackageForType() {
+      return containsPackage(basePackage);
+    }
+
+    public int getForeignPackageCount() {
+      int size = delegate.size();
+      return size == 0 ? 0 : containsPackage(basePackage) ? size - 1 : size;
     }
 
     @Override
     public String toString() {
-      return delegate.toString();
+      return JavaElementUtil.getTypeNameFull(baseType) + delegate.toString();
     }
   }
 
@@ -173,7 +186,7 @@ public class MoveIterator extends AdditionalIterator {
 
     @Override
     public String toString() {
-      return pakage + ": " + match;
+      return match + "\t" + pakage;
     }
 
     private void incrementMatch() {
@@ -184,10 +197,7 @@ public class MoveIterator extends AdditionalIterator {
       if (match < other.match) {
         return 1;
       }
-      if (match == other.match) {
-        return pakage.compareTo(other.pakage);
-      }
-      return -1;
+      return (match == other.match) ? pakage.compareTo(other.pakage) : -1;
     }
 
     @Override
@@ -201,10 +211,7 @@ public class MoveIterator extends AdditionalIterator {
         return false;
       }
       MatchPerPackage other = (MatchPerPackage) obj;
-      if (match != other.match) {
-        return false;
-      }
-      return pakage.equals(other.pakage);
+      return match == other.match ? pakage.equals(other.pakage) : false;
     }
   }
 
@@ -221,6 +228,29 @@ public class MoveIterator extends AdditionalIterator {
 
   @Override
   public String getJobName() {
-    return "Try to find classes to move";
+    return "Detect classes possible to move";
   }
 }
+// 280
+/*
+    private Set<String> getMostMatchedPackages() {
+      int maxMatchCount = getMaxMatchCount();
+      Set<String> result = new HashSet<String>();
+      for (MatchPerPackage matchPerPackage : delegate) {
+        if (matchPerPackage.match == maxMatchCount) {
+          result.add(matchPerPackage.pakage);
+        }
+      }
+      return result;
+    }
+    private Set<String> getMostMatchedPackages() {
+      int maxMatchCount = getMaxMatchCount();
+      Set<String> result = new HashSet<String>();
+      for (MatchPerPackage matchPerPackage : delegate) {
+        if (matchPerPackage.match == maxMatchCount) {
+          result.add(matchPerPackage.pakage);
+        }
+      }
+      return result;
+    }
+*/
