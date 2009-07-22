@@ -242,11 +242,27 @@ public class JavaElementUtil {
     return element.getElementName();
   }
 
+  /**
+   * @param element to get a String representation. Should be a {@link IType}
+   * @return typeName e.g. UCDetectorPlugin
+   */
   public static String getTypeName(IJavaElement element) { // NO_UCD
     if (element instanceof IType) {
       return ((IType) element).getTypeQualifiedName();
     }
     return "class?"; //$NON-NLS-1$
+  }
+
+  /**
+   * @param type to get a String representation
+   * @return full typeName e.g. org.ucdetector.UCDetectorPlugin
+   */
+  public static String getTypeNameFull(IType type) {
+    IPackageFragment pakage = getPackageFor(type);
+    if (pakage.isDefaultPackage()) {
+      return getTypeName(type);
+    }
+    return pakage.getElementName() + '.' + getTypeName(type);
   }
 
   /**
