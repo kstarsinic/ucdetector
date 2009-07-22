@@ -1,11 +1,10 @@
 //------------------------------------------------------------------------------
 TODO:
- - Visibility: Switch all with one combo
- - move cycle stuff to examples (prefs, plugin.xml...) 
  - create an extension point for "org.ucdetector.additional"
  - Matching a local class "0 References" in a parent class (BException)
  - UCDetector problems should have a parent in Problems View / Configure contents
- 
+ - Add QuickFix to project description
+  
 //------------------------------------------------------------------------------
 Code examples:
  - /org.eclipse.core.tools/src/org/eclipse/core/tools/search/FindUnusedMembers.java
