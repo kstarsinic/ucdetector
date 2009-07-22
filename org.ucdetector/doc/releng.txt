@@ -76,4 +76,7 @@ Steps to create new Version:
  - check homepage
 
  - SVN commit
- - SVN branch and tag: 
+ - SVN tag
+ - SVN branch
+ 
+ - add to freshmeat
