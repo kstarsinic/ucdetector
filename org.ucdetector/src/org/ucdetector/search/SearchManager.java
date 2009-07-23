@@ -356,14 +356,20 @@ public class SearchManager {
         JavaElementUtil.getElementName(member), Integer.valueOf(found) };
     String markerMessage = NLS.bind(Messages.MarkerFactory_MarkerReference,
         bindings);
-    // BUG: Don't check for constructors called only 1 time - ID: 2743872
     if (member instanceof IMethod) {
-      if (((IMethod) member).isConstructor() && found > 0) {
+      IMethod method = (IMethod) member;
+      // [ 2743872 ] Don't check for constructors called only 1 time
+      if (method.isConstructor() && found > 0) {
+        return found;
+      }
+      // [ 2826216 ] Unused interface methods are not detected
+      // [ 2225016 ] Don't create "0 references marker" for overridden methods
+      boolean isInterfaceMethod = JavaElementUtil.isInterfaceMethod(method);
+      if (!isInterfaceMethod && isOverriddenMethod) {
         return found;
       }
     }
-    // Fix for BUG 2225016:  Don't create "0 references marker" for overridden methods
-    if (found > Prefs.getWarnLimit() || isOverriddenMethod) {
+    if (found > Prefs.getWarnLimit()) {
       return found;
     }
     // Fix for BUG 2808853: Don't create "0 references marker" for classes with main methods
