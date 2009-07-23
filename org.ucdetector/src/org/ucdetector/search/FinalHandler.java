@@ -48,9 +48,10 @@ class FinalHandler {
         || Flags.isStatic(flags) //
         || Flags.isAbstract(flags) //
         || Flags.isFinal(flags) //
-        || Flags.isInterface(flags) //
         || method.isConstructor()//
         || method.isMainMethod()//
+        // [2826205] Can't make interface methods final
+        || JavaElementUtil.isInterfaceMethod(method) //
     ) {
       return false;
     }
