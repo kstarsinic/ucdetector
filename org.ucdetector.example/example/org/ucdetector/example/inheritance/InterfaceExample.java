@@ -14,12 +14,11 @@ public interface InterfaceExample {
   /**
    * NO marker! Method is implemented!
    */
-  void unusedMethod();
-
-  /**
-   * NO marker! Method is implemented!
-   */
-  String overridenMethod();
+  void overriddenButUnusedMethod();
+  
+  // causes compile error in InterfaceImplExample
+  //void unusedMethodNotOverridden();
+  
 
   public void useProtected();
 
