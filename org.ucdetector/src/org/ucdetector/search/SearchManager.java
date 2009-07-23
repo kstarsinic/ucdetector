@@ -362,7 +362,7 @@ public class SearchManager {
       if (method.isConstructor() && found > 0) {
         return found;
       }
-      // [ 2826216 ] Unused interface methods are not detected
+      // TODO review: [ 2826216 ] Unused interface methods are not detected
       // [ 2225016 ] Don't create "0 references marker" for overridden methods
       boolean isInterfaceMethod = JavaElementUtil.isInterfaceMethod(method);
       if (!isInterfaceMethod && isOverriddenMethod) {
