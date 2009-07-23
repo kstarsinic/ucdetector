@@ -805,4 +805,30 @@ public class JavaElementUtil {
     }
     return false;
   }
+
+  /**
+   * @param method method
+   * @return true, when parent of field is an interface
+   * @throws JavaModelException if a problem occurs
+   */
+  public static boolean isInterfaceMethod(IMethod method)
+      throws JavaModelException {
+    return isParentInterface(method);
+  }
+
+  /**
+   * @param field field
+   * @return true, when parent of field is an interface
+   * @throws JavaModelException if a problem occurs
+   */
+  public static boolean isInterfaceField(IField field)
+      throws JavaModelException {
+    return isParentInterface(field);
+  }
+
+  private static boolean isParentInterface(IJavaElement element)
+      throws JavaModelException {
+    IJavaElement parent = element.getParent();
+    return (parent instanceof IType && ((IType) parent).isInterface());
+  }
 }
