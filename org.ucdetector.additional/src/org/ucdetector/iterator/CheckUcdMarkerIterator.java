@@ -27,7 +27,7 @@ import org.ucdetector.util.MarkerFactory;
  * To 'test' UCDetector
  * <ul>
  * <li>Run UCDetector in directory /org.ucdetector.example/example</li>
- * <li>Run this class (pop up menu 'Check UCD Markers') in directory /org.ucdetector.example/example</li>
+ * <li>Run this class (pop up menu 'Find bad Markers') in directory /org.ucdetector.example/example</li>
  * <li>Markers will be created, if the expected markers are different from the created markers</li>
  * </ul>
  * The example code classes contain comments, to indicate which markers must be created.
@@ -80,7 +80,7 @@ public class CheckUcdMarkerIterator extends AbstractUCDetectorIterator {
         }
       }
       if (commentForLine == null) {
-        createMarker(resource, "Additional marker", markerLineFound);
+        createMarker(resource, "Bad marker", markerLineFound);
       }
       // -----------------------------------------------------------------------
       else {
