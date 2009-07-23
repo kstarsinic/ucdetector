@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project default="all" name="export plugin" basedir=".">
+<project default="plugin-export" name="export plugin" basedir=".">
   <description>Export UCDetector plugin</description>
 
   <!-- ===================================================================== -->
@@ -25,7 +25,7 @@
                        exportType="directory"
                        plugins="org.ucdetector,org.ucdetector.additional"
                        useJARFormat="true" />
-    <echo>Plugin will be exported to: ${ECLIPSE_HOME}/plugins</echo>
+    <echo>Plugins will be exported to: ${ECLIPSE_HOME}/plugins</echo>
   </target>
 
   <!-- ===================================================================== -->
@@ -52,9 +52,7 @@
     <ant target="source" />
     <!-- -->
     <ant antfile="../../org.ucdetector.website/build.xml" target="ucd-help" />
-    <ant antfile="../../org.ucdetector.website/build.xml" target="update" />
-    <!--
+    <ant antfile="../../org.ucdetector.website/build.xml" target="homepage" />
     <ant antfile="../../org.ucdetector.update_site/build.xml" target="send" />
-     -->
   </target>
 </project>
