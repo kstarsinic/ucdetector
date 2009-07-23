@@ -119,7 +119,7 @@ class VisibilityHandler {
         // EnumConstant can not be private
         return false;
       }
-      if (isParentInterface(field)) {
+      if (JavaElementUtil.isInterfaceField(field)) {
         // fix bug [ 2269486 ] Constants in Interfaces Can't be Private
         return false;
       }
@@ -129,7 +129,7 @@ class VisibilityHandler {
       if (method.isMainMethod()) {
         return false;
       }
-      if (isParentInterface(method)) {
+      if (JavaElementUtil.isInterfaceMethod(method)) {
         // fix bug [ 2269486 ] Constants in Interfaces Can't be Private
         return false;
       }
@@ -167,15 +167,6 @@ class VisibilityHandler {
           return true;
         }
       }
-    }
-    return false;
-  }
-
-  private static boolean isParentInterface(IJavaElement element)
-      throws JavaModelException {
-    IJavaElement parent = element.getParent();
-    if (parent instanceof IType && ((IType) parent).isInterface()) {
-      return true;
     }
     return false;
   }
