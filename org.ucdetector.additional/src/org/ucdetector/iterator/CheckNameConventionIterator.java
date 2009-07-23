@@ -26,11 +26,11 @@ public class CheckNameConventionIterator extends AdditionalIterator {
   protected void handleType(IType type) throws CoreException {
     String className = type.getElementName();
     if (!type.isAnonymous() && !startsWithUpper(className)) {
-      createMarker(type, "Class name should start with upper case");
+      createMarker(type, "Class name should start with upper case", ANALYZE_MARKER_EXAMPLE);
     }
     if (typeCount == 0) {
       System.out.println("classname ='" + className + "'");
-      createMarker(type, "Example marker! For class '" + className + "'");
+      createMarker(type, "Example marker! For class '" + className + "'", ANALYZE_MARKER_EXAMPLE);
     }
     typeCount++;
   }
@@ -42,19 +42,19 @@ public class CheckNameConventionIterator extends AdditionalIterator {
     if (Flags.isStatic(flags) && Flags.isFinal(flags)) {
       if (!isConstantName(fieldName)) {
         createMarker(field, "Constant '" + fieldName
-            + "' should use upper case or '_'");
+            + "' should use upper case or '_'", ANALYZE_MARKER_EXAMPLE);
       }
     }
     else if (field.isEnumConstant()) {
       if (!isConstantName(fieldName)) {
         createMarker(field, "Enum Constant '" + fieldName
-            + "' should use upper case or '_'");
+            + "' should use upper case or '_'", ANALYZE_MARKER_EXAMPLE);
       }
     }
     else if (!Flags.isFinal(flags) && !Flags.isStatic(flags)
         && startsWithUpper(fieldName)) {
       createMarker(field, "Field '" + fieldName
-          + "' should start with lower case");
+          + "' should start with lower case", ANALYZE_MARKER_EXAMPLE);
     }
   }
 
@@ -65,7 +65,7 @@ public class CheckNameConventionIterator extends AdditionalIterator {
     }
     else if (startsWithUpper(method.getElementName())) {
       createMarker(method, "Method '" + method.getElementName()
-          + "' should start with lower case");
+          + "' should start with lower case", ANALYZE_MARKER_EXAMPLE);
     }
   }
 

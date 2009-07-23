@@ -17,14 +17,15 @@ import org.ucdetector.search.LineManger;
  *
  */
 public abstract class AdditionalIterator extends AbstractUCDetectorIterator {
-  private static final String ANALYZE_MARKER_EXAMPLE //
+  static final String ANALYZE_MARKER_EXAMPLE //
   = "org.ucdetector.analyzeMarkerExample"; //$NON-NLS-1$
   private static final LineManger lineManger = new LineManger();
 
-  void createMarker(IMember element, String message) throws CoreException {
+  void createMarker(IMember element, String message, String markerType)
+      throws CoreException {
     int line = lineManger.getLine(element);
     ReportParam reportParam = new ReportParam(element, message, line,
-        ANALYZE_MARKER_EXAMPLE, WarnLevel.WARNING);
+        markerType, WarnLevel.WARNING);
     getMarkerFactory().reportMarker(reportParam);
   }
 
