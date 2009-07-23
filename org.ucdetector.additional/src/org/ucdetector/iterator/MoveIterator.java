@@ -12,6 +12,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.TreeSet;
 
+import org.eclipse.core.resources.IResource;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.jdt.core.IJavaElement;
 import org.eclipse.jdt.core.IType;
@@ -25,12 +26,13 @@ import org.ucdetector.UCDetectorPlugin;
 import org.ucdetector.search.SearchManager;
 import org.ucdetector.search.UCDProgressMonitor;
 import org.ucdetector.util.JavaElementUtil;
-import org.ucdetector.util.MarkerFactory;
 
 /**
  * Suggest to move a class to another package
  */
 public class MoveIterator extends AdditionalIterator {
+  private static final String ANALYZE_MARKER_MOVE_CLASS //
+  = "org.ucdetector.analyzeMarkerMoveClass"; //$NON-NLS-1$
   private final List<IType> types = new ArrayList<IType>();
 
   @Override
@@ -62,14 +64,21 @@ public class MoveIterator extends AdditionalIterator {
     }
   }
 
-  private boolean createMarker(MatchPerPackageList matchPerPackage, IType type) {
-    if (matchPerPackage.matchInOneOtherPackage()) {
-      MatchPerPackage targetPackageMatch = matchPerPackage.iterator().next();
-      System.out.println("Move class " + JavaElementUtil.getTypeNameFull(type) //
-          + " to " + targetPackageMatch.pakage);
-      return true;
+  private boolean createMarker(MatchPerPackageList matchPerPackage, IType type)
+      throws CoreException {
+    IResource resource = type.getResource();
+    if (resource == null) {
+      return false;
     }
-    return false;
+    if (!matchPerPackage.matchInOneOtherPackage()) {
+      return false;
+    }
+    MatchPerPackage targetPackageMatch = matchPerPackage.iterator().next();
+    String message = "Move class " + JavaElementUtil.getTypeNameFull(type) //
+        + " to " + targetPackageMatch.pakage;
+    System.out.println(message);
+    createMarker(type, message, ANALYZE_MARKER_MOVE_CLASS);
+    return true;
   }
 
   /**
@@ -218,7 +227,10 @@ public class MoveIterator extends AdditionalIterator {
   @Override
   public void handleStartSelectedElement(IJavaElement javaElement)
       throws CoreException {
-    MarkerFactory.deleteMarkers(javaElement);
+    if (javaElement.getResource() != null) {
+      javaElement.getResource().deleteMarkers(ANALYZE_MARKER_MOVE_CLASS, true,
+          IResource.DEPTH_INFINITE);
+    }
   }
 
   @Override
