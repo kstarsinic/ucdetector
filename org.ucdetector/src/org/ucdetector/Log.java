@@ -7,6 +7,7 @@
  */
 package org.ucdetector;
 
+import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Platform;
 
 /**
@@ -47,6 +48,18 @@ public class Log {
 
   public static void logError(String message, Throwable ex) {
     Log.logImpl(LOG_LEVEL_ERROR, message, ex);
+  }
+
+  public static void logStatus(IStatus status) {
+    if (status.getSeverity() == IStatus.ERROR) {
+      Log.logError(status.getMessage(), status.getException());
+    }
+    else if (status.getSeverity() == IStatus.WARNING) {
+      Log.logWarn(status.getMessage());
+    }
+    else {
+      Log.logInfo(status.getMessage());
+    }
   }
 
   /**
