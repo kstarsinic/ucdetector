@@ -46,6 +46,7 @@ import org.ucdetector.search.UCDProgressMonitor;
  * See feature request: [ 2653112 ] UCDetector should run as a ant task in
  * headless mode
  */
+@SuppressWarnings("nls")
 public class UCDApplication implements IApplication {
   /**
    * @see org.eclipse.core.resources.IncrementalProjectBuilder
@@ -56,14 +57,14 @@ public class UCDApplication implements IApplication {
   private int buildType = 0;
 
   static {
-    buildTypes.put("FULL_BUILD" //$NON-NLS-1$
-        , Integer.valueOf(IncrementalProjectBuilder.FULL_BUILD));
-    buildTypes.put("AUTO_BUILD"//$NON-NLS-1$
-        , Integer.valueOf(IncrementalProjectBuilder.AUTO_BUILD));
-    buildTypes.put("CLEAN_BUILD"//$NON-NLS-1$
-        , Integer.valueOf(IncrementalProjectBuilder.CLEAN_BUILD));
-    buildTypes.put("INCREMENTAL_BUILD"//$NON-NLS-1$
-        , Integer.valueOf(IncrementalProjectBuilder.INCREMENTAL_BUILD));
+    buildTypes.put("FULL_BUILD", Integer
+        .valueOf(IncrementalProjectBuilder.FULL_BUILD));
+    buildTypes.put("AUTO_BUILD", Integer
+        .valueOf(IncrementalProjectBuilder.AUTO_BUILD));
+    buildTypes.put("CLEAN_BUILD", Integer
+        .valueOf(IncrementalProjectBuilder.CLEAN_BUILD));
+    buildTypes.put("INCREMENTAL_BUILD", Integer
+        .valueOf(IncrementalProjectBuilder.INCREMENTAL_BUILD));
   }
 
   public Object start(IApplicationContext context) throws Exception {
@@ -82,23 +83,23 @@ public class UCDApplication implements IApplication {
 
     for (int i = 0; i < sArgs.length; i++) {
       //
-      if (sArgs[i].equals("-projects")) { //$NON-NLS-1$
+      if (sArgs[i].equals("-projects")) {
         if (hasOptionValue(sArgs, i)) {
-          projectsToIterate = Arrays.asList(sArgs[i + 1].split(",")); //$NON-NLS-1$
+          projectsToIterate = Arrays.asList(sArgs[i + 1].split(","));
           i++;
         }
       }
-      if (sArgs[i].equals("-buildtype")) { //$NON-NLS-1$
+      if (sArgs[i].equals("-buildtype")) {
         if (hasOptionValue(sArgs, i)) {
           sBuildType = sArgs[i + 1];
           i++;
         }
       }
-      if (sArgs[i].equals("-ucdoptions")) { //$NON-NLS-1$
+      if (sArgs[i].equals("-ucdoptions")) {
         if (hasOptionValue(sArgs, i)) {
-          List<String> keyValues = Arrays.asList(sArgs[i + 1].split(",")); //$NON-NLS-1$
+          List<String> keyValues = Arrays.asList(sArgs[i + 1].split(","));
           for (String keyValue : keyValues) {
-            int index = keyValue.indexOf("="); //$NON-NLS-1$
+            int index = keyValue.indexOf("=");
             if (index != -1) {
               String key = keyValue.substring(0, index);
               String value = keyValue.substring(index + 1);
@@ -109,40 +110,41 @@ public class UCDApplication implements IApplication {
       }
     }
     //
-    String info = (projectsToIterate == null) ? "ALL" : projectsToIterate //$NON-NLS-1$
+    String info = (projectsToIterate == null) ? "ALL" : projectsToIterate
         .toString();
-    Log.logInfo("\tprojects to detect: " + (info)); //$NON-NLS-1$
+    Log.logInfo("\tprojects to detect: " + (info));
     // 
-    sBuildType = (sBuildType == null) ? "AUTO_BUILD" : sBuildType; //$NON-NLS-1$
-    Log.logInfo("\tBuildType         : " + sBuildType); //$NON-NLS-1$
+    sBuildType = (sBuildType == null) ? "AUTO_BUILD" : sBuildType;
+    Log.logInfo("\tBuildType         : " + sBuildType);
     if (buildTypes.containsKey(sBuildType)) {
       buildType = buildTypes.get(sBuildType).intValue();
     }
     else {
       buildType = IncrementalProjectBuilder.AUTO_BUILD;
     }
-    Log.logInfo("\tucd option        : " + ucdOptions); //$NON-NLS-1$
+    Log.logInfo("\tucd option        : " + ucdOptions);
     Set<Entry<String, String>> optionSet = ucdOptions.entrySet();
     for (Entry<String, String> option : optionSet) {
       String key = option.getKey();
       String value = option.getValue();
-      Log.logInfo("\tSet ucd option    : " + (key + "->" + value)); //$NON-NLS-1$ //$NON-NLS-2$
+      Log.logInfo("\tSet ucd option    : " + (key + "->" + value));
       Prefs.setUcdValue(key, value);
     }
     String prefs = UCDetectorPlugin.getPreferencesAsString();
-    Log.logInfo(prefs.replace(", ", "\n\t")); //$NON-NLS-1$//$NON-NLS-2$
+    Log.logInfo(prefs.replace(", ", "\n\t"));
     IEclipsePreferences node = new DefaultScope().getNode(UCDetectorPlugin.ID);
     try {
-      String[] avaiable = node.keys();
-      Log.logInfo("\tAvaiable Options  : " + Arrays.asList(avaiable)); //$NON-NLS-1$
+      String avaiable = Arrays.asList(node.keys()).toString().replace(", ",
+          "\n\t").replace("[", "\n\t").replace("]", "\n\t");
+      Log.logInfo("\tAvaiable Options  : " + avaiable);
     }
     catch (BackingStoreException ex) {
-      Log.logError("Can't get preferences", ex); //$NON-NLS-1$  
+      Log.logError("Can't get preferences", ex);
     }
   }
 
   private boolean hasOptionValue(String[] sArgs, int i) {
-    return i < (sArgs.length - 1) && !sArgs[i + 1].startsWith("-");//$NON-NLS-1$
+    return i < (sArgs.length - 1) && !sArgs[i + 1].startsWith("-");
   }
 
   /**
@@ -150,7 +152,7 @@ public class UCDApplication implements IApplication {
    *    of its underlying resource
    */
   public void startImpl() throws CoreException {
-    Log.logInfo("Run UCDetector"); //$NON-NLS-1$
+    Log.logInfo("Run UCDetector");
     UCDetectorPlugin.setHeadlessMode(true);
     UCDProgressMonitor ucdMonitor = new UCDProgressMonitor();
     IWorkspace workspace = ResourcesPlugin.getWorkspace();
@@ -158,42 +160,52 @@ public class UCDApplication implements IApplication {
 
     IProject[] projects = root.getProjects();
     List<IJavaProject> openProjects = new ArrayList<IJavaProject>();
-    Log.logInfo("\tWorkspace: " + root.getLocation()); //$NON-NLS-1$
+    Log.logInfo("\tWorkspace: " + root.getLocation());
 
-    Log.logInfo("\tprojects found in workspace: " + projects.length); //$NON-NLS-1$
+    Log.logInfo("\tprojects found in workspace: " + projects.length);
     for (IProject project : projects) {
       IJavaProject javaProject = JavaCore.create(project);
       String projectName = javaProject.getElementName();
       boolean ignore = projectsToIterate != null
           && !projectsToIterate.contains(projectName);
-      Log.logInfo("\t\tRun UCDetector " + !ignore + " for " + projectName); //$NON-NLS-1$ //$NON-NLS-2$
       if (ignore) {
+        Log.logInfo("\tIgnore        : " + projectName);
         continue;
       }
-      if (javaProject.exists() && !javaProject.isOpen()) {
-        Log.logInfo("\t\topen project: " + projectName); //$NON-NLS-1$
+      if (!javaProject.exists()) {
+        Log.logInfo("\tDoes not exist: " + projectName);
+        continue;
+      }
+      if (!javaProject.isOpen()) {
+        Log.logInfo("\tTry to open   : " + projectName);
         javaProject.open(ucdMonitor);
       }
       if (javaProject.isOpen()) {
+        Log.logInfo("\tIs open       : " + projectName);
         openProjects.add(javaProject);
+      }
+      else {
+        Log.logInfo("\tIs closed     : " + projectName);
       }
     }
 
-    Log.logInfo("Refresh workspace...Please wait...!"); //$NON-NLS-1$
+    Log.logInfo("Refresh workspace...Please wait...!");
     root.refreshLocal(IResource.DEPTH_INFINITE, ucdMonitor);
 
-    Log.logInfo("Build workspace... Please wait...!"); //$NON-NLS-1$
+    Log.logInfo("Build workspace... Please wait...!");
     workspace.build(buildType, ucdMonitor);
 
     UCDetectorIterator iterator = new UCDetectorIterator();
     iterator.setMonitor(ucdMonitor);
-    Log.logInfo("Number of projects to iterate: " + openProjects.size()); //$NON-NLS-1$
-
+    Log.logInfo("Number of projects to iterate: " + openProjects.size());
+    for (IJavaProject openProject : openProjects) {
+      Log.logInfo("\tProject to iterate   : " + openProject.getElementName());
+    }
     iterator.iterate(openProjects
         .toArray(new IJavaProject[openProjects.size()]));
   }
 
   public void stop() {
-    Log.logInfo("Finished UCDetector"); //$NON-NLS-1$
+    Log.logInfo("Finished UCDetector");
   }
 }
