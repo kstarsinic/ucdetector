@@ -71,15 +71,13 @@ public class UCDetectorPlugin extends AbstractUIPlugin {
 
   private void dumpInformation() {
     Object version = getBundle().getHeaders().get("Bundle-Version"); //$NON-NLS-1$
-    Log.logInfo("\tUCD version : " + version); //$NON-NLS-1$
-    Log.logInfo("\tTime        : " + //  //$NON-NLS-1$
-        DATE_FORMAT.format(new Date()));
-    Log.logInfo("\tjava.version: " + // //$NON-NLS-1$
-        System.getProperty("java.version")); //$NON-NLS-1$
-    Log.logInfo("\tEclipse     : " + // //$NON-NLS-1$
-        System.getProperty("osgi.framework.version")); //$NON-NLS-1$
-    Log.logInfo("\tLogfile     : " + // //$NON-NLS-1$
-        System.getProperty("osgi.logfile")); //$NON-NLS-1$
+    String eclipse = System.getProperty("osgi.framework.version"); //$NON-NLS-1$
+    Log.logInfo("\tStart     : " + DATE_FORMAT.format(new Date())); //$NON-NLS-1$
+    Log.logInfo("\tUCDetector: " + version); //$NON-NLS-1$
+    Log.logInfo("\tJava      : " + System.getProperty("java.version")); //$NON-NLS-1$ //$NON-NLS-2$ 
+    Log.logInfo("\tEclipse   : " + eclipse); //$NON-NLS-1$
+    Log.logInfo("\tLogfile   : " + System.getProperty("osgi.logfile")); //$NON-NLS-1$ //$NON-NLS-2$
+    Log.logInfo("\tWorkspace : " + System.getProperty("osgi.instance.area")); //$NON-NLS-1$ //$NON-NLS-2$
     Log.logInfo(getPreferencesAsString());
   }
 
@@ -93,7 +91,7 @@ public class UCDetectorPlugin extends AbstractUIPlugin {
       sb.append(" preferences are different from default preferences:\r\n"); //$NON-NLS-1$
       for (String propertyName : propertyNames) {
         sb.append('\t').append(propertyName).append('=');
-        sb.append(propertyName).append(NL);
+        sb.append(node.get(propertyName, null)).append(NL);
       }
     }
     catch (BackingStoreException ex) {
@@ -163,15 +161,7 @@ public class UCDetectorPlugin extends AbstractUIPlugin {
     if (ucd != null && ucd.getLog() != null) {
       ucd.getLog().log(status);
     }
-    if (status.getSeverity() == IStatus.ERROR) {
-      Log.logError(status.getMessage(), status.getException());
-    }
-    else if (status.getSeverity() == IStatus.WARNING) {
-      Log.logWarn(status.getMessage());
-    }
-    else if (status.getSeverity() == IStatus.INFO) {
-      Log.logInfo(status.getMessage());
-    }
+    Log.logStatus(status);
   }
 
   public static Status logErrorAndStatus(String message, Throwable ex) {
