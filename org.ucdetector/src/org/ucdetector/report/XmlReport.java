@@ -328,11 +328,13 @@ public class XmlReport implements IUCDetectorReport {
    */
   private static void logEndReportMessage(String message, int iStatus,
       Throwable ex, String... parms) {
+    String mes = NLS.bind(message, parms);
+    Status status = new Status(iStatus, UCDetectorPlugin.ID, iStatus, mes, ex);
     if (iStatus == IStatus.ERROR) {
-      String mes = NLS.bind(message, parms);
-      Status status = new Status(iStatus, UCDetectorPlugin.ID, iStatus, mes, ex);
-      UCDetectorPlugin.logStatus(status);
+      UCDetectorPlugin.logStatus(status); // Create status in Error Log View
+      return;
     }
+    Log.logStatus(status);
   }
 
   /**
