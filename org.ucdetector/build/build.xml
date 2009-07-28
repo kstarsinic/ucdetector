@@ -39,6 +39,7 @@
       <fileset dir="..">
         <include name="**" />
         <exclude name="bin/**" />
+        <exclude name="ant/build.properties" />
       </fileset>
     </zip>
     <echo>Created source jar: ${source.jar}</echo>
