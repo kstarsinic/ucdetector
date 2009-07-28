@@ -29,7 +29,7 @@ public interface InterfaceUnusedMethodExample {
    *  No final marker here!
    *  [2826205] Can't make interface methods final
    */
-  void unused();
+  void unused(); // Marker YES: unused code
 
   /**
    * [ 2826216 ] Unused interface methods are not detected<br>
