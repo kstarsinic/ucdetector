@@ -1,19 +1,24 @@
 # =============================================================================
+# Workspac directory (parent folder of projects)
 # If you don't know, where WORKSPACE is, 
 # Open menu: Help/About eclipse SDK/Installation details/Configuration 
 # And search for 'osgi.instance.area'
 # 
 # ~ does not work on Linux. Use ${user.home} instead!
 # =============================================================================
-WORKSPACE=${user.home}/workspace/runtime-EclipseApplication
+WORKSPACE=${user.home}/workspace
 
 
 # =============================================================================
-# /opt/eclipse-3.3/plugins/org.eclipse.equinox.launcher_1.0.0.v20070606.jar
-# /opt/eclipse-3.4M5/plugins/org.eclipse.equinox.launcher_1.0.100.v20071211.jar
+# Directory of eclipse executabel
+# /opt/eclipse-3.3-clean
+# C:/eclipse/eclipse-3.3
 # =============================================================================
-ECLIPSE_HOME=C:/eclipse/eclipse-3.3
-LAUNCHER=${ECLIPSE_HOME}/plugins/org.eclipse.equinox.launcher_1.0.0.v20070606.jar
+ECLIPSE_HOME=
+
+
+# uncomment next line, to avoid ant script copy/rename launcher.jar
+#LAUNCHER=${ECLIPSE_HOME}/plugins/org.eclipse.equinox.launcher_1.0.0.v20070606.jar
 
 
 # =============================================================================
