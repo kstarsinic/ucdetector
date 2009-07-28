@@ -32,6 +32,9 @@ ucdoption    = ${ucd.options}
     <available file="${build.properties}" property="build.properties.present" />
     <antcall target="create-build.properties" />
 
+    <ant target="copy-launcher" inheritrefs="true" />
+    <property name="LAUNCHER"
+              location="${ECLIPSE_HOME}/plugins/org.eclipse.equinox.launcher.jar" />
     <java jar="${LAUNCHER}" fork="true">
       <arg line="-application org.ucdetector.ucd" />
       <arg line="-consolelog" />
@@ -49,7 +52,22 @@ ucdoption    = ${ucd.options}
   <target name="create-build.properties" unless="build.properties.present">
     <copy file="build.properties_template" tofile="${build.properties}" />
     <echo>Created ${build.properties}</echo>
-    <fail>Please edit new file ${build.properties}</fail>
+    <fail>Please edit new file ${build.properties} ant start build again!</fail>
+  </target>
+
+  <!-- ===================================================================== -->
+  <!-- COPY LAUNCHER                                                         -->
+  <!-- ===================================================================== -->
+  <target name="copy-launcher" unless="LAUNCHER" description="copy">
+    <!--  Hack from 
+      http://wiki.eclipse.org/Starting_Eclipse_Commandline_With_Equinox_Launcher
+      get path to equinox jar inside ${eclipse.home} folder (copy/rename actual jar) 
+    -->
+    <copy tofile="${ECLIPSE_HOME}/plugins/org.eclipse.equinox.launcher.jar"
+          verbose="true">
+      <fileset dir="${ECLIPSE_HOME}/plugins"
+               includes="**/org.eclipse.equinox.launcher_*.jar" />
+    </copy>
   </target>
 </project>
 
