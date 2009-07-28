@@ -1,7 +1,7 @@
 UCDetector 1.3.0 from 2009-:
 Bugfixes:
  - [ 2826205 ] Can't make interface methods final
- - TODO: [ 2826216 ] Unused interface methods are not detected
+ - [ 2826216 ] Unused interface methods are not detected
 
 New features:
  - 
