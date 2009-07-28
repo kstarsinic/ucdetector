@@ -373,11 +373,7 @@ public final class Prefs {
 
   public static String getReportFolder() {
     String fileName = getReportFile();
-    if (fileName == null || fileName.length() == 0) {
-      return null;
-    }
-    File report = new File(fileName);
-    return report.getParent();
+    return fileName.length() == 0 ? null : new File(fileName).getParent();
   }
 
   /**
@@ -404,6 +400,9 @@ public final class Prefs {
     return store;
   }
 
+  /**
+   * @return never <code>null</code>. Returns "" instead!
+   */
   private static String getString(String name) {
     return getStore().getString(name);
   }

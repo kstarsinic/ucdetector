@@ -294,6 +294,10 @@ public class XmlReport implements IUCDetectorReport {
       logEndReportMessage(Messages.XMLReport_WriteOk, IStatus.INFO, null,
           String.valueOf(markerCount), htmlFile.getAbsoluteFile().toString());
 
+      if (Log.DEBUG) {
+        Log.logDebug("htmlFile= " + htmlFile.getCanonicalPath()); //$NON-NLS-1$
+        Log.logDebug("xmlFile = " + xmlFile.getCanonicalPath()); //$NON-NLS-1$
+      }
     }
     catch (Exception e) {
       logEndReportMessage(Messages.XMLReport_WriteError, IStatus.ERROR, e,

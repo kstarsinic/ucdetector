@@ -141,6 +141,7 @@ public class UCDApplication implements IApplication {
     catch (BackingStoreException ex) {
       Log.logError("Can't get preferences", ex);
     }
+    Log.logInfo("Report file is: " + Prefs.getReportFile());
   }
 
   private boolean hasOptionValue(String[] sArgs, int i) {
@@ -173,7 +174,9 @@ public class UCDApplication implements IApplication {
         continue;
       }
       if (!javaProject.exists()) {
-        Log.logInfo("\tDoes not exist: " + projectName);
+        Log.logInfo("\tDoes not exist: " + projectName
+            + "\t\t if this is a problem, "
+            + "open project in eclipse IDE, restart ant");
         continue;
       }
       if (!javaProject.isOpen()) {
