@@ -35,7 +35,12 @@ import org.eclipse.search.ui.NewSearchUI;
 import org.ucdetector.Log;
 
 /**
- * Do text search headless (no UI stuff)
+ * This class is a copy of {@link org.eclipse.search.internal.core.text.TextSearchVisitor}
+ * but the following UI code was removed, to run it in headless mode:
+ * <ul>
+ *   <li><code>import org.eclipse.jface.*</code></li>
+ *   <li><code>import org.eclipse.ui.*</code></li>
+ * </ul>
  */
 class UCDTextSearchVisitor {
   private final TextSearchRequestor fCollector;
