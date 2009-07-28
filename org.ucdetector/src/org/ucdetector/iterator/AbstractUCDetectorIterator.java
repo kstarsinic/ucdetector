@@ -125,7 +125,7 @@ public abstract class AbstractUCDetectorIterator extends UCDetectorCallBack {
       if (markerFactory != null) {
         markerFactory.endReport(selections, timeStart);
         timeEnd = System.currentTimeMillis();
-        Log.logInfo("Detection time: "
+        Log.logInfo("Detection time: " //$NON-NLS-1$
             + StopWatch.timeAsString(timeEnd - timeStart));
       }
     }
