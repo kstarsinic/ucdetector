@@ -16,6 +16,8 @@ import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Path;
 import org.eclipse.core.runtime.Status;
+import org.eclipse.core.runtime.preferences.IEclipsePreferences;
+import org.eclipse.core.runtime.preferences.InstanceScope;
 import org.eclipse.jdt.internal.ui.JavaPluginImages;
 import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.jface.resource.ImageRegistry;
@@ -27,6 +29,7 @@ import org.eclipse.ui.IWorkbenchWindow;
 import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.plugin.AbstractUIPlugin;
 import org.osgi.framework.BundleContext;
+import org.osgi.service.prefs.BackingStoreException;
 
 /**
  * Default Activator-class of this plug-ins
@@ -40,6 +43,7 @@ public class UCDetectorPlugin extends AbstractUIPlugin {
    * See MANIFEST.MF: Bundle-SymbolicName, and .project
    */
   public static final String ID = "org.ucdetector"; //$NON-NLS-1$
+  public static final String NL = System.getProperty("line.separator"); //$NON-NLS-1$
   // The shared instance.
   private static UCDetectorPlugin plugin;
   private static boolean isHeadlessMode = false;
@@ -82,13 +86,19 @@ public class UCDetectorPlugin extends AbstractUIPlugin {
   public static String getPreferencesAsString() {
     StringBuilder sb = new StringBuilder();
     sb.append("\r\nUCDetector Plugin Preferences:\r\n"); //$NON-NLS-1$
-    String[] propertyNames = plugin.getPluginPreferences().propertyNames();
-    sb.append(propertyNames.length);
-    sb.append(" preferences are different from default preferences:\r\n"); //$NON-NLS-1$
-    for (String propertyName : propertyNames) {
-      sb.append("\t").append(propertyName).append("="); //$NON-NLS-1$ //$NON-NLS-2$
-      sb.append(plugin.getPluginPreferences().getString(propertyName));
-      sb.append("\r\n");//$NON-NLS-1$
+    IEclipsePreferences node = new InstanceScope().getNode(ID);
+    try {
+      String[] propertyNames = node.keys();
+      sb.append(propertyNames.length);
+      sb.append(" preferences are different from default preferences:\r\n"); //$NON-NLS-1$
+      for (String propertyName : propertyNames) {
+        sb.append('\t').append(propertyName).append('=');
+        sb.append(propertyName).append(NL);
+      }
+    }
+    catch (BackingStoreException ex) {
+      sb.append(ex);
+      Log.logError("Can't get preferences", ex); //$NON-NLS-1$
     }
     return sb.toString();
   }

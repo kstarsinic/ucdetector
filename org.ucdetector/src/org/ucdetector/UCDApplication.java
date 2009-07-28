@@ -22,10 +22,13 @@ import org.eclipse.core.resources.IWorkspaceRoot;
 import org.eclipse.core.resources.IncrementalProjectBuilder;
 import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.CoreException;
+import org.eclipse.core.runtime.preferences.DefaultScope;
+import org.eclipse.core.runtime.preferences.IEclipsePreferences;
 import org.eclipse.equinox.app.IApplication;
 import org.eclipse.equinox.app.IApplicationContext;
 import org.eclipse.jdt.core.IJavaProject;
 import org.eclipse.jdt.core.JavaCore;
+import org.osgi.service.prefs.BackingStoreException;
 import org.ucdetector.iterator.UCDetectorIterator;
 import org.ucdetector.preferences.Prefs;
 import org.ucdetector.search.UCDProgressMonitor;
@@ -126,11 +129,16 @@ public class UCDApplication implements IApplication {
       Log.logInfo("\tSet ucd option    : " + (key + "->" + value)); //$NON-NLS-1$ //$NON-NLS-2$
       Prefs.setUcdValue(key, value);
     }
-    String[] avaiable = UCDetectorPlugin.getDefault().getPluginPreferences()
-        .defaultPropertyNames();
     String prefs = UCDetectorPlugin.getPreferencesAsString();
     Log.logInfo(prefs.replace(", ", "\n\t")); //$NON-NLS-1$//$NON-NLS-2$
-    Log.logInfo("\tAvaiable Options  : " + Arrays.asList(avaiable)); //$NON-NLS-1$
+    IEclipsePreferences node = new DefaultScope().getNode(UCDetectorPlugin.ID);
+    try {
+      String[] avaiable = node.keys();
+      Log.logInfo("\tAvaiable Options  : " + Arrays.asList(avaiable)); //$NON-NLS-1$
+    }
+    catch (BackingStoreException ex) {
+      Log.logError("Can't get preferences", ex); //$NON-NLS-1$  
+    }
   }
 
   private boolean hasOptionValue(String[] sArgs, int i) {
