@@ -53,6 +53,7 @@ Steps to create new Version:
 		 - Paste The Change Log In: CHANGES.txt
 		 - Preserve my pre-formatted text.
 	 - 3: Add Files To This Release
+	   - https://sourceforge.net/apps/trac/sourceforge/wiki/Release%20files%20for%20download
 		 - Upload use this link: https://frs.sourceforge.net/webupload
 		 - Add files/refresh view
 		 - check box, again: Add files/refresh view
@@ -80,3 +81,4 @@ Steps to create new Version:
  - SVN branch
  
  - add to freshmeat
+ - post at http://www.linuxlinks.com/portal/news/submit.php
