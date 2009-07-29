@@ -1,5 +1,5 @@
 # =============================================================================
-# Workspac directory (parent folder of projects)
+# Workspace directory (parent folder of projects)
 # If you don't know, where WORKSPACE is, 
 # Open menu: Help/About eclipse SDK/Installation details/Configuration 
 # And search for 'osgi.instance.area'
@@ -10,7 +10,7 @@ WORKSPACE=${user.home}/workspace
 
 
 # =============================================================================
-# Directory of eclipse executabel
+# Directory of eclipse executable
 # /opt/eclipse-3.3-clean
 # C:/eclipse/eclipse-3.3
 # =============================================================================
