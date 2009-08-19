@@ -4,7 +4,8 @@ Bugfixes:
  - [ 2826216 ] Unused interface methods are not detected
 
 New features:
- - 
+ - TODO: [ 2832790 ] Custom annotation filter
+ - TODO: [ 2824564 ] Group preferences
 
 // -----------------------------------------------------------------------------
 
