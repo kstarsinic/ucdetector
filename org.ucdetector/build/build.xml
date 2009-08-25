@@ -6,8 +6,7 @@
   <!-- PREPARE                                                               -->
   <!-- ===================================================================== -->
   <target name="prepare" description="Load and dump properties">
-    <property name="build.properties"
-              location="${basedir}/../ant/build.properties" />
+    <property name="build.properties" location="../ant/build.properties" />
     <property file="${build.properties}" />
     <echo>build.properties = ${build.properties}</echo>
     <echo>ECLIPSE_HOME     = ${ECLIPSE_HOME}</echo>
@@ -17,9 +16,7 @@
   <!-- ===================================================================== -->
   <!-- EXPORT UCDETECTOR JARS                                                -->
   <!-- ===================================================================== -->
-  <target name="plugin-export"
-          depends="prepare"
-          description="Export UCDetector jars">
+  <target name="plugin-export" depends="prepare" description="Export plugins">
     <pde.exportPlugins destination="${ECLIPSE_HOME}"
                        exportSource="false"
                        exportType="directory"
@@ -31,7 +28,8 @@
   <!-- ===================================================================== -->
   <!-- EXPORT UCDETECTOR SOURCE                                              -->
   <!-- ===================================================================== -->
-  <target name="source" depends="prepare">
+  <target name="source" depends="prepare" description="Export source.jar">
+    <!-- get Bundle-Version -->
     <property file="../META-INF/MANIFEST.MF" />
     <property name="source.jar"
               location="${ECLIPSE_HOME}/plugins/org.ucdetector.source_${Bundle-Version}.jar" />
@@ -46,11 +44,24 @@
   </target>
 
   <!-- ===================================================================== -->
+  <!-- CREATE UCDETECTOR-ANNOTATIONS.JAR                                     -->
+  <!-- ===================================================================== -->
+  <target name="annotations-jar" description="Export annotations.jar">
+    <property name="annos.jar" location="../ucdetector-annotations.jar" />
+    <jar destfile="${annos.jar}">
+      <fileset dir="../bin" includes="org/ucdetector/util/UsedBy.class" />
+      <fileset dir="../src" includes="org/ucdetector/util/UsedBy.java" />
+    </jar>
+    <echo>Created annotations.jar: ${annos.jar}</echo>
+  </target>
+
+  <!-- ===================================================================== -->
   <!-- ALL                                                                   -->
   <!-- ===================================================================== -->
   <target name="all" description="create all artifacts">
     <ant target="plugin-export" />
     <ant target="source" />
+    <ant target="annotations.jar" />
     <!-- -->
     <ant antfile="../../org.ucdetector.website/build.xml" target="ucd-help" />
     <ant antfile="../../org.ucdetector.website/build.xml" target="homepage" />
