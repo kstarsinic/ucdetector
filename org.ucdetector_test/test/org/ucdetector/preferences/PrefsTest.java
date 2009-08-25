@@ -32,12 +32,12 @@ public class PrefsTest extends TestCase {
             if (Prefs.ANALYZE_FIELDS.equals(prefName)) {
               return WarnLevel.IGNORE.toString();
             }
-//            if (Prefs.ANALYZE_VISIBILITY_PROTECTED.equals(prefName)) {
-//              return WarnLevel.IGNORE.toString();
-//            }
-//            if (Prefs.ANALYZE_VISIBILITY_PRIVATE.equals(prefName)) {
-//              return WarnLevel.IGNORE.toString();
-//            }
+            //            if (Prefs.ANALYZE_VISIBILITY_PROTECTED.equals(prefName)) {
+            //              return WarnLevel.IGNORE.toString();
+            //            }
+            //            if (Prefs.ANALYZE_VISIBILITY_PRIVATE.equals(prefName)) {
+            //              return WarnLevel.IGNORE.toString();
+            //            }
             if (Prefs.ANALYZE_FINAL_METHOD.equals(prefName)) {
               return WarnLevel.WARNING.toString();
             }
@@ -55,6 +55,9 @@ public class PrefsTest extends TestCase {
             }
             if (Prefs.FILTER_FIELD.equals(prefName)) {
               return "*test*,";
+            }
+            if (Prefs.FILTER_ANNOATIONS.equals(prefName)) {
+              return "";
             }
             if (Prefs.FILTER_PACKAGE.equals(prefName)) {
               return "";
