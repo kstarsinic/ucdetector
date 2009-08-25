@@ -3,6 +3,7 @@ package org.ucdetector.example.impl;
 import static org.ucdetector.example.bugs.Bug2783734StaticImports.STATIC_IMPORT_USED;
 import static org.ucdetector.example.bugs.Bug2783734StaticImports.staticImportMethod;
 
+import org.ucdetector.example.IgnoreAnnotationExample;
 import org.ucdetector.example.Java5Example;
 import org.ucdetector.example.MixedExample;
 import org.ucdetector.example.NoUcdAnnotationExample;
@@ -68,6 +69,7 @@ public class PublicReferenceHolder {
 	@SuppressWarnings("deprecation")
 	@AnnotationExample(parameterExmaple = "1")
 	public static void main(String[] args) throws Throwable {
+	  System.out.println(IgnoreAnnotationExample.class.getName());
 		System.out.println(InterfaceUnusedMethodExampleImpl.class.getName());
 		//
 		InterfaceUnusedMethodExample interfaceUnusedMethodExample = ((InterfaceUnusedMethodExample) null);
