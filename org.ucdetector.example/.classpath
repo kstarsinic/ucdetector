@@ -7,5 +7,6 @@
 	<classpathentry kind="src" path="bug2715348/test/java"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
 	<classpathentry kind="lib" path="lib/example.jar"/>
+	<classpathentry kind="lib" path="/org.ucdetector/ucdetector-annotations.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
