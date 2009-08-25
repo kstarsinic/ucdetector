@@ -68,6 +68,10 @@ public class UCDetectorPreferencePage extends UCDetectorBasePreferencePage {
         Messages.PreferencePage_IgnoreFieldFilter, spacer,
         Messages.PreferencePage_IgnoreFieldFilterToolTip);
     this.addField(fieldFilter);
+    StringFieldEditor annotationsFilter = createText(Prefs.FILTER_ANNOATIONS,
+        Messages.PreferencePage_IgnoreAnnotationsFilter, spacer,
+        Messages.PreferencePage_IgnoreAnnotationsFilterToolTip);
+    this.addField(annotationsFilter);
     BooleanFieldEditor beanMethodFilter = new BooleanFieldEditor(
         Prefs.FILTER_BEAN_METHOD, Messages.PreferencePage_IgnoreBeanMethods,
         BooleanFieldEditor.SEPARATE_LABEL, spacer);

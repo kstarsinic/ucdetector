@@ -43,6 +43,8 @@ public final class Prefs {
   = UCDetectorPlugin.ID + ".methodFilter"; //$NON-NLS-1$
   static final String FILTER_FIELD //
   = UCDetectorPlugin.ID + ".fieldFilter"; //$NON-NLS-1$
+  static final String FILTER_ANNOATIONS //
+  = UCDetectorPlugin.ID + ".annotationsFilter"; //$NON-NLS-1$
   static final String FILTER_BEAN_METHOD //
   = UCDetectorPlugin.ID + ".beanMethodFilter"; //$NON-NLS-1$
   static final String DETECT_TEST_ONLY //
@@ -165,6 +167,15 @@ public final class Prefs {
    */
   public static boolean filterField(IField field) {
     return Prefs.matchFilter(Prefs.FILTER_FIELD, field.getElementName());
+  }
+
+  /**
+   * @param annotation which should be checked for filtering
+   * @return <code>true</code>, when the annotation matches the field filter
+   */
+  // [ 2832790 ] Custom annotation filter
+  public static boolean filterAnnotation(String annotation) {
+    return Prefs.matchFilter(Prefs.FILTER_ANNOATIONS, annotation);
   }
 
   // DETECT GROUP --------------------------------------------------------------
@@ -418,7 +429,6 @@ public final class Prefs {
   /**
    * @return <code>true</code>, when the name matches one of the Strings
    * found in the preference filteName.<br>
-   * This method ignores case since version 0.10.1
    */
   static boolean matchFilter(String filterName, String name) {
     String[] filters = parseFilters(filterName);

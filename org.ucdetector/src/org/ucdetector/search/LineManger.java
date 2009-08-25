@@ -39,8 +39,10 @@ import org.eclipse.jdt.core.dom.SingleMemberAnnotation;
 import org.eclipse.jdt.core.dom.StringLiteral;
 import org.ucdetector.Log;
 import org.ucdetector.UCDetectorPlugin;
+import org.ucdetector.preferences.Prefs;
 import org.ucdetector.quickfix.ASTMemberVisitor;
 import org.ucdetector.util.JavaElementUtil;
+import org.ucdetector.util.UsedBy;
 
 /**
  * Get the source code line of classes, methods, fields
@@ -153,41 +155,61 @@ public class LineManger {
         // System.out.println("modifier=" + modifier + " [" + modifier.getClass().getName() + "]");
         if (modifier instanceof Annotation) {
           Annotation annotation = (Annotation) modifier;
-          String fullName = annotation.getTypeName().getFullyQualifiedName();
-          if ("SuppressWarnings".equals(fullName) //$NON-NLS-1$
-              || "java.lang.SuppressWarnings".equals(fullName)) { //$NON-NLS-1$
-            if (isIgnoreUCDetector(annotation)) {
-              int startPos = name.getStartPosition();
-              ignoreLines.add(Integer.valueOf(scanner.getLineNumber(startPos)));
-            }
+          if (isIgnoreAnnotation(annotation)) {
+            int startPos = name.getStartPosition();
+            ignoreLines.add(Integer.valueOf(scanner.getLineNumber(startPos)));
           }
         }
       }
       return true;
     }
 
-    private boolean isIgnoreUCDetector(Annotation annotation) {
-      if (annotation instanceof SingleMemberAnnotation) {
-        Expression value = ((SingleMemberAnnotation) annotation).getValue();
-        if (value instanceof ArrayInitializer) {
-          ArrayInitializer arrayInitializer = (ArrayInitializer) value;
-          List<?> expressions = arrayInitializer.expressions();
-          for (Object oExpression : expressions) {
-            if (isUcdTag((StringLiteral) oExpression)) {
-              return true;
+    private static boolean isIgnoreAnnotation(Annotation annotation) {
+      String fullName = annotation.getTypeName().getFullyQualifiedName();
+      if (isSuppressWarningsUCDetector(annotation, fullName)) {
+        return true;
+      }
+      if (isUsedByAnnotation(fullName)) {
+        return true;
+      }
+      // TODO: Match org.ucdetector.example.FilterMeAnnotation and FilterMeAnnotation
+      if (Prefs.filterAnnotation(fullName)) {
+        return true;
+      }
+      return false;
+    }
+
+    private static boolean isSuppressWarningsUCDetector(Annotation annotation,
+        String name) {
+      if ("SuppressWarnings".equals(name) //$NON-NLS-1$
+          || "java.lang.SuppressWarnings".equals(name)) { //$NON-NLS-1$
+        if (annotation instanceof SingleMemberAnnotation) {
+          Expression value = ((SingleMemberAnnotation) annotation).getValue();
+          if (value instanceof ArrayInitializer) {
+            ArrayInitializer arrayInitializer = (ArrayInitializer) value;
+            List<?> expressions = arrayInitializer.expressions();
+            for (Object oExpression : expressions) {
+              if (isUcdTag((StringLiteral) oExpression)) {
+                return true;
+              }
             }
           }
-        }
-        else if (value instanceof StringLiteral) {
-          if (isUcdTag((StringLiteral) value)) {
-            return true;
+          else if (value instanceof StringLiteral) {
+            if (isUcdTag((StringLiteral) value)) {
+              return true;
+            }
           }
         }
       }
       return false;
     }
 
-    private boolean isUcdTag(StringLiteral literal) {
+    private static boolean isUsedByAnnotation(String name) {
+      return UsedBy.class.getSimpleName().equals(name) //
+          || UsedBy.class.getName().equals(name);
+    }
+
+    private static boolean isUcdTag(StringLiteral literal) {
       //      System.out.println("\tliteralValue=" + literal.getLiteralValue());
       return literal.getLiteralValue().equalsIgnoreCase(UCD_ANNOTATION_VALUE);
     }

@@ -22,21 +22,17 @@ import org.ucdetector.UCDetectorPlugin;
  * Class used to initialize default preference values.
  * See: {@link  org.ucdetector.preferences.Prefs#LIST_SEPARATOR}
  */
+@SuppressWarnings("nls")
 public class PreferenceInitializer extends AbstractPreferenceInitializer { // NO_UCD
   private static final String WARN = WARNING.name();
-  private static final String SOURCE_FOLDER_FILTER //
-  = "*test*,generated,"; //$NON-NLS-1$
-  private static final String PACKAGE_FILTER //
-  = "*test*,"; //$NON-NLS-1$
-  private static final String CLASS_FILTER //
-  = "Test*,*Test"; //$NON-NLS-1$
-  private static final String METHOD_FILTER //
-  = "test*,*Test"; //$NON-NLS-1$
-  private static final String FIELD_FILTER //
-  = "test*,*Test"; //$NON-NLS-1$
-  private static final String FILE_PATTERN_LITERAL_SEARCH //
-  = "*.xml,"; //$NON-NLS-1$
-  private static final String REPORT_DEFAULT_NAME = "UCDetetorReport.html"; //$NON-NLS-1$
+  private static final String SOURCE_FOLDER_FILTER = "*test*,generated,";
+  private static final String PACKAGE_FILTER = "*test*,";
+  private static final String CLASS_FILTER = "Test*,*Test";
+  private static final String METHOD_FILTER = "test*,*Test";
+  private static final String FIELD_FILTER = "test*,*Test";
+  private static final String ANNOATIONS_FILTER = "";
+  private static final String FILE_PATTERN_LITERAL_SEARCH = "*.xml,";
+  private static final String REPORT_DEFAULT_NAME = "UCDetetorReport.html";
 
   @Override
   public void initializeDefaultPreferences() {
@@ -47,6 +43,7 @@ public class PreferenceInitializer extends AbstractPreferenceInitializer { // NO
     store.setDefault(Prefs.FILTER_CLASS, CLASS_FILTER);
     store.setDefault(Prefs.FILTER_METHOD, METHOD_FILTER);
     store.setDefault(Prefs.FILTER_FIELD, FIELD_FILTER);
+    store.setDefault(Prefs.FILTER_ANNOATIONS, ANNOATIONS_FILTER);
     store.setDefault(Prefs.FILTER_BEAN_METHOD, true);
     // WHAT TO DETECT ----------------------------------------------------------
     store.setDefault(Prefs.WARN_LIMIT, 0);
@@ -66,7 +63,7 @@ public class PreferenceInitializer extends AbstractPreferenceInitializer { // NO
     }
     catch (Exception e) {
       report = REPORT_DEFAULT_NAME;
-      Log.logError("Can't get report file name", e); //$NON-NLS-1$
+      Log.logError("Can't get report file name", e);
     }
     store.setDefault(Prefs.REPORT_FILE, report);
     // KEYWORDS ----------------------------------------------------------------
