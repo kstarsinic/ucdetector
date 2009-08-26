@@ -10,24 +10,24 @@ package org.ucdetector.example.bugs;
  * <p>
  * see"https://sourceforge.net/tracker/?func=detail&atid=1046865&aid=2844899&group_id=219599"
  * <p>
- * See also bug: [ 2804064 ] Access to enclosing type - make 2743908
- * configurable
+ * See also bug: [ 2804064 ] 
+ * See also bug: [ 2743908 ] 
  */
-public class Bug2844899_FieldFromInnerClass{
-	/**
-	 * Changing i to private causes a warning:<br>
-	 * "Read access to enclosing field Bug2844899_FieldFromInnerClass.i is emulated by a synthetic accessor"
-	 */
-	public int i = 0;// Marker YES: use protected
+public class Bug2844899_FieldFromInnerClass {
+  /**
+   * Changing i to private causes a warning:<br>
+   * "Read access to enclosing field Bug2844899_FieldFromInnerClass.i is emulated by a synthetic accessor"
+   */
+  public int i = 0;// Marker YES: use protected
 
-	void foo() {// Marker YES: unused code
-		i = i + 5;
-		Object o = new Object() {
-			@Override
-			public int hashCode() {
-				return i + 1;
-			}
-		};
-		System.out.print(o);
-	}
+  void foo() {// Marker YES: unused code
+    i = i + 5;
+    Object o = new Object() {
+      @Override
+      public int hashCode() {
+        return i + 1;
+      }
+    };
+    System.out.print(o);
+  }
 }
