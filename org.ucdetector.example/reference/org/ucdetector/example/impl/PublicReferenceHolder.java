@@ -20,6 +20,8 @@ import org.ucdetector.example.bugs.Bug2743908;
 import org.ucdetector.example.bugs.Bug2776029FinalField;
 import org.ucdetector.example.bugs.Bug2776029FinalFieldBase;
 import org.ucdetector.example.bugs.Bug2779970;
+import org.ucdetector.example.bugs.Bug2844899_FieldFromInnerClass;
+import org.ucdetector.example.bugs.Bug2844899_Use;
 import org.ucdetector.example.bugs.impl.Bug2225016Impl;
 import org.ucdetector.example.classes.AnnotationExample;
 import org.ucdetector.example.classes.AnonymousClass;
@@ -69,7 +71,10 @@ public class PublicReferenceHolder {
 	@SuppressWarnings("deprecation")
 	@AnnotationExample(parameterExmaple = "1")
 	public static void main(String[] args) throws Throwable {
-	  System.out.println(IgnoreAnnotationExample.class.getName());
+		System.out.println(Bug2844899_FieldFromInnerClass.class.getName());
+		System.out.println(Bug2844899_Use.class.getName());
+		//
+		System.out.println(IgnoreAnnotationExample.class.getName());
 		System.out.println(InterfaceUnusedMethodExampleImpl.class.getName());
 		//
 		InterfaceUnusedMethodExample interfaceUnusedMethodExample = ((InterfaceUnusedMethodExample) null);
