@@ -12,6 +12,11 @@ package org.ucdetector.example.bugs;
  * <p>
  * See also bug: [ 2804064 ] 
  * See also bug: [ 2743908 ] 
+ * <p>
+ * Browse code at:
+ * http://ucdetector.svn.sourceforge.net/viewvc/ucdetector/trunk/org.ucdetector.example/example/org/ucdetector/example/bugs/Bug2844899_FieldFromInnerClass.java?view=markup
+ * http://ucdetector.svn.sourceforge.net/viewvc/ucdetector/trunk/org.ucdetector.example/example/org/ucdetector/example/bugs/Bug2844899_Use.java?view=markup
+ * <p>
  */
 public class Bug2844899_FieldFromInnerClass {
   /**
