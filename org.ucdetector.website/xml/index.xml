@@ -141,7 +141,8 @@ It is possible to change several problems at once using quick fix dialog.
 			<td>
 <h3>Ignore code</h3>
 <!-- ======================================================================= -->
-Use // NO_UCD comment for lines, which should be ignored:
+
+<h4>// NO_UCD</h4>
 <pre><span class="c4">/**
  * Class is only used by reflection.
  * Write a <strong>// NO_UCD</strong> comment at the end of the line.
@@ -149,14 +150,29 @@ Use // NO_UCD comment for lines, which should be ignored:
  */</span>
 <span class="c2"><strong>public</strong></span> <span class="c5"><strong>class</strong></span> BeanExample <span class="c6"><strong>{</strong></span> <span class="c7">// <strong>NO_UCD</strong></span></pre>
 
-Or use @SuppressWarnings("ucd") annotation for code, which should be ignored:
+<h4>@SuppressWarnings("ucd")</h4>
 <pre><span class="c4">/**
  * Class is only used by reflection.
  * Add a <strong>@SuppressWarnings("ucd")</strong> annotation.
- * This line will be ignored by UCDetector.
+ * This class/method/field will be ignored by UCDetector.
  */</span>
 <strong>@SuppressWarnings("ucd")</strong>
 <span class="c2"><strong>public</strong></span> <span class="c5"><strong>class</strong></span> BeanExample <span class="c6"><strong>{</strong></span></pre>
+
+<h4>@UsedBy("reflection")</h4>
+I don't like this one, but users asked for it:<br></br>
+If you want to "polute" your code, you can use the <code>@org.ucdetector.util.UsedBy</code>
+annotation located inside ucdetector-annotations.jar which is inside org.ucdetector.xxx.jar.
+<pre><span class="c4">/**
+ * Class is only used by reflection.
+ * Add a <strong>@SuppressWarnings("ucd")</strong> annotation.
+ * This class/method/field will be ignored by UCDetector.
+ */</span>
+<strong>@UsedBy("reflection")</strong>
+<span class="c2"><strong>public</strong></span> <span class="c5"><strong>class</strong></span> BeanExample <span class="c6"><strong>{</strong></span></pre>
+
+<h4>Other annotations</h4>
+List code to be ignored containing annotations in preferences/filter.
 
 </td>
 <!-- right ================================================== -->
