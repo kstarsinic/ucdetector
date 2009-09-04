@@ -77,7 +77,7 @@ NOTE: <code>@org.junit.Test</code> annotations are ignored.
 <!-- version > 0.12.0: <h3>Search class name in files</h3> -->
 <!-- ============================= -->
 <p><b>Search class names in text files:</b><br/>
-Select file extension, which should be searched for class name. 
+Select file extension, which should be searched for class name.
 For example "*.xml,*.jsp"
 </p>
 
@@ -145,7 +145,7 @@ Maybe this rules are not OK for you! Anyway: Apply changes for this rule careful
   <font color="#006699"><strong>private</strong></font></b>:<br/>
 Select error level for visibility. This option will create markers for code
 which could be <font color="#006699"><strong>protected</strong></font>, default or
-  <font color="#006699"><strong>private</strong></font>. 
+  <font color="#006699"><strong>private</strong></font>.
 This is code, which has only references in same package or same class.
 </p>
 In some cases this may cause <font color="red">compile errors</font>
@@ -153,7 +153,7 @@ for classes, if there is code like this:
 <pre>
 new A().getB().toString();
 </pre>
-For more details, check bug: 
+For more details, check bug:
 	<a href="http://sourceforge.net/tracker/?func=detail&amp;aid=2539795&amp;group_id=219599&amp;atid=1046865">
 	  Wrong default visibility marker for classes - ID: 2539795
 	</a>
@@ -189,7 +189,7 @@ Searched started: 06.07.09 23:58. Duration: 2.18 seconds
 <p>
 * To get links to the source locations, copy and paste table to Eclipse 'Java Stack Trace Console'<br/>
 ** Set 'Detect code with max number of references' &gt; 0<br/>
-To create custom reports change ECLIPSE_HOME/plugins/org.ucdetector_*.jar/org/ucdetector/report/html.xslt       
+To create custom reports change ECLIPSE_HOME/dropins/org.ucdetector_*.jar/org/ucdetector/report/html.xslt
 </p>Searched in:<ul><li>MixedExample.java</li></ul>
 
 

@@ -23,8 +23,8 @@ markers for the following problems, which appear in the eclipse problem view:
 <p>
 UCDetector also finds cyclic dependencies between classes in your code.
 This cycle classes are shown in s special cycle view.
-</p>			
-			
+</p>
+
 			</td>
 <!-- right ================================================== -->
 			<td align="left" valign="middle">
@@ -35,7 +35,7 @@ This cycle classes are shown in s special cycle view.
 		<tr>
 <!-- left ================================================== -->
 			<td>
-			
+
 <h3>Get UCDetector</h3>
 UCDetector needs Eclipse >= 3.3 and java >= 5.0
 <br></br>
@@ -43,7 +43,7 @@ UCDetector needs Eclipse >= 3.3 and java >= 5.0
 <!-- ======================================================================= -->
 <ul>
   <li>Download <a href="http://sourceforge.net/project/showfiles.php?group_id=219599">org.ucdetector_*.jar</a></li>
-  <li>Put the jar into <code>ECLIPSE_HOME/plugins</code> directory</li>
+  <li>Put the jar into <code>ECLIPSE_HOME/dropins</code> directory</li>
   <li>Restart Eclipse</li>
 </ul>
 
@@ -52,8 +52,8 @@ UCDetector needs Eclipse >= 3.3 and java >= 5.0
 <br></br>
 <code>http://ucdetector.sourceforge.net/update</code>
 
-			
-			
+
+
 <h3>Quick start</h3>
 <!-- ======================================================================= -->
 Instead of clicking Shift+Ctrl+G
@@ -125,7 +125,7 @@ your code. Click on the marker to see QuickFixes's to change code:
   <li>Change visibility: Use <font color="#006699"><strong>protected</strong></font>
 	   , default or <font color="#006699"><strong>private</strong></font></li>
   <li>Use <font color="#006699"><strong>final</strong></font></li>
-</ul>	
+</ul>
 It is possible to change several problems at once using quick fix dialog.
 			</td>
 <!-- right ================================================== -->

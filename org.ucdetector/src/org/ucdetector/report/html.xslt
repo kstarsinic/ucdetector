@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="ISO-8859-1"?>
-<!-- 
+<!--
  Copyright (c) 2009 Joerg Spieler All rights reserved. This program and the
  accompanying materials are made available under the terms of the Eclipse
  Public License v1.0 which accompanies this distribution, and is available at
@@ -15,12 +15,12 @@
  Public License v1.0 which accompanies this distribution, and is available at
  http://www.eclipse.org/legal/epl-v10.html
 		</xsl:comment>
-		
+
 		<xsl:comment>
-To create custom reports change: 
-ECLIPSE_HOME/plugins/org.ucdetector_*.jar/org/ucdetector/report/html.xslt
+To create custom reports change:
+ECLIPSE_HOME/dropins/org.ucdetector_*.jar/org/ucdetector/report/html.xslt
 		</xsl:comment>
-		
+
 		<html>
 			<head>
 				<title>UCDetector Report</title>
@@ -28,11 +28,11 @@ ECLIPSE_HOME/plugins/org.ucdetector_*.jar/org/ucdetector/report/html.xslt
 			</head>
 			<body bgcolor="#FFFFE0">
 				<h1 align="center">UCDetector Report</h1>
-				
+
 				<!-- ===================================================================
 				     ABOUT SEARCH
 				     =============================================================== -->
-				
+
 				<xsl:value-of select="concat('Searched started: ', /ucdetector/statistics/dateStarted, '. Duration: ', /ucdetector/statistics/searchDuration)"/>
 				<table border="1">
 					<thead align="center">
@@ -59,7 +59,7 @@ ECLIPSE_HOME/plugins/org.ucdetector_*.jar/org/ucdetector/report/html.xslt
 								<xsl:if test="string-length(package) &gt; 0">
 									<xsl:value-of select="concat(package, '.')"/>
 								</xsl:if>
-				
+
 			          <!-- class name -->
 								<xsl:value-of select="concat(class, '.')"/>
 
@@ -67,7 +67,7 @@ ECLIPSE_HOME/plugins/org.ucdetector_*.jar/org/ucdetector/report/html.xslt
 								<xsl:if test="not(method) and not(field)">
 									<xsl:text>declaration</xsl:text>
 								</xsl:if>
-				
+
 								<!-- method -->
 								<xsl:if test="method">
 									<xsl:value-of select="method"/>
@@ -77,7 +77,7 @@ ECLIPSE_HOME/plugins/org.ucdetector_*.jar/org/ucdetector/report/html.xslt
 								<xsl:if test="field">
 									<xsl:value-of select="field"/>
 								</xsl:if>
-				
+
 								<!-- Link in Eclipse Stack Trace Console View: (SWT.java:3634) -->
 								<xsl:value-of select="concat('(', resourceName, ':', line, ')')"/>
 							</td>
@@ -105,16 +105,16 @@ ECLIPSE_HOME/plugins/org.ucdetector_*.jar/org/ucdetector/report/html.xslt
 						</tr>
 					</xsl:for-each>
 				</table>
-				
+
 				<!-- ===================================================================
 				     FOOTNODE
 				     =============================================================== -->
 				<p>
 * To get links to the source locations, copy and paste table to Eclipse 'Java Stack Trace Console'<br></br>
 ** Set 'Detect code with max number of references' &gt; 0<br></br>
-To create custom reports change ECLIPSE_HOME/plugins/org.ucdetector_*.jar/org/ucdetector/report/html.xslt
+To create custom reports change ECLIPSE_HOME/dropins/org.ucdetector_*.jar/org/ucdetector/report/html.xslt
        </p>
-				
+
 				<!-- ===================================================================
 				     SEARCH IN
 				     =============================================================== -->
@@ -126,7 +126,7 @@ To create custom reports change ECLIPSE_HOME/plugins/org.ucdetector_*.jar/org/uc
 						</li>
 					</xsl:for-each>
 				</ul>
-				
+
 				<!-- ===================================================================
 				     PROBLEMS
 				     =============================================================== -->
