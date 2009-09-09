@@ -54,6 +54,8 @@ public final class Messages extends NLS {
   //
   public static String PreferencePage_CheckProtectedFields; // NO_UCD
   public static String PreferencePage_CheckPrivateFields; // NO_UCD
+  public static String PreferencePage_ignoreSyntheticAccessEmulation; // NO_UCD
+  public static String PreferencePage_ignoreSyntheticAccessEmulationTooltip; // NO_UCD
   //
   public static String PreferencePage_CheckProtectedConstants; // NO_UCD
   public static String PreferencePage_CheckPrivateConstants; // NO_UCD

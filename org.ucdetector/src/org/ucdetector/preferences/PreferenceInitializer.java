@@ -79,6 +79,7 @@ public class PreferenceInitializer extends AbstractPreferenceInitializer { // NO
     // fields
     store.setDefault(Prefs.ANALYZE_VISIBILITY_PROTECTED_FIELDS, WARN);
     store.setDefault(Prefs.ANALYZE_VISIBILITY_PRIVATE_FIELDS, WARN);
+    store.setDefault(Prefs.IGNORE_SYNTHETIC_ACCESS_EMULATION, true);
     // constants
     store.setDefault(Prefs.ANALYZE_VISIBILITY_PROTECTED_CONSTANTS, WARN);
     store.setDefault(Prefs.ANALYZE_VISIBILITY_PRIVATE_CONSTANTS, WARN);

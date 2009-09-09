@@ -7,6 +7,7 @@
  */
 package org.ucdetector.preferences;
 
+import org.eclipse.jface.preference.BooleanFieldEditor;
 import org.eclipse.jface.preference.ComboFieldEditor;
 import org.eclipse.jface.preference.FieldEditorPreferencePage;
 import org.eclipse.swt.SWT;
@@ -85,6 +86,15 @@ public class UCDetectorPreferencePageKeywords extends
         Messages.PreferencePage_CheckProtectedFields, spacer));
     this.addField(createCombo(Prefs.ANALYZE_VISIBILITY_PRIVATE_FIELDS,
         Messages.PreferencePage_CheckPrivateFields, spacer));
+
+    // [ 2804064 ] Access to enclosing type - make 2743908 configurable
+    BooleanFieldEditor ignoreSyntheticAccessEmulation = new BooleanFieldEditor(
+        Prefs.IGNORE_SYNTHETIC_ACCESS_EMULATION, "    " //$NON-NLS-1$
+            + Messages.PreferencePage_ignoreSyntheticAccessEmulation,
+        BooleanFieldEditor.SEPARATE_LABEL, spacer);
+    ignoreSyntheticAccessEmulation.getLabelControl(spacer).setToolTipText(
+        Messages.PreferencePage_ignoreSyntheticAccessEmulationTooltip);
+    this.addField(ignoreSyntheticAccessEmulation);
     addLineHack(spacer);
 
     this.addField(createCombo(Prefs.ANALYZE_VISIBILITY_PROTECTED_CONSTANTS,

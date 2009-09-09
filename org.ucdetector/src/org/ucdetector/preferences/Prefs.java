@@ -9,6 +9,7 @@ package org.ucdetector.preferences;
 
 import java.io.File;
 import java.util.regex.Pattern;
+import java.util.regex.PatternSyntaxException;
 
 import org.eclipse.jdt.core.Flags;
 import org.eclipse.jdt.core.IField;
@@ -83,6 +84,8 @@ public final class Prefs {
   = UCDetectorPlugin.ID + ".visibility.protected.fields"; //$NON-NLS-1$
   static final String ANALYZE_VISIBILITY_PRIVATE_FIELDS //
   = UCDetectorPlugin.ID + ".visibility.private.fields"; //$NON-NLS-1$
+  static final String IGNORE_SYNTHETIC_ACCESS_EMULATION //
+  = UCDetectorPlugin.ID + ".visibility.ignore.synthetic.access.emulation"; //$NON-NLS-1$
   //
   static final String ANALYZE_VISIBILITY_PROTECTED_CONSTANTS //
   = UCDetectorPlugin.ID + ".visibility.protected.constants"; //$NON-NLS-1$
@@ -142,6 +145,14 @@ public final class Prefs {
    */
   public static boolean isFilterBeanMethod() {
     return getStore().getBoolean(Prefs.FILTER_BEAN_METHOD);
+  }
+
+  /**
+   * @return <code>true</code>, when we don't care about warning 'Access to enclosing type'
+   * see: compiler warnings: Code style, 'access to a non-accessible member of an enclosing type'
+   */
+  public static boolean isIgnoreSyntheticAccessEmulationWarning() {
+    return getStore().getBoolean(Prefs.IGNORE_SYNTHETIC_ACCESS_EMULATION);
   }
 
   /**
@@ -434,8 +445,13 @@ public final class Prefs {
     String[] filters = parseFilters(filterName);
     for (String regex : filters) {
       // IPackageFragmentRoot can be "", filter can be ""
-      if (regex.length() > 0 && Pattern.matches(regex, name)) {
-        return true;
+      try {
+        if (regex.length() > 0 && Pattern.matches(regex, name)) {
+          return true;
+        }
+      }
+      catch (PatternSyntaxException e) {
+        Log.logWarn(e.getMessage());
       }
     }
     return false;
