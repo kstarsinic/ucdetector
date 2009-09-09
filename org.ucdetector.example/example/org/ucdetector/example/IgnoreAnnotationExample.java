@@ -18,6 +18,7 @@ public class IgnoreAnnotationExample {
 	@FilterMeAnnotation()
 	public int unused2 = 0;
 
+	// TODO: handle full annotation name!
 	@org.ucdetector.example.FilterMeAnnotation()
 	public void unused2() {
 	};

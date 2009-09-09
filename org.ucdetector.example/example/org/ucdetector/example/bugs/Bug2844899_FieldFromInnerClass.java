@@ -23,7 +23,7 @@ public class Bug2844899_FieldFromInnerClass {
    * Changing i to private causes a warning:<br>
    * "Read access to enclosing field Bug2844899_FieldFromInnerClass.i is emulated by a synthetic accessor"
    */
-  public int i = 0;// Marker YES: use protected
+  public int i = 0;// Marker YES: use private
 
   void foo() {// Marker YES: unused code
     i = i + 5;

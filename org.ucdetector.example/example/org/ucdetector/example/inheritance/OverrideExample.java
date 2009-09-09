@@ -18,7 +18,7 @@ public class OverrideExample {
   }
 
   // [ 2804064 ] Access to enclosing type - make 2743908 configurable
-  static class MyList extends ArrayList<Object> {
+  static class MyList extends ArrayList<Object> { // Marker YES: use private
     private static final long serialVersionUID = 1L;
 
     @Override

@@ -16,16 +16,19 @@ package org.ucdetector.example.bugs;
  * http://ucdetector.svn.sourceforge.net/viewvc/ucdetector/trunk/org.ucdetector.example/example/org/ucdetector/example/bugs/Bug2779970.java?revision=964&view=markup
  */
 public class Bug2779970 {
-  protected final int dontMakeMePrivate = 1;
+	/**
+	 * 2009-09-09: CONFIGURABLE NOW
+	 */
+  protected final int makeMePrivate = 1;// Marker YES: use private
 
   public static void main(String[] args) {
-    System.out.println(new Bug2779970().dontMakeMePrivate);
+    System.out.println(new Bug2779970().makeMePrivate);
     new StaticClass().foo();
   }
 
-  static class StaticClass {
-    protected void foo() {
-      System.out.println(new Bug2779970().dontMakeMePrivate);
+  static class StaticClass {// Marker YES: use private
+    protected void foo() {// Marker YES: use private
+      System.out.println(new Bug2779970().makeMePrivate);
     }
   }
 }

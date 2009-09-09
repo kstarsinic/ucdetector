@@ -16,7 +16,7 @@ import org.ucdetector.example.bugs.Bug2269486;
 import org.ucdetector.example.bugs.Bug2539795Main;
 import org.ucdetector.example.bugs.Bug2721955;
 import org.ucdetector.example.bugs.Bug2743872;
-import org.ucdetector.example.bugs.Bug2743908;
+import org.ucdetector.example.bugs.Bug2743908_2804064;
 import org.ucdetector.example.bugs.Bug2776029FinalField;
 import org.ucdetector.example.bugs.Bug2776029FinalFieldBase;
 import org.ucdetector.example.bugs.Bug2779970;
@@ -93,7 +93,7 @@ public class PublicReferenceHolder {
 		staticImportMethod();
 		// System.out.println(Bug2783734StaticImports.class.getName());
 		// ---------------------------------------------------------------------
-		System.out.println(Bug2743908.class.getName());
+		System.out.println(Bug2743908_2804064.class.getName());
 		System.out.println(Bug2743872.class.getName());
 		new Bug2743872(1);
 		// new Bug2743872();

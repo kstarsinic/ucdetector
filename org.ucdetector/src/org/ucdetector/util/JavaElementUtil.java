@@ -98,6 +98,26 @@ public class JavaElementUtil {
   }
 
   /**
+   * @return the class "before" the compilation unit in the package explorer
+   */
+  public static IType getRootTypeFor(IJavaElement javaElement) {
+    IJavaElement parent = javaElement;
+    IType lastType = null;
+    while (true) {
+      if (parent == null) {
+        return null;
+      }
+      if (parent instanceof IType) {
+        lastType = (IType) parent;
+      }
+      else if (parent instanceof ICompilationUnit) {
+        return lastType;
+      }
+      parent = parent.getParent();
+    }
+  }
+
+  /**
    * @param type check this type, if it is a primary type
    * @return <code>true</code>, when the class has the same name as the java file
    */
@@ -198,7 +218,7 @@ public class JavaElementUtil {
    *         <li><code>private static final ObjectStreamField[] serialPersistentFields</code></li>
    * </ul>
    * @throws JavaModelException if this element does not exist or if an
-  *      exception occurs while accessing its corresponding resource. 
+  *      exception occurs while accessing its corresponding resource.
    * @see "http://java.sun.com/javase/6/docs/platform/serialization/spec/output.html"
    */
   public static boolean isSerializationField(IField field)
@@ -336,7 +356,7 @@ public class JavaElementUtil {
    * it is very expensive to call this method!!!
    * @throws CoreException when problems found during search
    * @throws JavaModelException if this element does not exist or if an
-  *      exception occurs while accessing its corresponding resource. 
+  *      exception occurs while accessing its corresponding resource.
    */
   public static boolean isOverriddenMethod(IMethod method) throws CoreException {
     int flags = method.getFlags();
@@ -352,7 +372,7 @@ public class JavaElementUtil {
     IType declaringType = method.getDeclaringType();
     IJavaSearchScope scope = SearchEngine.createHierarchyScope(declaringType);
     runSearch(pattern, requestor, scope);
-    // Ignore 1 match: Declaring type! 
+    // Ignore 1 match: Declaring type!
     // TODO: check search matches: OverrideImplExample
     return requestor.found > 1;
   }
@@ -437,7 +457,7 @@ public class JavaElementUtil {
    * @param type to check for subclasses
    * @return <code>true</code>, when a type has sub classes
    * @throws JavaModelException if this element does not exist or if an
-  *      exception occurs while accessing its corresponding resource. 
+  *      exception occurs while accessing its corresponding resource.
    */
   public static boolean hasSubClasses(IType type) throws JavaModelException {
     return hasXType(type, false);
@@ -447,7 +467,7 @@ public class JavaElementUtil {
    * @param type to check for super classes
    * @return <code>true</code>, when a type has super classes
    * @throws JavaModelException if this element does not exist or if an
-  *      exception occurs while accessing its corresponding resource. 
+  *      exception occurs while accessing its corresponding resource.
    */
   public static boolean hasSuperClasses(IType type) throws JavaModelException { // NO_UCD
     return hasXType(type, true);
@@ -471,7 +491,7 @@ public class JavaElementUtil {
   }
 
   /**
-   * 
+   *
    * @param field to check if it is a constant
    * @return <code>true</code>, when a field is static and final
    * @throws JavaModelException if this element does not exist or if an
@@ -491,7 +511,7 @@ public class JavaElementUtil {
    *         <li><code>public boolean isValid()</code></li>
    *         </ul>
    * @throws JavaModelException if this element does not exist or if an
-  *      exception occurs while accessing its corresponding resource. 
+  *      exception occurs while accessing its corresponding resource.
    */
   public static boolean isBeanMethod(IMethod method) throws JavaModelException {
     if (!Flags.isPublic(method.getFlags()) || Flags.isStatic(method.getFlags())) {
@@ -526,14 +546,14 @@ public class JavaElementUtil {
    * If we call <code>IPackageFragment.getChildren()</code>
    * we do NOT get sub packages!<br>
    * This is a workaround. We calculate sub packages by going to the
-   * parent of code>IPackageFragment</code> 
+   * parent of code>IPackageFragment</code>
    * which is a <code>IPackageFragmentRoot</code> and call
    * <code>IPackageFragmentRoot.getChildren()</code>
    * When a name of a sub package starts with package name + "." it is a
    * sub package
    * @param packageFragment package to find sub packages
-   * 
-   * @return a list of all sub packages for the input package. For example input 
+   *
+   * @return a list of all sub packages for the input package. For example input
    * <pre>org.ucdetector</pre>
    * return a list with:
    * <ul>
@@ -675,7 +695,7 @@ public class JavaElementUtil {
    * @param javaElement to find source folder for
    * @return the PackageFragmentRoot for a javaElement.
    * In Eclipse IDE this is called a source folder
-   * 
+   *
    */
   public static IPackageFragmentRoot getPackageFragmentRootFor(
       IJavaElement javaElement) {
@@ -691,7 +711,7 @@ public class JavaElementUtil {
 
   /**
    * Bug [ 2715348 ] Filter on Source folders does not work.
-   * Match project relative path, not only last path element 
+   * Match project relative path, not only last path element
    * @param root source folder
    * @return "src/java/test" instead of only "test"
    */
@@ -714,7 +734,7 @@ public class JavaElementUtil {
    * </ul>
    * NOTE: The @org.junit.Test annotations are ignored
    * <p>
-   * See also feature request 2409697 "Detect code only called from tests" 
+   * See also feature request 2409697 "Detect code only called from tests"
    * https://sourceforge.net/tracker2/?func=detail&aid=2409697&group_id=219599&atid=1046868
    */
   public static boolean isTestCode(IJavaElement javaElement) {

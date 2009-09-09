@@ -34,14 +34,14 @@ public class ImplementsExample implements Observer {
   }
 
   // [ 2804064 ] Access to enclosing type - make 2743908 configurable
-  static class MyComparator implements Comparator<String> {
+  static class MyComparator implements Comparator<String> {// Marker YES: use private
     // @Override
     public int compare(String o1, String o2) {
       return 0;
     }
   }
 
-  static class MyObserver implements Observer {
+  static class MyObserver implements Observer {// Marker YES: use private
     // @Override
     public void update(Observable o, Object arg) {
     }

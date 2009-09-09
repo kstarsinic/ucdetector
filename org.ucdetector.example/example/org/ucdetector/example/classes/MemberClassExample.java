@@ -31,7 +31,7 @@ public class MemberClassExample {
   // Access to enclosing constructor MemberClassExample.MemberClassUsed<E>() 
   // is emulated by a synthetic accessor method. Increasing its visibility will
   // improve your performance
-  static class MemberClassUsed<E> extends ArrayList<E> {
+  static class MemberClassUsed<E> extends ArrayList<E> {// Marker YES: use private
     private static final long serialVersionUID = 1L;
 
     public void unused() {// Marker YES: unused code

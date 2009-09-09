@@ -63,28 +63,25 @@ class VisibilityHandler {
    * Tries to detect if it is possible to reduce visibility<br>
    * For example: Make a <code>public</code> member/method/class
    * <code>protected</code>.
+   * @throws JavaModelException
    */
   void checkVisibility(IJavaElement foundElement, int found, int foundTest) {
     if (!Prefs.isCheckReduceVisibilityProtected(startElement)
         && !Prefs.isCheckReduceVisibilityToPrivate(startElement)) {
       return;
     }
-    IType startPrimaryType = JavaElementUtil.getTypeFor(startElement, true);
-    IType foundPrimaryType = JavaElementUtil.getTypeFor(foundElement, true);
+    IType startRootType = JavaElementUtil.getRootTypeFor(startElement);
+    IType foundRootType = JavaElementUtil.getRootTypeFor(foundElement);
     //
-    if (startPrimaryType == null || foundPrimaryType == null) {
+    if (startRootType == null || foundRootType == null) {
       // reference in xml file found!
       setMaxVisibilityFound(VISIBILITY.PUBLIC);
       return;
     }
     // [ 2743908 ] Methods only called from inner class could be private
-    if (startPrimaryType.equals(foundPrimaryType)) {
-      IType startType = JavaElementUtil.getTypeFor(startElement, false);
-      IType foundType = JavaElementUtil.getTypeFor(foundElement, false);
+    if (startRootType.equals(foundRootType)) {
       // [ 2804064 ] Access to enclosing type - make 2743908 configurable
-      boolean isPrimaryStart = startPrimaryType.equals(startType);
-      boolean isPrimaryFound = foundPrimaryType.equals(foundType);
-      setMaxVisibilityFound(isPrimaryStart && isPrimaryFound ? VISIBILITY.PRIVATE
+      setMaxVisibilityFound(Prefs.isIgnoreSyntheticAccessEmulationWarning() ? VISIBILITY.PRIVATE
           : VISIBILITY.PROTECTED);
       return;
     }
@@ -135,6 +132,11 @@ class VisibilityHandler {
       }
     }
     else if (startElement instanceof IType) {
+      IType type = (IType) startElement;
+      if (type.isLocal()) {
+        // protected or private are forbidden for local classes
+        return false;
+      }
       if (hasPublicChild((IType) startElement)) {
         // The return line does not resolve
         // Bug 2539795: Wrong default visibility marker for classes
