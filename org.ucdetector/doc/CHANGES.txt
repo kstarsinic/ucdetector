@@ -2,9 +2,12 @@ UCDetector 1.3.0 from 2009-:
 Bugfixes:
  - [ 2826205 ] Can't make interface methods final
  - [ 2826216 ] Unused interface methods are not detected
+ - [ 2804064 ] Access to enclosing type - make 2743908 configurable:
+               Created new Checkbox
 
 New features:
- - TODO: [ 2832790 ] Custom annotation filter
+ - New preference: 'ignore Classes containing string'
+ - [ 2832790 ] Custom annotation filter
  - TODO: [ 2824564 ] Group preferences
 
 // -----------------------------------------------------------------------------
@@ -21,7 +24,7 @@ Bugfixes:
  - [ 2779970 ] Compile error for: static variable
 
 New features:
- - Improved running UCDetector headless: More Options. Refresh/compile workspace 
+ - Improved running UCDetector headless: More Options. Refresh/compile workspace
  - Detect order changed: Detect a complete class, then detect next class
  - Removed method/field detection of anonymous classes. Already done by eclipse, slow
  - [ 2803618 ] Add number of references to report
@@ -105,5 +108,5 @@ Bugfixes:
 
 // -----------------------------------------------------------------------------
 UCDetector 0.9.0 from 2008-03-01:
- - first version 
- 
+ - first version
+

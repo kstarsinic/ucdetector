@@ -46,6 +46,8 @@ public final class Prefs {
   = UCDetectorPlugin.ID + ".fieldFilter"; //$NON-NLS-1$
   static final String FILTER_ANNOATIONS //
   = UCDetectorPlugin.ID + ".annotationsFilter"; //$NON-NLS-1$
+  static final String FILTER_CONTAIN_STRING //
+  = UCDetectorPlugin.ID + ".containString"; //$NON-NLS-1$
   static final String FILTER_BEAN_METHOD //
   = UCDetectorPlugin.ID + ".beanMethodFilter"; //$NON-NLS-1$
   static final String DETECT_TEST_ONLY //
@@ -106,6 +108,7 @@ public final class Prefs {
   /**
    * Separator used in text fields, which contain lists. Value is ","
    */
+  //private static final String LIST_SEPARATOR = "\\s*,\\s*";
   private static final String LIST_SEPARATOR = ","; //$NON-NLS-1$
 
   // FILTER GROUP --------------------------------------------------------------
@@ -189,6 +192,35 @@ public final class Prefs {
     return Prefs.matchFilter(Prefs.FILTER_ANNOATIONS, annotation);
   }
 
+  /**
+   * @return <code>true</code>, when this filter is active
+   */
+  public static boolean isFilterClassContainingString() {
+    String[] strings = getStrings(Prefs.FILTER_CONTAIN_STRING);
+    for (String string : strings) {
+      if (string.trim().length() > 0) {
+        return true;
+      }
+    }
+    return false;
+  }
+
+  /**
+   * @param classAsString Class text content as a String
+   * @return <code>true</code>, the class contains one of the strings
+   */
+  public static boolean filterClassContainingString(String classAsString) {
+    String[] stringsToFindInFile = getStrings(Prefs.FILTER_CONTAIN_STRING);
+    for (String stringToFindInFile : stringsToFindInFile) {
+      if (stringToFindInFile.trim().length() > 0) {
+        if (classAsString != null && classAsString.contains(stringToFindInFile)) {
+          return true;
+        }
+      }
+    }
+    return false;
+  }
+
   // DETECT GROUP --------------------------------------------------------------
   // CLASSES --------------------------
   /**
@@ -247,7 +279,7 @@ public final class Prefs {
    */
   public static String[] getFilePatternLiteralSearch() {
     if (isUCDetectionInLiterals()) {
-      return getString(ANALYZE_LITERALS).split(LIST_SEPARATOR);
+      return getStrings(ANALYZE_LITERALS);
     }
     return EMPTY_ARRAY;
   }
@@ -430,6 +462,14 @@ public final class Prefs {
   }
 
   /**
+   * @return array of strings splitted by {@link #LIST_SEPARATOR}
+   */
+  private static String[] getStrings(String name) {
+    String[] split = getStore().getString(name).split(LIST_SEPARATOR);
+    return split;
+  }
+
+  /**
    * @param name prefix "org.ucdetector." is added
    * @param value , which should changed in preference store
    */
@@ -461,7 +501,7 @@ public final class Prefs {
    * @return an array, created splitting the filter text by LIST_SEPARATOR
    */
   private static String[] parseFilters(String filterName) {
-    String[] strings = getString(filterName).split(LIST_SEPARATOR);
+    String[] strings = getStrings(filterName);
     String[] filters = new String[strings.length];
     for (int i = 0; i < strings.length; i++) {
       filters[i] = simpleRegexToJavaRegex(strings[i]);

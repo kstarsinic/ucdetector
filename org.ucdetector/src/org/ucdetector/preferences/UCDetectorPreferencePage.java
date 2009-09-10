@@ -72,6 +72,11 @@ public class UCDetectorPreferencePage extends UCDetectorBasePreferencePage {
         Messages.PreferencePage_IgnoreAnnotationsFilter, spacer,
         Messages.PreferencePage_IgnoreAnnotationsFilterToolTip);
     this.addField(annotationsFilter);
+    StringFieldEditor containStringFilter = createText(
+        Prefs.FILTER_CONTAIN_STRING,
+        Messages.PreferencePage_IgnoreContainString, spacer,
+        Messages.PreferencePage_IgnoreContainStringToolTip);
+    this.addField(containStringFilter);
     BooleanFieldEditor beanMethodFilter = new BooleanFieldEditor(
         Prefs.FILTER_BEAN_METHOD, Messages.PreferencePage_IgnoreBeanMethods,
         BooleanFieldEditor.SEPARATE_LABEL, spacer);
@@ -160,8 +165,8 @@ public class UCDetectorPreferencePage extends UCDetectorBasePreferencePage {
     this.addField(fileFieldEditor);
   }
 
-  /** 
-   * Hack for layout problems. See also: IntegerFieldEditor.getNumberOfControls() 
+  /**
+   * Hack for layout problems. See also: IntegerFieldEditor.getNumberOfControls()
    * */
   @Override
   protected void adjustGridLayout() {

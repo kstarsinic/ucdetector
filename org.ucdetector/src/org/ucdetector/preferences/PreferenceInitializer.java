@@ -44,6 +44,7 @@ public class PreferenceInitializer extends AbstractPreferenceInitializer { // NO
     store.setDefault(Prefs.FILTER_METHOD, METHOD_FILTER);
     store.setDefault(Prefs.FILTER_FIELD, FIELD_FILTER);
     store.setDefault(Prefs.FILTER_ANNOATIONS, ANNOATIONS_FILTER);
+    store.setDefault(Prefs.FILTER_CONTAIN_STRING, "");
     store.setDefault(Prefs.FILTER_BEAN_METHOD, true);
     // WHAT TO DETECT ----------------------------------------------------------
     store.setDefault(Prefs.WARN_LIMIT, 0);
