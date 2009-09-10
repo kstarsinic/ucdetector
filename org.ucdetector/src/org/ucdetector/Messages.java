@@ -78,6 +78,8 @@ public final class Messages extends NLS {
   public static String PreferencePage_IgnoreFieldFilterToolTip; // NO_UCD
   public static String PreferencePage_IgnoreAnnotationsFilter; // NO_UCD
   public static String PreferencePage_IgnoreAnnotationsFilterToolTip; // NO_UCD
+  public static String PreferencePage_IgnoreContainString; // NO_UCD
+  public static String PreferencePage_IgnoreContainStringToolTip; // NO_UCD
   public static String PreferencePage_IgnoreBeanMethods; // NO_UCD
   public static String PreferencePage_IgnoreBeanMethodsToolTip;// NO_UCD
   //
