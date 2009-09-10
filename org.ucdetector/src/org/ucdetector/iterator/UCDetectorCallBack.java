@@ -38,14 +38,14 @@ public class UCDetectorCallBack { // NO_UCD
   // ---------------------------------------------------------------------------
   // GENERIC HANDLERS
   // ---------------------------------------------------------------------------
-  /** 
+  /**
    * @param objects to handle
    * @throws CoreException in classes overriding this method */
   public void handleStartGlobal(IJavaElement[] objects) throws CoreException {
     //
   }
 
-  /** 
+  /**
    * @param objects to handle
    * @throws CoreException in classes overriding this method */
   public void handleEndGlobal(IJavaElement[] objects) throws CoreException {
@@ -66,11 +66,11 @@ public class UCDetectorCallBack { // NO_UCD
     //
   }
 
-  /** 
+  /**
    * #########################################################
-   * OVERRIDE THIS METHOD, TO DUMP ALL ITERATED IJavaElement's 
+   * OVERRIDE THIS METHOD, TO DUMP ALL ITERATED IJavaElement's
    * #########################################################
-   * 
+   *
    * @param javaElement to handle
    * @throws CoreException in classes overriding this method */
   public void handleStartElement(IJavaElement javaElement) throws CoreException {
@@ -79,7 +79,7 @@ public class UCDetectorCallBack { // NO_UCD
     //    + JavaElementUtil.getClassName(javaElement));
   }
 
-  /** 
+  /**
    * @param javaElement to handle
    * @throws CoreException in classes overriding this method */
   public void handleEndElement(IJavaElement javaElement) throws CoreException {
@@ -91,14 +91,14 @@ public class UCDetectorCallBack { // NO_UCD
   // ---------------------------------------------------------------------------
 
   /**
-   * @param model  
+   * @param model
    */
   protected void handleJavaModel(IJavaModel model) {
     //
   }
 
   /**
-   * @param project  
+   * @param project
    */
   protected void handleJavaProject(IJavaProject project) {
     //
@@ -106,20 +106,20 @@ public class UCDetectorCallBack { // NO_UCD
   }
 
   /**
-   * @param root  
+   * @param root
    */
   protected void handlePackageFragmentRoot(IPackageFragmentRoot root) {
-    // 
+    //
   }
 
   /**
-   * @param packageFragment  
+   * @param packageFragment
    */
   protected void handlePackageFragment(IPackageFragment packageFragment) {
     //
   }
 
-  /** @param classFile 
+  /** @param classFile
    * @throws CoreException in classes overriding this method */
   // CLASS ---------------------------------------------------------------------
   protected void handleClassFile(IClassFile classFile) throws CoreException {
@@ -127,55 +127,57 @@ public class UCDetectorCallBack { // NO_UCD
 
   }
 
-  /** @param unit 
+  /** @param unit
    * @throws CoreException in classes overriding this method */
   protected void handleCompilationUnit(ICompilationUnit unit)
       throws CoreException {
     //
   }
 
-  /** @param type 
-   * @throws CoreException in classes overriding this method */
-  protected void handleType(IType type) throws CoreException {
-    //
+  /** @param type
+   * @return <code>true</code> when children of this class should be iterated
+   * @throws CoreException in classes overriding this method
+   * */
+  protected boolean handleType(IType type) throws CoreException {
+    return true;
   }
 
   // SUP CLASS -----------------------------------------------------------------
-  /** @param packageDeclaration 
+  /** @param packageDeclaration
    * @throws CoreException */
   protected void handlePackageDeclaration(IPackageDeclaration packageDeclaration)
       throws CoreException {
     //
   }
 
-  /** @param importContainer 
+  /** @param importContainer
    * @throws CoreException */
-  protected void handleImportContainer(IImportContainer importContainer)// 
+  protected void handleImportContainer(IImportContainer importContainer)//
       throws CoreException {
     //
   }
 
-  /** @param importDeclaration 
+  /** @param importDeclaration
    * @throws CoreException */
-  protected void handleImportDeclaration(IImportDeclaration importDeclaration)// 
+  protected void handleImportDeclaration(IImportDeclaration importDeclaration)//
       throws CoreException {
     //
   }
 
-  /** @param field 
+  /** @param field
    * @throws CoreException */
   protected void handleField(IField field) throws CoreException {
     //
   }
 
-  /** @param initializer 
+  /** @param initializer
    * @throws CoreException */
-  protected void handleInitializer(IInitializer initializer)// 
+  protected void handleInitializer(IInitializer initializer)//
       throws CoreException {
     //
   }
 
-  /** @param method 
+  /** @param method
    * @throws CoreException */
   protected void handleMethod(IMethod method) throws CoreException {
     //
@@ -184,25 +186,25 @@ public class UCDetectorCallBack { // NO_UCD
   // ---------------------------------------------------------------------------
   // RESOURCE HANDLERS
   // ---------------------------------------------------------------------------
-  /** @param file 
+  /** @param file
    * @throws CoreException */
   protected void handleResourceFile(IFile file) throws CoreException {
     //
   }
 
-  /** @param folder 
+  /** @param folder
    * @throws CoreException */
   protected void handleResourceFolder(IFolder folder) throws CoreException {
     //
   }
 
-  /** @param project 
+  /** @param project
    * @throws CoreException */
   protected void handleResourceProject(IProject project) throws CoreException {
     //
   }
 
-  /** @param workspaceRoot 
+  /** @param workspaceRoot
    * @throws CoreException */
   protected void handleResourceWorkspaceRoot(IWorkspaceRoot workspaceRoot)
       throws CoreException {
@@ -213,7 +215,7 @@ public class UCDetectorCallBack { // NO_UCD
   // DO
   // ---------------------------------------------------------------------------
   /**
-   * Override and return <code>false</code>, if you don't want 
+   * Override and return <code>false</code>, if you don't want
    * to iterate a selected element. In this case, nothing will be iterated!
    */
   protected boolean doSelectedElement() {
@@ -241,22 +243,14 @@ public class UCDetectorCallBack { // NO_UCD
    * Override and return <code>true</code>, if you don't want to iterate
    * children of packages, which are classes
    */
-  protected boolean doPackageChildren(IPackageFragment packageFragment) { // 
+  protected boolean doPackageChildren(IPackageFragment packageFragment) { //
     return !Prefs.filterPackage(packageFragment);
   }
 
   /**
    * Override and return <code>true</code>, if you don't want to iterate
-   * children of types, which are methods, classes, fields, imports
-   */
-  protected boolean doTypeChildren(IType type) {
-    return !Prefs.filterType(type);
-  }
-
-  /**
-   * Override and return <code>true</code>, if you don't want to iterate
    * children of importContainer, which are all imports.
-   * @param importContainer 
+   * @param importContainer
    */
   protected boolean doImportContainerChildren(IImportContainer importContainer) {
     return false;

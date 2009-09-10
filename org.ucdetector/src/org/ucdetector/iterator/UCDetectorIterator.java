@@ -24,7 +24,7 @@ import org.ucdetector.util.StopWatch;
 
 /**
  * Unnecessary Code Detector Iterator Collect types, methods an fields which
- * must be searched, run detection afterward 
+ * must be searched, run detection afterward
  * */
 public class UCDetectorIterator extends AbstractUCDetectorIterator {
   private static final String FIELD = "field"; //$NON-NLS-1$
@@ -57,25 +57,34 @@ public class UCDetectorIterator extends AbstractUCDetectorIterator {
   }
 
   @Override
-  protected void handleType(IType type) throws CoreException {
+  protected boolean handleType(IType type) throws CoreException {
     if (isPrivate(type)) {
-      debugNotHandle(TYPE, type, "isPrivate"); //$NON-NLS-1$ 
-      return;
+      debugNotHandle(TYPE, type, "isPrivate"); //$NON-NLS-1$
+      return false;
     }
     if (type.isAnonymous()) {
-      debugNotHandle(TYPE, type, "isAnonymous"); //$NON-NLS-1$ 
-      return;
+      debugNotHandle(TYPE, type, "isAnonymous"); //$NON-NLS-1$
+      return false;
     }
     if (!Prefs.isUCDetectionInClasses()) {
-      debugNotHandle(TYPE, type, "!isUCDetectionInClasses"); //$NON-NLS-1$ 
-      return;
+      debugNotHandle(TYPE, type, "!isUCDetectionInClasses"); //$NON-NLS-1$
+      return false;
     }
     if (Prefs.filterType(type)) {
-      debugNotHandle(TYPE, type, "filterType"); //$NON-NLS-1$ 
-      return;
+      debugNotHandle(TYPE, type, "filterType"); //$NON-NLS-1$
+      return false;
+    }
+    if (Prefs.isFilterClassContainingString()
+        && type.getCompilationUnit() != null) {
+      String classAsString = type.getCompilationUnit().getSource();
+      if (Prefs.filterClassContainingString(classAsString)) {
+        debugNotHandle(TYPE, type, "filterClassContainingString"); //$NON-NLS-1$
+        return false;
+      }
     }
     debugHandle(TYPE, type);
     addType(type);
+    return true;
   }
 
   private TypeContainer addType(IType type) {
@@ -88,24 +97,24 @@ public class UCDetectorIterator extends AbstractUCDetectorIterator {
   protected void handleMethod(IMethod method) throws CoreException {
     // Fix Bug [ 2153699 ] Find unused abstract methods
     if (isPrivate(method)) {
-      debugNotHandle(METHOD, method, "isPrivate");//$NON-NLS-1$ 
+      debugNotHandle(METHOD, method, "isPrivate");//$NON-NLS-1$
       return;
     }
     if (method.isMainMethod()) {
-      debugNotHandle(METHOD, method, "isMainMethod"); //$NON-NLS-1$ 
+      debugNotHandle(METHOD, method, "isMainMethod"); //$NON-NLS-1$
       return;
     }
     if (!Prefs.isUCDetectionInMethods()) {
-      debugNotHandle(METHOD, method, "!isUCDetectionInMethods"); //$NON-NLS-1$ 
+      debugNotHandle(METHOD, method, "!isUCDetectionInMethods"); //$NON-NLS-1$
       return;
     }
     if (Prefs.filterMethod(method)) {
-      debugNotHandle(METHOD, method, "filterMethod"); //$NON-NLS-1$ 
+      debugNotHandle(METHOD, method, "filterMethod"); //$NON-NLS-1$
       return;
     }
     // ignore default constructors
     if (method.isConstructor() && method.getNumberOfParameters() == 0) {
-      debugNotHandle(METHOD, method, "default constructor"); //$NON-NLS-1$ 
+      debugNotHandle(METHOD, method, "default constructor"); //$NON-NLS-1$
       return;
     }
     if (Prefs.isFilterBeanMethod() && JavaElementUtil.isBeanMethod(method)) {
@@ -119,7 +128,7 @@ public class UCDetectorIterator extends AbstractUCDetectorIterator {
   @Override
   protected void handleField(IField field) throws CoreException {
     if (Prefs.filterField(field)) {
-      debugNotHandle(FIELD, field, "filterField"); //$NON-NLS-1$ 
+      debugNotHandle(FIELD, field, "filterField"); //$NON-NLS-1$
     }
     else if (Prefs.isCheckUseFinalField()) {
       // we need even private fields here!
@@ -138,7 +147,7 @@ public class UCDetectorIterator extends AbstractUCDetectorIterator {
 
   /**
    * Call searchManager for collected elements
-   * @throws CoreException if the search failed 
+   * @throws CoreException if the search failed
    */
   @Override
   public void handleEndGlobal(IJavaElement[] objects) throws CoreException {

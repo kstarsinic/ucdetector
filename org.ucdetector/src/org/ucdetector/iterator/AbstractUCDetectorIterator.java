@@ -240,8 +240,7 @@ public abstract class AbstractUCDetectorIterator extends UCDetectorCallBack {
     }
     else if (javaElement instanceof IType) {
       IType type = (IType) javaElement;
-      doChildren = doTypeChildren(type);
-      handleType(type);
+      doChildren = handleType(type);
     }
     // SUB CLASS -----------------------------------------------------------
     else if (javaElement instanceof IImportContainer) {

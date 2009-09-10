@@ -79,13 +79,14 @@ public class CountIterator extends AbstractUCDetectorIterator {
   }
 
   @Override
-  protected void handleType(IType type) throws CoreException {
+  protected boolean handleType(IType type) throws CoreException {
     if (isPrivate(type) || Prefs.filterType(type)) {
       debugNotHandle("type", type, "isPrivate || filterType"); //$NON-NLS-1$ //$NON-NLS-2$
-      return;
+      return true;
     }
     debugHandle("type", type); //$NON-NLS-1$
     classes++;
+    return true;
   }
 
   @Override
