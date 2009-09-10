@@ -4,8 +4,7 @@ import org.ucdetector.util.UsedBy;
 
 public class IgnoreAnnotationExample {
 
-	// UsedBy
-	// -------------------------------------------------------------------
+	// UsedBy ------------------------------------------------------------------
 	@UsedBy("reflection")
 	public int unused = 0;
 
@@ -13,12 +12,10 @@ public class IgnoreAnnotationExample {
 	public void unused() {
 	};
 
-	// Filter
-	// -------------------------------------------------------------------
+	// Filter ------------------------------------------------------------------
 	@FilterMeAnnotation()
 	public int unused2 = 0;
 
-	// TODO: handle full annotation name!
 	@org.ucdetector.example.FilterMeAnnotation()
 	public void unused2() {
 	};
