@@ -36,11 +36,12 @@ public class MoveIterator extends AdditionalIterator {
   private final List<IType> types = new ArrayList<IType>();
 
   @Override
-  protected void handleType(IType type) throws CoreException {
+  protected boolean handleType(IType type) throws CoreException {
     // Only public types can be used in other packages
     if (isPublic(type) && JavaElementUtil.isPrimary(type)) {
       types.add(type);
     }
+    return true;
   }
 
   @Override
@@ -78,7 +79,7 @@ public class MoveIterator extends AdditionalIterator {
         + " to " + targetPackageMatch.pakage;
     System.out.println(message);
     createMarker(type, message, ANALYZE_MARKER_MOVE_CLASS);
-    return true;
+    return false;
   }
 
   /**
@@ -112,7 +113,7 @@ public class MoveIterator extends AdditionalIterator {
   }
 
   /**
-   * Contains a sorted list of MatchPerPackage and offers 
+   * Contains a sorted list of MatchPerPackage and offers
    * statistic methods for the contained data
    */
   private static final class MatchPerPackageList {

@@ -23,16 +23,19 @@ public class CheckNameConventionIterator extends AdditionalIterator {
   private int typeCount;
 
   @Override
-  protected void handleType(IType type) throws CoreException {
+  protected boolean handleType(IType type) throws CoreException {
     String className = type.getElementName();
     if (!type.isAnonymous() && !startsWithUpper(className)) {
-      createMarker(type, "Class name should start with upper case", ANALYZE_MARKER_EXAMPLE);
+      createMarker(type, "Class name should start with upper case",
+          ANALYZE_MARKER_EXAMPLE);
     }
     if (typeCount == 0) {
       System.out.println("classname ='" + className + "'");
-      createMarker(type, "Example marker! For class '" + className + "'", ANALYZE_MARKER_EXAMPLE);
+      createMarker(type, "Example marker! For class '" + className + "'",
+          ANALYZE_MARKER_EXAMPLE);
     }
     typeCount++;
+    return true;
   }
 
   @Override

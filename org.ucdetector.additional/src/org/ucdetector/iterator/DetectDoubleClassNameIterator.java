@@ -30,7 +30,7 @@ public class DetectDoubleClassNameIterator extends AdditionalIterator {
   private int doubleTypeCount = 0;
 
   @Override
-  protected void handleType(IType type) throws CoreException {
+  protected boolean handleType(IType type) throws CoreException {
     String className = type.getElementName();
     Set<IType> typeList = typeMap.get(className);
     if (typeList == null) {
@@ -38,6 +38,8 @@ public class DetectDoubleClassNameIterator extends AdditionalIterator {
       typeMap.put(className, typeList);
     }
     typeList.add(type);
+    return true;
+
   }
 
   @Override
@@ -53,7 +55,8 @@ public class DetectDoubleClassNameIterator extends AdditionalIterator {
       Set<IType> types = entry.getValue();
       if (types.size() > 1) {
         for (IType type : types) {
-          createMarker(type, "Type name found " + types.size() + " times", ANALYZE_MARKER_EXAMPLE);
+          createMarker(type, "Type name found " + types.size() + " times",
+              ANALYZE_MARKER_EXAMPLE);
           doubleTypeCount++;
         }
       }

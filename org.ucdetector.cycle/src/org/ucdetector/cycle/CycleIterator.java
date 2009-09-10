@@ -25,32 +25,25 @@ public class CycleIterator extends AbstractUCDetectorIterator {
   private final List<IType> types = new ArrayList<IType>();
 
   @Override
-  protected void handleType(IType type) throws CoreException {
+  protected boolean handleType(IType type) throws CoreException {
     // Fix [ 2103655 ] Detect cycles does not show anything
     // Don't use "isUCDetectionInClasses()" here!
     if (isPrivate(type) || type.isLocal() || type.isAnonymous()) {
       debugNotHandle("type", type, "isPrivate || isLocal || isAnonymous"); //$NON-NLS-1$ //$NON-NLS-2$
-      return;
+      return false;
     }
     if (Prefs.filterType(type)) {
       debugNotHandle("type", type, "filterType"); //$NON-NLS-1$ //$NON-NLS-2$
-      return;
+      return false;
     }
     ICompilationUnit compilationUnit = type.getCompilationUnit();
     IType primaryType = compilationUnit.findPrimaryType();
     if (!primaryType.equals(type)) {
       debugNotHandle("type", type, "!primary type"); //$NON-NLS-1$ //$NON-NLS-2$
-      return;
+      return false;
     }
     debugHandle("type", type); //$NON-NLS-1$
     this.types.add(type);
-  }
-
-  /**
-   * Don't iterate methods and fields
-   */
-  @Override
-  protected boolean doTypeChildren(IType type) {
     return false;
   }
 
