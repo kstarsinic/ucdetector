@@ -34,6 +34,7 @@ import org.eclipse.jdt.core.dom.Annotation;
 import org.eclipse.jdt.core.dom.ArrayInitializer;
 import org.eclipse.jdt.core.dom.BodyDeclaration;
 import org.eclipse.jdt.core.dom.Expression;
+import org.eclipse.jdt.core.dom.ITypeBinding;
 import org.eclipse.jdt.core.dom.SimpleName;
 import org.eclipse.jdt.core.dom.SingleMemberAnnotation;
 import org.eclipse.jdt.core.dom.StringLiteral;
@@ -121,9 +122,10 @@ public class LineManger {
    * Get the lines for which the @SuppressWarnings annotations are<p>
    * See feature request: Want annotations, not comments, to indicate non-dead code - ID: 2658675
    */
-  private static Set<Integer> findUcdSuppressWarningLines(IScanner scanner) {
+  private static Set<Integer> findUcdSuppressWarningLines(IScanner scanner,
+      ICompilationUnit compilationUnit) {
     ASTParser parser = ASTParser.newParser(AST.JLS3);
-    parser.setSource(scanner.getSource());
+    parser.setSource(compilationUnit); // compilationUnit needed for resolve bindings!
     parser.setKind(ASTParser.K_COMPILATION_UNIT);
     parser.setResolveBindings(true);
     ASTNode createAST = parser.createAST(null);
@@ -165,24 +167,35 @@ public class LineManger {
     }
 
     private static boolean isIgnoreAnnotation(Annotation annotation) {
-      String fullName = annotation.getTypeName().getFullyQualifiedName();
-      if (isSuppressWarningsUCDetector(annotation, fullName)) {
+      // See example in: SuppressWarningsProposal
+      // The name we see in code. eg: Test, but maybe also be org.junit.Test
+      String visibleName = annotation.getTypeName().getFullyQualifiedName();
+      if (isSuppressWarningsUCDetector(annotation, visibleName)) {
         return true;
       }
-      if (isUsedByAnnotation(fullName)) {
+      if (isUsedByAnnotation(visibleName)) {
         return true;
       }
-      // TODO: Match org.ucdetector.example.FilterMeAnnotation and FilterMeAnnotation
-      if (Prefs.filterAnnotation(fullName)) {
+      if (Prefs.filterAnnotation(visibleName)) {
         return true;
+      }
+      // Match org.ucdetector.example.FilterMeAnnotation AND FilterMeAnnotation
+      // using bindings, we get simple name AND full name
+      ITypeBinding typeBinding = annotation.resolveTypeBinding();
+      if (typeBinding != null) {
+        String name = typeBinding.getName();
+        String fullName = typeBinding.getQualifiedName();
+        if (Prefs.filterAnnotation(fullName) || Prefs.filterAnnotation(name)) {
+          return true;
+        }
       }
       return false;
     }
 
     private static boolean isSuppressWarningsUCDetector(Annotation annotation,
         String name) {
-      if ("SuppressWarnings".equals(name) //$NON-NLS-1$
-          || "java.lang.SuppressWarnings".equals(name)) { //$NON-NLS-1$
+      if (SuppressWarnings.class.getName().equals(name)
+          || SuppressWarnings.class.getSimpleName().equals(name)) {
         if (annotation instanceof SingleMemberAnnotation) {
           Expression value = ((SingleMemberAnnotation) annotation).getValue();
           if (value instanceof ArrayInitializer) {
@@ -262,7 +275,8 @@ public class LineManger {
     }
     scannerMap.put(compilationUnit, new ScannerTimestamp(scanner, timeStamp));
     lineEndsMap.put(compilationUnit, scanner.getLineEnds());
-    Set<Integer> annotationsIgnoreLines = findUcdSuppressWarningLines(scanner);
+    Set<Integer> annotationsIgnoreLines = findUcdSuppressWarningLines(scanner,
+        compilationUnit);
     ignoreLines.addAll(annotationsIgnoreLines);
     return scanner;
   }
