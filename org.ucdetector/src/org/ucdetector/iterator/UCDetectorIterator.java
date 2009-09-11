@@ -130,12 +130,15 @@ public class UCDetectorIterator extends AbstractUCDetectorIterator {
     if (Prefs.filterField(field)) {
       debugNotHandle(FIELD, field, "filterField"); //$NON-NLS-1$
     }
+    else if (!Prefs.isUCDetectionInFields()) {
+      debugNotHandle(FIELD, field, "!isUCDetectionInFields"); //$NON-NLS-1$
+    }
     else if (Prefs.isCheckUseFinalField()) {
       // we need even private fields here!
       debugHandle(FIELD, field);
       getIteratedTypeContainer().getFields().add(field);
     }
-    else if (Prefs.isUCDetectionInFields() && !isPrivate(field)) {
+    else if (!isPrivate(field)) {
       debugHandle(FIELD, field);
       getIteratedTypeContainer().getFields().add(field);
     }
