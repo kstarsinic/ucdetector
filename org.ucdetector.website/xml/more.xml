@@ -4,10 +4,12 @@
 		
 		<tr>
 			<td>
-				<h3>Run UCDetector with ANT (experimental!)</h3>
+			<a name="ant" />
+				<h3>Run UCDetector with ANT</h3>
 				<p>
-It is possible to call UCDetector from ANT and run it in headless mode
-(no user interface). This may be interesting, for build manager to create the html reports.
+It is possible to run UCDetector in headless mode (no user interface) by calling
+<a href="http://ant.apache.org/index.html">Apache Ant</a>.
+This may be interesting, for build manager to create the html reports.
 </p>
 				<p>
 Unzip folder <code>org.ucdetector_x.y.z.jar/ant</code>, check README.txt
@@ -21,6 +23,8 @@ Unzip folder <code>org.ucdetector_x.y.z.jar/ant</code>, check README.txt
 		
 		<tr>
 			<td>
+			
+        <a name="cycle" />
 				<h3>
 					<img alt="cycle" src="@ICONS_DIR@/cycle.gif"/>Detect class cycles - removed!
 				</h3>
@@ -39,6 +43,7 @@ cycle tree.</p>
 		
 		<tr>
 			<td>
+			<a name="count" />
 				<h3>
 					<img alt="count" src="@ICONS_DIR@/info_obj.gif"/>Count code checked by UCDetector
 				</h3>
@@ -52,7 +57,7 @@ cycle tree.</p>
 		
 		<tr>
 			<td>
-				
+				<a name="clean" />
 				<h3>
 					<img alt="remove" src="@ICONS_DIR@/remove.gif"/>Clean markers
 				</h3>

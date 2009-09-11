@@ -5,6 +5,8 @@
 <tr valign="top">
 <!-- left ================================================== -->
 			<td>
+
+<a name="about" />
 <h3>About</h3>
 <!-- ======================================================================= -->
 UCDetector (Unnecessary Code Detector) is a eclipse PlugIn tool to find unnecessary
@@ -36,6 +38,7 @@ This cycle classes are shown in s special cycle view.
 <!-- left ================================================== -->
 			<td>
 
+<a name="get" />
 <h3>Get UCDetector</h3>
 UCDetector needs Eclipse >= 3.3 and java >= 5.0
 <br></br>
@@ -53,7 +56,7 @@ UCDetector needs Eclipse >= 3.3 and java >= 5.0
 <code>http://ucdetector.sourceforge.net/update</code>
 
 
-
+<a name="quick" />
 <h3>Quick start</h3>
 <!-- ======================================================================= -->
 Instead of clicking Shift+Ctrl+G
@@ -79,6 +82,7 @@ Instead of clicking Shift+Ctrl+G
 </ol>
 
 
+<a name="change" />
 <h3>Really want to change code?</h3>
 <!-- ======================================================================= -->
 The problems found by UCDetector, are only suggestions.
@@ -113,7 +117,7 @@ you want to change.
 <!-- left ================================================== -->
 			<td>
 
-
+<a name="quickfix" />
 <h3>Change code, use QuickFixes!</h3>
 <!-- ======================================================================= -->
 After checking carefully all the possibilities above, maybe you decide to change
@@ -139,6 +143,8 @@ It is possible to change several problems at once using quick fix dialog.
 		<tr>
 <!-- left ================================================== -->
 			<td>
+
+<a name="ignore" />
 <h3>Ignore code</h3>
 <!-- ======================================================================= -->
 

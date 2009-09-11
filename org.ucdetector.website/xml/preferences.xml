@@ -7,18 +7,30 @@ Select menu: Window/Preferences.../UCDetector
 
 <tr valign="top">
 <td>
-<h3>Filter</h3>
+<a name="ignore" />
+<h3>Ignore</h3>
 <!-- ============================= -->
-It is possible to filter java elements (and all its children),
+It is possible to ignore java elements (and all its children),
 which should not be checked by UCDetector. A simple regular expression is used:
 <ul>
-  <li>All filters are "case sensitive"</li>
+  <li>All ignore filters are "case sensitive"</li>
   <li>?: Match one character</li>
   <li>*: Match 0 or more characters</li>
 </ul>
 <p>
 You can enter more than 1 entry, using the separator ","
 </p>
+
+<p><b>Code with annotations</b><br/>
+Code marked with these annotations, will be ignored during detection (full class name recommended).
+@UsedBy is automatically excluded, see also <a href="index.html#ignore">ignore code</a>
+</p>
+
+<p><b>Classes containing string:</b><br/>
+Classes containing one of this strings, will be ignored during detection - usefull for generated code.
+Be careful! Entering 'class' will exclude all classes!
+</p>
+
 
 <p><b>Ignore bean methods:</b><br/>
 Ignore methods, which use the java bean convention. For example
@@ -37,6 +49,7 @@ Ignore methods, which use the java bean convention. For example
 <td>
 <p>
 
+<a name="what" />
 <h3>What to detect</h3>
 <!-- ============================= -->
 <p><b>Detect code with max number of references:</b><br/>
@@ -73,8 +86,8 @@ Test code means:
 NOTE: <code>@org.junit.Test</code> annotations are ignored.
 </p>
 
+<a name="file_search" />
 <h3>File search</h3>
-<!-- version > 0.12.0: <h3>Search class name in files</h3> -->
 <!-- ============================= -->
 <p><b>Search class names in text files:</b><br/>
 Select file extension, which should be searched for class name.
@@ -114,6 +127,7 @@ Even for unused methods or fields!
 
 <tr valign="top">
 <td>
+<a name="keywords" />
 <h3>Keywords</h3>
 <!-- ============================= -->
 
@@ -158,16 +172,22 @@ For more details, check bug:
 	  Wrong default visibility marker for classes - ID: 2539795
 	</a>
 
+<p><b>Don't care about warning 'Access to enclosing type':</b><br/>
+See screenshot for eclipse warnings: Preferences, Java, Compiler Warnings: Code style, 'access to a non-accessible member of an enclosing type'
+</p>	
 
 
 </td>
 <td align="left" valign="middle">
 <img alt="UCDetector preferences"  border="1" src="@IMAGES_DIR@/preferences_3_keyword.png"/>
+<img alt="UCDetector preferences"  border="1" src="@IMAGES_DIR@/warning_access.png"/>
 </td>
 </tr>
 
 <tr valign="top">
 <td>
+
+<a name="other" />
 <h3>Other</h3>
 <!-- ============================= -->
 <p><b>HTML and XML Report file</b>:<br></br>

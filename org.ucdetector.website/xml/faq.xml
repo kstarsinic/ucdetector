@@ -68,5 +68,16 @@ Or check out org.ucdetector.additional and write your own detection.<p/>
 		Check the eclipse error log view and the eclipse log file at: <code>ECLIPSE_WORKSPACE/.metadata/.log</code>
 	<p/>
 
+	<b>Why is UCDetector so slow?</b>
+	<br/>
+		When you man manually try to find unused code, you search for references, which is slow.
+		UCDetector searches for references all the time and it checks inheritance.
+	<p/>
+
+	<b>How can I make UCDetector faster?</b>
+	<br/>
+		Changing preferences can improve speed of UCDetector slightly.
+	<p/>
+
 
 </ucd>
