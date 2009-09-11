@@ -29,6 +29,8 @@ import org.ucdetector.util.JavaElementUtil;
  * Constant definitions for plug-in preferences, offer access to preferences
  */
 public final class Prefs {
+  public static final String CHANGE_ALL_VISIBILIY_COMBO = "changeAllVisibiliyCombo";
+
   private Prefs() {
     // avoid instantiation
   }
