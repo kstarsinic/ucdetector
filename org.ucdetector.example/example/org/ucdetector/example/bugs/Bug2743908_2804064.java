@@ -55,7 +55,8 @@ public class Bug2743908_2804064 {
  * isMember=false<br>
  */
 class MyLocalClass {
-	public void foo() { // Marker YES: use protected
+	// See Bug2864046: no more marker here!
+	public void foo() {
 	};
 }
 

@@ -4,6 +4,7 @@ Bugfixes:
  - [ 2826216 ] Unused interface methods are not detected
  - [ 2804064 ] Access to enclosing type - make 2743908 configurable:
                Created new Checkbox
+ - [ 2864046 ] public methods of non-public classes
 
 New features:
  - New preference: 'ignore Classes containing string'

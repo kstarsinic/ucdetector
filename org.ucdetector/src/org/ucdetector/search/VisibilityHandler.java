@@ -33,7 +33,6 @@ class VisibilityHandler {
 
     private VISIBILITY(int value) {
       this.value = value;
-
     }
   }
 
@@ -47,15 +46,34 @@ class VisibilityHandler {
       throws JavaModelException {
     this.markerFactory = markerFactory;
     this.startElement = startElement;
-    int flags = startElement.getFlags();
+    VISIBILITY vParent = getVisibiliyParent(startElement);
+    VISIBILITY vStart = getVisibility(startElement);
+    // Bug 2864046: public methods of non-public classes
+    visibilityStart = vParent.value < vStart.value ? vParent : vStart;
+  }
+
+  private VISIBILITY getVisibility(IMember element) throws JavaModelException {
+    int flags = element.getFlags();
     if (Flags.isPublic(flags)) {
-      visibilityStart = VISIBILITY.PUBLIC;
+      return VISIBILITY.PUBLIC;
     }
-    else if (Flags.isProtected(flags) || Flags.isPackageDefault(flags)) {
-      visibilityStart = VISIBILITY.PROTECTED;
+    if (Flags.isProtected(flags) || Flags.isPackageDefault(flags)) {
+      return VISIBILITY.PROTECTED;
     }
-    else {
-      visibilityStart = VISIBILITY.PRIVATE;
+    return VISIBILITY.PRIVATE;
+  }
+
+  private VISIBILITY getVisibiliyParent(IMember element)
+      throws JavaModelException {
+    IJavaElement parent = element.getParent();
+    VISIBILITY result = VISIBILITY.PUBLIC;
+    while (true) {
+      if (!(parent instanceof IType)) {
+        return result;
+      }
+      VISIBILITY vParent = getVisibility((IType) parent);
+      result = vParent.value < result.value ? vParent : result;
+      parent = parent.getParent();
     }
   }
 
