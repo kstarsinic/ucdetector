@@ -29,7 +29,7 @@ import org.ucdetector.util.JavaElementUtil;
  * Constant definitions for plug-in preferences, offer access to preferences
  */
 public final class Prefs {
-  public static final String CHANGE_ALL_VISIBILIY_COMBO = "changeAllVisibiliyCombo";
+  public static final String CHANGE_ALL_VISIBILIY_COMBO = "changeAllVisibiliyCombo"; //$NON-NLS-1$
 
   private Prefs() {
     // avoid instantiation

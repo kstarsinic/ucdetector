@@ -98,6 +98,7 @@ public class JavaElementUtil {
   }
 
   /**
+   * @param javaElement to find the last parent for
    * @return the class "before" the compilation unit in the package explorer
    */
   public static IType getRootTypeFor(IJavaElement javaElement) {
