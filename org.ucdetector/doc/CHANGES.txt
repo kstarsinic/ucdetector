@@ -2,9 +2,10 @@ UCDetector 1.3.0 from 2009-:
 Bugfixes:
  - [ 2826205 ] Can't make interface methods final
  - [ 2826216 ] Unused interface methods are not detected
- - [ 2804064 ] Access to enclosing type - make 2743908 configurable:
-               Created new Checkbox
- - [ 2864046 ] public methods of non-public classes
+ - [ 2804064, 2865051, 2743908 ]
+              Access to enclosing type - make 2743908 configurable: Created new Checkbox
+ - [ 2864046 ] Ignore public methods of non-public classes
+-  [ 2864967 ] Ignore references for recursive methods
 
 New features:
  - New preference: 'ignore Classes containing string'

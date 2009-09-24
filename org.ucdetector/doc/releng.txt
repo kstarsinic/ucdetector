@@ -16,19 +16,20 @@ Steps to create new Version:
 
  - HELP
    - check screenshots
-   - add new features, bug fixes to help 
-   - update org.ucdetector.website\xml\releases.xml from 
+   - add new features, bug fixes to help
+   - update org.ucdetector.website\xml\releases.xml from
             org.ucdetector/doc/CHANGES.txt
    - update help     (run /org.ucdetector.website/build.xml:ucd-help)
    - check help
 
- - Create: 
+ - Create:
    - ucd.jar, source.jar, additional: /org.ucdetector/build/build.xml -> run as Ant Build
 	 - check contents of source.jar, ucdetector.jar (help up to date?)
 
  - Smoke test:
-   - deploy ucdetector.jar and ucdetector.additional.jar to a CLEAN eclipse 3.3, java5
-	 - Run UCDetector detecting code in org.ucdetector_test, jEdit, JUnit
+   - deploy org.ucdetector.jar and org.ucdetector.additional.jar to a CLEAN eclipse 3.3, java5
+	 - Run UCDetector detecting code in org.ucdetector.example/examples
+	 - [Run UCDetector in: jEdit, JUnit]
 	 - run UCDetector with: change warn limit to 2
 	 - Apply QuickFixes to QuickFixExample
    - check: Help/about Eclipse Platform/Plugin Details
@@ -40,7 +41,7 @@ Steps to create new Version:
    - [cycle detect: /org.ucdetector.example/cycle]
    - check UCDMarker: /org.ucdetector.example/example
 	 - check html report
-	 - Commit html/xml report to: /org.ucdetector_test/reports/
+	 - Commit html/xml report to: /org.ucdetector.example/reports/
 
  - Sourceforge:
      - https://sourceforge.net/account/login.php
@@ -61,8 +62,8 @@ Steps to create new Version:
 	 - platform independent, source.zip    udpate/refresh
 	 - send E-Mail
 	 - Create / Edit Download Page
-	   - Eclipse PlugIn: 
-	   - Eclipse PlugIn java sources: 
+	   - Eclipse PlugIn:
+	   - Eclipse PlugIn java sources:
 	 - Preview
 	 - Save
 	 - Browse all packages
@@ -79,6 +80,6 @@ Steps to create new Version:
  - SVN commit
  - SVN tag
  - SVN branch
- 
+
  - add to freshmeat
  - post at http://www.linuxlinks.com/portal/news/submit.php

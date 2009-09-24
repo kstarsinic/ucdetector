@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!-- 
-Browse this file: http://ucdetector.svn.sourceforge.net/viewvc/ucdetector/trunk/org.ucdetector/doc/UCDetector.psf 
+<!--
+Browse this file: http://ucdetector.svn.sourceforge.net/viewvc/ucdetector/trunk/org.ucdetector/doc/UCDetector.psf
 Get all sources: Import this file using File/Import.../Team/Team Project Set
 -->
 <psf version="2.0">
@@ -10,7 +10,6 @@ Get all sources: Import this file using File/Import.../Team/Team Project Set
 		<project reference="0.9.3,https://ucdetector.svn.sourceforge.net/svnroot/ucdetector/trunk/org.ucdetector.cycle,org.ucdetector.cycle"/>
 		<project reference="0.9.3,https://ucdetector.svn.sourceforge.net/svnroot/ucdetector/trunk/org.ucdetector.example,org.ucdetector.example"/>
 		<project reference="0.9.3,https://ucdetector.svn.sourceforge.net/svnroot/ucdetector/trunk/org.ucdetector.website,org.ucdetector.website"/>
-		<project reference="0.9.3,https://ucdetector.svn.sourceforge.net/svnroot/ucdetector/trunk/org.ucdetector_test,org.ucdetector_test"/>
 		<project reference="0.9.3,https://ucdetector.svn.sourceforge.net/svnroot/ucdetector/trunk/org.ucdetector.feature,org.ucdetector.feature"/>
 		<project reference="0.9.3,https://ucdetector.svn.sourceforge.net/svnroot/ucdetector/trunk/org.ucdetector.update_site,org.ucdetector.update_site"/>
 	</provider>
