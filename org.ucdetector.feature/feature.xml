@@ -1,16 +1,23 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<feature id="org.ucdetector.feature"
+<feature
+      id="org.ucdetector.feature"
       label="UCDetector"
-      version="1.2.1"
+      version="1.2.3"
       provider-name="%providerName"
       plugin="org.ucdetector"
       image="ucd.gif">
 
-   <description url="http://www.ucdetector.org/">%description</description>
+   <description url="http://www.ucdetector.org/">
+      %description
+   </description>
 
-   <copyright>%copyright</copyright>
+   <copyright>
+      %copyright
+   </copyright>
 
-   <license url="%licenseURL">%license</license>
+   <license url="%licenseURL">
+      %license
+   </license>
 
    <url>
       <update label="Unnecessary Code Detector Updates" url="http://ucdetector.sourceforge.net/update"/>
@@ -28,7 +35,8 @@
       <import plugin="org.eclipse.ui.ide"/>
    </requires>
 
-   <plugin id="org.ucdetector"
+   <plugin
+         id="org.ucdetector"
          download-size="200"
          install-size="200"
          version="1.2.1"
