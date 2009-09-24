@@ -94,10 +94,10 @@ public class SearchManager {
       for (TypeContainer container : typeContainers) {
         pos++;
         String message = "Search " + fill(pos, 4) // //$NON-NLS-1$
-            + " of " + fill(typeContainers.size(), 4) //$NON-NLS-1$ 
-            + " types. Markers " + fill(markerCreated, 4) //$NON-NLS-1$ 
-            + ". Exceptions " + fill(searchProblems.size(), 2) //$NON-NLS-1$ 
-            + ". Class " + JavaElementUtil.getTypeName(container.getType()) //$NON-NLS-1$ 
+            + " of " + fill(typeContainers.size(), 4) //$NON-NLS-1$
+            + " types. Markers " + fill(markerCreated, 4) //$NON-NLS-1$
+            + ". Exceptions " + fill(searchProblems.size(), 2) //$NON-NLS-1$
+            + ". Class " + JavaElementUtil.getTypeName(container.getType()) //$NON-NLS-1$
             + " - " + UCDetectorPlugin.getNow(); //$NON-NLS-1$
         if (Log.DEBUG) {
           Log.logDebug(message);
@@ -162,7 +162,7 @@ public class SearchManager {
       }
       String message = "Problems searching " //$NON-NLS-1$
           + JavaElementUtil.getMemberTypeString(member)//
-          + " " + JavaElementUtil.getElementName(member); //$NON-NLS-1$ 
+          + " " + JavaElementUtil.getElementName(member); //$NON-NLS-1$
       Log.logError(message, ex);
       Status status = new Status(IStatus.ERROR, UCDetectorPlugin.ID,
           IStatus.ERROR, message, ex);
@@ -450,7 +450,7 @@ public class SearchManager {
     try {
       // If we use monitor here, progressbar is very confusing!
       if (UCDetectorPlugin.isHeadlessMode()) {
-        // special search without UI stuff, which fails in headless mode 
+        // special search without UI stuff, which fails in headless mode
         new UCDTextSearchVisitor(requestor, searchPattern).search(scope, null);
       }
       else {
@@ -509,7 +509,7 @@ public class SearchManager {
     }
 
     /**
-     * Search for className or packageName.className, check character 
+     * Search for className or packageName.className, check character
      * before and after match, if it is a JavaIdentifier
      */
     @Override
@@ -628,12 +628,16 @@ public class SearchManager {
           return true;
         }
       }
+      // Bug 2864967: Ignore references for recursive methods
+      if (matchJavaElement.equals(searchStart)) {
+        return true;
+      }
       return false;
     }
   }
 
   /**
-   * Check conditions from preferences and 
+   * Check conditions from preferences and
    * cancel search by throwing a {@link OperationCanceledException}
    * when necessary
    */
