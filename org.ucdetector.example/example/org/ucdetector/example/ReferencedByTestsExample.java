@@ -6,31 +6,31 @@ package org.ucdetector.example;
  */
 public class ReferencedByTestsExample {
 
-	public void referencedByTestMethod() {// Marker YES: test only
+  public void referencedByTestMethod() {// Marker YES: test only
 
-	}
+  }
 
-	public void referencedByWrongTestMethod() {
+  public void referencedByWrongTestMethod() {
 
-	}
+  }
 
-	public void referencedByWrongTestMethodStatic() {
+  public void referencedByWrongTestMethodStatic() {
 
-	}
+  }
 
-	public void referencedByTestClass() { // Marker YES: test only
+  public void referencedByTestClass() { // Marker YES: test only
 
-	}
+  }
 
-	public void referencedByTestClassAndNormalClass() {
+  public void referencedByTestClassAndNormalClass() {
 
-	}
+  }
 
-	public void referencedByTestSourceFolder() { // Marker YES: test only
+  public void referencedByTestSourceFolder() { // Marker YES: test only
 
-	}
+  }
 
-	public void noReferences() { // Marker YES: unused code
+  public void noReferences() { // Marker YES: unused code
 
-	}
+  }
 }

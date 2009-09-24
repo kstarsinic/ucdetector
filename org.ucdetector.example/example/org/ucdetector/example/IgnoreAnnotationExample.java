@@ -4,25 +4,25 @@ import org.ucdetector.util.UsedBy;
 
 public class IgnoreAnnotationExample {
 
-	// UsedBy ------------------------------------------------------------------
-	@UsedBy("reflection")
-	public int unused = 0;
+  // UsedBy ------------------------------------------------------------------
+  @UsedBy("reflection")
+  public int unused = 0;
 
-	@org.ucdetector.util.UsedBy("library")
-	public void unused() {
-	};
+  @org.ucdetector.util.UsedBy("library")
+  public void unused() {
+  };
 
-	// Filter ------------------------------------------------------------------
-	@FilterMeAnnotation()
-	public int unused2 = 0;
+  // Filter ------------------------------------------------------------------
+  @FilterMeAnnotation()
+  public int unused2 = 0;
 
-	@org.ucdetector.example.FilterMeAnnotation()
-	public void unused2() {
-	};
+  @org.ucdetector.example.FilterMeAnnotation()
+  public void unused2() {
+  };
 
-	// Other -------------------------------------------------------------------
-	// public int unused3 = 0;
-	//  
-	// public void unused3(){};
+  // Other -------------------------------------------------------------------
+  // public int unused3 = 0;
+  //  
+  // public void unused3(){};
 
 }

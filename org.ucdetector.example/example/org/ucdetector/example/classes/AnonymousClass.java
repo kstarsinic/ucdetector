@@ -16,7 +16,7 @@ public class AnonymousClass {
       }
 
       // 2009-06-23 Removed detection of anonymous classes
-      public void changeToPrivate() { 
+      public void changeToPrivate() {
 
       }
     };

@@ -9,7 +9,7 @@ public class LocalClassExample {
   }
 
   private void used() {
-	 // private is a forbidden keyword here!
+    // private is a forbidden keyword here!
     class LocalClass {
 
     }

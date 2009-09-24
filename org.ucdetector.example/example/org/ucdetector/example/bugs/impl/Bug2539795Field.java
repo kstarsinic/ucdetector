@@ -6,7 +6,7 @@ package org.ucdetector.example.bugs.impl;
  */
 // TODO: Fix bug (no marker here, because public method is used)
 public class Bug2539795Field { // Marker YES: use default
-	public String getBar() {
-		return "Bar";
-	}
+  public String getBar() {
+    return "Bar";
+  }
 }

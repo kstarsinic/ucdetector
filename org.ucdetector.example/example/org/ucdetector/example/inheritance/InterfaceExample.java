@@ -15,10 +15,9 @@ public interface InterfaceExample {
    * NO marker! Method is implemented!
    */
   void overriddenButUnusedMethod(); // Marker YES: unused code
-  
+
   // causes compile error in InterfaceImplExample
   //void unusedMethodNotOverridden();
-  
 
   public void useProtected();
 

@@ -10,7 +10,6 @@ public class ConstructorExample {
   public ConstructorExample(String parameter) { // Marker YES: unused code
   }
 
-  
-  public ConstructorExample(int i,String parameter) { // Marker YES: unused code
+  public ConstructorExample(int i, String parameter) { // Marker YES: unused code
   }
 }

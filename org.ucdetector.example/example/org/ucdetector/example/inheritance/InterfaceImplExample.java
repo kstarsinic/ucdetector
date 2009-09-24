@@ -5,36 +5,36 @@ package org.ucdetector.example.inheritance;
  */
 public class InterfaceImplExample extends AbstractInterfaceImplExample {
 
-	public InterfaceImplExample() {
-		this(0);
-	}
+  public InterfaceImplExample() {
+    this(0);
+  }
 
-	// no final markers here!!
-	InterfaceImplExample(int i) { // Marker YES: use private
-		super(i);
-	}
+  // no final markers here!!
+  InterfaceImplExample(int i) { // Marker YES: use private
+    super(i);
+  }
 
-	/**
-	 * javadoc
-	 */
-	public void overriddenButUnusedMethod() {
-		useProtected();
-	}
+  /**
+   * javadoc
+   */
+  public void overriddenButUnusedMethod() {
+    useProtected();
+  }
 
-	protected String overrideMe() { // Marker YES: unused code
-		return "overrideMe";
-	}
+  protected String overrideMe() { // Marker YES: unused code
+    return "overrideMe";
+  }
 
-	@Override
-	protected void abstractMethod() {
+  @Override
+  protected void abstractMethod() {
 
-	}
+  }
 
-	@Override
-	public void abstractMethodUsed() {
+  @Override
+  public void abstractMethodUsed() {
 
-	}
+  }
 
-	public void useProtected() {
-	}
+  public void useProtected() {
+  }
 }
