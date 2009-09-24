@@ -1,3 +1,4 @@
+/*
 package org.ucdetector.preferences;
 
 import java.lang.reflect.InvocationHandler;
@@ -193,3 +194,4 @@ public class PrefsTest extends TestCase {
     assertEquals(WarnLevel.WARNING, Prefs.getCheckUseFinalField());
   }
 }
+*/
