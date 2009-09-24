@@ -95,7 +95,7 @@ public class UCDApplication implements IApplication {
           i++;
         }
       }
-      if (sArgs[i].equals("-ucdoptions")) {
+      if (sArgs[i].equals("-options")) {
         if (hasOptionValue(sArgs, i)) {
           List<String> keyValues = Arrays.asList(sArgs[i + 1].split(","));
           for (String keyValue : keyValues) {
@@ -113,7 +113,7 @@ public class UCDApplication implements IApplication {
     String info = (projectsToIterate == null) ? "ALL" : projectsToIterate
         .toString();
     Log.logInfo("\tprojects to detect: " + (info));
-    // 
+    //
     sBuildType = (sBuildType == null) ? "AUTO_BUILD" : sBuildType;
     Log.logInfo("\tBuildType         : " + sBuildType);
     if (buildTypes.containsKey(sBuildType)) {
