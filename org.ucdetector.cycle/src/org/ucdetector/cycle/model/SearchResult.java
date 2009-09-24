@@ -20,10 +20,10 @@ import org.ucdetector.cycle.Messages;
 
 /**
  * Contains cycles found by a search
- * 
+ *
  * <pre>
  * SearchResultRoot
- *   |- <font color="red">SearchResult</font> 
+ *   |- <font color="red">SearchResult</font>
  *     |- Cycle
  *       |- CycleType
  *         |- CycleMember
@@ -57,8 +57,8 @@ public class SearchResult extends CycleBaseElement {
     return parent;
   }
 
-  // Search in "org.ucdetector.cycle" - org.ucdetector_test [found 4 cycles]
-  // Search in "aaa,bbb,ccc" - org.ucdetector_test [found 4 cycles]
+  // Search in "org.ucdetector.cycle" - org.ucdetector.example [found 4 cycles]
+  // Search in "aaa,bbb,ccc" - org.ucdetector.example [found 4 cycles]
   public String getText() {
     StringBuilder search = new StringBuilder();
     for (IJavaElement selection : selections) {
