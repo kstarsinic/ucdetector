@@ -1,4 +1,4 @@
-Run UCDetector with ANT (experimental!)
+            Run UCDetector with ANT (http://ant.apache.org)
 
 Build manager may need to run UCDetector without starting the Eclipse IDE
 (=Eclipse headless mode).
@@ -15,9 +15,11 @@ Workspace:
 - Set your favorite UCDetector preferences in Eclipse IDE
 
 Run scripts:
-- Create build.properties from build.properties_template
-- Change WORKSPACE, ECLIPSE_HOME, LAUNCHER [maybe other options]
-- Run build.xml with ant: PROMPT>ant
+- unzip org.ucdetector_x.y.z.jar/ant to a new directory
+- >cd ant
+- >ant
+- Edit build.properties: Change WORKSPACE, ECLIPSE_HOME, LAUNCHER [maybe more]
+- >ant
 - [it is also possible to run detect.sh or detect.bat]
 
 Check logging:
