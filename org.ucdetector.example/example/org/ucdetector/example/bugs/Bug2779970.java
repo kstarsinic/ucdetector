@@ -13,7 +13,7 @@ package org.ucdetector.example.bugs;
  * See also bug: [ 2804064 ] Access to enclosing type - make 2743908 configurable
  * <p>
  * Browse code at:
- * http://ucdetector.svn.sourceforge.net/viewvc/ucdetector/trunk/org.ucdetector.example/example/org/ucdetector/example/bugs/Bug2779970.java?revision=964&view=markup
+ * http://ucdetector.svn.sourceforge.net/viewvc/ucdetector/trunk/org.ucdetector.example/example/org/ucdetector/example/bugs/Bug2779970.java?revision=964?view=markup
  */
 public class Bug2779970 {
   /**

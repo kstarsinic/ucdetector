@@ -16,7 +16,7 @@ import java.awt.event.ActionListener;
  * @see https://sourceforge.net/tracker/?func=detail&aid=2865051&group_id=219599&atid=1046865
  * <p>
  * Browse code at:
- * http://ucdetector.svn.sourceforge.net/viewvc/ucdetector/trunk/org.ucdetector.example/example/org/ucdetector/example/bugs/Bug2865051.java&view=markup
+ * http://ucdetector.svn.sourceforge.net/viewvc/ucdetector/trunk/org.ucdetector.example/example/org/ucdetector/example/bugs/Bug2865051.java?view=markup
  */
 public class Bug2865051 {
   public void foo() { // Marker YES: use protected

@@ -12,7 +12,7 @@ package org.ucdetector.example.bugs;
  * @see https://sourceforge.net/tracker/?func=detail&aid=2864967&group_id=219599&atid=1046865
  * <p>
  * Browse code at:
- * http://ucdetector.svn.sourceforge.net/viewvc/ucdetector/trunk/org.ucdetector.example/example/org/ucdetector/example/bugs/Bug2864967.java&view=markup
+ * http://ucdetector.svn.sourceforge.net/viewvc/ucdetector/trunk/org.ucdetector.example/example/org/ucdetector/example/bugs/Bug2864967.java?view=markup
  */
 public class Bug2864967 {
   public Bug2864967() {
