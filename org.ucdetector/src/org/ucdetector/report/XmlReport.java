@@ -63,19 +63,30 @@ import org.w3c.dom.Element;
  * This class tries to not throw Exceptions.
  * @see "file://org.ucdetector/src/org/ucdetector/report/html.xslt"
  */
+@SuppressWarnings("nls")
 public class XmlReport implements IUCDetectorReport {
-  private static final String COPY_RIGHT = //
-  /*  */"Copyright (c) 2009 Joerg Spieler All rights reserved. This program and the\n" //$NON-NLS-1$
-      + "accompanying materials are made available under the terms of the Eclipse\n" //$NON-NLS-1$
-      + "Public License v1.0 which accompanies this distribution, and is available at\n" //$NON-NLS-1$
-      + "http://www.eclipse.org/legal/epl-v10.html\n";//$NON-NLS-1$
+  private static final String COPY_RIGHT = "\n" //
+      + "    Copyright (c) 2009 Joerg Spieler All rights reserved. This program and the\n"
+      + "    accompanying materials are made available under the terms of the Eclipse\n"
+      + "    Public License v1.0 which accompanies this distribution, and is available at\n"
+      + "    http://www.eclipse.org/legal/epl-v10.html\n";
   //
-  private static final String EXTENSION_XML = ".xml"; //$NON-NLS-1$
-  private static final String EXTENSION_HTML = ".html"; //$NON-NLS-1$
-  private static final String XSL_FILE = "org/ucdetector/report/html.xslt";//$NON-NLS-1$
+  private static final String XML_INFO = "\n"
+      + "javaTypeSimple one of:\n"
+      + "    Class, Method, Field, Initializer\n"
+      + "javaType one of:\n"
+      + "    Annotation, Anonymous class, Enumeration, Interface, Local class, Member class, Class\n"
+      + "    Constructor, Method\n"
+      + "    EnumConstant, Constant, Field\n"
+      + "markerType one of:\n"
+      + "    Reference, FewReference, VisibilityPrivate, VisibilityProtected, VisibilityDefault, Final, TestOnly\n";
+  //
+  private static final String EXTENSION_XML = ".xml";
+  private static final String EXTENSION_HTML = ".html";
+  private static final String XSL_FILE = "org/ucdetector/report/html.xslt";
 
   private static final DecimalFormat FORMAT_REPORT_NUMBER = new DecimalFormat(
-      "000"); //$NON-NLS-1$
+      "000");
 
   private Document doc;
   private Element markers;
@@ -99,21 +110,23 @@ public class XmlReport implements IUCDetectorReport {
     try {
       doc = DocumentBuilderFactory.newInstance().newDocumentBuilder()
           .newDocument();
-      Element root = doc.createElement("ucdetector");//$NON-NLS-1$
+      Element root = doc.createElement("ucdetector");
       root.appendChild(doc.createComment(COPY_RIGHT));
       doc.appendChild(root);
       //
-      markers = doc.createElement("markers");//$NON-NLS-1$
+      markers = doc.createElement("markers");
       root.appendChild(markers);
       //
-      problems = doc.createElement("problems");//$NON-NLS-1$
+      markers.appendChild(doc.createComment(XML_INFO));
+      //
+      problems = doc.createElement("problems");
       root.appendChild(problems);
       //
-      statistcs = doc.createElement("statistics");//$NON-NLS-1$
+      statistcs = doc.createElement("statistics");
       root.appendChild(statistcs);
     }
     catch (Throwable e) {
-      Log.logError("XML problems", e);//$NON-NLS-1$
+      Log.logError("XML problems", e);
       initXMLException = e;
     }
   }
@@ -136,73 +149,72 @@ public class XmlReport implements IUCDetectorReport {
     try {
       markerCount++;
       markers.appendChild(doc
-          .createComment(" === Marker number " + markerCount));//$NON-NLS-1$
-      marker = doc.createElement("marker"); //$NON-NLS-1$
+          .createComment(" === Marker number " + markerCount));
+      marker = doc.createElement("marker");
       markers.appendChild(marker);
       IMember javaElement = reportParam.getJavaElement();
       IResource resource = javaElement.getResource();
 
       // NODE: "Error", "Warning"
-      appendChild(marker, "level", reportParam.getLevel().toString());//$NON-NLS-1$
+      appendChild(marker, "level", reportParam.getLevel().toString());
 
       // NODE: org.ucdetector
       IPackageFragment pack = JavaElementUtil.getPackageFor(javaElement);
       String packageName = pack.getElementName();
-      appendChild(marker, "package", packageName);//$NON-NLS-1$
+      appendChild(marker, "package", packageName);
 
       IType type = JavaElementUtil.getTypeFor(javaElement, true);
       // NODE: UCDetectorPlugin
-      appendChild(marker, "class", JavaElementUtil.getElementName(type));//$NON-NLS-1$
+      appendChild(marker, "class", JavaElementUtil.getElementName(type));
       // NODE: Class, Annotation, Constructor...
-      appendChild(
-          marker,
-          "javaTypeSimple", JavaElementUtil.getMemberTypeStringSimple(javaElement));//$NON-NLS-1$
-      appendChild(marker,
-          "javaType", JavaElementUtil.getMemberTypeString(javaElement));//$NON-NLS-1$
+      appendChild(marker, "javaTypeSimple", JavaElementUtil
+          .getMemberTypeStringSimple(javaElement));
+      appendChild(marker, "javaType", JavaElementUtil
+          .getMemberTypeString(javaElement));
 
       if (javaElement instanceof IMethod) {
         // NODE: method
         IMethod method = (IMethod) javaElement;
-        appendChild(marker,
-            "method", JavaElementUtil.getSimpleMethodName(method));//$NON-NLS-1$
+        appendChild(marker, "method", JavaElementUtil
+            .getSimpleMethodName(method));
       }
       if (javaElement instanceof IField) {
         // NODE: field
         IField field = (IField) javaElement;
-        appendChild(marker, "field", JavaElementUtil.getSimpleFieldName(field));//$NON-NLS-1$
+        appendChild(marker, "field", JavaElementUtil.getSimpleFieldName(field));
       }
 
       // NODE: 123
-      appendChild(marker, "line", String.valueOf(reportParam.getLine()));//$NON-NLS-1$
+      appendChild(marker, "line", String.valueOf(reportParam.getLine()));
 
       String markerType = reportParam.getMarkerType();
       if (markerType.startsWith(MarkerFactory.UCD_MARKER)) {
         markerType = markerType.substring(MarkerFactory.UCD_MARKER.length());
       }
-      appendChild(marker, "markerType", markerType);//$NON-NLS-1$
+      appendChild(marker, "markerType", markerType);
       // NODE: Change visibility of MixedExample to default
-      appendChild(marker, "description", reportParam.getMessage());//$NON-NLS-1$
-      String sReferenceCount = (reportParam.getReferenceCount() == -1) ? "-" : "" //$NON-NLS-1$ //$NON-NLS-2$
+      appendChild(marker, "description", reportParam.getMessage());
+      String sReferenceCount = (reportParam.getReferenceCount() == -1) ? "-" : "" //$NON-NLS-2$
               + reportParam.getReferenceCount();
-      appendChild(marker, "referenceCount", sReferenceCount);//$NON-NLS-1$
+      appendChild(marker, "referenceCount", sReferenceCount);
 
       if (resource != null) {
         // F:/ws/ucd/org.ucdetector.example/src/main/org/ucdetector/example/Bbb.java
         if (resource.getRawLocation() != null) {
-          appendChild(marker,
-              "resourceRawLocation", resource.getRawLocation().toString());//$NON-NLS-1$
+          appendChild(marker, "resourceRawLocation", resource.getRawLocation()
+              .toString());
         }
         IProject project = resource.getProject();
         if (project != null && project.getLocation() != null) {
           IPath location = project.getLocation();
           // [ 2762967 ] XmlReport: Problems running UCDetector
           // NODE:  org.ucdetector.example - maybe different projectName!
-          appendChild(marker, "projectDir", location.lastSegment());//$NON-NLS-1$
+          appendChild(marker, "projectDir", location.lastSegment());
           // NODE:  org.ucdetector.example - maybe different projectDir!
-          appendChild(marker, "projectName", project.getName());//$NON-NLS-1$
+          appendChild(marker, "projectName", project.getName());
           // NODE:  F:/ws/ucd
           String parentDir = location.removeLastSegments(1).toString();
-          appendChild(marker, "projectLocation", parentDir);//$NON-NLS-1$
+          appendChild(marker, "projectLocation", parentDir);
         }
 
         IPackageFragmentRoot sourceFolder = JavaElementUtil
@@ -211,24 +223,24 @@ public class XmlReport implements IUCDetectorReport {
           IPath path = sourceFolder.getResource().getProjectRelativePath();
           if (path != null) {
             // NODE:  example
-            appendChild(marker, "sourceFolder", path.toString());//$NON-NLS-1$
+            appendChild(marker, "sourceFolder", path.toString());
           }
         }
 
         IContainer parent = resource.getParent();
         if (parent != null && parent.getProjectRelativePath() != null) {
           // NODE:  org/ucdetector/example
-          appendChild(marker, "resourceLocation", packageName.replace('.', '/'));//$NON-NLS-1$
+          appendChild(marker, "resourceLocation", packageName.replace('.', '/'));
         }
         // NODE: NoReferenceExample.java
-        appendChild(marker, "resourceName", resource.getName());//$NON-NLS-1$
+        appendChild(marker, "resourceName", resource.getName());
       }
-      appendChild(marker, "nr", String.valueOf(markerCount));//$NON-NLS-1$
+      appendChild(marker, "nr", String.valueOf(markerCount));
     }
     catch (Throwable ex) {
-      Log.logError("XML problems", ex);//$NON-NLS-1$
+      Log.logError("XML problems", ex);
       if (marker != null) {
-        appendChild(marker, "ExceptionForCreatingMarker", ex.getMessage());//$NON-NLS-1$
+        appendChild(marker, "ExceptionForCreatingMarker", ex.getMessage());
       }
     }
     return true;
@@ -236,17 +248,17 @@ public class XmlReport implements IUCDetectorReport {
 
   public void reportDetectionProblem(IStatus status) {
     detectionProblemCount++;
-    Element problem = doc.createElement("problem"); //$NON-NLS-1$
+    Element problem = doc.createElement("problem");
     problems.appendChild(problem);
-    appendChild(problem, "status", status.toString());//$NON-NLS-1$
+    appendChild(problem, "status", status.toString());
     Throwable ex = status.getException();
-    String exString = ""; //$NON-NLS-1$
+    String exString = "";
     if (ex != null) {
       StringWriter writer = new StringWriter();
       ex.printStackTrace(new PrintWriter(writer));
-      exString = writer.toString().replace("\r\n", "\n"); //$NON-NLS-1$//$NON-NLS-2$
+      exString = writer.toString().replace("\r\n", "\n");//$NON-NLS-2$
     }
-    appendChild(problem, "exception", exString);//$NON-NLS-1$
+    appendChild(problem, "exception", exString);
   }
 
   /**
@@ -295,8 +307,8 @@ public class XmlReport implements IUCDetectorReport {
           String.valueOf(markerCount), htmlFile.getAbsoluteFile().toString());
 
       if (Log.DEBUG) {
-        Log.logDebug("htmlFile= " + htmlFile.getCanonicalPath()); //$NON-NLS-1$
-        Log.logDebug("xmlFile = " + xmlFile.getCanonicalPath()); //$NON-NLS-1$
+        Log.logDebug("htmlFile= " + htmlFile.getCanonicalPath());
+        Log.logDebug("xmlFile = " + xmlFile.getCanonicalPath());
       }
     }
     catch (Exception e) {
@@ -345,17 +357,17 @@ public class XmlReport implements IUCDetectorReport {
    * Append statistics like: date, searchDuration, searched elements
    */
   private void appendStatistics(Object[] selected, long start) {
-    appendChild(statistcs,
-        "dateStarted", UCDetectorPlugin.DATE_FORMAT.format(new Date(start)));//$NON-NLS-1$
-    appendChild(statistcs, "dateFinished", UCDetectorPlugin.getNow());//$NON-NLS-1$
+    appendChild(statistcs, "dateStarted", UCDetectorPlugin.DATE_FORMAT
+        .format(new Date(start)));
+    appendChild(statistcs, "dateFinished", UCDetectorPlugin.getNow());
     long millis = (System.currentTimeMillis() - start);
-    appendChild(statistcs, "searchDuration", StopWatch.timeAsString(millis));//$NON-NLS-1$
-    Element searched = appendChild(statistcs, "searched", null);//$NON-NLS-1$
+    appendChild(statistcs, "searchDuration", StopWatch.timeAsString(millis));
+    Element searched = appendChild(statistcs, "searched", null);
     for (Object selection : selected) {
       if (selection instanceof IJavaElement) {
         IJavaElement javaElement = (IJavaElement) selection;
-        appendChild(searched,
-            "search", JavaElementUtil.getElementName(javaElement));//$NON-NLS-1$
+        appendChild(searched, "search", JavaElementUtil
+            .getElementName(javaElement));
       }
     }
   }
@@ -369,8 +381,8 @@ public class XmlReport implements IUCDetectorReport {
     File file = new File(fileName);
     Result result = new StreamResult(file);
     Transformer xformer = TransformerFactory.newInstance().newTransformer();
-    xformer.setOutputProperty(OutputKeys.INDENT, "yes");//$NON-NLS-1$
-    xformer.setOutputProperty(OutputKeys.METHOD, "xml");//$NON-NLS-1$
+    xformer.setOutputProperty(OutputKeys.INDENT, "yes");
+    xformer.setOutputProperty(OutputKeys.METHOD, "xml");
     xformer.transform(source, result);
     return file;
   }
