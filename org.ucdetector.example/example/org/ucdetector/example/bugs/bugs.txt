@@ -1,0 +1,31 @@
+Usefully strings for new bugs:
+
+/**
+ * Bug _BUG_ID_: Compile error for: static variable
+ * <p>
+ * Submitted: Nobody/Anonymous ( nobody ) - 2009-04-24 00:59
+ * <p>
+ * TEXT
+ * <p>
+ * @see https://sourceforge.net/tracker/?func=detail&aid=_BUG_ID_&group_id=219599&atid=1046865
+ * <p>
+ * See also bug: [ 2804064 ] 
+ * <p>
+ * Browse code at:
+ * http://ucdetector.svn.sourceforge.net/viewvc/ucdetector/trunk/org.ucdetector.example/example/org/ucdetector/example/bugs/Bug_BUG_ID_.java&view=markup
+ */
+
+
+
+Usage:
+Marker YES: unused code
+Marker YES: few used code
+
+Visibility:
+Marker YES: use private
+Marker YES: use protected
+Marker YES: use default
+
+Other:
+Marker YES: use final
+Marker YES: test only
