@@ -10,8 +10,8 @@ public class NoUcdAnnotationExample {
   @SuppressWarnings( { "ucd", "unused" })
   /**
    * javadoc
-   * 
-   * 
+   *
+   *
    */
   // comment 1
   private final static String UNUSED_WITH_SINGLE_MEMBER_ANNOTATION = "1";
@@ -70,7 +70,7 @@ public class NoUcdAnnotationExample {
   @SuppressWarnings("ucd")
   public enum EnumExample {
     UNUSED, //
-    UNUSED_2
+    UNUSED_123
   }
 
   @java.lang.SuppressWarnings("ucd")

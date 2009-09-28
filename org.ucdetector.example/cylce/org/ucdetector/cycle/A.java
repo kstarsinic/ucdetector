@@ -13,7 +13,7 @@ public class A {
   AImpl aImpl = new AImpl();
 
   public void getJavadoc() {
-  };
+  }
 
   JavaDoc javaDoc = new JavaDoc();
 

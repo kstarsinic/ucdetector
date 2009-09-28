@@ -63,9 +63,9 @@ import org.ucdetector.example.visibility.UseProtectedClass;
 
 /**
  * {@link org.ucdetector.example.classes.JavaDocClassExample}
- * 
+ *
  * {@link org.ucdetector.example.fields.FieldExamples#usedByJavadoc}
- * 
+ *
  * {@link org.ucdetector.example.methods.MethodExamples#usedByJavaDoc()}
  */
 @SuppressWarnings("unused")
@@ -81,10 +81,9 @@ public class PublicReferenceHolder {
     System.out.println(IgnoreAnnotationExample.class.getName());
     System.out.println(InterfaceUnusedMethodExampleImpl.class.getName());
     //
-    InterfaceUnusedMethodExample interfaceUnusedMethodExample = ((InterfaceUnusedMethodExample) null);
-    if (interfaceUnusedMethodExample != null) {
-      interfaceUnusedMethodExample.used();
-    }
+    Object o = "";
+    InterfaceUnusedMethodExample interfaceUnusedMethodExample = ((InterfaceUnusedMethodExample) o);
+    interfaceUnusedMethodExample.used();
     //
     System.out.println(Bug2779970.class.getName());
     System.out.println(ClassInJarExample.class.getName());

@@ -10,7 +10,7 @@ public class IgnoreAnnotationExample {
 
   @org.ucdetector.util.UsedBy("library")
   public void unused() {
-  };
+  }
 
   // Filter ------------------------------------------------------------------
   @FilterMeAnnotation()
@@ -18,11 +18,11 @@ public class IgnoreAnnotationExample {
 
   @org.ucdetector.example.FilterMeAnnotation()
   public void unused2() {
-  };
+  }
 
   // Other -------------------------------------------------------------------
   // public int unused3 = 0;
-  //  
+  //
   // public void unused3(){};
 
 }

@@ -57,19 +57,19 @@ public class QuickFixExample {
 
   // -------------------------------------------------------------------------
   public void useProtected_1() {// Marker YES: use protected
-  };
+  }
 
   public void useProtected_2() {// Marker YES: use protected
-  };
+  }
 
   public void useProtected_3() {// Marker YES: use protected
-  };
+  }
 
   public void useProtected_4() {// Marker YES: use protected
-  };
+  }
 
   public void useProtected_5() {// Marker YES: use protected
-  };
+  }
 
   // -------------------------------------------------------------------------
   public void usePrivate_1() {// Marker YES: use private

@@ -46,7 +46,7 @@ public class Bug2743908_2804064 {
   }
 
   public static class A { // Marker YES: use private
-  };
+  }
 }
 
 /**
@@ -57,7 +57,7 @@ public class Bug2743908_2804064 {
 class MyLocalClass {
 	// See Bug2864046: no more marker here!
 	public void foo() {
-  };
+  }
 }
 
 class MyLocalClassUnused { // Marker YES: unused code

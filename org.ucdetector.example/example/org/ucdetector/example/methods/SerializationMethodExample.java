@@ -30,13 +30,13 @@ public class SerializationMethodExample {
 
   public Object readResolve() throws ObjectStreamException {
     throw new InvalidClassException("Test");
-  };
+  }
 
   /* private */void readObjectNoData() throws ObjectStreamException {
     if (true) {
       throw new InvalidClassException("Test");
     }
-  };
+  }
 
   public void unused() { // Marker YES: unused code
 
