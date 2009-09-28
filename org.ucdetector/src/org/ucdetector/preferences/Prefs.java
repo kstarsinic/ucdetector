@@ -29,7 +29,7 @@ import org.ucdetector.util.JavaElementUtil;
  * Constant definitions for plug-in preferences, offer access to preferences
  */
 public final class Prefs {
-  public static final String CHANGE_ALL_VISIBILIY_COMBO = "changeAllVisibiliyCombo"; //$NON-NLS-1$
+  protected static final String CHANGE_ALL_VISIBILIY_COMBO = "changeAllVisibiliyCombo"; //$NON-NLS-1$
 
   private Prefs() {
     // avoid instantiation
@@ -483,7 +483,7 @@ public final class Prefs {
    * @return <code>true</code>, when the name matches one of the Strings
    * found in the preference filteName.<br>
    */
-  static boolean matchFilter(String filterName, String name) {
+  private static boolean matchFilter(String filterName, String name) {
     String[] filters = parseFilters(filterName);
     for (String regex : filters) {
       // IPackageFragmentRoot can be "", filter can be ""

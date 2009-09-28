@@ -436,8 +436,8 @@ public class JavaElementUtil {
   /**
    * Count number of matches
    */
-  static final class CountOverridingRequestor extends SearchRequestor {
-    int found = 0;
+  private static final class CountOverridingRequestor extends SearchRequestor {
+    private int found = 0;
 
     @Override
     public void acceptSearchMatch(SearchMatch match) {

@@ -63,8 +63,8 @@ public abstract class AbstractUCDetectorIterator extends UCDetectorCallBack {
   private final List<IPackageFragment> visitedPackages //
   = new ArrayList<IPackageFragment>();
 
-  final long timeStart = System.currentTimeMillis();
-  long timeEnd = 0;
+  private final long timeStart = System.currentTimeMillis();
+  private long timeEnd = 0;
   private MarkerFactory markerFactory = null;
 
   // -------------------------------------------------------------------------

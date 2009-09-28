@@ -46,11 +46,11 @@ class UCDTextSearchVisitor {
   private final TextSearchRequestor fCollector;
   private final Matcher fMatcher;
 
-  IProgressMonitor fProgressMonitor;
+  private IProgressMonitor fProgressMonitor;
 
-  int fNumberOfScannedFiles;
-  int fNumberOfFilesToScan;
-  IFile fCurrentFile;
+  private int fNumberOfScannedFiles;
+  private int fNumberOfFilesToScan;
+  private IFile fCurrentFile;
 
   private final MultiStatus fStatus;
 
@@ -242,14 +242,15 @@ class UCDTextSearchVisitor {
     }
   }
 
-  static class TextSearchMatchAccessImpl extends TextSearchMatchAccess {
+  private static class TextSearchMatchAccessImpl extends TextSearchMatchAccess {
 
     private int fOffset;
     private int fLength;
     private IFile fFile;
     private CharSequence fContent;
 
-    void initialize(IFile file, int offset, int length, CharSequence content) {
+    private void initialize(IFile file, int offset, int length,
+        CharSequence content) {
       fFile = file;
       fOffset = offset;
       fLength = length;

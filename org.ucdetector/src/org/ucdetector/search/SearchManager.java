@@ -50,7 +50,8 @@ import org.ucdetector.util.StopWatch;
  * Search for class, methods, fields using the eclipse search mechanism
  */
 public class SearchManager {
-  static final boolean DEBUG = Log.isDebugOption("org.ucdetector/debug/search"); //$NON-NLS-1$
+  private static final boolean DEBUG = Log
+      .isDebugOption("org.ucdetector/debug/search"); //$NON-NLS-1$
   /** Information for user, that we are searching for final stuff */
   private static final String SEARCH_FINAL_MESSAGE = "final"; //$NON-NLS-1$
   /** Get Information about code lines in source code files   */
@@ -304,7 +305,7 @@ public class SearchManager {
   /**
    * check, if a field has read access
    */
-  static final class FieldReadRequestor extends SearchRequestor {
+  private static final class FieldReadRequestor extends SearchRequestor {
     boolean hasReadAccess = false;
 
     @Override
@@ -492,7 +493,7 @@ public class SearchManager {
   /**
    * text search in files
    */
-  final class UCDFileSearchRequestor extends TextSearchRequestor {
+  private final class UCDFileSearchRequestor extends TextSearchRequestor {
     int found = 0;
     final VisibilityHandler visibilityHandler;
     final String searchString;
@@ -556,7 +557,7 @@ public class SearchManager {
   /**
    * search java references
    */
-  static final class UCDSearchRequestor extends SearchRequestor {
+  private static final class UCDSearchRequestor extends SearchRequestor {
     int found = 0;
     int foundTest = 0;
     private final IMember searchStart;
@@ -641,7 +642,7 @@ public class SearchManager {
    * cancel search by throwing a {@link OperationCanceledException}
    * when necessary
    */
-  static void checkCancelSearch(IJavaElement javaElement, int found,
+  private static void checkCancelSearch(IJavaElement javaElement, int found,
       int foundTest) {
     if (Prefs.isDetectTestOnly() && (found == foundTest)) {
       // continue searching, because all matches are matches in test code

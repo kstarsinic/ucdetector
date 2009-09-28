@@ -32,7 +32,7 @@ public final class Messages extends NLS {
   public static String UCDetectorIterator_JobName; // NO_UCD
   public static String CleanMarkersIterator_JobName; // NO_UCD
   public static String UCDetectorIterator_MONITOR_INFO; // NO_UCD
-  public static String UCDetectorPreferencePageKeywords_ChangeAllCombos;
+  public static String UCDetectorPreferencePageKeywords_ChangeAllCombos; // NO_UCD
   public static String AbstractUCDetectorIterator_NothingToDetectTitle; // NO_UCD
   public static String AbstractUCDetectorIterator_NothingToDetect; // NO_UCD
   // count

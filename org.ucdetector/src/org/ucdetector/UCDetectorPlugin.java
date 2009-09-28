@@ -43,7 +43,7 @@ public class UCDetectorPlugin extends AbstractUIPlugin {
    * See MANIFEST.MF: Bundle-SymbolicName, and .project
    */
   public static final String ID = "org.ucdetector"; //$NON-NLS-1$
-  public static final String NL = System.getProperty("line.separator"); //$NON-NLS-1$
+  private static final String NL = System.getProperty("line.separator"); //$NON-NLS-1$
   // The shared instance.
   private static UCDetectorPlugin plugin;
   private static boolean isHeadlessMode = false;
