@@ -7,7 +7,7 @@ public class NoUcdAnnotationExample {
   @java.lang.SuppressWarnings("ucd")
   public int unused = 0;
 
-  @SuppressWarnings( { "ucd", "unused" })
+  @SuppressWarnings({ "ucd", "unused" })
   /**
    * javadoc
    *
@@ -17,14 +17,14 @@ public class NoUcdAnnotationExample {
   private final static String UNUSED_WITH_SINGLE_MEMBER_ANNOTATION = "1";
 
   /** javadoc */
-  @SuppressWarnings( { "UCD", "test", "unused" })
+  @SuppressWarnings({ "UCD", "test", "unused" })
   /*
    * comment
    */
   private final String unusedMember = "1";
 
   // comment
-  @SuppressWarnings( { "UCD" })
+  @SuppressWarnings({ "UCD" })
   /**
    * javadoc
    */

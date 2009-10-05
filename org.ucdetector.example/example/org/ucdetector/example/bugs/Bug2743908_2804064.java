@@ -55,8 +55,8 @@ public class Bug2743908_2804064 {
  * isMember=false<br>
  */
 class MyLocalClass {
-	// See Bug2864046: no more marker here!
-	public void foo() {
+  // See Bug2864046: no more marker here!
+  public void foo() {
   }
 }
 

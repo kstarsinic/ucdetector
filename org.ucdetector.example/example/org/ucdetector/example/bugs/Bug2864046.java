@@ -11,48 +11,48 @@ package org.ucdetector.example.bugs;
  * but keep the other ones?
  */
 class Bug2864046 {
-	// no "use protected" marker here, because parent class is already "default"
-	public void used_1() {
+  // no "use protected" marker here, because parent class is already "default"
+  public void used_1() {
 
-	}
+  }
 
-	public void used_6() { // Marker YES: use private
+  public void used_6() { // Marker YES: use private
 
-	}
+  }
 
-	public class Protected {
-		public void used_2() {
+  public class Protected {
+    public void used_2() {
 
-		}
-	}
+    }
+  }
 
-	private class Private {
-		void used_3() {
+  private class Private {
+    void used_3() {
 
-		}
-	}
+    }
+  }
 
-	static private class Static {
-		public void used_4() {
+  static private class Static {
+    public void used_4() {
 
-		}
-	}
+    }
+  }
 
-	public static void main(String[] args) {
-		Bug2864046 bug = new Bug2864046();
-		bug.used_6();
-		bug.new Private().used_3();
-		bug.new Protected().used_2();
+  public static void main(String[] args) {
+    Bug2864046 bug = new Bug2864046();
+    bug.used_6();
+    bug.new Private().used_3();
+    bug.new Protected().used_2();
 
-		new Bug2864046.Static().used_4();
-	}
+    new Bug2864046.Static().used_4();
+  }
 
-	public void unused() {// Marker YES: unused code
-	}
+  public void unused() {// Marker YES: unused code
+  }
 }
 
 class Bug2864046_2 {
-	public void used_5() {
+  public void used_5() {
 
-	}
+  }
 }

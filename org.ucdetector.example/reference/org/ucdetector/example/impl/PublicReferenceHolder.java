@@ -10,6 +10,7 @@ import org.ucdetector.example.NoUcdAnnotationExample;
 import org.ucdetector.example.NoUcdTagExample;
 import org.ucdetector.example.QuickFixExample;
 import org.ucdetector.example.ReferencedByTestsExample;
+import org.ucdetector.example.SlowExample;
 import org.ucdetector.example.bugs.Bug2139142Interface;
 import org.ucdetector.example.bugs.Bug2225016;
 import org.ucdetector.example.bugs.Bug2269486;
@@ -73,6 +74,7 @@ public class PublicReferenceHolder {
   @SuppressWarnings("deprecation")
   @AnnotationExample(parameterExmaple = "1")
   public static void main(String[] args) throws Throwable {
+    System.out.println(SlowExample.class.getName());
     System.out.println(Bug2844899_FieldFromInnerClass.class.getName());
     System.out.println(Bug2844899_Use.class.getName());
     System.out.println(Bug2864967.class.getName());

@@ -16,7 +16,7 @@ import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
-@Target( { TYPE, FIELD, METHOD, CONSTRUCTOR, ANNOTATION_TYPE })
+@Target({ TYPE, FIELD, METHOD, CONSTRUCTOR, ANNOTATION_TYPE })
 @Retention(RetentionPolicy.SOURCE)
 public @interface FilterMeAnnotation {
 }

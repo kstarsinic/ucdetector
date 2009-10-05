@@ -18,14 +18,14 @@ Usefully strings for new bugs:
 
 
 Usage:
-Marker YES: unused code
-Marker YES: few used code
+// Marker YES: unused code
+// Marker YES: few used code
 
 Visibility:
-Marker YES: use private
-Marker YES: use protected
-Marker YES: use default
+// Marker YES: use private
+// Marker YES: use protected
+// Marker YES: use default
 
 Other:
-Marker YES: use final
-Marker YES: test only
+// Marker YES: use final
+// Marker YES: test only

@@ -11,7 +11,7 @@ import java.lang.annotation.Target;
 /**
  * no markers here
  */
-@Target( { TYPE, FIELD, METHOD })
+@Target({ TYPE, FIELD, METHOD })
 @Retention(RetentionPolicy.CLASS)
 public @interface AnnotationExample {
 
