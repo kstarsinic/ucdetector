@@ -39,7 +39,7 @@
          id="org.ucdetector"
          download-size="200"
          install-size="200"
-         version="1.2.1"
+         version="1.2.3"
          unpack="false"/>
 
 </feature>
