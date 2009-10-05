@@ -64,8 +64,6 @@ public class SearchManager {
   private int markerCreated;
   /** Number of classes, methods, fields already searched */
   private int search = 0;
-  /** Pattern for text file search like *.xml;*.java  */
-  private final String[] filePatternLiteralSearch;
   /** shortcut to skip methods and fields of classes which have no references */
   private final List<IType> noRefTypes = new ArrayList<IType>();
   /** contains all exceptions happened during search */
@@ -79,7 +77,6 @@ public class SearchManager {
       MarkerFactory markerFactory) {
     this.monitor = monitor;
     this.searchTotal = searchTotal;
-    filePatternLiteralSearch = Prefs.getFilePatternLiteralSearch();
     this.markerFactory = markerFactory;
     finalHandler = new FinalHandler(markerFactory);
   }
@@ -415,18 +412,22 @@ public class SearchManager {
     checkForCancel();
     if (!Prefs.isUCDetectionInLiterals() || !(member instanceof IType)) {
       return 0;
-
     }
     // Only search if nothing is found and visibility is public
     if (found > 0 && visibilityHandler.isMaxVisibilityFoundPublic()) {
       return 0;
     }
     IType type = (IType) member;
+    // increase performance: only search public classes and primary classes
+    if (!JavaElementUtil.isPrimary(type) || !Flags.isPublic(type.getFlags())) {
+      return 0;
+    }
     String searchInfo = JavaElementUtil.getMemberTypeString(member);
+
     updateMonitorMessage(type, Messages.SearchManager_SearchClassNameAsLiteral,
         searchInfo);
-    FileTextSearchScope scope = FileTextSearchScope.newWorkspaceScope(
-        filePatternLiteralSearch, /*exclude bin dir */false);
+    FileTextSearchScope scope = FileTextSearchScope.newWorkspaceScope(Prefs
+        .getFilePatternLiteralSearch(), /*exclude bin dir */false);
     String searchString;
     boolean searchFullClassName = Prefs.isUCDetectionInLiteralsFullClassName();
     if (searchFullClassName) {
@@ -435,6 +436,7 @@ public class SearchManager {
     else {
       searchString = type.getElementName();
     }
+
     if (DEBUG) {
       StringBuilder mes = new StringBuilder();
       mes.append("Text search of ");//$NON-NLS-1$

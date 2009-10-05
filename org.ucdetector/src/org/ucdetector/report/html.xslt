@@ -110,7 +110,7 @@ ECLIPSE_HOME/dropins/org.ucdetector_*.jar/org/ucdetector/report/html.xslt
 				     FOOTNODE
 				     =============================================================== -->
 				<p>
-* To get links to the source locations, copy and paste table to Eclipse 'Java Stack Trace Console'<br></br>
+* To get links to the source locations, copy and paste first column (or table) to Eclipse 'Java Stack Trace Console'<br></br>
 ** Set 'Detect code with max number of references' &gt; 0<br></br>
 To create custom reports change ECLIPSE_HOME/dropins/org.ucdetector_*.jar/org/ucdetector/report/html.xslt
        </p>
