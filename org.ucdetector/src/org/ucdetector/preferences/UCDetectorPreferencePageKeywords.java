@@ -7,6 +7,8 @@
  */
 package org.ucdetector.preferences;
 
+import java.lang.reflect.Method;
+
 import org.eclipse.jface.preference.BooleanFieldEditor;
 import org.eclipse.jface.preference.ComboFieldEditor;
 import org.eclipse.jface.preference.FieldEditorPreferencePage;
@@ -31,6 +33,7 @@ import org.ucdetector.Messages;
  */
 public class UCDetectorPreferencePageKeywords extends
     UCDetectorBasePreferencePage {
+  private Method getComboListeners;
   private Combo changeVisibiliyCombos;
 
   public UCDetectorPreferencePageKeywords() {
@@ -108,6 +111,15 @@ public class UCDetectorPreferencePageKeywords extends
 
   // [2810803] Change visibility options more comfortable
   private void addChangeAllVisibiliyCombo(Composite parent) {
+    try {
+      Class<?>[] parameterTypes = new Class[] { int.class };
+      getComboListeners = Combo.class.getMethod("getListeners", parameterTypes); //$NON-NLS-1$
+    }
+    catch (Exception e) {
+      getComboListeners = null;
+      // eclipse 3.3!!!
+      return;
+    }
     Label label = new Label(parent, SWT.LEFT);
     label.setText(Messages.UCDetectorPreferencePageKeywords_ChangeAllCombos);
     changeVisibiliyCombos = new Combo(parent, SWT.READ_ONLY);
@@ -134,9 +146,28 @@ public class UCDetectorPreferencePageKeywords extends
        *  We must create a selection event for ComboFieldEditor#fCombo
        *  */
       private void createSelectionEventHack(Combo visibilityCombo) {
-        Listener[] listeners = visibilityCombo.getListeners(SWT.Selection);
+        Listener[] listeners = getListeners(visibilityCombo);
+        if (listeners == null || listeners.length == 0) {
+          return;
+        }
         TypedListener listener = (TypedListener) listeners[0];
         ((SelectionListener) listener.getEventListener()).widgetSelected(null);
+      }
+
+      /**
+       * Compatibility eclipse 3.3:
+       * The method <code>combo.getListeners(SWT.Selection)</code> only exists in 3.4
+       */
+      private Listener[] getListeners(Combo visibilityCombo) {
+        try {
+          Integer selection = Integer.valueOf(SWT.Selection);
+          return (Listener[]) getComboListeners.invoke(visibilityCombo,
+              new Object[] { selection });
+        }
+        catch (Exception e) {
+          // ignore
+        }
+        return null;
       }
     });
   }
@@ -144,22 +175,28 @@ public class UCDetectorPreferencePageKeywords extends
   @Override
   public boolean performOk() {
     boolean performOk = super.performOk();
-    getPreferenceStore().setValue(Prefs.CHANGE_ALL_VISIBILIY_COMBO,
-        changeVisibiliyCombos.getSelectionIndex());
+    if (getComboListeners != null) {
+      getPreferenceStore().setValue(Prefs.CHANGE_ALL_VISIBILIY_COMBO,
+          changeVisibiliyCombos.getSelectionIndex());
+    }
     return performOk;
   }
 
   @Override
   protected void initialize() {
     super.initialize();
-    int index = getPreferenceStore().getInt(Prefs.CHANGE_ALL_VISIBILIY_COMBO);
-    changeVisibiliyCombos.select(index);
+    if (getComboListeners != null) {
+      int index = getPreferenceStore().getInt(Prefs.CHANGE_ALL_VISIBILIY_COMBO);
+      changeVisibiliyCombos.select(index);
+    }
   }
 
   @Override
   protected void performDefaults() {
     super.performDefaults();
-    changeVisibiliyCombos.select(WarnLevel.WARNING.ordinal());
+    if (getComboListeners != null) {
+      changeVisibiliyCombos.select(WarnLevel.WARNING.ordinal());
+    }
   }
 
   private void addLineHack(Composite spacer) {
