@@ -23,6 +23,7 @@
                        plugins="org.ucdetector,org.ucdetector.additional"
                        useJARFormat="true" />
     <echo>Plugins will be exported to: ${ECLIPSE_HOME}/plugins</echo>
+    <ant target="source" />
   </target>
 
   <!-- ===================================================================== -->
@@ -61,7 +62,7 @@
   <target name="all" description="create all artifacts">
     <ant target="plugin-export" />
     <ant target="source" />
-    <ant target="annotations.jar" />
+    <ant target="annotations-jar" />
     <!-- -->
     <ant antfile="../../org.ucdetector.website/build.xml" target="ucd-help" />
     <ant antfile="../../org.ucdetector.website/build.xml" target="homepage" />
