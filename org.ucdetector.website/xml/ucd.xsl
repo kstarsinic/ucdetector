@@ -33,18 +33,25 @@
 			</head>
 			
 <!-- Piwik -->
-<script type="text/javascript">
+			<script type="text/javascript">
 var pkBaseURL = (("https:" == document.location.protocol) ? "https://apps.sourceforge.net/piwik/ucdetector/" : "http://apps.sourceforge.net/piwik/ucdetector/");
 document.write(unescape("%3Cscript src='" + pkBaseURL + "piwik.js' type='text/javascript'%3E%3C/script%3E"));
-</script><script type="text/javascript">
+</script>
+			<script type="text/javascript">
 piwik_action_name = '';
 piwik_idsite = 1;
 piwik_url = pkBaseURL + "piwik.php";
 piwik_log(piwik_action_name, piwik_idsite, piwik_url);
 </script>
-<object><noscript><p><img src="http://apps.sourceforge.net/piwik/ucdetector/piwik.php?idsite=1" alt="piwik"/></p></noscript></object>
+			<object>
+				<noscript>
+					<p>
+						<img src="http://apps.sourceforge.net/piwik/ucdetector/piwik.php?idsite=1" alt="piwik"/>
+					</p>
+				</noscript>
+			</object>
 <!-- End Piwik Tag -->
-
+			
 			<body>
 <!-- Navigation table -->
 				<table width="100%" border="0" summary="left navigation, right text">
@@ -102,10 +109,34 @@ piwik_log(piwik_action_name, piwik_idsite, piwik_url);
 										<a href="contact.html">Contact &amp; Links</a>
 									</td>
 								</tr>
+								<tr height="30">
+									<td></td>
+								</tr>
+								
+								<tr>
+									<td>
+ <!-- BANNER LEFT -->
+										<script type="text/javascript">
+											<xsl:comment>										
+google_ad_client = "pub-6019677758660683";
+/* banner_links_skyscraper */
+google_ad_slot = "3650627737";
+google_ad_width = 120;
+google_ad_height = 600;
+//</xsl:comment>
+										</script>
+										<script type="text/javascript" src="http://pagead2.googlesyndication.com/pagead/show_ads.js"></script>
+									</td>
+								</tr>
+
 							<!-- ==================================== -->
 							</table>
 						</td>
 						<td>
+
+ <!-- BANNER TOP -->
+							
+							
 							<h1 align="center">
 								<img alt="UCDetector" src="http://www.ucdetector.org/ucdetector.ico"/>
 UCDetector: Unnecessary Code Detector</h1>
@@ -126,7 +157,8 @@ UCDetector: Unnecessary Code Detector</h1>
 				<table width="100%" summary="footer">
 					<tr>
 						<td align="left" valign="middle">Last Update: @TODAY@</td>
-						<td align="right" valign="middle">Copyright &#169; @YEAR@, by <a href="mailto:feedback@ucdetector.org">Jörg Spieler</a></td>
+						<td align="right" valign="middle">Copyright &#169; @YEAR@, by <a href="mailto:feedback@ucdetector.org">Jörg Spieler</a>
+						</td>
 					</tr>
 				</table>
 				<hr/>
@@ -160,3 +192,6 @@ UCDetector: Unnecessary Code Detector</h1>
 	</xsl:template>
 	 -->
 </xsl:stylesheet>
+
+<!-- :mode=javascript: -->
+<!-- :mode=xslt: -->
