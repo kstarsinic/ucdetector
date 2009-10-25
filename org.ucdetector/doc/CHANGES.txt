@@ -2,6 +2,7 @@ UCDetector 1.4.0 from :
 Bugfixes:
 
 New features:
+ - TODO: [ 2824564 ] Group preferences
 
 // -----------------------------------------------------------------------------
 UCDetector 1.3.0 from 2009-10-25:
@@ -16,7 +17,6 @@ Bugfixes:
 New features:
  - New preference: 'ignore Classes containing string'
  - [ 2832790 ] Custom annotation filter
- - TODO: [ 2824564 ] Group preferences
 
 // -----------------------------------------------------------------------------
 

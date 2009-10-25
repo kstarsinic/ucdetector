@@ -46,37 +46,21 @@ Steps to create new Version:
 	 - Commit html/xml report to: /org.ucdetector.example/reports/
 
  - Sourceforge:
-     - https://sourceforge.net/account/login.php
+     - https://sourceforge.net/project/admin/?group_id=219599
 		 - "project Admin": Categorization
 		 - Description
 		 - Screenshot
 		 - Category
-	 - Firefox! project Admin/Download (popup)/Manage Packages / Releases/add release
-		 - Add Release: 1.0.0, Create this release
-		 - Paste The Change Log In: CHANGES.txt
-		 - Preserve my pre-formatted text.
-	 - 3: Add Files To This Release
-	   - https://sourceforge.net/apps/trac/sourceforge/wiki/Release%20files%20for%20download
-		 - Upload use this link: https://frs.sourceforge.net/webupload
-		 - Add files/refresh view
-		 - check box, again: Add files/refresh view
-	 - platform independent, jar   udpate/refresh
-	 - platform independent, source.zip    udpate/refresh
-	 - send E-Mail
-	 - Create / Edit Download Page
-	   - Eclipse PlugIn:
-	   - Eclipse PlugIn java sources:
-	 - Preview
-	 - Save
-	 - Browse all packages
-	 - Logout
+	 - Firefox! project Admin/File admin/file manager
+		 - create folder
+		 - upload jar, source.jar, changes.txt
 
  - update site (http://ucdetector.sourceforge.net/update):
 	 - /org.ucdetector.update_site/site.xml click: synchronize, build all
 	 - /org.ucdetector.update_site/build.xml:send -d
 	 - check if update site works
 
- - update homepage: run /org.ucdetector.website/build.xml:update -d
+ - update homepage: run /org.ucdetector.website/build.xml:homepage -d
  - check homepage
 
  - SVN commit
