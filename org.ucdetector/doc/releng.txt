@@ -28,7 +28,9 @@ Steps to create new Version:
 
  - Smoke test:
    - deploy org.ucdetector.jar and org.ucdetector.additional.jar to a CLEAN eclipse 3.3, java5
-	 - Run UCDetector detecting code in org.ucdetector.example/examples
+	 - Run UCDetector detecting code in org.ucdetector.example/examples with settings:
+	   - @org.ucdetector.example.FilterMeAnnotation
+	   - IGNORE THIS CODE
 	 - [Run UCDetector in: jEdit, JUnit]
 	 - run UCDetector with: change warn limit to 2
 	 - Apply QuickFixes to QuickFixExample

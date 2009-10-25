@@ -69,6 +69,19 @@ piwik_log(piwik_action_name, piwik_idsite, piwik_url);
 <tr>
 <td><a href="contact.html">Contact &amp; Links</a></td>
 </tr>
+<tr height="30">
+<td></td>
+</tr>
+<tr>
+<td><script type="text/javascript">
+<!--										
+google_ad_client = "pub-6019677758660683";
+/* banner_links_skyscraper */
+google_ad_slot = "3650627737";
+google_ad_width = 120;
+google_ad_height = 600;
+//--></script><script src="http://pagead2.googlesyndication.com/pagead/show_ads.js" type="text/javascript"></script></td>
+</tr>
 </table>
 </td><td>
 <h1 align="center">
@@ -87,14 +100,15 @@ Select menu: Window/Preferences.../UCDetector
 <tr valign="top">
 
 <td>
+<a name="ignore"></a>
 
-<h3>Filter</h3>
+<h3>Ignore</h3>
 <!-- ============================= -->
-It is possible to filter java elements (and all its children),
+It is possible to ignore java elements (and all its children),
 which should not be checked by UCDetector. A simple regular expression is used:
 <ul>
   
-<li>All filters are "case sensitive"</li>
+<li>All ignore filters are "case sensitive"</li>
   
 <li>?: Match one character</li>
   
@@ -105,6 +119,24 @@ which should not be checked by UCDetector. A simple regular expression is used:
 <p>
 You can enter more than 1 entry, using the separator ","
 </p>
+
+
+<p>
+<b>Code with annotations</b>
+<br>
+Code marked with these annotations, will be ignored during detection (full class name recommended). Use class name without @.
+@UsedBy is automatically excluded, see also <a href="index.html#ignore">ignore code</a>
+
+</p>
+
+
+<p>
+<b>Classes containing string:</b>
+<br>
+Classes containing one of this strings, will be ignored during detection - usefull for generated code.
+Be careful! Entering 'class' will exclude all classes!
+</p>
+
 
 
 <p>
@@ -134,6 +166,8 @@ Ignore methods, which use the java bean convention. For example
 
 <p>
 
+
+<a name="what"></a>
 
 <h3>What to detect</h3>
 <!-- ============================= -->
@@ -200,14 +234,15 @@ NOTE: <code>@org.junit.Test</code> annotations are ignored.
 </p>
 
 
+<a name="file_search"></a>
+
 <h3>File search</h3>
-<!-- version > 0.12.0: <h3>Search class name in files</h3> -->
 <!-- ============================= -->
 
 <p>
 <b>Search class names in text files:</b>
 <br>
-Select file extension, which should be searched for class name. 
+Select file extension, which should be searched for class name.
 For example "*.xml,*.jsp"
 </p>
 
@@ -258,6 +293,7 @@ Even for unused methods or fields!
 <tr valign="top">
 
 <td>
+<a name="keywords"></a>
 
 <h3>Keywords</h3>
 <!-- ============================= -->
@@ -303,7 +339,7 @@ Maybe this rules are not OK for you! Anyway: Apply changes for this rule careful
   <font color="#006699"><strong>private</strong></font></b>:<br>
 Select error level for visibility. This option will create markers for code
 which could be <font color="#006699"><strong>protected</strong></font>, default or
-  <font color="#006699"><strong>private</strong></font>. 
+  <font color="#006699"><strong>private</strong></font>.
 This is code, which has only references in same package or same class.
 </p>
 In some cases this may cause <font color="red">compile errors</font>
@@ -311,16 +347,24 @@ for classes, if there is code like this:
 <pre>
 new A().getB().toString();
 </pre>
-For more details, check bug: 
+For more details, check bug:
 	<a href="http://sourceforge.net/tracker/?func=detail&aid=2539795&group_id=219599&atid=1046865">
 	  Wrong default visibility marker for classes - ID: 2539795
 	</a>
+
+
+<p>
+<b>Don't care about warning 'Access to enclosing type':</b>
+<br>
+See screenshot for eclipse warnings: Preferences, Java, Compiler Warnings: Code style, 'access to a non-accessible member of an enclosing type'
+</p>	
 
 
 
 </td>
 <td align="left" valign="middle">
 <img alt="UCDetector preferences" border="1" src="http://ucdetector.org/images/preferences_3_keyword.png">
+<img alt="UCDetector preferences" border="1" src="http://ucdetector.org/images/warning_access.png">
 </td>
 
 </tr>
@@ -329,6 +373,8 @@ For more details, check bug:
 <tr valign="top">
 
 <td>
+
+<a name="other"></a>
 
 <h3>Other</h3>
 <!-- ============================= -->
@@ -384,7 +430,7 @@ Searched started: 06.07.09 23:58. Duration: 2.18 seconds
 <p>
 * To get links to the source locations, copy and paste table to Eclipse 'Java Stack Trace Console'<br>
 ** Set 'Detect code with max number of references' &gt; 0<br>
-To create custom reports change ECLIPSE_HOME/plugins/org.ucdetector_*.jar/org/ucdetector/report/html.xslt       
+To create custom reports change ECLIPSE_HOME/dropins/org.ucdetector_*.jar/org/ucdetector/report/html.xslt
 </p>Searched in:<ul>
 <li>MixedExample.java</li>
 </ul>
@@ -414,7 +460,7 @@ cycles in your code, a big number here makes cycle detection very slow!
 <hr>
 <table summary="footer" width="100%">
 <tr>
-<td valign="middle" align="left">Last Update: 2009-07-20</td><td valign="middle" align="right">Copyright &copy; 2009, by <a href="mailto:feedback@ucdetector.org">J&ouml;rg Spieler</a></td>
+<td valign="middle" align="left">Last Update: 2009-10-26</td><td valign="middle" align="right">Copyright &copy; 2009, by <a href="mailto:feedback@ucdetector.org">J&ouml;rg Spieler</a></td>
 </tr>
 </table>
 <hr>
