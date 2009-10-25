@@ -22,7 +22,7 @@ You can enter more than 1 entry, using the separator ","
 </p>
 
 <p><b>Code with annotations</b><br/>
-Code marked with these annotations, will be ignored during detection (full class name recommended).
+Code marked with these annotations, will be ignored during detection (full class name recommended). Use class name without @.
 @UsedBy is automatically excluded, see also <a href="index.html#ignore">ignore code</a>
 </p>
 

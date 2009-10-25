@@ -2,7 +2,7 @@
 <feature
       id="org.ucdetector.feature"
       label="UCDetector"
-      version="1.2.3"
+      version="1.3.0"
       provider-name="%providerName"
       plugin="org.ucdetector"
       image="ucd.gif">
@@ -39,7 +39,7 @@
          id="org.ucdetector"
          download-size="200"
          install-size="200"
-         version="1.2.3"
+         version="1.3.0"
          unpack="false"/>
 
 </feature>
