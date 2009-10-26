@@ -9,7 +9,7 @@
 <a name="about" />
 <h3>About</h3>
 <!-- ======================================================================= -->
-UCDetector (Unnecessary Code Detector) is a eclipse PlugIn tool to find unnecessary
+UCDetector (Unnecessary Code Detector - pronounced "You See Detector") is a eclipse PlugIn tool to find unnecessary
 (dead) <font color="#006699"><strong>public</strong></font> java code.
 For example public classes, methods or fields which have no references. UCDetector creates
 markers for the following problems, which appear in the eclipse problem view:
@@ -21,12 +21,12 @@ markers for the following problems, which appear in the eclipse problem view:
   <font color="#006699"><strong>private</strong></font></li>
   <li>Methods of fields, which can be <font color="#006699"><strong>final</strong></font></li>
 </ul>
-
+<!--
 <p>
 UCDetector also finds cyclic dependencies between classes in your code.
 This cycle classes are shown in s special cycle view.
 </p>
-
+-->
 			</td>
 <!-- right ================================================== -->
 			<td align="left" valign="middle">
