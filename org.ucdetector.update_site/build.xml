@@ -12,11 +12,15 @@
               value="${sf.userid}:${sf.password}@${sf.server}:${sf.remotedir}" />
     <echo>Loaded ucdetector.properties from ${ucd.props}</echo>
     <echo>Sending udpate site to: ${todir}...</echo>
-    <scp todir="${todir}" trust="true">
+    <scp todir="${todir}" trust="true" verbose="true">
       <fileset dir="${basedir}">
-        <exclude name="build.xml" />
-        <exclude name="content.xml" />
-        <exclude name="artifacts.xml" />
+        <include name="features/**" />
+        <include name="plugins/**" />
+        <include name="web/**" />
+        <include name="artifacts.jar" />
+        <include name="content.jar" />
+        <include name="index.html" />
+        <include name="site.xml" />
       </fileset>
     </scp>
     <echo>Finished sending udpate site.</echo>
