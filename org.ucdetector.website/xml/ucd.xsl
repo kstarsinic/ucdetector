@@ -28,7 +28,7 @@
  span.c4 {color: #6600CC}
  span.c3 {color: red}
  span.c2 {color: #006699}
- h1.c1 {text-align: center}
+ h2.c1 {text-align: center}
 </style>
 			</head>
 			
@@ -53,10 +53,27 @@ piwik_log(piwik_action_name, piwik_idsite, piwik_url);
 <!-- End Piwik Tag -->
 			
 			<body>
+
+						<!-- TOP-START ============================================================= -->
+				<p align="center">
+					<script type="text/javascript">
+						<xsl:comment>
+google_ad_client = "pub-6019677758660683";
+/* ucd_top */
+google_ad_slot = "9034205040";
+google_ad_width = 728;
+google_ad_height = 15;
+//</xsl:comment>
+					</script>
+					<script type="text/javascript" src="http://pagead2.googlesyndication.com/pagead/show_ads.js"></script>
+				</p>
+<!-- TOP-END =============================================================== -->
+			
+			
 <!-- Navigation table -->
 				<table width="100%" border="0" summary="left navigation, right text">
 					<tr valign="top">
-						<td width="10%" bgcolor="#FFFFE0">
+						<td width="120" bgcolor="#FFFFE0">
 							<table border="0">
 								<tr height="100">
 									<td></td>
@@ -109,23 +126,24 @@ piwik_log(piwik_action_name, piwik_idsite, piwik_url);
 										<a href="contact.html">Contact &amp; Links</a>
 									</td>
 								</tr>
-								<tr height="30">
+								<tr height="120">
 									<td></td>
 								</tr>
 								
 								<tr>
 									<td>
- <!-- BANNER LEFT -->
+ <!-- LEFT-START ============================================================ -->
 										<script type="text/javascript">
-											<xsl:comment>										
+											<xsl:comment>		
 google_ad_client = "pub-6019677758660683";
-/* banner_links_skyscraper */
-google_ad_slot = "3650627737";
+/* banner_links_skyscraper_2 */
+google_ad_slot = "6583747056";
 google_ad_width = 120;
-google_ad_height = 600;
+google_ad_height = 240;
 //</xsl:comment>
 										</script>
 										<script type="text/javascript" src="http://pagead2.googlesyndication.com/pagead/show_ads.js"></script>
+<!-- LEFT-END ============================================================== -->
 									</td>
 								</tr>
 
@@ -137,15 +155,15 @@ google_ad_height = 600;
  <!-- BANNER TOP -->
 							
 							
-							<h1 align="center">
+							<h2 align="center">
 								<img alt="UCDetector" src="http://www.ucdetector.org/ucdetector.ico"/>
-UCDetector: Unnecessary Code Detector</h1>
+UCDetector: Unnecessary Code Detector</h2>
 
 <!-- !!!!!!!!!!!!!!!!!!!!!!!!! START !!!!!!!!!!!!!!!!!!!!!!!!!!!! -->
 							<div align="center">
-								<h2>
+								<h3>
 									<xsl:value-of select="ucd/@page"/>
-								</h2>
+								</h3>
 							</div>
 							<xsl:apply-templates/>
 <!-- !!!!!!!!!!!!!!!!!!!!!!!!! END !!!!!!!!!!!!!!!!!!!!!!!!!!!! -->
@@ -157,6 +175,7 @@ UCDetector: Unnecessary Code Detector</h1>
 				<table width="100%" summary="footer">
 					<tr>
 						<td align="left" valign="middle">Last Update: @TODAY@</td>
+						<td align="center" valign="middle"></td>
 						<td align="right" valign="middle">Copyright &#169; @YEAR@, by <a href="mailto:feedback@ucdetector.org">Jörg Spieler</a>
 						</td>
 					</tr>
