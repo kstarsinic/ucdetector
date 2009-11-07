@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <introContent>
-	<extensionContent id="orgucdetector-introExtension" style="css/sample.css" name="Sample Extension" path="overview/@">
+	<extensionContent id="orgucdetector-introExtension" style="help/welcome.css" name="UCDetector Extension" path="overview/@">
 		<group style-id="content-group" id="orgucdetector-introLink-group">
 			<link label="Unnecessary Code Detector" url="http://www.ucdetector.org" id="orgucdetector-introLink" style-id="content-link">
-				<text>Find unnecessary (dead) public java code</text>
+				<text>Learn how to find unnecessary code in your java projects</text>
 			</link>
 		</group>
 	</extensionContent>
