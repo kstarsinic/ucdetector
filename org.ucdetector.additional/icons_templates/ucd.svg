@@ -17,7 +17,7 @@
    version="1.0"
    sodipodi:docname="ucd.svg"
    inkscape:output_extension="org.inkscape.output.svg.inkscape"
-   inkscape:export-filename="/home/js/ucdetector/org.ucdetector.additional/icons_templates/ucd.png"
+   inkscape:export-filename="E:\workspace\org.ucdetector.additional\icons_templates\ucd.png"
    inkscape:export-xdpi="90"
    inkscape:export-ydpi="90">
   <defs
@@ -608,16 +608,13 @@
        x2="3.3654783"
        y2="32.687199"
        gradientUnits="userSpaceOnUse" />
-    <linearGradient
-       inkscape:collect="always"
-       xlink:href="#linearGradient3831"
-       id="linearGradient2495"
-       gradientUnits="userSpaceOnUse"
-       gradientTransform="matrix(1.5617494,0,0,1.5617494,81.933016,87.568347)"
-       x1="-52.962753"
-       y1="-33.813273"
-       x2="-26.095566"
-       y2="-33.813273" />
+    <inkscape:perspective
+       id="perspective2568"
+       inkscape:persp3d-origin="372.04724 : 350.78739 : 1"
+       inkscape:vp_z="744.09448 : 526.18109 : 1"
+       inkscape:vp_y="0 : 1000 : 0"
+       inkscape:vp_x="0 : 526.18109 : 1"
+       sodipodi:type="inkscape:persp3d" />
   </defs>
   <sodipodi:namedview
      id="base"
@@ -627,7 +624,7 @@
      inkscape:pageopacity="0.0"
      inkscape:pageshadow="2"
      inkscape:zoom="3.0898438"
-     inkscape:cx="95.8455"
+     inkscape:cx="22.978506"
      inkscape:cy="43.711237"
      inkscape:current-layer="layer2"
      showgrid="true"
@@ -636,10 +633,10 @@
      gridtolerance="10000"
      guidetolerance="10000"
      objecttolerance="2"
-     inkscape:window-width="1680"
-     inkscape:window-height="993"
-     inkscape:window-x="-4"
-     inkscape:window-y="-4">
+     inkscape:window-width="1440"
+     inkscape:window-height="885"
+     inkscape:window-x="0"
+     inkscape:window-y="0">
     <inkscape:grid
        type="xygrid"
        id="grid2393"
@@ -664,14 +661,6 @@
      id="layer1"
      inkscape:label="Layer 1"
      inkscape:groupmode="layer">
-    <image
-       y="-12"
-       x="216"
-       id="image2753"
-       height="28"
-       width="32"
-       sodipodi:absref="/home/js/ucdetector/org.ucdetector/icons/use_final.gif"
-       xlink:href="/home/js/ucdetector/org.ucdetector/icons/use_final.gif" />
     <rect
        y="-16"
        x="160"
@@ -782,6 +771,14 @@
        sodipodi:ry="8"
        d="M 12,32 A 4,8 0 1 1 4,32 A 4,8 0 1 1 12,32 z"
        transform="matrix(0.9731375,1.0186043,-0.9857595,1.0318161,108.16836,-5.165654)" />
+    <image
+       y="24"
+       x="-64"
+       id="image2570"
+       height="16"
+       width="16"
+       sodipodi:absref="E:\workspace\org.ucdetector\icons\ucd.gif"
+       xlink:href="E:\workspace\org.ucdetector\icons\ucd.gif" />
   </g>
   <g
      inkscape:groupmode="layer"
@@ -789,15 +786,16 @@
      inkscape:label="letter">
     <text
        xml:space="preserve"
-       style="font-size:62.46997833px;font-style:normal;font-weight:bold;fill:url(#linearGradient2495);fill-opacity:1;stroke:#25f000;stroke-width:1.56174946px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:0;font-family:Bitstream Vera Sans"
-       x="-3.8440518"
-       y="66.596397"
+       style="font-size:120px;font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;text-align:start;line-height:125%;writing-mode:lr-tb;text-anchor:start;fill:#a52a2a;fill-opacity:1;stroke:#25f000;stroke-width:2.33627462px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:0;font-family:Arial Narrow;-inkscape-font-specification:Arial Narrow Bold"
+       x="12.01503"
+       y="91.884918"
        id="text3827"
-       transform="scale(1.0405687,0.961013)"><tspan
+       transform="scale(0.9987491,1.0012525)"
+       sodipodi:linespacing="125%"><tspan
          sodipodi:role="line"
          id="tspan3829"
-         x="-3.8440518"
-         y="66.596397"
-         style="font-size:87.45796204px;font-style:normal;font-weight:bold;fill:url(#linearGradient2495);fill-opacity:1;stroke:#25f000;stroke-width:1.56174946;stroke-opacity:0">?</tspan></text>
+         x="12.01503"
+         y="91.884918"
+         style="font-size:120px;font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;text-align:start;line-height:125%;writing-mode:lr-tb;text-anchor:start;fill:#a52a2a;fill-opacity:1;stroke:#25f000;stroke-width:2.33627462;stroke-opacity:0;font-family:Arial Narrow;-inkscape-font-specification:Arial Narrow Bold">?</tspan></text>
   </g>
 </svg>
