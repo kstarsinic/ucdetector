@@ -309,6 +309,25 @@ public class LineManger {
   }
 
   /**
+   * @param element to create a scanner
+   * @param offset char position in the file
+   * @param length of the code
+   * @return Piece of code contained in offset
+   * @throws CoreException if there are problems creating a scanner
+   */
+  public String getPieceOfCode(IJavaElement element, int offset, int length)
+      throws CoreException {
+    createScanner(element);
+    IType type = JavaElementUtil.getTypeFor(element, false);
+    ICompilationUnit unit = type.getCompilationUnit();
+    char[] chars = contentsMap.get(unit);
+    if (chars != null && (offset + length) < chars.length) {
+      return String.valueOf(chars, offset, length);
+    }
+    return null;
+  }
+
+  /**
    * @return line number for a tag like "NO_UCD", or <code>null</code>
    * if there is no tag like "NO_UCD"
    */

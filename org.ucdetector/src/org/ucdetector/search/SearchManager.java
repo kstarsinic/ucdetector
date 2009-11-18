@@ -26,8 +26,11 @@ import org.eclipse.jdt.core.IMethod;
 import org.eclipse.jdt.core.IType;
 import org.eclipse.jdt.core.JavaCore;
 import org.eclipse.jdt.core.JavaModelException;
+import org.eclipse.jdt.core.dom.AST;
+import org.eclipse.jdt.core.dom.ASTParser;
 import org.eclipse.jdt.core.search.IJavaSearchConstants;
 import org.eclipse.jdt.core.search.IJavaSearchScope;
+import org.eclipse.jdt.core.search.MethodReferenceMatch;
 import org.eclipse.jdt.core.search.SearchEngine;
 import org.eclipse.jdt.core.search.SearchMatch;
 import org.eclipse.jdt.core.search.SearchPattern;
@@ -391,10 +394,11 @@ public class SearchManager {
       VisibilityHandler visibilityHandler) throws CoreException {
     checkForCancel();
     IJavaSearchScope scope = SearchEngine.createWorkspaceScope();
+    //    scope.includesBinaries();
     SearchPattern pattern = SearchPattern.createPattern(member,
         IJavaSearchConstants.REFERENCES);
     UCDSearchRequestor requestor = new UCDSearchRequestor(member,
-        visibilityHandler);
+        visibilityHandler, lineManger);
     boolean isSearchException = JavaElementUtil.runSearch(pattern, requestor,
         scope);
     // Let's be pessimistic and handle an Exception as "reference found"!
@@ -564,6 +568,7 @@ public class SearchManager {
     int foundTest = 0;
     private final IMember searchStart;
     private final VisibilityHandler visibilityHandler;
+    private final LineManger lineManager;
 
     @Override
     public String toString() {
@@ -571,9 +576,11 @@ public class SearchManager {
           + foundTest;
     }
 
-    UCDSearchRequestor(IMember searchStart, VisibilityHandler visibilityHandler) {
+    UCDSearchRequestor(IMember searchStart,
+        VisibilityHandler visibilityHandler, LineManger lineManager) {
       this.searchStart = searchStart;
       this.visibilityHandler = visibilityHandler;
+      this.lineManager = lineManager;
     }
 
     @Override
@@ -583,12 +590,41 @@ public class SearchManager {
       }
       this.found++;
       IJavaElement matchJavaElement = (IJavaElement) match.getElement();
+      checkUnusedBoolean(match, matchJavaElement);
       if (Prefs.isDetectTestOnly()
           && JavaElementUtil.isTestCode(matchJavaElement)) {
         foundTest++;
       }
       checkCancelSearch(matchJavaElement, found, foundTest);
       visibilityHandler.checkVisibility(matchJavaElement, found, foundTest);
+    }
+
+    //TODO: Implement       checkUnusedBoolean
+    @SuppressWarnings("nls")
+    private void checkUnusedBoolean(SearchMatch match,
+        IJavaElement matchJavaElement) {
+      if (match instanceof MethodReferenceMatch) {
+        MethodReferenceMatch method = (MethodReferenceMatch) match;
+        System.out.println("method: " + method);
+        int offset = method.getOffset();
+        int length = method.getLength();
+        try {
+          String code = lineManager.getPieceOfCode(matchJavaElement, offset,
+              length);
+          System.out.println("code: " + code);
+          ASTParser parser = ASTParser.newParser(AST.JLS3);
+          parser.setSource(code.toCharArray());
+          parser.setKind(ASTParser.K_STATEMENTS);
+          //          parser.setResolveBindings(true);
+          //          ASTNode createAST = parser.createAST(null);
+          //          FindUcdSuppressWarningsVisitor visitor = new FindUcdSuppressWarningsVisitor(
+          //              scanner);
+          //          createAST.accept(visitor);
+        }
+        catch (CoreException e) {
+          e.printStackTrace();
+        }
+      }
     }
 
     /**
