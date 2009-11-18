@@ -58,6 +58,7 @@ import org.ucdetector.example.methods.MethodReferenceInJarExample;
 import org.ucdetector.example.methods.MethodsSameNameExample;
 import org.ucdetector.example.methods.ObjectClassMethodsExample;
 import org.ucdetector.example.methods.SerializationMethodExample;
+import org.ucdetector.example.methods.UnnecessaryBoolParam;
 import org.ucdetector.example.visibility.ProtectedReferenceHolderVisibility;
 import org.ucdetector.example.visibility.UsePrivateClass;
 import org.ucdetector.example.visibility.UseProtectedClass;
@@ -74,6 +75,14 @@ public class PublicReferenceHolder {
   @SuppressWarnings("deprecation")
   @AnnotationExample(parameterExmaple = "1")
   public static void main(String[] args) throws Throwable {
+    // ------------------------------------------------------------------------
+    UnnecessaryBoolParam ubp = new UnnecessaryBoolParam();
+    ubp.unnecessaryBool("test", true);
+    ubp.unnecessaryBool("test", true);
+    //
+    ubp.necessaryBool("test", true);
+    ubp.necessaryBool("test", false);
+    // ------------------------------------------------------------------------
     System.out.println(SlowExample.class.getName());
     System.out.println(Bug2844899_FieldFromInnerClass.class.getName());
     System.out.println(Bug2844899_Use.class.getName());
