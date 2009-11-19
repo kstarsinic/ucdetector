@@ -13,6 +13,10 @@
 			<a href="https://sourceforge.net/projects/ucdetector/files/">Downloads</a>
 		</li>
 		
+		<li>
+			<a href="http://ucdetector.sourceforge.net/update">Eclipse update site</a>: http://ucdetector.sourceforge.net/update
+		</li>
+
 		<li>Report a <a href="http://sourceforge.net/tracker/?func=browse&amp;group_id=219599&amp;atid=1046865&amp;status=1">bug</a>
 		</li>
 		
@@ -24,7 +28,7 @@
 		</li>
 		
 		<li>
-			<a href="http://ucdetector.svn.sourceforge.net/viewvc/ucdetector/trunk/">Browse </a>sources
+			<a href="http://ucdetector.svn.sourceforge.net/viewvc/ucdetector/trunk/">Browse</a> sources
 		</li>
 		
 		<li>
@@ -40,8 +44,5 @@
 			 If you want to report a bug or feature request, please use the links above.
 		</li>
 		
-		<li>
-			<a href="http://ucdetector.sourceforge.net/update">Eclipse update site</a>: http://ucdetector.sourceforge.net/update
-		</li>
 	</ul>
 </ucd>
