@@ -30,6 +30,7 @@ import org.ucdetector.example.classes.AnnotationExample;
 import org.ucdetector.example.classes.AnonymousClass;
 import org.ucdetector.example.classes.ClassInJarExample;
 import org.ucdetector.example.classes.EnumExample;
+import org.ucdetector.example.classes.EnumExampleUsedWithValues;
 import org.ucdetector.example.classes.LocalClassExample;
 import org.ucdetector.example.classes.MemberClassExample;
 import org.ucdetector.example.fields.FieldExamples;
@@ -75,6 +76,8 @@ public class PublicReferenceHolder {
   @SuppressWarnings("deprecation")
   @AnnotationExample(parameterExmaple = "1")
   public static void main(String[] args) throws Throwable {
+    // ------------------------------------------------------------------------
+    System.out.println(EnumExampleUsedWithValues.values());
     // ------------------------------------------------------------------------
     UnnecessaryBoolParam ubp = new UnnecessaryBoolParam();
     ubp.unnecessaryBool("test", true);

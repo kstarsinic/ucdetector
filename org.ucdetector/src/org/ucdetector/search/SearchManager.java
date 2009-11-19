@@ -273,6 +273,16 @@ public class SearchManager {
         searchInfo);
     int found = searchImpl(field, searchInfo, false);
     watch.end("    searchImpl"); //$NON-NLS-1$
+
+// TODO enum detection
+    if (field.isEnumConstant()) {
+      IType enumType = JavaElementUtil.getTypeFor(field, false);
+      IMethod[] methods = enumType.getMethods();
+      for (IMethod method : methods) {
+        System.out.println("method=" + method); //$NON-NLS-1$
+      }
+    }
+
     if (found > 0 && !hasReadAccess(field)) {
       String message = NLS.bind(
           Messages.MarkerFactory_MarkerReferenceFieldNeverRead,
@@ -599,18 +609,20 @@ public class SearchManager {
       visibilityHandler.checkVisibility(matchJavaElement, found, foundTest);
     }
 
-    //TODO: Implement       checkUnusedBoolean
     @SuppressWarnings("nls")
-    private void checkUnusedBoolean(SearchMatch match,
-        IJavaElement matchJavaElement) {
+    private void checkUnusedBoolean(SearchMatch match, IJavaElement matchElement) {
+      if (true) {
+        //TODO: Implement: checkUnusedBoolean
+        return;
+      }
       if (match instanceof MethodReferenceMatch) {
         MethodReferenceMatch method = (MethodReferenceMatch) match;
         System.out.println("method: " + method);
         int offset = method.getOffset();
         int length = method.getLength();
         try {
-          String code = lineManager.getPieceOfCode(matchJavaElement, offset,
-              length);
+          String code = lineManager
+              .getPieceOfCode(matchElement, offset, length);
           System.out.println("code: " + code);
           ASTParser parser = ASTParser.newParser(AST.JLS3);
           parser.setSource(code.toCharArray());
