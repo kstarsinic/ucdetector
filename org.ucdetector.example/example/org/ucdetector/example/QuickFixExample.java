@@ -1,4 +1,5 @@
 package org.ucdetector.example;
+
 /**
  * This class is used to check QuickFix refactorings
  */
@@ -15,10 +16,7 @@ public class QuickFixExample {
   public static int USE_FINAL5 = 5;// Marker YES: use final,unused code
 
   // CONSTUCTORS ---------------------------------------------------------------
-  public QuickFixExample(int i) {
-  }
-
-  public QuickFixExample() {// Marker YES: use default
+  public QuickFixExample() {
     this(true);
     System.out.println(usePrivateField_1);
     System.out.println(usePrivateField_2);
@@ -37,10 +35,16 @@ public class QuickFixExample {
     this(Boolean.TRUE);
   }
 
+  public QuickFixExample(int i) {// Marker YES: use default
+  }
+
   public QuickFixExample(boolean privateOnly) {// Marker YES: use private
   }
 
   public QuickFixExample(Boolean privateOnly) {// Marker YES: use private
+  }
+
+  public QuickFixExample(char c) {
   }
 
   // CLASSES DEFAULT -----------------------------------------------------------

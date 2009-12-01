@@ -180,7 +180,7 @@ public class PublicReferenceHolder {
     // ---------------------------------------------------------------------
     System.out.println(AnonymousClass.class);
     // ---------------------------------------------------------------------
-    System.out.println(new QuickFixExample(1));
+    System.out.println(new QuickFixExample('c'));
     // ---------------------------------------------------------------------
     System.out.println("org.ucdetector.example.classes.ClassNameInJavaFile");
     // ---------------------------------------------------------------------
