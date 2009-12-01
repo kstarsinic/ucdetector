@@ -5,7 +5,8 @@ public class ProtectedReferenceHolder {
     System.out.println(new MixedExample());
     // new MixedExample().makeProtectedMethod();
 
-    QuickFixExample quickFixExample = new QuickFixExample();
+    QuickFixExample quickFixExample = new QuickFixExample("protected");
+    quickFixExample = new QuickFixExample();
     int i = quickFixExample.useProtectedField_1;
     i = quickFixExample.useProtectedField_2;
     i = quickFixExample.useProtectedField_3;

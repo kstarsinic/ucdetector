@@ -15,7 +15,11 @@ public class QuickFixExample {
   public static int USE_FINAL5 = 5;// Marker YES: use final,unused code
 
   // CONSTUCTORS ---------------------------------------------------------------
+  public QuickFixExample(int i) {
+  }
+
   public QuickFixExample() {// Marker YES: use default
+    this(true);
     System.out.println(usePrivateField_1);
     System.out.println(usePrivateField_2);
     System.out.println(usePrivateField_3);
@@ -30,9 +34,13 @@ public class QuickFixExample {
   }
 
   public QuickFixExample(String s) {// Marker YES: use default
+    this(Boolean.TRUE);
   }
 
-  public QuickFixExample(int i) {
+  public QuickFixExample(boolean privateOnly) {// Marker YES: use private
+  }
+
+  public QuickFixExample(Boolean privateOnly) {// Marker YES: use private
   }
 
   // CLASSES DEFAULT -----------------------------------------------------------
