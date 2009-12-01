@@ -3,7 +3,7 @@ package org.ucdetector.example;
  * This class is used to check QuickFix refactorings
  */
 public class QuickFixExample {
-
+  // CONSTANTS ----------------------------------------------------------------------
   public static int USE_FINAL1 = 1;// Marker YES: use final,unused code
 
   public static int USE_FINAL2 = 2;// Marker YES: use final,unused code
@@ -14,7 +14,28 @@ public class QuickFixExample {
 
   public static int USE_FINAL5 = 5;// Marker YES: use final,unused code
 
-  // -------------------------------------------------------------------------
+  // CONSTUCTORS ---------------------------------------------------------------
+  public QuickFixExample() {// Marker YES: use default
+    System.out.println(usePrivateField_1);
+    System.out.println(usePrivateField_2);
+    System.out.println(usePrivateField_3);
+    System.out.println(usePrivateField_4);
+    System.out.println(usePrivateField_5);
+
+    usePrivate_1();
+    usePrivate_2();
+    usePrivate_3();
+    usePrivate_4();
+    usePrivate_5();
+  }
+
+  public QuickFixExample(String s) {// Marker YES: use default
+  }
+
+  public QuickFixExample(int i) {
+  }
+
+  // CLASSES DEFAULT -----------------------------------------------------------
 
   public class UseProtectedClass_1 {// Marker YES: use default
   }
@@ -31,8 +52,7 @@ public class QuickFixExample {
   public class UseProtectedClass_5 {// Marker YES: use default
   }
 
-  // -------------------------------------------------------------------------
-
+  // FIELDS PRIVATE ------------------------------------------------------------
   public final int usePrivateField_1 = 0;// Marker YES: use private
 
   public final int usePrivateField_2 = 0;// Marker YES: use private
@@ -43,8 +63,7 @@ public class QuickFixExample {
 
   public final int usePrivateField_5 = 0;// Marker YES: use private
 
-  // -------------------------------------------------------------------------
-
+  // FIELDS PROTECTED ----------------------------------------------------------
   public final int useProtectedField_1 = 0;// Marker YES: use protected
 
   public final int useProtectedField_2 = 0;// Marker YES: use protected
@@ -55,7 +74,7 @@ public class QuickFixExample {
 
   public final int useProtectedField_5 = 0;// Marker YES: use protected
 
-  // -------------------------------------------------------------------------
+  // METHODS PROTECTED ---------------------------------------------------------
   public void useProtected_1() {// Marker YES: use protected
   }
 
@@ -71,7 +90,7 @@ public class QuickFixExample {
   public void useProtected_5() {// Marker YES: use protected
   }
 
-  // -------------------------------------------------------------------------
+  // METHODS PRIVATE -----------------------------------------------------------
   public void usePrivate_1() {// Marker YES: use private
   }
 
@@ -87,7 +106,7 @@ public class QuickFixExample {
   public void usePrivate_5() {// Marker YES: use private
   }
 
-  // -------------------------------------------------------------------------
+  // FIELDS UNUSED -------------------------------------------------------------
   final int unusedField_1 = 1;// Marker YES: unused code
 
   final int unusedField_2 = 2;// Marker YES: unused code
@@ -98,7 +117,7 @@ public class QuickFixExample {
 
   final int unusedField_5 = 5;// Marker YES: unused code
 
-  // -------------------------------------------------------------------------
+  // METHODS UNUSED ------------------------------------------------------------
 
   public void unusedMethod_1() {// Marker YES: unused code
   }
@@ -127,7 +146,7 @@ public class QuickFixExample {
   public void unusedMethod_5() {// Marker YES: unused code
   }
 
-  // -------------------------------------------------------------------------
+  // CLASSES UNUSED ------------------------------------------------------------
 
   public class UnusedClass_1 {// Marker YES: unused code
   }
@@ -148,20 +167,5 @@ public class QuickFixExample {
   }
 
   public class UnusedClass_5 {// Marker YES: unused code
-  }
-
-  // -------------------------------------------------------------------------
-  public QuickFixExample() {
-    System.out.println(usePrivateField_1);
-    System.out.println(usePrivateField_2);
-    System.out.println(usePrivateField_3);
-    System.out.println(usePrivateField_4);
-    System.out.println(usePrivateField_5);
-
-    usePrivate_1();
-    usePrivate_2();
-    usePrivate_3();
-    usePrivate_4();
-    usePrivate_5();
   }
 }
