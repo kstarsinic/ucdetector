@@ -26,11 +26,8 @@ import org.eclipse.jdt.core.IMethod;
 import org.eclipse.jdt.core.IType;
 import org.eclipse.jdt.core.JavaCore;
 import org.eclipse.jdt.core.JavaModelException;
-import org.eclipse.jdt.core.dom.AST;
-import org.eclipse.jdt.core.dom.ASTParser;
 import org.eclipse.jdt.core.search.IJavaSearchConstants;
 import org.eclipse.jdt.core.search.IJavaSearchScope;
-import org.eclipse.jdt.core.search.MethodReferenceMatch;
 import org.eclipse.jdt.core.search.SearchEngine;
 import org.eclipse.jdt.core.search.SearchMatch;
 import org.eclipse.jdt.core.search.SearchPattern;
@@ -274,14 +271,53 @@ public class SearchManager {
     int found = searchImpl(field, searchInfo, false);
     watch.end("    searchImpl"); //$NON-NLS-1$
 
-// TODO enum detection
-    if (field.isEnumConstant()) {
-      IType enumType = JavaElementUtil.getTypeFor(field, false);
-      IMethod[] methods = enumType.getMethods();
-      for (IMethod method : methods) {
-        System.out.println("method=" + method); //$NON-NLS-1$
-      }
-    }
+    // TODO bug 2900561: enum detection, or don't create "unnecessary marker" for enum constants
+    //    if (field.isEnumConstant()) {
+    //      IMethod method = new ResolvedSourceMethod(
+    //          (JavaElement) field.getParent(), "values", new String[0], null);
+    //      IJavaSearchScope scope = SearchEngine.createWorkspaceScope();
+    //      //    scope.includesBinaries();
+    //      SearchPattern pattern = SearchPattern.createPattern(method,
+    //          IJavaSearchConstants.REFERENCES);
+    //
+    //      SearchRequestor requestor = new SearchRequestor() {
+    //        boolean found = false;
+    //
+    //        @Override
+    //        public void acceptSearchMatch(SearchMatch match) {
+    //          if (match.getElement() instanceof IJavaElement) {
+    //            found = true;
+    //            throw new OperationCanceledException(
+    //                "Cancel Search: Field has read access");//$NON-NLS-1$
+    //          }
+    //        }
+    //      };
+    //
+    //      JavaElementUtil.runSearch(pattern, requestor, scope);
+    //      System.out.println("found=" + requestor);
+    //
+    //      IType enumType = JavaElementUtil.getTypeFor(field, false);
+    //
+    //      ASTParser parser = ASTParser.newParser(AST.JLS3);
+    //      parser.setSource(enumType.getCompilationUnit());
+    //      parser.setKind(ASTParser.K_COMPILATION_UNIT);
+    //      parser.setResolveBindings(true);
+    //      ASTNode ast = parser.createAST(null);
+    //      ASTVisitor visitor = new ASTVisitor() {
+    //        @Override
+    //        public boolean visit(EnumDeclaration declaration) {
+    //          System.out.println("declaration=" + declaration);
+    //          return true;
+    //        }
+    //
+    //      };
+    //      ast.accept(visitor);
+    //
+    //      //      IMethod[] methods = enumType.getMethods();
+    //      //      for (IMethod method : methods) {
+    //      //        System.out.println("method=" + method); //$NON-NLS-1$
+    //      //      }
+    //    }
 
     if (found > 0 && !hasReadAccess(field)) {
       String message = NLS.bind(
@@ -600,7 +636,7 @@ public class SearchManager {
       }
       this.found++;
       IJavaElement matchJavaElement = (IJavaElement) match.getElement();
-      checkUnusedBoolean(match, matchJavaElement);
+      //      checkUnusedBoolean(match, matchJavaElement);
       if (Prefs.isDetectTestOnly()
           && JavaElementUtil.isTestCode(matchJavaElement)) {
         foundTest++;
@@ -609,35 +645,31 @@ public class SearchManager {
       visibilityHandler.checkVisibility(matchJavaElement, found, foundTest);
     }
 
-    @SuppressWarnings("nls")
-    private void checkUnusedBoolean(SearchMatch match, IJavaElement matchElement) {
-      if (true) {
-        //TODO: Implement: checkUnusedBoolean
-        return;
-      }
-      if (match instanceof MethodReferenceMatch) {
-        MethodReferenceMatch method = (MethodReferenceMatch) match;
-        System.out.println("method: " + method);
-        int offset = method.getOffset();
-        int length = method.getLength();
-        try {
-          String code = lineManager
-              .getPieceOfCode(matchElement, offset, length);
-          System.out.println("code: " + code);
-          ASTParser parser = ASTParser.newParser(AST.JLS3);
-          parser.setSource(code.toCharArray());
-          parser.setKind(ASTParser.K_STATEMENTS);
-          //          parser.setResolveBindings(true);
-          //          ASTNode createAST = parser.createAST(null);
-          //          FindUcdSuppressWarningsVisitor visitor = new FindUcdSuppressWarningsVisitor(
-          //              scanner);
-          //          createAST.accept(visitor);
-        }
-        catch (CoreException e) {
-          e.printStackTrace();
-        }
-      }
-    }
+    //TODO: request 2893808: Check for unnecessary (boolean) parameters
+    //    private void checkUnusedBoolean(SearchMatch match, IJavaElement matchElement) {
+    //      if (match instanceof MethodReferenceMatch) {
+    //        MethodReferenceMatch method = (MethodReferenceMatch) match;
+    //        System.out.println("method: " + method);
+    //        int offset = method.getOffset();
+    //        int length = method.getLength();
+    //        try {
+    //          String code = lineManager
+    //              .getPieceOfCode(matchElement, offset, length);
+    //          System.out.println("code: " + code);
+    //          ASTParser parser = ASTParser.newParser(AST.JLS3);
+    //          parser.setSource(code.toCharArray());
+    //          parser.setKind(ASTParser.K_STATEMENTS);
+    //          //          parser.setResolveBindings(true);
+    //          //          ASTNode createAST = parser.createAST(null);
+    //          //          FindUcdSuppressWarningsVisitor visitor = new FindUcdSuppressWarningsVisitor(
+    //          //              scanner);
+    //          //          createAST.accept(visitor);
+    //        }
+    //        catch (CoreException e) {
+    //          e.printStackTrace();
+    //        }
+    //      }
+    //    }
 
     /**
      * @return <code>true</code> if the found match should be ignored
