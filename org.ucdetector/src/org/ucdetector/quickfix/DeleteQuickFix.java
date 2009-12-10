@@ -33,7 +33,7 @@ class DeleteQuickFix extends AbstractUCDQuickFix {
     // Hack: replace deleted note by a comment
     LineComment lineComment = nodeToChange.getAST().newLineComment();
     rewrite.replace(nodeToChange, lineComment, null);
-    commitChanges();
+    //    commitChanges();
   }
 
   public String getLabel() {

@@ -1,5 +1,7 @@
 UCDetector 1.4.0 from :
 Bugfixes:
+ - QuickFix doesn't modify code - ID: 2911486
+
 
 New features:
  - TODO: [ 2824564 ] Group preferences

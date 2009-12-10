@@ -11,15 +11,11 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
-import org.eclipse.core.filebuffers.FileBuffers;
 import org.eclipse.core.filebuffers.ITextFileBuffer;
-import org.eclipse.core.filebuffers.ITextFileBufferManager;
-import org.eclipse.core.filebuffers.LocationKind;
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IMarker;
 import org.eclipse.core.resources.IResource;
 import org.eclipse.core.runtime.CoreException;
-import org.eclipse.core.runtime.IPath;
 import org.eclipse.jdt.core.ICompilationUnit;
 import org.eclipse.jdt.core.IJavaElement;
 import org.eclipse.jdt.core.JavaCore;
@@ -38,12 +34,14 @@ import org.eclipse.jdt.core.dom.TypeDeclaration;
 import org.eclipse.jdt.core.dom.Modifier.ModifierKeyword;
 import org.eclipse.jdt.core.dom.rewrite.ASTRewrite;
 import org.eclipse.jdt.core.dom.rewrite.ListRewrite;
+import org.eclipse.jdt.internal.corext.refactoring.util.RefactoringFileBuffers;
 import org.eclipse.jdt.internal.ui.javaeditor.EditorUtility;
 import org.eclipse.jface.text.BadLocationException;
 import org.eclipse.jface.text.IDocument;
 import org.eclipse.jface.text.TextUtilities;
 import org.eclipse.text.edits.TextEdit;
 import org.eclipse.ui.IEditorPart;
+import org.eclipse.ui.texteditor.ITextEditor;
 import org.eclipse.ui.views.markers.WorkbenchMarkerResolution;
 import org.ucdetector.Log;
 import org.ucdetector.UCDetectorPlugin;
@@ -54,9 +52,16 @@ import org.ucdetector.util.MarkerFactory.ElementType;
 /**
  * Base class for all UCDetector QuickFixes. This class does all the stuff to
  * change a java file.
+ * <p>
+ * Useful code from org.eclipse.jdt.ui:
+ * <ul>
+ * <li>{@link org.eclipse.jdt.internal.corext.fix.UnusedCodeFix}</li>
+ * <li>{@link org.eclipse.jdt.internal.corext.refactoring.changes.AbstractDeleteChange}</li>
+ * <li>{@link org.eclipse.jdt.internal.ui.text.correction.CorrectionMarkerResolutionGenerator}</li>
+ * </ul>
  * 
- * @see "http://help.eclipse.org/help32/index.jsp?topic=/org.eclipse.jdt.doc.isv/reference/api/org/eclipse/jdt/core/dom/rewrite/ASTRewrite.html"
- * @see "http://www.eclipse.org/articles/article.php?file=Article-JavaCodeManipulation_AST/index.html"
+ * @see <a href="http://help.eclipse.org/help32/index.jsp?topic=/org.eclipse.jdt.doc.isv/reference/api/org/eclipse/jdt/core/dom/rewrite/ASTRewrite.html" >javadoc ASTRewrite</a>
+ * @see <a href="http://www.eclipse.org/articles/article.php?file=Article-JavaCodeManipulation_AST/index.html">Abstract Syntax Tree</a>
  */
 abstract class AbstractUCDQuickFix extends WorkbenchMarkerResolution {
   private final IMarker quickFixMarker;
@@ -81,9 +86,7 @@ abstract class AbstractUCDQuickFix extends WorkbenchMarkerResolution {
 
   @SuppressWarnings("unchecked")
   public void run(IMarker marker) {
-    ITextFileBufferManager bufferManager = FileBuffers
-        .getTextFileBufferManager();
-    IPath path = marker.getResource().getLocation();
+    ICompilationUnit originalUnit = null;
     try {
       if (Log.DEBUG) {
         StringBuilder sb = new StringBuilder();
@@ -92,12 +95,10 @@ abstract class AbstractUCDQuickFix extends WorkbenchMarkerResolution {
         Log.logDebug(sb.toString());
       }
       int lineNrMarker = marker.getAttribute(IMarker.LINE_NUMBER, -1);
-      bufferManager.connect(path, LocationKind.NORMALIZE, null);
-      ITextFileBuffer textFileBuffer = bufferManager.getTextFileBuffer(path,
-          LocationKind.NORMALIZE);
+      originalUnit = getCompilationUnit(marker);
+      ITextFileBuffer textFileBuffer = RefactoringFileBuffers
+          .acquire(originalUnit);
       doc = textFileBuffer.getDocument();
-      // -----------------------------------------------------------------------
-      ICompilationUnit originalUnit = getCompilationUnit(marker);
       CompilationUnit copyUnit = createCopy(originalUnit);
       rewrite = ASTRewrite.create(copyUnit.getAST());
       AbstractTypeDeclaration firstType = (AbstractTypeDeclaration) copyUnit
@@ -107,33 +108,45 @@ abstract class AbstractUCDQuickFix extends WorkbenchMarkerResolution {
       firstType.accept(visitor);
       BodyDeclaration nodeToChange = visitor.nodeFound;
       if (Log.DEBUG) {
-        Log.logDebug("Node to change:\r\n'" + nodeToChange + "'"); //$NON-NLS-1$ //$NON-NLS-2$
+        Log.logDebug(String.format("Node to change:\r\n'%s'", nodeToChange)); //$NON-NLS-1$ 
       }
       if (nodeToChange == null) {
+        HashMap attributes = new HashMap(marker.getAttributes());
+        Log.logWarn(String.format(
+            "Node to change not found for marker: '%s'", attributes)); //$NON-NLS-1$ 
         return;
       }
       MarkerFactory.ElementType elementType = MarkerReport
           .getElementTypeAndName(marker).elementType;
       runImpl(marker, elementType, nodeToChange);
       marker.delete();
+      commitChanges();
       // -----------------------------------------------------------------------
-      // see org.eclipse.jdt.internal.ui.text.correction.CorrectionMarkerResolutionGenerator
       IEditorPart part = EditorUtility.isOpenInEditor(originalUnit);
-      if (part != null) { // not open
+      if (part == null) { // closed
+        part = EditorUtility.openInEditor(originalUnit, true);
+      }
+      if (part != null) {
+        // textFileBuffer.commit(null, false);
+        // Eclipse does not save buffer, when applying quickfixes. HACK we do:
         part.doSave(null);
       }
-      //      if (part instanceof ITextEditor) {
-      //        ITextEditor textEditor = (ITextEditor) part;
-      //        textEditor.selectAndReveal(startPosition, 0);
-      //        part.setFocus();
-      //      }
+      originalUnit.getResource().refreshLocal(IResource.DEPTH_ONE, null);
+      // needs org.eclipse.ui.editors
+      if (part instanceof ITextEditor) {
+        ITextEditor textEditor = (ITextEditor) part;
+        //set cursor at edit position
+        textEditor.selectAndReveal(nodeToChange.getStartPosition(), 0);
+      }
     }
     catch (Exception e) {
       UCDetectorPlugin.logErrorAndStatus("Quick Fix Problems", e); //$NON-NLS-1$
     }
     finally {
       try {
-        bufferManager.disconnect(path, LocationKind.NORMALIZE, null);
+        if (originalUnit != null) {
+          RefactoringFileBuffers.release(originalUnit);
+        }
       }
       catch (CoreException e) {
         UCDetectorPlugin.logErrorAndStatus("Quick Fix Problems", e); //$NON-NLS-1$
@@ -230,8 +243,6 @@ abstract class AbstractUCDQuickFix extends WorkbenchMarkerResolution {
   protected final void commitChanges() throws BadLocationException {
     TextEdit edits = rewrite.rewriteAST(doc, null);
     edits.apply(doc);
-    // We don't save the buffer at the moment
-    // textFileBuffer.commit(null, false);
   }
 
   /**
@@ -309,6 +320,14 @@ abstract class AbstractUCDQuickFix extends WorkbenchMarkerResolution {
         continue;
       }
     }
+    // sorting does not resolve quick fix problem
+    //    Collections.sort(result, new Comparator<IMarker>() {
+    //      public int compare(IMarker m1, IMarker m2) {
+    //        int nr1 = m1.getAttribute(IMarker.LINE_NUMBER, -1);
+    //        int nr2 = m2.getAttribute(IMarker.LINE_NUMBER, -1);
+    //        return nr2 < nr1 ? -1 : (nr2 == nr1 ? 0 : 1);
+    //      }
+    //    });
     return result.toArray(new IMarker[result.size()]);
   }
 

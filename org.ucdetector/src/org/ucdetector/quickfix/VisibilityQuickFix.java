@@ -52,7 +52,7 @@ class VisibilityQuickFix extends AbstractUCDQuickFix {
     else if (modifierFound != null && modifierNew != null) {
       listRewrite.replace(modifierFound, modifierNew, null);
     }
-    commitChanges();
+    //    commitChanges();
   }
 
   private Modifier getModifierNew(BodyDeclaration nodeToChange) {

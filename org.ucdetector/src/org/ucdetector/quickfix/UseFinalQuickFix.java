@@ -41,7 +41,7 @@ class UseFinalQuickFix extends AbstractUCDQuickFix {
     else {
       listRewrite.insertAfter(modifierFinal, modifierFound, null);
     }
-    commitChanges();
+    //    commitChanges();
   }
 
   public String getLabel() {
