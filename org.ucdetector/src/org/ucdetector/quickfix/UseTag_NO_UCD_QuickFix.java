@@ -21,23 +21,25 @@ import org.ucdetector.util.MarkerFactory.ElementType;
  * 'Fixes' code by adding line comment at end of line: "// NO_UCD"
  */
 class UseTag_NO_UCD_QuickFix extends AbstractUCDQuickFix {
+  private static final String COMMENT_SPACE = " "; //$NON-NLS-1$
 
   protected UseTag_NO_UCD_QuickFix(IMarker marker) {
     super(marker);
   }
 
   @Override
-  public void runImpl(IMarker marker, ElementType elementType,
+  public int runImpl(IMarker marker, ElementType elementType,
       BodyDeclaration nodeToChange) throws BadLocationException {
     int lineNr = marker.getAttribute(IMarker.LINE_NUMBER, -1);
     if (lineNr < 1) {
-      return;
+      return nodeToChange.getStartPosition();//
     }
     IRegion region = doc.getLineInformation(lineNr - 1);
     int offset = region.getOffset();
     int length = region.getLength();
     String strLine = doc.get(offset, length);
-    doc.replace(offset, length, strLine + " // NO_UCD"); //$NON-NLS-1$
+    doc.replace(offset, length, strLine + COMMENT_SPACE + "// NO_UCD"); //$NON-NLS-1$
+    return offset + length + COMMENT_SPACE.length();
   }
 
   public Image getImage() {

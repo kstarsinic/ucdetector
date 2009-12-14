@@ -26,7 +26,7 @@ class DeleteQuickFix extends AbstractUCDQuickFix {
   }
 
   @Override
-  public void runImpl(IMarker marker, ElementType elementType,
+  public int runImpl(IMarker marker, ElementType elementType,
       BodyDeclaration nodeToChange) throws BadLocationException {
     // [ 2721955 ] On QuickFix the direct sibling marker gets deleted too
     // rewrite.remove(nodeToChange, null); // This line did not work
@@ -34,6 +34,10 @@ class DeleteQuickFix extends AbstractUCDQuickFix {
     LineComment lineComment = nodeToChange.getAST().newLineComment();
     rewrite.replace(nodeToChange, lineComment, null);
     //    commitChanges();
+    if (nodeToChange.getJavadoc() != null) {
+      return nodeToChange.getJavadoc().getStartPosition();
+    }
+    return nodeToChange.getStartPosition();
   }
 
   public String getLabel() {

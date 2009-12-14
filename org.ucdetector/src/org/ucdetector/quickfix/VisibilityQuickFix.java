@@ -31,28 +31,32 @@ class VisibilityQuickFix extends AbstractUCDQuickFix {
   }
 
   @Override
-  public void runImpl(IMarker marker, ElementType elementType,
+  public int runImpl(IMarker marker, ElementType elementType,
       BodyDeclaration nodeToChange) throws BadLocationException {
     ListRewrite listRewrite = getModifierListRewrite(elementType, nodeToChange);
     Modifier modifierFound = getModifierVisibility(nodeToChange);
     Modifier modifierNew = getModifierNew(nodeToChange);
     // default -> default
     if (modifierFound == null && modifierNew == null) {
-      return; // nothing
+      // nothing
     }
     // default -> private
     else if (modifierFound == null && modifierNew != null) {
       listRewrite.insertFirst(modifierNew, null);
+      return modifierNew.getStartPosition();
     }
     // public -> default
     else if (modifierFound != null && modifierNew == null) {
       listRewrite.remove(modifierFound, null);
+      return modifierFound.getStartPosition();
     }
     // public -> private
     else if (modifierFound != null && modifierNew != null) {
       listRewrite.replace(modifierFound, modifierNew, null);
+      return modifierFound.getStartPosition();
     }
     //    commitChanges();
+    return nodeToChange.getStartPosition();
   }
 
   private Modifier getModifierNew(BodyDeclaration nodeToChange) {

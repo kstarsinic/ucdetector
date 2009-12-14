@@ -35,29 +35,19 @@ class UseSuppressWarningsQuickFix extends AbstractUCDQuickFix {
    * adds a new line, which should work in 95%!
    */
   @Override
-  public void runImpl(IMarker marker, ElementType elementType,
+  public int runImpl(IMarker marker, ElementType elementType,
       BodyDeclaration nodeToChange) throws BadLocationException {
     int lineNr = marker.getAttribute(IMarker.LINE_NUMBER, -1);
-    if (lineNr < 1) {
-      return;
+    if (lineNr > 0) {
+      IRegion region = doc.getLineInformation(lineNr - 1);
+      String indent = guessIndent(region);
+      String declarationLine = doc.get(region.getOffset(), 0);
+      String twoLines = indent + "@SuppressWarnings(\"ucd\")" //$NON-NLS-1$
+          + getLineDelimitter() + declarationLine;
+      doc.replace(region.getOffset(), 0, twoLines);
+      return region.getOffset() + indent.length();
     }
-    IRegion region = doc.getLineInformation(lineNr - 1);
-    String indent = guessIndent(region);
-    String declarationLine = doc.get(region.getOffset(), 0);
-    String twoLines = indent + "@SuppressWarnings(\"ucd\")" //$NON-NLS-1$
-        + getLineDelimitter() + declarationLine;
-    doc.replace(region.getOffset(), 0, twoLines);
-  }
-
-  private String guessIndent(IRegion region) throws BadLocationException {
-    String strLine = doc.get(region.getOffset(), region.getLength());
-    int index = 0;
-    for (index = 0; index < strLine.length(); index++) {
-      if (!Character.isWhitespace(strLine.charAt(index))) {
-        break;
-      }
-    }
-    return strLine.substring(0, index);
+    return nodeToChange.getStartPosition();
   }
 
   public Image getImage() {

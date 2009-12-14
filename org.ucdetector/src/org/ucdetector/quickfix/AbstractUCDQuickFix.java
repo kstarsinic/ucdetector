@@ -38,6 +38,7 @@ import org.eclipse.jdt.internal.corext.refactoring.util.RefactoringFileBuffers;
 import org.eclipse.jdt.internal.ui.javaeditor.EditorUtility;
 import org.eclipse.jface.text.BadLocationException;
 import org.eclipse.jface.text.IDocument;
+import org.eclipse.jface.text.IRegion;
 import org.eclipse.jface.text.TextUtilities;
 import org.eclipse.text.edits.TextEdit;
 import org.eclipse.ui.IEditorPart;
@@ -90,7 +91,7 @@ abstract class AbstractUCDQuickFix extends WorkbenchMarkerResolution {
     try {
       if (Log.DEBUG) {
         StringBuilder sb = new StringBuilder();
-        sb.append(getClass().getSimpleName()).append("run().Marker="); //$NON-NLS-1$
+        sb.append(getClass().getSimpleName()).append(".run().Marker="); //$NON-NLS-1$
         sb.append(new HashMap(marker.getAttributes()));
         Log.logDebug(sb.toString());
       }
@@ -108,7 +109,7 @@ abstract class AbstractUCDQuickFix extends WorkbenchMarkerResolution {
       firstType.accept(visitor);
       BodyDeclaration nodeToChange = visitor.nodeFound;
       if (Log.DEBUG) {
-        Log.logDebug(String.format("Node to change:\r\n'%s'", nodeToChange)); //$NON-NLS-1$ 
+        Log.logDebug(String.format("Node to change:'\r\n%s'", nodeToChange)); //$NON-NLS-1$ 
       }
       if (nodeToChange == null) {
         HashMap attributes = new HashMap(marker.getAttributes());
@@ -118,7 +119,7 @@ abstract class AbstractUCDQuickFix extends WorkbenchMarkerResolution {
       }
       MarkerFactory.ElementType elementType = MarkerReport
           .getElementTypeAndName(marker).elementType;
-      runImpl(marker, elementType, nodeToChange);
+      int startPosition = runImpl(marker, elementType, nodeToChange);
       marker.delete();
       commitChanges();
       // -----------------------------------------------------------------------
@@ -136,7 +137,7 @@ abstract class AbstractUCDQuickFix extends WorkbenchMarkerResolution {
       if (part instanceof ITextEditor) {
         ITextEditor textEditor = (ITextEditor) part;
         //set cursor at edit position
-        textEditor.selectAndReveal(nodeToChange.getStartPosition(), 0);
+        textEditor.selectAndReveal(startPosition, 0);
       }
     }
     catch (Exception e) {
@@ -296,7 +297,7 @@ abstract class AbstractUCDQuickFix extends WorkbenchMarkerResolution {
   // Override, implement
   // ---------------------------------------------------------------------------
 
-  public abstract void runImpl(IMarker marker, ElementType elementType,
+  public abstract int runImpl(IMarker marker, ElementType elementType,
       BodyDeclaration nodeToChange) throws BadLocationException;
 
   public String getDescription() {
@@ -345,6 +346,17 @@ abstract class AbstractUCDQuickFix extends WorkbenchMarkerResolution {
    */
   protected final String getLineDelimitter() {
     return TextUtilities.getDefaultLineDelimiter(doc);
+  }
+
+  final String guessIndent(IRegion region) throws BadLocationException {
+    String strLine = doc.get(region.getOffset(), region.getLength());
+    int index = 0;
+    for (index = 0; index < strLine.length(); index++) {
+      if (!Character.isWhitespace(strLine.charAt(index))) {
+        break;
+      }
+    }
+    return strLine.substring(0, index);
   }
 
   private static final ElementType getElementType(IMarker marker) {
