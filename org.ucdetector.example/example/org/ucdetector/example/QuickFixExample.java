@@ -201,6 +201,17 @@ public class QuickFixExample {
   final int unusedField_5 = 5;// Marker YES: unused code
 
   // ---------------------------------------------------------------------------
+  //[ 2721955 ] On QuickFix the direct sibling marker gets deleted too
+  // ---------------------------------------------------------------------------
+  public final int UNUSED_FIELD_10 = 10; // Marker YES: unused code
+  public final int UNUSED_FIELD_11 = 11; // Marker YES: unused code
+  public final int UNUSED_FIELD_12 = 12; // Marker YES: unused code
+  public final int UNUSED_FIELD_13 = 13; // Marker YES: unused code
+  public final int UNUSED_FIELD_14 = 14; // Marker YES: unused code
+  public final int UNUSED_FIELD_15 = 15; // Marker YES: unused code
+  public final int UNUSED_FIELD_16 = 16; // Marker YES: unused code
+
+  // ---------------------------------------------------------------------------
   // METHODS UNUSED
   // ---------------------------------------------------------------------------
 
@@ -231,6 +242,24 @@ public class QuickFixExample {
   }
 
   public void unusedMethod_5() {// Marker YES: unused code
+  }
+
+  public void unusedMethod_10() {// Marker YES: unused code
+  }
+
+  // ---------------------------------------------------------------------------
+  //[ 2721955 ] On QuickFix the direct sibling marker gets deleted too
+  // ---------------------------------------------------------------------------
+  public void unusedMethod_11() {// Marker YES: unused code
+  }
+
+  public void unusedMethod_12() {// Marker YES: unused code
+  }
+
+  public void unusedMethod_13() {// Marker YES: unused code
+  }
+
+  public void unusedMethod_14() {// Marker YES: unused code
   }
 
   // ---------------------------------------------------------------------------
