@@ -51,4 +51,20 @@ class UseTag_NO_UCD_QuickFix extends AbstractUCDQuickFix {
   public String getLabel() {
     return Messages.UseTag_NO_UCD_QuickFix_label;
   }
+
+  public String getDescription() {
+    return null;
+    //    try {
+    //      int lineNr = getMarker().getAttribute(IMarker.LINE_NUMBER, -1);
+    //      IRegion region = doc.getLineInformation(lineNr - 1);
+    //      int offset = region.getOffset();
+    //      int length = region.getLength();
+    //      String strLine = doc.get(offset, length);
+    //      return strLine + "<b>" + COMMENT_SPACE + "// NO_UCD</b>"; //$NON-NLS-1$
+    //    }
+    //    catch (Exception e) {
+    //      e.printStackTrace();
+    //      return null;
+    //    }
+  }
 }

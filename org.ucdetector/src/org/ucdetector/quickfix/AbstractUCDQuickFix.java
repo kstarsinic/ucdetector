@@ -69,10 +69,14 @@ abstract class AbstractUCDQuickFix extends WorkbenchMarkerResolution {
   protected final String markerType;
   protected ASTRewrite rewrite;
   protected IDocument doc;
+  final ElementType elementType;
+  final String elementName;
 
   protected AbstractUCDQuickFix(IMarker marker) {
     this.quickFixMarker = marker;
     markerType = getMarkerType(marker);
+    elementType = MarkerReport.getElementTypeAndName(marker).elementType;
+    elementName = MarkerReport.getElementTypeAndName(marker).elementName;
   }
 
   private String getMarkerType(IMarker marker) {
@@ -109,7 +113,7 @@ abstract class AbstractUCDQuickFix extends WorkbenchMarkerResolution {
       firstType.accept(visitor);
       BodyDeclaration nodeToChange = visitor.nodeFound;
       if (Log.DEBUG) {
-        Log.logDebug(String.format("Node to change:'\r\n%s'", nodeToChange)); //$NON-NLS-1$ 
+        Log.logDebug(String.format("Node to change:'%n%s'", nodeToChange)); //$NON-NLS-1$ 
       }
       if (nodeToChange == null) {
         HashMap attributes = new HashMap(marker.getAttributes());
@@ -117,8 +121,6 @@ abstract class AbstractUCDQuickFix extends WorkbenchMarkerResolution {
             "Node to change not found for marker: '%s'", attributes)); //$NON-NLS-1$ 
         return;
       }
-      MarkerFactory.ElementType elementType = MarkerReport
-          .getElementTypeAndName(marker).elementType;
       int startPosition = runImpl(marker, elementType, nodeToChange);
       marker.delete();
       commitChanges();
@@ -300,10 +302,6 @@ abstract class AbstractUCDQuickFix extends WorkbenchMarkerResolution {
   public abstract int runImpl(IMarker marker, ElementType elementType,
       BodyDeclaration nodeToChange) throws BadLocationException;
 
-  public String getDescription() {
-    return null;
-  }
-
   @Override
   public IMarker[] findOtherMarkers(IMarker[] markers) {
     final List<IMarker> result = new ArrayList<IMarker>();
@@ -361,5 +359,9 @@ abstract class AbstractUCDQuickFix extends WorkbenchMarkerResolution {
 
   private static final ElementType getElementType(IMarker marker) {
     return MarkerReport.getElementTypeAndName(marker).elementType;
+  }
+
+  IMarker getMarker() {
+    return quickFixMarker;
   }
 }

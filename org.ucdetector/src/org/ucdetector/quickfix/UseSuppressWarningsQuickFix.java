@@ -58,4 +58,8 @@ class UseSuppressWarningsQuickFix extends AbstractUCDQuickFix {
   public String getLabel() {
     return Messages.UseAnnotation_UCD_QuickFix_label;
   }
+
+  public String getDescription() {
+    return null;
+  }
 }

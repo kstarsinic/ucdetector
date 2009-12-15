@@ -128,4 +128,8 @@ class LineCommentQuickFix extends AbstractUCDQuickFix {
     return UCDetectorPlugin.getImage(UCDetectorPlugin.IMAGE_COMMENT);
     //    return JavaPluginImages.get(JavaPluginImages.IMG_CORRECTION_REMOVE); // IMG_OBJS_JSEARCH
   }
+
+  public String getDescription() {
+    return null;
+  }
 }

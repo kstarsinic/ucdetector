@@ -48,4 +48,14 @@ class DeleteQuickFix extends AbstractUCDQuickFix {
     //    return JavaPluginImages.get(JavaPluginImages.IMG_CORRECTION_REMOVE);
     return UCDetectorPlugin.getSharedImage(ISharedImages.IMG_TOOL_DELETE);
   }
+
+  public String getDescription() {
+    return null;
+    //    try {
+    //      return "Delete " + new HashMap(getMarker().getAttributes());
+    //    }
+    //    catch (CoreException e) {
+    //      return "Delete code";
+    //    }
+  }
 }

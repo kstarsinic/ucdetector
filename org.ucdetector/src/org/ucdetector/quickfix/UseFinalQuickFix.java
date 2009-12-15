@@ -56,4 +56,8 @@ class UseFinalQuickFix extends AbstractUCDQuickFix {
   public Image getImage() {
     return UCDetectorPlugin.getImage(UCDetectorPlugin.IMAGE_FINAL);
   }
+
+  public String getDescription() {
+    return null;
+  }
 }

@@ -37,26 +37,27 @@ class VisibilityQuickFix extends AbstractUCDQuickFix {
     Modifier modifierFound = getModifierVisibility(nodeToChange);
     Modifier modifierNew = getModifierNew(nodeToChange);
     // default -> default
+    int startPosition = nodeToChange.getStartPosition();
     if (modifierFound == null && modifierNew == null) {
       // nothing
     }
     // default -> private
     else if (modifierFound == null && modifierNew != null) {
       listRewrite.insertFirst(modifierNew, null);
-      return modifierNew.getStartPosition();
+      startPosition = modifierNew.getStartPosition();
     }
     // public -> default
     else if (modifierFound != null && modifierNew == null) {
       listRewrite.remove(modifierFound, null);
-      return modifierFound.getStartPosition();
+      startPosition = modifierFound.getStartPosition();
     }
     // public -> private
     else if (modifierFound != null && modifierNew != null) {
       listRewrite.replace(modifierFound, modifierNew, null);
-      return modifierFound.getStartPosition();
+      startPosition = modifierFound.getStartPosition();
     }
     //    commitChanges();
-    return nodeToChange.getStartPosition();
+    return startPosition;
   }
 
   private Modifier getModifierNew(BodyDeclaration nodeToChange) {
@@ -98,6 +99,10 @@ class VisibilityQuickFix extends AbstractUCDQuickFix {
       return JavaUI.getSharedImages().getImage(
           JavaPluginImages.IMG_MISC_PRIVATE);
     }
+    return null;
+  }
+
+  public String getDescription() {
     return null;
   }
 }
