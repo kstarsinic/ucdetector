@@ -147,7 +147,7 @@ public class UCDetectorPreferencePageKeywords extends
        *  */
       private void createSelectionEventHack(Combo visibilityCombo) {
         Listener[] listeners = getListeners(visibilityCombo);
-        if (listeners == null || listeners.length == 0) {
+        if (listeners.length == 0) {
           return;
         }
         TypedListener listener = (TypedListener) listeners[0];
@@ -167,7 +167,7 @@ public class UCDetectorPreferencePageKeywords extends
         catch (Exception e) {
           // ignore
         }
-        return null;
+        return new Listener[0];
       }
     });
   }
