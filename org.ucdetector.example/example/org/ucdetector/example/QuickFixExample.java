@@ -212,6 +212,15 @@ public class QuickFixExample {
   public final int UNUSED_FIELD_16 = 16; // Marker YES: unused code
 
   // ---------------------------------------------------------------------------
+  // FIELDS UNUSED - ECLIPSE WARNINGS
+  // ---------------------------------------------------------------------------
+  private static int unusedPrivateField_101 = 101;
+  private static int unusedPrivateField_102 = 102;
+  private static int unusedPrivateField_103 = 103;
+  private static int unusedPrivateField_104 = 104;
+  private static int unusedPrivateField_105 = 105;
+
+  // ---------------------------------------------------------------------------
   // METHODS UNUSED
   // ---------------------------------------------------------------------------
 
@@ -245,6 +254,24 @@ public class QuickFixExample {
   }
 
   public void unusedMethod_10() {// Marker YES: unused code
+  }
+
+  // ---------------------------------------------------------------------------
+  // METHODS UNUSED - ECLIPSE WARNINGS
+  // ---------------------------------------------------------------------------
+  private void unusedPrivateMethod_101() {
+  }
+
+  private void unusedPrivateMethod_102() {
+  }
+
+  private void unusedPrivateMethod_103() {
+  }
+
+  private void unusedPrivateMethod_104() {
+  }
+
+  private void unusedPrivateMethod_105() {
   }
 
   // ---------------------------------------------------------------------------
@@ -293,4 +320,23 @@ public class QuickFixExample {
 
   public class UnusedClass_5 {// Marker YES: unused code
   }
+
+  // ---------------------------------------------------------------------------
+  // CLASSES UNUSED - ECLIPSE WARNINGS
+  // ---------------------------------------------------------------------------
+  private class PrivateUnusedClass_011 {
+  }
+
+  private class PrivateUnusedClass_102 {
+  }
+
+  private class PrivateUnusedClass_103 {
+  }
+
+  private class PrivateUnusedClass_104 {
+  }
+
+  private class PrivateUnusedClass_195 {
+  }
+
 }
