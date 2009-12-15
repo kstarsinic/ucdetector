@@ -94,7 +94,7 @@ public class MarkerReport implements IUCDetectorReport {
     ElementTypeAndName result = new ElementTypeAndName();
     result.elementType = (resultArray.length > 0 ? ElementType
         .valueOf(resultArray[0]) : null);
-    result.name = (resultArray.length > 1 ? resultArray[1] : null);
+    result.elementName = (resultArray.length > 1 ? resultArray[1] : null);
     return result;
   }
 
@@ -106,7 +106,7 @@ public class MarkerReport implements IUCDetectorReport {
   @SuppressWarnings("ucd")
   public static class ElementTypeAndName {
     public ElementType elementType;
-    protected String name;
+    public String elementName;
   }
 
   /**
