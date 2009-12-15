@@ -545,7 +545,7 @@ public class SearchManager {
   /**
    * text search in files
    */
-  private final class UCDFileSearchRequestor extends TextSearchRequestor {
+  private final static class UCDFileSearchRequestor extends TextSearchRequestor {
     int found = 0;
     final VisibilityHandler visibilityHandler;
     final String searchString;

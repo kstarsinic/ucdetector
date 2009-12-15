@@ -355,8 +355,8 @@ public class XmlReport implements IUCDetectorReport {
    * Append statistics like: date, searchDuration, searched elements
    */
   private void appendStatistics(Object[] selected, long start) {
-    appendChild(statistcs, "dateStarted", UCDetectorPlugin.DATE_FORMAT
-        .format(new Date(start)));
+    appendChild(statistcs, "dateStarted",
+        UCDetectorPlugin.getDefault().getDateFormat().format(new Date(start)));
     appendChild(statistcs, "dateFinished", UCDetectorPlugin.getNow());
     long millis = (System.currentTimeMillis() - start);
     appendChild(statistcs, "searchDuration", StopWatch.timeAsString(millis));

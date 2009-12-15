@@ -56,7 +56,7 @@ public class UCDetectorPlugin extends AbstractUIPlugin {
   public static final String HELP_ID = ID + ".ucd_context_id";//$NON-NLS-1$
   public static final String HELP_ID_PREFERENCES = ID
       + ".ucd_context_id_preferences";//$NON-NLS-1$
-  public static final DateFormat DATE_FORMAT = DateFormat.getDateTimeInstance(
+  private final DateFormat dateFormat = DateFormat.getDateTimeInstance(
       DateFormat.MEDIUM, DateFormat.MEDIUM, Locale.getDefault());
 
   public UCDetectorPlugin() {
@@ -72,7 +72,7 @@ public class UCDetectorPlugin extends AbstractUIPlugin {
   private void dumpInformation() {
     Object version = getBundle().getHeaders().get("Bundle-Version"); //$NON-NLS-1$
     String eclipse = System.getProperty("osgi.framework.version"); //$NON-NLS-1$
-    Log.logInfo("\tStart     : " + DATE_FORMAT.format(new Date())); //$NON-NLS-1$
+    Log.logInfo("\tStart     : " + getDateFormat().format(new Date())); //$NON-NLS-1$
     Log.logInfo("\tUCDetector: " + version); //$NON-NLS-1$
     Log.logInfo("\tJava      : " + System.getProperty("java.version")); //$NON-NLS-1$ //$NON-NLS-2$ 
     Log.logInfo("\tEclipse   : " + eclipse); //$NON-NLS-1$
@@ -185,7 +185,7 @@ public class UCDetectorPlugin extends AbstractUIPlugin {
   }
 
   public static String getNow() {
-    return DATE_FORMAT.format(new Date());
+    return getDefault().getDateFormat().format(new Date());
   }
 
   // -------------------------------------------------------------------------
@@ -208,5 +208,9 @@ public class UCDetectorPlugin extends AbstractUIPlugin {
 
   public static boolean isHeadlessMode() {
     return UCDetectorPlugin.isHeadlessMode;
+  }
+
+  public DateFormat getDateFormat() {
+    return dateFormat;
   }
 }
