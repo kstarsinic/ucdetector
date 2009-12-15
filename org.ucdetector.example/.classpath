@@ -6,6 +6,7 @@
 	<classpathentry kind="src" path="src/test"/>
 	<classpathentry kind="src" path="bug2715348/test/java"/>
 	<classpathentry kind="src" path="jar"/>
+	<classpathentry kind="src" path="quickfix"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
 	<classpathentry kind="lib" path="lib/example.jar"/>
 	<classpathentry kind="lib" path="lib/ucdetector-annotations.jar"/>
