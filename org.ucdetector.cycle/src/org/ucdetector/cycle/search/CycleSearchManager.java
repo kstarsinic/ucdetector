@@ -116,8 +116,8 @@ public class CycleSearchManager {
       result.add(typeAndMatches);
       if (Log.DEBUG) {
         int found = typeAndMatches.getTypeSearchMatches().size();
-        Log.logDebug("found " + found + " references for " //$NON-NLS-1$ //$NON-NLS-2$
-            + type.getElementName());
+        Log.logDebug(String.format("Found %s references for %s", Integer //$NON-NLS-1$
+            .valueOf(found), type.getElementName()));
       }
     }
     return result;

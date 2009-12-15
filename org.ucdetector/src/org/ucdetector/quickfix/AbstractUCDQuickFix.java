@@ -93,10 +93,8 @@ abstract class AbstractUCDQuickFix extends WorkbenchMarkerResolution {
     ICompilationUnit originalUnit = null;
     try {
       if (Log.DEBUG) {
-        StringBuilder sb = new StringBuilder();
-        sb.append(getClass().getSimpleName()).append(".run().Marker="); //$NON-NLS-1$
-        sb.append(new HashMap(marker.getAttributes()));
-        Log.logDebug(sb.toString());
+        Log.logDebug(String.format("%s.run(). Marker=%s", //$NON-NLS-1$
+            getClass().getSimpleName(), new HashMap(marker.getAttributes())));
       }
       int lineNrMarker = marker.getAttribute(IMarker.LINE_NUMBER, -1);
       originalUnit = getCompilationUnit();

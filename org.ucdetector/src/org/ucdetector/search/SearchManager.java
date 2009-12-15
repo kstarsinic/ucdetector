@@ -91,12 +91,14 @@ public class SearchManager {
       int pos = 0;
       for (TypeContainer container : typeContainers) {
         pos++;
-        String message = "Search " + fill(pos, 4) // //$NON-NLS-1$
-            + " of " + fill(typeContainers.size(), 4) //$NON-NLS-1$
-            + " types. Markers " + fill(markerCreated, 4) //$NON-NLS-1$
-            + ". Exceptions " + fill(searchProblems.size(), 2) //$NON-NLS-1$
-            + ". Class " + JavaElementUtil.getTypeName(container.getType()) //$NON-NLS-1$
-            + " - " + UCDetectorPlugin.getNow(); //$NON-NLS-1$
+        String message = String.format(
+            "Search %s of %s types. Markers %s. Exceptions %s. Class %s - %s", //$NON-NLS-1$
+            fill(pos, 4),//
+            fill(typeContainers.size(), 4),//
+            fill(markerCreated, 4), //
+            fill(searchProblems.size(), 2),//
+            JavaElementUtil.getTypeName(container.getType()), //
+            UCDetectorPlugin.getNow());
         if (Log.DEBUG) {
           Log.logDebug(message);
         }
@@ -488,11 +490,8 @@ public class SearchManager {
     }
 
     if (DEBUG) {
-      StringBuilder mes = new StringBuilder();
-      mes.append("Text search of ");//$NON-NLS-1$
-      mes.append(searchFullClassName ? "full" : "simple");//$NON-NLS-1$ //$NON-NLS-2$
-      mes.append(" classname '").append(searchString).append("'");//$NON-NLS-1$ //$NON-NLS-2$
-      Log.logDebug(mes.toString());
+      Log.logDebug(String.format("Text search of %s classname '%s'", //$NON-NLS-1$
+          searchFullClassName ? "full" : "simple", searchString));// //$NON-NLS-1$ //$NON-NLS-2$
     }
     if (searchString == null || searchString.length() == 0) {
       return 0;
@@ -519,8 +518,9 @@ public class SearchManager {
     // bug fix [ 2373808 ]: Classes found by text search should have no markers
     if (requestor.found > 0) {
       if (Log.DEBUG) {
-        Log.logDebug("Matches found searching class name '" + searchString //$NON-NLS-1$
-            + " in text files"); //$NON-NLS-1$
+        Log.logDebug(String.format(
+            "Matches found searching class name '%s' in text files", //$NON-NLS-1$
+            searchString));
       }
       noRefTypes.add(type);
     }
@@ -565,6 +565,7 @@ public class SearchManager {
      * Search for className or packageName.className, check character
      * before and after match, if it is a JavaIdentifier
      */
+    @SuppressWarnings("boxing")
     @Override
     public boolean acceptPatternMatch(TextSearchMatchAccess matchAccess)
         throws CoreException {
@@ -577,12 +578,10 @@ public class SearchManager {
         int offset = matchAccess.getMatchOffset();
         int length = matchAccess.getMatchLength();
         String match = matchAccess.getFileContent(offset, length);
-        StringBuilder mes = new StringBuilder();
-        mes.append("    TEXT MATCH {").append(beforeChar).append(match);//$NON-NLS-1$
-        mes.append(afterChar).append("}"); //$NON-NLS-1$
-        mes.append(", isMatchOk=").append(isClassNamMatchOk); //$NON-NLS-1$
-        mes.append(", in=").append(matchAccess.getFile()); //$NON-NLS-1$
-        Log.logDebug(mes.toString());
+        Log.logDebug(String.format(
+            "    TEXT MATCH {%s%s%s}. isMatchOk: %s. in: %s", //$NON-NLS-1$
+            beforeChar, match, afterChar, isClassNamMatchOk, //
+            matchAccess.getFile()));
       }
       if (isClassNamMatchOk) {
         this.found++;

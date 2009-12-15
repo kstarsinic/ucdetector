@@ -328,12 +328,10 @@ public class XmlReport implements IUCDetectorReport {
     String nameStart = reportFile.substring(0, posDot);
     String nameEnd = reportFile.substring(posDot);
     for (int i = 1; i < 1000; i++) {
-      StringBuilder numberName = new StringBuilder();
-      numberName.append(nameStart).append('_');
-      numberName.append(FORMAT_REPORT_NUMBER.format(i)).append(nameEnd);
-      String sNumberName = numberName.toString();
-      if (!new File(sNumberName).exists()) {
-        return sNumberName;
+      String numberName = String.format("%s_%s%s",//
+          nameStart, FORMAT_REPORT_NUMBER.format(i), nameEnd);
+      if (!new File(numberName).exists()) {
+        return numberName;
       }
     }
     return reportFile;

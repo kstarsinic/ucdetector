@@ -293,14 +293,8 @@ public class JavaElementUtil {
     if (method == null) {
       return "method?"; //$NON-NLS-1$
     }
-    StringBuffer info = new StringBuffer();
-    info.append(getTypeName(method.getParent()));
-    info.append('.');
-    info.append(getSimpleMethodName(method));
-    info.append('(');
-    info.append(parametersToString(method));
-    info.append(')');
-    return info.toString();
+    return String.format("%s.%s(%s)", getTypeName(method.getParent()), //$NON-NLS-1$
+        getSimpleMethodName(method), parametersToString(method));
   }
 
   public static String getSimpleMethodName(IMethod method) {
@@ -316,10 +310,8 @@ public class JavaElementUtil {
     if (field == null) {
       return "field?"; //$NON-NLS-1$
     }
-    StringBuffer info = new StringBuffer();
-    info.append(getTypeName(field.getParent()));
-    info.append('.').append(field.getElementName());
-    return info.toString();
+    return String.format(
+        "%s.%s", getTypeName(field.getParent()), field.getElementName()); //$NON-NLS-1$
   }
 
   /**
@@ -330,7 +322,7 @@ public class JavaElementUtil {
    * @see org.eclipse.jdt.internal.core.SourceMethod#toStringInfo(int, StringBuffer)
    */
   private static String parametersToString(IMethod method) {
-    StringBuffer sb = new StringBuffer();
+    StringBuilder sb = new StringBuilder();
     String[] typeParameters = method.getParameterTypes();
     for (int i = 0; i < typeParameters.length; i++) {
       String typeAsString = Signature.toString(typeParameters[i]);
@@ -426,9 +418,8 @@ public class JavaElementUtil {
     catch (Throwable throwable) {
       isSearchException = true;
       // Java Search throws an NullPointerException in Eclipse 3.4M5
-      Log.logError("Java search problems." //$NON-NLS-1$
-          + "UCDetecor will ignore this exception. " //$NON-NLS-1$
-          + "Maybe a 'org.eclipse.jdt.core.search' bug!", throwable); //$NON-NLS-1$
+      String mes = "Java search problems. UCDetecor will ignore this exception. Maybe a 'org.eclipse.jdt.core.search' bug!"; //$NON-NLS-1$
+      Log.logError(mes, throwable);
     }
     return isSearchException;
   }
@@ -681,10 +672,8 @@ public class JavaElementUtil {
     if (javaElement == null) {
       return "null"; //$NON-NLS-1$
     }
-    StringBuilder sb = new StringBuilder();
-    sb.append(javaElement.getElementName()).append("\t["); //$NON-NLS-1$
-    sb.append(getClassName(javaElement)).append("]"); //$NON-NLS-1$
-    return sb.toString();
+    return String.format("%s\t[%s]", //$NON-NLS-1$
+        javaElement.getElementName(), getClassName(javaElement));
   }
 
   @SuppressWarnings("ucd")
