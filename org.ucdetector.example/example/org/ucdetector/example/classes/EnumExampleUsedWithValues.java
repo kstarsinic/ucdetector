@@ -16,6 +16,7 @@ package org.ucdetector.example.classes;
  * http://ucdetector.svn.sourceforge.net/viewvc/ucdetector/trunk/org.ucdetector.example/example/org/ucdetector/example/classes/EnumExampleUsedWithValues.java?view=markup
  */
 public enum EnumExampleUsedWithValues {
-  TEST, //
-  TEST2,
+  //TODO: make detection optional
+  TEST, // Marker YES: unused code 
+  TEST2, // Marker YES: unused code
 }
