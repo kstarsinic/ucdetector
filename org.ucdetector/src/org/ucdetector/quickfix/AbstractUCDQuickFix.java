@@ -47,7 +47,6 @@ import org.eclipse.ui.views.markers.WorkbenchMarkerResolution;
 import org.ucdetector.Log;
 import org.ucdetector.UCDetectorPlugin;
 import org.ucdetector.report.MarkerReport;
-import org.ucdetector.util.MarkerFactory;
 import org.ucdetector.util.MarkerFactory.ElementType;
 
 /**
@@ -65,21 +64,21 @@ import org.ucdetector.util.MarkerFactory.ElementType;
  * @see <a href="http://www.eclipse.org/articles/article.php?file=Article-JavaCodeManipulation_AST/index.html">Abstract Syntax Tree</a>
  */
 abstract class AbstractUCDQuickFix extends WorkbenchMarkerResolution {
-  private final IMarker quickFixMarker;
-  protected final String markerType;
-  protected ASTRewrite rewrite;
-  protected IDocument doc;
+  final IMarker marker;
+  final String markerType;
+  ASTRewrite rewrite;
+  IDocument doc;
   final ElementType elementType;
   final String elementName;
 
   protected AbstractUCDQuickFix(IMarker marker) {
-    this.quickFixMarker = marker;
-    markerType = getMarkerType(marker);
+    this.marker = marker;
+    markerType = getMarkerType();
     elementType = MarkerReport.getElementTypeAndName(marker).elementType;
     elementName = MarkerReport.getElementTypeAndName(marker).elementName;
   }
 
-  private String getMarkerType(IMarker marker) {
+  private String getMarkerType() {
     try {
       return marker.getType();
     }
@@ -90,7 +89,7 @@ abstract class AbstractUCDQuickFix extends WorkbenchMarkerResolution {
   }
 
   @SuppressWarnings("unchecked")
-  public void run(IMarker marker) {
+  public void run(IMarker marker2) {
     ICompilationUnit originalUnit = null;
     try {
       if (Log.DEBUG) {
@@ -100,7 +99,7 @@ abstract class AbstractUCDQuickFix extends WorkbenchMarkerResolution {
         Log.logDebug(sb.toString());
       }
       int lineNrMarker = marker.getAttribute(IMarker.LINE_NUMBER, -1);
-      originalUnit = getCompilationUnit(marker);
+      originalUnit = getCompilationUnit();
       ITextFileBuffer textFileBuffer = RefactoringFileBuffers
           .acquire(originalUnit);
       doc = textFileBuffer.getDocument();
@@ -121,7 +120,7 @@ abstract class AbstractUCDQuickFix extends WorkbenchMarkerResolution {
             "Node to change not found for marker: '%s'", attributes)); //$NON-NLS-1$ 
         return;
       }
-      int startPosition = runImpl(marker, elementType, nodeToChange);
+      int startPosition = runImpl(nodeToChange);
       marker.delete();
       commitChanges();
       // -----------------------------------------------------------------------
@@ -170,6 +169,7 @@ abstract class AbstractUCDQuickFix extends WorkbenchMarkerResolution {
       this.lineMarker = lineNrMarker;
     }
 
+    @SuppressWarnings("boxing")
     @Override
     protected boolean visitImpl(BodyDeclaration declaration, SimpleName name) {
       if (nodeFound != null) {
@@ -184,12 +184,8 @@ abstract class AbstractUCDQuickFix extends WorkbenchMarkerResolution {
         int lineEnd = doc.getLineOfOffset(endPos) + 1;
         boolean found = lineStart <= lineMarker && lineMarker <= lineEnd;
         if (Log.DEBUG) {
-          StringBuilder sb = new StringBuilder();
-          sb.append("\r\n").append(declaration); //$NON-NLS-1$
-          sb.append("Lines: ").append(lineStart).append("<="); //$NON-NLS-1$ //$NON-NLS-2$
-          sb.append(lineMarker).append("<=").append(lineEnd); //$NON-NLS-1$
-          sb.append(", Found node=").append(found); //$NON-NLS-1$
-          Log.logDebug(sb.toString());
+          Log.logDebug(String.format("%n%s. Lines: %s<=%s<=%s. Found node: %s", //$NON-NLS-1$
+              declaration, lineStart, lineMarker, lineEnd, found));
         }
         if (found) {
           Log.logDebug("NODE FOUND: \r\n" + name.getIdentifier()); //$NON-NLS-1$
@@ -213,8 +209,7 @@ abstract class AbstractUCDQuickFix extends WorkbenchMarkerResolution {
    * @return top java element (CompilationUnit) of the marker
    * @throws CoreException 
    */
-  private ICompilationUnit getCompilationUnit(IMarker marker)
-      throws CoreException {
+  private ICompilationUnit getCompilationUnit() throws CoreException {
     IResource resource = marker.getResource();
     if (resource instanceof IFile && resource.isAccessible()) {
       IFile file = (IFile) resource;
@@ -258,7 +253,7 @@ abstract class AbstractUCDQuickFix extends WorkbenchMarkerResolution {
    * </ul>
    */
   protected final ListRewrite getModifierListRewrite(
-      MarkerFactory.ElementType elementType, BodyDeclaration nodeToChange) {
+      BodyDeclaration nodeToChange) {
     ChildListPropertyDescriptor property;
     switch (elementType) {
       case TYPE:
@@ -299,15 +294,15 @@ abstract class AbstractUCDQuickFix extends WorkbenchMarkerResolution {
   // Override, implement
   // ---------------------------------------------------------------------------
 
-  public abstract int runImpl(IMarker marker, ElementType elementType,
-      BodyDeclaration nodeToChange) throws BadLocationException;
+  public abstract int runImpl(BodyDeclaration nodeToChange)
+      throws BadLocationException;
 
   @Override
   public IMarker[] findOtherMarkers(IMarker[] markers) {
     final List<IMarker> result = new ArrayList<IMarker>();
     for (IMarker markerToCheck : markers) {
       try {
-        if (this.quickFixMarker != markerToCheck
+        if (this.marker != markerToCheck
             && this.markerType.equals(markerToCheck.getType())) {
           if (isElementTypeEqual(markerToCheck)) {
             result.add(markerToCheck);
@@ -334,7 +329,7 @@ abstract class AbstractUCDQuickFix extends WorkbenchMarkerResolution {
    * @return <code>true</code> if FIELD and FIELD
    */
   private final boolean isElementTypeEqual(IMarker markerToCheck) {
-    return getElementType(quickFixMarker).equals(getElementType(markerToCheck));
+    return getElementType(marker).equals(getElementType(markerToCheck));
   }
 
   /**
@@ -362,6 +357,6 @@ abstract class AbstractUCDQuickFix extends WorkbenchMarkerResolution {
   }
 
   IMarker getMarker() {
-    return quickFixMarker;
+    return marker;
   }
 }

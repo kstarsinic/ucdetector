@@ -15,7 +15,6 @@ import org.eclipse.jface.text.BadLocationException;
 import org.eclipse.swt.graphics.Image;
 import org.ucdetector.Messages;
 import org.ucdetector.UCDetectorPlugin;
-import org.ucdetector.util.MarkerFactory.ElementType;
 
 /**
  * Fixes code by adding keyword <code>final</code>
@@ -27,9 +26,8 @@ class UseFinalQuickFix extends AbstractUCDQuickFix {
   }
 
   @Override
-  public final int runImpl(IMarker marker, ElementType elementType,
-      BodyDeclaration nodeToChange) throws BadLocationException {
-    ListRewrite listRewrite = getModifierListRewrite(elementType, nodeToChange);
+  public final int runImpl(BodyDeclaration nodeToChange) throws BadLocationException {
+    ListRewrite listRewrite = getModifierListRewrite(nodeToChange);
     Modifier modifierFound = getModifierVisibility(nodeToChange);
     Modifier modifierFinal = nodeToChange.getAST().newModifier(
         Modifier.ModifierKeyword.FINAL_KEYWORD);

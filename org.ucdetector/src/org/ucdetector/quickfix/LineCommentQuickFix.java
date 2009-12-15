@@ -14,7 +14,6 @@ import org.eclipse.jface.text.IRegion;
 import org.eclipse.swt.graphics.Image;
 import org.ucdetector.Messages;
 import org.ucdetector.UCDetectorPlugin;
-import org.ucdetector.util.MarkerFactory.ElementType;
 
 /**
  * Fixes code by commenting all affected lines
@@ -29,8 +28,7 @@ class LineCommentQuickFix extends AbstractUCDQuickFix {
   }
 
   @Override
-  public int runImpl(IMarker marker, ElementType elementType,
-      BodyDeclaration nodeToChange) throws BadLocationException {
+  public int runImpl(BodyDeclaration nodeToChange) throws BadLocationException {
     int offsetBody = nodeToChange.getStartPosition();
     int lengthBody = nodeToChange.getLength();
     int lineStart = doc.getLineOfOffset(offsetBody);

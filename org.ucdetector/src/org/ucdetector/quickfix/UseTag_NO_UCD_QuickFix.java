@@ -15,7 +15,6 @@ import org.eclipse.jface.text.BadLocationException;
 import org.eclipse.jface.text.IRegion;
 import org.eclipse.swt.graphics.Image;
 import org.ucdetector.Messages;
-import org.ucdetector.util.MarkerFactory.ElementType;
 
 /**
  * 'Fixes' code by adding line comment at end of line: "// NO_UCD"
@@ -28,8 +27,7 @@ class UseTag_NO_UCD_QuickFix extends AbstractUCDQuickFix {
   }
 
   @Override
-  public int runImpl(IMarker marker, ElementType elementType,
-      BodyDeclaration nodeToChange) throws BadLocationException {
+  public int runImpl(BodyDeclaration nodeToChange) throws BadLocationException {
     int lineNr = marker.getAttribute(IMarker.LINE_NUMBER, -1);
     if (lineNr < 1) {
       return nodeToChange.getStartPosition();//

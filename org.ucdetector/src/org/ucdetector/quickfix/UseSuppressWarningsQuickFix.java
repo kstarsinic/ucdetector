@@ -15,7 +15,6 @@ import org.eclipse.jface.text.BadLocationException;
 import org.eclipse.jface.text.IRegion;
 import org.eclipse.swt.graphics.Image;
 import org.ucdetector.Messages;
-import org.ucdetector.util.MarkerFactory.ElementType;
 
 /**
  * 'Fixes' code by adding @SuppressWarnings("ucd")
@@ -35,8 +34,7 @@ class UseSuppressWarningsQuickFix extends AbstractUCDQuickFix {
    * adds a new line, which should work in 95%!
    */
   @Override
-  public int runImpl(IMarker marker, ElementType elementType,
-      BodyDeclaration nodeToChange) throws BadLocationException {
+  public int runImpl(BodyDeclaration nodeToChange) throws BadLocationException {
     int lineNr = marker.getAttribute(IMarker.LINE_NUMBER, -1);
     if (lineNr > 0) {
       IRegion region = doc.getLineInformation(lineNr - 1);

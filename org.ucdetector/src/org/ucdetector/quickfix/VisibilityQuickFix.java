@@ -18,7 +18,6 @@ import org.eclipse.osgi.util.NLS;
 import org.eclipse.swt.graphics.Image;
 import org.ucdetector.Messages;
 import org.ucdetector.util.MarkerFactory;
-import org.ucdetector.util.MarkerFactory.ElementType;
 
 /**
  * Fixes code by changing visibility to <code>protected</code>
@@ -31,9 +30,8 @@ class VisibilityQuickFix extends AbstractUCDQuickFix {
   }
 
   @Override
-  public int runImpl(IMarker marker, ElementType elementType,
-      BodyDeclaration nodeToChange) throws BadLocationException {
-    ListRewrite listRewrite = getModifierListRewrite(elementType, nodeToChange);
+  public int runImpl(BodyDeclaration nodeToChange) throws BadLocationException {
+    ListRewrite listRewrite = getModifierListRewrite(nodeToChange);
     Modifier modifierFound = getModifierVisibility(nodeToChange);
     Modifier modifierNew = getModifierNew(nodeToChange);
     // default -> default

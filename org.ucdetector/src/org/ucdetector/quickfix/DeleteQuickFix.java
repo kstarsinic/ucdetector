@@ -15,7 +15,6 @@ import org.eclipse.swt.graphics.Image;
 import org.eclipse.ui.ISharedImages;
 import org.ucdetector.Messages;
 import org.ucdetector.UCDetectorPlugin;
-import org.ucdetector.util.MarkerFactory.ElementType;
 
 /**
  * Fixes code by deleting all affected lines
@@ -26,8 +25,7 @@ class DeleteQuickFix extends AbstractUCDQuickFix {
   }
 
   @Override
-  public int runImpl(IMarker marker, ElementType elementType,
-      BodyDeclaration nodeToChange) throws BadLocationException {
+  public int runImpl(BodyDeclaration nodeToChange) throws BadLocationException {
     // [ 2721955 ] On QuickFix the direct sibling marker gets deleted too
     // rewrite.remove(nodeToChange, null); // This line did not work
     // Hack: replace deleted note by a comment
