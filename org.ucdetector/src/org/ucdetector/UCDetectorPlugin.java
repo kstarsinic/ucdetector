@@ -101,6 +101,7 @@ public class UCDetectorPlugin extends AbstractUIPlugin {
     return sb.toString();
   }
 
+  @SuppressWarnings("ucd")
   public static void dumpList(String listString, String separator) {
     System.out.println(listString //
         .replace("[", separator) //$NON-NLS-1$ 

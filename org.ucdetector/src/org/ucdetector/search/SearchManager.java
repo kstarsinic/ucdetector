@@ -613,6 +613,7 @@ public class SearchManager {
     int foundTest = 0;
     private final IMember searchStart;
     private final VisibilityHandler visibilityHandler;
+    @SuppressWarnings("unused")
     private final LineManger lineManager;
 
     @Override

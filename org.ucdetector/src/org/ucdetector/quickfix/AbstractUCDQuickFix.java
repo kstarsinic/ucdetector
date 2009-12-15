@@ -68,14 +68,15 @@ abstract class AbstractUCDQuickFix extends WorkbenchMarkerResolution {
   final String markerType;
   ASTRewrite rewrite;
   IDocument doc;
-  final ElementType elementType;
-  final String elementName;
+  private final ElementType elementType;
+
+  //  private final String elementName;
 
   protected AbstractUCDQuickFix(IMarker marker) {
     this.marker = marker;
     markerType = getMarkerType();
     elementType = MarkerReport.getElementTypeAndName(marker).elementType;
-    elementName = MarkerReport.getElementTypeAndName(marker).elementName;
+    //    elementName = MarkerReport.getElementTypeAndName(marker).elementName;
   }
 
   private String getMarkerType() {
@@ -352,9 +353,5 @@ abstract class AbstractUCDQuickFix extends WorkbenchMarkerResolution {
 
   private static final ElementType getElementType(IMarker marker) {
     return MarkerReport.getElementTypeAndName(marker).elementType;
-  }
-
-  IMarker getMarker() {
-    return marker;
   }
 }
