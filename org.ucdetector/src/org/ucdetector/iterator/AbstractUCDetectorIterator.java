@@ -94,10 +94,8 @@ public abstract class AbstractUCDetectorIterator extends UCDetectorCallBack {
    */
   public final void iterate(IJavaElement[] selectionsUI) throws CoreException {
     if (DEBUG) {
-      StringBuilder sb = new StringBuilder();
-      sb.append(selectionsUI.length).append(" selections to iterate: ");//$NON-NLS-1$
-      sb.append(getSelectedString(selectionsUI));
-      Log.logDebug(sb.toString());
+      Log.logDebug(String.format("%s selections to iterate: %s", String //$NON-NLS-1$
+          .valueOf(selectionsUI.length), getSelectedString(selectionsUI)));
     }
     try {
       this.selections = selectionsUI;
@@ -139,10 +137,8 @@ public abstract class AbstractUCDetectorIterator extends UCDetectorCallBack {
       return;
     }
     if (DEBUG) {
-      StringBuilder sb = new StringBuilder();
-      sb.append("Iterate Resource '").append(resource.getName()); //$NON-NLS-1$
-      sb.append("' ").append(Log.getClassName(resource)); //$NON-NLS-1$
-      Log.logDebug(sb.toString());
+      Log.logDebug(String.format("Iterate Resource '%s' %s", //$NON-NLS-1$
+          resource.getName(), Log.getClassName(resource)));
     }
     if (resource instanceof IFile) {
       IFile file = (IFile) resource;
@@ -161,9 +157,8 @@ public abstract class AbstractUCDetectorIterator extends UCDetectorCallBack {
       handleResourceWorkspaceRoot(workspaceRoot);
     }
     else {
-      Log.logWarn("UNHANDLED RESOURCE" //$NON-NLS-1$
-          + resource.getName() + ":" //$NON-NLS-1$
-          + resource.getClass().getSimpleName());
+      Log.logWarn(String.format("UNHANDLED RESOURCE %s:%s", //$NON-NLS-1$
+          resource.getName(), resource.getClass().getSimpleName()));
     }
     if (resource instanceof IContainer) {
       IContainer container = (IContainer) resource;
@@ -190,11 +185,8 @@ public abstract class AbstractUCDetectorIterator extends UCDetectorCallBack {
       return;
     }
     if (DEBUG) {
-      StringBuilder sb = new StringBuilder();
-      sb.append("Iterate JavaElement '"); //$NON-NLS-1$
-      sb.append(JavaElementUtil.getElementName(javaElement)).append("' "); //$NON-NLS-1$
-      sb.append(Log.getClassName(javaElement));
-      Log.logDebug(sb.toString());
+      Log.logDebug(String.format("Iterate JavaElement '%s' %s", JavaElementUtil //$NON-NLS-1$
+          .getElementName(javaElement), Log.getClassName(javaElement)));
     }
     handleStartElement(javaElement);
     boolean doChildren = true;
@@ -271,9 +263,9 @@ public abstract class AbstractUCDetectorIterator extends UCDetectorCallBack {
     else {
       // ILocalVariable
       // ITypeParameter
-      Log.logWarn("UNHANDLED TYPE" //$NON-NLS-1$
-          + JavaElementUtil.getElementName(javaElement) + ":" //$NON-NLS-1$
-          + javaElement.getClass().getSimpleName());
+      Log.logWarn(String.format("UNHANDLED TYPE %s:%s", //$NON-NLS-1$
+          JavaElementUtil.getElementName(javaElement), //
+          javaElement.getClass().getSimpleName()));
     }
     // CHILDREN
     if (doChildren) {
@@ -304,7 +296,7 @@ public abstract class AbstractUCDetectorIterator extends UCDetectorCallBack {
    * @return creates a String for all selected javaElements
    */
   protected final String getSelectedString(IJavaElement[] javaElements) {
-    StringBuffer selectedAsString = new StringBuffer();
+    StringBuilder selectedAsString = new StringBuilder();
     for (IJavaElement javaElement : javaElements) {
       if (selectedAsString.length() > 0) {
         selectedAsString.append(SEP);
@@ -331,10 +323,8 @@ public abstract class AbstractUCDetectorIterator extends UCDetectorCallBack {
    */
   protected final void debugHandle(String what, IMember member) {
     if (DEBUG) {
-      StringBuilder sb = new StringBuilder();
-      sb.append("    Handle ").append(what).append(" '"); //$NON-NLS-1$ //$NON-NLS-2$
-      sb.append(JavaElementUtil.getElementName(member)).append('\'');
-      Log.logDebug(sb.toString());
+      Log.logDebug(String.format(
+          "    Handle %s '%s'", what, JavaElementUtil.getElementName(member))); //$NON-NLS-1$
     }
   }
 
@@ -344,11 +334,9 @@ public abstract class AbstractUCDetectorIterator extends UCDetectorCallBack {
    */
   protected final void debugNotHandle(String what, IMember member, String reason) {
     if (DEBUG) {
-      StringBuilder sb = new StringBuilder();
-      sb.append("    Ignore ").append(what).append(" '"); //$NON-NLS-1$ //$NON-NLS-2$
-      sb.append(JavaElementUtil.getElementName(member));
-      sb.append("' because: ").append(reason); //$NON-NLS-1$
-      Log.logDebug(sb.toString());
+      String mes = String.format("    Ignore %s '%s' because: %s", what, //$NON-NLS-1$
+          JavaElementUtil.getElementName(member), reason);
+      Log.logDebug(mes);
     }
   }
 }

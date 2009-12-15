@@ -114,7 +114,7 @@ public class CountIterator extends AbstractUCDetectorIterator {
    */
   @Override
   public String toString() {
-    StringBuffer sb = new StringBuffer();
+    StringBuilder sb = new StringBuilder();
     sb.append(Messages.CountIterator_NotPrivate).append(' ');
     // sb.append("\r\n");
     int totalFound = getElelementsToDetectCount();

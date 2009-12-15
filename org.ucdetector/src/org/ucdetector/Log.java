@@ -108,11 +108,6 @@ public class Log {
   }
 
   public static String getClassName(Object o) {
-    if (o == null) {
-      return "[?]";//$NON-NLS-1$
-    }
-    StringBuilder sb = new StringBuilder();
-    sb.append('[').append(o.getClass().getName()).append(']');
-    return sb.toString();
+    return String.format("[%s]", o == null ? "?" : o.getClass().getName()); //$NON-NLS-1$ //$NON-NLS-2$
   }
 }
