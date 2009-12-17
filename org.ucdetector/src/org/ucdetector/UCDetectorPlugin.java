@@ -9,7 +9,11 @@ package org.ucdetector;
 
 import java.text.DateFormat;
 import java.util.Date;
+import java.util.LinkedHashMap;
 import java.util.Locale;
+import java.util.Map;
+import java.util.Set;
+import java.util.Map.Entry;
 
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IPath;
@@ -43,7 +47,6 @@ public class UCDetectorPlugin extends AbstractUIPlugin {
    * See MANIFEST.MF: Bundle-SymbolicName, and .project
    */
   public static final String ID = "org.ucdetector"; //$NON-NLS-1$
-  private static final String NL = System.getProperty("line.separator"); //$NON-NLS-1$
   // The shared instance.
   private static UCDetectorPlugin plugin;
   private static boolean isHeadlessMode = false;
@@ -58,9 +61,27 @@ public class UCDetectorPlugin extends AbstractUIPlugin {
       + ".ucd_context_id_preferences";//$NON-NLS-1$
   private final DateFormat dateFormat = DateFormat.getDateTimeInstance(
       DateFormat.MEDIUM, DateFormat.MEDIUM, Locale.getDefault());
+  private final About about;
+
+  public About getAbout() {
+    return about;
+  }
 
   public UCDetectorPlugin() {
     UCDetectorPlugin.plugin = this;
+    about = new About(this);
+  }
+
+  private void dumpInformation() {
+    Log.logInfo("\tStart     : " + about.getNow()); //$NON-NLS-1$
+    Log.logInfo("\tOS        : " + about.getOS()); //$NON-NLS-1$ 
+    Log.logInfo("\tJava      : " + about.getJavaVersion()); //$NON-NLS-1$ 
+    Log.logInfo("\tEclipse   : " + about.getEclipseVersion()); //$NON-NLS-1$
+    Log.logInfo("\tUCDetector: " + about.getUCDVersion()); //$NON-NLS-1$
+    Log.logInfo("\tHome      : " + about.getEclipseHome()); //$NON-NLS-1$ 
+    Log.logInfo("\tLogfile   : " + about.getLogfile()); //$NON-NLS-1$ 
+    Log.logInfo("\tWorkspace : " + about.getWorkspace()); //$NON-NLS-1$ 
+    Log.logInfo(getPreferencesAsString());
   }
 
   @Override
@@ -69,36 +90,75 @@ public class UCDetectorPlugin extends AbstractUIPlugin {
     dumpInformation();
   }
 
-  private void dumpInformation() {
-    Object version = getBundle().getHeaders().get("Bundle-Version"); //$NON-NLS-1$
-    String eclipse = System.getProperty("osgi.framework.version"); //$NON-NLS-1$
-    Log.logInfo("\tStart     : " + getDateFormat().format(new Date())); //$NON-NLS-1$
-    Log.logInfo("\tUCDetector: " + version); //$NON-NLS-1$
-    Log.logInfo("\tJava      : " + System.getProperty("java.version")); //$NON-NLS-1$ //$NON-NLS-2$ 
-    Log.logInfo("\tEclipse   : " + eclipse); //$NON-NLS-1$
-    Log.logInfo("\tLogfile   : " + System.getProperty("osgi.logfile")); //$NON-NLS-1$ //$NON-NLS-2$
-    Log.logInfo("\tWorkspace : " + System.getProperty("osgi.instance.area")); //$NON-NLS-1$ //$NON-NLS-2$
-    Log.logInfo(getPreferencesAsString());
+  public static class About {
+    private final UCDetectorPlugin ucdPlugin;
+
+    public About(UCDetectorPlugin plugin) {
+      ucdPlugin = plugin;
+    }
+
+    public String getNow() {
+      return ucdPlugin.getDateFormat().format(new Date());
+    }
+
+    public String getOS() {
+      return System.getProperty("os.name") + " - " //$NON-NLS-1$ //$NON-NLS-2$
+          + System.getProperty("os.version"); //$NON-NLS-1$
+    }
+
+    public String getJavaVersion() {
+      return System.getProperty("java.runtime.version"); //$NON-NLS-1$
+    }
+
+    public String getEclipseVersion() {
+      return System.getProperty("osgi.framework.version"); //$NON-NLS-1$
+    }
+
+    public String getUCDVersion() {
+      return (String) getDefault().getBundle().getHeaders().get(
+          "Bundle-Version"); //$NON-NLS-1$
+    }
+
+    public String getEclipseHome() {
+      return System.getProperty("eclipse.home.location"); //$NON-NLS-1$
+    }
+
+    public String getLogfile() {
+      return System.getProperty("osgi.logfile"); //$NON-NLS-1$
+    }
+
+    public String getWorkspace() {
+      return System.getProperty("osgi.instance.area"); //$NON-NLS-1$
+    }
   }
 
   public static String getPreferencesAsString() {
     StringBuilder sb = new StringBuilder();
     sb.append("\r\nUCDetector Plugin Preferences:\r\n"); //$NON-NLS-1$
-    IEclipsePreferences node = new InstanceScope().getNode(ID);
+    Map<String, String> preferences = getPreferences();
+    sb.append(preferences.size());
+    sb.append(" preferences are different from default preferences:\r\n"); //$NON-NLS-1$
+    Set<Entry<String, String>> entrySet = preferences.entrySet();
+    for (Entry<String, String> entry : entrySet) {
+      sb.append(String.format("\t%s=%s%n", entry.getKey(), entry.getValue())); //$NON-NLS-1$
+    }
+    return sb.toString();
+  }
+
+  public static Map<String, String> getPreferences() {
+    Map<String, String> result = new LinkedHashMap<String, String>();
     try {
+      IEclipsePreferences node = new InstanceScope().getNode(ID);
       String[] propertyNames = node.keys();
-      sb.append(propertyNames.length);
-      sb.append(" preferences are different from default preferences:\r\n"); //$NON-NLS-1$
       for (String propertyName : propertyNames) {
-        sb.append('\t').append(propertyName).append('=');
-        sb.append(node.get(propertyName, null)).append(NL);
+        result.put(propertyName, node.get(propertyName, null));
       }
     }
     catch (BackingStoreException ex) {
-      sb.append(ex);
+      result.put("EXCEPTION", ex.getMessage()); //$NON-NLS-1$
       Log.logError("Can't get preferences", ex); //$NON-NLS-1$
     }
-    return sb.toString();
+    return result;
   }
 
   @SuppressWarnings("ucd")

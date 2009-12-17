@@ -15,25 +15,22 @@
  Public License v1.0 which accompanies this distribution, and is available at
  http://www.eclipse.org/legal/epl-v10.html
 		</xsl:comment>
-
+		
 		<xsl:comment>
 To create custom reports change:
 ECLIPSE_HOME/dropins/org.ucdetector_*.jar/org/ucdetector/report/html.xslt
 		</xsl:comment>
-
+		
 		<html>
 			<head>
 				<title>UCDetector Report</title>
 				<link rel="icon" href="http://www.ucdetector.org/ucdetector.ico" type="image/x-icon"/>
 			</head>
 			<body bgcolor="#FFFFE0">
-				<h1 align="center">UCDetector Report</h1>
-
-				<!-- ===================================================================
-				     ABOUT SEARCH
-				     =============================================================== -->
-
-				<xsl:value-of select="concat('Searched started: ', /ucdetector/statistics/dateStarted, '. Duration: ', /ucdetector/statistics/searchDuration)"/>
+				<h2 align="center">UCDetector Report</h2>
+			
+			  <!--	<xsl:value-of select="concat('Searched started: ', /ucdetector/statistics/dateStarted, '. Duration: ', /ucdetector/statistics/searchDuration)"/> -->
+				<h3>Warnings</h3>
 				<table border="1">
 					<thead align="center">
 						<tr bgcolor="#C0C0C0">
@@ -118,22 +115,91 @@ To create custom reports change ECLIPSE_HOME/dropins/org.ucdetector_*.jar/org/uc
 				<!-- ===================================================================
 				     SEARCH IN
 				     =============================================================== -->
-				<xsl:text>Searched in:</xsl:text>
-				<ul>
+				<h3>Searched in</h3>
+				<table border="1">
+					<tr bgcolor="#C0C0C0">
+						<th>Element</th>
+						<th>Type</th>
+					</tr>
 					<xsl:for-each select="/ucdetector/statistics/searched/search">
-						<li>
-							<xsl:value-of select="."/>
-						</li>
+						<xsl:variable name="color">
+							<xsl:choose>
+								<xsl:when test="position() mod 2 = 0">#E6E6FA</xsl:when>
+								<xsl:otherwise>#FFFACD</xsl:otherwise>
+							</xsl:choose>
+						</xsl:variable>
+						<tr bgcolor="{$color}">
+							<td>
+								<xsl:value-of select="."/>
+							</td>
+							<td>
+								<xsl:value-of select="@class"/>
+							</td>
+						</tr>
 					</xsl:for-each>
-				</ul>
+				</table>
 
 				<!-- ===================================================================
+				     PREFERENCES
+				     =============================================================== -->
+				<h3>Preferences</h3>
+				<table border="1">
+					<tr bgcolor="#C0C0C0">
+						<th>Preference</th>
+						<th>Value</th>
+					</tr>
+					<xsl:for-each select="/ucdetector/statistics/preferences/preference">
+						<xsl:variable name="color">
+							<xsl:choose>
+								<xsl:when test="position() mod 2 = 0">#E6E6FA</xsl:when>
+								<xsl:otherwise>#FFFACD</xsl:otherwise>
+							</xsl:choose>
+						</xsl:variable>
+						<tr bgcolor="{$color}">
+							<td>
+								<xsl:value-of select="@key"/>
+							</td>
+							<td>
+								<xsl:value-of select="@value"/>
+							</td>
+						</tr>
+					</xsl:for-each>
+				</table>
+
+				<!-- ===================================================================
+				     SYSTEM
+				     =============================================================== -->
+				<h3>About search</h3>
+				<table border="1">
+					<tr bgcolor="#C0C0C0">
+						<th>Property</th>
+						<th>Value</th>
+					</tr>
+					<xsl:for-each select="/ucdetector/statistics/abouts/about">
+						<xsl:variable name="color">
+							<xsl:choose>
+								<xsl:when test="position() mod 2 = 0">#E6E6FA</xsl:when>
+								<xsl:otherwise>#FFFACD</xsl:otherwise>
+							</xsl:choose>
+						</xsl:variable>
+						<tr bgcolor="{$color}">
+							<td>
+								<xsl:value-of select="key"/>
+							</td>
+							<td>
+								<xsl:value-of select="value"/>
+							</td>
+						</tr>
+					</xsl:for-each>
+				</table>
+				
+  			<!-- ===================================================================
 				     PROBLEMS
 				     =============================================================== -->
 				<xsl:if test="count(/ucdetector/problems/problem) &gt; 0">
-					<h2>
+					<h3>
 						<font color="red">Problems during Detection</font>
-					</h2>
+					</h3>
 					<ul>
 						<xsl:for-each select="/ucdetector/problems/problem">
 							<li>

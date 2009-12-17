@@ -13,7 +13,8 @@ import java.io.InputStream;
 import java.io.PrintWriter;
 import java.io.StringWriter;
 import java.text.DecimalFormat;
-import java.util.Date;
+import java.util.Set;
+import java.util.Map.Entry;
 
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
@@ -46,6 +47,7 @@ import org.eclipse.osgi.util.NLS;
 import org.ucdetector.Log;
 import org.ucdetector.Messages;
 import org.ucdetector.UCDetectorPlugin;
+import org.ucdetector.UCDetectorPlugin.About;
 import org.ucdetector.preferences.Prefs;
 import org.ucdetector.util.JavaElementUtil;
 import org.ucdetector.util.MarkerFactory;
@@ -72,14 +74,14 @@ public class XmlReport implements IUCDetectorReport {
       + "    http://www.eclipse.org/legal/epl-v10.html\n";
   //
   private static final String XML_INFO = "\n"
-      + "javaTypeSimple one of:\n"
-      + "    Class, Method, Field, Initializer\n"
-      + "javaType one of:\n"
-      + "    Annotation, Anonymous class, Enumeration, Interface, Local class, Member class, Class\n"
-      + "    Constructor, Method\n"
-      + "    EnumConstant, Constant, Field\n"
-      + "markerType one of:\n"
-      + "    Reference, FewReference, VisibilityPrivate, VisibilityProtected, VisibilityDefault, Final, TestOnly\n";
+      + " - javaTypeSimple one of:\n"
+      + "   - Class, Method, Field, Initializer\n"
+      + " - javaType one of:\n"
+      + "   - Annotation, Anonymous class, Enumeration, Interface, Local class, Member class, Class\n"
+      + "   - Constructor, Method\n"
+      + "   - EnumConstant, Constant, Field\n"
+      + " - markerType one of:\n"
+      + "   - Reference, FewReference, VisibilityPrivate, VisibilityProtected, VisibilityDefault, Final, TestOnly\n";
   //
   private static final String EXTENSION_XML = ".xml";
   private static final String EXTENSION_HTML = ".html";
@@ -95,6 +97,7 @@ public class XmlReport implements IUCDetectorReport {
   private int markerCount;
   private int detectionProblemCount;
   private Throwable initXMLException;
+  private Element abouts;
 
   public XmlReport() {
     initXML();
@@ -114,16 +117,16 @@ public class XmlReport implements IUCDetectorReport {
       root.appendChild(doc.createComment(COPY_RIGHT));
       doc.appendChild(root);
       //
+      statistcs = doc.createElement("statistics");
+      root.appendChild(statistcs);
+      //
       markers = doc.createElement("markers");
       root.appendChild(markers);
-      //
-      markers.appendChild(doc.createComment(XML_INFO));
       //
       problems = doc.createElement("problems");
       root.appendChild(problems);
       //
-      statistcs = doc.createElement("statistics");
-      root.appendChild(statistcs);
+      markers.appendChild(doc.createComment(XML_INFO));
     }
     catch (Throwable e) {
       Log.logError("XML problems", e);
@@ -264,8 +267,8 @@ public class XmlReport implements IUCDetectorReport {
   /**
    * Append a child node and a text node
    */
-  private Element appendChild(Element parent, String child, String text) {
-    Element childNode = doc.createElement(child);
+  private Element appendChild(Element parent, String tagName, String text) {
+    Element childNode = doc.createElement(tagName);
     if (text != null) {
       childNode.appendChild(doc.createTextNode(text));
     }
@@ -355,19 +358,59 @@ public class XmlReport implements IUCDetectorReport {
    * Append statistics like: date, searchDuration, searched elements
    */
   private void appendStatistics(Object[] selected, long start) {
-    appendChild(statistcs, "dateStarted",
-        UCDetectorPlugin.getDefault().getDateFormat().format(new Date(start)));
-    appendChild(statistcs, "dateFinished", UCDetectorPlugin.getNow());
-    long millis = (System.currentTimeMillis() - start);
-    appendChild(statistcs, "searchDuration", StopWatch.timeAsString(millis));
+    About about = UCDetectorPlugin.getDefault().getAbout();
+    long now = System.currentTimeMillis();
+    long duration = (now - start);
+    abouts = appendChild(statistcs, "abouts", null);
+    appendAbout("reportCreated", "Created report", about.getNow(), String
+        .valueOf(now));
+    appendAbout("operatingSystem", "Operating system", about.getOS(), null);
+    appendAbout("javaVersion", "Java", about.getJavaVersion(), null);
+    appendAbout("eclipseVersion", "Eclipse", about.getEclipseVersion(), null);
+    appendAbout("ucdetectorVersion", "UCDetector", about.getUCDVersion(), null);
+    appendAbout("searchDuration", "Search duration", StopWatch
+        .timeAsString(duration), String.valueOf(duration));
+    appendAbout("eclipseHome", "Eclipse home", about.getEclipseHome(), null);
+    appendAbout("logfile", "Logfile", about.getLogfile(), null);
+    appendAbout("workspace", "Workspace", about.getWorkspace(), null);
+    //
     Element searched = appendChild(statistcs, "searched", null);
     for (Object selection : selected) {
       if (selection instanceof IJavaElement) {
         IJavaElement javaElement = (IJavaElement) selection;
-        appendChild(searched, "search", JavaElementUtil
+        Element search = appendChild(searched, "search", JavaElementUtil
             .getElementName(javaElement));
+        search.setAttribute("class", javaElement.getClass().getSimpleName());
       }
     }
+    Element preferencesNode = appendChild(statistcs, "preferences", null);
+    Set<Entry<String, String>> preferencesSet = UCDetectorPlugin
+        .getPreferences().entrySet();
+    for (Entry<String, String> entry : preferencesSet) {
+      Element preferenceNode = appendChild(preferencesNode, "preference", null);
+      preferenceNode.setAttribute("key", entry.getKey());
+      preferenceNode.setAttribute("value", entry.getValue());
+    }
+  }
+
+  /**
+   * <pre>
+   *  &lt;about name="operatingSystem">
+   *     &lt;key>Operating system&lt;/key>
+   *     &lt;value>Linux-2.6.27.39-0.2-default&lt;/value>
+   *  &lt;/about>
+   * </pre>
+   */
+  private Element appendAbout(String nodeName, String nodeNiceName,
+      String value, String timestamp) {
+    Element about = appendChild(abouts, "about", null);
+    about.setAttribute("name", nodeName);
+    appendChild(about, "key", nodeNiceName);
+    appendChild(about, "value", value);
+    if (timestamp != null) {
+      appendChild(about, "timestamp", timestamp);
+    }
+    return about;
   }
 
   /**
