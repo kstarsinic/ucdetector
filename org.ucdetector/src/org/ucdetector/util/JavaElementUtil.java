@@ -49,7 +49,7 @@ import org.ucdetector.UCDetectorPlugin;
  * Calculates inheritance for methods
  */
 public class JavaElementUtil {
-  private final static NullProgressMonitor monitor = new NullProgressMonitor();
+  private final static NullProgressMonitor NULL_MONITOR = new NullProgressMonitor();
 
   private JavaElementUtil() {
     //
@@ -471,7 +471,7 @@ public class JavaElementUtil {
    */
   private static boolean hasXType(IType type, boolean isSupertype)
       throws JavaModelException {
-    ITypeHierarchy hierarchy = type.newTypeHierarchy(monitor);
+    ITypeHierarchy hierarchy = type.newTypeHierarchy(NULL_MONITOR);
     if (hierarchy != null) {
       IType[] types = isSupertype ? hierarchy.getSupertypes(type) : hierarchy
           .getSubtypes(type);

@@ -7,6 +7,7 @@
  */
 package org.ucdetector.action;
 
+import org.eclipse.core.runtime.IStatus;
 import org.ucdetector.iterator.AbstractUCDetectorIterator;
 import org.ucdetector.iterator.CleanMarkersIterator;
 
@@ -18,5 +19,10 @@ public class CleanMarkersAction extends AbstractUCDetectorAction {// NO_UCD
   @Override
   protected AbstractUCDetectorIterator createIterator() {
     return new CleanMarkersIterator();
+  }
+
+  @Override
+  protected IStatus postIteration() {
+    return null;
   }
 }

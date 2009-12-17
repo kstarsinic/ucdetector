@@ -51,19 +51,19 @@ public class UCDApplication implements IApplication {
   /**
    * @see org.eclipse.core.resources.IncrementalProjectBuilder
    */
-  private static final Map<String, Integer> buildTypes = new HashMap<String, Integer>();
-  private static final Map<String, String> ucdOptions = new HashMap<String, String>();
+  private static final Map<String, Integer> BUILD_TYPES = new HashMap<String, Integer>();
+  private final Map<String, String> ucdOptions = new HashMap<String, String>();
   private List<String> projectsToIterate = null;
   private int buildType = 0;
 
   static {
-    buildTypes.put("FULL_BUILD", Integer
+    BUILD_TYPES.put("FULL_BUILD", Integer
         .valueOf(IncrementalProjectBuilder.FULL_BUILD));
-    buildTypes.put("AUTO_BUILD", Integer
+    BUILD_TYPES.put("AUTO_BUILD", Integer
         .valueOf(IncrementalProjectBuilder.AUTO_BUILD));
-    buildTypes.put("CLEAN_BUILD", Integer
+    BUILD_TYPES.put("CLEAN_BUILD", Integer
         .valueOf(IncrementalProjectBuilder.CLEAN_BUILD));
-    buildTypes.put("INCREMENTAL_BUILD", Integer
+    BUILD_TYPES.put("INCREMENTAL_BUILD", Integer
         .valueOf(IncrementalProjectBuilder.INCREMENTAL_BUILD));
   }
 
@@ -116,8 +116,8 @@ public class UCDApplication implements IApplication {
     //
     sBuildType = (sBuildType == null) ? "AUTO_BUILD" : sBuildType;
     Log.logInfo("\tBuildType         : " + sBuildType);
-    if (buildTypes.containsKey(sBuildType)) {
-      buildType = buildTypes.get(sBuildType).intValue();
+    if (BUILD_TYPES.containsKey(sBuildType)) {
+      buildType = BUILD_TYPES.get(sBuildType).intValue();
     }
     else {
       buildType = IncrementalProjectBuilder.AUTO_BUILD;
