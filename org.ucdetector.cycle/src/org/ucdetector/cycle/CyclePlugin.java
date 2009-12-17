@@ -28,11 +28,6 @@ public class CyclePlugin extends AbstractUIPlugin {
     CyclePlugin.plugin = this;
   }
 
-  @Override
-  public void start(BundleContext context) throws Exception {
-    super.start(context);
-  }
-
   /**
    * This method is called when the plug-in is stopped
    */
