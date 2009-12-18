@@ -19,6 +19,7 @@ import org.ucdetector.UCDetectorPlugin;
  * Fixes code by commenting all affected lines
  */
 class LineCommentQuickFix extends AbstractUCDQuickFix {
+
   protected LineCommentQuickFix(IMarker marker) {
     super(marker);
   }
@@ -47,11 +48,11 @@ class LineCommentQuickFix extends AbstractUCDQuickFix {
       int lengthLine = region.getLength();
       String strLine = doc.get(offsetLine, lengthLine);
       StringBuilder replace = new StringBuilder();
-      replace.append("// "); //$NON-NLS-1$
       if (lineNr == lineStart) {
-        replace.append("TODO UCDetector: Remove unused code.").append(newLine); //$NON-NLS-1$
+        replace.append("// TODO UCdetector: Remove unused code: "); //$NON-NLS-1$;
+        replace.append(newLine);
       }
-      replace.append(strLine);
+      replace.append("// ").append(strLine); //$NON-NLS-1$;
       doc.replace(offsetLine, lengthLine, replace.toString());
     }
   }

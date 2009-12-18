@@ -16,6 +16,7 @@ import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IMarker;
 import org.eclipse.core.resources.IResource;
 import org.eclipse.core.runtime.CoreException;
+import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.jdt.core.ICompilationUnit;
 import org.eclipse.jdt.core.IJavaElement;
 import org.eclipse.jdt.core.JavaCore;
@@ -64,11 +65,11 @@ import org.ucdetector.util.MarkerFactory.ElementType;
  * @see <a href="http://www.eclipse.org/articles/article.php?file=Article-JavaCodeManipulation_AST/index.html">Abstract Syntax Tree</a>
  */
 abstract class AbstractUCDQuickFix extends WorkbenchMarkerResolution {
-  final IMarker marker;
-  final String markerType;
+  IMarker marker;
+  String markerType;
   ASTRewrite rewrite;
   IDocument doc;
-  private final ElementType elementType;
+  private ElementType elementType;
 
   //  private final String elementName;
 
@@ -91,6 +92,10 @@ abstract class AbstractUCDQuickFix extends WorkbenchMarkerResolution {
 
   @SuppressWarnings("unchecked")
   public void run(IMarker marker2) {
+   // Hack: For run(markers[]), marker2 != marker from constructor
+    this.marker = marker2;
+    markerType = getMarkerType();
+    elementType = MarkerReport.getElementTypeAndName(marker2).elementType;
     ICompilationUnit originalUnit = null;
     try {
       if (Log.DEBUG) {
@@ -111,7 +116,7 @@ abstract class AbstractUCDQuickFix extends WorkbenchMarkerResolution {
       firstType.accept(visitor);
       BodyDeclaration nodeToChange = visitor.nodeFound;
       if (Log.DEBUG) {
-        Log.logDebug(String.format("Node to change:'%n%s'", nodeToChange)); //$NON-NLS-1$ 
+        //        Log.logDebug(String.format("Node to change:'%n%s'", nodeToChange)); //$NON-NLS-1$ 
       }
       if (nodeToChange == null) {
         HashMap attributes = new HashMap(marker.getAttributes());
@@ -168,7 +173,6 @@ abstract class AbstractUCDQuickFix extends WorkbenchMarkerResolution {
       this.lineMarker = lineNrMarker;
     }
 
-    @SuppressWarnings("boxing")
     @Override
     protected boolean visitImpl(BodyDeclaration declaration, SimpleName name) {
       if (nodeFound != null) {
@@ -182,12 +186,15 @@ abstract class AbstractUCDQuickFix extends WorkbenchMarkerResolution {
         int lineStart = doc.getLineOfOffset(startPos) + 1;
         int lineEnd = doc.getLineOfOffset(endPos) + 1;
         boolean found = lineStart <= lineMarker && lineMarker <= lineEnd;
-        if (Log.DEBUG) {
-          Log.logDebug(String.format("%n%s. Lines: %s<=%s<=%s. Found node: %s", //$NON-NLS-1$
-              declaration, lineStart, lineMarker, lineEnd, found));
-        }
+        // To many logging
+        // if (Log.DEBUG) {
+        // Log.logDebug(String.format("%n%s. Lines: %s<=%s<=%s. Found node: %s", //$NON-NLS-1$
+        //   declaration, lineStart, lineMarker, lineEnd, found));
+        // if (found) {
+        //   Log.logDebug("NODE FOUND: \r\n" + name.getIdentifier()); //$NON-NLS-1$
+        // }
+        // }
         if (found) {
-          Log.logDebug("NODE FOUND: \r\n" + name.getIdentifier()); //$NON-NLS-1$
           nodeFound = declaration;
         }
       }
