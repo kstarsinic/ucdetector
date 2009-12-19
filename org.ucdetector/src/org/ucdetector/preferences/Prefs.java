@@ -123,7 +123,7 @@ public final class Prefs {
     String sourceFolder = JavaElementUtil
         .getSourceFolderProjectRelativePath(root);
     return sourceFolder == null
-        || Prefs.matchFilter(Prefs.FILTER_SOURCE_FOLDER, sourceFolder);
+        || matchFilter(FILTER_SOURCE_FOLDER, sourceFolder);
   }
 
   /**
@@ -132,8 +132,7 @@ public final class Prefs {
    * matches the package filter
    */
   public static boolean filterPackage(IPackageFragment packageFragment) {
-    return Prefs.matchFilter(Prefs.FILTER_PACKAGE, packageFragment
-        .getElementName());
+    return matchFilter(FILTER_PACKAGE, packageFragment.getElementName());
   }
 
   /**
@@ -142,14 +141,14 @@ public final class Prefs {
    * matches the type filter
    */
   public static boolean filterType(IType type) {
-    return Prefs.matchFilter(Prefs.FILTER_CLASS, type.getElementName());
+    return matchFilter(FILTER_CLASS, type.getElementName());
   }
 
   /**
    * @return <code>true</code>, when bean methods should be filtered
    */
   public static boolean isFilterBeanMethod() {
-    return getStore().getBoolean(Prefs.FILTER_BEAN_METHOD);
+    return getStore().getBoolean(FILTER_BEAN_METHOD);
   }
 
   /**
@@ -157,14 +156,14 @@ public final class Prefs {
    * see: compiler warnings: Code style, 'access to a non-accessible member of an enclosing type'
    */
   public static boolean isIgnoreSyntheticAccessEmulationWarning() {
-    return getStore().getBoolean(Prefs.IGNORE_SYNTHETIC_ACCESS_EMULATION);
+    return getStore().getBoolean(IGNORE_SYNTHETIC_ACCESS_EMULATION);
   }
 
   /**
    * @return <code>true</code>, when code is references only by test code
    */
   public static boolean isDetectTestOnly() {
-    return getStore().getBoolean(Prefs.DETECT_TEST_ONLY);
+    return getStore().getBoolean(DETECT_TEST_ONLY);
   }
 
   /**
@@ -173,7 +172,7 @@ public final class Prefs {
    * matches the method filter
    */
   public static boolean filterMethod(IMethod method) {
-    return Prefs.matchFilter(Prefs.FILTER_METHOD, method.getElementName());
+    return matchFilter(FILTER_METHOD, method.getElementName());
   }
 
   /**
@@ -182,7 +181,7 @@ public final class Prefs {
    * matches the field filter
    */
   public static boolean filterField(IField field) {
-    return Prefs.matchFilter(Prefs.FILTER_FIELD, field.getElementName());
+    return matchFilter(FILTER_FIELD, field.getElementName());
   }
 
   /**
@@ -191,14 +190,14 @@ public final class Prefs {
    */
   // [ 2832790 ] Custom annotation filter
   public static boolean filterAnnotation(String annotation) {
-    return Prefs.matchFilter(Prefs.FILTER_ANNOATIONS, annotation);
+    return matchFilter(FILTER_ANNOATIONS, annotation);
   }
 
   /**
    * @return <code>true</code>, when this filter is active
    */
   public static boolean isFilterClassContainingString() {
-    String[] strings = getStrings(Prefs.FILTER_CONTAIN_STRING);
+    String[] strings = getStrings(FILTER_CONTAIN_STRING);
     for (String string : strings) {
       if (string.trim().length() > 0) {
         return true;
@@ -212,7 +211,7 @@ public final class Prefs {
    * @return <code>true</code>, the class contains one of the strings
    */
   public static boolean filterClassContainingString(String classAsString) {
-    String[] stringsToFindInFile = getStrings(Prefs.FILTER_CONTAIN_STRING);
+    String[] stringsToFindInFile = getStrings(FILTER_CONTAIN_STRING);
     for (String stringToFindInFile : stringsToFindInFile) {
       if (stringToFindInFile.trim().length() > 0) {
         if (classAsString != null && classAsString.contains(stringToFindInFile)) {
