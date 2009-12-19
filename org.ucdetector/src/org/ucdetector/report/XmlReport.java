@@ -9,7 +9,9 @@ package org.ucdetector.report;
 
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.FileOutputStream;
 import java.io.InputStream;
+import java.io.OutputStreamWriter;
 import java.io.PrintWriter;
 import java.io.StringWriter;
 import java.text.DecimalFormat;
@@ -362,17 +364,18 @@ public class XmlReport implements IUCDetectorReport {
     long now = System.currentTimeMillis();
     long duration = (now - start);
     abouts = appendChild(statistcs, "abouts", null);
-    appendAbout("reportCreated", "Created report", about.getNow(), String
-        .valueOf(now));
-    appendAbout("operatingSystem", "Operating system", about.getOS(), null);
-    appendAbout("javaVersion", "Java", about.getJavaVersion(), null);
-    appendAbout("eclipseVersion", "Eclipse", about.getEclipseVersion(), null);
-    appendAbout("ucdetectorVersion", "UCDetector", about.getUCDVersion(), null);
+    appendAbout("reportCreated", "Created report", about.getNow(), true);
+    appendAbout("reportCreatedTS", "Created report", "" + now, false);
+    appendAbout("operatingSystem", "Operating system", about.getOS(), true);
+    appendAbout("javaVersion", "Java", about.getJavaVersion(), true);
+    appendAbout("eclipseVersion", "Eclipse", about.getEclipseVersion(), true);
+    appendAbout("ucdetectorVersion", "UCDetector", about.getUCDVersion(), true);
     appendAbout("searchDuration", "Search duration", StopWatch
-        .timeAsString(duration), String.valueOf(duration));
-    appendAbout("eclipseHome", "Eclipse home", about.getEclipseHome(), null);
-    appendAbout("logfile", "Logfile", about.getLogfile(), null);
-    appendAbout("workspace", "Workspace", about.getWorkspace(), null);
+        .timeAsString(duration), true);
+    appendAbout("searchDurationTS", "Search duration", "" + duration, false);
+    appendAbout("eclipseHome", "Eclipse home", about.getEclipseHome(), false);
+    appendAbout("logfile", "Logfile", about.getLogfile(), false);
+    appendAbout("workspace", "Workspace", about.getWorkspace(), false);
     //
     Element searched = appendChild(statistcs, "searched", null);
     for (Object selection : selected) {
@@ -395,21 +398,19 @@ public class XmlReport implements IUCDetectorReport {
 
   /**
    * <pre>
-   *  &lt;about name="operatingSystem">
+   *  &lt;about name="operatingSystem" show="true">
    *     &lt;key>Operating system&lt;/key>
    *     &lt;value>Linux-2.6.27.39-0.2-default&lt;/value>
    *  &lt;/about>
    * </pre>
    */
   private Element appendAbout(String nodeName, String nodeNiceName,
-      String value, String timestamp) {
+      String value, boolean show) {
     Element about = appendChild(abouts, "about", null);
     about.setAttribute("name", nodeName);
+    about.setAttribute("show", Boolean.toString(show));
     appendChild(about, "key", nodeNiceName);
     appendChild(about, "value", value);
-    if (timestamp != null) {
-      appendChild(about, "timestamp", timestamp);
-    }
     return about;
   }
 
@@ -420,8 +421,12 @@ public class XmlReport implements IUCDetectorReport {
       throws Exception {
     Source source = new DOMSource(docToWrite);
     File file = new File(fileName);
-    Result result = new StreamResult(file);
-    Transformer xformer = TransformerFactory.newInstance().newTransformer();
+    Result result = new StreamResult(new OutputStreamWriter(
+        new FileOutputStream(file), "utf-8"));
+    // Result result = new StreamResult(new OutputStreamWriter(new FI, "utf-8"));
+    TransformerFactory tf = TransformerFactory.newInstance();
+    tf.setAttribute("indent-number", new Integer(2));
+    Transformer xformer = tf.newTransformer();
     xformer.setOutputProperty(OutputKeys.INDENT, "yes");
     xformer.setOutputProperty(OutputKeys.METHOD, "xml");
     xformer.transform(source, result);

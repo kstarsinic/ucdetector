@@ -176,20 +176,22 @@ To create custom reports change ECLIPSE_HOME/dropins/org.ucdetector_*.jar/org/uc
 						<th>Value</th>
 					</tr>
 					<xsl:for-each select="/ucdetector/statistics/abouts/about">
-						<xsl:variable name="color">
-							<xsl:choose>
-								<xsl:when test="position() mod 2 = 0">#E6E6FA</xsl:when>
-								<xsl:otherwise>#FFFACD</xsl:otherwise>
-							</xsl:choose>
-						</xsl:variable>
-						<tr bgcolor="{$color}">
-							<td>
-								<xsl:value-of select="key"/>
-							</td>
-							<td>
-								<xsl:value-of select="value"/>
-							</td>
-						</tr>
+						<xsl:if test="@show = 'true'">
+							<xsl:variable name="color">
+								<xsl:choose>
+									<xsl:when test="position() mod 2 = 0">#E6E6FA</xsl:when>
+									<xsl:otherwise>#FFFACD</xsl:otherwise>
+								</xsl:choose>
+							</xsl:variable>
+							<tr bgcolor="{$color}">
+								<td>
+									<xsl:value-of select="key"/>
+								</td>
+								<td>
+									<xsl:value-of select="value"/>
+								</td>
+							</tr>
+						</xsl:if>
 					</xsl:for-each>
 				</table>
 				
