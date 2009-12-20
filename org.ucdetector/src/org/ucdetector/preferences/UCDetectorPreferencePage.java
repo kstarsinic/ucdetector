@@ -18,6 +18,7 @@ import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Label;
 import org.ucdetector.Messages;
+import org.ucdetector.UCDetectorPlugin;
 
 /**
  * Create the UCDetector preference page:<br>
@@ -35,6 +36,7 @@ public class UCDetectorPreferencePage extends UCDetectorBasePreferencePage {
   public void createFieldEditors() {
     Composite parentGroups = createComposite(getFieldEditorParent(), 1, 1,
         GridData.FILL_HORIZONTAL);
+    setTitle("UCDetector " + UCDetectorPlugin.getAbout().getUCDVersion()); //$NON-NLS-1$
     createFilterGroup(parentGroups);
     createDetectGroup(parentGroups);
     createFileSearchGroup(parentGroups);

@@ -63,8 +63,8 @@ public class UCDetectorPlugin extends AbstractUIPlugin {
       DateFormat.MEDIUM, DateFormat.MEDIUM, Locale.getDefault());
   private final About about;
 
-  public About getAbout() {
-    return about;
+  public static About getAbout() {
+    return plugin.about;
   }
 
   public UCDetectorPlugin() {
