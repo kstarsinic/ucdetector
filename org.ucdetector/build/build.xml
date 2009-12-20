@@ -6,17 +6,25 @@
   <!-- PREPARE                                                               -->
   <!-- ===================================================================== -->
   <target name="prepare" description="Load and dump properties">
+    <!-- get Bundle-Version -->
+    <property file="../META-INF/MANIFEST.MF" />
     <property name="build.properties" location="../ant/build.properties" />
     <property file="${build.properties}" />
-    <echo>build.properties = ${build.properties}</echo>
-    <echo>ECLIPSE_HOME     = ${ECLIPSE_HOME}</echo>
+    <echo>build.properties   = ${build.properties}</echo>
+    <echo>ECLIPSE_HOME       = ${ECLIPSE_HOME}</echo>
+    <echo>UCDetector version = ${Bundle-Version}</echo>
     <fail unless="ECLIPSE_HOME" message="Missing ${build.properties}" />
+    <tstamp>
+      <format property="NOW" pattern="yyyy-MM-dd HH:mm z" locale="en" />
+    </tstamp>
   </target>
 
   <!-- ===================================================================== -->
   <!-- EXPORT UCDETECTOR JARS                                                -->
   <!-- ===================================================================== -->
-  <target name="plugin-export" depends="prepare" description="Export plugins">
+  <target name="plugin-export"
+          depends="version-info"
+          description="Export plugins">
     <pde.exportPlugins destination="${ECLIPSE_HOME}"
                        exportSource="false"
                        exportType="directory"
@@ -29,9 +37,7 @@
   <!-- ===================================================================== -->
   <!-- EXPORT UCDETECTOR SOURCE                                              -->
   <!-- ===================================================================== -->
-  <target name="source" depends="prepare" description="Export source.jar">
-    <!-- get Bundle-Version -->
-    <property file="../META-INF/MANIFEST.MF" />
+  <target name="source" depends="version-info" description="Export source.jar">
     <property name="source.jar"
               location="${ECLIPSE_HOME}/plugins/org.ucdetector.source_${Bundle-Version}.jar" />
     <zip destfile="${source.jar}">
@@ -42,6 +48,26 @@
       </fileset>
     </zip>
     <echo>Created source jar: ${source.jar}</echo>
+  </target>
+
+  <!-- ===================================================================== -->
+  <!-- VERSION INFO                                                          -->
+  <!-- ===================================================================== -->
+  <target name="version-info"
+          depends="prepare"
+          description="Create version info file">
+    <property name="version.file" location="../VERSION.TXT" />
+    <copy file="version.txt_template" tofile="${version.file}" overwrite="true">
+      <filterset>
+        <filter token="BUILD_UCD" value="${Bundle-Version}" />
+        <filter token="BUILD_DATE" value="${NOW}" />
+        <filter token="BUILD_JAVA"
+                value="${java.runtime.version} - ${java.specification.vendor}" />
+        <filter token="BUILD_ECLIPSE" value="${osgi.framework.version}" />
+        <filter token="BUILD_OS" value="${os.name}" />
+      </filterset>
+    </copy>
+    <echo>Created version info file: ${version.file}</echo>
   </target>
 
   <!-- ===================================================================== -->
