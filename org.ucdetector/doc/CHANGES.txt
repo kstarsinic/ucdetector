@@ -6,6 +6,7 @@ Bugfixes:
 New features:
  - Improved QuickFixes
  - Improved HTML/XML report
+ - Added a new TodoQuickFix
  - TODO: [ 2824564 ] Group preferences
 
 // -----------------------------------------------------------------------------
