@@ -43,6 +43,8 @@ public class UCDetectorPlugin extends AbstractUIPlugin {
   public static final String IMAGE_UCD = "IMAGE_UCD"; //$NON-NLS-1$
   /** org.eclipse.jdt.ui\etool16\comment_edit.gif */
   public static final String IMAGE_COMMENT = "IMAGE_COMMENT"; //$NON-NLS-1$
+  /** org.eclipse.ui.ide/icons/full/elcl16/showtsk_tsk.gif */
+  public static final String IMAGE_TODO = "IMAGE_TODO"; //$NON-NLS-1$
   /**
    * See MANIFEST.MF: Bundle-SymbolicName, and .project
    */
@@ -206,6 +208,7 @@ public class UCDetectorPlugin extends AbstractUIPlugin {
     registry.put(IMAGE_COMMENT, getUcdImage("comment_edit.gif")); //$NON-NLS-1$
     registry.put(IMAGE_UCD, getUcdImage("ucd.gif")); //$NON-NLS-1$
     registry.put(IMAGE_FINAL, JavaPluginImages.DESC_OVR_FINAL);
+    registry.put(IMAGE_TODO, getUcdImage("showtsk_tsk.gif")); //$NON-NLS-1$
   }
 
   private ImageDescriptor getUcdImage(String icon) {

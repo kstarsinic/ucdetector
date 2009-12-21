@@ -32,6 +32,7 @@ public class UCDQuickGenerator implements IMarkerResolutionGenerator2 { // NO_UC
         Log.logDebug("UCDQuickFixer.getResolutions()" + markerType); //$NON-NLS-1$
       }
       List<IMarkerResolution> resolutions = new ArrayList<IMarkerResolution>();
+      resolutions.add(new TodoQuickFix(marker));
       if (MarkerFactory.UCD_MARKER_UNUSED.equals(markerType)) {
         resolutions.add(new DeleteQuickFix(marker));
         resolutions.add(new LineCommentQuickFix(marker));
