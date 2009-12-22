@@ -43,7 +43,6 @@ public final class Messages extends NLS {
   public static String CountIterator_Methods; // NO_UCD
   public static String CountIterator_Packages; // NO_UCD
   public static String CountIterator_Projects; // NO_UCD
-  public static String CountIterator_NothingFound; // NO_UCD
 
   // PreferencePage ----------------------------------------------------------
   public static String PreferencePage_CheckProtectedClasses; // NO_UCD

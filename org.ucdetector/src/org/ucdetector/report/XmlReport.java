@@ -425,7 +425,7 @@ public class XmlReport implements IUCDetectorReport {
         new FileOutputStream(file), "utf-8"));
     // Result result = new StreamResult(new OutputStreamWriter(new FI, "utf-8"));
     TransformerFactory tf = TransformerFactory.newInstance();
-    tf.setAttribute("indent-number", new Integer(2));
+    tf.setAttribute("indent-number", Integer.valueOf(2));
     Transformer xformer = tf.newTransformer();
     xformer.setOutputProperty(OutputKeys.INDENT, "yes");
     xformer.setOutputProperty(OutputKeys.METHOD, "xml");
