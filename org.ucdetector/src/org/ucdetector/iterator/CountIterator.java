@@ -116,36 +116,17 @@ public class CountIterator extends AbstractUCDetectorIterator {
   public String toString() {
     StringBuilder sb = new StringBuilder();
     sb.append(Messages.CountIterator_NotPrivate).append(' ');
-    // sb.append("\r\n");
-    int totalFound = getElelementsToDetectCount();
-    if (totalFound == 0) {
-      sb.append(Messages.CountIterator_NothingFound);
-      return sb.toString();
-    }
-    // ---------------------------------------------------------------------
-    if (projects > 0) {
-      sb.append(Messages.CountIterator_Projects);
-      sb.append('=').append(projects).append(SEP);
-    }
-    if (packages > 0) {
-      sb.append(Messages.CountIterator_Packages);
-      sb.append('=').append(packages).append(SEP);
-    }
-    if (classes > 0) {
-      sb.append(Messages.CountIterator_Classes);
-      sb.append('=').append(classes).append(SEP);
-    }
-    if (methods > 0) {
-      sb.append(Messages.CountIterator_Methods);
-      sb.append('=').append(methods).append(SEP);
-    }
-    if (fields > 0) {
-      sb.append(Messages.CountIterator_Fields);
-      sb.append('=').append(fields).append(SEP);
-    }
-    sb.setLength(sb.length() - SEP.length());
-    sb.append(" (in ").append(selectedAsString).append(')');//$NON-NLS-1$
+    appendLine(sb, Messages.CountIterator_Projects, projects);
+    appendLine(sb, Messages.CountIterator_Packages, packages);
+    appendLine(sb, Messages.CountIterator_Classes, classes);
+    appendLine(sb, Messages.CountIterator_Methods, methods);
+    appendLine(sb, Messages.CountIterator_Fields, fields);
+    sb.append(NL).append("In: ").append(selectedAsString);//$NON-NLS-1$
     return sb.toString();
+  }
+
+  private void appendLine(StringBuilder sb, String info, int count) {
+    sb.append(String.format("%n\t%s\t=\t%s", info, Integer.valueOf(count))); //$NON-NLS-1$
   }
 
   @Override

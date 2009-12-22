@@ -55,6 +55,7 @@ public abstract class AbstractUCDetectorIterator extends UCDetectorCallBack {
   static final boolean DEBUG = "true".equalsIgnoreCase(Platform //$NON-NLS-1$ NO_UCD
       .getDebugOption("org.ucdetector/debug/iterator")); //$NON-NLS-1$
   static final String SEP = ", "; //$NON-NLS-1$
+  static final String NL = System.getProperty("line.separator"); //$NON-NLS-1$
   private UCDProgressMonitor monitor;
   /** Elements selected in the UI */
   protected IJavaElement[] selections;
