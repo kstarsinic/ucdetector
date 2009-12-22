@@ -14,7 +14,7 @@
 		</li>
 		
 		<li>
-			<a href="http://ucdetector.sourceforge.net/update">Eclipse update site</a>: http://ucdetector.sourceforge.net/update
+			<!-- <a href="http://ucdetector.sourceforge.net/update">-->Eclipse update site<!--</a> -->: <tt>http://ucdetector.sourceforge.net/update</tt>
 		</li>
 
 		<li>Report a <a href="http://sourceforge.net/tracker/?func=browse&amp;group_id=219599&amp;atid=1046865&amp;status=1">bug</a>
