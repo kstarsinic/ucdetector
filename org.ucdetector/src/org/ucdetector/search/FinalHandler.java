@@ -17,7 +17,6 @@ import org.eclipse.jdt.core.IMethod;
 import org.eclipse.jdt.core.IType;
 import org.eclipse.jdt.core.JavaModelException;
 import org.eclipse.jdt.core.search.IJavaSearchConstants;
-import org.eclipse.jdt.core.search.SearchEngine;
 import org.eclipse.jdt.core.search.SearchMatch;
 import org.eclipse.jdt.core.search.SearchPattern;
 import org.eclipse.jdt.core.search.SearchRequestor;
@@ -91,8 +90,7 @@ class FinalHandler {
     SearchPattern pattern = SearchPattern.createPattern(field,
         IJavaSearchConstants.WRITE_ACCESSES);
     CanMakeFinalRequestor requestor = new CanMakeFinalRequestor(field);
-    JavaElementUtil.runSearch(pattern, requestor, SearchEngine
-        .createWorkspaceScope());
+    JavaElementUtil.runSearch(pattern, requestor);
     return !requestor.fieldHasWriteAccessFromMethod;
   }
 

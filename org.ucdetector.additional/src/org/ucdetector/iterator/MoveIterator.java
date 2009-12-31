@@ -17,8 +17,6 @@ import org.eclipse.core.runtime.CoreException;
 import org.eclipse.jdt.core.IJavaElement;
 import org.eclipse.jdt.core.IType;
 import org.eclipse.jdt.core.search.IJavaSearchConstants;
-import org.eclipse.jdt.core.search.IJavaSearchScope;
-import org.eclipse.jdt.core.search.SearchEngine;
 import org.eclipse.jdt.core.search.SearchMatch;
 import org.eclipse.jdt.core.search.SearchPattern;
 import org.eclipse.jdt.core.search.SearchRequestor;
@@ -47,7 +45,6 @@ public class MoveIterator extends AdditionalIterator {
   @Override
   public void handleEndGlobal(IJavaElement[] objects) throws CoreException {
     List<MatchPerPackageList> allMatchPerPackages = new ArrayList<MatchPerPackageList>();
-    IJavaSearchScope scope = SearchEngine.createWorkspaceScope();
     UCDProgressMonitor monitor = getMonitor();
     monitor.beginTask(getJobName(), types.size());
     for (IType type : types) {
@@ -56,7 +53,7 @@ public class MoveIterator extends AdditionalIterator {
       SearchPattern pattern = SearchPattern.createPattern(type,
           IJavaSearchConstants.REFERENCES);
       MatchPerPackageRequestor requestor = new MatchPerPackageRequestor(type);
-      JavaElementUtil.runSearch(pattern, requestor, scope);
+      JavaElementUtil.runSearch(pattern, requestor);
       createMarker(requestor.matchPerPackage, type);
       allMatchPerPackages.add(requestor.matchPerPackage);
     }

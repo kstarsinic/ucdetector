@@ -20,8 +20,6 @@ import org.eclipse.jdt.core.IJavaElement;
 import org.eclipse.jdt.core.IJavaProject;
 import org.eclipse.jdt.core.IType;
 import org.eclipse.jdt.core.search.IJavaSearchConstants;
-import org.eclipse.jdt.core.search.IJavaSearchScope;
-import org.eclipse.jdt.core.search.SearchEngine;
 import org.eclipse.jdt.core.search.SearchMatch;
 import org.eclipse.jdt.core.search.SearchPattern;
 import org.eclipse.jdt.core.search.SearchRequestor;
@@ -107,12 +105,12 @@ public class CycleSearchManager {
       SearchPattern pattern = SearchPattern.createPattern(type,
           IJavaSearchConstants.REFERENCES, SearchPattern.R_EXACT_MATCH);
       // IJavaSearchScope scope = SearchEngine.createWorkspaceScope();
-      IJavaProject javaProject = type.getJavaProject();
-      IJavaSearchScope scope = SearchEngine.createJavaSearchScope(
-          new IJavaProject[] { javaProject }, false);
+      //      IJavaProject javaProject = type.getJavaProject();
+      //      IJavaSearchScope scope = SearchEngine.createJavaSearchScope(
+      //          new IJavaProject[] { javaProject }, false);
       ReferenceSearchRequestor requestor = new ReferenceSearchRequestor(
           typeAndMatches);
-      JavaElementUtil.runSearch(pattern, requestor, scope);
+      JavaElementUtil.runSearch(pattern, requestor);
       result.add(typeAndMatches);
       if (Log.DEBUG) {
         int found = typeAndMatches.getTypeSearchMatches().size();
