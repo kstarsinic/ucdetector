@@ -31,13 +31,13 @@ import org.eclipse.jdt.core.Signature;
 import org.eclipse.jdt.core.search.IJavaSearchConstants;
 import org.eclipse.jdt.core.search.IJavaSearchScope;
 import org.eclipse.jdt.core.search.SearchEngine;
-import org.eclipse.jdt.core.search.SearchMatch;
 import org.eclipse.jdt.core.search.SearchParticipant;
 import org.eclipse.jdt.core.search.SearchPattern;
 import org.eclipse.jdt.core.search.SearchRequestor;
 import org.ucdetector.Log;
 import org.ucdetector.Messages;
 import org.ucdetector.UCDetectorPlugin;
+import org.ucdetector.search.CountSearchRequestor;
 
 /**
  * Helper Class for javaElement's like:
@@ -361,13 +361,13 @@ public class JavaElementUtil {
         | IJavaSearchConstants.IGNORE_DECLARING_TYPE
         | IJavaSearchConstants.IGNORE_RETURN_TYPE;
     SearchPattern pattern = SearchPattern.createPattern(method, limitTo);
-    CountOverridingRequestor requestor = new CountOverridingRequestor();
+    CountSearchRequestor requestor = new CountSearchRequestor();
     IType declaringType = method.getDeclaringType();
     IJavaSearchScope scope = SearchEngine.createHierarchyScope(declaringType);
     runSearch(pattern, requestor, scope);
     // Ignore 1 match: Declaring type!
     // TODO: check search matches: OverrideImplExample
-    return requestor.found > 1;
+    return requestor.getFoundCount() > 1;
   }
 
   /*
@@ -422,24 +422,6 @@ public class JavaElementUtil {
       Log.logError(mes, throwable);
     }
     return isSearchException;
-  }
-
-  /**
-   * Count number of matches
-   */
-  private static final class CountOverridingRequestor extends SearchRequestor {
-    private int found = 0;
-
-    @Override
-    public void acceptSearchMatch(SearchMatch match) {
-      //      System.out.println("~~~~~~~~acceptSearchMatch=" + match.getElement());
-      this.found++;
-    }
-
-    @Override
-    public String toString() {
-      return "found: " + found; //$NON-NLS-1$
-    }
   }
 
   // -------------------------------------------------------------------------

@@ -272,55 +272,6 @@ public class SearchManager {
         searchInfo);
     int found = searchImpl(field, searchInfo, false);
     watch.end("    searchImpl"); //$NON-NLS-1$
-
-    // TODO bug 2900561: enum detection, or don't create "unnecessary marker" for enum constants
-    //    if (field.isEnumConstant()) {
-    //      IMethod method = new ResolvedSourceMethod(
-    //          (JavaElement) field.getParent(), "values", new String[0], null);
-    //      IJavaSearchScope scope = SearchEngine.createWorkspaceScope();
-    //      //    scope.includesBinaries();
-    //      SearchPattern pattern = SearchPattern.createPattern(method,
-    //          IJavaSearchConstants.REFERENCES);
-    //
-    //      SearchRequestor requestor = new SearchRequestor() {
-    //        boolean found = false;
-    //
-    //        @Override
-    //        public void acceptSearchMatch(SearchMatch match) {
-    //          if (match.getElement() instanceof IJavaElement) {
-    //            found = true;
-    //            throw new OperationCanceledException(
-    //                "Cancel Search: Field has read access");//$NON-NLS-1$
-    //          }
-    //        }
-    //      };
-    //
-    //      JavaElementUtil.runSearch(pattern, requestor, scope);
-    //      System.out.println("found=" + requestor);
-    //
-    //      IType enumType = JavaElementUtil.getTypeFor(field, false);
-    //
-    //      ASTParser parser = ASTParser.newParser(AST.JLS3);
-    //      parser.setSource(enumType.getCompilationUnit());
-    //      parser.setKind(ASTParser.K_COMPILATION_UNIT);
-    //      parser.setResolveBindings(true);
-    //      ASTNode ast = parser.createAST(null);
-    //      ASTVisitor visitor = new ASTVisitor() {
-    //        @Override
-    //        public boolean visit(EnumDeclaration declaration) {
-    //          System.out.println("declaration=" + declaration);
-    //          return true;
-    //        }
-    //
-    //      };
-    //      ast.accept(visitor);
-    //
-    //      //      IMethod[] methods = enumType.getMethods();
-    //      //      for (IMethod method : methods) {
-    //      //        System.out.println("method=" + method); //$NON-NLS-1$
-    //      //      }
-    //    }
-
     if (found > 0 && !hasReadAccess(field)) {
       String message = NLS.bind(
           Messages.MarkerFactory_MarkerReferenceFieldNeverRead,
@@ -344,31 +295,10 @@ public class SearchManager {
   private static boolean hasReadAccess(IField field) throws CoreException {
     SearchPattern pattern = SearchPattern.createPattern(field,
         IJavaSearchConstants.READ_ACCESSES);
-    FieldReadRequestor requestor = new FieldReadRequestor();
+    CountSearchRequestor requestor = new CountSearchRequestor();
     JavaElementUtil.runSearch(pattern, requestor, SearchEngine
         .createWorkspaceScope());
-    return requestor.hasReadAccess;
-  }
-
-  /**
-   * check, if a field has read access
-   */
-  private static final class FieldReadRequestor extends SearchRequestor {
-    boolean hasReadAccess = false;
-
-    @Override
-    public void acceptSearchMatch(SearchMatch match) {
-      if (match.getElement() instanceof IJavaElement) {
-        hasReadAccess = true;
-        throw new OperationCanceledException(
-            "Cancel Search: Field has read access");//$NON-NLS-1$
-      }
-    }
-
-    @Override
-    public String toString() {
-      return "hasReadAccess=" + hasReadAccess; //$NON-NLS-1$
-    }
+    return requestor.isFound();
   }
 
   /**
@@ -425,6 +355,21 @@ public class SearchManager {
     if (member instanceof IType) {
       if (JavaElementUtil.hasMainMethod((IType) member)) {
         return found;
+      }
+    }
+    // TODO bug 2900561: enum detection, or don't create "unnecessary marker" for enum constants
+    if (member instanceof IField) {
+      IField field = (IField) member;
+      if (field.isEnumConstant()) {
+        IType enumType = JavaElementUtil.getTypeFor(field, false);
+        IMethod values = enumType.getMethod("values", new String[0]); //$NON-NLS-1$
+        IJavaSearchScope scope = SearchEngine.createWorkspaceScope();
+        int limitTo = IJavaSearchConstants.ALL_OCCURRENCES
+            | IJavaSearchConstants.IGNORE_RETURN_TYPE;
+        SearchPattern pattern = SearchPattern.createPattern(values, limitTo);
+        CountSearchRequestor requestor = new CountSearchRequestor();
+        JavaElementUtil.runSearch(pattern, requestor, scope);
+        System.out.println("found=" + requestor);
       }
     }
     created = markerFactory.createReferenceMarker(member, markerMessage, line,
