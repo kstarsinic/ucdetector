@@ -43,6 +43,7 @@ Steps to create new Version:
    - [cycle detect: /org.ucdetector.example/cycle]
    - check UCDMarker: /org.ucdetector.example/example
 	 - check html report
+	 - Add version number to <title> tag: version 1.0.0
 	 - Commit html/xml report to: /org.ucdetector.example/reports/
 
  - Sourceforge:
