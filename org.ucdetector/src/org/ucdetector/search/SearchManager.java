@@ -27,8 +27,6 @@ import org.eclipse.jdt.core.IType;
 import org.eclipse.jdt.core.JavaCore;
 import org.eclipse.jdt.core.JavaModelException;
 import org.eclipse.jdt.core.search.IJavaSearchConstants;
-import org.eclipse.jdt.core.search.IJavaSearchScope;
-import org.eclipse.jdt.core.search.SearchEngine;
 import org.eclipse.jdt.core.search.SearchMatch;
 import org.eclipse.jdt.core.search.SearchPattern;
 import org.eclipse.jdt.core.search.SearchRequestor;
@@ -296,8 +294,7 @@ public class SearchManager {
     SearchPattern pattern = SearchPattern.createPattern(field,
         IJavaSearchConstants.READ_ACCESSES);
     CountSearchRequestor requestor = new CountSearchRequestor();
-    JavaElementUtil.runSearch(pattern, requestor, SearchEngine
-        .createWorkspaceScope());
+    JavaElementUtil.runSearch(pattern, requestor);
     return requestor.isFound();
   }
 
@@ -358,18 +355,21 @@ public class SearchManager {
       }
     }
     // TODO bug 2900561: enum detection, or don't create "unnecessary marker" for enum constants
-    if (member instanceof IField) {
+    // TODO: clean up code
+    // See: JavaSearchPage.performNewSearch()
+    // See: JavaSearchQuery.run()
+    if (found == 0 && member instanceof IField) {
       IField field = (IField) member;
       if (field.isEnumConstant()) {
         IType enumType = JavaElementUtil.getTypeFor(field, false);
-        IMethod values = enumType.getMethod("values", new String[0]); //$NON-NLS-1$
-        IJavaSearchScope scope = SearchEngine.createWorkspaceScope();
-        int limitTo = IJavaSearchConstants.ALL_OCCURRENCES
-            | IJavaSearchConstants.IGNORE_RETURN_TYPE;
-        SearchPattern pattern = SearchPattern.createPattern(values, limitTo);
+        String stringPattern = enumType.getFullyQualifiedName() + ".values()"; //$NON-NLS-1$
+        SearchPattern pattern = SearchPattern.createPattern(stringPattern,
+            IJavaSearchConstants.METHOD, IJavaSearchConstants.REFERENCES,
+            SearchPattern.R_ERASURE_MATCH);
         CountSearchRequestor requestor = new CountSearchRequestor();
-        JavaElementUtil.runSearch(pattern, requestor, scope);
-        System.out.println("found=" + requestor);
+        JavaElementUtil.runSearch(pattern, requestor);
+        //        System.out.println("found=" + requestor); //$NON-NLS-1$
+        return requestor.getFoundCount();
       }
     }
     created = markerFactory.createReferenceMarker(member, markerMessage, line,
@@ -386,14 +386,11 @@ public class SearchManager {
   private UCDSearchRequestor searchJavaImpl(IMember member,
       VisibilityHandler visibilityHandler) throws CoreException {
     checkForCancel();
-    IJavaSearchScope scope = SearchEngine.createWorkspaceScope();
-    //    scope.includesBinaries();
     SearchPattern pattern = SearchPattern.createPattern(member,
         IJavaSearchConstants.REFERENCES);
     UCDSearchRequestor requestor = new UCDSearchRequestor(member,
         visibilityHandler, lineManger);
-    boolean isSearchException = JavaElementUtil.runSearch(pattern, requestor,
-        scope);
+    boolean isSearchException = JavaElementUtil.runSearch(pattern, requestor);
     // Let's be pessimistic and handle an Exception as "reference found"!
     if (isSearchException && requestor.found == 0) {
       requestor.found = 1;
