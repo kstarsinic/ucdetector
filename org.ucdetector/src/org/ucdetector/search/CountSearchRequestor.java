@@ -12,7 +12,7 @@ public class CountSearchRequestor extends SearchRequestor {
 
   @Override
   public void acceptSearchMatch(SearchMatch match) {
-    System.out.println("~~~~~~~~acceptSearchMatch=" + match.getElement());
+    //    System.out.println("~~~~~~~~acceptSearchMatch=" + match.getElement());
     if (match.getElement() instanceof IJavaElement) {
       this.found++;
     }
