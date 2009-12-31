@@ -1,13 +1,13 @@
 UCDetector 1.4.0 from :
 Bugfixes:
- - QuickFix doesn't modify code - ID: 2911486
-
+ - [ PerformanceBug ] UCDetector is now 2 times faster, because SearchScope is sources now.
+ - [ 2911486 ] QuickFix doesn't modify code
+ - [ 2900561] Enum detection, or don't create "unnecessary marker" for enum constants
 
 New features:
  - Improved QuickFixes
  - Improved HTML/XML report
  - Added a new TodoQuickFix
- - TODO: [ 2824564 ] Group preferences
 
 // -----------------------------------------------------------------------------
 UCDetector 1.3.0 from 2009-10-25:

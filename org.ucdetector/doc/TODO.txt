@@ -1,10 +1,9 @@
 //------------------------------------------------------------------------------
 TODO:
- - created.xml
  - create an extension point for "org.ucdetector.additional"
  - Matching a local class "0 References" in a parent class (BException)
- - UCDetector problems should have a parent in Problems View / Configure contents
  - Add QuickFix to project description
+ - TODO: [ 2824564 ] Group preferences
   
 //------------------------------------------------------------------------------
 Code examples:
