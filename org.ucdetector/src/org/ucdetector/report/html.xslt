@@ -28,7 +28,96 @@ ECLIPSE_HOME/dropins/org.ucdetector_*.jar/org/ucdetector/report/html.xslt
 			</head>
 			<body bgcolor="#FFFFE0">
 				<h2 align="center">UCDetector Report</h2>
-			
+				
+				<table border="0"><!-- top table containing columns for about, preferences, searched in -->
+					<tr>
+					<!-- ================================================================
+					 ABOUT
+					 =============================================================== -->
+						<td valign="top">
+							<h3 align="center">About search</h3>
+							<table border="1">
+								<tr bgcolor="#C0C0C0">
+									<th>Property</th>
+									<th>Value</th>
+								</tr>
+								<xsl:for-each select="/ucdetector/statistics/abouts/about[@show = 'true']">
+									<xsl:variable name="color">
+										<xsl:choose>
+											<xsl:when test="position() mod 2 = 0">#E6E6FA</xsl:when>
+											<xsl:otherwise>#FFFACD</xsl:otherwise>
+										</xsl:choose>
+									</xsl:variable>
+									<tr bgcolor="{$color}">
+										<td>
+											<xsl:value-of select="key"/>
+										</td>
+										<td>
+											<xsl:value-of select="value"/>
+										</td>
+									</tr>
+								</xsl:for-each>
+							</table>
+						</td>
+						<!-- ==============================================================
+						PREFERENCES
+						=============================================================== -->
+						<td valign="top">
+							<h3 align="center">Preferences</h3>
+							<table border="1">
+								<tr bgcolor="#C0C0C0">
+									<th>Preference</th>
+									<th>Value</th>
+								</tr>
+								<xsl:for-each select="/ucdetector/statistics/preferences/preference">
+									<xsl:variable name="color">
+										<xsl:choose>
+											<xsl:when test="position() mod 2 = 0">#E6E6FA</xsl:when>
+											<xsl:otherwise>#FFFACD</xsl:otherwise>
+										</xsl:choose>
+									</xsl:variable>
+									<tr bgcolor="{$color}">
+										<td>
+											<xsl:value-of select="@key"/>
+										</td>
+										<td>
+											<xsl:value-of select="@value"/>
+										</td>
+									</tr>
+								</xsl:for-each>
+							</table>
+						</td>
+						<td valign="top">
+						 <!-- ==============================================================
+				     SEARCH IN
+				     =============================================================== -->
+							<h3 align="center">Searched in</h3>
+							<table border="1">
+								<tr bgcolor="#C0C0C0">
+									<th>Element</th>
+									<th>Type</th>
+								</tr>
+								<xsl:for-each select="/ucdetector/statistics/searched/search">
+									<xsl:variable name="color">
+										<xsl:choose>
+											<xsl:when test="position() mod 2 = 0">#E6E6FA</xsl:when>
+											<xsl:otherwise>#FFFACD</xsl:otherwise>
+										</xsl:choose>
+									</xsl:variable>
+									<tr bgcolor="{$color}">
+										<td>
+											<xsl:value-of select="."/>
+										</td>
+										<td>
+											<xsl:value-of select="@class"/>
+										</td>
+									</tr>
+								</xsl:for-each>
+							</table>
+						</td>
+					</tr>
+				</table><!-- top outer table -->
+				
 			  <!--	<xsl:value-of select="concat('Searched started: ', /ucdetector/statistics/dateStarted, '. Duration: ', /ucdetector/statistics/searchDuration)"/> -->
 				<h3>Warnings</h3>
 				<table border="1">
@@ -113,89 +202,6 @@ To create custom reports change ECLIPSE_HOME/dropins/org.ucdetector_*.jar/org/uc
        </p>
 
 				<!-- ===================================================================
-				     SEARCH IN
-				     =============================================================== -->
-				<h3>Searched in</h3>
-				<table border="1">
-					<tr bgcolor="#C0C0C0">
-						<th>Element</th>
-						<th>Type</th>
-					</tr>
-					<xsl:for-each select="/ucdetector/statistics/searched/search">
-						<xsl:variable name="color">
-							<xsl:choose>
-								<xsl:when test="position() mod 2 = 0">#E6E6FA</xsl:when>
-								<xsl:otherwise>#FFFACD</xsl:otherwise>
-							</xsl:choose>
-						</xsl:variable>
-						<tr bgcolor="{$color}">
-							<td>
-								<xsl:value-of select="."/>
-							</td>
-							<td>
-								<xsl:value-of select="@class"/>
-							</td>
-						</tr>
-					</xsl:for-each>
-				</table>
-
-				<!-- ===================================================================
-				     PREFERENCES
-				     =============================================================== -->
-				<h3>Preferences</h3>
-				<table border="1">
-					<tr bgcolor="#C0C0C0">
-						<th>Preference</th>
-						<th>Value</th>
-					</tr>
-					<xsl:for-each select="/ucdetector/statistics/preferences/preference">
-						<xsl:variable name="color">
-							<xsl:choose>
-								<xsl:when test="position() mod 2 = 0">#E6E6FA</xsl:when>
-								<xsl:otherwise>#FFFACD</xsl:otherwise>
-							</xsl:choose>
-						</xsl:variable>
-						<tr bgcolor="{$color}">
-							<td>
-								<xsl:value-of select="@key"/>
-							</td>
-							<td>
-								<xsl:value-of select="@value"/>
-							</td>
-						</tr>
-					</xsl:for-each>
-				</table>
-
-				<!-- ===================================================================
-				     SYSTEM
-				     =============================================================== -->
-				<h3>About search</h3>
-				<table border="1">
-					<tr bgcolor="#C0C0C0">
-						<th>Property</th>
-						<th>Value</th>
-					</tr>
-					<xsl:for-each select="/ucdetector/statistics/abouts/about">
-						<xsl:if test="@show = 'true'">
-							<xsl:variable name="color">
-								<xsl:choose>
-									<xsl:when test="position() mod 2 = 0">#E6E6FA</xsl:when>
-									<xsl:otherwise>#FFFACD</xsl:otherwise>
-								</xsl:choose>
-							</xsl:variable>
-							<tr bgcolor="{$color}">
-								<td>
-									<xsl:value-of select="key"/>
-								</td>
-								<td>
-									<xsl:value-of select="value"/>
-								</td>
-							</tr>
-						</xsl:if>
-					</xsl:for-each>
-				</table>
-				
-  			<!-- ===================================================================
 				     PROBLEMS
 				     =============================================================== -->
 				<xsl:if test="count(/ucdetector/problems/problem) &gt; 0">
