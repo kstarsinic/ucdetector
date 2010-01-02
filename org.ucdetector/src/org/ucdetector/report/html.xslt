@@ -86,6 +86,7 @@ ECLIPSE_HOME/dropins/org.ucdetector_*.jar/org/ucdetector/report/html.xslt
 									</tr>
 								</xsl:for-each>
 							</table>
+							Only preferences which are different from default are listed.
 						</td>
 						<td valign="top">
 						 <!-- ==============================================================
@@ -128,7 +129,8 @@ ECLIPSE_HOME/dropins/org.ucdetector_*.jar/org/ucdetector/report/html.xslt
 							<!-- <th>Warn level</th> -->
 							<th>Description</th>
 							<th>References**</th>
-							<th>Type</th>
+							<th>Java Type</th>
+							<th>Marker Type</th>
 						</tr>
 					</thead>
 					<xsl:for-each select="/ucdetector/markers/marker">
@@ -187,6 +189,10 @@ ECLIPSE_HOME/dropins/org.ucdetector_*.jar/org/ucdetector/report/html.xslt
 							<!-- JAVA TYPE -->
 							<td>
 								<xsl:value-of select="javaType"/>
+							</td>
+							<!-- MARKER TYPE -->
+							<td>
+								<xsl:value-of select="markerType"/>
 							</td>
 						</tr>
 					</xsl:for-each>

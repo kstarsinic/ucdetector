@@ -359,6 +359,8 @@ public class XmlReport implements IUCDetectorReport {
     appendAbout("eclipseHome", "Eclipse home", about.getEclipseHome(), false);
     appendAbout("logfile", "Logfile", about.getLogfile(), false);
     appendAbout("workspace", "Workspace", about.getWorkspace(), false);
+    appendAbout("warnings", "Warnings", String.valueOf(markerCount), true);
+    appendAbout("host", "Host", about.getHostName(), false);
     //
     Element searched = appendChild(statistcs, "searched", null);
     for (Object selection : selected) {

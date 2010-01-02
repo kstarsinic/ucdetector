@@ -130,6 +130,15 @@ public class UCDetectorPlugin extends AbstractUIPlugin {
     public String getWorkspace() {
       return System.getProperty("osgi.instance.area"); //$NON-NLS-1$
     }
+
+    public String getHostName() {
+      try {
+        return java.net.InetAddress.getLocalHost().getHostName();
+      }
+      catch (Exception e) {
+        return "?"; //$NON-NLS-1$
+      }
+    }
   }
 
   public static String getPreferencesAsString() {
