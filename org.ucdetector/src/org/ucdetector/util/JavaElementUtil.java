@@ -807,4 +807,35 @@ public class JavaElementUtil {
     IJavaElement parent = element.getParent();
     return (parent instanceof IType && ((IType) parent).isInterface());
   }
+
+  /**
+   * Check if a enum class is called by:
+   * <ul>
+   *   <li><code>values()</code> or</li> 
+   *   <li><code>valueOf(java.lang.String)</code></li>
+   * </ul>
+   * See bug 2900561: enum detection, or don't create "unnecessary marker" for enum constants
+   * See: JavaSearchPage.performNewSearch()
+   *  See: JavaSearchQuery.run()
+   * @param enumType enum to check usage
+   * @return <code>true</code>, when enum is used by values() or valueOf()
+   * @throws CoreException when there are search problems
+   */
+  public static boolean isUsedBySpecialEnumMethods(IType enumType) throws CoreException {
+    String[] stringPatterns = new String[] {//
+    /**/enumType.getFullyQualifiedName() + ".values()", //$NON-NLS-1$
+        enumType.getFullyQualifiedName() + ".valueOf(java.lang.String)", //$NON-NLS-1$
+    //        enumType.getFullyQualifiedName() + ".valueOf(java.lang.Class,java.lang.String)",
+    };
+    for (String stringPattern : stringPatterns) {
+      SearchPattern pattern = SearchPattern.createPattern(stringPattern, IJavaSearchConstants.METHOD,
+          IJavaSearchConstants.REFERENCES, SearchPattern.R_ERASURE_MATCH);
+      CountSearchRequestor requestor = new CountSearchRequestor();
+      runSearch(pattern, requestor);
+      if (requestor.isFound()) {
+        return true;
+      }
+    }
+    return false;
+  }
 }

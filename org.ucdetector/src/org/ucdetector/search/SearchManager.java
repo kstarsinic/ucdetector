@@ -63,6 +63,8 @@ public class SearchManager {
   private int search = 0;
   /** shortcut to skip methods and fields of classes which have no references */
   private final List<IType> noRefTypes = new ArrayList<IType>();
+  /** Skip search for enum constants, because they are used by value() or valueOf() */
+  private final List<IType> usedByValueEnums = new ArrayList<IType>();
   /** contains all exceptions happened during search */
   private final List<IStatus> searchProblems = new ArrayList<IStatus>();
   /** Factory to create markers */
@@ -180,6 +182,9 @@ public class SearchManager {
     if (found == 0) {
       noRefTypes.add(type);
     }
+    if (type.isEnum() && JavaElementUtil.isUsedBySpecialEnumMethods(type)) {
+      usedByValueEnums.add(type);
+    }
   }
 
   /**
@@ -257,6 +262,9 @@ public class SearchManager {
     }
     if (type.isAnonymous()) {
       return; // Ignore anonymous classes
+    }
+    if (usedByValueEnums.contains(type)) {
+      return;// See bug 2900561: enum detection, or don't create "unnecessary marker" for enum constants
     }
     updateMonitorMessage(field, Messages.SearchManager_SearchReferences, searchInfo);
     int found = searchImpl(field, searchInfo, false);
@@ -339,23 +347,6 @@ public class SearchManager {
         return found;
       }
     }
-    // TODO bug 2900561: enum detection, or don't create "unnecessary marker" for enum constants
-    // TODO: clean up code
-    // See: JavaSearchPage.performNewSearch()
-    // See: JavaSearchQuery.run()
-    if (found == 0 && member instanceof IField) {
-      IField field = (IField) member;
-      if (field.isEnumConstant()) {
-        IType enumType = JavaElementUtil.getTypeFor(field, false);
-        String stringPattern = enumType.getFullyQualifiedName() + ".values()"; //$NON-NLS-1$
-        SearchPattern pattern = SearchPattern.createPattern(stringPattern, IJavaSearchConstants.METHOD,
-            IJavaSearchConstants.REFERENCES, SearchPattern.R_ERASURE_MATCH);
-        CountSearchRequestor requestor = new CountSearchRequestor();
-        JavaElementUtil.runSearch(pattern, requestor);
-        //        System.out.println("found=" + requestor); //$NON-NLS-1$
-        return requestor.getFoundCount();
-      }
-    }
     created = markerFactory.createReferenceMarker(member, markerMessage, line, found);
     if (created) {
       markerCreated++;
@@ -399,7 +390,7 @@ public class SearchManager {
 
     updateMonitorMessage(type, Messages.SearchManager_SearchClassNameAsLiteral, searchInfo);
     FileTextSearchScope scope = FileTextSearchScope.newWorkspaceScope(Prefs.getFilePatternLiteralSearch(), /*exclude bin dir */
-        false);
+    false);
     String searchString;
     boolean searchFullClassName = Prefs.isUCDetectionInLiteralsFullClassName();
     if (searchFullClassName) {

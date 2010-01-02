@@ -2,7 +2,7 @@ UCDetector 1.4.0 from :
 Bugfixes:
  - [ PerformanceBug ] UCDetector is now 2 times faster, because SearchScope is sources now.
  - [ 2911486 ] QuickFix doesn't modify code
- - [ 2900561] Enum detection, or don't create "unnecessary marker" for enum constants
+ - [ 2900561] Enum constant detection now also searches for values() and valueOf()
 
 New features:
  - Improved QuickFixes

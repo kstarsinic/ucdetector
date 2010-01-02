@@ -32,6 +32,7 @@ import org.ucdetector.example.classes.ClassInJarExample;
 import org.ucdetector.example.classes.LocalClassExample;
 import org.ucdetector.example.classes.MemberClassExample;
 import org.ucdetector.example.enums.EnumExample;
+import org.ucdetector.example.enums.EnumExampleUsedWithValueOf;
 import org.ucdetector.example.enums.EnumExampleUsedWithValues;
 import org.ucdetector.example.fields.FieldExamples;
 import org.ucdetector.example.fields.FieldNeverRead;
@@ -78,6 +79,7 @@ public class PublicReferenceHolder {
   public static void main(String[] args) throws Throwable {
     // ------------------------------------------------------------------------
     System.out.println(EnumExampleUsedWithValues.values());
+    System.out.println(EnumExampleUsedWithValueOf.valueOf("test"));
     // ------------------------------------------------------------------------
     UnnecessaryBoolParam ubp = new UnnecessaryBoolParam();
     ubp.unnecessaryBool("test", true);

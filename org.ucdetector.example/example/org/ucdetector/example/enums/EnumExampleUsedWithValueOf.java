@@ -13,9 +13,9 @@ package org.ucdetector.example.enums;
  * @see https://sourceforge.net/tracker/?func=detail&aid=2900561&group_id=219599&atid=1046865
  * <p>
  * Browse code at:
- * http://ucdetector.svn.sourceforge.net/viewvc/ucdetector/trunk/org.ucdetector.example/example/org/ucdetector/example/enums/EnumExampleUsedWithValues.java?view=markup
+ * http://ucdetector.svn.sourceforge.net/viewvc/ucdetector/trunk/org.ucdetector.example/example/org/ucdetector/example/enums/EnumExampleUsedWithValueOf.java?view=markup
  */
-public enum EnumExampleUsedWithValues {
-  TEST, //
+public enum EnumExampleUsedWithValueOf {
+  TEST, // 
   TEST2, //
 }
