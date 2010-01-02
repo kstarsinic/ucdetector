@@ -3,7 +3,7 @@ Usefully strings for new bugs:
 /**
  * Bug _BUG_ID_: Compile error for: static variable
  * <p>
- * Submitted: Nobody/Anonymous ( nobody ) - 2009-04-24 00:59
+ * Submitted: Nobody/Anonymous ( nobody ) - 2010-04-24 00:59
  * <p>
  * TEXT
  * <p>

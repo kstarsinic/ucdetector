@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2009 Joerg Spieler
+ * Copyright (c) 2010 Joerg Spieler
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -70,7 +70,7 @@ import org.w3c.dom.Element;
 @SuppressWarnings("nls")
 public class XmlReport implements IUCDetectorReport {
   private static final String COPY_RIGHT = "\n" //
-      + "    Copyright (c) 2009 Joerg Spieler All rights reserved. This program and the\n"
+      + "    Copyright (c) 2010 Joerg Spieler All rights reserved. This program and the\n"
       + "    accompanying materials are made available under the terms of the Eclipse\n"
       + "    Public License v1.0 which accompanies this distribution, and is available at\n"
       + "    http://www.eclipse.org/legal/epl-v10.html\n";

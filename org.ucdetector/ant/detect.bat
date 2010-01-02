@@ -1,6 +1,6 @@
 REM @echo off
 REM ----------------------------------------------------------------------------
-REM  Copyright (c) 2009 Joerg Spieler All rights reserved. This program and the
+REM  Copyright (c) 2010 Joerg Spieler All rights reserved. This program and the
 REM  accompanying materials are made available under the terms of the Eclipse
 REM  Public License v1.0 which accompanies this distribution, and is available at
 REM  http://www.eclipse.org/legal/epl-v10.html
