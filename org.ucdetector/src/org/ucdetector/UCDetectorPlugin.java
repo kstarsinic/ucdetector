@@ -158,6 +158,7 @@ public class UCDetectorPlugin extends AbstractUIPlugin {
     Map<String, String> result = new LinkedHashMap<String, String>();
     try {
       IEclipsePreferences node = new InstanceScope().getNode(ID);
+      // All preferences: node = new DefaultScope().getNode(UCDetectorPlugin.ID);
       String[] propertyNames = node.keys();
       for (String propertyName : propertyNames) {
         result.put(propertyName, node.get(propertyName, null));
