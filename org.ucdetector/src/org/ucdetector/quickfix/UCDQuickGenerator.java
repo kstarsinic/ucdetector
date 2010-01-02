@@ -45,7 +45,7 @@ public class UCDQuickGenerator implements IMarkerResolutionGenerator2 { // NO_UC
       else if (MarkerFactory.UCD_MARKER_USE_FINAL.equals(markerType)) {
         resolutions.add(new UseFinalQuickFix(marker));
       }
-      resolutions.add(new UseTag_NO_UCD_QuickFix(marker));
+      resolutions.add(new NoUcdTagQuickFix(marker));
       resolutions.add(new UseSuppressWarningsQuickFix(marker));
       return resolutions.toArray(new IMarkerResolution[resolutions.size()]);
     }

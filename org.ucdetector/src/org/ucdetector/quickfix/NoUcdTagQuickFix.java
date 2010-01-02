@@ -20,10 +20,10 @@ import org.ucdetector.Messages;
 /**
  * 'Fixes' code by adding line comment at end of line: "// NO_UCD"
  */
-class UseTag_NO_UCD_QuickFix extends AbstractUCDQuickFix {
+class NoUcdTagQuickFix extends AbstractUCDQuickFix {
   static final String NO_UCD_COMMENT = " // NO_UCD";//$NON-NLS-1$
 
-  protected UseTag_NO_UCD_QuickFix(IMarker marker) {
+  protected NoUcdTagQuickFix(IMarker marker) {
     super(marker);
   }
 
