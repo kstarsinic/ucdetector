@@ -1,4 +1,4 @@
-package org.ucdetector.example.classes;
+package org.ucdetector.example.enums;
 
 public enum EnumExample {
   USED, //

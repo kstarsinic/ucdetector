@@ -1,4 +1,4 @@
-package org.ucdetector.example.classes;
+package org.ucdetector.example.enums;
 /**
  * Bug 2900561: Compile error for: static variable
  * <p>
