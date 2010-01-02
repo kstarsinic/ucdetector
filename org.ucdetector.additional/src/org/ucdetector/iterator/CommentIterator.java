@@ -37,8 +37,7 @@ public class CommentIterator extends AdditionalIterator {
   private final List<String> todoComments = new ArrayList<String>();
 
   @Override
-  protected void handleCompilationUnit(ICompilationUnit unit)
-      throws CoreException {
+  protected void handleCompilationUnit(ICompilationUnit unit) throws CoreException {
     IScanner scanner = ToolFactory.createScanner(true, false, false, true);
     // old: char[] contents = org.eclipse.jdt.internal.core.CompilationUnit.getContents();
     char[] contents = unit.getBuffer().getCharacters();
@@ -65,8 +64,7 @@ public class CommentIterator extends AdditionalIterator {
       }
     }
     catch (InvalidInputException e) {
-      IStatus status = new Status(IStatus.ERROR, UCDetectorPlugin.ID,
-          IStatus.ERROR, e.getMessage(), e);
+      IStatus status = new Status(IStatus.ERROR, UCDetectorPlugin.ID, IStatus.ERROR, e.getMessage(), e);
       throw new CoreException(status);
     }
   }

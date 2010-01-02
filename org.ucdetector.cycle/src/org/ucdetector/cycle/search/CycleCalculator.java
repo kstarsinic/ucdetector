@@ -33,8 +33,7 @@ class CycleCalculator {
   private final SearchResult searchResult;
   private final IProgressMonitor monitor;
 
-  CycleCalculator(SearchResult searchResult,
-      List<TypeAndMatches> typeAndRefsList, IProgressMonitor monitor) {
+  CycleCalculator(SearchResult searchResult, List<TypeAndMatches> typeAndRefsList, IProgressMonitor monitor) {
     this.searchResult = searchResult;
     this.typeAndMatchesList = typeAndRefsList;
     this.monitor = monitor;
@@ -69,10 +68,8 @@ class CycleCalculator {
       searchCycles(startType, path, allCycles);
       if (Log.DEBUG) {
         int found = allCycles.size() - prevSize;
-        Log.logDebug(found
-            + " cycles found for " //$NON-NLS-1$
-            + typeAndMatches.getRoot().getElementName()
-            + " (including double cycles)"); //$NON-NLS-1$
+        Log.logDebug(found + " cycles found for " //$NON-NLS-1$
+            + typeAndMatches.getRoot().getElementName() + " (including double cycles)"); //$NON-NLS-1$
       }
       prevSize = allCycles.size();
     }
@@ -136,8 +133,7 @@ class CycleCalculator {
    * @param path actual search Path: A-B-C
    * @param result contains all found cycles, new cycles are added
    */
-  private void searchCycles(IType startType, Stack<TypeAndMatches> path,
-      List<Cycle> result) {
+  private void searchCycles(IType startType, Stack<TypeAndMatches> path, List<Cycle> result) {
     TypeAndMatches typeAndMatches = getTypeAndMatchesFor(startType);
     if (typeAndMatches == null) {
       // there is no information about the class
@@ -165,8 +161,7 @@ class CycleCalculator {
     path.pop();
   }
 
-  private static LinkedList<CycleType> createCycleList(
-      List<TypeAndMatches> matches) {
+  private static LinkedList<CycleType> createCycleList(List<TypeAndMatches> matches) {
     LinkedList<CycleType> result = new LinkedList<CycleType>();
     for (int i = 0; i < matches.size(); i++) {
       int next = (i + 1) % matches.size();

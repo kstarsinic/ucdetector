@@ -76,8 +76,7 @@ public abstract class AbstractUCDetectorIterator extends UCDetectorCallBack {
    * @throws CoreException when a problems happened during iteration
    */
   public final void iterateAll() throws CoreException { // NO_UCD
-    IProject[] projects = ResourcesPlugin.getWorkspace().getRoot()
-        .getProjects();
+    IProject[] projects = ResourcesPlugin.getWorkspace().getRoot().getProjects();
     List<IJavaProject> openProjects = new ArrayList<IJavaProject>();
     for (IProject tempProject : projects) {
       IJavaProject project = JavaCore.create(tempProject);
@@ -212,8 +211,7 @@ public abstract class AbstractUCDetectorIterator extends UCDetectorCallBack {
       if (!visitedPackages.contains(packageFragment)) {
         visitedPackages.add(packageFragment);
         if (activePackage == packageFragment) {
-          List<IPackageFragment> subPackages = JavaElementUtil
-              .getSubPackages(packageFragment);
+          List<IPackageFragment> subPackages = JavaElementUtil.getSubPackages(packageFragment);
           for (IPackageFragment subPackage : subPackages) {
             iterate(subPackage);
           }
@@ -324,8 +322,7 @@ public abstract class AbstractUCDetectorIterator extends UCDetectorCallBack {
    */
   protected final void debugHandle(String what, IMember member) {
     if (DEBUG) {
-      Log.logDebug(String.format(
-          "    Handle %s '%s'", what, JavaElementUtil.getElementName(member))); //$NON-NLS-1$
+      Log.logDebug(String.format("    Handle %s '%s'", what, JavaElementUtil.getElementName(member))); //$NON-NLS-1$
     }
   }
 

@@ -51,8 +51,7 @@ public class UCDetectorIterator extends AbstractUCDetectorIterator {
   }
 
   @Override
-  public void handleStartSelectedElement(IJavaElement javaElement)
-      throws CoreException {
+  public void handleStartSelectedElement(IJavaElement javaElement) throws CoreException {
     MarkerFactory.deleteMarkers(javaElement);
   }
 
@@ -74,8 +73,7 @@ public class UCDetectorIterator extends AbstractUCDetectorIterator {
       debugNotHandle(TYPE, type, "filterType"); //$NON-NLS-1$
       return false;
     }
-    if (Prefs.isFilterClassContainingString()
-        && type.getCompilationUnit() != null) {
+    if (Prefs.isFilterClassContainingString() && type.getCompilationUnit() != null) {
       String classAsString = type.getCompilationUnit().getSource();
       if (Prefs.filterClassContainingString(classAsString)) {
         debugNotHandle(TYPE, type, "filterClassContainingString"); //$NON-NLS-1$
@@ -143,8 +141,7 @@ public class UCDetectorIterator extends AbstractUCDetectorIterator {
       getIteratedTypeContainer().getFields().add(field);
     }
     else {
-      debugNotHandle(FIELD, field,
-          "!isCheckUseFinalField || isUCDetectionInFields"); //$NON-NLS-1$
+      debugNotHandle(FIELD, field, "!isCheckUseFinalField || isUCDetectionInFields"); //$NON-NLS-1$
     }
   }
 
@@ -157,8 +154,7 @@ public class UCDetectorIterator extends AbstractUCDetectorIterator {
     int totalSize = getElelementsToDetectCount();
     getMonitor().beginTask(Messages.UCDetectorIterator_MONITOR_INFO, totalSize);
     getMonitor().worked(1);
-    SearchManager searchManager = new SearchManager(getMonitor(), totalSize,
-        getMarkerFactory());
+    SearchManager searchManager = new SearchManager(getMonitor(), totalSize, getMarkerFactory());
     try {
       searchManager.search(typeContainers);
     }

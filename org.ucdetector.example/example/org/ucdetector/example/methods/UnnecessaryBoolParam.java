@@ -12,4 +12,3 @@ public class UnnecessaryBoolParam {
   public void necessaryBool(String s, boolean bool) {
   }
 }
- 

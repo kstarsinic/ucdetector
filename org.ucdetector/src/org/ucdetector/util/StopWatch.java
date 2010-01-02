@@ -18,12 +18,10 @@ import org.ucdetector.Log;
  * Simple stop watch to measure performance
  */
 public class StopWatch {
-  private static final int MINIMUM_DURATION = Log.getDebugOption(
-      "org.ucdetector/debug/search/duration", 1000); //$NON-NLS-1$
+  private static final int MINIMUM_DURATION = Log.getDebugOption("org.ucdetector/debug/search/duration", 1000); //$NON-NLS-1$
   private final String message;
   private long start = System.currentTimeMillis();
-  private static final DecimalFormat DOUBLE_FORMAT = new DecimalFormat(
-      "0.00", new DecimalFormatSymbols(Locale.US)); //$NON-NLS-1$
+  private static final DecimalFormat DOUBLE_FORMAT = new DecimalFormat("0.00", new DecimalFormatSymbols(Locale.US)); //$NON-NLS-1$
 
   public StopWatch() {
     message = null;

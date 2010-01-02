@@ -18,8 +18,7 @@ public class SerializationMethodExample {
     }
   }
 
-  /* private */void readObject(ObjectInputStream stream) throws IOException,
-      ClassNotFoundException {
+  /* private */void readObject(ObjectInputStream stream) throws IOException, ClassNotFoundException {
     new File("a").getCanonicalFile();
     throw new ClassNotFoundException();
   }

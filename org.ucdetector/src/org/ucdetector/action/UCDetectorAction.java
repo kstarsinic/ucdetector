@@ -55,8 +55,7 @@ public class UCDetectorAction extends AbstractUCDetectorAction {
         UCDProgressMonitor monitor = iterator.getMonitor();
         if (monitor.isFinished()) {
           // See org.eclipse.ui.views.markers.MarkerViewUtil.getViewId()
-          UCDetectorPlugin.getActivePage()
-              .showView(IPageLayout.ID_PROBLEM_VIEW);
+          UCDetectorPlugin.getActivePage().showView(IPageLayout.ID_PROBLEM_VIEW);
           return;
         }
         IJavaElement element = monitor.getActiveSearchElement();
@@ -75,8 +74,7 @@ public class UCDetectorAction extends AbstractUCDetectorAction {
   protected IStatus postIteration() {
     int created = iterator.getMarkerCreated();
     StringBuilder mes = new StringBuilder();
-    mes.append(NLS.bind(Messages.UCDetectorAction_ResultMessage, String
-        .valueOf(created)));
+    mes.append(NLS.bind(Messages.UCDetectorAction_ResultMessage, String.valueOf(created)));
     //
     String reportFolder = Prefs.getReportFolder();
     if (reportFolder != null && created > 0) {

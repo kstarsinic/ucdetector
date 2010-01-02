@@ -21,7 +21,7 @@ import java.lang.annotation.Target;
 // http://sourceforge.net/tracker/?func=detail&aid=2658675&group_id=219599&atid=1046868
 // Similar to SuppressWarnings
 
-@Target( { TYPE, FIELD, METHOD, CONSTRUCTOR, ANNOTATION_TYPE })
+@Target({ TYPE, FIELD, METHOD, CONSTRUCTOR, ANNOTATION_TYPE })
 @Retention(RetentionPolicy.SOURCE)
 /**
  * Examples: @UsedBy("reflection", "external", "framework")

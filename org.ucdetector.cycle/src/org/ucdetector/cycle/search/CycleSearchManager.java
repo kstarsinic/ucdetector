@@ -44,8 +44,7 @@ public class CycleSearchManager {
   private final Map<IJavaProject, List<IType>> typesMap = new HashMap<IJavaProject, List<IType>>();
   private final IJavaElement[] selections;
 
-  public CycleSearchManager(IProgressMonitor monitor, List<IType> types,
-      IJavaElement[] selections) {
+  public CycleSearchManager(IProgressMonitor monitor, List<IType> types, IJavaElement[] selections) {
     this.monitor = monitor;
     this.selections = selections;
     // Group types by project
@@ -71,12 +70,9 @@ public class CycleSearchManager {
       IJavaProject javaProject = entry.getKey();
       List<IType> types = entry.getValue();
       List<TypeAndMatches> typeAndRefsList = searchAllTypes(types, projectNr);
-      SearchResult searchResult = new SearchResult(root, selections,
-          javaProject);
-      CycleCalculator cycleCalculator = new CycleCalculator(searchResult,
-          typeAndRefsList, monitor);
-      monitor.subTask(Messages.CycleSearchManager_Project_Info
-          + javaProject.getElementName());
+      SearchResult searchResult = new SearchResult(root, selections, javaProject);
+      CycleCalculator cycleCalculator = new CycleCalculator(searchResult, typeAndRefsList, monitor);
+      monitor.subTask(Messages.CycleSearchManager_Project_Info + javaProject.getElementName());
       monitor.worked(1);
       List<Cycle> cycleList = cycleCalculator.calculate();
       //
@@ -89,8 +85,7 @@ public class CycleSearchManager {
     }
   }
 
-  private List<TypeAndMatches> searchAllTypes(List<IType> types, int projectNr)
-      throws CoreException {
+  private List<TypeAndMatches> searchAllTypes(List<IType> types, int projectNr) throws CoreException {
     List<TypeAndMatches> result = new ArrayList<TypeAndMatches>();
     int search = 0;
     for (IType type : types) {
@@ -102,14 +97,13 @@ public class CycleSearchManager {
       monitor.subTask(mes);
       monitor.worked(1);
       TypeAndMatches typeAndMatches = new TypeAndMatches(type);
-      SearchPattern pattern = SearchPattern.createPattern(type,
-          IJavaSearchConstants.REFERENCES, SearchPattern.R_EXACT_MATCH);
+      SearchPattern pattern = SearchPattern.createPattern(type, IJavaSearchConstants.REFERENCES,
+          SearchPattern.R_EXACT_MATCH);
       // IJavaSearchScope scope = SearchEngine.createWorkspaceScope();
       //      IJavaProject javaProject = type.getJavaProject();
       //      IJavaSearchScope scope = SearchEngine.createJavaSearchScope(
       //          new IJavaProject[] { javaProject }, false);
-      ReferenceSearchRequestor requestor = new ReferenceSearchRequestor(
-          typeAndMatches);
+      ReferenceSearchRequestor requestor = new ReferenceSearchRequestor(typeAndMatches);
       JavaElementUtil.runSearch(pattern, requestor);
       result.add(typeAndMatches);
       if (Log.DEBUG) {
@@ -121,8 +115,7 @@ public class CycleSearchManager {
     return result;
   }
 
-  private String getMonitorMessage(List<IType> types, int projectNr,
-      int search, IType type) {
+  private String getMonitorMessage(List<IType> types, int projectNr, int search, IType type) {
     List<Object> bindingList = new ArrayList<Object>();
     if (typesMap.size() > 1) {
       bindingList.add(Integer.valueOf(projectNr));

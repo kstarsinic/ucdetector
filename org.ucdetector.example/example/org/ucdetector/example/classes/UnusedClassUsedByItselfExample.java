@@ -5,7 +5,6 @@ package org.ucdetector.example.classes;
  */
 public class UnusedClassUsedByItselfExample {// Marker YES: unused code
   public UnusedClassUsedByItselfExample() {
-    System.out
-        .println("Name=" + UnusedClassUsedByItselfExample.class.getName());
+    System.out.println("Name=" + UnusedClassUsedByItselfExample.class.getName());
   }
 }

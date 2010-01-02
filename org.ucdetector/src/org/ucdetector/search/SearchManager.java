@@ -48,8 +48,7 @@ import org.ucdetector.util.StopWatch;
  * Search for class, methods, fields using the eclipse search mechanism
  */
 public class SearchManager {
-  private static final boolean DEBUG = Log
-      .isDebugOption("org.ucdetector/debug/search"); //$NON-NLS-1$
+  private static final boolean DEBUG = Log.isDebugOption("org.ucdetector/debug/search"); //$NON-NLS-1$
   /** Information for user, that we are searching for final stuff */
   private static final String SEARCH_FINAL_MESSAGE = "final"; //$NON-NLS-1$
   /** Get Information about code lines in source code files   */
@@ -71,8 +70,7 @@ public class SearchManager {
   /** handle final stuff   */
   private final FinalHandler finalHandler;
 
-  public SearchManager(UCDProgressMonitor monitor, int searchTotal,
-      MarkerFactory markerFactory) {
+  public SearchManager(UCDProgressMonitor monitor, int searchTotal, MarkerFactory markerFactory) {
     this.monitor = monitor;
     this.searchTotal = searchTotal;
     this.markerFactory = markerFactory;
@@ -89,8 +87,7 @@ public class SearchManager {
       int pos = 0;
       for (TypeContainer container : typeContainers) {
         pos++;
-        String message = String.format(
-            "Search %s of %s types. Markers %s. Exceptions %s. Class %s - %s", //$NON-NLS-1$
+        String message = String.format("Search %s of %s types. Markers %s. Exceptions %s. Class %s - %s", //$NON-NLS-1$
             fill(pos, 4),//
             fill(typeContainers.size(), 4),//
             fill(markerCreated, 4), //
@@ -119,10 +116,9 @@ public class SearchManager {
     }
     Log.logInfo("Search end: " + UCDetectorPlugin.getNow()); //$NON-NLS-1$
     if (searchProblems.size() > 0) {
-      IStatus[] stati = searchProblems.toArray(new IStatus[searchProblems
-          .size()]);
-      MultiStatus status = new MultiStatus(UCDetectorPlugin.ID, IStatus.ERROR,
-          stati, stati.length + " errors happened during UCDetection", null); //$NON-NLS-1$
+      IStatus[] stati = searchProblems.toArray(new IStatus[searchProblems.size()]);
+      MultiStatus status = new MultiStatus(UCDetectorPlugin.ID, IStatus.ERROR, stati, stati.length
+          + " errors happened during UCDetection", null); //$NON-NLS-1$
       UCDetectorPlugin.logStatus(status);
     }
   }
@@ -162,13 +158,11 @@ public class SearchManager {
           + JavaElementUtil.getMemberTypeString(member)//
           + " " + JavaElementUtil.getElementName(member); //$NON-NLS-1$
       Log.logError(message, ex);
-      Status status = new Status(IStatus.ERROR, UCDetectorPlugin.ID,
-          IStatus.ERROR, message, ex);
+      Status status = new Status(IStatus.ERROR, UCDetectorPlugin.ID, IStatus.ERROR, message, ex);
       markerFactory.reportDetectionProblem(status);
       searchProblems.add(status);
       if (searchProblems.size() > 100) {
-        throw new OperationCanceledException(
-            "Stopped searching. To many Exceptions!"); //$NON-NLS-1$
+        throw new OperationCanceledException("Stopped searching. To many Exceptions!"); //$NON-NLS-1$
       }
     }
   }
@@ -179,8 +173,7 @@ public class SearchManager {
   private void searchSpecific(IType type) throws CoreException {
     monitor.worked(1);
     String searchInfo = JavaElementUtil.getMemberTypeString(type);
-    updateMonitorMessage(type, Messages.SearchManager_SearchReferences,
-        searchInfo);
+    updateMonitorMessage(type, Messages.SearchManager_SearchReferences, searchInfo);
     StopWatch watch = new StopWatch(type);
     int found = searchImpl(type, searchInfo, false);
     watch.end("    Calculate reference marker"); //$NON-NLS-1$
@@ -229,8 +222,7 @@ public class SearchManager {
         markerCreated++;
       }
     }
-    updateMonitorMessage(method, Messages.SearchManager_SearchReferences,
-        searchInfo);
+    updateMonitorMessage(method, Messages.SearchManager_SearchReferences, searchInfo);
     searchImpl(method, searchInfo, isOverriddenMethod);
     watch.end("    searchImpl"); //$NON-NLS-1$
   }
@@ -266,14 +258,12 @@ public class SearchManager {
     if (type.isAnonymous()) {
       return; // Ignore anonymous classes
     }
-    updateMonitorMessage(field, Messages.SearchManager_SearchReferences,
-        searchInfo);
+    updateMonitorMessage(field, Messages.SearchManager_SearchReferences, searchInfo);
     int found = searchImpl(field, searchInfo, false);
     watch.end("    searchImpl"); //$NON-NLS-1$
     if (found > 0 && !hasReadAccess(field)) {
-      String message = NLS.bind(
-          Messages.MarkerFactory_MarkerReferenceFieldNeverRead,
-          new Object[] { JavaElementUtil.getElementName(field) });
+      String message = NLS.bind(Messages.MarkerFactory_MarkerReferenceFieldNeverRead, new Object[] { JavaElementUtil
+          .getElementName(field) });
       // found=0 needed here, to create reference marker!
       markerFactory.createReferenceMarker(field, message, line, 0);
     }
@@ -291,8 +281,7 @@ public class SearchManager {
    * @return <code>true</code>, when a field has read access
    */
   private static boolean hasReadAccess(IField field) throws CoreException {
-    SearchPattern pattern = SearchPattern.createPattern(field,
-        IJavaSearchConstants.READ_ACCESSES);
+    SearchPattern pattern = SearchPattern.createPattern(field, IJavaSearchConstants.READ_ACCESSES);
     CountSearchRequestor requestor = new CountSearchRequestor();
     JavaElementUtil.runSearch(pattern, requestor);
     return requestor.isFound();
@@ -301,15 +290,13 @@ public class SearchManager {
   /**
     * Search for references create marker
     */
-  private int searchImpl(IMember member, String searchInfo,
-      boolean isOverriddenMethod) throws CoreException {
+  private int searchImpl(IMember member, String searchInfo, boolean isOverriddenMethod) throws CoreException {
     int line = lineManger.getLine(member);
     checkForCancel();
     if (line == LineManger.LINE_NOT_FOUND) {
       return 0;
     }
-    VisibilityHandler visibilityHandler = new VisibilityHandler(markerFactory,
-        member);
+    VisibilityHandler visibilityHandler = new VisibilityHandler(markerFactory, member);
     UCDSearchRequestor foundResult = searchJavaImpl(member, visibilityHandler);
     int found = foundResult.found;
     // System.out.println("found: " + found + " - " + foundResult.foundTest);
@@ -328,10 +315,8 @@ public class SearchManager {
         markerCreated++;
       }
     }
-    Object[] bindings = new Object[] { searchInfo,
-        JavaElementUtil.getElementName(member), Integer.valueOf(found) };
-    String markerMessage = NLS.bind(Messages.MarkerFactory_MarkerReference,
-        bindings);
+    Object[] bindings = new Object[] { searchInfo, JavaElementUtil.getElementName(member), Integer.valueOf(found) };
+    String markerMessage = NLS.bind(Messages.MarkerFactory_MarkerReference, bindings);
     if (member instanceof IMethod) {
       IMethod method = (IMethod) member;
       // [ 2743872 ] Don't check for constructors called only 1 time
@@ -363,17 +348,15 @@ public class SearchManager {
       if (field.isEnumConstant()) {
         IType enumType = JavaElementUtil.getTypeFor(field, false);
         String stringPattern = enumType.getFullyQualifiedName() + ".values()"; //$NON-NLS-1$
-        SearchPattern pattern = SearchPattern.createPattern(stringPattern,
-            IJavaSearchConstants.METHOD, IJavaSearchConstants.REFERENCES,
-            SearchPattern.R_ERASURE_MATCH);
+        SearchPattern pattern = SearchPattern.createPattern(stringPattern, IJavaSearchConstants.METHOD,
+            IJavaSearchConstants.REFERENCES, SearchPattern.R_ERASURE_MATCH);
         CountSearchRequestor requestor = new CountSearchRequestor();
         JavaElementUtil.runSearch(pattern, requestor);
         //        System.out.println("found=" + requestor); //$NON-NLS-1$
         return requestor.getFoundCount();
       }
     }
-    created = markerFactory.createReferenceMarker(member, markerMessage, line,
-        found);
+    created = markerFactory.createReferenceMarker(member, markerMessage, line, found);
     if (created) {
       markerCreated++;
     }
@@ -383,13 +366,10 @@ public class SearchManager {
   /**
    * Search for java references
    */
-  private UCDSearchRequestor searchJavaImpl(IMember member,
-      VisibilityHandler visibilityHandler) throws CoreException {
+  private UCDSearchRequestor searchJavaImpl(IMember member, VisibilityHandler visibilityHandler) throws CoreException {
     checkForCancel();
-    SearchPattern pattern = SearchPattern.createPattern(member,
-        IJavaSearchConstants.REFERENCES);
-    UCDSearchRequestor requestor = new UCDSearchRequestor(member,
-        visibilityHandler, lineManger);
+    SearchPattern pattern = SearchPattern.createPattern(member, IJavaSearchConstants.REFERENCES);
+    UCDSearchRequestor requestor = new UCDSearchRequestor(member, visibilityHandler, lineManger);
     boolean isSearchException = JavaElementUtil.runSearch(pattern, requestor);
     // Let's be pessimistic and handle an Exception as "reference found"!
     if (isSearchException && requestor.found == 0) {
@@ -401,8 +381,7 @@ public class SearchManager {
   /**
    * Search in text files
    */
-  private int searchTextImpl(IMember member,
-      VisibilityHandler visibilityHandler, int found) throws CoreException {
+  private int searchTextImpl(IMember member, VisibilityHandler visibilityHandler, int found) throws CoreException {
     checkForCancel();
     if (!Prefs.isUCDetectionInLiterals() || !(member instanceof IType)) {
       return 0;
@@ -418,10 +397,9 @@ public class SearchManager {
     }
     String searchInfo = JavaElementUtil.getMemberTypeString(member);
 
-    updateMonitorMessage(type, Messages.SearchManager_SearchClassNameAsLiteral,
-        searchInfo);
-    FileTextSearchScope scope = FileTextSearchScope.newWorkspaceScope(Prefs
-        .getFilePatternLiteralSearch(), /*exclude bin dir */false);
+    updateMonitorMessage(type, Messages.SearchManager_SearchClassNameAsLiteral, searchInfo);
+    FileTextSearchScope scope = FileTextSearchScope.newWorkspaceScope(Prefs.getFilePatternLiteralSearch(), /*exclude bin dir */
+        false);
     String searchString;
     boolean searchFullClassName = Prefs.isUCDetectionInLiteralsFullClassName();
     if (searchFullClassName) {
@@ -439,8 +417,7 @@ public class SearchManager {
       return 0;
     }
     Pattern searchPattern = Pattern.compile(Pattern.quote(searchString));
-    UCDFileSearchRequestor requestor = new UCDFileSearchRequestor(searchString,
-        visibilityHandler);
+    UCDFileSearchRequestor requestor = new UCDFileSearchRequestor(searchString, visibilityHandler);
     try {
       // If we use monitor here, progressbar is very confusing!
       if (UCDetectorPlugin.isHeadlessMode()) {
@@ -460,8 +437,7 @@ public class SearchManager {
     // bug fix [ 2373808 ]: Classes found by text search should have no markers
     if (requestor.found > 0) {
       if (Log.DEBUG) {
-        Log.logDebug(String.format(
-            "Matches found searching class name '%s' in text files", //$NON-NLS-1$
+        Log.logDebug(String.format("Matches found searching class name '%s' in text files", //$NON-NLS-1$
             searchString));
       }
       noRefTypes.add(type);
@@ -473,13 +449,11 @@ public class SearchManager {
    * Message shown in the progress dialog like:<br>
    *        <code>Found 2! Done 7/58. Detecting class Classname.methodName()</code>
    */
-  private void updateMonitorMessage(IJavaElement element, String details,
-      String searchInfo) {
+  private void updateMonitorMessage(IJavaElement element, String details, String searchInfo) {
     checkForCancel();
     String javaElement = JavaElementUtil.getElementName(element);
-    Object[] bindings = new Object[] { Integer.valueOf(markerCreated),
-        Integer.valueOf(search), Integer.valueOf(searchTotal), searchInfo,
-        javaElement, details };
+    Object[] bindings = new Object[] { Integer.valueOf(markerCreated), Integer.valueOf(search),
+        Integer.valueOf(searchTotal), searchInfo, javaElement, details };
     String message = NLS.bind(Messages.SearchManager_Monitor, bindings);
     monitor.subTask(message);
   }
@@ -497,8 +471,7 @@ public class SearchManager {
       return "'" + searchString + "' found=" + found; //$NON-NLS-1$ //$NON-NLS-2$
     }
 
-    UCDFileSearchRequestor(String searchString,
-        VisibilityHandler visibilityHandler) {
+    UCDFileSearchRequestor(String searchString, VisibilityHandler visibilityHandler) {
       this.searchString = searchString;
       this.visibilityHandler = visibilityHandler;
     }
@@ -509,8 +482,7 @@ public class SearchManager {
      */
     @SuppressWarnings("boxing")
     @Override
-    public boolean acceptPatternMatch(TextSearchMatchAccess matchAccess)
-        throws CoreException {
+    public boolean acceptPatternMatch(TextSearchMatchAccess matchAccess) throws CoreException {
       char beforeChar = getCharBefore(matchAccess);
       char afterChar = getCharAfter(matchAccess);
       boolean isValidCharBefore = Character.isJavaIdentifierStart(beforeChar);
@@ -520,8 +492,7 @@ public class SearchManager {
         int offset = matchAccess.getMatchOffset();
         int length = matchAccess.getMatchLength();
         String match = matchAccess.getFileContent(offset, length);
-        Log.logDebug(String.format(
-            "    TEXT MATCH {%s%s%s}. isMatchOk: %s. in: %s", //$NON-NLS-1$
+        Log.logDebug(String.format("    TEXT MATCH {%s%s%s}. isMatchOk: %s. in: %s", //$NON-NLS-1$
             beforeChar, match, afterChar, isClassNamMatchOk, //
             matchAccess.getFile()));
       }
@@ -564,8 +535,7 @@ public class SearchManager {
           + foundTest;
     }
 
-    UCDSearchRequestor(IMember searchStart,
-        VisibilityHandler visibilityHandler, LineManger lineManager) {
+    UCDSearchRequestor(IMember searchStart, VisibilityHandler visibilityHandler, LineManger lineManager) {
       this.searchStart = searchStart;
       this.visibilityHandler = visibilityHandler;
       this.lineManager = lineManager;
@@ -579,8 +549,7 @@ public class SearchManager {
       this.found++;
       IJavaElement matchJavaElement = (IJavaElement) match.getElement();
       //      checkUnusedBoolean(match, matchJavaElement);
-      if (Prefs.isDetectTestOnly()
-          && JavaElementUtil.isTestCode(matchJavaElement)) {
+      if (Prefs.isDetectTestOnly() && JavaElementUtil.isTestCode(matchJavaElement)) {
         foundTest++;
       }
       checkCancelSearch(matchJavaElement, found, foundTest);
@@ -666,14 +635,12 @@ public class SearchManager {
    * cancel search by throwing a {@link OperationCanceledException}
    * when necessary
    */
-  private static void checkCancelSearch(IJavaElement javaElement, int found,
-      int foundTest) {
+  private static void checkCancelSearch(IJavaElement javaElement, int found, int foundTest) {
     if (Prefs.isDetectTestOnly() && (found == foundTest)) {
       // continue searching, because all matches are matches in test code
       return;
     }
-    if (found > Prefs.getWarnLimit()
-        && !Prefs.isCheckReduceVisibilityProtected(javaElement)
+    if (found > Prefs.getWarnLimit() && !Prefs.isCheckReduceVisibilityProtected(javaElement)
         && !Prefs.isCheckReduceVisibilityToPrivate(javaElement)) {
       throw new OperationCanceledException("Cancel Search: Warn limit reached");//$NON-NLS-1$
     }

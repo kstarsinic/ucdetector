@@ -37,10 +37,8 @@ public class ExampleAction extends AbstractUCDetectorAction {// NO_UCD
     // show message dialog
     Display.getDefault().asyncExec(new Runnable() {
       public void run() {
-        status = new Status(IStatus.INFO, UCDetectorPlugin.ID, IStatus.INFO,
-            iterator.getMessage(), null);
-        MessageDialog.openInformation(UCDetectorPlugin.getShell(), iterator
-            .getJobName(), iterator.getMessage());
+        status = new Status(IStatus.INFO, UCDetectorPlugin.ID, IStatus.INFO, iterator.getMessage(), null);
+        MessageDialog.openInformation(UCDetectorPlugin.getShell(), iterator.getJobName(), iterator.getMessage());
       }
     });
     return status;

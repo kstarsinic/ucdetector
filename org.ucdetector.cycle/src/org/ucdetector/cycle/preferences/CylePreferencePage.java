@@ -24,18 +24,15 @@ import org.ucdetector.preferences.UCDetectorBasePreferencePage;
 public class CylePreferencePage extends UCDetectorBasePreferencePage {
 
   public CylePreferencePage() {
-    super(FieldEditorPreferencePage.GRID, CyclePlugin.getDefault()
-        .getPreferenceStore());
+    super(FieldEditorPreferencePage.GRID, CyclePlugin.getDefault().getPreferenceStore());
   }
 
   @Override
   public void createFieldEditors() {
-    Composite parentGroups = createComposite(getFieldEditorParent(), 1, 1,
-        GridData.FILL_HORIZONTAL);
+    Composite parentGroups = createComposite(getFieldEditorParent(), 1, 1, GridData.FILL_HORIZONTAL);
     //
-    IntegerFieldEditor cycleDepth = new IntegerFieldEditor(
-        CyclePrefs.CYCLE_DEPTH, Messages.PreferencePage_MaxCycleSize,
-        parentGroups) {
+    IntegerFieldEditor cycleDepth = new IntegerFieldEditor(CyclePrefs.CYCLE_DEPTH,
+        Messages.PreferencePage_MaxCycleSize, parentGroups) {
       /** 
        * Hack for layout problems. 
        * */
@@ -44,11 +41,9 @@ public class CylePreferencePage extends UCDetectorBasePreferencePage {
         return 3;
       }
     };
-    cycleDepth.setValidRange(CyclePrefs.CYCLE_DEPTH_MIN,
-        CyclePrefs.CYCLE_DEPTH_MAX);
+    cycleDepth.setValidRange(CyclePrefs.CYCLE_DEPTH_MIN, CyclePrefs.CYCLE_DEPTH_MAX);
     cycleDepth.setEmptyStringAllowed(false);
-    cycleDepth.getLabelControl(parentGroups).setToolTipText(
-        Messages.PreferencePage_MaxCycleSizeToolTip);
+    cycleDepth.getLabelControl(parentGroups).setToolTipText(Messages.PreferencePage_MaxCycleSizeToolTip);
     this.addField(cycleDepth);
 
   }

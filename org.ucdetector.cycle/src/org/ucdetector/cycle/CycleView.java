@@ -94,8 +94,7 @@ public class CycleView extends ViewPart { //
 
     label.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
 
-    viewer = new TreeViewer(composite, SWT.MULTI | SWT.H_SCROLL | SWT.V_SCROLL
-        | SWT.BORDER);
+    viewer = new TreeViewer(composite, SWT.MULTI | SWT.H_SCROLL | SWT.V_SCROLL | SWT.BORDER);
     tree = viewer.getTree();
     tree.setLayoutData(new GridData(GridData.FILL_BOTH));
     // drillDownAdapter = new DrillDownAdapter(viewer);
@@ -104,8 +103,7 @@ public class CycleView extends ViewPart { //
     viewer.setInput(getViewSite());
 
     // Create the help context id for the viewer's control
-    PlatformUI.getWorkbench().getHelpSystem().setHelp(viewer.getControl(),
-        UCDetectorPlugin.HELP_ID);
+    PlatformUI.getWorkbench().getHelpSystem().setHelp(viewer.getControl(), UCDetectorPlugin.HELP_ID);
     makeActions();
     hookContextMenu();
     hookDoubleClickAction();
@@ -168,8 +166,7 @@ public class CycleView extends ViewPart { //
     };
     refreshAction.setText(Messages.CycleView_popup_refresh);
     ISharedImages sharedImages = PlatformUI.getWorkbench().getSharedImages();
-    refreshAction.setImageDescriptor(sharedImages
-        .getImageDescriptor(ISharedImages.IMG_OBJS_INFO_TSK));
+    refreshAction.setImageDescriptor(sharedImages.getImageDescriptor(ISharedImages.IMG_OBJS_INFO_TSK));
 
     // ---------------------------------------------------------------------
     // ROTATE
@@ -276,8 +273,7 @@ public class CycleView extends ViewPart { //
     };
     copyAction.setEnabled(true);
     copyAction.setText(Messages.CycleView_popup_copy_clipboard);
-    copyAction.setImageDescriptor(sharedImages
-        .getImageDescriptor(ISharedImages.IMG_TOOL_COPY));
+    copyAction.setImageDescriptor(sharedImages.getImageDescriptor(ISharedImages.IMG_TOOL_COPY));
 
   }
 
@@ -306,8 +302,7 @@ public class CycleView extends ViewPart { //
   }
 
   private ITreeSelection getTreeSelection() {
-    ITreeSelection treeSelection = (ITreeSelection) CycleView.this.viewer
-        .getSelection();
+    ITreeSelection treeSelection = (ITreeSelection) CycleView.this.viewer.getSelection();
     return treeSelection;
   }
 
@@ -334,8 +329,7 @@ public class CycleView extends ViewPart { //
   // -------------------------------------------------------------------------
   // ContentProvider
   // -------------------------------------------------------------------------
-  private static class ViewContentProvider implements
-      IStructuredContentProvider {
+  private static class ViewContentProvider implements IStructuredContentProvider {
 
     public void dispose() {
       //

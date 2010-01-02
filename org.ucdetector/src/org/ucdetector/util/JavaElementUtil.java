@@ -140,8 +140,7 @@ public class JavaElementUtil {
    * @param element2 method, class or field to check if it is in same class
    * @return <code>true</code>, when the type of element1 and element2 is the same class
    */
-  public static boolean isInSameType(IJavaElement element1,
-      IJavaElement element2) {
+  public static boolean isInSameType(IJavaElement element1, IJavaElement element2) {
     IType type1 = JavaElementUtil.getTypeFor(element1, false);
     IType type2 = JavaElementUtil.getTypeFor(element2, false);
     if (type1 == null || type2 == null) {
@@ -223,8 +222,7 @@ public class JavaElementUtil {
   *      exception occurs while accessing its corresponding resource.
    * @see "http://java.sun.com/javase/6/docs/platform/serialization/spec/output.html"
    */
-  public static boolean isSerializationField(IField field)
-      throws JavaModelException {
+  public static boolean isSerializationField(IField field) throws JavaModelException {
     if (isConstant(field)) {
       return "serialVersionUID".equals(field.getElementName()) //$NON-NLS-1$
           || "serialPersistentFields".equals(field.getElementName()); //$NON-NLS-1$
@@ -254,8 +252,7 @@ public class JavaElementUtil {
     if (element instanceof IType) {
       return getTypeName(element);
     }
-    if (element instanceof IPackageFragment
-        && ((IPackageFragment) element).isDefaultPackage()) {
+    if (element instanceof IPackageFragment && ((IPackageFragment) element).isDefaultPackage()) {
       return "default package"; //$NON-NLS-1$
     }
     if (element instanceof IImportContainer) {
@@ -311,8 +308,7 @@ public class JavaElementUtil {
     if (field == null) {
       return "field?"; //$NON-NLS-1$
     }
-    return String.format(
-        "%s.%s", getTypeName(field.getParent()), field.getElementName()); //$NON-NLS-1$
+    return String.format("%s.%s", getTypeName(field.getParent()), field.getElementName()); //$NON-NLS-1$
   }
 
   /**
@@ -354,12 +350,10 @@ public class JavaElementUtil {
    */
   public static boolean isOverriddenMethod(IMethod method) throws CoreException {
     int flags = method.getFlags();
-    if (method.isConstructor() || Flags.isStatic(flags)
-        || Flags.isPrivate(flags)) {
+    if (method.isConstructor() || Flags.isStatic(flags) || Flags.isPrivate(flags)) {
       return false;
     }
-    int limitTo = IJavaSearchConstants.DECLARATIONS
-        | IJavaSearchConstants.IGNORE_DECLARING_TYPE
+    int limitTo = IJavaSearchConstants.DECLARATIONS | IJavaSearchConstants.IGNORE_DECLARING_TYPE
         | IJavaSearchConstants.IGNORE_RETURN_TYPE;
     SearchPattern pattern = SearchPattern.createPattern(method, limitTo);
     CountSearchRequestor requestor = new CountSearchRequestor();
@@ -391,11 +385,9 @@ public class JavaElementUtil {
   }
    */
 
-  public static boolean runSearch(SearchPattern pattern,
-      SearchRequestor requestor) throws CoreException {
+  public static boolean runSearch(SearchPattern pattern, SearchRequestor requestor) throws CoreException {
     JavaSearchScopeFactory factory = JavaSearchScopeFactory.getInstance();
-    IJavaSearchScope sourceScope = factory
-        .createWorkspaceScope(IJavaSearchScope.SOURCES);
+    IJavaSearchScope sourceScope = factory.createWorkspaceScope(IJavaSearchScope.SOURCES);
     // [PerformanceBug] Next line made UCDetector 2 times slower before version 1.4.0!!!
     // sourceScope = SearchEngine.createWorkspaceScope()
     return runSearch(pattern, requestor, sourceScope);
@@ -410,13 +402,12 @@ public class JavaElementUtil {
    * @return true, when a {@link Exception} happend
    * @throws CoreException when there is a OutOfMemoryError
    */
-  public static boolean runSearch(SearchPattern pattern,
-      SearchRequestor requestor, IJavaSearchScope scope) throws CoreException {
+  public static boolean runSearch(SearchPattern pattern, SearchRequestor requestor, IJavaSearchScope scope)
+      throws CoreException {
     boolean isSearchException = false;
     SearchEngine searchEngine = new SearchEngine();
     try {
-      SearchParticipant[] participant = new SearchParticipant[] { SearchEngine
-          .getDefaultSearchParticipant() };
+      SearchParticipant[] participant = new SearchParticipant[] { SearchEngine.getDefaultSearchParticipant() };
       searchEngine.search(pattern, participant, scope, requestor, null);
     }
     catch (OperationCanceledException e) {
@@ -462,12 +453,10 @@ public class JavaElementUtil {
    * org.eclipse.jdt.internal.corext.dom.Bindings.findOverriddenMethod
    * org.eclipse.jdt.internal.ui.typehierarchy.SubTypeHierarchyViewer
    */
-  private static boolean hasXType(IType type, boolean isSupertype)
-      throws JavaModelException {
+  private static boolean hasXType(IType type, boolean isSupertype) throws JavaModelException {
     ITypeHierarchy hierarchy = type.newTypeHierarchy(NULL_MONITOR);
     if (hierarchy != null) {
-      IType[] types = isSupertype ? hierarchy.getSupertypes(type) : hierarchy
-          .getSubtypes(type);
+      IType[] types = isSupertype ? hierarchy.getSupertypes(type) : hierarchy.getSubtypes(type);
       if (types == null || types.length == 0) {
         return false;
       }
@@ -503,25 +492,19 @@ public class JavaElementUtil {
       return false;
     }
     String name = method.getElementName();
-    if (Signature.SIG_VOID.equals(method.getReturnType())
-        && name.startsWith("set") //$NON-NLS-1$
+    if (Signature.SIG_VOID.equals(method.getReturnType()) && name.startsWith("set") //$NON-NLS-1$
         && name.length() > 3 //
-        && Character.isUpperCase(name.charAt(3))
-        && method.getNumberOfParameters() == 1) {
+        && Character.isUpperCase(name.charAt(3)) && method.getNumberOfParameters() == 1) {
       return true;
     }
-    if (!Signature.SIG_VOID.equals(method.getReturnType())
-        && name.startsWith("get") //$NON-NLS-1$
+    if (!Signature.SIG_VOID.equals(method.getReturnType()) && name.startsWith("get") //$NON-NLS-1$
         && name.length() > 3 //
-        && Character.isUpperCase(name.charAt(3))
-        && method.getNumberOfParameters() == 0) {
+        && Character.isUpperCase(name.charAt(3)) && method.getNumberOfParameters() == 0) {
       return true;
     }
-    if (Signature.SIG_BOOLEAN.equals(method.getReturnType())
-        && name.startsWith("is") //$NON-NLS-1$
+    if (Signature.SIG_BOOLEAN.equals(method.getReturnType()) && name.startsWith("is") //$NON-NLS-1$
         && name.length() > 2 //
-        && Character.isUpperCase(name.charAt(2))
-        && method.getNumberOfParameters() == 0) {
+        && Character.isUpperCase(name.charAt(2)) && method.getNumberOfParameters() == 0) {
       return true;
     }
     return false;
@@ -547,16 +530,13 @@ public class JavaElementUtil {
    * </ul>
    * @throws CoreException when there are problems finding sub packages
    */
-  public static List<IPackageFragment> getSubPackages(
-      IPackageFragment packageFragment) throws CoreException {
+  public static List<IPackageFragment> getSubPackages(IPackageFragment packageFragment) throws CoreException {
     List<IPackageFragment> subPackages = new ArrayList<IPackageFragment>();
-    IJavaElement[] allPackages = ((IPackageFragmentRoot) packageFragment
-        .getParent()).getChildren();
+    IJavaElement[] allPackages = ((IPackageFragmentRoot) packageFragment.getParent()).getChildren();
     for (IJavaElement javaElement : allPackages) {
       IPackageFragment pakage = (IPackageFragment) javaElement;
       String startPackagenName = packageFragment.getElementName() + "."; //$NON-NLS-1$
-      if (packageFragment.isDefaultPackage()
-          || pakage.getElementName().startsWith(startPackagenName)) {
+      if (packageFragment.isDefaultPackage() || pakage.getElementName().startsWith(startPackagenName)) {
         subPackages.add(pakage);
       }
     }
@@ -680,8 +660,7 @@ public class JavaElementUtil {
    * In Eclipse IDE this is called a source folder
    *
    */
-  public static IPackageFragmentRoot getPackageFragmentRootFor(
-      IJavaElement javaElement) {
+  public static IPackageFragmentRoot getPackageFragmentRootFor(IJavaElement javaElement) {
     IJavaElement parent = javaElement.getParent();
     while (true) {
       // System.out.println("parent =\t" + dumpJavaElement(parent));
@@ -698,8 +677,7 @@ public class JavaElementUtil {
    * @param root source folder
    * @return "src/java/test" instead of only "test"
    */
-  public static String getSourceFolderProjectRelativePath(
-      IPackageFragmentRoot root) {
+  public static String getSourceFolderProjectRelativePath(IPackageFragmentRoot root) {
     IResource resource = root.getResource();
     if (resource != null && resource.getProjectRelativePath() != null) {
       return resource.getProjectRelativePath().toOSString();
@@ -741,10 +719,8 @@ public class JavaElementUtil {
     if (javaElement instanceof IMethod) {
       IMethod method = (IMethod) javaElement;
       try {
-        if (Signature.SIG_VOID.equals(method.getReturnType())
-            && Flags.isPublic(method.getFlags())
-            && !Flags.isStatic(method.getFlags())
-            && method.getNumberOfParameters() == 0) {
+        if (Signature.SIG_VOID.equals(method.getReturnType()) && Flags.isPublic(method.getFlags())
+            && !Flags.isStatic(method.getFlags()) && method.getNumberOfParameters() == 0) {
           // JUnit 3
           if (method.getElementName().startsWith("test")) { //$NON-NLS-1$
             return true;
@@ -814,8 +790,7 @@ public class JavaElementUtil {
    * @return true, when parent of field is an interface
    * @throws JavaModelException if a problem occurs
    */
-  public static boolean isInterfaceMethod(IMethod method)
-      throws JavaModelException {
+  public static boolean isInterfaceMethod(IMethod method) throws JavaModelException {
     return isParentInterface(method);
   }
 
@@ -824,13 +799,11 @@ public class JavaElementUtil {
    * @return true, when parent of field is an interface
    * @throws JavaModelException if a problem occurs
    */
-  public static boolean isInterfaceField(IField field)
-      throws JavaModelException {
+  public static boolean isInterfaceField(IField field) throws JavaModelException {
     return isParentInterface(field);
   }
 
-  private static boolean isParentInterface(IJavaElement element)
-      throws JavaModelException {
+  private static boolean isParentInterface(IJavaElement element) throws JavaModelException {
     IJavaElement parent = element.getParent();
     return (parent instanceof IType && ((IType) parent).isInterface());
   }

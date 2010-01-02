@@ -59,7 +59,6 @@ public class CyclePlugin extends AbstractUIPlugin {
 
   private ImageDescriptor getUcdImage(String icon) {
     IPath path = new Path("icons").append("/" + icon); //$NON-NLS-1$ //$NON-NLS-2$
-    return JavaPluginImages.createImageDescriptor(getDefault().getBundle(),
-        path, true);
+    return JavaPluginImages.createImageDescriptor(getDefault().getBundle(), path, true);
   }
 }

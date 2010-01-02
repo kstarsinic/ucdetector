@@ -59,8 +59,7 @@ class TypeAndMatches {
     }
     // A type has matches in other classes
     List<CycleMember> cycleElementList = getOrCreateCycleElementList(matchtedType);
-    CycleMember cycleMember = getOrCreateCycleElement(matchElement,
-        cycleElementList);
+    CycleMember cycleMember = getOrCreateCycleElement(matchElement, cycleElementList);
     // A match consists of one or more regions (=source ranges)
     int lineNr;
     try {
@@ -74,8 +73,7 @@ class TypeAndMatches {
     int length = match.getLength();
     String codeLine = lineManger.getPieceOfCode(matchElement, offset);
     List<CycleRegion> cycleRegions = cycleMember.getChildren();
-    CycleRegion cycleRegion = new CycleRegion(cycleMember, offset, length,
-        lineNr, codeLine);
+    CycleRegion cycleRegion = new CycleRegion(cycleMember, offset, length, lineNr, codeLine);
     cycleRegions.add(cycleRegion);
   }
 
@@ -88,8 +86,7 @@ class TypeAndMatches {
     return cycleElementList;
   }
 
-  private static CycleMember getOrCreateCycleElement(IJavaElement matchElement,
-      List<CycleMember> cycleElementList) {
+  private static CycleMember getOrCreateCycleElement(IJavaElement matchElement, List<CycleMember> cycleElementList) {
     CycleMember cycleMember = null;
     for (CycleMember searchCycleElement : cycleElementList) {
       if (searchCycleElement.getMatch().equals(matchElement)) {

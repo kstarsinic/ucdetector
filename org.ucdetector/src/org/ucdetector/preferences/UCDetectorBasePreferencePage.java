@@ -29,8 +29,8 @@ import org.ucdetector.UCDetectorPlugin;
 /**
  *
  */
-public abstract class UCDetectorBasePreferencePage extends
-    FieldEditorPreferencePage implements IWorkbenchPreferencePage {
+public abstract class UCDetectorBasePreferencePage extends FieldEditorPreferencePage implements
+    IWorkbenchPreferencePage {
   /**
    * entryNames (first column) and values (second column) for the
    * ComboFieldEditor
@@ -64,13 +64,10 @@ public abstract class UCDetectorBasePreferencePage extends
   /**
    * create an ComboFieldEditor with label, tooltip and do layout
    */
-  static ComboFieldEditor createCombo(String name, String label,
-      Composite parent) {
-    ComboFieldEditor combo = new ComboFieldEditor(name, label, WARN_LEVELS,
-        parent);
+  static ComboFieldEditor createCombo(String name, String label, Composite parent) {
+    ComboFieldEditor combo = new ComboFieldEditor(name, label, WARN_LEVELS, parent);
     combo.fillIntoGrid(parent, 2);
-    combo.getLabelControl(parent).setToolTipText(
-        Messages.PreferencePage_ComboToolTip);
+    combo.getLabelControl(parent).setToolTipText(Messages.PreferencePage_ComboToolTip);
     fillHorizontal(parent, combo);
     return combo;
   }
@@ -78,8 +75,7 @@ public abstract class UCDetectorBasePreferencePage extends
   /**
    * create an StringFieldEditor with label, tooltip and do layout
    */
-  static StringFieldEditor createText(String name, String label,
-      Composite parent, String toolTip) {
+  static StringFieldEditor createText(String name, String label, Composite parent, String toolTip) {
     StringFieldEditor text = new StringFieldEditor(name, label, parent);
     text.fillIntoGrid(parent, 2);
     text.getLabelControl(parent).setToolTipText(toolTip);
@@ -102,14 +98,12 @@ public abstract class UCDetectorBasePreferencePage extends
   @Override
   // org.eclipse.help.ui.internal.preferences.HelpContentPreferencePage
   protected Control createContents(Composite parent) {
-    PlatformUI.getWorkbench().getHelpSystem().setHelp(parent,
-        UCDetectorPlugin.HELP_ID_PREFERENCES);
+    PlatformUI.getWorkbench().getHelpSystem().setHelp(parent, UCDetectorPlugin.HELP_ID_PREFERENCES);
     return super.createContents(parent);
   }
 
   // LaunchingPreferencePage
-  static Composite createGroup(Composite parent, String text, int columns,
-      int hspan, int fill) {
+  static Composite createGroup(Composite parent, String text, int columns, int hspan, int fill) {
     Group g = new Group(parent, SWT.NONE);
     g.setLayout(new GridLayout(columns, false));
     g.setText(text);
@@ -121,8 +115,7 @@ public abstract class UCDetectorBasePreferencePage extends
   }
 
   // SWTFactory
-  public static Composite createComposite(Composite parent, int columns,
-      int hspan, int fill) {
+  public static Composite createComposite(Composite parent, int columns, int hspan, int fill) {
     Composite g = new Composite(parent, SWT.NONE);
     g.setLayout(new GridLayout(columns, false));
     g.setFont(parent.getFont());

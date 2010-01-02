@@ -58,19 +58,16 @@ public class CheckUcdMarkerIterator extends AbstractUCDetectorIterator {
 
   @SuppressWarnings("unchecked")
   @Override
-  protected void handleCompilationUnit(ICompilationUnit unit)
-      throws CoreException {
+  protected void handleCompilationUnit(ICompilationUnit unit) throws CoreException {
     IResource resource = unit.getCorrespondingResource();
-    IMarker[] markers = resource.findMarkers(MarkerFactory.UCD_MARKER, true,
-        IResource.DEPTH_ZERO);
+    IMarker[] markers = resource.findMarkers(MarkerFactory.UCD_MARKER, true, IResource.DEPTH_ZERO);
 
     Set<LineNrComments> lineNrsMARKER_YES = getLineNrMARKER_YES(unit);
     markerCount += markers.length;
     Set<Integer> makerLinesFound = new LinkedHashSet<Integer>();
     // Check, if each marker has a marker comment
     for (IMarker marker : markers) {
-      Integer markerLineFound = Integer.valueOf(marker.getAttribute(
-          IMarker.LINE_NUMBER, -1));
+      Integer markerLineFound = Integer.valueOf(marker.getAttribute(IMarker.LINE_NUMBER, -1));
       makerLinesFound.add(markerLineFound);
       // Marker line number not found in "MARKER YES" lines --------------------
       LineNrComments commentForLine = null;
@@ -89,8 +86,7 @@ public class CheckUcdMarkerIterator extends AbstractUCDetectorIterator {
         String problemMarker = markerMap.get(marker.getType());
         List<String> problemsExpected = commentForLine.commentList;
         if (!problemsExpected.contains(problemMarker)) {
-          String message = "Wrong marker. Expected: '" + problemsExpected
-              + "'. Found: '" + problemMarker + "'";
+          String message = "Wrong marker. Expected: '" + problemsExpected + "'. Found: '" + problemMarker + "'";
           createMarker(resource, message, markerLineFound);
         }
       }
@@ -105,11 +101,9 @@ public class CheckUcdMarkerIterator extends AbstractUCDetectorIterator {
   }
 
   @Override
-  public void handleStartSelectedElement(IJavaElement javaElement)
-      throws CoreException {
+  public void handleStartSelectedElement(IJavaElement javaElement) throws CoreException {
     if (javaElement.getResource() != null) {
-      javaElement.getResource().deleteMarkers(ANALYZE_MARKER_CHECK_UCD_MARKERS,
-          true, IResource.DEPTH_INFINITE);
+      javaElement.getResource().deleteMarkers(ANALYZE_MARKER_CHECK_UCD_MARKERS, true, IResource.DEPTH_INFINITE);
     }
   }
 
@@ -128,8 +122,7 @@ public class CheckUcdMarkerIterator extends AbstractUCDetectorIterator {
     return badMarkerCount;
   }
 
-  private void createMarker(IResource resource, String message, Integer line)
-      throws CoreException {
+  private void createMarker(IResource resource, String message, Integer line) throws CoreException {
     IMarker marker = resource.createMarker(ANALYZE_MARKER_CHECK_UCD_MARKERS);
     marker.setAttribute(IMarker.MESSAGE, message);
     marker.setAttribute(IMarker.PRIORITY, IMarker.PRIORITY_HIGH);
@@ -141,24 +134,21 @@ public class CheckUcdMarkerIterator extends AbstractUCDetectorIterator {
   /**
    * Parse the java code
    */
-  private Set<LineNrComments> getLineNrMARKER_YES(ICompilationUnit unit)
-      throws CoreException {
+  private Set<LineNrComments> getLineNrMARKER_YES(ICompilationUnit unit) throws CoreException {
     IScanner scanner = ToolFactory.createScanner(true, false, false, true);
     scanner.setSource(unit.getBuffer().getCharacters());
     Set<LineNrComments> ignoreLines = new HashSet<LineNrComments>();
     int nextToken;
     try {
       while ((nextToken = scanner.getNextToken()) != ITerminalSymbols.TokenNameEOF) {
-        LineNrComments lineNrComment = findLineNrComments(scanner,
-            "Marker YES: ", nextToken);
+        LineNrComments lineNrComment = findLineNrComments(scanner, "Marker YES: ", nextToken);
         if (lineNrComment != null) {
           ignoreLines.add(lineNrComment);
         }
       }
     }
     catch (InvalidInputException e) {
-      IStatus status = new Status(IStatus.ERROR, UCDetectorPlugin.ID,
-          IStatus.ERROR, e.getMessage(), e);
+      IStatus status = new Status(IStatus.ERROR, UCDetectorPlugin.ID, IStatus.ERROR, e.getMessage(), e);
       throw new CoreException(status);
     }
     return ignoreLines;
@@ -168,8 +158,7 @@ public class CheckUcdMarkerIterator extends AbstractUCDetectorIterator {
    * @return line number for a tag like "NO_UCD", or <code>null</code>
    * if there is no tag like "NO_UCD"
    */
-  private static LineNrComments findLineNrComments(IScanner scanner,
-      String tag, int nextToken) {
+  private static LineNrComments findLineNrComments(IScanner scanner, String tag, int nextToken) {
     if (nextToken == ITerminalSymbols.TokenNameCOMMENT_LINE) {
       char[] currentTokenSource = scanner.getCurrentTokenSource();
       String source = new String(currentTokenSource);

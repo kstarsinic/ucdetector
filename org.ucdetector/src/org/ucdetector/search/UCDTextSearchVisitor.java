@@ -58,14 +58,11 @@ class UCDTextSearchVisitor {
 
   private final TextSearchMatchAccessImpl fMatchAccess;
 
-  protected UCDTextSearchVisitor(TextSearchRequestor collector,
-      Pattern searchPattern) {
+  protected UCDTextSearchVisitor(TextSearchRequestor collector, Pattern searchPattern) {
     fCollector = collector;
-    fStatus = new MultiStatus(NewSearchUI.PLUGIN_ID, IStatus.OK,
-        SearchMessages.TextSearchEngine_statusMessage, null);
+    fStatus = new MultiStatus(NewSearchUI.PLUGIN_ID, IStatus.OK, SearchMessages.TextSearchEngine_statusMessage, null);
 
-    fMatcher = searchPattern.pattern().length() == 0 ? null : searchPattern
-        .matcher(""); //$NON-NLS-1$
+    fMatcher = searchPattern.pattern().length() == 0 ? null : searchPattern.matcher(""); //$NON-NLS-1$
 
     fFileCharSequenceProvider = new FileCharSequenceProvider();
     fMatchAccess = new TextSearchMatchAccessImpl();
@@ -77,8 +74,7 @@ class UCDTextSearchVisitor {
     fNumberOfFilesToScan = files.length;
     fCurrentFile = null;
 
-    Job monitorUpdateJob = new Job(
-        SearchMessages.TextSearchVisitor_progress_updating_job) {
+    Job monitorUpdateJob = new Job(SearchMessages.TextSearchVisitor_progress_updating_job) {
       private int fLastNumberOfScannedFiles = 0;
 
       @Override
@@ -87,10 +83,8 @@ class UCDTextSearchVisitor {
           IFile file = fCurrentFile;
           if (file != null) {
             String fileName = file.getName();
-            Object[] args = { fileName, Integer.valueOf(fNumberOfScannedFiles),
-                Integer.valueOf(fNumberOfFilesToScan) };
-            fProgressMonitor.subTask(Messages.format(
-                SearchMessages.TextSearchVisitor_scanning, args));
+            Object[] args = { fileName, Integer.valueOf(fNumberOfScannedFiles), Integer.valueOf(fNumberOfFilesToScan) };
+            fProgressMonitor.subTask(Messages.format(SearchMessages.TextSearchVisitor_scanning, args));
             int steps = fNumberOfScannedFiles - fLastNumberOfScannedFiles;
             fProgressMonitor.worked(steps);
             fLastNumberOfScannedFiles += steps;
@@ -107,10 +101,8 @@ class UCDTextSearchVisitor {
     };
 
     try {
-      String taskName = fMatcher == null ? SearchMessages.TextSearchVisitor_filesearch_task_label
-          : Messages.format(
-              SearchMessages.TextSearchVisitor_textsearch_task_label, fMatcher
-                  .pattern().pattern());
+      String taskName = fMatcher == null ? SearchMessages.TextSearchVisitor_filesearch_task_label : Messages.format(
+          SearchMessages.TextSearchVisitor_textsearch_task_label, fMatcher.pattern().pattern());
       fProgressMonitor.beginTask(taskName, fNumberOfFilesToScan);
       monitorUpdateJob.setSystem(true);
       monitorUpdateJob.schedule();
@@ -172,27 +164,23 @@ class UCDTextSearchVisitor {
       //      }
     }
     catch (Throwable e) {
-      fStatus.add(new Status(IStatus.ERROR, NewSearchUI.PLUGIN_ID,
-          IStatus.ERROR, e.getMessage(), e));
+      fStatus.add(new Status(IStatus.ERROR, NewSearchUI.PLUGIN_ID, IStatus.ERROR, e.getMessage(), e));
     }
     finally {
       fNumberOfScannedFiles++;
     }
     if (fProgressMonitor.isCanceled()) {
-      throw new OperationCanceledException(
-          SearchMessages.TextSearchVisitor_canceled);
+      throw new OperationCanceledException(SearchMessages.TextSearchVisitor_canceled);
     }
     return true;
   }
 
-  private boolean hasBinaryContent(CharSequence seq, IFile file)
-      throws CoreException {
+  private boolean hasBinaryContent(CharSequence seq, IFile file) throws CoreException {
     IContentDescription desc = file.getContentDescription();
     if (desc != null) {
       IContentType contentType = desc.getContentType();
       if (contentType != null
-          && contentType.isKindOf(Platform.getContentTypeManager()
-              .getContentType(IContentTypeManager.CT_TEXT))) {
+          && contentType.isKindOf(Platform.getContentTypeManager().getContentType(IContentTypeManager.CT_TEXT))) {
         return false;
       }
     }
@@ -213,8 +201,7 @@ class UCDTextSearchVisitor {
     return false;
   }
 
-  private void locateMatches(IFile file, CharSequence searchInput)
-      throws CoreException {
+  private void locateMatches(IFile file, CharSequence searchInput) throws CoreException {
     try {
       fMatcher.reset(searchInput);
       int k = 0;
@@ -230,8 +217,7 @@ class UCDTextSearchVisitor {
         }
         if (k++ == 20) {
           if (fProgressMonitor.isCanceled()) {
-            throw new OperationCanceledException(
-                SearchMessages.TextSearchVisitor_canceled);
+            throw new OperationCanceledException(SearchMessages.TextSearchVisitor_canceled);
           }
           k = 0;
         }
@@ -249,8 +235,7 @@ class UCDTextSearchVisitor {
     private IFile fFile;
     private CharSequence fContent;
 
-    private void initialize(IFile file, int offset, int length,
-        CharSequence content) {
+    private void initialize(IFile file, int offset, int length, CharSequence content) {
       fFile = file;
       fOffset = offset;
       fLength = length;

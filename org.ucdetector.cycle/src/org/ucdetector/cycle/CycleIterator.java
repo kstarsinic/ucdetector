@@ -49,10 +49,8 @@ public class CycleIterator extends AbstractUCDetectorIterator {
 
   @Override
   public void handleEndGlobal(IJavaElement[] objects) throws CoreException {
-    getMonitor().beginTask(Messages.CycleIterator_MONITOR_INFO,
-        types.size() * 2);
-    CycleSearchManager cycleSearchManager = new CycleSearchManager(
-        getMonitor(), types, selections);
+    getMonitor().beginTask(Messages.CycleIterator_MONITOR_INFO, types.size() * 2);
+    CycleSearchManager cycleSearchManager = new CycleSearchManager(getMonitor(), types, selections);
     cycleSearchManager.search();
   }
 

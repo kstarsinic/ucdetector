@@ -29,8 +29,7 @@ class UseFinalQuickFix extends AbstractUCDQuickFix {
   public final int runImpl(BodyDeclaration nodeToChange) throws BadLocationException {
     ListRewrite listRewrite = getModifierListRewrite(nodeToChange);
     Modifier modifierFound = getModifierVisibility(nodeToChange);
-    Modifier modifierFinal = nodeToChange.getAST().newModifier(
-        Modifier.ModifierKeyword.FINAL_KEYWORD);
+    Modifier modifierFinal = nodeToChange.getAST().newModifier(Modifier.ModifierKeyword.FINAL_KEYWORD);
     int startPosition;
     if (modifierFound == null) {
       // default -> final
@@ -40,8 +39,7 @@ class UseFinalQuickFix extends AbstractUCDQuickFix {
     else {
       // public -> public final
       listRewrite.insertAfter(modifierFinal, modifierFound, null);
-      startPosition = modifierFound.getStartPosition()
-          + modifierFound.getLength() + 1;
+      startPosition = modifierFound.getStartPosition() + modifierFound.getLength() + 1;
     }
     //    commitChanges();
     return startPosition;

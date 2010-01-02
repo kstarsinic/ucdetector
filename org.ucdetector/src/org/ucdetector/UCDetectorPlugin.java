@@ -59,10 +59,9 @@ public class UCDetectorPlugin extends AbstractUIPlugin {
    * http://www.eclipse.org/articles/article.php?file=Article-AddingHelpToRCP/index.html
    */
   public static final String HELP_ID = ID + ".ucd_context_id";//$NON-NLS-1$
-  public static final String HELP_ID_PREFERENCES = ID
-      + ".ucd_context_id_preferences";//$NON-NLS-1$
-  private final DateFormat dateFormat = DateFormat.getDateTimeInstance(
-      DateFormat.MEDIUM, DateFormat.MEDIUM, Locale.getDefault());
+  public static final String HELP_ID_PREFERENCES = ID + ".ucd_context_id_preferences";//$NON-NLS-1$
+  private final DateFormat dateFormat = DateFormat.getDateTimeInstance(DateFormat.MEDIUM, DateFormat.MEDIUM, Locale
+      .getDefault());
   private final About about;
 
   public static About getAbout() {
@@ -117,8 +116,7 @@ public class UCDetectorPlugin extends AbstractUIPlugin {
     }
 
     public String getUCDVersion() {
-      return (String) getDefault().getBundle().getHeaders().get(
-          "Bundle-Version"); //$NON-NLS-1$
+      return (String) getDefault().getBundle().getHeaders().get("Bundle-Version"); //$NON-NLS-1$
     }
 
     public String getEclipseHome() {
@@ -186,8 +184,7 @@ public class UCDetectorPlugin extends AbstractUIPlugin {
    * @param e {@link OutOfMemoryError} , which is wrapped in a {@link CoreException}
    * @throws CoreException which contains the {@link OutOfMemoryError}
    */
-  public static void handleOutOfMemoryError(OutOfMemoryError e)
-      throws CoreException {
+  public static void handleOutOfMemoryError(OutOfMemoryError e) throws CoreException {
     Status status = logErrorAndStatus(Messages.OutOfMemoryError_Hint, e);
     throw new CoreException(status);
   }
@@ -213,8 +210,7 @@ public class UCDetectorPlugin extends AbstractUIPlugin {
 
   private ImageDescriptor getUcdImage(String icon) {
     IPath path = new Path("icons").append("/" + icon); //$NON-NLS-1$ //$NON-NLS-2$
-    return JavaPluginImages.createImageDescriptor(getDefault().getBundle(),
-        path, true);
+    return JavaPluginImages.createImageDescriptor(getDefault().getBundle(), path, true);
   }
 
   /**

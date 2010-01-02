@@ -120,10 +120,8 @@ public final class Prefs {
    * matches the source folder filter
    */
   public static boolean filterPackageFragmentRoot(IPackageFragmentRoot root) {
-    String sourceFolder = JavaElementUtil
-        .getSourceFolderProjectRelativePath(root);
-    return sourceFolder == null
-        || matchFilter(FILTER_SOURCE_FOLDER, sourceFolder);
+    String sourceFolder = JavaElementUtil.getSourceFolderProjectRelativePath(root);
+    return sourceFolder == null || matchFilter(FILTER_SOURCE_FOLDER, sourceFolder);
   }
 
   /**
@@ -289,16 +287,14 @@ public final class Prefs {
    * @return <code>true</code> if we should detect class names in literals as well
    */
   public static boolean isUCDetectionInLiterals() {
-    return getStore().getBoolean(ANALYZE_LITERALS_CHECK)
-        && getString(ANALYZE_LITERALS).length() > 0;
+    return getStore().getBoolean(ANALYZE_LITERALS_CHECK) && getString(ANALYZE_LITERALS).length() > 0;
   }
 
   /**
    * @return <code>true</code> if we should detect FULL class names in literals as well
    */
   public static boolean isUCDetectionInLiteralsFullClassName() {
-    return getStore().getBoolean(ANALYZE_CHECK_FULL_CLASS_NAME)
-        && getString(ANALYZE_LITERALS).length() > 0;
+    return getStore().getBoolean(ANALYZE_CHECK_FULL_CLASS_NAME) && getString(ANALYZE_LITERALS).length() > 0;
   }
 
   // WARN GROUP ----------------------------------------------------------------
@@ -326,8 +322,7 @@ public final class Prefs {
     if (member instanceof IField) {
       IField field = (IField) member;
       if (isConstant(field)) {
-        return WarnLevel
-            .valueOf(getString(ANALYZE_VISIBILITY_PROTECTED_CONSTANTS));
+        return WarnLevel.valueOf(getString(ANALYZE_VISIBILITY_PROTECTED_CONSTANTS));
 
       }
       return WarnLevel.valueOf(getString(ANALYZE_VISIBILITY_PROTECTED_FIELDS));
@@ -359,8 +354,7 @@ public final class Prefs {
     if (member instanceof IField) {
       IField field = (IField) member;
       if (isConstant(field)) {
-        return WarnLevel
-            .valueOf(getString(ANALYZE_VISIBILITY_PRIVATE_CONSTANTS));
+        return WarnLevel.valueOf(getString(ANALYZE_VISIBILITY_PRIVATE_CONSTANTS));
 
       }
       return WarnLevel.valueOf(getString(ANALYZE_VISIBILITY_PRIVATE_FIELDS));
@@ -379,8 +373,7 @@ public final class Prefs {
 
   private static boolean isConstant(IMember member) {
     try {
-      return Flags.isStatic(member.getFlags())
-          && Flags.isFinal(member.getFlags());
+      return Flags.isStatic(member.getFlags()) && Flags.isFinal(member.getFlags());
     }
     catch (JavaModelException e) {
       Log.logError("Can't get isConstant: " + member, e); //$NON-NLS-1$

@@ -59,8 +59,7 @@ public abstract class CycleBaseElement implements ICycleBaseElement {
     return sb.toString();
   }
 
-  private final void appendToString(ICycleBaseElement cycleBaseElement,
-      StringBuilder sb, int level) {
+  private final void appendToString(ICycleBaseElement cycleBaseElement, StringBuilder sb, int level) {
     int nextLevel = level + 1;
     for (int i = 0; i < level; i++) {
       sb.append("  "); //$NON-NLS-1$

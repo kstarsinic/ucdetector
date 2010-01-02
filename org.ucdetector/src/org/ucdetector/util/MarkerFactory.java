@@ -119,14 +119,11 @@ public final class MarkerFactory implements IUCDetectorReport {
    * @return <code>true</code>, if a marker was created
    * @throws CoreException when there are problem creating marker
    */
-  public boolean createFinalMarker(IMethod method, int line)
-      throws CoreException {
+  public boolean createFinalMarker(IMethod method, int line) throws CoreException {
     String searchInfo = JavaElementUtil.getMemberTypeString(method);
     String elementName = JavaElementUtil.getElementName(method);
-    String message = NLS.bind(Messages.MarkerFactory_MarkerFinalMethod,
-        new Object[] { searchInfo, elementName });
-    return reportMarker(new ReportParam(method, message, line,
-        UCD_MARKER_USE_FINAL));
+    String message = NLS.bind(Messages.MarkerFactory_MarkerFinalMethod, new Object[] { searchInfo, elementName });
+    return reportMarker(new ReportParam(method, message, line, UCD_MARKER_USE_FINAL));
   }
 
   /**
@@ -139,10 +136,8 @@ public final class MarkerFactory implements IUCDetectorReport {
   public boolean createFinalMarker(IField field, int line) throws CoreException {
     String searchInfo = JavaElementUtil.getMemberTypeString(field);
     String elementName = JavaElementUtil.getElementName(field);
-    String message = NLS.bind(Messages.MarkerFactory_MarkerFinalField,
-        new Object[] { searchInfo, elementName });
-    return reportMarker(new ReportParam(field, message, line,
-        UCD_MARKER_USE_FINAL));
+    String message = NLS.bind(Messages.MarkerFactory_MarkerFinalField, new Object[] { searchInfo, elementName });
+    return reportMarker(new ReportParam(field, message, line, UCD_MARKER_USE_FINAL));
   }
 
   /**
@@ -154,8 +149,7 @@ public final class MarkerFactory implements IUCDetectorReport {
    * @return <code>true</code>, if a marker was created
    * @throws CoreException when there are problem creating marker
    */
-  public boolean createReferenceMarker(IMember javaElement, String message,
-      int line, int found) throws CoreException {
+  public boolean createReferenceMarker(IMember javaElement, String message, int line, int found) throws CoreException {
     String type = found == 0 ? UCD_MARKER_UNUSED : UCD_MARKER_USED_FEW;
     return reportMarker(new ReportParam(javaElement, message, line, type, found));
   }
@@ -167,14 +161,11 @@ public final class MarkerFactory implements IUCDetectorReport {
    * @return <code>true</code>, if a marker was created
    * @throws CoreException when there are problem creating marker
    */
-  public boolean createReferenceMarkerTestOnly(IMember member, int line)
-      throws CoreException {
+  public boolean createReferenceMarkerTestOnly(IMember member, int line) throws CoreException {
     String searchInfo = JavaElementUtil.getMemberTypeString(member);
     String elementName = JavaElementUtil.getElementName(member);
-    String message = NLS.bind(Messages.MarkerFactory_MarkerTestOnly,
-        new Object[] { searchInfo, elementName });
-    return reportMarker(new ReportParam(member, message, line,
-        UCD_MARKER_TEST_ONLY));
+    String message = NLS.bind(Messages.MarkerFactory_MarkerTestOnly, new Object[] { searchInfo, elementName });
+    return reportMarker(new ReportParam(member, message, line, UCD_MARKER_TEST_ONLY));
   }
 
   /**
@@ -185,8 +176,7 @@ public final class MarkerFactory implements IUCDetectorReport {
    * @return <code>true</code>, if a marker was created
    * @throws CoreException when there are problem creating marker
    */
-  public boolean createVisibilityMarker(IMember member, String type, int line)
-      throws CoreException {
+  public boolean createVisibilityMarker(IMember member, String type, int line) throws CoreException {
     String visibilityString = null;
     if (UCD_MARKER_USE_PRIVATE.equals(type)) {
       visibilityString = "private"; //$NON-NLS-1$
@@ -202,10 +192,8 @@ public final class MarkerFactory implements IUCDetectorReport {
       // [2539795] Visibility marker for classes causes compilation error
       visibilityString += Messages.MarkerFactory_VisibilityCompileErrorForClass;
     }
-    Object[] bindings = new Object[] { searchInfo,
-        JavaElementUtil.getElementName(member), visibilityString };
-    String message = NLS
-        .bind(Messages.MarkerFactory_MarkerVisibility, bindings);
+    Object[] bindings = new Object[] { searchInfo, JavaElementUtil.getElementName(member), visibilityString };
+    String message = NLS.bind(Messages.MarkerFactory_MarkerVisibility, bindings);
     return reportMarker(new ReportParam(member, message, line, type));
   }
 
@@ -214,11 +202,9 @@ public final class MarkerFactory implements IUCDetectorReport {
    * @param javaElement  to create marker for
    * @throws CoreException when there are problem creating marker
    */
-  public static void deleteMarkers(IJavaElement javaElement)
-      throws CoreException {
+  public static void deleteMarkers(IJavaElement javaElement) throws CoreException {
     if (javaElement.getResource() != null) {
-      javaElement.getResource().deleteMarkers(UCD_MARKER, true,
-          IResource.DEPTH_INFINITE);
+      javaElement.getResource().deleteMarkers(UCD_MARKER, true, IResource.DEPTH_INFINITE);
     }
   }
 }

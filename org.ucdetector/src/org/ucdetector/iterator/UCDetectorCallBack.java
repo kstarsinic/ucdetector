@@ -54,15 +54,13 @@ public class UCDetectorCallBack { // NO_UCD
 
   /**  @param javaElement to handle
    * @throws CoreException in classes overriding this method */
-  public void handleStartSelectedElement(IJavaElement javaElement)
-      throws CoreException {
+  public void handleStartSelectedElement(IJavaElement javaElement) throws CoreException {
     //
   }
 
   /**  @param javaElement to handle
    * @throws CoreException in classes overriding this method */
-  public void handleEndSelectedElement(IJavaElement javaElement)
-      throws CoreException {
+  public void handleEndSelectedElement(IJavaElement javaElement) throws CoreException {
     //
   }
 
@@ -129,8 +127,7 @@ public class UCDetectorCallBack { // NO_UCD
 
   /** @param unit
    * @throws CoreException in classes overriding this method */
-  protected void handleCompilationUnit(ICompilationUnit unit)
-      throws CoreException {
+  protected void handleCompilationUnit(ICompilationUnit unit) throws CoreException {
     //
   }
 
@@ -145,8 +142,7 @@ public class UCDetectorCallBack { // NO_UCD
   // SUP CLASS -----------------------------------------------------------------
   /** @param packageDeclaration
    * @throws CoreException */
-  protected void handlePackageDeclaration(IPackageDeclaration packageDeclaration)
-      throws CoreException {
+  protected void handlePackageDeclaration(IPackageDeclaration packageDeclaration) throws CoreException {
     //
   }
 
@@ -206,8 +202,7 @@ public class UCDetectorCallBack { // NO_UCD
 
   /** @param workspaceRoot
    * @throws CoreException */
-  protected void handleResourceWorkspaceRoot(IWorkspaceRoot workspaceRoot)
-      throws CoreException {
+  protected void handleResourceWorkspaceRoot(IWorkspaceRoot workspaceRoot) throws CoreException {
     //
   }
 
@@ -259,13 +254,11 @@ public class UCDetectorCallBack { // NO_UCD
   // ---------------------------------------------------------------------------
   // HELPER
   // ---------------------------------------------------------------------------
-  protected static final boolean isPrivate(IMember member)
-      throws JavaModelException {
+  protected static final boolean isPrivate(IMember member) throws JavaModelException {
     return Flags.isPrivate(member.getFlags());
   }
 
-  protected static final boolean isPublic(IMember member)
-      throws JavaModelException {
+  protected static final boolean isPublic(IMember member) throws JavaModelException {
     return Flags.isPublic(member.getFlags());
   }
 }

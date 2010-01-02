@@ -43,8 +43,7 @@ public class MarkerReport implements IUCDetectorReport {
     totalMarkerCount++;
     // Waiting for first 10 markers - ID: 2787576
     // Flush all markers at the begin, so users can start using UCDetector results
-    if (totalMarkerCount < MARKERS_FLASH_LIMIT
-        || markersToFlash.size() >= MARKERS_FLASH_LIMIT) {
+    if (totalMarkerCount < MARKERS_FLASH_LIMIT || markersToFlash.size() >= MARKERS_FLASH_LIMIT) {
       flushReport();
     }
     return true;
@@ -76,8 +75,7 @@ public class MarkerReport implements IUCDetectorReport {
       default:
         return;
     }
-    IMarker marker = reportParam.getJavaElement().getResource().createMarker(
-        reportParam.getMarkerType());
+    IMarker marker = reportParam.getJavaElement().getResource().createMarker(reportParam.getMarkerType());
     marker.setAttribute(IMarker.SEVERITY, severity);
     marker.setAttribute(IMarker.MESSAGE, reportParam.getMessage());
     marker.setAttribute(IMarker.PRIORITY, IMarker.PRIORITY_HIGH);
@@ -87,13 +85,10 @@ public class MarkerReport implements IUCDetectorReport {
   }
 
   public static ElementTypeAndName getElementTypeAndName(IMarker marker) {
-    String attribute = marker.getAttribute(
-        MarkerFactory.ELEMENT_TYPE_ATTRIBUTE, "?"); //$NON-NLS-1$
-    String[] resultArray = attribute
-        .split(MarkerReport.JAVA_ELEMENT_SEPARATOR_MARKER);
+    String attribute = marker.getAttribute(MarkerFactory.ELEMENT_TYPE_ATTRIBUTE, "?"); //$NON-NLS-1$
+    String[] resultArray = attribute.split(MarkerReport.JAVA_ELEMENT_SEPARATOR_MARKER);
     ElementTypeAndName result = new ElementTypeAndName();
-    result.elementType = (resultArray.length > 0 ? ElementType
-        .valueOf(resultArray[0]) : null);
+    result.elementType = (resultArray.length > 0 ? ElementType.valueOf(resultArray[0]) : null);
     result.elementName = (resultArray.length > 1 ? resultArray[1] : null);
     return result;
   }
@@ -119,8 +114,7 @@ public class MarkerReport implements IUCDetectorReport {
    * </ul>
    *  NOTE: This string is used in other classes!
    */
-  private static String createJavaElementString(IJavaElement javaElement)
-      throws JavaModelException {
+  private static String createJavaElementString(IJavaElement javaElement) throws JavaModelException {
     StringBuilder sb = new StringBuilder();
     if (javaElement instanceof IType) {
       sb.append(MarkerFactory.ElementType.TYPE);
@@ -130,11 +124,9 @@ public class MarkerReport implements IUCDetectorReport {
     }
     else if (javaElement instanceof IField) {
       boolean isConstant = JavaElementUtil.isConstant((IField) javaElement);
-      sb.append(isConstant ? MarkerFactory.ElementType.CONSTANT
-          : MarkerFactory.ElementType.FIELD);
+      sb.append(isConstant ? MarkerFactory.ElementType.CONSTANT : MarkerFactory.ElementType.FIELD);
     }
-    sb.append(JAVA_ELEMENT_SEPARATOR_MARKER).append(
-        javaElement.getElementName());
+    sb.append(JAVA_ELEMENT_SEPARATOR_MARKER).append(javaElement.getElementName());
     return sb.toString();
   }
 

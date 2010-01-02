@@ -43,8 +43,7 @@ public class DetectDoubleClassNameIterator extends AdditionalIterator {
   }
 
   @Override
-  public void handleStartSelectedElement(IJavaElement javaElement)
-      throws CoreException {
+  public void handleStartSelectedElement(IJavaElement javaElement) throws CoreException {
     MarkerFactory.deleteMarkers(javaElement);
   }
 
@@ -55,8 +54,7 @@ public class DetectDoubleClassNameIterator extends AdditionalIterator {
       Set<IType> types = entry.getValue();
       if (types.size() > 1) {
         for (IType type : types) {
-          createMarker(type, "Type name found " + types.size() + " times",
-              ANALYZE_MARKER_EXAMPLE);
+          createMarker(type, "Type name found " + types.size() + " times", ANALYZE_MARKER_EXAMPLE);
           doubleTypeCount++;
         }
       }

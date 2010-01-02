@@ -57,19 +57,14 @@ public class UCDApplication implements IApplication {
   private int buildType = 0;
 
   static {
-    BUILD_TYPES.put("FULL_BUILD", Integer
-        .valueOf(IncrementalProjectBuilder.FULL_BUILD));
-    BUILD_TYPES.put("AUTO_BUILD", Integer
-        .valueOf(IncrementalProjectBuilder.AUTO_BUILD));
-    BUILD_TYPES.put("CLEAN_BUILD", Integer
-        .valueOf(IncrementalProjectBuilder.CLEAN_BUILD));
-    BUILD_TYPES.put("INCREMENTAL_BUILD", Integer
-        .valueOf(IncrementalProjectBuilder.INCREMENTAL_BUILD));
+    BUILD_TYPES.put("FULL_BUILD", Integer.valueOf(IncrementalProjectBuilder.FULL_BUILD));
+    BUILD_TYPES.put("AUTO_BUILD", Integer.valueOf(IncrementalProjectBuilder.AUTO_BUILD));
+    BUILD_TYPES.put("CLEAN_BUILD", Integer.valueOf(IncrementalProjectBuilder.CLEAN_BUILD));
+    BUILD_TYPES.put("INCREMENTAL_BUILD", Integer.valueOf(IncrementalProjectBuilder.INCREMENTAL_BUILD));
   }
 
   public Object start(IApplicationContext context) throws Exception {
-    Object args = context.getArguments().get(
-        IApplicationContext.APPLICATION_ARGS);
+    Object args = context.getArguments().get(IApplicationContext.APPLICATION_ARGS);
     if (args instanceof String[]) {
       String[] sArgs = (String[]) args;
       parseCommandLine(sArgs);
@@ -110,8 +105,7 @@ public class UCDApplication implements IApplication {
       }
     }
     //
-    String info = (projectsToIterate == null) ? "ALL" : projectsToIterate
-        .toString();
+    String info = (projectsToIterate == null) ? "ALL" : projectsToIterate.toString();
     Log.logInfo("\tprojects to detect: " + (info));
     //
     sBuildType = (sBuildType == null) ? "AUTO_BUILD" : sBuildType;
@@ -134,8 +128,8 @@ public class UCDApplication implements IApplication {
     Log.logInfo(prefs.replace(", ", "\n\t"));
     IEclipsePreferences node = new DefaultScope().getNode(UCDetectorPlugin.ID);
     try {
-      String avaiable = Arrays.asList(node.keys()).toString().replace(", ",
-          "\n\t").replace("[", "\n\t").replace("]", "\n\t");
+      String avaiable = Arrays.asList(node.keys()).toString().replace(", ", "\n\t").replace("[", "\n\t").replace("]",
+          "\n\t");
       Log.logInfo("\tAvaiable Options  : " + avaiable);
     }
     catch (BackingStoreException ex) {
@@ -167,15 +161,13 @@ public class UCDApplication implements IApplication {
     for (IProject project : projects) {
       IJavaProject javaProject = JavaCore.create(project);
       String projectName = javaProject.getElementName();
-      boolean ignore = projectsToIterate != null
-          && !projectsToIterate.contains(projectName);
+      boolean ignore = projectsToIterate != null && !projectsToIterate.contains(projectName);
       if (ignore) {
         Log.logInfo("\tIgnore        : " + projectName);
         continue;
       }
       if (!javaProject.exists()) {
-        Log.logInfo("\tDoes not exist: " + projectName
-            + "\t\t if this is a problem, "
+        Log.logInfo("\tDoes not exist: " + projectName + "\t\t if this is a problem, "
             + "open project in eclipse IDE, restart ant");
         continue;
       }
@@ -204,8 +196,7 @@ public class UCDApplication implements IApplication {
     for (IJavaProject openProject : openProjects) {
       Log.logInfo("\tProject to iterate   : " + openProject.getElementName());
     }
-    iterator.iterate(openProjects
-        .toArray(new IJavaProject[openProjects.size()]));
+    iterator.iterate(openProjects.toArray(new IJavaProject[openProjects.size()]));
   }
 
   public void stop() {

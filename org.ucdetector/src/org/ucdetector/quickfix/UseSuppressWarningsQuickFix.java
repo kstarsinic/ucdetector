@@ -49,8 +49,7 @@ class UseSuppressWarningsQuickFix extends AbstractUCDQuickFix {
   }
 
   public Image getImage() {
-    return JavaUI.getSharedImages().getImage(
-        JavaPluginImages.IMG_OBJS_ANNOTATION);
+    return JavaUI.getSharedImages().getImage(JavaPluginImages.IMG_OBJS_ANNOTATION);
   }
 
   public String getLabel() {

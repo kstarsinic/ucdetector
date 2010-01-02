@@ -122,15 +122,13 @@ public class LineManger {
    * Get the lines for which the @SuppressWarnings annotations are<p>
    * See feature request: Want annotations, not comments, to indicate non-dead code - ID: 2658675
    */
-  private static Set<Integer> findUcdSuppressWarningLines(IScanner scanner,
-      ICompilationUnit compilationUnit) {
+  private static Set<Integer> findUcdSuppressWarningLines(IScanner scanner, ICompilationUnit compilationUnit) {
     ASTParser parser = ASTParser.newParser(AST.JLS3);
     parser.setSource(compilationUnit); // compilationUnit needed for resolve bindings!
     parser.setKind(ASTParser.K_COMPILATION_UNIT);
     parser.setResolveBindings(true);
     ASTNode createAST = parser.createAST(null);
-    FindUcdSuppressWarningsVisitor visitor = new FindUcdSuppressWarningsVisitor(
-        scanner);
+    FindUcdSuppressWarningsVisitor visitor = new FindUcdSuppressWarningsVisitor(scanner);
     createAST.accept(visitor);
     // System.out.println("ignoreLines=" + visitor.ignoreLines);
     return visitor.ignoreLines;
@@ -192,10 +190,8 @@ public class LineManger {
       return false;
     }
 
-    private static boolean isSuppressWarningsUCDetector(Annotation annotation,
-        String name) {
-      if (SuppressWarnings.class.getName().equals(name)
-          || SuppressWarnings.class.getSimpleName().equals(name)) {
+    private static boolean isSuppressWarningsUCDetector(Annotation annotation, String name) {
+      if (SuppressWarnings.class.getName().equals(name) || SuppressWarnings.class.getSimpleName().equals(name)) {
         if (annotation instanceof SingleMemberAnnotation) {
           Expression value = ((SingleMemberAnnotation) annotation).getValue();
           if (value instanceof ArrayInitializer) {
@@ -234,8 +230,7 @@ public class LineManger {
   private IScanner createScanner(IJavaElement javaElement) throws CoreException {
     IOpenable openable = javaElement.getOpenable();
     if (!(openable instanceof ICompilationUnit)) {
-      Log.logError(String.format(
-          "openable NOT instanceof ICompilationUnit '%s' %s", //$NON-NLS-1$
+      Log.logError(String.format("openable NOT instanceof ICompilationUnit '%s' %s", //$NON-NLS-1$
           JavaElementUtil.getElementName(javaElement),//
           javaElement.getClass().getName()));
       return null;
@@ -262,22 +257,19 @@ public class LineManger {
     int nextToken;
     try {
       while ((nextToken = scanner.getNextToken()) != ITerminalSymbols.TokenNameEOF) {
-        Integer ignoreLine = findTagInComment(scanner, NO_UCD_COMMENT,
-            nextToken);
+        Integer ignoreLine = findTagInComment(scanner, NO_UCD_COMMENT, nextToken);
         if (ignoreLine != null) {
           ignoreLines.add(ignoreLine);
         }
       }
     }
     catch (InvalidInputException e) {
-      IStatus status = new Status(IStatus.ERROR, UCDetectorPlugin.ID,
-          IStatus.ERROR, e.getMessage(), e);
+      IStatus status = new Status(IStatus.ERROR, UCDetectorPlugin.ID, IStatus.ERROR, e.getMessage(), e);
       throw new CoreException(status);
     }
     scannerMap.put(compilationUnit, new ScannerTimestamp(scanner, timeStamp));
     lineEndsMap.put(compilationUnit, scanner.getLineEnds());
-    Set<Integer> annotationsIgnoreLines = findUcdSuppressWarningLines(scanner,
-        compilationUnit);
+    Set<Integer> annotationsIgnoreLines = findUcdSuppressWarningLines(scanner, compilationUnit);
     ignoreLines.addAll(annotationsIgnoreLines);
     return scanner;
   }
@@ -332,8 +324,7 @@ public class LineManger {
    * @return line number for a tag like "NO_UCD", or <code>null</code>
    * if there is no tag like "NO_UCD"
    */
-  private static Integer findTagInComment(IScanner scanner, String tag,
-      int nextToken) {
+  private static Integer findTagInComment(IScanner scanner, String tag, int nextToken) {
     if (nextToken == ITerminalSymbols.TokenNameCOMMENT_LINE) {
       char[] currentTokenSource = scanner.getCurrentTokenSource();
       String source = new String(currentTokenSource);

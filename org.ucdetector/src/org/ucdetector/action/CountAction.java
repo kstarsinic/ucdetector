@@ -32,13 +32,12 @@ public class CountAction extends AbstractUCDetectorAction {
   @Override
   protected IStatus postIteration() {
     // show message for count dialog, create status
-    final IStatus status = new Status(IStatus.INFO, UCDetectorPlugin.ID,
-        IStatus.INFO, iterator.toString(), null);
+    final IStatus status = new Status(IStatus.INFO, UCDetectorPlugin.ID, IStatus.INFO, iterator.toString(), null);
     UCDetectorPlugin.logStatus(status);
     Display.getDefault().asyncExec(new Runnable() {
       public void run() {
-        MessageDialog.openInformation(UCDetectorPlugin.getShell(),
-            Messages.CountAction_ResultTitle, iterator.toString());
+        MessageDialog.openInformation(UCDetectorPlugin.getShell(), Messages.CountAction_ResultTitle, iterator
+            .toString());
       }
     });
     return status;

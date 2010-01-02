@@ -34,8 +34,7 @@ public class CycleRegion extends CycleBaseElement {
   private final int line;
   private final String strLine;
 
-  public CycleRegion(CycleBaseElement parent, int offset, int length, int line,
-      String strLine) {
+  public CycleRegion(CycleBaseElement parent, int offset, int length, int line, String strLine) {
     this.parent = parent;
     this.offset = offset;
     this.length = length;
@@ -59,8 +58,7 @@ public class CycleRegion extends CycleBaseElement {
   }
 
   public Image getImage() {
-    return JavaUI.getSharedImages().getImage(
-        JavaPluginImages.IMG_OBJS_SEARCH_OCCURRENCE);
+    return JavaUI.getSharedImages().getImage(JavaPluginImages.IMG_OBJS_SEARCH_OCCURRENCE);
   }
 
   public CycleBaseElement getParent() {

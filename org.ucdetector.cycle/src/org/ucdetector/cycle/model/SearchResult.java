@@ -37,8 +37,7 @@ public class SearchResult extends CycleBaseElement {
   private final IJavaProject javaProject;
   private final IJavaElement[] selections;
 
-  public SearchResult(SearchResultRoot parent, IJavaElement[] selections,
-      IJavaProject javaProject) {
+  public SearchResult(SearchResultRoot parent, IJavaElement[] selections, IJavaProject javaProject) {
     this.parent = parent;
     this.selections = selections;
     this.javaProject = javaProject;
@@ -49,8 +48,7 @@ public class SearchResult extends CycleBaseElement {
   }
 
   public Image getImage() {
-    return JavaUI.getSharedImages().getImage(
-        JavaPluginImages.IMG_OBJS_SEARCH_REF); // IMG_OBJS_JSEARCH
+    return JavaUI.getSharedImages().getImage(JavaPluginImages.IMG_OBJS_SEARCH_REF); // IMG_OBJS_JSEARCH
   }
 
   public CycleBaseElement getParent() {

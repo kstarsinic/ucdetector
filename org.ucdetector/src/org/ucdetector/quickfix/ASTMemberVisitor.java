@@ -72,7 +72,6 @@ public abstract class ASTMemberVisitor extends ASTVisitor {
     return false;
   }
 
-  protected abstract boolean visitImpl(BodyDeclaration declaration,
-      SimpleName name);
+  protected abstract boolean visitImpl(BodyDeclaration declaration, SimpleName name);
 
 }

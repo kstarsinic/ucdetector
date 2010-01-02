@@ -38,8 +38,7 @@ class LineCommentQuickFix extends AbstractUCDQuickFix {
    * comment effected lines using <code>// </code>
    * See also ToggleCommentAction, TextViewer.shift(), ITextOperationTarget.PREFIX, ITextOperationTarget.STRIP_PREFIX<br>
    */
-  private void createLineComments(int lineStart, int lineEnd)
-      throws BadLocationException {
+  private void createLineComments(int lineStart, int lineEnd) throws BadLocationException {
     String newLine = getLineDelimitter();
     // start at the end, because inserting new lines shifts following lines
     for (int lineNr = lineEnd; lineNr >= lineStart; lineNr--) {

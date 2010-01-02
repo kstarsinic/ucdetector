@@ -34,8 +34,7 @@ public class ReportParam {
     sb.append("MARKER{").append(getLevel()).append(';').append(getMessage()); //$NON-NLS-1$
     IResource resource = getJavaElement().getResource();
     if (resource != null) {
-      sb.append(';').append(resource.getFullPath()).append(':').append(
-          getLine());
+      sb.append(';').append(resource.getFullPath()).append(':').append(getLine());
     }
     else {
       sb.append(";line=").append(getLine()); //$NON-NLS-1$
@@ -44,23 +43,20 @@ public class ReportParam {
     return sb.toString();
   }
 
-  public ReportParam(IMember javaElement, String message, int line,
-      String markerType) {
+  public ReportParam(IMember javaElement, String message, int line, String markerType) {
     this(javaElement, message, line, markerType, null, -1);
   }
 
-  public ReportParam(IMember javaElement, String message, int line,
-      String markerType, int referenceCount) {
+  public ReportParam(IMember javaElement, String message, int line, String markerType, int referenceCount) {
     this(javaElement, message, line, markerType, null, referenceCount);
   }
 
-  public ReportParam(IMember javaElement, String message, int line,
-      String markerType, WarnLevel warnLevel) {
+  public ReportParam(IMember javaElement, String message, int line, String markerType, WarnLevel warnLevel) {
     this(javaElement, message, line, markerType, warnLevel, -1);
   }
 
-  private ReportParam(IMember javaElement, String message, int line,
-      String markerType, WarnLevel warnLevel, int referenceCount) {
+  private ReportParam(IMember javaElement, String message, int line, String markerType, WarnLevel warnLevel,
+      int referenceCount) {
     this.javaElement = javaElement;
     this.message = message;
     this.line = line;

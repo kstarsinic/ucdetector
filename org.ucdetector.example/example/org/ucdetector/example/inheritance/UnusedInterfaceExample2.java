@@ -3,6 +3,5 @@ package org.ucdetector.example.inheritance;
 public interface UnusedInterfaceExample2 { // Marker YES: unused code
 
   // interface methods can't be private
-  public static final String CLASS_NAME = UnusedInterfaceExample2.class
-      .getName();
+  public static final String CLASS_NAME = UnusedInterfaceExample2.class.getName();
 }

@@ -60,12 +60,10 @@ class VisibilityQuickFix extends AbstractUCDQuickFix {
 
   private Modifier getModifierNew(BodyDeclaration nodeToChange) {
     if (MarkerFactory.UCD_MARKER_USE_PRIVATE.equals(markerType)) {
-      return nodeToChange.getAST().newModifier(
-          Modifier.ModifierKeyword.PRIVATE_KEYWORD);
+      return nodeToChange.getAST().newModifier(Modifier.ModifierKeyword.PRIVATE_KEYWORD);
     }
     else if (MarkerFactory.UCD_MARKER_USE_PROTECTED.equals(markerType)) {
-      return nodeToChange.getAST().newModifier(
-          Modifier.ModifierKeyword.PROTECTED_KEYWORD);
+      return nodeToChange.getAST().newModifier(Modifier.ModifierKeyword.PROTECTED_KEYWORD);
     }
     return null;
   }
@@ -86,16 +84,13 @@ class VisibilityQuickFix extends AbstractUCDQuickFix {
 
   public Image getImage() {
     if (MarkerFactory.UCD_MARKER_USE_PROTECTED.equals(markerType)) {
-      return JavaUI.getSharedImages().getImage(
-          JavaPluginImages.IMG_MISC_PROTECTED);
+      return JavaUI.getSharedImages().getImage(JavaPluginImages.IMG_MISC_PROTECTED);
     }
     else if (MarkerFactory.UCD_MARKER_USE_DEFAULT.equals(markerType)) {
-      return JavaUI.getSharedImages().getImage(
-          JavaPluginImages.IMG_MISC_DEFAULT);
+      return JavaUI.getSharedImages().getImage(JavaPluginImages.IMG_MISC_DEFAULT);
     }
     else if (MarkerFactory.UCD_MARKER_USE_PRIVATE.equals(markerType)) {
-      return JavaUI.getSharedImages().getImage(
-          JavaPluginImages.IMG_MISC_PRIVATE);
+      return JavaUI.getSharedImages().getImage(JavaPluginImages.IMG_MISC_PRIVATE);
     }
     return null;
   }

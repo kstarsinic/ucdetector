@@ -18,8 +18,7 @@ import org.ucdetector.util.MarkerFactory;
 public class CleanMarkersIterator extends AbstractUCDetectorIterator {
 
   @Override
-  public void handleStartSelectedElement(IJavaElement javaElement)
-      throws CoreException {
+  public void handleStartSelectedElement(IJavaElement javaElement) throws CoreException {
     MarkerFactory.deleteMarkers(javaElement);
   }
 

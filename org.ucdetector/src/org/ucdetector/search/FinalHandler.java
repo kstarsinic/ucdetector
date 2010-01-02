@@ -87,8 +87,7 @@ class FinalHandler {
    * @return <code>true</code>, when a field can use the keyword final
    */
   private static boolean canMakeFinal(IField field) throws CoreException {
-    SearchPattern pattern = SearchPattern.createPattern(field,
-        IJavaSearchConstants.WRITE_ACCESSES);
+    SearchPattern pattern = SearchPattern.createPattern(field, IJavaSearchConstants.WRITE_ACCESSES);
     CanMakeFinalRequestor requestor = new CanMakeFinalRequestor(field);
     JavaElementUtil.runSearch(pattern, requestor);
     return !requestor.fieldHasWriteAccessFromMethod;

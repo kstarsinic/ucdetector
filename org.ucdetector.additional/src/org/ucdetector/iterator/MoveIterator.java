@@ -50,8 +50,7 @@ public class MoveIterator extends AdditionalIterator {
     for (IType type : types) {
       monitor.worked(1);
       monitor.subTask(JavaElementUtil.getTypeName(type));
-      SearchPattern pattern = SearchPattern.createPattern(type,
-          IJavaSearchConstants.REFERENCES);
+      SearchPattern pattern = SearchPattern.createPattern(type, IJavaSearchConstants.REFERENCES);
       MatchPerPackageRequestor requestor = new MatchPerPackageRequestor(type);
       JavaElementUtil.runSearch(pattern, requestor);
       createMarker(requestor.matchPerPackage, type);
@@ -62,8 +61,7 @@ public class MoveIterator extends AdditionalIterator {
     }
   }
 
-  private boolean createMarker(MatchPerPackageList matchPerPackage, IType type)
-      throws CoreException {
+  private boolean createMarker(MatchPerPackageList matchPerPackage, IType type) throws CoreException {
     IResource resource = type.getResource();
     if (resource == null) {
       return false;
@@ -86,8 +84,7 @@ public class MoveIterator extends AdditionalIterator {
     private final MatchPerPackageList matchPerPackage;
 
     protected MatchPerPackageRequestor(IType type) {
-      this.matchPerPackage = new MatchPerPackageList(JavaElementUtil
-          .getTypeFor(type, true));
+      this.matchPerPackage = new MatchPerPackageList(JavaElementUtil.getTypeFor(type, true));
     }
 
     @Override
@@ -179,8 +176,7 @@ public class MoveIterator extends AdditionalIterator {
   /**
    * Data container class, containing the package name and the number of matches
    */
-  private static final class MatchPerPackage implements
-      Comparable<MatchPerPackage> {
+  private static final class MatchPerPackage implements Comparable<MatchPerPackage> {
     private final String pakage;
     private int match = 1;
 
@@ -223,11 +219,9 @@ public class MoveIterator extends AdditionalIterator {
   }
 
   @Override
-  public void handleStartSelectedElement(IJavaElement javaElement)
-      throws CoreException {
+  public void handleStartSelectedElement(IJavaElement javaElement) throws CoreException {
     if (javaElement.getResource() != null) {
-      javaElement.getResource().deleteMarkers(ANALYZE_MARKER_MOVE_CLASS, true,
-          IResource.DEPTH_INFINITE);
+      javaElement.getResource().deleteMarkers(ANALYZE_MARKER_MOVE_CLASS, true, IResource.DEPTH_INFINITE);
     }
   }
 

@@ -42,8 +42,7 @@ class VisibilityHandler {
   private final IMember startElement;
   private final MarkerFactory markerFactory;
 
-  VisibilityHandler(MarkerFactory markerFactory, IMember startElement)
-      throws JavaModelException {
+  VisibilityHandler(MarkerFactory markerFactory, IMember startElement) throws JavaModelException {
     this.markerFactory = markerFactory;
     this.startElement = startElement;
     VISIBILITY vParent = getVisibiliyParent(startElement);
@@ -63,8 +62,7 @@ class VisibilityHandler {
     return VISIBILITY.PRIVATE;
   }
 
-  private VISIBILITY getVisibiliyParent(IMember element)
-      throws JavaModelException {
+  private VISIBILITY getVisibiliyParent(IMember element) throws JavaModelException {
     IJavaElement parent = element.getParent();
     VISIBILITY result = VISIBILITY.PUBLIC;
     while (true) {
@@ -84,8 +82,7 @@ class VisibilityHandler {
    * @throws JavaModelException
    */
   void checkVisibility(IJavaElement foundElement, int found, int foundTest) {
-    if (!Prefs.isCheckReduceVisibilityProtected(startElement)
-        && !Prefs.isCheckReduceVisibilityToPrivate(startElement)) {
+    if (!Prefs.isCheckReduceVisibilityProtected(startElement) && !Prefs.isCheckReduceVisibilityToPrivate(startElement)) {
       return;
     }
     IType startRootType = JavaElementUtil.getRootTypeFor(startElement);
@@ -99,8 +96,7 @@ class VisibilityHandler {
     // [ 2743908 ] Methods only called from inner class could be private
     if (startRootType.equals(foundRootType)) {
       // [ 2804064 ] Access to enclosing type - make 2743908 configurable
-      setMaxVisibilityFound(Prefs.isIgnoreSyntheticAccessEmulationWarning() ? VISIBILITY.PRIVATE
-          : VISIBILITY.PROTECTED);
+      setMaxVisibilityFound(Prefs.isIgnoreSyntheticAccessEmulationWarning() ? VISIBILITY.PRIVATE : VISIBILITY.PROTECTED);
       return;
     }
     IPackageFragment startPackage = JavaElementUtil.getPackageFor(startElement);
@@ -123,8 +119,7 @@ class VisibilityHandler {
    * Create a marker: "Change visibility of ClassName to private"
    * @return <code>true</code>, if a marker was created
    */
-  boolean createMarker(IMember member, int line, int found)
-      throws CoreException {
+  boolean createMarker(IMember member, int line, int found) throws CoreException {
     if (!needVisibilityMarker(member, found)) {
       return false;
     }
@@ -213,8 +208,7 @@ class VisibilityHandler {
     boolean decreaseVisibility = visibilityStart.value > visibilityMaxFound.value;
     return found > 0
         && decreaseVisibility
-        && (Prefs.isCheckReduceVisibilityProtected(member)
-            && visibilityMaxFound == VISIBILITY.PROTECTED || Prefs
+        && (Prefs.isCheckReduceVisibilityProtected(member) && visibilityMaxFound == VISIBILITY.PROTECTED || Prefs
             .isCheckReduceVisibilityToPrivate(member)
             && visibilityMaxFound == VISIBILITY.PRIVATE);
   }

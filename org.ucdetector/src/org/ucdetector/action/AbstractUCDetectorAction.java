@@ -66,8 +66,7 @@ public abstract class AbstractUCDetectorAction extends ActionDelegate {
           //          return e.getStatus();
         }
         catch (Throwable e) {
-          UCDetectorPlugin.logErrorAndStatus(
-              Messages.AbstractUCDetectorAction_AnalyzeFailedText, e);
+          UCDetectorPlugin.logErrorAndStatus(Messages.AbstractUCDetectorAction_AnalyzeFailedText, e);
         }
         IStatus status = null;
         try {
@@ -76,8 +75,7 @@ public abstract class AbstractUCDetectorAction extends ActionDelegate {
         finally {
           ucdMonitor.done();
         }
-        return status != null ? status
-            : ucdMonitor.isCanceled() ? Status.CANCEL_STATUS : Status.OK_STATUS;
+        return status != null ? status : ucdMonitor.isCanceled() ? Status.CANCEL_STATUS : Status.OK_STATUS;
       }
 
       private void showNothingToDetectMessage() {
@@ -99,8 +97,7 @@ public abstract class AbstractUCDetectorAction extends ActionDelegate {
    */
   protected void setJobProperty(Job job) {
     job.setProperty(IProgressConstants.KEEP_PROPERTY, Boolean.TRUE);
-    ImageDescriptor ucdIcon = UCDetectorPlugin
-        .getImageDescriptor(UCDetectorPlugin.IMAGE_UCD);
+    ImageDescriptor ucdIcon = UCDetectorPlugin.getImageDescriptor(UCDetectorPlugin.IMAGE_UCD);
     job.setProperty(IProgressConstants.ICON_PROPERTY, ucdIcon);
     job.setProperty(IProgressConstants.KEEP_PROPERTY, Boolean.TRUE);
   }
@@ -126,8 +123,7 @@ public abstract class AbstractUCDetectorAction extends ActionDelegate {
     if (action == null) {
       return;
     }
-    PlatformUI.getWorkbench().getHelpSystem().setHelp(action,
-        UCDetectorPlugin.HELP_ID);
+    PlatformUI.getWorkbench().getHelpSystem().setHelp(action, UCDetectorPlugin.HELP_ID);
     action.setEnabled(true);
     // Collect selections
     collectJavaElementSelections(selection);

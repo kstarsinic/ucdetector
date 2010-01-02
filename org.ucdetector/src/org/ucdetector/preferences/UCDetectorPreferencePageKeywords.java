@@ -31,8 +31,7 @@ import org.ucdetector.Messages;
  * <p>
  * https://sourceforge.net/tracker2/?func=detail&aid=2490344&group_id=219599&atid=1046868
  */
-public class UCDetectorPreferencePageKeywords extends
-    UCDetectorBasePreferencePage {
+public class UCDetectorPreferencePageKeywords extends UCDetectorBasePreferencePage {
   private Method getComboListeners;
   private Combo changeVisibiliyCombos;
 
@@ -42,8 +41,7 @@ public class UCDetectorPreferencePageKeywords extends
 
   @Override
   public void createFieldEditors() {
-    Composite parentGroups = createComposite(getFieldEditorParent(), 1, 1,
-        GridData.FILL_HORIZONTAL);
+    Composite parentGroups = createComposite(getFieldEditorParent(), 1, 1, GridData.FILL_HORIZONTAL);
     createKeywordGroup(parentGroups);
     createVisibilityGroupClasses(parentGroups);
   }
@@ -53,12 +51,10 @@ public class UCDetectorPreferencePageKeywords extends
    * (analyze visibility, try to make methods or fields final)
    */
   private void createKeywordGroup(Composite parentGroups) {
-    Composite spacer = createGroup(parentGroups,
-        Messages.PreferencePage_GroupFinal, 1, 1, GridData.FILL_HORIZONTAL);
+    Composite spacer = createGroup(parentGroups, Messages.PreferencePage_GroupFinal, 1, 1, GridData.FILL_HORIZONTAL);
     // FINAL -------------------------------------------------------------------
-    ComboFieldEditor analyzeFinalMethod = createCombo(
-        Prefs.ANALYZE_FINAL_METHOD, Messages.PreferencePage_CheckFinalMethod,
-        spacer);
+    ComboFieldEditor analyzeFinalMethod = createCombo(Prefs.ANALYZE_FINAL_METHOD,
+        Messages.PreferencePage_CheckFinalMethod, spacer);
     this.addField(analyzeFinalMethod);
     ComboFieldEditor analyzeFinalField = createCombo(Prefs.ANALYZE_FINAL_FIELD,
         Messages.PreferencePage_CheckFinalField, spacer);
@@ -70,34 +66,33 @@ public class UCDetectorPreferencePageKeywords extends
    * (analyze visibility, try to make methods or fields final)
    */
   private void createVisibilityGroupClasses(Composite parentGroups) {
-    Composite spacer = createGroup(parentGroups,
-        Messages.PreferencePage_GroupVisibility, 1, 1, GridData.FILL_HORIZONTAL);
+    Composite spacer = createGroup(parentGroups, Messages.PreferencePage_GroupVisibility, 1, 1,
+        GridData.FILL_HORIZONTAL);
     //
     addChangeAllVisibiliyCombo(spacer);
     //
     addLineHack(spacer);
     this.addField(createCombo(Prefs.ANALYZE_VISIBILITY_PROTECTED_CLASSES,
         Messages.PreferencePage_CheckProtectedClasses, spacer));
-    this.addField(createCombo(Prefs.ANALYZE_VISIBILITY_PRIVATE_CLASSES,
-        Messages.PreferencePage_CheckPrivateClasses, spacer));
+    this.addField(createCombo(Prefs.ANALYZE_VISIBILITY_PRIVATE_CLASSES, Messages.PreferencePage_CheckPrivateClasses,
+        spacer));
     addLineHack(spacer);
 
     this.addField(createCombo(Prefs.ANALYZE_VISIBILITY_PROTECTED_METHODS,
         Messages.PreferencePage_CheckProtectedMethods, spacer));
-    this.addField(createCombo(Prefs.ANALYZE_VISIBILITY_PRIVATE_METHODS,
-        Messages.PreferencePage_CheckPrivateMethods, spacer));
+    this.addField(createCombo(Prefs.ANALYZE_VISIBILITY_PRIVATE_METHODS, Messages.PreferencePage_CheckPrivateMethods,
+        spacer));
     addLineHack(spacer);
 
-    this.addField(createCombo(Prefs.ANALYZE_VISIBILITY_PROTECTED_FIELDS,
-        Messages.PreferencePage_CheckProtectedFields, spacer));
-    this.addField(createCombo(Prefs.ANALYZE_VISIBILITY_PRIVATE_FIELDS,
-        Messages.PreferencePage_CheckPrivateFields, spacer));
+    this.addField(createCombo(Prefs.ANALYZE_VISIBILITY_PROTECTED_FIELDS, Messages.PreferencePage_CheckProtectedFields,
+        spacer));
+    this.addField(createCombo(Prefs.ANALYZE_VISIBILITY_PRIVATE_FIELDS, Messages.PreferencePage_CheckPrivateFields,
+        spacer));
 
     // [ 2804064 ] Access to enclosing type - make 2743908 configurable
-    BooleanFieldEditor ignoreSyntheticAccessEmulation = new BooleanFieldEditor(
-        Prefs.IGNORE_SYNTHETIC_ACCESS_EMULATION, "    " //$NON-NLS-1$
-            + Messages.PreferencePage_ignoreSyntheticAccessEmulation,
-        BooleanFieldEditor.SEPARATE_LABEL, spacer);
+    BooleanFieldEditor ignoreSyntheticAccessEmulation = new BooleanFieldEditor(Prefs.IGNORE_SYNTHETIC_ACCESS_EMULATION,
+        "    " //$NON-NLS-1$
+            + Messages.PreferencePage_ignoreSyntheticAccessEmulation, BooleanFieldEditor.SEPARATE_LABEL, spacer);
     ignoreSyntheticAccessEmulation.getLabelControl(spacer).setToolTipText(
         Messages.PreferencePage_ignoreSyntheticAccessEmulationTooltip);
     this.addField(ignoreSyntheticAccessEmulation);
@@ -123,10 +118,8 @@ public class UCDetectorPreferencePageKeywords extends
     Label label = new Label(parent, SWT.LEFT);
     label.setText(Messages.UCDetectorPreferencePageKeywords_ChangeAllCombos);
     changeVisibiliyCombos = new Combo(parent, SWT.READ_ONLY);
-    changeVisibiliyCombos.setItems(new String[] {
-        WarnLevel.ERROR.toStringLocalized(),
-        WarnLevel.WARNING.toStringLocalized(),
-        WarnLevel.IGNORE.toStringLocalized() });
+    changeVisibiliyCombos.setItems(new String[] { WarnLevel.ERROR.toStringLocalized(),
+        WarnLevel.WARNING.toStringLocalized(), WarnLevel.IGNORE.toStringLocalized() });
     changeVisibiliyCombos.setText(WarnLevel.WARNING.toStringLocalized());
     changeVisibiliyCombos.addSelectionListener(new SelectionAdapter() {
       @Override
@@ -161,8 +154,7 @@ public class UCDetectorPreferencePageKeywords extends
       private Listener[] getListeners(Combo visibilityCombo) {
         try {
           Integer selection = Integer.valueOf(SWT.Selection);
-          return (Listener[]) getComboListeners.invoke(visibilityCombo,
-              new Object[] { selection });
+          return (Listener[]) getComboListeners.invoke(visibilityCombo, new Object[] { selection });
         }
         catch (Exception e) {
           // ignore
@@ -176,8 +168,7 @@ public class UCDetectorPreferencePageKeywords extends
   public boolean performOk() {
     boolean performOk = super.performOk();
     if (getComboListeners != null) {
-      getPreferenceStore().setValue(Prefs.CHANGE_ALL_VISIBILIY_COMBO,
-          changeVisibiliyCombos.getSelectionIndex());
+      getPreferenceStore().setValue(Prefs.CHANGE_ALL_VISIBILIY_COMBO, changeVisibiliyCombos.getSelectionIndex());
     }
     return performOk;
   }

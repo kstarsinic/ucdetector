@@ -22,9 +22,7 @@ public class CyclePrefs {
    * @return Maximum depth of searching for class cycles
    */
   public static int getCycleDepth() {
-    int cycleDepth = CyclePlugin.getDefault().getPreferenceStore().getInt(
-        CYCLE_DEPTH);
-    return cycleDepth < CYCLE_DEPTH_MIN ? CYCLE_DEPTH_MIN
-        : cycleDepth > CYCLE_DEPTH_MAX ? CYCLE_DEPTH_MAX : cycleDepth;
+    int cycleDepth = CyclePlugin.getDefault().getPreferenceStore().getInt(CYCLE_DEPTH);
+    return cycleDepth < CYCLE_DEPTH_MIN ? CYCLE_DEPTH_MIN : cycleDepth > CYCLE_DEPTH_MAX ? CYCLE_DEPTH_MAX : cycleDepth;
   }
 }
