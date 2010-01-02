@@ -12,6 +12,7 @@ import org.eclipse.jdt.core.dom.BodyDeclaration;
 import org.eclipse.jdt.internal.ui.JavaPluginImages;
 import org.eclipse.jdt.ui.JavaUI;
 import org.eclipse.jface.text.BadLocationException;
+import org.eclipse.jface.text.IDocument;
 import org.eclipse.jface.text.IRegion;
 import org.eclipse.swt.graphics.Image;
 import org.ucdetector.Messages;
@@ -20,7 +21,7 @@ import org.ucdetector.Messages;
  * 'Fixes' code by adding line comment at end of line: "// NO_UCD"
  */
 class UseTag_NO_UCD_QuickFix extends AbstractUCDQuickFix {
-  private static final String COMMENT_SPACE = " "; //$NON-NLS-1$
+  static final String NO_UCD_COMMENT = " // NO_UCD";//$NON-NLS-1$
 
   protected UseTag_NO_UCD_QuickFix(IMarker marker) {
     super(marker);
@@ -29,21 +30,27 @@ class UseTag_NO_UCD_QuickFix extends AbstractUCDQuickFix {
   @Override
   public int runImpl(BodyDeclaration nodeToChange) throws BadLocationException {
     int lineNr = marker.getAttribute(IMarker.LINE_NUMBER, -1);
+    return appendNoUcd(doc, nodeToChange, lineNr);
+  }
+
+  /**
+   * Add " // NO_UCD" to line end of class/method/field declaration
+   */
+  static int appendNoUcd(IDocument document, BodyDeclaration nodeToChange, int lineNr) throws BadLocationException {
     if (lineNr < 1) {
       return nodeToChange.getStartPosition();//
     }
-    IRegion region = doc.getLineInformation(lineNr - 1);
+    IRegion region = document.getLineInformation(lineNr - 1);
     int offset = region.getOffset();
     int length = region.getLength();
-    String strLine = doc.get(offset, length);
-    doc.replace(offset, length, strLine + COMMENT_SPACE + "// NO_UCD"); //$NON-NLS-1$
-    return offset + length + COMMENT_SPACE.length();
+    String newLine = document.get(offset, length) + NO_UCD_COMMENT;
+    document.replace(offset, length, newLine);
+    return offset + length + 1;
   }
 
   public Image getImage() {
     // IMG_OBJS_HTMLTAG
-    return JavaUI.getSharedImages()
-        .getImage(JavaPluginImages.IMG_OBJS_NLS_SKIP);
+    return JavaUI.getSharedImages().getImage(JavaPluginImages.IMG_OBJS_NLS_SKIP);
   }
 
   public String getLabel() {
@@ -52,17 +59,5 @@ class UseTag_NO_UCD_QuickFix extends AbstractUCDQuickFix {
 
   public String getDescription() {
     return null;
-    //    try {
-    //      int lineNr = getMarker().getAttribute(IMarker.LINE_NUMBER, -1);
-    //      IRegion region = doc.getLineInformation(lineNr - 1);
-    //      int offset = region.getOffset();
-    //      int length = region.getLength();
-    //      String strLine = doc.get(offset, length);
-    //      return strLine + "<b>" + COMMENT_SPACE + "// NO_UCD</b>"; //$NON-NLS-1$
-    //    }
-    //    catch (Exception e) {
-    //      e.printStackTrace();
-    //      return null;
-    //    }
   }
 }

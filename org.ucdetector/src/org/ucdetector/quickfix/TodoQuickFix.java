@@ -18,6 +18,7 @@ import org.ucdetector.UCDetectorPlugin;
  * 'Fixes' code by adding line comment at end of line: "// NO_UCD"
  */
 class TodoQuickFix extends AbstractUCDQuickFix {
+  private static final String TODO_UCD = "// TODO from UCDetector: "; //$NON-NLS-1$
 
   protected TodoQuickFix(IMarker marker) {
     super(marker);
@@ -29,8 +30,9 @@ class TodoQuickFix extends AbstractUCDQuickFix {
     if (lineNr < 1) {
       return nodeToChange.getStartPosition();//
     }
+    UseTag_NO_UCD_QuickFix.appendNoUcd(doc, nodeToChange, lineNr);
     int offset = doc.getLineInformation(lineNr - 1).getOffset();
-    String todo = "// TODO from UCDetector: " + marker.getAttribute(IMarker.MESSAGE, "?") + getLineDelimitter(); //$NON-NLS-1$
+    String todo = TODO_UCD + marker.getAttribute(IMarker.MESSAGE, "?") + getLineDelimitter(); //$NON-NLS-1$ 
     doc.replace(offset, 0, todo);
     return offset;
   }
@@ -44,6 +46,7 @@ class TodoQuickFix extends AbstractUCDQuickFix {
   }
 
   public String getDescription() {
-    return null;
+    return String.format(
+        "Add comments:<br><b>%s...</b><br>And<br><b>%s</b>", TODO_UCD, UseTag_NO_UCD_QuickFix.NO_UCD_COMMENT); //$NON-NLS-1$
   }
 }
