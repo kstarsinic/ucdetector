@@ -32,6 +32,7 @@ import org.ucdetector.example.classes.ClassInJarExample;
 import org.ucdetector.example.classes.LocalClassExample;
 import org.ucdetector.example.classes.MemberClassExample;
 import org.ucdetector.example.enums.EnumExample;
+import org.ucdetector.example.enums.EnumExampleUnusedConstants;
 import org.ucdetector.example.enums.EnumExampleUsedWithValueOf;
 import org.ucdetector.example.enums.EnumExampleUsedWithValues;
 import org.ucdetector.example.fields.FieldExamples;
@@ -135,6 +136,7 @@ public class PublicReferenceHolder {
     sameNameExample.sameName(new Long(2L), 3);
     // ---------------------------------------------------------------------
     System.out.println(EnumExample.class);
+    System.out.println(EnumExampleUnusedConstants.class);
     System.out.println(EnumExample.USED);
     System.out.println(ConstructorExample.class.getName());
     // ---------------------------------------------------------------------

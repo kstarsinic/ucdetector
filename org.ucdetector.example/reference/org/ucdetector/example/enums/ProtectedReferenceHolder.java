@@ -1,4 +1,4 @@
-package org.ucdetector.example.classes;
+package org.ucdetector.example.enums;
 
 import org.ucdetector.example.MixedExample;
 import org.ucdetector.example.enums.EnumExample;

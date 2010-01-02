@@ -16,6 +16,6 @@ package org.ucdetector.example.enums;
  * http://ucdetector.svn.sourceforge.net/viewvc/ucdetector/trunk/org.ucdetector.example/example/org/ucdetector/example/enums/EnumExampleUsedWithValueOf.java?view=markup
  */
 public enum EnumExampleUsedWithValueOf {
-  TEST, // 
-  TEST2, //
+  UNUSED, //
+  UNUSED2, //
 }
