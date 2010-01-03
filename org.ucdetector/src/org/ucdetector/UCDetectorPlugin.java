@@ -120,7 +120,11 @@ public class UCDetectorPlugin extends AbstractUIPlugin {
     }
 
     public String getEclipseHome() {
-      return System.getProperty("eclipse.home.location"); //$NON-NLS-1$
+      String eclipseHome = System.getProperty("osgi.install.area"); //$NON-NLS-1$
+      if (eclipseHome != null && eclipseHome.startsWith("file:")) { //$NON-NLS-1$
+        return eclipseHome.substring("file:".length()); //$NON-NLS-1$
+      }
+      return eclipseHome;
     }
 
     public String getLogfile() {
