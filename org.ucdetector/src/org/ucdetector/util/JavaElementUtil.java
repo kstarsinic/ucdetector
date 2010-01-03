@@ -821,10 +821,10 @@ public class JavaElementUtil {
    * @throws CoreException when there are search problems
    */
   public static boolean isUsedBySpecialEnumMethods(IType enumType) throws CoreException {
-    String[] stringPatterns = new String[] {//
-    /**/enumType.getFullyQualifiedName() + ".values()", //$NON-NLS-1$
-        enumType.getFullyQualifiedName() + ".valueOf(java.lang.String)", //$NON-NLS-1$
-    //        enumType.getFullyQualifiedName() + ".valueOf(java.lang.Class,java.lang.String)",
+    String[] stringPatterns = new String[] {
+    // We need '.' as class name separator for search!
+        enumType.getFullyQualifiedName('.') + ".values()",//$NON-NLS-1$
+        enumType.getFullyQualifiedName('.') + ".valueOf(java.lang.String)", //$NON-NLS-1$
     };
     for (String stringPattern : stringPatterns) {
       SearchPattern pattern = SearchPattern.createPattern(stringPattern, IJavaSearchConstants.METHOD,
