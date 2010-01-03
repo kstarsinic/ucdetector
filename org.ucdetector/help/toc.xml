@@ -1,8 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <?NLS TYPE="org.eclipse.help.toc"?>
 <toc label="UCDetector" topic="help/html/index.html">
-	<topic href="help/html/index.html" label="UCDetector usage">
-   </topic> 
-	<topic label="UCDetector preferences" href="help/html/index.html">
-	</topic>  
+	<topic label="Usage" href="help/html/index.html"></topic>
+	<topic label="Preferences" href="help/html/preferences.html"></topic>
+	<topic label="Releases" href="help/html/releases.html"></topic>
+	<topic label="FAQ" href="help/html/faq.html"></topic>
+	<topic label="Contact" href="help/html/contact.html"></topic>
 </toc>
