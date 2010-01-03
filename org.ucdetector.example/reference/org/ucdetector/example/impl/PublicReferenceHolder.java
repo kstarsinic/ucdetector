@@ -31,6 +31,7 @@ import org.ucdetector.example.classes.AnonymousClass;
 import org.ucdetector.example.classes.ClassInJarExample;
 import org.ucdetector.example.classes.LocalClassExample;
 import org.ucdetector.example.classes.MemberClassExample;
+import org.ucdetector.example.enums.Bug2922801;
 import org.ucdetector.example.enums.EnumExample;
 import org.ucdetector.example.enums.EnumExampleUnusedConstants;
 import org.ucdetector.example.enums.EnumExampleUsedWithValueOf;
@@ -78,6 +79,7 @@ public class PublicReferenceHolder {
   @SuppressWarnings("deprecation")
   @AnnotationExample(parameterExmaple = "1")
   public static void main(String[] args) throws Throwable {
+    System.out.println(Bug2922801.class);
     // ------------------------------------------------------------------------
     System.out.println(EnumExampleUsedWithValues.values());
     System.out.println(EnumExampleUsedWithValueOf.valueOf("test"));
