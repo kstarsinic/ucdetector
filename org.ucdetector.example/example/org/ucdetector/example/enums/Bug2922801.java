@@ -11,13 +11,31 @@ package org.ucdetector.example.enums;
  * Browse code at:
  * http://ucdetector.svn.sourceforge.net/viewvc/ucdetector/trunk/org.ucdetector.example/example/org/ucdetector/example/enums/Bug2922801.java?view=markup
  */
-
 public class Bug2922801 {
+  // Class name to search: org.ucdetector.example.enums.Bug2922801.MakeMePrivate
   public enum MakeMePrivate {
     A, B, C, D
   }
 
+  /**
+   * Class name to search: org.ucdetector.example.enums.Bug2922801.MakeMePrivate2
+   */
+  protected static enum MakeMePrivate2 {
+    E, F, G
+  }
+
+  /*
+   * Class name to search: org.ucdetector.example.enums.Bug2922801.MakeMePrivate3
+   */
+  static enum MakeMePrivate3 {
+    H, //
+    I, //
+    J, //
+  }
+
   public static void main(String[] args) {
     System.out.println(MakeMePrivate.values());
+    System.out.println(MakeMePrivate2.values());
+    System.out.println(MakeMePrivate3.valueOf("Foo"));
   }
 }
