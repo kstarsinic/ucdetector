@@ -361,7 +361,6 @@ public class JavaElementUtil {
     IJavaSearchScope scope = SearchEngine.createHierarchyScope(declaringType);
     runSearch(pattern, requestor, scope);
     // Ignore 1 match: Declaring type!
-    // TODO: check search matches: OverrideImplExample
     return requestor.getFoundCount() > 1;
   }
 
