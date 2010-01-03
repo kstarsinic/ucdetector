@@ -12,9 +12,25 @@
 		<li></li>
 	</ul>
 -->
+	<hr></hr>
+  <!-- ===================================================================== -->
+	<h3>UCDetector 1.4.0 from 2010-01-03:</h3>
+  <!-- ===================================================================== -->
+	<p>New features:</p>
+	<ul>
+		<li>Improved QuickFixes</li>
+		<li>Improved HTML/XML report</li>
+		<li>Added a new TodoQuickFix</li>
+	</ul>
+	<p>Bugfixes:</p>
+	<ul>
+		<li>[ PerformanceBug ] UCDetector is now 2 times faster, because SearchScope is sources now.</li>
+		<li>[ 2911486 ] QuickFix doesn't modify code</li>
+		<li>[ 2900561 ] Enum constant detection now also searches for values() and valueOf()</li>
+	</ul>
+
 	
 	<hr></hr>
-
   <!-- ===================================================================== -->
 	<h3>1.3.0 from 2009-10-25:</h3>
   <!-- ===================================================================== -->
