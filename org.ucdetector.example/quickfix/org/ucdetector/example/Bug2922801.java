@@ -1,4 +1,4 @@
-package org.ucdetector.example.enums;
+package org.ucdetector.example;
 /**
  * Bug 2922801: Quick fix eception on enum declaration
  * <p>
@@ -13,21 +13,21 @@ package org.ucdetector.example.enums;
  */
 public class Bug2922801 {
   // Class name to search: org.ucdetector.example.enums.Bug2922801.MakeMePrivate
-  public enum MakeMePrivate {
+  public enum MakeMePrivate { // Marker YES: use private
     A, B, C, D
   }
 
   /**
    * Class name to search: org.ucdetector.example.enums.Bug2922801.MakeMePrivate2
    */
-  protected static enum MakeMePrivate2 {
+  protected static enum MakeMePrivate2 {// Marker YES: use private
     E, F, G
   }
 
   /*
    * Class name to search: org.ucdetector.example.enums.Bug2922801.MakeMePrivate3
    */
-  static enum MakeMePrivate3 {
+  static enum MakeMePrivate3 {// Marker YES: use private
     H, //
     I, //
     J, //

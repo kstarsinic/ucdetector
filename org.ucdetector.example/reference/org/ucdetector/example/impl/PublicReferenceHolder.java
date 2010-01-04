@@ -3,6 +3,7 @@ package org.ucdetector.example.impl;
 import static org.ucdetector.example.bugs.Bug2783734StaticImports.STATIC_IMPORT_USED;
 import static org.ucdetector.example.bugs.Bug2783734StaticImports.staticImportMethod;
 
+import org.ucdetector.example.Bug2922801;
 import org.ucdetector.example.IgnoreAnnotationExample;
 import org.ucdetector.example.Java5Example;
 import org.ucdetector.example.MixedExample;
@@ -32,7 +33,6 @@ import org.ucdetector.example.classes.AnonymousClass;
 import org.ucdetector.example.classes.ClassInJarExample;
 import org.ucdetector.example.classes.LocalClassExample;
 import org.ucdetector.example.classes.MemberClassExample;
-import org.ucdetector.example.enums.Bug2922801;
 import org.ucdetector.example.enums.EnumExample;
 import org.ucdetector.example.enums.EnumExampleUnusedConstants;
 import org.ucdetector.example.enums.EnumExampleUsedWithValueOf;
