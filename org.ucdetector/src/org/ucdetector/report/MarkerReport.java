@@ -117,14 +117,18 @@ public class MarkerReport implements IUCDetectorReport {
   private static String createJavaElementString(IJavaElement javaElement) throws JavaModelException {
     StringBuilder sb = new StringBuilder();
     if (javaElement instanceof IType) {
-      sb.append(MarkerFactory.ElementType.TYPE);
+      IType type = (IType) javaElement;
+      // fix bug 2922801: Quick fix exception on enum declaration 
+      sb.append(type.isEnum() ? ElementType.ENUM : type.isAnnotation() ? ElementType.ANNOTATION : ElementType.TYPE);
     }
     else if (javaElement instanceof IMethod) {
-      sb.append(MarkerFactory.ElementType.METHOD);
+      // Fix bug 2922801: Quick fix exception on enum declaration 
+      IType type = JavaElementUtil.getTypeFor(javaElement, false);
+      sb.append(type.isAnnotation() ? ElementType.ANNOTATION_TYPE_MEMBER : ElementType.METHOD);
     }
     else if (javaElement instanceof IField) {
-      boolean isConstant = JavaElementUtil.isConstant((IField) javaElement);
-      sb.append(isConstant ? MarkerFactory.ElementType.CONSTANT : MarkerFactory.ElementType.FIELD);
+      IField field = (IField) javaElement;
+      sb.append(field.isEnumConstant() ? ElementType.ENUM_CONSTANT : ElementType.FIELD);
     }
     sb.append(JAVA_ELEMENT_SEPARATOR_MARKER).append(javaElement.getElementName());
     return sb.toString();

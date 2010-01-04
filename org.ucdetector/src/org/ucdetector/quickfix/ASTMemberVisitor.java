@@ -11,6 +11,7 @@ import java.util.List;
 
 import org.eclipse.jdt.core.dom.ASTVisitor;
 import org.eclipse.jdt.core.dom.AnnotationTypeDeclaration;
+import org.eclipse.jdt.core.dom.AnnotationTypeMemberDeclaration;
 import org.eclipse.jdt.core.dom.BodyDeclaration;
 import org.eclipse.jdt.core.dom.EnumConstantDeclaration;
 import org.eclipse.jdt.core.dom.EnumDeclaration;
@@ -31,16 +32,42 @@ import org.eclipse.jdt.core.dom.VariableDeclarationFragment;
  */
 public abstract class ASTMemberVisitor extends ASTVisitor {
 
+  protected abstract boolean visitImpl(BodyDeclaration declaration, SimpleName name);
+
+  //----------------------------------------------------------------------------
+  // TYPES
+  //----------------------------------------------------------------------------
   @Override
   public boolean visit(TypeDeclaration declaration) {
     return visitImpl(declaration, declaration.getName());
   }
 
   @Override
+  public boolean visit(EnumDeclaration declaration) {
+    return visitImpl(declaration, declaration.getName());
+  }
+
+  @Override
+  public boolean visit(AnnotationTypeDeclaration declaration) {
+    return visitImpl(declaration, declaration.getName());
+  }
+
+  //----------------------------------------------------------------------------
+  // METHODS
+  //----------------------------------------------------------------------------
+  @Override
   public boolean visit(MethodDeclaration declaration) {
     return visitImpl(declaration, declaration.getName());
   }
 
+  @Override
+  public boolean visit(AnnotationTypeMemberDeclaration declaration) {
+    return visitImpl(declaration, declaration.getName());
+  }
+
+  //----------------------------------------------------------------------------
+  // FIELDS
+  //----------------------------------------------------------------------------
   /**
    * Use name of last VariableDeclarationFragment for SimpleName
    */
@@ -57,21 +84,8 @@ public abstract class ASTMemberVisitor extends ASTVisitor {
   }
 
   @Override
-  public boolean visit(EnumDeclaration declaration) {
-    return visitImpl(declaration, declaration.getName());
-  }
-
-  @Override
-  public boolean visit(AnnotationTypeDeclaration declaration) {
-    return visitImpl(declaration, declaration.getName());
-  }
-
-  @Override
   public boolean visit(EnumConstantDeclaration declaration) {
     visitImpl(declaration, declaration.getName());
     return false;
   }
-
-  protected abstract boolean visitImpl(BodyDeclaration declaration, SimpleName name);
-
 }

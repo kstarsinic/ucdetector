@@ -60,8 +60,14 @@ public final class MarkerFactory implements IUCDetectorReport {
    **/
   public static final String ELEMENT_TYPE_ATTRIBUTE = "ELEMENT_TYPE_ATTRIBUTE";//$NON-NLS-1$
 
+  /**
+   * See also concrete classes of: org.eclipse.jdt.core.dom.BodyDeclaration<br>
+   * See also org.ucdetector.quickfix.AbstractUCDQuickFix.getModifierListRewrite()<br>
+   */
   public static enum ElementType {
-    TYPE, METHOD, FIELD, CONSTANT
+    TYPE, ANNOTATION, ENUM, // types
+    METHOD, ANNOTATION_TYPE_MEMBER, // methods
+    FIELD, ENUM_CONSTANT, /*ANNOTATION_TYPE_MEMBER*/// fields
   }
 
   private MarkerFactory(List<IUCDetectorReport> reports) {

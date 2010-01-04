@@ -23,9 +23,13 @@ import org.eclipse.jdt.core.JavaModelException;
 import org.eclipse.jdt.core.dom.AST;
 import org.eclipse.jdt.core.dom.ASTParser;
 import org.eclipse.jdt.core.dom.AbstractTypeDeclaration;
+import org.eclipse.jdt.core.dom.AnnotationTypeDeclaration;
+import org.eclipse.jdt.core.dom.AnnotationTypeMemberDeclaration;
 import org.eclipse.jdt.core.dom.BodyDeclaration;
 import org.eclipse.jdt.core.dom.ChildListPropertyDescriptor;
 import org.eclipse.jdt.core.dom.CompilationUnit;
+import org.eclipse.jdt.core.dom.EnumConstantDeclaration;
+import org.eclipse.jdt.core.dom.EnumDeclaration;
 import org.eclipse.jdt.core.dom.FieldDeclaration;
 import org.eclipse.jdt.core.dom.MethodDeclaration;
 import org.eclipse.jdt.core.dom.Modifier;
@@ -253,20 +257,31 @@ abstract class AbstractUCDQuickFix extends WorkbenchMarkerResolution {
    * </ul>
    */
   protected final ListRewrite getModifierListRewrite(BodyDeclaration nodeToChange) {
-    ChildListPropertyDescriptor property;
+    ChildListPropertyDescriptor property = null;
     switch (elementType) {
       case TYPE:
         property = TypeDeclaration.MODIFIERS2_PROPERTY;
         break;
+      case ANNOTATION:
+        property = AnnotationTypeDeclaration.MODIFIERS2_PROPERTY;
+        break;
+      case ENUM:
+        // Fix bug 2922801: Quick fix exception on enum declaration 
+        property = EnumDeclaration.MODIFIERS2_PROPERTY;
+        break;
       case METHOD:
         property = MethodDeclaration.MODIFIERS2_PROPERTY;
         break;
+      case ANNOTATION_TYPE_MEMBER:
+        // Fix bug 2906950: IllegalArgumentException modifiers is not a property of type
+        property = AnnotationTypeMemberDeclaration.MODIFIERS2_PROPERTY;
+        break;
       case FIELD:
-      case CONSTANT:
         property = FieldDeclaration.MODIFIERS2_PROPERTY;
         break;
-      default:
-        property = null;
+      case ENUM_CONSTANT:
+        property = EnumConstantDeclaration.MODIFIERS2_PROPERTY;
+        break;
     }
     return rewrite.getListRewrite(nodeToChange, property);
   }
