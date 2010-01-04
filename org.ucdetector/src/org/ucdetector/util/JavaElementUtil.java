@@ -267,7 +267,7 @@ public class JavaElementUtil {
    */
   public static String getTypeName(IJavaElement element) { // NO_UCD
     if (element instanceof IType) {
-      return ((IType) element).getTypeQualifiedName();
+      return ((IType) element).getTypeQualifiedName('.');
     }
     return "class?"; //$NON-NLS-1$
   }
