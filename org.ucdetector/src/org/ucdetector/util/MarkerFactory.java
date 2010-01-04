@@ -53,12 +53,12 @@ public final class MarkerFactory implements IUCDetectorReport {
   = "org.ucdetector.analyzeMarkerTestOnly"; //$NON-NLS-1$
   // ADDING NEW MARKER? ADD ALSO TO plugin.xml!
 
+  /** Helper attribute to transfer java element name (e.g. method name) from a marker to QuickFix  **/
+  public static final String JAVA_NAME = "JAVA_NAME";//$NON-NLS-1$
   /**
-   * Helper attribute to transfer java element information
-   * of a marker to QuickFix. Only String, Integer... are permitted
-   * as iMarker.setAttribute()
-   **/
-  public static final String ELEMENT_TYPE_ATTRIBUTE = "ELEMENT_TYPE_ATTRIBUTE";//$NON-NLS-1$
+   * Helper attribute to transfer java type information (e.g. ElementType.TYPE.toString()) from a marker to QuickFix
+   */
+  public static final String JAVA_TYPE = "JAVA_TYPE";//$NON-NLS-1$
 
   /**
    * See also concrete classes of: org.eclipse.jdt.core.dom.BodyDeclaration<br>
@@ -77,15 +77,6 @@ public final class MarkerFactory implements IUCDetectorReport {
   public static MarkerFactory createInstance(List<IUCDetectorReport> reports) {
     return new MarkerFactory(reports);
   }
-
-  /**
-   * Create any eclipse marker
-   * @param reportParam report parameter to create marker for
-   * @throws CoreException when there are problem creating marker
-   */
-  //  public void reportMarker(ReportParam reportParam) throws CoreException {
-  //    createMarkerImpl(reportParam);
-  //  }
 
   /**
    * This method does the work and creates an marker

@@ -15,7 +15,9 @@ import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.jdt.core.IField;
 import org.eclipse.jdt.core.IJavaElement;
+import org.eclipse.jdt.core.IMember;
 import org.eclipse.jdt.core.IMethod;
+import org.eclipse.jdt.core.ISourceRange;
 import org.eclipse.jdt.core.IType;
 import org.eclipse.jdt.core.JavaModelException;
 import org.ucdetector.Log;
@@ -27,7 +29,6 @@ import org.ucdetector.util.MarkerFactory.ElementType;
  * Create a marker
  */
 public class MarkerReport implements IUCDetectorReport {
-  private static final String JAVA_ELEMENT_SEPARATOR_MARKER = ","; //$NON-NLS-1$
   /**
    * Don't create each marker. Do a batch creation instead
    */
@@ -54,8 +55,7 @@ public class MarkerReport implements IUCDetectorReport {
    */
   private void flushReport() throws CoreException {
     if (Log.DEBUG) {
-      Log.logDebug(String.format(" FlushMarkers created %s markers", //$NON-NLS-1$
-          Integer.valueOf(markersToFlash.size())));
+      Log.logDebug(String.format("flushReport will create %s markers", Integer.valueOf(markersToFlash.size())));//$NON-NLS-1$
     }
     for (ReportParam reportParamToCreate : markersToFlash) {
       createMarker(reportParamToCreate);
@@ -75,63 +75,36 @@ public class MarkerReport implements IUCDetectorReport {
       default:
         return;
     }
-    IMarker marker = reportParam.getJavaElement().getResource().createMarker(reportParam.getMarkerType());
+    IMember javaElement = reportParam.getJavaElement();
+    ISourceRange range = javaElement.getNameRange();
+    IMarker marker = javaElement.getResource().createMarker(reportParam.getMarkerType());
     marker.setAttribute(IMarker.SEVERITY, severity);
     marker.setAttribute(IMarker.MESSAGE, reportParam.getMessage());
     marker.setAttribute(IMarker.PRIORITY, IMarker.PRIORITY_HIGH);
-    marker.setAttribute(IMarker.LINE_NUMBER, reportParam.getLine());
-    String elementString = createJavaElementString(reportParam.getJavaElement());
-    marker.setAttribute(MarkerFactory.ELEMENT_TYPE_ATTRIBUTE, elementString);
-  }
-
-  public static ElementTypeAndName getElementTypeAndName(IMarker marker) {
-    String attribute = marker.getAttribute(MarkerFactory.ELEMENT_TYPE_ATTRIBUTE, "?"); //$NON-NLS-1$
-    String[] resultArray = attribute.split(MarkerReport.JAVA_ELEMENT_SEPARATOR_MARKER);
-    ElementTypeAndName result = new ElementTypeAndName();
-    result.elementType = (resultArray.length > 0 ? ElementType.valueOf(resultArray[0]) : null);
-    result.elementName = (resultArray.length > 1 ? resultArray[1] : null);
-    return result;
+    //    marker.setAttribute(IMarker.LINE_NUMBER, reportParam.getLine());
+    marker.setAttribute(IMarker.CHAR_START, range.getOffset());
+    marker.setAttribute(IMarker.CHAR_END, range.getOffset() + range.getLength());
+    marker.setAttribute(MarkerFactory.JAVA_NAME, javaElement.getElementName());
+    marker.setAttribute(MarkerFactory.JAVA_TYPE, String.valueOf(getElementType(javaElement)));
   }
 
   /**
-   * Data container, containing a elementType
-   * See:  {@link MarkerReport#createJavaElementString(IJavaElement)}
+   * @return a ElementType based on javaElement
    */
-  // TODO 2009-02-20: UCD tells to use default visibility. But compile error
-  @SuppressWarnings("ucd")
-  public static class ElementTypeAndName {
-    public ElementType elementType;
-    public String elementName;
-  }
-
-  /**
-   * @return a String for a class, method or field like:
-   * <ul>
-   * <li>"type,MyClass"</li>
-   * <li>"method,calculate"</li>
-   * <li>"field,value"</li>
-   * <li>"constant,MAX_VALUE"</li>
-   * </ul>
-   *  NOTE: This string is used in other classes!
-   */
-  private static String createJavaElementString(IJavaElement javaElement) throws JavaModelException {
-    StringBuilder sb = new StringBuilder();
+  private static ElementType getElementType(IJavaElement javaElement) throws JavaModelException {
     if (javaElement instanceof IType) {
       IType type = (IType) javaElement;
-      // fix bug 2922801: Quick fix exception on enum declaration 
-      sb.append(type.isEnum() ? ElementType.ENUM : type.isAnnotation() ? ElementType.ANNOTATION : ElementType.TYPE);
+      return (type.isEnum() ? ElementType.ENUM : type.isAnnotation() ? ElementType.ANNOTATION : ElementType.TYPE);
     }
     else if (javaElement instanceof IMethod) {
-      // Fix bug 2922801: Quick fix exception on enum declaration 
       IType type = JavaElementUtil.getTypeFor(javaElement, false);
-      sb.append(type.isAnnotation() ? ElementType.ANNOTATION_TYPE_MEMBER : ElementType.METHOD);
+      return (type.isAnnotation() ? ElementType.ANNOTATION_TYPE_MEMBER : ElementType.METHOD);
     }
     else if (javaElement instanceof IField) {
       IField field = (IField) javaElement;
-      sb.append(field.isEnumConstant() ? ElementType.ENUM_CONSTANT : ElementType.FIELD);
+      return (field.isEnumConstant() ? ElementType.ENUM_CONSTANT : ElementType.FIELD);
     }
-    sb.append(JAVA_ELEMENT_SEPARATOR_MARKER).append(javaElement.getElementName());
-    return sb.toString();
+    return null;
   }
 
   public void endReport(Object[] selected, long start) throws CoreException {
