@@ -24,13 +24,13 @@ import org.ucdetector.UCDetectorPlugin;
 import org.ucdetector.search.SearchManager;
 import org.ucdetector.search.UCDProgressMonitor;
 import org.ucdetector.util.JavaElementUtil;
+import org.ucdetector.util.MarkerFactory;
 
 /**
  * Suggest to move a class to another package
  */
 public class MoveIterator extends AdditionalIterator {
-  private static final String ANALYZE_MARKER_MOVE_CLASS //
-  = "org.ucdetector.analyzeMarkerMoveClass"; //$NON-NLS-1$
+  private static final String ANALYZE_MARKER_MOVE_CLASS = MarkerFactory.MARKER_PREFIX + "analyzeMarkerMoveClass"; //$NON-NLS-1$
   private final List<IType> types = new ArrayList<IType>();
 
   @Override

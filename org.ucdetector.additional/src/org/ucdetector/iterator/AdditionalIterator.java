@@ -12,13 +12,13 @@ import org.eclipse.jdt.core.IMember;
 import org.ucdetector.preferences.WarnLevel;
 import org.ucdetector.report.ReportParam;
 import org.ucdetector.search.LineManger;
+import org.ucdetector.util.MarkerFactory;
 
 /**
  *
  */
 public abstract class AdditionalIterator extends AbstractUCDetectorIterator {
-  static final String ANALYZE_MARKER_EXAMPLE //
-  = "org.ucdetector.analyzeMarkerExample"; //$NON-NLS-1$
+  static final String ANALYZE_MARKER_EXAMPLE = MarkerFactory.MARKER_PREFIX + "FanalyzeMarkerExample"; //$NON-NLS-1$
   private static final LineManger lineManger = new LineManger();
 
   void createMarker(IMember element, String message, String markerType) throws CoreException {
