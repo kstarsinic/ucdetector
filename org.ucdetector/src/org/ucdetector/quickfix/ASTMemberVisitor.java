@@ -28,7 +28,7 @@ import org.eclipse.jdt.core.dom.VariableDeclarationFragment;
  * <li>methods</li>
  * <li>fields</li>
  * </ul>
- *
+ * See concrete classes of {@link org.eclipse.jdt.core.dom.BodyDeclaration}
  */
 public abstract class ASTMemberVisitor extends ASTVisitor {
 
@@ -64,6 +64,9 @@ public abstract class ASTMemberVisitor extends ASTVisitor {
   public boolean visit(AnnotationTypeMemberDeclaration declaration) {
     return visitImpl(declaration, declaration.getName());
   }
+
+  // NOTHING TO DO FOR:
+  // public boolean visit(Initializer declaration) 
 
   //----------------------------------------------------------------------------
   // FIELDS
