@@ -30,24 +30,23 @@ class NoUcdTagQuickFix extends AbstractUCDQuickFix {
   @Override
   public int runImpl(BodyDeclaration nodeToChange) throws BadLocationException {
     int charStart = marker.getAttribute(IMarker.CHAR_START, -1);
-    return appendNoUcd(doc, nodeToChange, charStart);
+    return appendNoUcd(doc, charStart);
   }
 
   /**
    * Add " // NO_UCD" to line end of class/method/field declaration
    */
-  static int appendNoUcd(IDocument document, BodyDeclaration nodeToChange, int charStart) throws BadLocationException {
-    IRegion region = document.getLineInformationOfOffset(charStart);
-    int offset = region.getOffset();
-    int length = region.getLength();
+  static int appendNoUcd(IDocument document, int charStart) throws BadLocationException {
+    IRegion line = document.getLineInformationOfOffset(charStart);
+    int offset = line.getOffset();
+    int length = line.getLength();
     String newLine = document.get(offset, length) + NO_UCD_COMMENT;
     document.replace(offset, length, newLine);
     return offset + length + 1;
   }
 
   public Image getImage() {
-    // IMG_OBJS_HTMLTAG
-    return JavaUI.getSharedImages().getImage(JavaPluginImages.IMG_OBJS_NLS_SKIP);
+    return JavaUI.getSharedImages().getImage(JavaPluginImages.IMG_OBJS_NLS_SKIP);// IMG_OBJS_HTMLTAG
   }
 
   public String getLabel() {

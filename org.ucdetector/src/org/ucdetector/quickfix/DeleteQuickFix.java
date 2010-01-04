@@ -49,11 +49,5 @@ class DeleteQuickFix extends AbstractUCDQuickFix {
 
   public String getDescription() {
     return null;
-    //    try {
-    //      return "Delete " + new HashMap(getMarker().getAttributes());
-    //    }
-    //    catch (CoreException e) {
-    //      return "Delete code";
-    //    }
   }
 }

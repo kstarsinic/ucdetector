@@ -31,13 +31,13 @@ class UseFinalQuickFix extends AbstractUCDQuickFix {
     Modifier modifierFound = getModifierVisibility(nodeToChange);
     Modifier modifierFinal = nodeToChange.getAST().newModifier(Modifier.ModifierKeyword.FINAL_KEYWORD);
     int startPosition;
+    // default -> final
     if (modifierFound == null) {
-      // default -> final
       listRewrite.insertFirst(modifierFinal, null);
       startPosition = nodeToChange.getStartPosition();
     }
+    // public -> public final
     else {
-      // public -> public final
       listRewrite.insertAfter(modifierFinal, modifierFound, null);
       startPosition = modifierFound.getStartPosition() + modifierFound.getLength() + 1;
     }

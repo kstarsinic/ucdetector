@@ -69,31 +69,3 @@ class LineCommentQuickFix extends AbstractUCDQuickFix {
     return null;
   }
 }
-//  /**
-//   * comment effected lines using <code>/* * /</code>
-//   */
-//  private String createBlockComment(int lineStart, int lineEnd)
-//      throws BadLocationException {
-//    String newLine = getLineDelimitter();
-//    // end -----------------------------------------------------------------
-//    IRegion region = doc.getLineInformation(lineEnd);
-//    int offsetLine = region.getOffset();
-//    int lengthLine = region.getLength();
-//    String strLine = doc.get(offsetLine, lengthLine);
-//    StringBuilder replaceEnd = new StringBuilder();
-//    String indent = guessIndent(region);
-//    replaceEnd.append(strLine).append(newLine);
-//    replaceEnd.append(indent).append("*/"); //$NON-NLS-1$
-//    doc.replace(offsetLine, lengthLine, replaceEnd.toString());
-//    // start ---------------------------------------------------------------
-//    region = doc.getLineInformation(lineStart);
-//    offsetLine = region.getOffset();
-//    lengthLine = region.getLength();
-//    strLine = doc.get(offsetLine, lengthLine);
-//    StringBuilder replaceStart = new StringBuilder();
-//    replaceStart.append(indent).append("/* ").append(TODO_COMMENT); //$NON-NLS-1$
-//    replaceStart.append(indent).append(newLine).append(strLine);
-//    doc.replace(offsetLine, lengthLine, replaceStart.toString());
-//    return indent;
-//  }
-

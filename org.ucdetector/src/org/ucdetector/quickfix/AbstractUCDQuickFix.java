@@ -77,8 +77,11 @@ abstract class AbstractUCDQuickFix extends WorkbenchMarkerResolution {
       if (Log.DEBUG) {
         Log.logDebug(String.format("%s.run(). Marker=%s", getClass().getSimpleName(), dumpMarker(marker)));
       }
-      //      int lineNrMarker = marker.getAttribute(IMarker.LINE_NUMBER, -1);
       int charStart = marker.getAttribute(IMarker.CHAR_START, -1);
+      if (charStart == -1) {
+        Log.logWarn(String.format("CHAR_START missing for marker: '%s'", dumpMarker(marker)));
+        return;
+      }
       originalUnit = getCompilationUnit();
       ITextFileBuffer textFileBuffer = RefactoringFileBuffers.acquire(originalUnit);
       doc = textFileBuffer.getDocument();
@@ -105,11 +108,9 @@ abstract class AbstractUCDQuickFix extends WorkbenchMarkerResolution {
         part.doSave(null);
       }
       originalUnit.getResource().refreshLocal(IResource.DEPTH_ONE, null);
-      // needs org.eclipse.ui.editors
-      if (part instanceof ITextEditor) {
+      if (part instanceof ITextEditor) {// needs org.eclipse.ui.editors
         ITextEditor textEditor = (ITextEditor) part;
-        //set cursor at edit position
-        textEditor.selectAndReveal(startPosition, 0);
+        textEditor.selectAndReveal(startPosition, 0);//set cursor at edit position
       }
     }
     catch (Exception e) {
@@ -140,9 +141,6 @@ abstract class AbstractUCDQuickFix extends WorkbenchMarkerResolution {
 
     @Override
     protected boolean visitImpl(BodyDeclaration declaration, SimpleName name) {
-      if (nodeToChange != null) {
-        return false;
-      }
       int startPos = declaration.getStartPosition();
       // end of class/method/field name
       int endPos = name.getStartPosition() + name.getLength();
@@ -243,18 +241,16 @@ abstract class AbstractUCDQuickFix extends WorkbenchMarkerResolution {
   }
 
   private boolean isOtherMarker(IMarker marker2) {
-    if (marker != marker2) {
-      try {
-        if (marker.getType().equals(marker2.getType())) {
-          // Now we have a ucdetector marker!
-          String javaType1 = (String) marker.getAttribute(MarkerFactory.JAVA_TYPE);
-          String javaType2 = (String) marker2.getAttribute(MarkerFactory.JAVA_TYPE);
-          return javaType1 != null && javaType1.equals(javaType2);
-        }
+    try {
+      if (marker.getType().equals(marker2.getType())) {
+        // Now we have a ucdetector marker!
+        String javaType1 = (String) marker.getAttribute(MarkerFactory.JAVA_TYPE);
+        String javaType2 = (String) marker2.getAttribute(MarkerFactory.JAVA_TYPE);
+        return javaType1 != null && javaType1.equals(javaType2);
       }
-      catch (Exception e) {
-        Log.logError("Can't compare markers: " + e.getMessage());
-      }
+    }
+    catch (Exception e) {
+      Log.logError("Can't compare markers: " + e.getMessage());
     }
     return false;
   }
