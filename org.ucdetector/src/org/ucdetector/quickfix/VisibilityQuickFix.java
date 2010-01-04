@@ -31,7 +31,7 @@ class VisibilityQuickFix extends AbstractUCDQuickFix {
 
   @Override
   public int runImpl(BodyDeclaration nodeToChange) throws BadLocationException {
-    ListRewrite listRewrite = getModifierListRewrite(nodeToChange);
+    ListRewrite listRewrite = getListRewrite(nodeToChange);
     Modifier modifierFound = getModifierVisibility(nodeToChange);
     Modifier modifierNew = getModifierNew(nodeToChange);
     // default -> default
@@ -59,6 +59,7 @@ class VisibilityQuickFix extends AbstractUCDQuickFix {
   }
 
   private Modifier getModifierNew(BodyDeclaration nodeToChange) {
+    String markerType = getMarkerType();
     if (MarkerFactory.UCD_MARKER_USE_PRIVATE.equals(markerType)) {
       return nodeToChange.getAST().newModifier(Modifier.ModifierKeyword.PRIVATE_KEYWORD);
     }
@@ -69,6 +70,7 @@ class VisibilityQuickFix extends AbstractUCDQuickFix {
   }
 
   public String getLabel() {
+    String markerType = getMarkerType();
     String keyword = null;
     if (MarkerFactory.UCD_MARKER_USE_PROTECTED.equals(markerType)) {
       keyword = "protected"; //$NON-NLS-1$
@@ -83,6 +85,7 @@ class VisibilityQuickFix extends AbstractUCDQuickFix {
   }
 
   public Image getImage() {
+    String markerType = getMarkerType();
     if (MarkerFactory.UCD_MARKER_USE_PROTECTED.equals(markerType)) {
       return JavaUI.getSharedImages().getImage(JavaPluginImages.IMG_MISC_PROTECTED);
     }

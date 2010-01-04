@@ -29,18 +29,15 @@ class NoUcdTagQuickFix extends AbstractUCDQuickFix {
 
   @Override
   public int runImpl(BodyDeclaration nodeToChange) throws BadLocationException {
-    int lineNr = marker.getAttribute(IMarker.LINE_NUMBER, -1);
-    return appendNoUcd(doc, nodeToChange, lineNr);
+    int charStart = marker.getAttribute(IMarker.CHAR_START, -1);
+    return appendNoUcd(doc, nodeToChange, charStart);
   }
 
   /**
    * Add " // NO_UCD" to line end of class/method/field declaration
    */
-  static int appendNoUcd(IDocument document, BodyDeclaration nodeToChange, int lineNr) throws BadLocationException {
-    if (lineNr < 1) {
-      return nodeToChange.getStartPosition();//
-    }
-    IRegion region = document.getLineInformation(lineNr - 1);
+  static int appendNoUcd(IDocument document, BodyDeclaration nodeToChange, int charStart) throws BadLocationException {
+    IRegion region = document.getLineInformationOfOffset(charStart);
     int offset = region.getOffset();
     int length = region.getLength();
     String newLine = document.get(offset, length) + NO_UCD_COMMENT;

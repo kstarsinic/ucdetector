@@ -27,7 +27,7 @@ class UseFinalQuickFix extends AbstractUCDQuickFix {
 
   @Override
   public final int runImpl(BodyDeclaration nodeToChange) throws BadLocationException {
-    ListRewrite listRewrite = getModifierListRewrite(nodeToChange);
+    ListRewrite listRewrite = getListRewrite(nodeToChange);
     Modifier modifierFound = getModifierVisibility(nodeToChange);
     Modifier modifierFinal = nodeToChange.getAST().newModifier(Modifier.ModifierKeyword.FINAL_KEYWORD);
     int startPosition;

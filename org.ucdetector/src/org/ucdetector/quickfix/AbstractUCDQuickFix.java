@@ -23,18 +23,11 @@ import org.eclipse.jdt.core.JavaModelException;
 import org.eclipse.jdt.core.dom.AST;
 import org.eclipse.jdt.core.dom.ASTParser;
 import org.eclipse.jdt.core.dom.AbstractTypeDeclaration;
-import org.eclipse.jdt.core.dom.AnnotationTypeDeclaration;
-import org.eclipse.jdt.core.dom.AnnotationTypeMemberDeclaration;
 import org.eclipse.jdt.core.dom.BodyDeclaration;
 import org.eclipse.jdt.core.dom.ChildListPropertyDescriptor;
 import org.eclipse.jdt.core.dom.CompilationUnit;
-import org.eclipse.jdt.core.dom.EnumConstantDeclaration;
-import org.eclipse.jdt.core.dom.EnumDeclaration;
-import org.eclipse.jdt.core.dom.FieldDeclaration;
-import org.eclipse.jdt.core.dom.MethodDeclaration;
 import org.eclipse.jdt.core.dom.Modifier;
 import org.eclipse.jdt.core.dom.SimpleName;
-import org.eclipse.jdt.core.dom.TypeDeclaration;
 import org.eclipse.jdt.core.dom.Modifier.ModifierKeyword;
 import org.eclipse.jdt.core.dom.rewrite.ASTRewrite;
 import org.eclipse.jdt.core.dom.rewrite.ListRewrite;
@@ -50,8 +43,7 @@ import org.eclipse.ui.texteditor.ITextEditor;
 import org.eclipse.ui.views.markers.WorkbenchMarkerResolution;
 import org.ucdetector.Log;
 import org.ucdetector.UCDetectorPlugin;
-import org.ucdetector.report.MarkerReport;
-import org.ucdetector.util.MarkerFactory.ElementType;
+import org.ucdetector.util.MarkerFactory;
 
 /**
  * Base class for all UCDetector QuickFixes. This class does all the stuff to
@@ -67,63 +59,39 @@ import org.ucdetector.util.MarkerFactory.ElementType;
  * @see <a href="http://help.eclipse.org/help32/index.jsp?topic=/org.eclipse.jdt.doc.isv/reference/api/org/eclipse/jdt/core/dom/rewrite/ASTRewrite.html" >javadoc ASTRewrite</a>
  * @see <a href="http://www.eclipse.org/articles/article.php?file=Article-JavaCodeManipulation_AST/index.html">Abstract Syntax Tree</a>
  */
+@SuppressWarnings("nls")
 abstract class AbstractUCDQuickFix extends WorkbenchMarkerResolution {
   IMarker marker;
-  String markerType;
   ASTRewrite rewrite;
   IDocument doc;
-  private ElementType elementType;
-
-  //  private final String elementName;
 
   protected AbstractUCDQuickFix(IMarker marker) {
     this.marker = marker;
-    markerType = getMarkerType();
-    elementType = MarkerReport.getElementTypeAndName(marker).elementType;
-    //    elementName = MarkerReport.getElementTypeAndName(marker).elementName;
   }
 
-  private String getMarkerType() {
-    try {
-      return marker.getType();
-    }
-    catch (CoreException e) {
-      Log.logError("Can't get marker type", e); //$NON-NLS-1$
-      return null;
-    }
-  }
-
-  @SuppressWarnings("unchecked")
   public void run(IMarker marker2) {
     // Hack: For run(markers[]), marker2 != marker from constructor
     this.marker = marker2;
-    markerType = getMarkerType();
-    elementType = MarkerReport.getElementTypeAndName(marker2).elementType;
     ICompilationUnit originalUnit = null;
     try {
       if (Log.DEBUG) {
-        Log.logDebug(String.format("%s.run(). Marker=%s", //$NON-NLS-1$
-            getClass().getSimpleName(), new HashMap(marker.getAttributes())));
+        Log.logDebug(String.format("%s.run(). Marker=%s", getClass().getSimpleName(), dumpMarker(marker)));
       }
-      int lineNrMarker = marker.getAttribute(IMarker.LINE_NUMBER, -1);
+      //      int lineNrMarker = marker.getAttribute(IMarker.LINE_NUMBER, -1);
+      int charStart = marker.getAttribute(IMarker.CHAR_START, -1);
       originalUnit = getCompilationUnit();
       ITextFileBuffer textFileBuffer = RefactoringFileBuffers.acquire(originalUnit);
       doc = textFileBuffer.getDocument();
       CompilationUnit copyUnit = createCopy(originalUnit);
       rewrite = ASTRewrite.create(copyUnit.getAST());
       AbstractTypeDeclaration firstType = (AbstractTypeDeclaration) copyUnit.types().get(0);
-      FindNodeToChangeVisitor visitor = new FindNodeToChangeVisitor(doc, lineNrMarker);
+      FindNodeToChangeVisitor visitor = new FindNodeToChangeVisitor(charStart);
       firstType.accept(visitor);
-      BodyDeclaration nodeToChange = visitor.nodeFound;
-      if (Log.DEBUG) {
-        //        Log.logDebug(String.format("Node to change:'%n%s'", nodeToChange)); //$NON-NLS-1$ 
-      }
-      if (nodeToChange == null) {
-        HashMap attributes = new HashMap(marker.getAttributes());
-        Log.logWarn(String.format("Node to change not found for marker: '%s'", attributes)); //$NON-NLS-1$ 
+      if (visitor.nodeToChange == null) {
+        Log.logWarn(String.format("Node to change not found for marker: '%s'", dumpMarker(marker)));
         return;
       }
-      int startPosition = runImpl(nodeToChange);
+      int startPosition = runImpl(visitor.nodeToChange);
       marker.delete();
       commitChanges();
       // -----------------------------------------------------------------------
@@ -145,7 +113,7 @@ abstract class AbstractUCDQuickFix extends WorkbenchMarkerResolution {
       }
     }
     catch (Exception e) {
-      UCDetectorPlugin.logErrorAndStatus("Quick Fix Problems", e); //$NON-NLS-1$
+      UCDetectorPlugin.logErrorAndStatus("Quick Fix Problems", e);
     }
     finally {
       try {
@@ -154,7 +122,7 @@ abstract class AbstractUCDQuickFix extends WorkbenchMarkerResolution {
         }
       }
       catch (CoreException e) {
-        UCDetectorPlugin.logErrorAndStatus("Quick Fix Problems", e); //$NON-NLS-1$
+        UCDetectorPlugin.logErrorAndStatus("Quick Fix Problems", e);
       }
     }
   }
@@ -163,50 +131,35 @@ abstract class AbstractUCDQuickFix extends WorkbenchMarkerResolution {
    * Find a ASTNode by line number
    */
   private static class FindNodeToChangeVisitor extends ASTMemberVisitor {
-    BodyDeclaration nodeFound = null;
-    private final IDocument doc;
-    private final int lineMarker;
+    BodyDeclaration nodeToChange = null;
+    private final int charStart;
 
-    protected FindNodeToChangeVisitor(IDocument doc, int lineNrMarker) {
-      this.doc = doc;
-      this.lineMarker = lineNrMarker;
+    protected FindNodeToChangeVisitor(int charStart) {
+      this.charStart = charStart;
     }
 
     @Override
     protected boolean visitImpl(BodyDeclaration declaration, SimpleName name) {
-      if (nodeFound != null) {
+      if (nodeToChange != null) {
         return false;
       }
-      try {
-        // start of javadoc, before return type
-        int startPos = declaration.getStartPosition();
-        // end of class/method/field name
-        int endPos = name.getStartPosition() + name.getLength();
-        int lineStart = doc.getLineOfOffset(startPos) + 1;
-        int lineEnd = doc.getLineOfOffset(endPos) + 1;
-        boolean found = lineStart <= lineMarker && lineMarker <= lineEnd;
-        // To many logging
-        // if (Log.DEBUG) {
-        // Log.logDebug(String.format("%n%s. Lines: %s<=%s<=%s. Found node: %s", //$NON-NLS-1$
-        //   declaration, lineStart, lineMarker, lineEnd, found));
-        // if (found) {
-        //   Log.logDebug("NODE FOUND: \r\n" + name.getIdentifier()); //$NON-NLS-1$
-        // }
-        // }
-        if (found) {
-          nodeFound = declaration;
-        }
+      int startPos = declaration.getStartPosition();
+      // end of class/method/field name
+      int endPos = name.getStartPosition() + name.getLength();
+      boolean found = startPos <= charStart && charStart <= endPos;
+      if (found) {
+        nodeToChange = declaration;
       }
-      catch (BadLocationException e) {
-        Log.logError("Can't get line", e); //$NON-NLS-1$
-        return false;
+      if (Log.DEBUG && found) {
+        Log.logDebug(String.format("NodeToChange: %s. char postion: %s<=%s<=%s.", //
+            name.getIdentifier(), "" + startPos, "" + charStart, "" + endPos));
       }
-      return nodeFound == null;
+      return nodeToChange == null;
     }
 
     @Override
     public String toString() {
-      return "nodeFound='" + nodeFound + "'"; //$NON-NLS-1$ //$NON-NLS-2$
+      return "nodeFound='" + nodeToChange + "'";
     }
   }
 
@@ -223,8 +176,7 @@ abstract class AbstractUCDQuickFix extends WorkbenchMarkerResolution {
         return (ICompilationUnit) javaElement;
       }
     }
-    Log.logWarn("Can't find CompilationUnit: " //$NON-NLS-1$
-        + marker.getType());
+    Log.logWarn("Can't find CompilationUnit: " + marker.getType());
     return null;
   }
 
@@ -248,41 +200,10 @@ abstract class AbstractUCDQuickFix extends WorkbenchMarkerResolution {
   }
 
   /**
-   * @return ListRewrite to change modifiers like
-   * <ul>
-   * <li><code>final</code></li>
-   * <li><code>protected</code></li>
-   * <li><code>private</code></li>
-   * <li>default</li>
-   * </ul>
+   * @return ListRewrite to change <code>nodeToChange</code>
    */
-  protected final ListRewrite getModifierListRewrite(BodyDeclaration nodeToChange) {
-    ChildListPropertyDescriptor property = null;
-    switch (elementType) {
-      case TYPE:
-        property = TypeDeclaration.MODIFIERS2_PROPERTY;
-        break;
-      case ANNOTATION:
-        property = AnnotationTypeDeclaration.MODIFIERS2_PROPERTY;
-        break;
-      case ENUM:
-        // Fix bug 2922801: Quick fix exception on enum declaration 
-        property = EnumDeclaration.MODIFIERS2_PROPERTY;
-        break;
-      case METHOD:
-        property = MethodDeclaration.MODIFIERS2_PROPERTY;
-        break;
-      case ANNOTATION_TYPE_MEMBER:
-        // Fix bug 2906950: IllegalArgumentException modifiers is not a property of type
-        property = AnnotationTypeMemberDeclaration.MODIFIERS2_PROPERTY;
-        break;
-      case FIELD:
-        property = FieldDeclaration.MODIFIERS2_PROPERTY;
-        break;
-      case ENUM_CONSTANT:
-        property = EnumConstantDeclaration.MODIFIERS2_PROPERTY;
-        break;
-    }
+  protected final ListRewrite getListRewrite(BodyDeclaration nodeToChange) {
+    ChildListPropertyDescriptor property = nodeToChange.getModifiersProperty();
     return rewrite.getListRewrite(nodeToChange, property);
   }
 
@@ -314,34 +235,28 @@ abstract class AbstractUCDQuickFix extends WorkbenchMarkerResolution {
   public IMarker[] findOtherMarkers(IMarker[] markers) {
     final List<IMarker> result = new ArrayList<IMarker>();
     for (IMarker markerToCheck : markers) {
-      try {
-        if (this.marker != markerToCheck && this.markerType.equals(markerToCheck.getType())) {
-          if (isElementTypeEqual(markerToCheck)) {
-            result.add(markerToCheck);
-          }
-        }
-      }
-      catch (CoreException e) {
-        Log.logError("Can't find other marker", e); //$NON-NLS-1$
-        continue;
+      if (isOtherMarker(markerToCheck)) {
+        result.add(markerToCheck);
       }
     }
-    // sorting does not resolve quick fix problem
-    //    Collections.sort(result, new Comparator<IMarker>() {
-    //      public int compare(IMarker m1, IMarker m2) {
-    //        int nr1 = m1.getAttribute(IMarker.LINE_NUMBER, -1);
-    //        int nr2 = m2.getAttribute(IMarker.LINE_NUMBER, -1);
-    //        return nr2 < nr1 ? -1 : (nr2 == nr1 ? 0 : 1);
-    //      }
-    //    });
     return result.toArray(new IMarker[result.size()]);
   }
 
-  /**
-   * @return <code>true</code> if FIELD and FIELD
-   */
-  private final boolean isElementTypeEqual(IMarker markerToCheck) {
-    return getElementType(marker).equals(getElementType(markerToCheck));
+  private boolean isOtherMarker(IMarker marker2) {
+    if (marker != marker2) {
+      try {
+        if (marker.getType().equals(marker2.getType())) {
+          // Now we have a ucdetector marker!
+          String javaType1 = (String) marker.getAttribute(MarkerFactory.JAVA_TYPE);
+          String javaType2 = (String) marker2.getAttribute(MarkerFactory.JAVA_TYPE);
+          return javaType1 != null && javaType1.equals(javaType2);
+        }
+      }
+      catch (Exception e) {
+        Log.logError("Can't compare markers: " + e.getMessage());
+      }
+    }
+    return false;
   }
 
   /**
@@ -364,7 +279,22 @@ abstract class AbstractUCDQuickFix extends WorkbenchMarkerResolution {
     return strLine.substring(0, index);
   }
 
-  private static final ElementType getElementType(IMarker marker) {
-    return MarkerReport.getElementTypeAndName(marker).elementType;
+  final String getMarkerType() {
+    try {
+      return marker.getType();
+    }
+    catch (CoreException e) {
+      return null;
+    }
+  }
+
+  @SuppressWarnings("unchecked")
+  private static String dumpMarker(IMarker m) {
+    try {
+      return new HashMap(m.getAttributes()).toString();
+    }
+    catch (CoreException e) {
+      return e.getMessage();
+    }
   }
 }

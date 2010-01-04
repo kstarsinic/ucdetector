@@ -26,12 +26,9 @@ class TodoQuickFix extends AbstractUCDQuickFix {
 
   @Override
   public int runImpl(BodyDeclaration nodeToChange) throws BadLocationException {
-    int lineNr = marker.getAttribute(IMarker.LINE_NUMBER, -1);
-    if (lineNr < 1) {
-      return nodeToChange.getStartPosition();//
-    }
-    NoUcdTagQuickFix.appendNoUcd(doc, nodeToChange, lineNr);
-    int offset = doc.getLineInformation(lineNr - 1).getOffset();
+    int charStart = marker.getAttribute(IMarker.CHAR_START, -1);
+    NoUcdTagQuickFix.appendNoUcd(doc, nodeToChange, charStart);
+    int offset = doc.getLineInformationOfOffset(charStart).getOffset();
     String todo = TODO_UCD + marker.getAttribute(IMarker.MESSAGE, "?") + getLineDelimitter(); //$NON-NLS-1$ 
     doc.replace(offset, 0, todo);
     return offset;

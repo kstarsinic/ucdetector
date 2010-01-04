@@ -35,17 +35,14 @@ class UseSuppressWarningsQuickFix extends AbstractUCDQuickFix {
    */
   @Override
   public int runImpl(BodyDeclaration nodeToChange) throws BadLocationException {
-    int lineNr = marker.getAttribute(IMarker.LINE_NUMBER, -1);
-    if (lineNr > 0) {
-      IRegion region = doc.getLineInformation(lineNr - 1);
-      String indent = guessIndent(region);
-      String declarationLine = doc.get(region.getOffset(), 0);
-      String twoLines = indent + "@SuppressWarnings(\"ucd\")" //$NON-NLS-1$
-          + getLineDelimitter() + declarationLine;
-      doc.replace(region.getOffset(), 0, twoLines);
-      return region.getOffset() + indent.length();
-    }
-    return nodeToChange.getStartPosition();
+    int charStart = marker.getAttribute(IMarker.CHAR_START, -1);
+    IRegion region = doc.getLineInformationOfOffset(charStart);
+    String indent = guessIndent(region);
+    String declarationLine = doc.get(region.getOffset(), 0);
+    String twoLines = indent + "@SuppressWarnings(\"ucd\")" //$NON-NLS-1$
+        + getLineDelimitter() + declarationLine;
+    doc.replace(region.getOffset(), 0, twoLines);
+    return region.getOffset() + indent.length();
   }
 
   public Image getImage() {
