@@ -30,28 +30,22 @@ import org.ucdetector.search.LineManger;
  * CALL endReport() TO FLUSH MARKERS!!!
  */
 public final class MarkerFactory implements IUCDetectorReport {
-  private final List<IUCDetectorReport> reports;
-
+  /** Marker prefix for all UCDetector markers  */
+  public static final String MARKER_PREFIX = "org.ucdetector."; //$NON-NLS-1$
   /**
    * See extension point="org.eclipse.core.resources.markers" in plugin.xml
    */
-  public static final String UCD_MARKER //
-  = "org.ucdetector.analyzeMarker"; //$NON-NLS-1$
-  public static final String UCD_MARKER_UNUSED //
-  = "org.ucdetector.analyzeMarkerReference"; //$NON-NLS-1$
-  public static final String UCD_MARKER_USED_FEW //
-  = "org.ucdetector.analyzeMarkerFewReference"; //$NON-NLS-1$
-  public static final String UCD_MARKER_USE_PRIVATE //
-  = "org.ucdetector.analyzeMarkerVisibilityPrivate"; //$NON-NLS-1$
-  public static final String UCD_MARKER_USE_PROTECTED //
-  = "org.ucdetector.analyzeMarkerVisibilityProtected"; //$NON-NLS-1$
-  public static final String UCD_MARKER_USE_DEFAULT //
-  = "org.ucdetector.analyzeMarkerVisibilityDefault"; //$NON-NLS-1$
-  public static final String UCD_MARKER_USE_FINAL //
-  = "org.ucdetector.analyzeMarkerFinal"; //$NON-NLS-1$
-  public static final String UCD_MARKER_TEST_ONLY //
-  = "org.ucdetector.analyzeMarkerTestOnly"; //$NON-NLS-1$
+  public static final String UCD_MARKER = MARKER_PREFIX + "analyzeMarker"; //$NON-NLS-1$
+  public static final String UCD_MARKER_UNUSED = MARKER_PREFIX + "analyzeMarkerReference"; //$NON-NLS-1$
+  public static final String UCD_MARKER_USED_FEW = MARKER_PREFIX + "analyzeMarkerFewReference"; //$NON-NLS-1$
+  public static final String UCD_MARKER_USE_PRIVATE = MARKER_PREFIX + "analyzeMarkerVisibilityPrivate"; //$NON-NLS-1$
+  public static final String UCD_MARKER_USE_PROTECTED = MARKER_PREFIX + "analyzeMarkerVisibilityProtected"; //$NON-NLS-1$
+  public static final String UCD_MARKER_USE_DEFAULT = MARKER_PREFIX + "analyzeMarkerVisibilityDefault"; //$NON-NLS-1$
+  public static final String UCD_MARKER_USE_FINAL = MARKER_PREFIX + "analyzeMarkerFinal"; //$NON-NLS-1$
+  public static final String UCD_MARKER_TEST_ONLY = MARKER_PREFIX + "analyzeMarkerTestOnly"; //$NON-NLS-1$
   // ADDING NEW MARKER? ADD ALSO TO plugin.xml!
+
+  private final List<IUCDetectorReport> reports;
 
   /** Helper attribute to transfer java element name (e.g. method name) from a marker to QuickFix  **/
   public static final String JAVA_NAME = "JAVA_NAME";//$NON-NLS-1$
