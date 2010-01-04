@@ -27,6 +27,7 @@ import org.ucdetector.example.bugs.Bug2864967;
 import org.ucdetector.example.bugs.Bug2865051;
 import org.ucdetector.example.bugs.impl.Bug2225016Impl;
 import org.ucdetector.example.classes.AnnotationExample;
+import org.ucdetector.example.classes.AnnotationExampleUnusedMember;
 import org.ucdetector.example.classes.AnonymousClass;
 import org.ucdetector.example.classes.ClassInJarExample;
 import org.ucdetector.example.classes.LocalClassExample;
@@ -78,6 +79,7 @@ import org.ucdetector.example.visibility.UseProtectedClass;
 public class PublicReferenceHolder {
   @SuppressWarnings("deprecation")
   @AnnotationExample(parameterExmaple = "1")
+  @AnnotationExampleUnusedMember(used = 1, needed = false)
   public static void main(String[] args) throws Throwable {
     System.out.println(Bug2922801.class);
     // ------------------------------------------------------------------------
