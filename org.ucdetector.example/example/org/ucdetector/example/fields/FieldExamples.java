@@ -61,14 +61,27 @@ public class FieldExamples {
   public static final String USED_FIELD = "UNUSED_FIELD";
 
   // -------------------------------------------------------------------------
+  // MULTI LINE
+  // -------------------------------------------------------------------------
+  private int oneLine1 = 1, oneLine2 = 2, oneLine3 = 4;// Marker YES: use final
+
+  public static final String MULTY_1 = "1", MULTY_2 = "2", MULTY_3 = "3"; // Marker YES: unused code
+
+  // -------------------------------------------------------------------------
   // HELPER
   // -------------------------------------------------------------------------
   public static void main(String[] args) {
     FieldExamples ex = new FieldExamples();
     System.out.println(ex.privateUsedField);
+    //
     System.out.println(ex.usedFieldList1);
     System.out.println(ex.usedFieldList2);
     System.out.println(ex.usedFieldList3);
+    //
+    System.out.println(ex.oneLine1);
+    System.out.println(ex.oneLine2);
+    System.out.println(ex.oneLine3);
+    //
     ex.privateUsedField = 1;
     ex.defaultUsedField = 1;
     ex.protectedUsedField = 1;
