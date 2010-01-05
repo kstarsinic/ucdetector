@@ -21,8 +21,8 @@ import org.eclipse.jface.action.Separator;
 import org.eclipse.jface.viewers.DoubleClickEvent;
 import org.eclipse.jface.viewers.IDoubleClickListener;
 import org.eclipse.jface.viewers.ISelection;
-import org.eclipse.jface.viewers.IStructuredContentProvider;
 import org.eclipse.jface.viewers.IStructuredSelection;
+import org.eclipse.jface.viewers.ITreeContentProvider;
 import org.eclipse.jface.viewers.ITreeSelection;
 import org.eclipse.jface.viewers.LabelProvider;
 import org.eclipse.jface.viewers.TreePath;
@@ -329,7 +329,7 @@ public class CycleView extends ViewPart { //
   // -------------------------------------------------------------------------
   // ContentProvider
   // -------------------------------------------------------------------------
-  private static class ViewContentProvider implements IStructuredContentProvider {
+  private static class ViewContentProvider implements ITreeContentProvider {
 
     public void dispose() {
       //
@@ -339,17 +339,17 @@ public class CycleView extends ViewPart { //
       return SearchResultRoot.getInstance().getChildren().toArray();
     }
 
-    //    public Object[] getChildren(Object parent) {
-    //      return ((ICycleBaseElement) parent).getChildren().toArray();
-    //    }
-    //
-    //    public Object getParent(Object child) {
-    //      return ((ICycleBaseElement) child).getParent();
-    //    }
-    //
-    //    public boolean hasChildren(Object parent) {
-    //      return ((ICycleBaseElement) parent).hasChildren();
-    //    }
+    public Object[] getChildren(Object parent) {
+      return ((ICycleBaseElement) parent).getChildren().toArray();
+    }
+
+    public Object getParent(Object child) {
+      return ((ICycleBaseElement) child).getParent();
+    }
+
+    public boolean hasChildren(Object parent) {
+      return ((ICycleBaseElement) parent).hasChildren();
+    }
 
     public void inputChanged(Viewer v, Object oldInput, Object newInput) {
       //
