@@ -94,7 +94,7 @@ public class UCDetectorPlugin extends AbstractUIPlugin {
   public static class About {
     private final UCDetectorPlugin ucdPlugin;
 
-    public About(UCDetectorPlugin plugin) {
+    private About(UCDetectorPlugin plugin) {
       ucdPlugin = plugin;
     }
 
@@ -175,7 +175,6 @@ public class UCDetectorPlugin extends AbstractUIPlugin {
     return result;
   }
 
-  @SuppressWarnings("ucd")
   public static void dumpList(String listString, String separator) {
     Log.logInfo(listString //
         .replace("[", separator) //$NON-NLS-1$ 
