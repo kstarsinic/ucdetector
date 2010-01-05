@@ -14,7 +14,7 @@ import org.ucdetector.iterator.CleanMarkersIterator;
 /**
  * Run "clean markers"
  */
-public class CleanMarkersAction extends AbstractUCDetectorAction {// NO_UCD
+public class CleanMarkersAction extends AbstractUCDetectorAction {
 
   @Override
   protected AbstractUCDetectorIterator createIterator() {

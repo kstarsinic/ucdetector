@@ -41,7 +41,6 @@ import org.ucdetector.search.UCDProgressMonitor;
  */
 // Don't change visibility to default!
 public abstract class AbstractUCDetectorAction extends ActionDelegate {
-  // NO_UCD
   protected IJavaElement[] selections;
 
   @Override
