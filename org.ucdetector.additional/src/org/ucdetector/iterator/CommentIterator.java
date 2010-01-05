@@ -91,13 +91,11 @@ public class CommentIterator extends AdditionalIterator {
   /**
    * do a simple "report"
    */
+  @SuppressWarnings("boxing")
   @Override
   public String getMessage() {
-    return "line comments:\t" + lineComments.size() //
-        + ",\nblock comments:\t" + blockComments.size() //
-        + "\njavadoc comments:\t" + javadocComments.size()//
-        + "\ntodo comments:\t" + todoComments.size()//
-    ;
+    return String.format("line comments:\t%s,%nblock comments:\t%s%njavadoc comments:\t%s%ntodo comments:\t%s",
+        lineComments.size(), blockComments.size(), javadocComments.size(), todoComments.size());
   }
 
   @Override
