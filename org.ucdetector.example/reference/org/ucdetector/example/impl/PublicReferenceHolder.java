@@ -26,6 +26,7 @@ import org.ucdetector.example.bugs.Bug2844899_FieldFromInnerClass;
 import org.ucdetector.example.bugs.Bug2844899_Use;
 import org.ucdetector.example.bugs.Bug2864967;
 import org.ucdetector.example.bugs.Bug2865051;
+import org.ucdetector.example.bugs.Bug2926266;
 import org.ucdetector.example.bugs.impl.Bug2225016Impl;
 import org.ucdetector.example.classes.AnnotationExample;
 import org.ucdetector.example.classes.AnnotationExampleUnusedMember;
@@ -81,6 +82,7 @@ public class PublicReferenceHolder {
   @AnnotationExample(parameterExmaple = "1")
   @AnnotationExampleUnusedMember(used = 1, needed = false)
   public static void main(String[] args) throws Throwable {
+    System.out.println(Bug2926266.class);
     System.out.println(Bug2922801.class);
     // ------------------------------------------------------------------------
     System.out.println(EnumExampleUsedWithValues.values());
