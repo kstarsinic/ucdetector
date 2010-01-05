@@ -52,17 +52,16 @@ import org.ucdetector.util.StopWatch;
  * in {@link UCDetectorCallBack}
  */
 public abstract class AbstractUCDetectorIterator extends UCDetectorCallBack {
-  static final boolean DEBUG = "true".equalsIgnoreCase(Platform //$NON-NLS-1$ NO_UCD
+  static final boolean DEBUG = "true".equalsIgnoreCase(Platform //$NON-NLS-1$ // NO_UCD
       .getDebugOption("org.ucdetector/debug/iterator")); //$NON-NLS-1$
-  static final String SEP = ", "; //$NON-NLS-1$
+  static final String SEP = ", "; //$NON-NLS-1$ // NO_UCD
   static final String NL = System.getProperty("line.separator"); //$NON-NLS-1$
   private UCDProgressMonitor monitor;
   /** Elements selected in the UI */
   protected IJavaElement[] selections;
 
   private IPackageFragment activePackage;
-  private final List<IPackageFragment> visitedPackages //
-  = new ArrayList<IPackageFragment>();
+  private final List<IPackageFragment> visitedPackages = new ArrayList<IPackageFragment>();
 
   private final long timeStart = System.currentTimeMillis();
   private long timeEnd = 0;
@@ -137,8 +136,7 @@ public abstract class AbstractUCDetectorIterator extends UCDetectorCallBack {
       return;
     }
     if (DEBUG) {
-      Log.logDebug(String.format("Iterate Resource '%s' %s", //$NON-NLS-1$
-          resource.getName(), Log.getClassName(resource)));
+      Log.logDebug(String.format("Iterate Resource '%s' %s", resource.getName(), Log.getClassName(resource)));//$NON-NLS-1$
     }
     if (resource instanceof IFile) {
       IFile file = (IFile) resource;
@@ -157,8 +155,7 @@ public abstract class AbstractUCDetectorIterator extends UCDetectorCallBack {
       handleResourceWorkspaceRoot(workspaceRoot);
     }
     else {
-      Log.logWarn(String.format("UNHANDLED RESOURCE %s:%s", //$NON-NLS-1$
-          resource.getName(), resource.getClass().getSimpleName()));
+      Log.logWarn(String.format("UNHANDLED RESOURCE %s:%s", resource.getName(), resource.getClass().getSimpleName()));//$NON-NLS-1$
     }
     if (resource instanceof IContainer) {
       IContainer container = (IContainer) resource;
@@ -185,8 +182,8 @@ public abstract class AbstractUCDetectorIterator extends UCDetectorCallBack {
       return;
     }
     if (DEBUG) {
-      Log.logDebug(String.format("Iterate JavaElement '%s' %s", JavaElementUtil //$NON-NLS-1$
-          .getElementName(javaElement), Log.getClassName(javaElement)));
+      Log.logDebug(String.format("Iterate JavaElement '%s' %s",//$NON-NLS-1$
+          JavaElementUtil.getElementName(javaElement), Log.getClassName(javaElement)));
     }
     handleStartElement(javaElement);
     boolean doChildren = true;
@@ -332,8 +329,8 @@ public abstract class AbstractUCDetectorIterator extends UCDetectorCallBack {
    */
   protected final void debugNotHandle(String what, IMember member, String reason) {
     if (DEBUG) {
-      String mes = String.format("    Ignore %s '%s' because: %s", what, //$NON-NLS-1$
-          JavaElementUtil.getElementName(member), reason);
+      String mes = String.format("    Ignore %s '%s' because: %s", //$NON-NLS-1$
+          what, JavaElementUtil.getElementName(member), reason);
       Log.logDebug(mes);
     }
   }
