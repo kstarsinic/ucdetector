@@ -21,6 +21,7 @@ import org.eclipse.jdt.core.ISourceRange;
 import org.eclipse.jdt.core.IType;
 import org.eclipse.jdt.core.JavaModelException;
 import org.ucdetector.Log;
+import org.ucdetector.preferences.WarnLevel;
 import org.ucdetector.util.JavaElementUtil;
 import org.ucdetector.util.MarkerFactory;
 import org.ucdetector.util.MarkerFactory.ElementType;
@@ -29,52 +30,17 @@ import org.ucdetector.util.MarkerFactory.ElementType;
  * Create a marker
  */
 public class MarkerReport implements IUCDetectorReport {
-  /**
-   * Don't create each marker. Do a batch creation instead
-   */
+  /** Don't create each marker. Do a batch creation instead */
   private static final int MARKERS_FLASH_LIMIT = 10;
   private final List<ReportParam> markersToFlash = new ArrayList<ReportParam>();
   private int totalMarkerCount = 0;
 
-  public boolean reportMarker(ReportParam reportParam) throws CoreException {
-    if (Log.DEBUG) {
-      Log.logDebug("    Add to queue: " + reportParam); //$NON-NLS-1$
-    }
-    markersToFlash.add(reportParam);
-    totalMarkerCount++;
-    // Waiting for first 10 markers - ID: 2787576
-    // Flush all markers at the begin, so users can start using UCDetector results
-    if (totalMarkerCount < MARKERS_FLASH_LIMIT || markersToFlash.size() >= MARKERS_FLASH_LIMIT) {
-      flushReport();
-    }
-    return true;
-  }
-
-  /**
-   * Create markers and clean cache;
-   */
-  private void flushReport() throws CoreException {
-    if (Log.DEBUG) {
-      Log.logDebug(String.format("flushReport will create %s markers", Integer.valueOf(markersToFlash.size())));//$NON-NLS-1$
-    }
-    for (ReportParam reportParamToCreate : markersToFlash) {
-      createMarker(reportParamToCreate);
-    }
-    markersToFlash.clear();
-  }
-
   private void createMarker(ReportParam reportParam) throws CoreException {
-    int severity;
-    switch (reportParam.getLevel()) {
-      case ERROR:
-        severity = IMarker.SEVERITY_ERROR;
-        break;
-      case WARNING:
-        severity = IMarker.SEVERITY_WARNING;
-        break;
-      default:
-        return;
+    WarnLevel level = reportParam.getLevel();
+    if (level == WarnLevel.IGNORE) {
+      return;
     }
+    int severity = (level == WarnLevel.ERROR) ? IMarker.SEVERITY_ERROR : IMarker.SEVERITY_WARNING;
     IMember javaElement = reportParam.getJavaElement();
     ISourceRange range = javaElement.getNameRange();
     IMarker marker = javaElement.getResource().createMarker(reportParam.getMarkerType());
@@ -106,6 +72,33 @@ public class MarkerReport implements IUCDetectorReport {
       return (field.isEnumConstant() ? ElementType.ENUM_CONSTANT : ElementType.FIELD);
     }
     return null;
+  }
+
+  public boolean reportMarker(ReportParam reportParam) throws CoreException {
+    if (Log.DEBUG) {
+      Log.logDebug("    Add to queue: " + reportParam); //$NON-NLS-1$
+    }
+    markersToFlash.add(reportParam);
+    totalMarkerCount++;
+    // Waiting for first 10 markers - ID: 2787576
+    // Flush all markers at the begin, so users can start using UCDetector results
+    if (totalMarkerCount < MARKERS_FLASH_LIMIT || markersToFlash.size() >= MARKERS_FLASH_LIMIT) {
+      flushReport();
+    }
+    return true;
+  }
+
+  /**
+   * Create markers and clean cache;
+   */
+  private void flushReport() throws CoreException {
+    if (Log.DEBUG) {
+      Log.logDebug(String.format("flushReport will create %s markers", Integer.valueOf(markersToFlash.size())));//$NON-NLS-1$
+    }
+    for (ReportParam reportParamToCreate : markersToFlash) {
+      createMarker(reportParamToCreate);
+    }
+    markersToFlash.clear();
   }
 
   public void endReport(Object[] selected, long start) throws CoreException {
