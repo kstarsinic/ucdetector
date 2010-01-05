@@ -205,7 +205,7 @@ public final class Prefs {
    * @return <code>true</code> if we should detect unnecessary code in classes
    */
   public static boolean isUCDetectionInClasses() {
-    return !WarnLevel.IGNORE.equals(getUCDetectionInClasses());
+    return WarnLevel.IGNORE != getUCDetectionInClasses();
   }
 
   // METHODS --------------------------
@@ -222,7 +222,7 @@ public final class Prefs {
    * @return <code>true</code> if we should detect unnecessary code in methods
    */
   public static boolean isUCDetectionInMethods() {
-    return !WarnLevel.IGNORE.equals(getUCDetectionInMethods());
+    return WarnLevel.IGNORE != getUCDetectionInMethods();
   }
 
   // FIELDS ----------------------------
@@ -239,7 +239,7 @@ public final class Prefs {
    * @return <code>true</code> if we should detect unnecessary code in fields
    */
   public static boolean isUCDetectionInFields() {
-    return !WarnLevel.IGNORE.equals(getUCDetectionInFields());
+    return WarnLevel.IGNORE != getUCDetectionInFields();
   }
 
   // LITERALS ----------------------------
@@ -306,7 +306,7 @@ public final class Prefs {
    * @return <code>true</code> if we can use protected
    */
   public static boolean isCheckReduceVisibilityProtected(IJavaElement member) {
-    return !WarnLevel.IGNORE.equals(getCheckReduceVisibilityProtected(member));
+    return WarnLevel.IGNORE != getCheckReduceVisibilityProtected(member);
   }
 
   // VISIBILITY PRIVATE -----------------------
@@ -338,7 +338,7 @@ public final class Prefs {
    * @return <code>true</code> if we can use private
    */
   public static boolean isCheckReduceVisibilityToPrivate(IJavaElement member) {
-    return !WarnLevel.IGNORE.equals(getCheckReduceVisibilityToPrivate(member));
+    return WarnLevel.IGNORE != getCheckReduceVisibilityToPrivate(member);
   }
 
   private static boolean isConstant(IMember member) {
@@ -363,7 +363,7 @@ public final class Prefs {
    * @return <code>true</code> if we can use final for fields
    */
   public static boolean isCheckUseFinalField() {
-    return !WarnLevel.IGNORE.equals(getCheckUseFinalField());
+    return WarnLevel.IGNORE != getCheckUseFinalField();
   }
 
   // FINAL METHOD -----------------------
@@ -378,7 +378,7 @@ public final class Prefs {
    * @return <code>true</code> if we can use final for methods
    */
   public static boolean isCheckUseFinalMethod() {
-    return !WarnLevel.IGNORE.equals(getCheckUseFinalMethod());
+    return WarnLevel.IGNORE != getCheckUseFinalMethod();
   }
 
   // REPORT --------------------------------------------------------------------
