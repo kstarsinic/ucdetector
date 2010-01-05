@@ -23,7 +23,7 @@ import org.ucdetector.util.MarkerFactory;
  * @see "http://wiki.eclipse.org/FAQ_How_do_I_implement_Quick_Fixes_for_my_own_language%3F"
  * See extension point="org.eclipse.ui.ide.markerResolution" in plugin.xml
  */
-public class UCDQuickGenerator implements IMarkerResolutionGenerator2 { // NO_UCD
+public class UCDQuickGenerator implements IMarkerResolutionGenerator2 {
 
   public IMarkerResolution[] getResolutions(IMarker marker) {
     try {
