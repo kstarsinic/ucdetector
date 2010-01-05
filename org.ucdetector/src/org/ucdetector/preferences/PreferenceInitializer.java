@@ -23,7 +23,7 @@ import org.ucdetector.UCDetectorPlugin;
  * See: {@link  org.ucdetector.preferences.Prefs#LIST_SEPARATOR}
  */
 @SuppressWarnings("nls")
-public class PreferenceInitializer extends AbstractPreferenceInitializer { // NO_UCD
+public class PreferenceInitializer extends AbstractPreferenceInitializer {
   private static final String WARN = WARNING.name();
   private static final String SOURCE_FOLDER_FILTER = "*test*,generated,";
   private static final String PACKAGE_FILTER = "*test*,";

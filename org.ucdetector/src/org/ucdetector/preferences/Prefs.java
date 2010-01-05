@@ -36,75 +36,45 @@ public final class Prefs {
   }
 
   // FILTER --------------------------------------------------------------------
-  static final String FILTER_SOURCE_FOLDER//
-  = UCDetectorPlugin.ID + ".sourceFolderFilter"; //$NON-NLS-1$
-  static final String FILTER_PACKAGE//
-  = UCDetectorPlugin.ID + ".packageFilter"; //$NON-NLS-1$
-  static final String FILTER_CLASS //
-  = UCDetectorPlugin.ID + ".classFilter"; //$NON-NLS-1$
-  static final String FILTER_METHOD //
-  = UCDetectorPlugin.ID + ".methodFilter"; //$NON-NLS-1$
-  static final String FILTER_FIELD //
-  = UCDetectorPlugin.ID + ".fieldFilter"; //$NON-NLS-1$
-  static final String FILTER_ANNOATIONS //
-  = UCDetectorPlugin.ID + ".annotationsFilter"; //$NON-NLS-1$
-  static final String FILTER_CONTAIN_STRING //
-  = UCDetectorPlugin.ID + ".containString"; //$NON-NLS-1$
-  static final String FILTER_BEAN_METHOD //
-  = UCDetectorPlugin.ID + ".beanMethodFilter"; //$NON-NLS-1$
-  static final String DETECT_TEST_ONLY //
-  = UCDetectorPlugin.ID + ".detectTestOnly"; //$NON-NLS-1$
+  static final String FILTER_SOURCE_FOLDER = UCDetectorPlugin.ID + ".sourceFolderFilter"; //$NON-NLS-1$
+  static final String FILTER_PACKAGE = UCDetectorPlugin.ID + ".packageFilter"; //$NON-NLS-1$
+  static final String FILTER_CLASS = UCDetectorPlugin.ID + ".classFilter"; //$NON-NLS-1$
+  static final String FILTER_METHOD = UCDetectorPlugin.ID + ".methodFilter"; //$NON-NLS-1$
+  static final String FILTER_FIELD = UCDetectorPlugin.ID + ".fieldFilter"; //$NON-NLS-1$
+  static final String FILTER_ANNOATIONS = UCDetectorPlugin.ID + ".annotationsFilter"; //$NON-NLS-1$
+  static final String FILTER_CONTAIN_STRING = UCDetectorPlugin.ID + ".containString"; //$NON-NLS-1$
+  static final String FILTER_BEAN_METHOD = UCDetectorPlugin.ID + ".beanMethodFilter"; //$NON-NLS-1$
+  static final String DETECT_TEST_ONLY = UCDetectorPlugin.ID + ".detectTestOnly"; //$NON-NLS-1$
   // ANALYZE -------------------------------------------------------------------
-  static final String ANALYZE_CLASSES //
-  = UCDetectorPlugin.ID + ".classes"; //$NON-NLS-1$
-  static final String ANALYZE_MEHTODS //
-  = UCDetectorPlugin.ID + ".methods"; //$NON-NLS-1$
-  static final String ANALYZE_FIELDS //
-  = UCDetectorPlugin.ID + ".member"; //$NON-NLS-1$
-  static final String ANALYZE_LITERALS_CHECK //
-  = UCDetectorPlugin.ID + ".literalsCheck"; //$NON-NLS-1$
-  static final String ANALYZE_CHECK_FULL_CLASS_NAME //
-  = UCDetectorPlugin.ID + ".checkFullClassName"; //$NON-NLS-1$
-  static final String ANALYZE_LITERALS //
-  = UCDetectorPlugin.ID + ".literals"; //$NON-NLS-1$
+  static final String ANALYZE_CLASSES = UCDetectorPlugin.ID + ".classes"; //$NON-NLS-1$
+  static final String ANALYZE_MEHTODS = UCDetectorPlugin.ID + ".methods"; //$NON-NLS-1$
+  static final String ANALYZE_FIELDS = UCDetectorPlugin.ID + ".member"; //$NON-NLS-1$
+  static final String ANALYZE_LITERALS_CHECK = UCDetectorPlugin.ID + ".literalsCheck"; //$NON-NLS-1$
+  static final String ANALYZE_CHECK_FULL_CLASS_NAME = UCDetectorPlugin.ID + ".checkFullClassName"; //$NON-NLS-1$
+  static final String ANALYZE_LITERALS = UCDetectorPlugin.ID + ".literals"; //$NON-NLS-1$
   // WARN_LIMIT ----------------------------------------------------------------
-  static final String WARN_LIMIT //
-  = UCDetectorPlugin.ID + ".warnLimit"; //$NON-NLS-1$
+  static final String WARN_LIMIT = UCDetectorPlugin.ID + ".warnLimit"; //$NON-NLS-1$
   // KEYWORD -------------------------------------------------------------------
-  /*
-  Feature Requests ID: 2490344:
-  */
-  static final String ANALYZE_VISIBILITY_PROTECTED_CLASSES //
-  = UCDetectorPlugin.ID + ".visibility.protected.classes"; //$NON-NLS-1$
-  static final String ANALYZE_VISIBILITY_PRIVATE_CLASSES //
-  = UCDetectorPlugin.ID + ".visibility.private.classes"; //$NON-NLS-1$
+  /*  Feature Requests ID: 2490344: */
+  static final String ANALYZE_VISIBILITY_PROTECTED_CLASSES = UCDetectorPlugin.ID + ".visibility.protected.classes"; //$NON-NLS-1$
+  static final String ANALYZE_VISIBILITY_PRIVATE_CLASSES = UCDetectorPlugin.ID + ".visibility.private.classes"; //$NON-NLS-1$
   //
-  static final String ANALYZE_VISIBILITY_PROTECTED_METHODS //
-  = UCDetectorPlugin.ID + ".visibility.protected.methods"; //$NON-NLS-1$
-  static final String ANALYZE_VISIBILITY_PRIVATE_METHODS //
-  = UCDetectorPlugin.ID + ".visibility.private.methods"; //$NON-NLS-1$
+  static final String ANALYZE_VISIBILITY_PROTECTED_METHODS = UCDetectorPlugin.ID + ".visibility.protected.methods"; //$NON-NLS-1$
+  static final String ANALYZE_VISIBILITY_PRIVATE_METHODS = UCDetectorPlugin.ID + ".visibility.private.methods"; //$NON-NLS-1$
   //
-  static final String ANALYZE_VISIBILITY_PROTECTED_FIELDS //
-  = UCDetectorPlugin.ID + ".visibility.protected.fields"; //$NON-NLS-1$
-  static final String ANALYZE_VISIBILITY_PRIVATE_FIELDS //
-  = UCDetectorPlugin.ID + ".visibility.private.fields"; //$NON-NLS-1$
-  static final String IGNORE_SYNTHETIC_ACCESS_EMULATION //
-  = UCDetectorPlugin.ID + ".visibility.ignore.synthetic.access.emulation"; //$NON-NLS-1$
+  static final String ANALYZE_VISIBILITY_PROTECTED_FIELDS = UCDetectorPlugin.ID + ".visibility.protected.fields"; //$NON-NLS-1$
+  static final String ANALYZE_VISIBILITY_PRIVATE_FIELDS = UCDetectorPlugin.ID + ".visibility.private.fields"; //$NON-NLS-1$
+  static final String IGNORE_SYNTHETIC_ACCESS_EMULATION = UCDetectorPlugin.ID
+      + ".visibility.ignore.synthetic.access.emulation"; //$NON-NLS-1$
   //
-  static final String ANALYZE_VISIBILITY_PROTECTED_CONSTANTS //
-  = UCDetectorPlugin.ID + ".visibility.protected.constants"; //$NON-NLS-1$
-  static final String ANALYZE_VISIBILITY_PRIVATE_CONSTANTS //
-  = UCDetectorPlugin.ID + ".visibility.private.constants"; //$NON-NLS-1$
+  static final String ANALYZE_VISIBILITY_PROTECTED_CONSTANTS = UCDetectorPlugin.ID + ".visibility.protected.constants"; //$NON-NLS-1$
+  static final String ANALYZE_VISIBILITY_PRIVATE_CONSTANTS = UCDetectorPlugin.ID + ".visibility.private.constants"; //$NON-NLS-1$
   //
-
-  static final String ANALYZE_FINAL_FIELD //
-  = UCDetectorPlugin.ID + ".finalField"; //$NON-NLS-1$
-  static final String ANALYZE_FINAL_METHOD //
-  = UCDetectorPlugin.ID + ".finalMethod"; //$NON-NLS-1$
-  // REPORT --------------------------------------------------------------------
-  static final String REPORT_FILE //
-  = UCDetectorPlugin.ID + ".reportFile"; //$NON-NLS-1$
-  // ---------------------------------------------------------------------------
+  static final String ANALYZE_FINAL_FIELD = UCDetectorPlugin.ID + ".finalField"; //$NON-NLS-1$
+  static final String ANALYZE_FINAL_METHOD = UCDetectorPlugin.ID + ".finalMethod"; //$NON-NLS-1$
+  //
+  static final String REPORT_FILE = UCDetectorPlugin.ID + ".reportFile"; //$NON-NLS-1$
+  // 
   private static final String[] EMPTY_ARRAY = new String[0];
   private static IPreferenceStore store_FOR_TEST;
   /**
@@ -434,8 +404,7 @@ public final class Prefs {
   // ---------------------------------------------------------------------------
   // HELPER
   // ---------------------------------------------------------------------------
-  @SuppressWarnings("ucd")
-  protected static void setStore_FOR_TEST(IPreferenceStore store_FOR_TEST) {
+  protected static void setStore_FOR_TEST(IPreferenceStore store_FOR_TEST) { // NO_UCD
     Prefs.store_FOR_TEST = store_FOR_TEST;
   }
 
@@ -443,9 +412,7 @@ public final class Prefs {
     if (store_FOR_TEST != null) {
       return store_FOR_TEST;
     }
-    IPreferenceStore store = UCDetectorPlugin.getDefault().getPreferenceStore();
-    // PrefConverter.convert09to10(store);
-    return store;
+    return UCDetectorPlugin.getDefault().getPreferenceStore();
   }
 
   /**
@@ -459,8 +426,7 @@ public final class Prefs {
    * @return array of strings splitted by {@link #LIST_SEPARATOR}
    */
   private static String[] getStrings(String name) {
-    String[] split = getStore().getString(name).split(LIST_SEPARATOR);
-    return split;
+    return getStore().getString(name).split(LIST_SEPARATOR);
   }
 
   /**
