@@ -265,7 +265,7 @@ public class JavaElementUtil {
    * @param element to get a String representation. Should be a {@link IType}
    * @return typeName e.g. UCDetectorPlugin
    */
-  public static String getTypeName(IJavaElement element) { // NO_UCD
+  public static String getTypeName(IJavaElement element) {
     if (element instanceof IType) {
       return ((IType) element).getTypeQualifiedName('.');
     }
@@ -401,7 +401,7 @@ public class JavaElementUtil {
    * @return true, when a {@link Exception} happend
    * @throws CoreException when there is a OutOfMemoryError
    */
-  public static boolean runSearch(SearchPattern pattern, SearchRequestor requestor, IJavaSearchScope scope)
+  private static boolean runSearch(SearchPattern pattern, SearchRequestor requestor, IJavaSearchScope scope)
       throws CoreException {
     boolean isSearchException = false;
     SearchEngine searchEngine = new SearchEngine();
@@ -644,13 +644,11 @@ public class JavaElementUtil {
     if (javaElement == null) {
       return "null"; //$NON-NLS-1$
     }
-    return String.format("%s\t[%s]", //$NON-NLS-1$
-        javaElement.getElementName(), getClassName(javaElement));
+    return String.format("%s\t[%s]", javaElement.getElementName(), getClassName(javaElement)); //$NON-NLS-1$
   }
 
-  @SuppressWarnings("ucd")
-  public static String getClassName(IJavaElement javaElement) {
-    return javaElement == null ? "null" : javaElement.getClass().getName(); //$NON-NLS-1$
+  private static String getClassName(Object object) {
+    return object == null ? "null" : object.getClass().getName(); //$NON-NLS-1$
   }
 
   /**
