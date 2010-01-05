@@ -63,9 +63,9 @@ public class FieldExamples {
   // -------------------------------------------------------------------------
   // MULTI LINE
   // -------------------------------------------------------------------------
-  private int oneLine1 = 1, oneLine2 = 2, oneLine3 = 4;// Marker YES: use final
+  private int oneLine1 = 1, noMarker = 5, oneLine2 = 2, oneLine3 = 4;// Marker YES: use final
 
-  public static final String MULTY_1 = "1", MULTY_2 = "2", MULTY_3 = "3"; // Marker YES: unused code
+  public static final String UNUSED_1 = "1", USED = "4", UNUSED_2 = "2", UNUSED_3 = "3"; // Marker YES: unused code
 
   // -------------------------------------------------------------------------
   // HELPER
@@ -81,6 +81,8 @@ public class FieldExamples {
     System.out.println(ex.oneLine1);
     System.out.println(ex.oneLine2);
     System.out.println(ex.oneLine3);
+    System.out.println(ex.noMarker);
+    ex.noMarker = 6;
     //
     ex.privateUsedField = 1;
     ex.defaultUsedField = 1;

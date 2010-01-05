@@ -124,6 +124,7 @@ public class PublicReferenceHolder {
     // ---------------------------------------------------------------------
     FieldExamples fieldExamples = new FieldExamples();
     System.out.println(FieldExamples.USED_FIELD);
+    System.out.println(FieldExamples.USED);
     System.out.println(fieldExamples.publicUsedField);
     // ---------------------------------------------------------------------
     System.out.println(InterfaceExample.USED);
