@@ -192,7 +192,7 @@ abstract class AbstractUCDQuickFix extends WorkbenchMarkerResolution {
   /**
    * commit changes to document
    */
-  protected final void commitChanges() throws BadLocationException {
+  private final void commitChanges() throws BadLocationException {
     TextEdit edits = rewrite.rewriteAST(doc, null);
     edits.apply(doc);
   }
@@ -241,16 +241,19 @@ abstract class AbstractUCDQuickFix extends WorkbenchMarkerResolution {
   }
 
   private boolean isOtherMarker(IMarker marker2) {
-    try {
-      if (marker.getType().equals(marker2.getType())) {
-        // Now we have a ucdetector marker!
-        String javaType1 = (String) marker.getAttribute(MarkerFactory.JAVA_TYPE);
-        String javaType2 = (String) marker2.getAttribute(MarkerFactory.JAVA_TYPE);
-        return javaType1 != null && javaType1.equals(javaType2);
+    // Don't add this marker 2 times!
+    if (marker != marker2) {
+      try {
+        if (marker.getType().equals(marker2.getType())) {
+          // Now we have a ucdetector marker!
+          String javaType1 = (String) marker.getAttribute(MarkerFactory.JAVA_TYPE);
+          String javaType2 = (String) marker2.getAttribute(MarkerFactory.JAVA_TYPE);
+          return javaType1 != null && javaType1.equals(javaType2);
+        }
       }
-    }
-    catch (Exception e) {
-      Log.logError("Can't compare markers: " + e.getMessage());
+      catch (Exception e) {
+        Log.logError("Can't compare markers: " + e.getMessage());
+      }
     }
     return false;
   }
