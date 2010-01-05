@@ -81,7 +81,8 @@ public class MarkerReport implements IUCDetectorReport {
     marker.setAttribute(IMarker.SEVERITY, severity);
     marker.setAttribute(IMarker.MESSAGE, reportParam.getMessage());
     marker.setAttribute(IMarker.PRIORITY, IMarker.PRIORITY_HIGH);
-    //    marker.setAttribute(IMarker.LINE_NUMBER, reportParam.getLine());
+    // LINE_NUMBER Still needed for MultiQuickFix dialog
+    marker.setAttribute(IMarker.LINE_NUMBER, reportParam.getLine());
     marker.setAttribute(IMarker.CHAR_START, range.getOffset());
     marker.setAttribute(IMarker.CHAR_END, range.getOffset() + range.getLength());
     marker.setAttribute(MarkerFactory.JAVA_NAME, javaElement.getElementName());
