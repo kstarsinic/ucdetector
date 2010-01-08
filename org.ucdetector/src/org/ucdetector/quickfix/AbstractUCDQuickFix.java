@@ -43,6 +43,7 @@ import org.eclipse.ui.texteditor.ITextEditor;
 import org.eclipse.ui.views.markers.WorkbenchMarkerResolution;
 import org.ucdetector.Log;
 import org.ucdetector.UCDetectorPlugin;
+import org.ucdetector.util.ASTMemberVisitor;
 import org.ucdetector.util.MarkerFactory;
 
 /**

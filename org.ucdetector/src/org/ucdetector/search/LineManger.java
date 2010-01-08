@@ -41,7 +41,7 @@ import org.eclipse.jdt.core.dom.StringLiteral;
 import org.ucdetector.Log;
 import org.ucdetector.UCDetectorPlugin;
 import org.ucdetector.preferences.Prefs;
-import org.ucdetector.quickfix.ASTMemberVisitor;
+import org.ucdetector.util.ASTMemberVisitor;
 import org.ucdetector.util.JavaElementUtil;
 import org.ucdetector.util.UsedBy;
 
