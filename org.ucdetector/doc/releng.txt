@@ -70,3 +70,5 @@ Steps to create new Version:
 
  - add to freshmeat http://freshmeat.net/projects/ucdetector/releases/new
  - post at http://www.linuxlinks.com/portal/news/submit.php
+ - post at http://marketplace.eclipse.org/content/unnecessary-code-detector/edit
+ 
