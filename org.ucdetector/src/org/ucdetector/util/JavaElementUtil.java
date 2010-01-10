@@ -640,7 +640,15 @@ public class JavaElementUtil {
     return "???"; //$NON-NLS-1$
   }
 
-  public static String dumpJavaElement(IJavaElement javaElement) { // NO_UCD
+  public static String getElementNames(List<? extends IJavaElement> javaElements) { // NO_UCD
+    StringBuilder sb = new StringBuilder();
+    for (IJavaElement javaElement : javaElements) {
+      sb.append(getElementName(javaElement)).append("\n"); //$NON-NLS-1$
+    }
+    return sb.toString();
+  }
+
+  public static String getElementNameAndClassName(IJavaElement javaElement) { // NO_UCD
     if (javaElement == null) {
       return "null"; //$NON-NLS-1$
     }
@@ -772,14 +780,18 @@ public class JavaElementUtil {
   }
    */
 
-  public static boolean hasMainMethod(IType member) throws JavaModelException {
+  public static IMethod getMainMethod(IType member) throws JavaModelException {
     IMethod[] methods = member.getMethods();
     for (IMethod method : methods) {
       if (method.isMainMethod()) {
-        return true;
+        return method;
       }
     }
-    return false;
+    return null;
+  }
+
+  public static boolean hasMainMethod(IType member) throws JavaModelException {
+    return getMainMethod(member) != null;
   }
 
   /**

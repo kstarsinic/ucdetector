@@ -23,7 +23,8 @@ public class ExampleAction extends AbstractUCDetectorAction {// NO_UCD
 
   @Override
   protected AbstractUCDetectorIterator createIterator() {
-    iterator = new org.ucdetector.iterator.CheckNameConventionIterator();
+    iterator = new org.ucdetector.iterator.MethodParseIterator();
+    // iterator = new org.ucdetector.iterator.CheckNameConventionIterator();
     // iterator = new org.ucdetector.iterator.DetectDoubleClassNameIterator();
     // iterator = new org.ucdetector.iterator.DetectNoJavaFileIterator();
     // iterator = new org.ucdetector.iterator.CommentIterator();

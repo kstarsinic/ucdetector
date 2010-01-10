@@ -177,7 +177,7 @@ public abstract class AbstractUCDetectorIterator extends UCDetectorCallBack {
   /**
    * Concrete iteration method, called recursively
    */
-  private void iterate(IJavaElement javaElement) throws CoreException {
+  public void iterate(IJavaElement javaElement) throws CoreException {
     if (getMonitor().isCanceled()) {
       return;
     }
