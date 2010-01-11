@@ -30,7 +30,7 @@ public class PreferenceInitializer extends AbstractPreferenceInitializer {
   private static final String CLASS_FILTER = "Test*,*Test";
   private static final String METHOD_FILTER = "test*,*Test";
   private static final String FIELD_FILTER = "test*,*Test";
-  private static final String ANNOATIONS_FILTER = "";
+  private static final String ANNOATIONS_FILTER = "java.lang.Deprecated,";
   private static final String FILE_PATTERN_LITERAL_SEARCH = "*.xml,";
   private static final String REPORT_DEFAULT_NAME = "UCDetetorReport.html";
 
