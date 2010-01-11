@@ -32,7 +32,7 @@
 </style>
 			</head>
 			
-<!-- Piwik -->
+<!-- Piwik
 			<script type="text/javascript">
 var pkBaseURL = (("https:" == document.location.protocol) ? "https://apps.sourceforge.net/piwik/ucdetector/" : "http://apps.sourceforge.net/piwik/ucdetector/");
 document.write(unescape("%3Cscript src='" + pkBaseURL + "piwik.js' type='text/javascript'%3E%3C/script%3E"));
@@ -43,6 +43,7 @@ piwik_idsite = 1;
 piwik_url = pkBaseURL + "piwik.php";
 piwik_log(piwik_action_name, piwik_idsite, piwik_url);
 </script>
+
 			<object>
 				<noscript>
 					<p>
@@ -50,11 +51,13 @@ piwik_log(piwik_action_name, piwik_idsite, piwik_url);
 					</p>
 				</noscript>
 			</object>
+ -->			
 <!-- End Piwik Tag -->
 			
 			<body>
 
 						<!-- TOP-START ============================================================= -->
+<!--						
 				<p align="center">
 					<script type="text/javascript">
 						<xsl:comment>
@@ -67,6 +70,7 @@ google_ad_height = 15;
 					</script>
 					<script type="text/javascript" src="http://pagead2.googlesyndication.com/pagead/show_ads.js"></script>
 				</p>
+-->				
 <!-- TOP-END =============================================================== -->
 			
 			
@@ -133,6 +137,7 @@ google_ad_height = 15;
 								<tr>
 									<td>
  <!-- LEFT-START ============================================================ -->
+<!-- 
 										<script type="text/javascript">
 											<xsl:comment>		
 google_ad_client = "pub-6019677758660683";
@@ -143,6 +148,7 @@ google_ad_height = 240;
 //</xsl:comment>
 										</script>
 										<script type="text/javascript" src="http://pagead2.googlesyndication.com/pagead/show_ads.js"></script>
+-->										
 <!-- LEFT-END ============================================================== -->
 									</td>
 								</tr>
