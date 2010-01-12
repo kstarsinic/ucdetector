@@ -847,4 +847,39 @@ public class JavaElementUtil {
     }
     return false;
   }
+
+  /**
+   * org.eclipse.jdt.internal.corext.dom.Bindings.findOverriddenMethod
+   * org.eclipse.jdt.internal.ui.typehierarchy.SubTypeHierarchyViewer
+   */
+  public static IType[] getAllSupertypes(IType type) throws JavaModelException {
+    ITypeHierarchy hierarchy = type.newTypeHierarchy(NULL_MONITOR);
+    if (hierarchy != null) {
+      return hierarchy.getAllSupertypes(type);
+    }
+    return new IType[0];
+  }
+
+  /*
+   * @param clazz to find super classes for
+   * @return all super classes of clazz. All interfaces implemented by this class
+  public static Set<Class<?>> getAllSuperClasses(Class<?> clazz) {
+    Set<Class<?>> result = new LinkedHashSet<Class<?>>();
+    addAllSuperClasses(clazz, result);
+    return result;
+  }
+
+  private static void addAllSuperClasses(Class<?> clazz, Set<Class<?>> result) {
+    Class<?>[] interfaces = clazz.getInterfaces();
+    for (Class<?> interfaze : interfaces) {
+      result.add(interfaze);
+      addAllSuperClasses(interfaze, result);
+    }
+    Class<?> superclass = clazz.getSuperclass();
+    if (superclass != null) {
+      result.add(superclass);
+      addAllSuperClasses(superclass, result);
+    }
+  }
+   */
 }

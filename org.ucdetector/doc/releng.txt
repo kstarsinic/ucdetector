@@ -31,6 +31,7 @@ Steps to create new Version:
 	 - Run UCDetector detecting code in org.ucdetector.example/examples with settings:
 	   - org.ucdetector.example.FilterMeAnnotation
 	   - IGNORE THIS CODE
+	   - org.ucdetector.example.inheritance.filter.Ignore,IIgnoreMe
 	 - [Run UCDetector in: jEdit, JUnit]
 	 - run UCDetector with: change warn limit to 2
 	 - Apply QuickFixes to QuickFixExample

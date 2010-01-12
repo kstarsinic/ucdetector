@@ -67,6 +67,9 @@ public class UCDetectorPreferencePage extends UCDetectorBasePreferencePage {
     StringFieldEditor annotationsFilter = createText(Prefs.FILTER_ANNOATIONS,
         Messages.PreferencePage_IgnoreAnnotationsFilter, spacer, Messages.PreferencePage_IgnoreAnnotationsFilterToolTip);
     this.addField(annotationsFilter);
+    StringFieldEditor implementsFilter = createText(Prefs.FILTER_IMPLEMENTS, Messages.PreferencePage_IgnoreImplements,
+        spacer, Messages.PreferencePage_IgnoreImplementsToolTip);
+    this.addField(implementsFilter);
     StringFieldEditor containStringFilter = createText(Prefs.FILTER_CONTAIN_STRING,
         Messages.PreferencePage_IgnoreContainString, spacer, Messages.PreferencePage_IgnoreContainStringToolTip);
     this.addField(containStringFilter);

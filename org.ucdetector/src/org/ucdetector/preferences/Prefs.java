@@ -42,6 +42,7 @@ public final class Prefs {
   static final String FILTER_METHOD = UCDetectorPlugin.ID + ".methodFilter"; //$NON-NLS-1$
   static final String FILTER_FIELD = UCDetectorPlugin.ID + ".fieldFilter"; //$NON-NLS-1$
   static final String FILTER_ANNOATIONS = UCDetectorPlugin.ID + ".annotationsFilter"; //$NON-NLS-1$
+  static final String FILTER_IMPLEMENTS = UCDetectorPlugin.ID + ".superClassFilter"; //$NON-NLS-1$
   static final String FILTER_CONTAIN_STRING = UCDetectorPlugin.ID + ".containString"; //$NON-NLS-1$
   static final String FILTER_BEAN_METHOD = UCDetectorPlugin.ID + ".beanMethodFilter"; //$NON-NLS-1$
   static final String DETECT_TEST_ONLY = UCDetectorPlugin.ID + ".detectTestOnly"; //$NON-NLS-1$
@@ -159,6 +160,19 @@ public final class Prefs {
   // [ 2832790 ] Custom annotation filter
   public static boolean filterAnnotation(String annotation) {
     return matchFilter(FILTER_ANNOATIONS, annotation);
+  }
+
+  /**
+   * @param className which should be checked for filtering
+   * @return <code>true</code>, when the className matches the field filter
+   */
+  // [ 2929828 ] Filter to exclude classes extending/implementing
+  public static boolean filterImplements(String className) {
+    return matchFilter(FILTER_IMPLEMENTS, className);
+  }
+
+  public static boolean isFilterImplements() {
+    return getStore().getString(FILTER_IMPLEMENTS).trim().length() > 0;
   }
 
   /**
