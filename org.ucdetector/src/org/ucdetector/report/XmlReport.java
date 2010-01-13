@@ -405,10 +405,15 @@ public class XmlReport implements IUCDetectorReport {
     Result result = new StreamResult(new OutputStreamWriter(new FileOutputStream(file), "utf-8"));
     // Result result = new StreamResult(new OutputStreamWriter(new FI, "utf-8"));
     TransformerFactory tf = TransformerFactory.newInstance();
-    tf.setAttribute("indent-number", Integer.valueOf(2));
     Transformer xformer = tf.newTransformer();
-    xformer.setOutputProperty(OutputKeys.INDENT, "yes");
-    xformer.setOutputProperty(OutputKeys.METHOD, "xml");
+    try {
+      tf.setAttribute("indent-number", Integer.valueOf(2));
+      xformer.setOutputProperty(OutputKeys.INDENT, "yes");
+      xformer.setOutputProperty(OutputKeys.METHOD, "xml");
+    }
+    catch (IllegalArgumentException ignore) {
+      Log.logWarn("Can't change output format: " + ignore);
+    }
     xformer.transform(source, result);
     return file;
   }
