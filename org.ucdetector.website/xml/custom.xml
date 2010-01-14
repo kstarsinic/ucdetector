@@ -49,7 +49,7 @@ svn co https://ucdetector.svn.sourceforge.net/svnroot/ucdetector/trunk/org.ucdet
 				<a href="mailto:feedback@ucdetector.org">E-Mail </a> me your detection example!
            </td>
 			<td align="left" valign="middle">
-				<img alt="Additional" border="1" src="@IMAGES_DIR@/additional.png"/>
+				<img alt="Additional" border="1" src="images/additional.png"/>
 			</td>
 		</tr>
 
@@ -65,9 +65,9 @@ svn co https://ucdetector.svn.sourceforge.net/svnroot/ucdetector/trunk/org.ucdet
 					<li>See screenshots</li>
 					<li>Click button 'Debug'</li>
 				</ul>
-      <img alt="Main" border="1" src="@IMAGES_DIR@/run_main.png"/>
-      <img alt="Arguments" border="1" src="@IMAGES_DIR@/run_arguments.png"/>
-      <img alt="Plugins" border="1" src="@IMAGES_DIR@/run_plugins.png"/>
+      <img alt="Main" border="1" src="images/run_main.png"/>
+      <img alt="Arguments" border="1" src="images/run_arguments.png"/>
+      <img alt="Plugins" border="1" src="images/run_plugins.png"/>
     </td>
    </tr>
 	</table>

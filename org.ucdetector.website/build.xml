@@ -8,7 +8,6 @@
   <property name="xml.dir" location="${basedir}/xml" />
   <property name="html.dir" location="${basedir}/html" />
   <property name="temp.dir" location="${xml.dir}/temp" />
-  <property name="ucd.dir" location="${basedir}/../org.ucdetector" />
 
 
   <!-- ===================================================================== -->
@@ -24,7 +23,14 @@
   <!-- ===================================================================== -->
   <target name="create" description="Create UCDetector homepage">
     <antcall target="-transform" />
-    <copy-help />
+    <copy todir="${html.dir}" overwrite="true">
+      <filterset>
+        <filter token="TODAY" value="${TODAY}" />
+        <filter token="YEAR" value="${YEAR}" />
+      </filterset>
+      <fileset dir="${temp.dir}" includes="*.html" />
+    </copy>
+    <delete dir="${temp.dir}" />
     <echo>Created UCDetector homepage. See: ${html.dir}/index.html</echo>
   </target>
 
@@ -39,43 +45,6 @@
           includes="*.xml"
           style="${xml.dir}/ucd.xsl">
     </xslt>
-  </target>
-
-  <!-- ===================================================================== -->
-  <!--                      COPY-HTML                                        -->
-  <!-- ===================================================================== -->
-  <macrodef name="copy-help" description="Copy html files, replace tokens">
-    <attribute name="images" default="images" />
-    <attribute name="icons" default="icons" />
-    <attribute name="todir" default="${html.dir}" />
-    <sequential>
-      <copy todir="@{todir}" overwrite="true">
-        <filterset>
-          <filter token="IMAGES_DIR" value="@{images}" />
-          <filter token="ICONS_DIR" value="@{icons}" />
-          <filter token="TODAY" value="${TODAY}" />
-          <filter token="YEAR" value="${YEAR}" />
-        </filterset>
-        <fileset dir="${temp.dir}" includes="*.html" />
-      </copy>
-      <!--
-      <copy todir="@{todir}">
-        <fileset dir="${ucd.dir}" includes="icons/*" />
-      </copy>
-      -->
-      <delete dir="${temp.dir}" />
-    </sequential>
-  </macrodef>
-
-  <!-- ===================================================================== -->
-  <!--                      CREATE UCD HELP                                  -->
-  <!-- ===================================================================== -->
-  <target name="ucd-help" description="Copy help to UCDetector plugin">
-    <antcall target="-transform" />
-    <copy-help images="http://ucdetector.org/images"
-               icons="../../icons"
-               todir="${ucd.dir}/help/html" />
-    <echo>Created UCDetector help in plugin in ${ucd.dir}/help/html</echo>
   </target>
 
   <!-- ===================================================================== -->

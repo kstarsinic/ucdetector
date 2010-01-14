@@ -19,7 +19,6 @@ Steps to create new Version:
    - add new features, bug fixes to help
    - update org.ucdetector.website\xml\releases.xml from
             org.ucdetector/doc/CHANGES.txt
-   - update help     (run /org.ucdetector.website/build.xml:ucd-help)
    - check help
 
  - Create:

@@ -90,7 +90,6 @@
     <ant target="source" />
     <ant target="annotations-jar" />
     <!-- -->
-    <ant antfile="../../org.ucdetector.website/build.xml" target="ucd-help" />
     <ant antfile="../../org.ucdetector.website/build.xml" target="homepage" />
     <ant antfile="../../org.ucdetector.update_site/build.xml" target="send" />
   </target>
