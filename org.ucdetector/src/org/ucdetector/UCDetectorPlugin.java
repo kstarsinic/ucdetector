@@ -7,6 +7,7 @@
  */
 package org.ucdetector;
 
+import java.net.URL;
 import java.text.DateFormat;
 import java.util.Date;
 import java.util.LinkedHashMap;
@@ -16,6 +17,7 @@ import java.util.Set;
 import java.util.Map.Entry;
 
 import org.eclipse.core.runtime.CoreException;
+import org.eclipse.core.runtime.FileLocator;
 import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Path;
@@ -41,9 +43,7 @@ import org.osgi.service.prefs.BackingStoreException;
 public class UCDetectorPlugin extends AbstractUIPlugin {
   public static final String IMAGE_FINAL = "IMAGE_FINAL"; //$NON-NLS-1$
   public static final String IMAGE_UCD = "IMAGE_UCD"; //$NON-NLS-1$
-  /** org.eclipse.jdt.ui\etool16\comment_edit.gif */
   public static final String IMAGE_COMMENT = "IMAGE_COMMENT"; //$NON-NLS-1$
-  /** org.eclipse.ui.ide/icons/full/elcl16/showtsk_tsk.gif */
   public static final String IMAGE_TODO = "IMAGE_TODO"; //$NON-NLS-1$
   /**
    * See MANIFEST.MF: Bundle-SymbolicName, and .project
@@ -215,15 +215,26 @@ public class UCDetectorPlugin extends AbstractUIPlugin {
   @Override
   protected void initializeImageRegistry(ImageRegistry registry) {
     super.initializeImageRegistry(registry);
-    registry.put(IMAGE_COMMENT, getUcdImage("comment_edit.gif")); //$NON-NLS-1$
     registry.put(IMAGE_UCD, getUcdImage("ucd.gif")); //$NON-NLS-1$
     registry.put(IMAGE_FINAL, JavaPluginImages.DESC_OVR_FINAL);
-    registry.put(IMAGE_TODO, getUcdImage("showtsk_tsk.gif")); //$NON-NLS-1$
+    registry.put(IMAGE_COMMENT, getEclipseImage("org.eclipse.jdt.ui/icons/full/etool16/comment_edit.gif")); //$NON-NLS-1$
+    registry.put(IMAGE_TODO, getEclipseImage("org.eclipse.ui.ide/icons/full/elcl16/showtsk_tsk.gif")); //$NON-NLS-1$
   }
 
   private ImageDescriptor getUcdImage(String icon) {
     IPath path = new Path("icons").append("/" + icon); //$NON-NLS-1$ //$NON-NLS-2$
     return JavaPluginImages.createImageDescriptor(getDefault().getBundle(), path, true);
+  }
+
+  public static ImageDescriptor getEclipseImage(String icon) {
+    try {
+      URL url = new URL("platform:/plugin/" + icon); //$NON-NLS-1$
+      return ImageDescriptor.createFromURL(FileLocator.resolve(url));
+    }
+    catch (Exception ex) {
+      Log.logError("Can't get eclipse image", ex); //$NON-NLS-1$
+      return null;
+    }
   }
 
   /**

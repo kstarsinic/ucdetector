@@ -7,14 +7,11 @@
  */
 package org.ucdetector.cycle;
 
-import org.eclipse.core.runtime.IPath;
-import org.eclipse.core.runtime.Path;
-import org.eclipse.jdt.internal.ui.JavaPluginImages;
-import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.jface.resource.ImageRegistry;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.ui.plugin.AbstractUIPlugin;
 import org.osgi.framework.BundleContext;
+import org.ucdetector.UCDetectorPlugin;
 
 /**
  * Default Activator-class of this plug-ins
@@ -54,11 +51,6 @@ public class CyclePlugin extends AbstractUIPlugin {
   @Override
   protected void initializeImageRegistry(ImageRegistry registry) {
     super.initializeImageRegistry(registry);
-    registry.put(IMAGE_CYCLE, getUcdImage("cycle.gif")); //$NON-NLS-1$
-  }
-
-  private ImageDescriptor getUcdImage(String icon) {
-    IPath path = new Path("icons").append("/" + icon); //$NON-NLS-1$ //$NON-NLS-2$
-    return JavaPluginImages.createImageDescriptor(getDefault().getBundle(), path, true);
+    registry.put(IMAGE_CYCLE, UCDetectorPlugin.getEclipseImage("org.eclipse.pde/icons/elcl16/refresh.gif")); //$NON-NLS-1$
   }
 }
