@@ -15,12 +15,12 @@ Workspace:
 - Set your favorite UCDetector preferences in Eclipse IDE
 
 Run scripts:
-- unzip org.ucdetector_x.y.z.jar/ant to a new directory
-- >cd ant
-- >ant
+- unzip org.ucdetector.source_x.y.z.zip/ant to a new directory
+- $ cd ant
+- $ ant
 - Edit build.properties: Change WORKSPACE, ECLIPSE_HOME, LAUNCHER [maybe more]
-- >ant
-- [it is also possible to run detect.sh or detect.bat]
+- $ ant
+- [it is also possible to run ./detect.sh or detect.bat]
 
 Check logging:
  - There may appear some UI Exceptions, which could be ignored

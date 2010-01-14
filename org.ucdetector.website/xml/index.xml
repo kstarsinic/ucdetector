@@ -169,7 +169,7 @@ It is possible to change several problems at once using quick fix dialog.
 <h4>@UsedBy("reflection")</h4>
 I don't like this one, but users asked for it:<br></br>
 If you want to "polute" your code, you can use the <code>@org.ucdetector.util.UsedBy</code>
-annotation located inside ucdetector-annotations.jar which is inside org.ucdetector.xxx.jar.
+annotation located inside ucdetector-annotations.jar which is inside org.ucdetector.source_x.y.z.zip.
 <pre><span class="c4">/**
  * Class is only used by reflection.
  * Add a <strong>@SuppressWarnings("ucd")</strong> annotation.
