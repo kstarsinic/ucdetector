@@ -2,18 +2,16 @@
 <project default="plugin-export" name="export plugin" basedir=".">
   <description>Export UCDetector plugin</description>
 
+  <property name="ECLIPSE_HOME" location="/opt/eclipse-3.3" />
+
   <!-- ===================================================================== -->
   <!-- PREPARE                                                               -->
   <!-- ===================================================================== -->
   <target name="prepare" description="Load and dump properties">
     <!-- get Bundle-Version -->
     <property file="../META-INF/MANIFEST.MF" />
-    <property name="build.properties" location="../ant/build.properties" />
-    <property file="${build.properties}" />
-    <echo>build.properties   = ${build.properties}</echo>
     <echo>ECLIPSE_HOME       = ${ECLIPSE_HOME}</echo>
     <echo>UCDetector version = ${Bundle-Version}</echo>
-    <fail unless="ECLIPSE_HOME" message="Missing ${build.properties}" />
     <tstamp>
       <format property="NOW" pattern="yyyy-MM-dd HH:mm z" locale="en" />
     </tstamp>
