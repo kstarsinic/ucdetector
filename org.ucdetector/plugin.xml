@@ -77,6 +77,20 @@
           icon="platform:/plugin/org.eclipse.ui/icons/full/obj16/info_tsk.gif"
           menubarPath="ucdetectorGroup/ucdetector"/>
     </objectContribution>
+    
+    <!-- FIND UNUSED METHODS ============================ -->
+    <objectContribution
+        adaptable="true"
+        id="org.ucdetector.popupMenus.project.Analyze"
+        objectClass="org.eclipse.jdt.core.IJavaElement">
+      <action class="org.ucdetector.action.FindUnusedMethodsAction"
+          enablesFor="+"
+          id="org.ucdetector.FindUnusedMethodsAction"
+          label="%FindUnusedMethodsAction.label"
+          tooltip="%FindUnusedMethodsAction.tooltip"
+          icon="platform:/plugin/org.eclipse.jdt.ui/icons/full/elcl16/ch_callees.gif"
+          menubarPath="ucdetectorGroup/ucdetector"/>
+    </objectContribution>
 
     <!-- CLEAN MARKERS ============================ -->
     <objectContribution

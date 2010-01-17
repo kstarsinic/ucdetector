@@ -8,6 +8,7 @@
 package org.ucdetector.util;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 
 import org.eclipse.core.resources.IResource;
@@ -640,10 +641,10 @@ public class JavaElementUtil {
     return "???"; //$NON-NLS-1$
   }
 
-  public static String getElementNames(List<? extends IJavaElement> javaElements) { // NO_UCD
+  public static String getElementNames(Collection<? extends IJavaElement> javaElements) { // NO_UCD
     StringBuilder sb = new StringBuilder();
     for (IJavaElement javaElement : javaElements) {
-      sb.append(getElementName(javaElement)).append("\n"); //$NON-NLS-1$
+      sb.append(getElementName(javaElement)).append("\n\t"); //$NON-NLS-1$
     }
     return sb.toString();
   }
@@ -652,7 +653,7 @@ public class JavaElementUtil {
     if (javaElement == null) {
       return "null"; //$NON-NLS-1$
     }
-    return String.format("%s\t[%s]", javaElement.getElementName(), getClassName(javaElement)); //$NON-NLS-1$
+    return String.format("%s\t[%s]", getElementName(javaElement), getClassName(javaElement)); //$NON-NLS-1$
   }
 
   private static String getClassName(Object object) {
