@@ -23,7 +23,6 @@ import org.eclipse.jdt.core.dom.ASTVisitor;
 import org.eclipse.jdt.core.dom.IMethodBinding;
 import org.eclipse.jdt.core.dom.MethodDeclaration;
 import org.eclipse.jdt.core.dom.MethodInvocation;
-import org.ucdetector.search.UCDProgressMonitor;
 import org.ucdetector.util.JavaElementUtil;
 
 /**
@@ -42,28 +41,28 @@ public class MethodParseIterator extends AdditionalIterator {
     }
     IJavaElement javaElement = javaElements[0];
     if (javaElement instanceof IMethod) {
-      startParsing((IMethod) javaElement);
+      parse((IMethod) javaElement);
       return;
     }
     IType type = JavaElementUtil.getTypeFor(javaElement, true);
     if (type != null) {
       IMethod mainMethod = JavaElementUtil.getMainMethod(type);
       if (mainMethod != null) {
-        startParsing(mainMethod);
+        parse(mainMethod);
         return;
       }
     }
     System.err.println("No method to parse found");
   }
 
-  private static void startParsing(IMethod method) throws CoreException {
-    MethodCollectIterator methodCollector = new MethodCollectIterator();
-    methodCollector.setMonitor(new UCDProgressMonitor());
-    methodCollector.iterate(method.getJavaProject());
-    allMethods = methodCollector.getAllmethods();
-    parse(method);
-    //    System.out.println("allMethods:\n" + JavaElementUtil.dumpJavaElements(allMethods));
-  }
+  //  private static void startParsing(IMethod method) throws CoreException {
+  //    MethodCollectIterator methodCollector = new MethodCollectIterator();
+  //    methodCollector.setMonitor(new UCDProgressMonitor());
+  //    methodCollector.iterate(method.getJavaProject());
+  //    allMethods = methodCollector.getAllmethods();
+  //    parse(method);
+  //    //    System.out.println("allMethods:\n" + JavaElementUtil.dumpJavaElements(allMethods));
+  //  }
 
   private static void parse(IMethod method) throws JavaModelException {
     if (visitedMethods.contains(method)) {
