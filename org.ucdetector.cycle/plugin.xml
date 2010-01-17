@@ -33,7 +33,7 @@
           id="org.ucdetector.cycle.CycleAction"
           label="%CycleAction.label"
           tooltip="%CycleAction.tooltip"
-          icon="platform:/plugin/org.eclipse.pde/icons/elcl16/refresh.gif"
+          icon="platform:/plugin/org.eclipse.jdt.ui/icons/full/elcl16/refresh_nav.gif"
           menubarPath="ucdetectorGroup/cycle"/>
     </objectContribution>
   </extension>
@@ -45,7 +45,7 @@
       <category  name="%category.name.CycleView" id="org.ucdetector.cycle.CycleView">
       </category>
       <view name="%view.name.CycleView"
-            icon="platform:/plugin/org.eclipse.pde/icons/elcl16/refresh.gif"
+            icon="platform:/plugin/org.eclipse.jdt.ui/icons/full/elcl16/refresh_nav.gif"
             category="org.ucdetector.cycle.CycleView"
             class="org.ucdetector.cycle.CycleView"
             id="org.ucdetector.cycle.view.CycleView">
