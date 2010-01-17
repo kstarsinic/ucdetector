@@ -39,16 +39,16 @@ public class UCDetectorCallBack { // NO_UCD
   // GENERIC HANDLERS
   // ---------------------------------------------------------------------------
   /**
-   * @param objects to handle
+   * @param javaElements to handle
    * @throws CoreException in classes overriding this method */
-  public void handleStartGlobal(IJavaElement[] objects) throws CoreException {
+  public void handleStartGlobal(IJavaElement[] javaElements) throws CoreException {
     //
   }
 
   /**
-   * @param objects to handle
+   * @param javaElements to handle
    * @throws CoreException in classes overriding this method */
-  public void handleEndGlobal(IJavaElement[] objects) throws CoreException {
+  public void handleEndGlobal(IJavaElement[] javaElements) throws CoreException {
     //
   }
 
@@ -89,24 +89,24 @@ public class UCDetectorCallBack { // NO_UCD
   // ---------------------------------------------------------------------------
 
   /**
-   * @param model
+   * @param javaModel
    */
-  protected void handleJavaModel(IJavaModel model) {
+  protected void handleJavaModel(IJavaModel javaModel) {
     //
   }
 
   /**
-   * @param project
+   * @param javaProject
    */
-  protected void handleJavaProject(IJavaProject project) {
+  protected void handleJavaProject(IJavaProject javaProject) {
     //
 
   }
 
   /**
-   * @param root
+   * @param packageFragmentRoot
    */
-  protected void handlePackageFragmentRoot(IPackageFragmentRoot root) {
+  protected void handlePackageFragmentRoot(IPackageFragmentRoot packageFragmentRoot) {
     //
   }
 
@@ -125,9 +125,9 @@ public class UCDetectorCallBack { // NO_UCD
 
   }
 
-  /** @param unit
+  /** @param compilationUnit
    * @throws CoreException in classes overriding this method */
-  protected void handleCompilationUnit(ICompilationUnit unit) throws CoreException {
+  protected void handleCompilationUnit(ICompilationUnit compilationUnit) throws CoreException {
     //
   }
 
@@ -230,8 +230,8 @@ public class UCDetectorCallBack { // NO_UCD
    * PackageFragmentRoot children (children of jars...)
    * This could be a lot of stuff in case of big jars!
    */
-  protected boolean doPackageFragmentRootChildren(IPackageFragmentRoot root) {
-    return !root.isArchive() && !Prefs.filterPackageFragmentRoot(root);
+  protected boolean doPackageFragmentRootChildren(IPackageFragmentRoot packageFragmentRoot) {
+    return !packageFragmentRoot.isArchive() && !Prefs.filterPackageFragmentRoot(packageFragmentRoot);
   }
 
   /**
