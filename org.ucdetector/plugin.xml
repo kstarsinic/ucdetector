@@ -82,7 +82,7 @@
     <objectContribution
         adaptable="true"
         id="org.ucdetector.popupMenus.project.Analyze"
-        objectClass="org.eclipse.jdt.core.IJavaElement">
+        objectClass="org.eclipse.jdt.core.IMember">
       <action class="org.ucdetector.action.FindUnusedMethodsAction"
           enablesFor="+"
           id="org.ucdetector.FindUnusedMethodsAction"
