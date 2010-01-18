@@ -13,6 +13,8 @@ import java.util.List;
 import java.util.Set;
 
 import org.eclipse.core.runtime.CoreException;
+import org.eclipse.core.runtime.IProgressMonitor;
+import org.eclipse.core.runtime.NullProgressMonitor;
 import org.eclipse.jdt.core.IJavaElement;
 import org.eclipse.jdt.core.IJavaProject;
 import org.eclipse.jdt.core.IMember;
@@ -23,7 +25,6 @@ import org.ucdetector.Log;
 import org.ucdetector.preferences.WarnLevel;
 import org.ucdetector.report.ReportParam;
 import org.ucdetector.search.LineManger;
-import org.ucdetector.search.UCDProgressMonitor;
 import org.ucdetector.util.JavaElementUtil;
 import org.ucdetector.util.MarkerFactory;
 
@@ -35,7 +36,6 @@ import org.ucdetector.util.MarkerFactory;
 public class FindUnusedMethodsIterator extends AbstractUCDetectorIterator {
   private final Set<IMethod> visitedMethods = new LinkedHashSet<IMethod>();
   private final Set<IJavaProject> javaProjects = new LinkedHashSet<IJavaProject>();
-  private final UCDProgressMonitor monitor = new UCDProgressMonitor();
   private String resultMessage = ""; //$NON-NLS-1$
   private static final LineManger lineManger = new LineManger();
 
@@ -44,12 +44,14 @@ public class FindUnusedMethodsIterator extends AbstractUCDetectorIterator {
     if (javaElements == null) {
       return;
     }
+
+    getMonitor().beginTask(getJobName(), IProgressMonitor.UNKNOWN);
+
     List<IMember> members = new ArrayList<IMember>();
     for (IJavaElement iJavaElement : javaElements) {
       MarkerFactory.deleteMarkers(iJavaElement.getJavaProject());
       if (iJavaElement instanceof IMember) {
         members.add((IMember) iJavaElement);
-        javaProjects.add(iJavaElement.getJavaProject());
       }
     }
     IMember[] membersArray = members.toArray(new IMember[members.size()]);
@@ -60,7 +62,10 @@ public class FindUnusedMethodsIterator extends AbstractUCDetectorIterator {
   }
 
   private void iterateCalls(MethodWrapper startWrapper) {
-    MethodWrapper[] wrappers = startWrapper.getCalls(monitor);
+    if (getMonitor().isCanceled()) {
+      return;
+    }
+    MethodWrapper[] wrappers = startWrapper.getCalls(new NullProgressMonitor());
     for (MethodWrapper wrapper : wrappers) {
       IMember member = wrapper.getMember();
       if (member.isBinary()) {
@@ -70,8 +75,13 @@ public class FindUnusedMethodsIterator extends AbstractUCDetectorIterator {
         continue;
       }
       if (member instanceof IMethod) {
-        visitedMethods.add((IMethod) member);
-        // System.err.println("### " + JavaElementUtil.getElementNameAndClassName(member) + " -> " + wrapper.getCalls(monitor).length);
+        IMethod method = (IMethod) member;
+        getMonitor().worked(1);
+        getMonitor().subTask(String.format("Level %s - %s",// //$NON-NLS-1$
+            Integer.valueOf(wrapper.getLevel()), JavaElementUtil.getElementName(method)));
+        getMonitor().setActiveSearchElement(method);
+        visitedMethods.add(method);
+        javaProjects.add(method.getJavaProject());
       }
       iterateCalls(wrapper);
     }
@@ -80,8 +90,9 @@ public class FindUnusedMethodsIterator extends AbstractUCDetectorIterator {
   private List<IMethod> getAllMethodsOfProjects() throws CoreException {
     List<IMethod> result = new ArrayList<IMethod>();
     for (IJavaProject javaProject : javaProjects) {
+      getMonitor().subTask("Collect all methods in: " + JavaElementUtil.getElementName(javaProject)); //$NON-NLS-1$
       MethodCollectIterator methodCollector = new MethodCollectIterator();
-      methodCollector.setMonitor(new UCDProgressMonitor());
+      methodCollector.setMonitor(getMonitor());
       methodCollector.iterate(javaProject);
       result.addAll(methodCollector.getAllmethods());
     }
@@ -121,6 +132,11 @@ public class FindUnusedMethodsIterator extends AbstractUCDetectorIterator {
     sb.append("Methods unused : " + unusedMethods.size()).append(NL); //$NON-NLS-1$
     resultMessage = sb.toString();
     Log.logInfo(resultMessage);
+    getMonitor().subTask("Clear markers"); //$NON-NLS-1$
+    for (IJavaProject javaProject : javaProjects) {
+      MarkerFactory.deleteMarkers(javaProject);
+    }
+    getMonitor().subTask("Create markers: " + unusedMethods.size()); //$NON-NLS-1$
     for (IMethod unusedMethod : unusedMethods) {
       createMarker(unusedMethod, "Method not called", MarkerFactory.UCD_MARKER_UNUSED); //$NON-NLS-1$
     }
