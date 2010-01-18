@@ -167,6 +167,7 @@ public abstract class AbstractUCDetectorIterator extends UCDetectorCallBack {
   }
 
   /**
+   * Override, to show a message, when there are 0 elements to detect
    * @return number of elements to detect. If return 0, a warning message will
    * be shown "nothing to detect"
    */

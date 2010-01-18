@@ -277,7 +277,7 @@ public class UCDetectorPlugin extends AbstractUIPlugin {
     return getActiveWorkbenchWindow().getActivePage();
   }
 
-  private static IWorkbenchWindow getActiveWorkbenchWindow() {
+  public static IWorkbenchWindow getActiveWorkbenchWindow() {
     return getDefault().getWorkbench().getWorkbenchWindows()[0];
   }
 

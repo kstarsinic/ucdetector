@@ -7,6 +7,7 @@
  */
 package org.ucdetector.iterator;
 
+import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.LinkedHashSet;
 import java.util.List;
@@ -21,7 +22,11 @@ import org.eclipse.jdt.core.IMember;
 import org.eclipse.jdt.core.IMethod;
 import org.eclipse.jdt.internal.corext.callhierarchy.CallHierarchy;
 import org.eclipse.jdt.internal.corext.callhierarchy.MethodWrapper;
+import org.eclipse.jdt.internal.ui.callhierarchy.CallHierarchyUI;
+import org.eclipse.jdt.internal.ui.callhierarchy.CallHierarchyViewPart;
+import org.eclipse.swt.widgets.Display;
 import org.ucdetector.Log;
+import org.ucdetector.UCDetectorPlugin;
 import org.ucdetector.preferences.WarnLevel;
 import org.ucdetector.report.ReportParam;
 import org.ucdetector.search.LineManger;
@@ -38,27 +43,46 @@ public class FindUnusedMethodsIterator extends AbstractUCDetectorIterator {
   private final Set<IJavaProject> javaProjects = new LinkedHashSet<IJavaProject>();
   private String resultMessage = ""; //$NON-NLS-1$
   private static final LineManger lineManger = new LineManger();
+  private int elelementsToDetectCount = -1;
 
   @Override
   public void handleStartGlobal(IJavaElement[] javaElements) throws CoreException {
-    if (javaElements == null) {
-      return;
-    }
-
     getMonitor().beginTask(getJobName(), IProgressMonitor.UNKNOWN);
-
     List<IMember> members = new ArrayList<IMember>();
     for (IJavaElement iJavaElement : javaElements) {
-      MarkerFactory.deleteMarkers(iJavaElement.getJavaProject());
       if (iJavaElement instanceof IMember) {
         members.add((IMember) iJavaElement);
       }
     }
-    IMember[] membersArray = members.toArray(new IMember[members.size()]);
+    final IMember[] membersArray = members.toArray(new IMember[members.size()]);
+    openCallHierarchyView(membersArray);
+    elelementsToDetectCount = membersArray.length;
     MethodWrapper[] calleeRoots = CallHierarchy.getDefault().getCalleeRoots(membersArray);
     for (MethodWrapper calleeRoot : calleeRoots) {
       iterateCalls(calleeRoot);
     }
+  }
+
+  private void openCallHierarchyView(final IMember[] membersArray) {
+    Display.getDefault().asyncExec(new Runnable() {
+      public void run() {
+        // CallHierarchyViewPart.DIALOGSTORE_CALL_MODE, CallHierarchyViewPart.CALL_MODE_CALLEES
+        // JavaPlugin.getDefault().getDialogSettings()("CallHierarchyViewPart.call_mode", 1);
+        CallHierarchyViewPart hierarchy = CallHierarchyUI.openView(membersArray, UCDetectorPlugin
+            .getActiveWorkbenchWindow());
+
+        try {
+          Class<?>[] parameterTypes = new Class[] { int.class };
+          // org.eclipse.jdt.internal.ui.callhierarchy.CallHierarchyViewPart.setCallMode(int)
+          Method setCallMode = CallHierarchyViewPart.class.getDeclaredMethod("setCallMode", parameterTypes); //$NON-NLS-1$
+          setCallMode.setAccessible(true);
+          setCallMode.invoke(hierarchy, Integer.valueOf(1));
+        }
+        catch (Exception e) {
+          e.printStackTrace();
+        }
+      }
+    });
   }
 
   private void iterateCalls(MethodWrapper startWrapper) {
@@ -158,5 +182,10 @@ public class FindUnusedMethodsIterator extends AbstractUCDetectorIterator {
   @Override
   public String getJobName() {
     return "Find unused methods"; //$NON-NLS-1$
+  }
+
+  @Override
+  public int getElelementsToDetectCount() {
+    return elelementsToDetectCount;
   }
 }
