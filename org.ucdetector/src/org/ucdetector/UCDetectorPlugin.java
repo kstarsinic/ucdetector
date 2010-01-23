@@ -62,26 +62,20 @@ public class UCDetectorPlugin extends AbstractUIPlugin {
   public static final String HELP_ID_PREFERENCES = ID + ".ucd_context_id_preferences";//$NON-NLS-1$
   private final DateFormat dateFormat = DateFormat.getDateTimeInstance(DateFormat.MEDIUM, DateFormat.MEDIUM, Locale
       .getDefault());
-  private final About about;
-
-  public static About getAbout() {
-    return plugin.about;
-  }
 
   public UCDetectorPlugin() {
     UCDetectorPlugin.plugin = this;
-    about = new About(this);
   }
 
   private void dumpInformation() {
-    Log.logInfo("\tStart     : " + about.getNow()); //$NON-NLS-1$
-    Log.logInfo("\tOS        : " + about.getOS()); //$NON-NLS-1$ 
-    Log.logInfo("\tJava      : " + about.getJavaVersion()); //$NON-NLS-1$ 
-    Log.logInfo("\tEclipse   : " + about.getEclipseVersion()); //$NON-NLS-1$
-    Log.logInfo("\tUCDetector: " + about.getUCDVersion()); //$NON-NLS-1$
-    Log.logInfo("\tHome      : " + about.getEclipseHome()); //$NON-NLS-1$ 
-    Log.logInfo("\tLogfile   : " + about.getLogfile()); //$NON-NLS-1$ 
-    Log.logInfo("\tWorkspace : " + about.getWorkspace()); //$NON-NLS-1$ 
+    Log.logInfo("\tStart     : " + getNow()); //$NON-NLS-1$
+    Log.logInfo("\tOS        : " + getAboutOS()); //$NON-NLS-1$ 
+    Log.logInfo("\tJava      : " + getAboutJavaVersion()); //$NON-NLS-1$ 
+    Log.logInfo("\tEclipse   : " + getAboutEclipseVersion()); //$NON-NLS-1$
+    Log.logInfo("\tUCDetector: " + getAboutUCDVersion()); //$NON-NLS-1$
+    Log.logInfo("\tHome      : " + getAboutEclipseHome()); //$NON-NLS-1$ 
+    Log.logInfo("\tLogfile   : " + getAboutLogfile()); //$NON-NLS-1$ 
+    Log.logInfo("\tWorkspace : " + getAboutWorkspace()); //$NON-NLS-1$ 
     Log.logInfo(getPreferencesAsString());
   }
 
@@ -89,60 +83,6 @@ public class UCDetectorPlugin extends AbstractUIPlugin {
   public void start(BundleContext context) throws Exception {
     super.start(context);
     dumpInformation();
-  }
-
-  public static class About {
-    private final UCDetectorPlugin ucdPlugin;
-
-    private About(UCDetectorPlugin plugin) {
-      ucdPlugin = plugin;
-    }
-
-    public String getNow() {
-      return ucdPlugin.getDateFormat().format(new Date());
-    }
-
-    public String getOS() {
-      return System.getProperty("os.name") + " - " //$NON-NLS-1$ //$NON-NLS-2$
-          + System.getProperty("os.version"); //$NON-NLS-1$
-    }
-
-    public String getJavaVersion() {
-      return System.getProperty("java.runtime.version"); //$NON-NLS-1$
-    }
-
-    public String getEclipseVersion() {
-      return System.getProperty("osgi.framework.version"); //$NON-NLS-1$
-    }
-
-    public String getUCDVersion() {
-      return (String) getDefault().getBundle().getHeaders().get("Bundle-Version"); //$NON-NLS-1$
-    }
-
-    public String getEclipseHome() {
-      String eclipseHome = System.getProperty("osgi.install.area"); //$NON-NLS-1$
-      if (eclipseHome != null && eclipseHome.startsWith("file:")) { //$NON-NLS-1$
-        return eclipseHome.substring("file:".length()); //$NON-NLS-1$
-      }
-      return eclipseHome;
-    }
-
-    public String getLogfile() {
-      return System.getProperty("osgi.logfile"); //$NON-NLS-1$
-    }
-
-    public String getWorkspace() {
-      return System.getProperty("osgi.instance.area"); //$NON-NLS-1$
-    }
-
-    public String getHostName() {
-      try {
-        return java.net.InetAddress.getLocalHost().getHostName();
-      }
-      catch (Exception e) {
-        return "?"; //$NON-NLS-1$
-      }
-    }
   }
 
   public static String getPreferencesAsString() {
@@ -295,5 +235,48 @@ public class UCDetectorPlugin extends AbstractUIPlugin {
 
   public DateFormat getDateFormat() {
     return dateFormat;
+  }
+
+  // -------------------------------------------------------------------------
+  public static String getAboutOS() {
+    return System.getProperty("os.name") + " - " //$NON-NLS-1$ //$NON-NLS-2$
+        + System.getProperty("os.version"); //$NON-NLS-1$
+  }
+
+  public static String getAboutJavaVersion() {
+    return System.getProperty("java.runtime.version"); //$NON-NLS-1$
+  }
+
+  public static String getAboutEclipseVersion() {
+    return System.getProperty("osgi.framework.version"); //$NON-NLS-1$
+  }
+
+  public static String getAboutUCDVersion() {
+    return (String) getDefault().getBundle().getHeaders().get("Bundle-Version"); //$NON-NLS-1$
+  }
+
+  public static String getAboutEclipseHome() {
+    String eclipseHome = System.getProperty("osgi.install.area"); //$NON-NLS-1$
+    if (eclipseHome != null && eclipseHome.startsWith("file:")) { //$NON-NLS-1$
+      return eclipseHome.substring("file:".length()); //$NON-NLS-1$
+    }
+    return eclipseHome;
+  }
+
+  public static String getAboutLogfile() {
+    return System.getProperty("osgi.logfile"); //$NON-NLS-1$
+  }
+
+  public static String getAboutWorkspace() {
+    return System.getProperty("osgi.instance.area"); //$NON-NLS-1$
+  }
+
+  public static String getHostName() {
+    try {
+      return java.net.InetAddress.getLocalHost().getHostName();
+    }
+    catch (Exception e) {
+      return "?"; //$NON-NLS-1$
+    }
   }
 }

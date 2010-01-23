@@ -49,7 +49,6 @@ import org.eclipse.osgi.util.NLS;
 import org.ucdetector.Log;
 import org.ucdetector.Messages;
 import org.ucdetector.UCDetectorPlugin;
-import org.ucdetector.UCDetectorPlugin.About;
 import org.ucdetector.preferences.Prefs;
 import org.ucdetector.util.JavaElementUtil;
 import org.ucdetector.util.MarkerFactory;
@@ -344,23 +343,22 @@ public class XmlReport implements IUCDetectorReport {
    * Append statistics like: date, searchDuration, searched elements
    */
   private void appendStatistics(Object[] selected, long start) {
-    About about = UCDetectorPlugin.getAbout();
     long now = System.currentTimeMillis();
     long duration = (now - start);
     abouts = appendChild(statistcs, "abouts", null);
-    appendAbout("reportCreated", "Created report", about.getNow(), true);
+    appendAbout("reportCreated", "Created report", UCDetectorPlugin.getNow(), true);
     appendAbout("reportCreatedTS", "Created report", "" + now, false);
-    appendAbout("operatingSystem", "Operating system", about.getOS(), true);
-    appendAbout("javaVersion", "Java", about.getJavaVersion(), true);
-    appendAbout("eclipseVersion", "Eclipse", about.getEclipseVersion(), true);
-    appendAbout("ucdetectorVersion", "UCDetector", about.getUCDVersion(), true);
+    appendAbout("operatingSystem", "Operating system", UCDetectorPlugin.getAboutOS(), true);
+    appendAbout("javaVersion", "Java", UCDetectorPlugin.getAboutJavaVersion(), true);
+    appendAbout("eclipseVersion", "Eclipse", UCDetectorPlugin.getAboutEclipseVersion(), true);
+    appendAbout("ucdetectorVersion", "UCDetector", UCDetectorPlugin.getAboutUCDVersion(), true);
     appendAbout("searchDuration", "Search duration", StopWatch.timeAsString(duration), true);
     appendAbout("searchDurationTS", "Search duration", "" + duration, false);
-    appendAbout("eclipseHome", "Eclipse home", about.getEclipseHome(), false);
-    appendAbout("logfile", "Logfile", about.getLogfile(), false);
-    appendAbout("workspace", "Workspace", about.getWorkspace(), false);
+    appendAbout("eclipseHome", "Eclipse home", UCDetectorPlugin.getAboutEclipseHome(), false);
+    appendAbout("logfile", "Logfile", UCDetectorPlugin.getAboutLogfile(), false);
+    appendAbout("workspace", "Workspace", UCDetectorPlugin.getAboutWorkspace(), false);
     appendAbout("warnings", "Warnings", String.valueOf(markerCount), true);
-    appendAbout("host", "Host", about.getHostName(), false);
+    appendAbout("host", "Host", UCDetectorPlugin.getHostName(), false);
     //
     Element searched = appendChild(statistcs, "searched", null);
     for (Object selection : selected) {

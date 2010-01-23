@@ -35,7 +35,7 @@ public class UCDetectorPreferencePage extends UCDetectorBasePreferencePage {
   @Override
   public void createFieldEditors() {
     Composite parentGroups = createComposite(getFieldEditorParent(), 1, 1, GridData.FILL_HORIZONTAL);
-    setTitle("UCDetector " + UCDetectorPlugin.getAbout().getUCDVersion()); //$NON-NLS-1$
+    setTitle("UCDetector " + UCDetectorPlugin.getAboutUCDVersion()); //$NON-NLS-1$
     createFilterGroup(parentGroups);
     createDetectGroup(parentGroups);
     createFileSearchGroup(parentGroups);
