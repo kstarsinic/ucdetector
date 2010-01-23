@@ -24,7 +24,6 @@ import org.ucdetector.Log;
 import org.ucdetector.preferences.WarnLevel;
 import org.ucdetector.util.JavaElementUtil;
 import org.ucdetector.util.MarkerFactory;
-import org.ucdetector.util.MarkerFactory.ElementType;
 
 /**
  * Create a marker
@@ -72,6 +71,16 @@ public class MarkerReport implements IUCDetectorReport {
       return (field.isEnumConstant() ? ElementType.ENUM_CONSTANT : ElementType.FIELD);
     }
     return null;
+  }
+
+  /**
+   * See also concrete classes of: org.eclipse.jdt.core.dom.BodyDeclaration<br>
+   * See also org.ucdetector.quickfix.AbstractUCDQuickFix.getModifierListRewrite()<br>
+   */
+  private static enum ElementType {
+    TYPE, ANNOTATION, ENUM, // types
+    METHOD, ANNOTATION_TYPE_MEMBER, // methods
+    FIELD, ENUM_CONSTANT, /*ANNOTATION_TYPE_MEMBER*/// fields
   }
 
   public boolean reportMarker(ReportParam reportParam) throws CoreException {
