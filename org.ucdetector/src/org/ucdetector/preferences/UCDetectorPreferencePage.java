@@ -141,6 +141,22 @@ public class UCDetectorPreferencePage extends UCDetectorBasePreferencePage {
     fileFieldEditor.setFileExtensions(new String[] { "*.html" }); //$NON-NLS-1$
     fileFieldEditor.getLabelControl(spacer).setToolTipText(Messages.PreferencePage_ReportFileToolTip);
     this.addField(fileFieldEditor);
+    // Cycle
+    IntegerFieldEditor cycleDepth = new IntegerFieldEditor(Prefs.CYCLE_DEPTH, Messages.PreferencePage_MaxCycleSize,
+        parentGroups) {
+      /** 
+       * Hack for layout problems. 
+       * */
+      @Override
+      public int getNumberOfControls() {
+        return 3;
+      }
+    };
+    cycleDepth.setValidRange(Prefs.CYCLE_DEPTH_MIN, Prefs.CYCLE_DEPTH_MAX);
+    cycleDepth.setEmptyStringAllowed(false);
+    cycleDepth.getLabelControl(parentGroups).setToolTipText(Messages.PreferencePage_MaxCycleSizeToolTip);
+    this.addField(cycleDepth);
+
   }
 
   /**

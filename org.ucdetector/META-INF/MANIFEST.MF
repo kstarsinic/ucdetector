@@ -27,4 +27,6 @@ Export-Package: org.ucdetector,
  org.ucdetector.quickfix,
  org.ucdetector.report,
  org.ucdetector.search,
- org.ucdetector.util
+ org.ucdetector.util,
+ org.ucdetector.cycle,
+ org.ucdetector.cycle.model

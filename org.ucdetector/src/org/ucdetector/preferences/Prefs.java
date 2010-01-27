@@ -78,6 +78,12 @@ public final class Prefs {
   // 
   private static final String[] EMPTY_ARRAY = new String[0];
   private static IPreferenceStore store_FOR_TEST;
+  // CYCLE -------------------------------------------------------------------
+  public static final String CYCLE_DEPTH = UCDetectorPlugin.ID + ".cycleDepth"; //$NON-NLS-1$
+  public static final int CYCLE_DEPTH_MIN = 2;
+  public static final int CYCLE_DEPTH_DEFAULT = 4;
+  public static final int CYCLE_DEPTH_MAX = 8;
+
   /**
    * Separator used in text fields, which contain lists. Value is ","
    */
@@ -487,4 +493,13 @@ public final class Prefs {
     String regex = simpleRegex.replaceAll("\\*", ".*"); //$NON-NLS-1$ //$NON-NLS-2$
     return regex.replace("?", ".{1}"); //$NON-NLS-1$ //$NON-NLS-2$
   }
+
+  /**
+   * @return Maximum depth of searching for class cycles
+   */
+  public static int getCycleDepth() {
+    int cycleDepth = getStore().getInt(CYCLE_DEPTH);
+    return cycleDepth < CYCLE_DEPTH_MIN ? CYCLE_DEPTH_MIN : cycleDepth > CYCLE_DEPTH_MAX ? CYCLE_DEPTH_MAX : cycleDepth;
+  }
+
 }
