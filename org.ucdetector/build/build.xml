@@ -2,12 +2,12 @@
 <project default="plugin-export" name="export plugin" basedir=".">
   <description>Export UCDetector plugin</description>
 
-  <property name="ECLIPSE_HOME" location="/opt/eclipse-3.3" />
-
   <!-- ===================================================================== -->
   <!-- PREPARE                                                               -->
   <!-- ===================================================================== -->
   <target name="prepare" description="Load and dump properties">
+    <!-- get ECLIPSE_HOME -->
+    <property file="../ant/build.properties" />
     <!-- get Bundle-Version -->
     <property file="../META-INF/MANIFEST.MF" />
     <echo>ECLIPSE_HOME       = ${ECLIPSE_HOME}</echo>
@@ -27,7 +27,7 @@
     <pde.exportPlugins destination="${ECLIPSE_HOME}"
                        exportSource="false"
                        exportType="directory"
-                       plugins="org.ucdetector,org.ucdetector.additional"
+                       plugins="org.ucdetector,org.ucdetector.additional,org.ucdetector.cycle"
                        useJARFormat="true" />
     <echo>Plugins will be exported to: ${ECLIPSE_HOME}/plugins</echo>
   </target>
