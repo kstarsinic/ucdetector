@@ -51,6 +51,6 @@ public class CyclePlugin extends AbstractUIPlugin {
   @Override
   protected void initializeImageRegistry(ImageRegistry registry) {
     super.initializeImageRegistry(registry);
-    registry.put(IMAGE_CYCLE, UCDetectorPlugin.getEclipseImage("org.eclipse.pde/icons/elcl16/refresh.gif")); //$NON-NLS-1$
+    registry.put(IMAGE_CYCLE, UCDetectorPlugin.getEclipseImage("org.eclipse.jdt.ui/icons/full/elcl16/refresh_nav.gif")); //$NON-NLS-1$
   }
 }
