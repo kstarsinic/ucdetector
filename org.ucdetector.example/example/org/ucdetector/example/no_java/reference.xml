@@ -1,7 +1,0 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<reference hello="world">
-	<class name="org.ucdetector.example.classes.text.ClassNameInXmlFile">HelloWorld</class>
-	<class>SimpleClassNameInXmlFile</class>
-	<class name="MyApplication">HelloWorld</class>
-	<class>org.ucdetector.example.classes.text.SimpleApplicationExample</class>
-</reference>
