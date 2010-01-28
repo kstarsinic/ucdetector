@@ -28,10 +28,10 @@ import org.ucdetector.util.JavaElementUtil;
  *         |- <font color="red">CycleMember</font>
  *           |- CycleRegion
  */
-public class CycleMember extends CycleBaseElement {
+public class CycleMember extends CycleJavaElement {
   private final IJavaElement match;
   private final List<CycleRegion> cycleRegions = new ArrayList<CycleRegion>();
-  private CycleBaseElement parent;
+  private CycleType parent;
 
   public CycleMember(IJavaElement match) {
     if (match == null) {
@@ -57,7 +57,7 @@ public class CycleMember extends CycleBaseElement {
     return match;
   }
 
-  public CycleBaseElement getParent() {
+  public CycleType getParent() {
     return parent;
   }
 
@@ -73,7 +73,7 @@ public class CycleMember extends CycleBaseElement {
     return sb.toString();
   }
 
-  void setParent(CycleBaseElement parent) {
+  void setParent(CycleType parent) {
     this.parent = parent;
   }
 }

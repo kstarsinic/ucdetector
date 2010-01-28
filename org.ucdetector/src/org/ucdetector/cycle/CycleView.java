@@ -48,6 +48,7 @@ import org.ucdetector.Log;
 import org.ucdetector.Messages;
 import org.ucdetector.UCDetectorPlugin;
 import org.ucdetector.cycle.model.Cycle;
+import org.ucdetector.cycle.model.CycleJavaElement;
 import org.ucdetector.cycle.model.CycleRegion;
 import org.ucdetector.cycle.model.CycleType;
 import org.ucdetector.cycle.model.ICycleBaseElement;
@@ -220,7 +221,7 @@ public class CycleView extends ViewPart { //
           }
           return;
         }
-        IJavaElement element = ((ICycleBaseElement) obj).getJavaElement();
+        IJavaElement element = null;
         int offset = -1;
         int length = -1;
         if (obj instanceof CycleRegion) {
@@ -228,6 +229,9 @@ public class CycleView extends ViewPart { //
           offset = cycleRegion.getOffset();
           length = cycleRegion.getLength();
           element = cycleRegion.getParent().getJavaElement();
+        }
+        if (obj instanceof CycleJavaElement) {
+          element = ((CycleJavaElement) obj).getJavaElement();
         }
         // -------------------------------------------------------------
         openInEditor(element, offset, length);

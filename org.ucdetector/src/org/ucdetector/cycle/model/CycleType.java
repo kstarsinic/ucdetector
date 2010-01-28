@@ -9,6 +9,7 @@ package org.ucdetector.cycle.model;
 
 import java.util.List;
 
+import org.eclipse.core.runtime.IAdaptable;
 import org.eclipse.jdt.core.IType;
 import org.eclipse.swt.graphics.Image;
 import org.ucdetector.Messages;
@@ -24,10 +25,10 @@ import org.ucdetector.Messages;
  *         |- CycleMember
  *           |- CycleRegion
  */
-public class CycleType extends CycleBaseElement {
+public class CycleType extends CycleJavaElement implements IAdaptable {
   private final List<CycleMember> cycleMembers;
   private final IType type;
-  private CycleBaseElement parent;
+  private Cycle parent;
 
   public CycleType(IType type, List<CycleMember> cycleMembers) {
     if (type == null) {
@@ -43,6 +44,10 @@ public class CycleType extends CycleBaseElement {
     }
   }
 
+  public Object getAdapter(Class adapter) {
+    return null;
+  }
+
   public List<CycleMember> getChildren() {
     return cycleMembers;
   }
@@ -56,7 +61,7 @@ public class CycleType extends CycleBaseElement {
     return type;
   }
 
-  public CycleBaseElement getParent() {
+  public Cycle getParent() {
     return parent;
   }
 
@@ -78,7 +83,7 @@ public class CycleType extends CycleBaseElement {
     return sb.toString();
   }
 
-  void setParent(CycleBaseElement parent) {
+  void setParent(Cycle parent) {
     this.parent = parent;
   }
 }

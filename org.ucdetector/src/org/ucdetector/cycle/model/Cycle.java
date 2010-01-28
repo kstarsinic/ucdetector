@@ -28,9 +28,9 @@ import org.ucdetector.UCDetectorPlugin;
  */
 public class Cycle extends CycleBaseElement {
   private final LinkedList<CycleType> cycleList;
-  private final CycleBaseElement parent;
+  private final SearchResult parent;
 
-  public Cycle(CycleBaseElement parent, LinkedList<CycleType> cycleList) {
+  public Cycle(SearchResult parent, LinkedList<CycleType> cycleList) {
     if (cycleList.size() < 2) {
       throw new IllegalArgumentException("Cycle must have 2 Elements"); //$NON-NLS-1$
     }
@@ -101,7 +101,7 @@ public class Cycle extends CycleBaseElement {
     return UCDetectorPlugin.getImage(UCDetectorPlugin.IMAGE_CYCLE);
   }
 
-  public CycleBaseElement getParent() {
+  public SearchResult getParent() {
     return parent;
   }
 

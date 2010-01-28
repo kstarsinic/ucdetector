@@ -37,10 +37,6 @@ public abstract class CycleBaseElement implements ICycleBaseElement {
     return LABEL_PROVIDER_DELEGAT.getText(javaElement);
   }
 
-  public IJavaElement getJavaElement() {
-    return null;
-  }
-
   // -------------------------------------------------------------------------
   // HELPER
   // -------------------------------------------------------------------------

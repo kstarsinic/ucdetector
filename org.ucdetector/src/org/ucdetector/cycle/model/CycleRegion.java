@@ -24,18 +24,18 @@ import org.ucdetector.Messages;
  *   |- SearchResult
  *     |- Cycle
  *       |- CycleType
- *         |- CycleMember<
+ *         |- CycleMember
  *           |-  <font color="red">CycleRegion</font>
  */
 public class CycleRegion extends CycleBaseElement {
-  private final CycleBaseElement parent;
+  private final CycleMember cycleMember;
   private final int offset;
   private final int length;
   private final int line;
   private final String strLine;
 
-  public CycleRegion(CycleBaseElement parent, int offset, int length, int line, String strLine) {
-    this.parent = parent;
+  public CycleRegion(CycleMember cycleMember, int offset, int length, int line, String strLine) {
+    this.cycleMember = cycleMember;
     this.offset = offset;
     this.length = length;
     this.line = line;
@@ -61,8 +61,8 @@ public class CycleRegion extends CycleBaseElement {
     return JavaUI.getSharedImages().getImage(JavaPluginImages.IMG_OBJS_SEARCH_OCCURRENCE);
   }
 
-  public CycleBaseElement getParent() {
-    return parent;
+  public CycleMember getParent() {
+    return cycleMember;
   }
 
   public String getText() {

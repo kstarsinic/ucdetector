@@ -9,7 +9,6 @@ package org.ucdetector.cycle.model;
 
 import java.util.List;
 
-import org.eclipse.jdt.core.IJavaElement;
 import org.eclipse.swt.graphics.Image;
 
 /**
@@ -30,12 +29,6 @@ public interface ICycleBaseElement {
    * @return Image for the ICycleBaseElement
    */
   Image getImage();
-
-  /**
-   * @return the java element associated with the ICycleBaseElement, may be
-   *         <code>null</code>
-   */
-  IJavaElement getJavaElement();
 
   // -------------------------------------------------------------------------
   // CHILDREN
