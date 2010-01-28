@@ -61,7 +61,6 @@
 		<super type="org.ucdetector.analyzeMarker"></super>
 		<persistent value="true"></persistent>
 	 </extension>
-	 </extension>
 
   <!-- ===================================================================== -->
   <!-- ANNOTATION TYPES                                                      -->
