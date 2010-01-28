@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?eclipse version="3.3"?>
+<plugin>
+  <!-- ===================================================================== -->
+  <!-- POP UP                                                                -->
+  <!-- ===================================================================== -->
+	<extension point="org.eclipse.ui.popupMenus">
+		<objectContribution	adaptable="true"
+				objectClass="org.eclipse.jdt.core.IJavaElement"
+				id="org.ucdetector.popupMenus.project">
+			<menu label="%popupMenus.root"
+					path="additions"
+					id="ucdetectorGroup">
+			</menu>
+		</objectContribution>
+
+        <!-- Example -->
+		<objectContribution	adaptable="true"
+				id="org.ucdetector.popupMenus.project.Analyze"
+				objectClass="org.eclipse.jdt.core.IJavaElement">
+			<action class="org.ucdetector.action.ExampleAction"
+				enablesFor="+"
+				id="org.ucdetector.action.ExampleAction"
+				label="%ExampleAction.label"
+				tooltip="%ExampleAction.tooltip"
+				icon="$nl$/icons/example.gif"
+				menubarPath="ucdetectorGroup/additional"/>
+		</objectContribution>
+		<!-- CheckUcdMarker -->
+		<objectContribution adaptable="true"
+		      id="org.ucdetector.popupMenus.project.Analyze"
+		      objectClass="org.eclipse.jdt.core.IJavaElement">
+			<action class="org.ucdetector.action.CheckUcdMarkerAction"
+				enablesFor="+"
+				icon="$nl$/icons/help_search.gif"
+				id="org.ucdetector.action.CheckUcdMarkerAction"
+				label="%check.ucd.action.label"
+				menubarPath="ucdetectorGroup/additional">
+			</action>
+		</objectContribution>
+	</extension>
+
+  <!-- ===================================================================== -->
+  <!-- MARKER                                                                -->
+  <!-- ===================================================================== -->
+  <!-- Example -->
+	<extension point="org.eclipse.core.resources.markers"
+			id="org.ucdetector.analyzeMarkerExample"
+			name="%example.marker.name" >
+		<super type="org.eclipse.core.resources.problemmarker"/>
+		<super type="org.eclipse.core.resources.textmarker"/>
+		<super type="org.ucdetector.analyzeMarker"/>
+		<persistent value="true"></persistent>
+	</extension>
+	  <!-- CheckUcdMarker -->
+	<extension point="org.eclipse.core.resources.markers"
+	   id="org.ucdetector.analyzeMarkerCheckUcdMarkers"
+	   name="%check.ucd.marker.name" >
+		<super type="org.eclipse.core.resources.problemmarker"></super>
+		<super type="org.eclipse.core.resources.textmarker"></super>
+		<super type="org.ucdetector.analyzeMarker"></super>
+		<persistent value="true"></persistent>
+	 </extension>
+	 </extension>
+
+  <!-- ===================================================================== -->
+  <!-- ANNOTATION TYPES                                                      -->
+  <!-- ===================================================================== -->
+	<extension point="org.eclipse.ui.editors.annotationTypes">
+		<!-- Example -->
+		<type name="org.ucdetector.analyzeMarkerExample"
+				super="org.eclipse.ui.workbench.texteditor.warning"
+				markerType="org.ucdetector.analyzeMarkerExample"/>
+		<!-- CheckUcdMarker -->
+		<type  markerType="org.ucdetector.analyzeMarkerCheckUcdMarkers"
+		      name="org.ucdetector.analyzeMarkerCheckUcdMarkers"
+		      super="org.eclipse.ui.workbench.texteditor.warning" />
+	</extension>
+ 
+  <!-- ===================================================================== -->
+  <!-- ANNOTATION SPECIFICATION                                              -->
+  <!-- ===================================================================== -->
+  <!-- Example -->
+	<extension point="org.eclipse.ui.editors.markerAnnotationSpecification">
+		<specification annotationType="org.ucdetector.analyzeMarkerExample"
+				icon="icons/help_search.gif"
+				includeOnPreferencePage="true"
+				label="%example.specification.label"/>
+		<!-- CheckUcdMarker -->
+		<specification annotationType="org.ucdetector.analyzeMarkerCheckUcdMarkers"
+		      icon="icons/help_search.gif"
+		      includeOnPreferencePage="true"
+		      label="%check.ucd.specification.label"/>
+	</extension>
+</plugin>
