@@ -58,6 +58,7 @@ public class CycleRegion extends CycleBaseElement {
   }
 
   public Image getImage() {
+    //    return JavaPluginImages.get(JavaPluginImages.IMG_OBJS_SEARCH_OCCURRENCE);
     return JavaUI.getSharedImages().getImage(JavaPluginImages.IMG_OBJS_SEARCH_OCCURRENCE);
   }
 

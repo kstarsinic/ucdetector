@@ -9,9 +9,6 @@ package org.ucdetector.cycle.model;
 
 import java.util.List;
 
-import org.eclipse.jdt.core.IJavaElement;
-import org.eclipse.jdt.ui.JavaElementLabelProvider;
-import org.eclipse.jface.viewers.ILabelProvider;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.ui.PlatformUI;
 
@@ -20,22 +17,23 @@ import org.eclipse.ui.PlatformUI;
  */
 // TODO 2009-02-20: UCD tells to use default visibility. But compile error
 public abstract class CycleBaseElement implements ICycleBaseElement {
-  private static final int LABLEL_FLAGS = JavaElementLabelProvider.SHOW_PARAMETERS;
-
-  private static final ILabelProvider LABEL_PROVIDER_DELEGAT //
-  = new JavaElementLabelProvider(LABLEL_FLAGS); // OR
-
+  //  private static final int LABLEL_FLAGS = JavaElementLabelProvider.SHOW_PARAMETERS;
+  //
+  //  private static final ILabelProvider LABEL_PROVIDER_DELEGAT //
+  //  = new JavaElementLabelProvider(LABLEL_FLAGS); // OR
+  //
   protected final Image getImage(String id) {
     return PlatformUI.getWorkbench().getSharedImages().getImage(id);
   }
 
-  protected final Image getDefaultImage(IJavaElement javaElement) {
-    return LABEL_PROVIDER_DELEGAT.getImage(javaElement);
-  }
-
-  protected final String getDefaultText(IJavaElement javaElement) {
-    return LABEL_PROVIDER_DELEGAT.getText(javaElement);
-  }
+  //
+  //  protected final Image getDefaultImage(IJavaElement javaElement) {
+  //    return LABEL_PROVIDER_DELEGAT.getImage(javaElement);
+  //  }
+  //
+  //  protected final String getDefaultText(IJavaElement javaElement) {
+  //    return LABEL_PROVIDER_DELEGAT.getText(javaElement);
+  //  }
 
   // -------------------------------------------------------------------------
   // HELPER
