@@ -23,37 +23,13 @@
     <initializer class="org.ucdetector.preferences.PreferenceInitializer"/>
   </extension>
   
-  
-  <!-- ===================================================================== -->
-  <!-- TOOL BAR                                    
-  http://www.onjava.com/pub/a/onjava/2005/03/30/eclipse.html?page=2                            -->
-  <!-- =====================================================================
-		<extension id="UCDetectorAction"
-					 name="UCDetector Action"
-					 point="org.eclipse.ui.actionSets">
-		<actionSet id="UCDetector.actionSet"
-					label="UCDetector Actions"
-					visible="true">
-      <action class="org.ucdetector.action.UCDetectorAction"
-          enablesFor="+"
-          id="org.ucdetector.SearchAction"
-          label="%DetectAction.label"
-          tooltip="%DetectAction.tooltip"
-          icon="$nl$/icons/ucd.gif"
-          toolbarPath="additions"
-          definitionId="org.ucdetector.definitionId.ucd"/>
-		</actionSet>
-	</extension>
-	 -->
   <!-- ===================================================================== -->
   <!-- POP UP                                                                -->
   <!-- ===================================================================== -->
   <extension point="org.eclipse.ui.popupMenus">
   
   <!-- =====================================================================
-    To show also for WorkingSet, use:
-    objectClass=org.eclipse.core.resources.mapping.ResourceMapping
-   -->
+    To show also for WorkingSet, use: objectClass=org.eclipse.core.resources.mapping.ResourceMapping -->
     <objectContribution
         adaptable="true"
         objectClass="org.eclipse.jdt.core.IJavaElement"
@@ -140,9 +116,7 @@
   <!-- ===================================================================== -->
    <!-- MARKER                                                               -->
   <!-- ===================================================================== -->
-  <!-- base 
-  see also attributes in: eclipse-3.3\plugins\org.eclipse.jdt.core_3.3.0.v_771.jar
-  -->
+  <!-- base see also attributes in: eclipse-3.3\plugins\org.eclipse.jdt.core_3.3.0.v_771.jar -->
   <!-- *** 1 *** -->
   <extension
       id="org.ucdetector.analyzeMarker"
@@ -343,18 +317,17 @@
      markerType="org.ucdetector.analyzeMarkerVisibilityPrivate"
      class="org.ucdetector.quickfix.UCDQuickGenerator"/>
   </extension>
-  
   <extension point="org.eclipse.ui.ide.markerResolution">
     <markerResolutionGenerator
      markerType="org.ucdetector.analyzeMarkerVisibilityProtected"
      class="org.ucdetector.quickfix.UCDQuickGenerator"/>
   </extension>
-  
   <extension point="org.eclipse.ui.ide.markerResolution">
     <markerResolutionGenerator
      markerType="org.ucdetector.analyzeMarkerVisibilityDefault"
      class="org.ucdetector.quickfix.UCDQuickGenerator"/>
   </extension>
+
   <!-- ===================================================================== -->
   <!-- HELP.TOC                                                              -->
   <!-- ===================================================================== -->
@@ -394,50 +367,11 @@
    </extension>
 
   <!-- ===================================================================== -->
-  <!-- ANT                                                                   -->
-  <!-- ===================================================================== 
-  <extension point="org.eclipse.ant.core.antTasks">
-     <antTask
-           class="org.ucdetector.UCDetectorTask"
-           eclipseRuntime="true"
-           headless="true"
-           library="lib/ucd-ant.jar"
-           name="ucdetector">
-     </antTask>
-  </extension>
-  -->
-<!-- Extra Classpath 
-   <extension
-         point="org.eclipse.ant.core.extraClasspathEntries">
-      <extraClasspathEntry
-            library="lib/ucdetector-ant.jar">
-      </extraClasspathEntry>
-   </extension>
--->
-
-  <!-- ===================================================================== -->
-  <!-- APPLICATION                                                           -->
-  <!-- ===================================================================== 
-  <extension
-        id="id1"
-        point="org.eclipse.core.runtime.applications">
-     <application
-           cardinality="singleton-global"
-           thread="main"
-           visible="true">
-        <run
-              class="org.ucdetector.RunUCDHeadless">
-        </run>
-     </application>
-  </extension>  -->
-
-  <!-- ===================================================================== -->
   <!-- INTRO                                                                 -->
   <!-- ===================================================================== 
   http://www.eclipse.org/eclipse/platform-ua/proposals/shared-intro/shared-intro.htm#enhancements
   -->
-  <extension
-        point="org.eclipse.ui.intro.configExtension">
+  <extension point="org.eclipse.ui.intro.configExtension">
      <configExtension 
            configId="org.eclipse.ui.intro.universalConfig"
            content="welcome.xml" >
