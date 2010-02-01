@@ -10,7 +10,6 @@ package org.ucdetector.cycle.model;
 import java.util.List;
 
 import org.eclipse.jdt.core.IType;
-import org.eclipse.swt.graphics.Image;
 import org.ucdetector.Messages;
 
 /**
@@ -45,10 +44,6 @@ public class CycleType extends CycleJavaElement {
 
   public List<CycleMember> getChildren() {
     return cycleMembers;
-  }
-
-  public Image getImage() {
-    return getDefaultImage(type);
   }
 
   @Override

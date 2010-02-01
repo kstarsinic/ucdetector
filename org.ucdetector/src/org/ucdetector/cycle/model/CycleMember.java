@@ -13,7 +13,6 @@ import java.util.List;
 import org.eclipse.jdt.core.IImportDeclaration;
 import org.eclipse.jdt.core.IJavaElement;
 import org.eclipse.jdt.core.IType;
-import org.eclipse.swt.graphics.Image;
 import org.ucdetector.util.JavaElementUtil;
 
 /**
@@ -46,10 +45,6 @@ public class CycleMember extends CycleJavaElement {
 
   public List<CycleRegion> getChildren() {
     return cycleRegions;
-  }
-
-  public Image getImage() {
-    return getDefaultImage(match);
   }
 
   @Override
