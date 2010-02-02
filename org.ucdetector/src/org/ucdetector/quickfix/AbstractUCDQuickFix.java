@@ -288,7 +288,7 @@ abstract class AbstractUCDQuickFix extends WorkbenchMarkerResolution {
     }
   }
 
-  @SuppressWarnings("unchecked")
+  @SuppressWarnings({ "unchecked", "rawtypes" })
   private static String dumpMarker(IMarker m) {
     try {
       return new HashMap(m.getAttributes()).toString();

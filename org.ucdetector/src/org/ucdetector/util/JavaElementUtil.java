@@ -833,7 +833,7 @@ public class JavaElementUtil {
    */
   public static boolean isUsedBySpecialEnumMethods(IType enumType) throws CoreException {
     String[] stringPatterns = new String[] {
-    // We need '.' as class name separator for search!
+        // We need '.' as class name separator for search!
         enumType.getFullyQualifiedName('.') + ".values()",//$NON-NLS-1$
         enumType.getFullyQualifiedName('.') + ".valueOf(java.lang.String)", //$NON-NLS-1$
     };
@@ -852,6 +852,9 @@ public class JavaElementUtil {
   /**
    * org.eclipse.jdt.internal.corext.dom.Bindings.findOverriddenMethod
    * org.eclipse.jdt.internal.ui.typehierarchy.SubTypeHierarchyViewer
+   * @param type to find super types for
+   * @return super types
+   * @throws JavaModelException when there are problems creating hierarchy
    */
   public static IType[] getAllSupertypes(IType type) throws JavaModelException {
     ITypeHierarchy hierarchy = type.newTypeHierarchy(NULL_MONITOR);
