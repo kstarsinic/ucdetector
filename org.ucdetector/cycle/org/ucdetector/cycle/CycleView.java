@@ -26,6 +26,7 @@ import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jface.viewers.ITreeContentProvider;
 import org.eclipse.jface.viewers.ITreeSelection;
 import org.eclipse.jface.viewers.LabelProvider;
+import org.eclipse.jface.viewers.StructuredSelection;
 import org.eclipse.jface.viewers.TreePath;
 import org.eclipse.jface.viewers.TreeViewer;
 import org.eclipse.jface.viewers.Viewer;
@@ -44,6 +45,7 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Menu;
 import org.eclipse.swt.widgets.Tree;
+import org.eclipse.swt.widgets.TreeItem;
 import org.eclipse.ui.IActionBars;
 import org.eclipse.ui.IEditorPart;
 import org.eclipse.ui.ISharedImages;
@@ -230,16 +232,55 @@ public class CycleView extends ViewPart { //
           return;
         }
         ICycleBaseElement first = (ICycleBaseElement) selected;
+        ICycleBaseElement nextMatch = first.getNextMatch();
 
-        if ((first instanceof SearchResult)) {
+        TreeItem[] roots = tree.getItems();
+        iterateTreeItems(roots, nextMatch);
+        //        INavigate navigator = new TreeViewerNavigator( viewer);
+        //        TestTreeViewerNavigator navigator = new TestTreeViewerNavigator(viewer);
+        //        navigator.navigateNext(true);
+      }
+
+      private void iterateTreeItems(TreeItem[] treeItems, ICycleBaseElement nextMatch) {
+        for (TreeItem treeItem : treeItems) {
+          Object data = treeItem.getData();
+          if (nextMatch == data) {
+            internalSetSelection(treeItem);
+            return;
+          }
+          iterateTreeItems(getChildren(treeItem), nextMatch);
         }
       }
+
+      private void internalSetSelection(TreeItem ti) {
+        if (ti != null) {
+          Object data = ti.getData();
+          if (data != null) {
+            ISelection selection = new StructuredSelection(data);
+            viewer.setSelection(selection, true);
+          }
+        }
+      }
+
+      private TreeItem[] getChildren(TreeItem item) {
+        viewer.setExpandedState(item.getData(), true);
+        return item.getItems();
+      }
     };
+    showNextResultAction.setText(SearchMessages.ShowNextResultAction_label);
+    SearchPluginImages.setImageDescriptors(showNextResultAction, SearchPluginImages.T_LCL,
+        SearchPluginImages.IMG_LCL_SEARCH_NEXT);
+    showNextResultAction.setToolTipText(SearchMessages.ShowNextResultAction_tooltip);
+    // ------------------------------------------------------------------------
     showPreviousResultAction = new Action() {
       @Override
       public void run() {
       }
     };
+    showPreviousResultAction.setText(SearchMessages.ShowPreviousResultAction_label);
+    SearchPluginImages.setImageDescriptors(showPreviousResultAction, SearchPluginImages.T_LCL,
+        SearchPluginImages.IMG_LCL_SEARCH_PREV);
+    showPreviousResultAction.setToolTipText(SearchMessages.ShowPreviousResultAction_tooltip);
 
     // ---------------------------------------------------------------------
     // REMOVE
@@ -369,6 +410,9 @@ public class CycleView extends ViewPart { //
     viewer.refresh();
     boolean hasInput = tree != null && tree.getItemCount() > 0;
     label.setText(hasInput ? "" : Messages.CycleView_run_ucd_for_results); //$NON-NLS-1$
+    if (hasInput) {
+      tree.select(tree.getItem(0));
+    }
   }
 
   /**
