@@ -72,4 +72,9 @@ public class CycleRegion extends CycleBaseElement {
     sb.append(": ").append(strLine); //$NON-NLS-1$
     return sb.toString();
   }
+
+  @Override
+  public ICycleBaseElement getNextMatch() {
+    return getNextMatchFromParent();
+  }
 }

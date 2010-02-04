@@ -71,4 +71,9 @@ public class CycleMember extends CycleJavaElement {
   void setParent(CycleType parent) {
     this.parent = parent;
   }
+
+  @Override
+  public ICycleBaseElement getNextMatch() {
+    return getNextMatchFromParent();
+  }
 }

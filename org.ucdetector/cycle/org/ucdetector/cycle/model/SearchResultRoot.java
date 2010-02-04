@@ -53,4 +53,9 @@ public class SearchResultRoot extends CycleBaseElement {
   public String getText() {
     return Messages.SearchResultRoot_Name;
   }
+
+  @Override
+  public ICycleBaseElement getNextMatch() {
+    return getNextMatchFromChildren();
+  }
 }

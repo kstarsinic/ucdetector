@@ -64,4 +64,16 @@ public abstract class CycleBaseElement implements ICycleBaseElement {
       appendToString(child, sb, nextLevel);
     }
   }
+
+  public ICycleBaseElement getNextMatch() {
+    return getNextMatchFromChildren();
+  }
+
+  ICycleBaseElement getNextMatchFromChildren() {
+    return hasChildren() ? getChildren().get(0).getNextMatch() : null;
+  }
+
+  ICycleBaseElement getNextMatchFromParent() {
+    return getParent().getNextMatch();
+  }
 }

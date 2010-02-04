@@ -50,4 +50,6 @@ public interface ICycleBaseElement {
    */
   int getChildrenSize();
 
+  public ICycleBaseElement getNextMatch();
+
 }

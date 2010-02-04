@@ -80,4 +80,9 @@ public class SearchResult extends CycleBaseElement {
   public void setCycles(List<Cycle> cycles) {
     this.cycles = cycles;
   }
+
+  @Override
+  public ICycleBaseElement getNextMatch() {
+    return getNextMatchFromChildren();
+  }
 }
