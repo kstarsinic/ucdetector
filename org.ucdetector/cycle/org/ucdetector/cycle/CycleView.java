@@ -16,6 +16,7 @@ import org.eclipse.jface.action.Action;
 import org.eclipse.jface.action.IAction;
 import org.eclipse.jface.action.IMenuListener;
 import org.eclipse.jface.action.IMenuManager;
+import org.eclipse.jface.action.IToolBarManager;
 import org.eclipse.jface.action.MenuManager;
 import org.eclipse.jface.action.Separator;
 import org.eclipse.jface.viewers.DoubleClickEvent;
@@ -29,6 +30,7 @@ import org.eclipse.jface.viewers.TreePath;
 import org.eclipse.jface.viewers.TreeViewer;
 import org.eclipse.jface.viewers.Viewer;
 import org.eclipse.search.internal.ui.SearchPluginImages;
+import org.eclipse.search2.internal.ui.SearchMessages;
 import org.eclipse.search2.internal.ui.basic.views.CollapseAllAction;
 import org.eclipse.search2.internal.ui.basic.views.ExpandAllAction;
 import org.eclipse.swt.SWT;
@@ -42,6 +44,7 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Menu;
 import org.eclipse.swt.widgets.Tree;
+import org.eclipse.ui.IActionBars;
 import org.eclipse.ui.IEditorPart;
 import org.eclipse.ui.ISharedImages;
 import org.eclipse.ui.IWorkbenchActionConstants;
@@ -71,11 +74,16 @@ public class CycleView extends ViewPart { //
 
   private Action refreshAction;
   private Action rotateAction;
-  private Action removeAction;
   private IAction copyAction;
   private Action openAction;
+  //
+  private Action showNextResultAction;
+  private Action showPreviousResultAction;
+  private Action removeSelectedMatches;
+  private Action removeAllMatches;
   private ExpandAllAction expandAllAction;
   private CollapseAllAction collapseAllAction;
+  //
 
   private Label label;
 
@@ -105,7 +113,7 @@ public class CycleView extends ViewPart { //
     viewer = new TreeViewer(composite, SWT.MULTI | SWT.H_SCROLL | SWT.V_SCROLL | SWT.BORDER);
     tree = viewer.getTree();
     tree.setLayoutData(new GridData(GridData.FILL_BOTH));
-    // drillDownAdapter = new DrillDownAdapter(viewer);
+    clipboard = new Clipboard(tree.getDisplay());
     viewer.setContentProvider(new ViewContentProvider());
     viewer.setLabelProvider(new ViewLabelProvider());
     viewer.setInput(getViewSite());
@@ -115,7 +123,25 @@ public class CycleView extends ViewPart { //
     makeActions();
     hookContextMenu();
     hookDoubleClickAction();
-    clipboard = new Clipboard(tree.getDisplay());
+    contributeToActionBars();
+  }
+
+  private void contributeToActionBars() {
+    IActionBars bars = getViewSite().getActionBars();
+    //    fillLocalPullDown(bars.getMenuManager());
+    fillLocalToolBar(bars.getToolBarManager());
+  }
+
+  private void fillLocalToolBar(IToolBarManager manager) {
+    manager.add(showNextResultAction);
+    manager.add(showPreviousResultAction);
+    manager.add(new Separator());
+    manager.add(removeSelectedMatches);
+    manager.add(removeAllMatches);
+    manager.add(new Separator());
+    manager.add(expandAllAction);
+    manager.add(collapseAllAction);
+    manager.add(new Separator());
   }
 
   private void fillContextMenu(IMenuManager manager) {
@@ -131,7 +157,7 @@ public class CycleView extends ViewPart { //
       manager.add(copyAction);
 
       if (first instanceof Cycle || first instanceof SearchResult) {
-        manager.add(removeAction);
+        manager.add(removeSelectedMatches);
       }
 
       manager.add(refreshAction);
@@ -194,9 +220,31 @@ public class CycleView extends ViewPart { //
     rotateAction.setText(Messages.CycleView_popup_rotate);
 
     // ---------------------------------------------------------------------
+    // SHOW NEXT/PREVIOUS
+    // ---------------------------------------------------------------------
+    showNextResultAction = new Action() {
+      @Override
+      public void run() {
+        Object selected = getFirstSelectedElement();
+        if (selected == null) {
+          return;
+        }
+        ICycleBaseElement first = (ICycleBaseElement) selected;
+
+        if ((first instanceof SearchResult)) {
+        }
+      }
+    };
+    showPreviousResultAction = new Action() {
+      @Override
+      public void run() {
+      }
+    };
+
+    // ---------------------------------------------------------------------
     // REMOVE
     // ---------------------------------------------------------------------
-    removeAction = new Action() {
+    removeSelectedMatches = new Action() {
       @Override
       public void run() {
         TreePath[] paths = getTreeSelection().getPaths();
@@ -209,8 +257,26 @@ public class CycleView extends ViewPart { //
         refresh();
       }
     };
-    removeAction.setText(Messages.CycleView_popup_remove);
-    removeAction.setImageDescriptor(sharedImages.getImageDescriptor(SearchPluginImages.IMG_LCL_SEARCH_REM));
+    // setText(SearchMessages.RemoveSelectedMatchesAction_label);
+    // setToolTipText(SearchMessages.RemoveSelectedMatchesAction_tooltip);
+    // removeSelectedMatches.setImageDescriptor(sharedImages.getImageDescriptor(SearchPluginImages.IMG_LCL_SEARCH_REM));
+
+    removeSelectedMatches.setText(SearchMessages.RemoveSelectedMatchesAction_label);
+    removeSelectedMatches.setToolTipText(SearchMessages.RemoveSelectedMatchesAction_tooltip);
+    SearchPluginImages.setImageDescriptors(removeSelectedMatches, SearchPluginImages.T_LCL,
+        SearchPluginImages.IMG_LCL_SEARCH_REM);
+    // removeAllMatches -------------------------------------------------------
+    removeAllMatches = new Action() {
+      @Override
+      public void run() {
+        SearchResultRoot.getInstance().getChildren().clear();
+        refresh();
+      }
+    };
+    removeAllMatches.setText(SearchMessages.RemoveAllMatchesAction_label);
+    SearchPluginImages.setImageDescriptors(removeAllMatches, SearchPluginImages.T_LCL,
+        SearchPluginImages.IMG_LCL_SEARCH_REM_ALL);
+    removeAllMatches.setToolTipText(SearchMessages.RemoveAllMatchesAction_tooltip);
 
     // ---------------------------------------------------------------------
     // OPEN
