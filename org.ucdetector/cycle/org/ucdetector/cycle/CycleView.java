@@ -56,10 +56,11 @@ import org.ucdetector.Log;
 import org.ucdetector.Messages;
 import org.ucdetector.UCDetectorPlugin;
 import org.ucdetector.cycle.model.Cycle;
+import org.ucdetector.cycle.model.CycleRegionIterator;
 import org.ucdetector.cycle.model.CycleJavaElement;
 import org.ucdetector.cycle.model.CycleRegion;
 import org.ucdetector.cycle.model.CycleType;
-import org.ucdetector.cycle.model.ICycleBaseElement;
+import org.ucdetector.cycle.model.CycleBaseElement;
 import org.ucdetector.cycle.model.SearchResult;
 import org.ucdetector.cycle.model.SearchResultRoot;
 
@@ -224,59 +225,13 @@ public class CycleView extends ViewPart { //
     // ---------------------------------------------------------------------
     // SHOW NEXT/PREVIOUS
     // ---------------------------------------------------------------------
-    showNextResultAction = new Action() {
-      @Override
-      public void run() {
-        Object selected = getFirstSelectedElement();
-        if (selected == null) {
-          return;
-        }
-        ICycleBaseElement first = (ICycleBaseElement) selected;
-        ICycleBaseElement nextMatch = first.getNextMatch();
-
-        TreeItem[] roots = tree.getItems();
-        iterateTreeItems(roots, nextMatch);
-        //        INavigate navigator = new TreeViewerNavigator( viewer);
-        //        TestTreeViewerNavigator navigator = new TestTreeViewerNavigator(viewer);
-        //        navigator.navigateNext(true);
-      }
-
-      private void iterateTreeItems(TreeItem[] treeItems, ICycleBaseElement nextMatch) {
-        for (TreeItem treeItem : treeItems) {
-          Object data = treeItem.getData();
-          if (nextMatch == data) {
-            internalSetSelection(treeItem);
-            return;
-          }
-          iterateTreeItems(getChildren(treeItem), nextMatch);
-        }
-      }
-
-      private void internalSetSelection(TreeItem ti) {
-        if (ti != null) {
-          Object data = ti.getData();
-          if (data != null) {
-            ISelection selection = new StructuredSelection(data);
-            viewer.setSelection(selection, true);
-          }
-        }
-      }
-
-      private TreeItem[] getChildren(TreeItem item) {
-        viewer.setExpandedState(item.getData(), true);
-        return item.getItems();
-      }
-    };
+    showNextResultAction = new ShowResultAction(true);
     showNextResultAction.setText(SearchMessages.ShowNextResultAction_label);
     SearchPluginImages.setImageDescriptors(showNextResultAction, SearchPluginImages.T_LCL,
         SearchPluginImages.IMG_LCL_SEARCH_NEXT);
     showNextResultAction.setToolTipText(SearchMessages.ShowNextResultAction_tooltip);
     // ------------------------------------------------------------------------
-    showPreviousResultAction = new Action() {
-      @Override
-      public void run() {
-      }
-    };
+    showPreviousResultAction = new ShowResultAction(false);
     showPreviousResultAction.setText(SearchMessages.ShowPreviousResultAction_label);
     SearchPluginImages.setImageDescriptors(showPreviousResultAction, SearchPluginImages.T_LCL,
         SearchPluginImages.IMG_LCL_SEARCH_PREV);
@@ -292,7 +247,7 @@ public class CycleView extends ViewPart { //
         for (TreePath treePath : paths) {
           Object last = treePath.getLastSegment();
           if (last instanceof SearchResult || last instanceof Cycle) {
-            ((ICycleBaseElement) last).getParent().getChildren().remove(last);
+            ((CycleBaseElement) last).getParent().getChildren().remove(last);
           }
         }
         refresh();
@@ -449,12 +404,12 @@ public class CycleView extends ViewPart { //
     // // org.eclipse.jdt.ui\icons\full\elcl16\refresh_nav.gif
     @Override
     public Image getImage(Object obj) {
-      return ((ICycleBaseElement) obj).getImage();
+      return ((CycleBaseElement) obj).getImage();
     }
 
     @Override
     public String getText(Object obj) {
-      return ((ICycleBaseElement) obj).getText();
+      return ((CycleBaseElement) obj).getText();
     }
   }
 
@@ -472,19 +427,64 @@ public class CycleView extends ViewPart { //
     }
 
     public Object[] getChildren(Object parent) {
-      return ((ICycleBaseElement) parent).getChildren().toArray();
+      return ((CycleBaseElement) parent).getChildren().toArray();
     }
 
     public Object getParent(Object child) {
-      return ((ICycleBaseElement) child).getParent();
+      return ((CycleBaseElement) child).getParent();
     }
 
     public boolean hasChildren(Object parent) {
-      return ((ICycleBaseElement) parent).hasChildren();
+      return ((CycleBaseElement) parent).hasChildren();
     }
 
     public void inputChanged(Viewer v, Object oldInput, Object newInput) {
       //
+    }
+  }
+
+  private class ShowResultAction extends Action {
+    private final boolean next;
+
+    public ShowResultAction(boolean next) {
+      this.next = next;
+    }
+
+    @Override
+    public void run() {
+      Object selected = getFirstSelectedElement();
+      if (selected != null) {
+        CycleBaseElement first = (CycleBaseElement) selected;
+        CycleRegionIterator iterator = new CycleRegionIterator();
+        CycleBaseElement nextMatch = iterator.getNext(first, next);
+        TreeItem[] roots = tree.getItems();
+        iterateTreeItems(roots, nextMatch);
+      }
+    }
+
+    private void iterateTreeItems(TreeItem[] treeItems, CycleBaseElement nextMatch) {
+      for (TreeItem treeItem : treeItems) {
+        Object data = treeItem.getData();
+        if (nextMatch == data) {
+          internalSetSelection(treeItem);
+          return;
+        }
+        iterateTreeItems(getChildren(treeItem), nextMatch);
+      }
+    }
+
+    private void internalSetSelection(TreeItem treeItem) {
+      if (treeItem != null) {
+        Object data = treeItem.getData();
+        if (data != null) {
+          viewer.setSelection(new StructuredSelection(data), true);
+        }
+      }
+    }
+
+    private TreeItem[] getChildren(TreeItem item) {
+      viewer.setExpandedState(item.getData(), true);
+      return item.getItems();
     }
   }
 }

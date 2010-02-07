@@ -43,6 +43,7 @@ public class CycleMember extends CycleJavaElement {
     return match;
   }
 
+  @Override
   public List<CycleRegion> getChildren() {
     return cycleRegions;
   }
@@ -52,10 +53,12 @@ public class CycleMember extends CycleJavaElement {
     return match;
   }
 
+  @Override
   public CycleType getParent() {
     return parent;
   }
 
+  @Override
   public String getText() {
     IType typeFor = JavaElementUtil.getTypeFor(match, false);
     StringBuilder sb = new StringBuilder();
@@ -70,10 +73,5 @@ public class CycleMember extends CycleJavaElement {
 
   void setParent(CycleType parent) {
     this.parent = parent;
-  }
-
-  @Override
-  public ICycleBaseElement getNextMatch() {
-    return getNextMatchFromParent();
   }
 }

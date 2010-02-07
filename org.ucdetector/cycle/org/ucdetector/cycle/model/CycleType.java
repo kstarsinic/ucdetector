@@ -42,6 +42,7 @@ public class CycleType extends CycleJavaElement {
     }
   }
 
+  @Override
   public List<CycleMember> getChildren() {
     return cycleMembers;
   }
@@ -51,6 +52,7 @@ public class CycleType extends CycleJavaElement {
     return type;
   }
 
+  @Override
   public Cycle getParent() {
     return parent;
   }
@@ -63,6 +65,7 @@ public class CycleType extends CycleJavaElement {
     return result;
   }
 
+  @Override
   public String getText() {
     StringBuilder sb = new StringBuilder();
     sb.append(super.getDefaultText(type)).append(' ');
@@ -75,10 +78,5 @@ public class CycleType extends CycleJavaElement {
 
   void setParent(Cycle parent) {
     this.parent = parent;
-  }
-
-  @Override
-  public ICycleBaseElement getNextMatch() {
-    return getNextMatchFromParent();
   }
 }

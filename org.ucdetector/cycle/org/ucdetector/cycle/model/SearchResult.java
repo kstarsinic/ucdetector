@@ -43,20 +43,24 @@ public class SearchResult extends CycleBaseElement {
     this.javaProject = javaProject;
   }
 
+  @Override
   public List<Cycle> getChildren() {
     return cycles;
   }
 
+  @Override
   public Image getImage() {
     return JavaUI.getSharedImages().getImage(JavaPluginImages.IMG_OBJS_SEARCH_REF); // IMG_OBJS_JSEARCH
   }
 
+  @Override
   public CycleBaseElement getParent() {
     return parent;
   }
 
   // Search in "org.ucdetector.cycle" - org.ucdetector.example [found 4 cycles]
   // Search in "aaa,bbb,ccc" - org.ucdetector.example [found 4 cycles]
+  @Override
   public String getText() {
     StringBuilder search = new StringBuilder();
     for (IJavaElement selection : selections) {
@@ -79,10 +83,5 @@ public class SearchResult extends CycleBaseElement {
 
   public void setCycles(List<Cycle> cycles) {
     this.cycles = cycles;
-  }
-
-  @Override
-  public ICycleBaseElement getNextMatch() {
-    return getNextMatchFromChildren();
   }
 }

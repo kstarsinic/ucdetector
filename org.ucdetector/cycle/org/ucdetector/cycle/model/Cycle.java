@@ -29,7 +29,6 @@ import org.ucdetector.UCDetectorPlugin;
 public class Cycle extends CycleBaseElement {
   private final LinkedList<CycleType> cycleList;
   private final SearchResult parent;
-  private int matchPosition = -1;
 
   public Cycle(SearchResult parent, LinkedList<CycleType> cycleList) {
     if (cycleList.size() < 2) {
@@ -94,14 +93,17 @@ public class Cycle extends CycleBaseElement {
     cycleList.addLast(cycleList.removeFirst());
   }
 
+  @Override
   public List<CycleType> getChildren() {
     return cycleList;
   }
 
+  @Override
   public Image getImage() {
     return UCDetectorPlugin.getImage(UCDetectorPlugin.IMAGE_CYCLE);
   }
 
+  @Override
   public SearchResult getParent() {
     return parent;
   }
@@ -114,6 +116,7 @@ public class Cycle extends CycleBaseElement {
     return result;
   }
 
+  @Override
   public String getText() {
     StringBuilder sb = new StringBuilder();
     sb.append(Messages.Cycle_Name).append(": "); //$NON-NLS-1$
@@ -124,29 +127,5 @@ public class Cycle extends CycleBaseElement {
     sb.append(" - ").append(getChildrenSize()).append(" classes"); //$NON-NLS-1$ //$NON-NLS-2$
     sb.append(" - ").append(getMatchCount()).append(" matches"); //$NON-NLS-1$ //$NON-NLS-2$
     return sb.toString();
-  }
-
-  @Override
-  public ICycleBaseElement getNextMatch() {
-    if (!hasChildren()) {
-      return null;
-    }
-    matchPosition++;
-    if (matchPosition >= getMatchCount()) {
-      matchPosition = 0;
-    }
-    int iterateMatchPosition = 0;
-    for (CycleType cycleType : cycleList) {
-      for (CycleMember cycleMember : cycleType.getChildren()) {
-        List<CycleRegion> cycleRegions = cycleMember.getChildren();
-        for (CycleRegion cycleRegion : cycleRegions) {
-          if (matchPosition == iterateMatchPosition) {
-            return cycleRegion;
-          }
-          iterateMatchPosition++;
-        }
-      }
-    }
-    return null;
   }
 }

@@ -25,6 +25,7 @@ public abstract class CycleJavaElement extends CycleBaseElement /*implements IAd
   /** @return the java element associated with the  CycleBaseElement, may be <code>null</code>*/
   public abstract IJavaElement getJavaElement();
 
+  @Override
   public Image getImage() {
     return LABEL_PROVIDER_DELEGAT.getImage(getJavaElement());
   }

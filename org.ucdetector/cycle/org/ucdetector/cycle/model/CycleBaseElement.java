@@ -16,7 +16,7 @@ import org.eclipse.ui.PlatformUI;
  * Base class of all CycleTreeElements
  */
 // TODO 2009-02-20: UCD tells to use default visibility. But compile error
-public abstract class CycleBaseElement implements ICycleBaseElement {
+public abstract class CycleBaseElement {
   //  private static final int LABLEL_FLAGS = JavaElementLabelProvider.SHOW_PARAMETERS;
   //
   //  private static final ILabelProvider LABEL_PROVIDER_DELEGAT //
@@ -53,27 +53,44 @@ public abstract class CycleBaseElement implements ICycleBaseElement {
     return sb.toString();
   }
 
-  private final void appendToString(ICycleBaseElement cycleBaseElement, StringBuilder sb, int level) {
+  private final void appendToString(CycleBaseElement cycleBaseElement, StringBuilder sb, int level) {
     int nextLevel = level + 1;
     for (int i = 0; i < level; i++) {
       sb.append("  "); //$NON-NLS-1$
     }
     sb.append("|-").append(cycleBaseElement.getText()).append('\n'); //$NON-NLS-1$
-    List<? extends ICycleBaseElement> children = cycleBaseElement.getChildren();
-    for (ICycleBaseElement child : children) {
+    List<? extends CycleBaseElement> children = cycleBaseElement.getChildren();
+    for (CycleBaseElement child : children) {
       appendToString(child, sb, nextLevel);
     }
   }
 
-  public ICycleBaseElement getNextMatch() {
-    return getNextMatchFromChildren();
-  }
+  // --------------------------------------------------------------------------
+  // ABSTRACT
+  // --------------------------------------------------------------------------
+  /**
+   * @return parent of the CycleBaseElement in the tree
+   */
+  public abstract CycleBaseElement getParent();
 
-  ICycleBaseElement getNextMatchFromChildren() {
-    return hasChildren() ? getChildren().get(0).getNextMatch() : null;
-  }
+  /**
+   * @return Text for the CycleBaseElement
+   */
+  public abstract String getText();
 
-  ICycleBaseElement getNextMatchFromParent() {
-    return getParent().getNextMatch();
-  }
+  /**
+   * @return Image for the CycleBaseElement
+   */
+  public abstract Image getImage();
+
+  // -------------------------------------------------------------------------
+  // CHILDREN
+  // -------------------------------------------------------------------------
+
+  /**
+   * @return children of the CycleBaseElement in the tree, never returns
+   *         <code>null</code>
+   */
+  public abstract List<? extends CycleBaseElement> getChildren();
+
 }

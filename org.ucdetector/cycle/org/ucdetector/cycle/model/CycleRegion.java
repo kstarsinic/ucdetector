@@ -53,28 +53,27 @@ public class CycleRegion extends CycleBaseElement {
   /**
    * @return always an empty list
    */
-  public List<ICycleBaseElement> getChildren() {
+  @Override
+  public List<CycleBaseElement> getChildren() {
     return Collections.emptyList();
   }
 
+  @Override
   public Image getImage() {
     //    return JavaPluginImages.get(JavaPluginImages.IMG_OBJS_SEARCH_OCCURRENCE);
     return JavaUI.getSharedImages().getImage(JavaPluginImages.IMG_OBJS_SEARCH_OCCURRENCE);
   }
 
+  @Override
   public CycleMember getParent() {
     return cycleMember;
   }
 
+  @Override
   public String getText() {
     StringBuilder sb = new StringBuilder();
     sb.append(Messages.CycleRegion_Line).append(line);
     sb.append(": ").append(strLine); //$NON-NLS-1$
     return sb.toString();
-  }
-
-  @Override
-  public ICycleBaseElement getNextMatch() {
-    return getNextMatchFromParent();
   }
 }

@@ -35,10 +35,12 @@ public class SearchResultRoot extends CycleBaseElement {
     return INSTANCE;
   }
 
+  @Override
   public List<SearchResult> getChildren() {
     return searchResults;
   }
 
+  @Override
   public Image getImage() {
     return getImage(ISharedImages.IMG_TOOL_BACK);
   }
@@ -46,16 +48,13 @@ public class SearchResultRoot extends CycleBaseElement {
   /**
    * @return always <code>null</code>
    */
-  public ICycleBaseElement getParent() {
+  @Override
+  public CycleBaseElement getParent() {
     return null;
   }
 
+  @Override
   public String getText() {
     return Messages.SearchResultRoot_Name;
-  }
-
-  @Override
-  public ICycleBaseElement getNextMatch() {
-    return getNextMatchFromChildren();
   }
 }
