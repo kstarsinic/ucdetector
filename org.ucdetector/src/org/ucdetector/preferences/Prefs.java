@@ -45,6 +45,7 @@ public final class Prefs {
   static final String FILTER_IMPLEMENTS = UCDetectorPlugin.ID + ".superClassFilter"; //$NON-NLS-1$
   static final String FILTER_CONTAIN_STRING = UCDetectorPlugin.ID + ".containString"; //$NON-NLS-1$
   static final String FILTER_BEAN_METHOD = UCDetectorPlugin.ID + ".beanMethodFilter"; //$NON-NLS-1$
+  static final String IGNORE_DEPRECATED = UCDetectorPlugin.ID + ".ignoreDeprecated"; //$NON-NLS-1$
   static final String DETECT_TEST_ONLY = UCDetectorPlugin.ID + ".detectTestOnly"; //$NON-NLS-1$
   // ANALYZE -------------------------------------------------------------------
   static final String ANALYZE_CLASSES = UCDetectorPlugin.ID + ".classes"; //$NON-NLS-1$
@@ -79,10 +80,10 @@ public final class Prefs {
   private static final String[] EMPTY_ARRAY = new String[0];
   private static IPreferenceStore store_FOR_TEST;
   // CYCLE -------------------------------------------------------------------
-  public static final String CYCLE_DEPTH = UCDetectorPlugin.ID + ".cycleDepth"; //$NON-NLS-1$
-  public static final int CYCLE_DEPTH_MIN = 2;
-  public static final int CYCLE_DEPTH_DEFAULT = 4;
-  public static final int CYCLE_DEPTH_MAX = 8;
+  static final String CYCLE_DEPTH = UCDetectorPlugin.ID + ".cycleDepth"; //$NON-NLS-1$
+  static final int CYCLE_DEPTH_MIN = 2;
+  static final int CYCLE_DEPTH_DEFAULT = 4;
+  static final int CYCLE_DEPTH_MAX = 8;
 
   /**
    * Separator used in text fields, which contain lists. Value is ","
@@ -124,6 +125,13 @@ public final class Prefs {
    */
   public static boolean isFilterBeanMethod() {
     return getStore().getBoolean(FILTER_BEAN_METHOD);
+  }
+
+  /**
+   * @return <code>true</code>, when deprecated code should be ignored
+   */
+  public static boolean isIgnoreDeprecated() {
+    return getStore().getBoolean(IGNORE_DEPRECATED);
   }
 
   /**

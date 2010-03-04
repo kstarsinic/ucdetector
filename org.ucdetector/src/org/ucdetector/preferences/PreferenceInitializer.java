@@ -47,6 +47,7 @@ public class PreferenceInitializer extends AbstractPreferenceInitializer {
     store.setDefault(Prefs.FILTER_IMPLEMENTS, "");
     store.setDefault(Prefs.FILTER_CONTAIN_STRING, "");
     store.setDefault(Prefs.FILTER_BEAN_METHOD, true);
+    store.setDefault(Prefs.IGNORE_DEPRECATED, true);
     // WHAT TO DETECT ----------------------------------------------------------
     store.setDefault(Prefs.WARN_LIMIT, 0);
     store.setDefault(Prefs.ANALYZE_CLASSES, WARN);

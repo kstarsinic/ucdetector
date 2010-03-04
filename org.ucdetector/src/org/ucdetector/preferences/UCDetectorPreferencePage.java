@@ -77,6 +77,10 @@ public class UCDetectorPreferencePage extends UCDetectorBasePreferencePage {
         Messages.PreferencePage_IgnoreBeanMethods, BooleanFieldEditor.SEPARATE_LABEL, spacer);
     beanMethodFilter.getLabelControl(spacer).setToolTipText(Messages.PreferencePage_IgnoreBeanMethodsToolTip);
     this.addField(beanMethodFilter);
+    BooleanFieldEditor deprecatedFilter = new BooleanFieldEditor(Prefs.IGNORE_DEPRECATED,
+        Messages.PreferencePage_IgnoreDeprecated, BooleanFieldEditor.SEPARATE_LABEL, spacer);
+    deprecatedFilter.getLabelControl(spacer).setToolTipText(Messages.PreferencePage_IgnoreDeprecatedToolTip);
+    this.addField(deprecatedFilter);
   }
 
   /**
@@ -143,7 +147,7 @@ public class UCDetectorPreferencePage extends UCDetectorBasePreferencePage {
     this.addField(fileFieldEditor);
     // Cycle
     IntegerFieldEditor cycleDepth = new IntegerFieldEditor(Prefs.CYCLE_DEPTH, Messages.PreferencePage_MaxCycleSize,
-        parentGroups) {
+        spacer, 1) {
       /** 
        * Hack for layout problems. 
        * */
@@ -154,9 +158,8 @@ public class UCDetectorPreferencePage extends UCDetectorBasePreferencePage {
     };
     cycleDepth.setValidRange(Prefs.CYCLE_DEPTH_MIN, Prefs.CYCLE_DEPTH_MAX);
     cycleDepth.setEmptyStringAllowed(false);
-    cycleDepth.getLabelControl(parentGroups).setToolTipText(Messages.PreferencePage_MaxCycleSizeToolTip);
+    cycleDepth.getLabelControl(spacer).setToolTipText(Messages.PreferencePage_MaxCycleSizeToolTip);
     this.addField(cycleDepth);
-
   }
 
   /**

@@ -5,3 +5,5 @@ Bugfixes:
 
 New features:
  - [ 2929828 ] Added filter to exclude classes extending/implementing
+ - [ 2923567 ] Do not report markers for deprecated class members
+ - Added cycle detection again, improved cycle view

@@ -35,9 +35,11 @@ import org.eclipse.jdt.core.dom.ArrayInitializer;
 import org.eclipse.jdt.core.dom.BodyDeclaration;
 import org.eclipse.jdt.core.dom.Expression;
 import org.eclipse.jdt.core.dom.ITypeBinding;
+import org.eclipse.jdt.core.dom.Javadoc;
 import org.eclipse.jdt.core.dom.SimpleName;
 import org.eclipse.jdt.core.dom.SingleMemberAnnotation;
 import org.eclipse.jdt.core.dom.StringLiteral;
+import org.eclipse.jdt.core.dom.TagElement;
 import org.ucdetector.Log;
 import org.ucdetector.UCDetectorPlugin;
 import org.ucdetector.preferences.Prefs;
@@ -148,6 +150,7 @@ public class LineManger {
      * Then we try to find @SuppressWarnings<br>
      * then we look for the value of the annotation like @SuppressWarnings("ucd")
      */
+    @SuppressWarnings("unchecked")
     @Override
     protected boolean visitImpl(BodyDeclaration declaration, SimpleName name) {
       // System.out.println("declaration=" + declaration);
@@ -156,8 +159,19 @@ public class LineManger {
         if (modifier instanceof Annotation) {
           Annotation annotation = (Annotation) modifier;
           if (isIgnoreAnnotation(annotation)) {
-            int startPos = name.getStartPosition();
-            ignoreLines.add(Integer.valueOf(scanner.getLineNumber(startPos)));
+            ignoreLines.add(Integer.valueOf(scanner.getLineNumber(name.getStartPosition())));
+          }
+        }
+      }
+      // [ 2923567 ] Do not report markers for deprecated class members
+      if (!Prefs.isIgnoreDeprecated()) {
+        Javadoc javadoc = declaration.getJavadoc();
+        if (javadoc != null && javadoc.tags() != null) {
+          List<TagElement> tags = javadoc.tags();
+          for (TagElement tag : tags) {
+            if ("@deprecated".equals(tag.getTagName())) { //$NON-NLS-1$
+              ignoreLines.add(Integer.valueOf(scanner.getLineNumber(name.getStartPosition())));
+            }
           }
         }
       }
@@ -172,6 +186,9 @@ public class LineManger {
         return true;
       }
       if (isUsedByAnnotation(visibleName)) {
+        return true;
+      }
+      if (!Prefs.isIgnoreDeprecated() && isDeprecatedAnnotation(visibleName)) {
         return true;
       }
       if (Prefs.filterAnnotation(visibleName)) {
@@ -218,6 +235,12 @@ public class LineManger {
           || UsedBy.class.getName().equals(name);
     }
 
+    // [ 2923567 ] Do not report markers for deprecated class members
+    private static boolean isDeprecatedAnnotation(String name) {
+      return Deprecated.class.getSimpleName().equals(name) //
+          || Deprecated.class.getName().equals(name);
+    }
+
     private static boolean isUcdTag(StringLiteral literal) {
       //      System.out.println("\tliteralValue=" + literal.getLiteralValue());
       return literal.getLiteralValue().equalsIgnoreCase(UCD_ANNOTATION_VALUE);
@@ -257,10 +280,7 @@ public class LineManger {
     int nextToken;
     try {
       while ((nextToken = scanner.getNextToken()) != ITerminalSymbols.TokenNameEOF) {
-        Integer ignoreLine = findTagInComment(scanner, NO_UCD_COMMENT, nextToken);
-        if (ignoreLine != null) {
-          ignoreLines.add(ignoreLine);
-        }
+        addIgnoreLineForToken(ignoreLines, scanner, NO_UCD_COMMENT, nextToken, ITerminalSymbols.TokenNameCOMMENT_LINE);
       }
     }
     catch (InvalidInputException e) {
@@ -321,17 +341,17 @@ public class LineManger {
   //   }
 
   /**
-   * @return line number for a tag like "NO_UCD", or <code>null</code>
-   * if there is no tag like "NO_UCD"
+   * Add line number for a tag like "NO_UCD"
    */
-  private static Integer findTagInComment(IScanner scanner, String tag, int nextToken) {
-    if (nextToken == ITerminalSymbols.TokenNameCOMMENT_LINE) {
+  private static void addIgnoreLineForToken(Set<Integer> ignoreLines, IScanner scanner, String tag, int nextToken,
+      int tokenType) {
+    if (nextToken == tokenType) {
       char[] currentTokenSource = scanner.getCurrentTokenSource();
       String source = new String(currentTokenSource);
       if (source.contains(tag)) {
         int start = scanner.getCurrentTokenStartPosition();
         int line = scanner.getLineNumber(start);
-        return Integer.valueOf(line);
+        ignoreLines.add(Integer.valueOf(line));
       }
     }
     /*
@@ -343,7 +363,6 @@ public class LineManger {
       scanner.getNextToken(); // )
     }
     */
-    return null;
   }
 
   /**
