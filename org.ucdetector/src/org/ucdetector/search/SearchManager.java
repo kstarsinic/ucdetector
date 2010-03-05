@@ -84,7 +84,7 @@ public class SearchManager {
    * @param typeContainers classes to search
    */
   public final void search(Set<TypeContainer> typeContainers) {
-    Log.logInfo("Search start: " + UCDetectorPlugin.getNow()); //$NON-NLS-1$
+    logStart(typeContainers);
     try {
       int pos = 0;
       for (TypeContainer container : typeContainers) {
@@ -123,6 +123,19 @@ public class SearchManager {
           + " errors happened during UCDetection", null); //$NON-NLS-1$
       UCDetectorPlugin.logStatus(status);
     }
+  }
+
+  private void logStart(Set<TypeContainer> typeContainers) {
+    int methodsToDetect = 0;
+    int fieldsToDetect = 0;
+    for (TypeContainer container : typeContainers) {
+      methodsToDetect += container.getMethods().size();
+      fieldsToDetect += container.getFields().size();
+    }
+    Log.logInfo("Detection start      : " + UCDetectorPlugin.getNow()); //$NON-NLS-1$
+    Log.logInfo("    Classes to detect: " + typeContainers.size()); //$NON-NLS-1$
+    Log.logInfo("    Methods to detect: " + methodsToDetect); //$NON-NLS-1$
+    Log.logInfo("    Fields  to detect: " + fieldsToDetect); //$NON-NLS-1$
   }
 
   private String fill(int i, int length) {
