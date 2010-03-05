@@ -28,68 +28,67 @@ import org.ucdetector.util.JavaElementUtil;
 /**
  * Constant definitions for plug-in preferences, offer access to preferences
  */
+@SuppressWarnings("nls")
 public final class Prefs {
-  protected static final String CHANGE_ALL_VISIBILIY_COMBO = "changeAllVisibiliyCombo"; //$NON-NLS-1$
+  private static final String ID = UCDetectorPlugin.ID;
 
   private Prefs() {
     // avoid instantiation
   }
 
   // FILTER --------------------------------------------------------------------
-  static final String FILTER_SOURCE_FOLDER = UCDetectorPlugin.ID + ".sourceFolderFilter"; //$NON-NLS-1$
-  static final String FILTER_PACKAGE = UCDetectorPlugin.ID + ".packageFilter"; //$NON-NLS-1$
-  static final String FILTER_CLASS = UCDetectorPlugin.ID + ".classFilter"; //$NON-NLS-1$
-  static final String FILTER_METHOD = UCDetectorPlugin.ID + ".methodFilter"; //$NON-NLS-1$
-  static final String FILTER_FIELD = UCDetectorPlugin.ID + ".fieldFilter"; //$NON-NLS-1$
-  static final String FILTER_ANNOATIONS = UCDetectorPlugin.ID + ".annotationsFilter"; //$NON-NLS-1$
-  static final String FILTER_IMPLEMENTS = UCDetectorPlugin.ID + ".superClassFilter"; //$NON-NLS-1$
-  static final String FILTER_CONTAIN_STRING = UCDetectorPlugin.ID + ".containString"; //$NON-NLS-1$
-  static final String FILTER_BEAN_METHOD = UCDetectorPlugin.ID + ".beanMethodFilter"; //$NON-NLS-1$
-  static final String IGNORE_DEPRECATED = UCDetectorPlugin.ID + ".ignoreDeprecated"; //$NON-NLS-1$
-  static final String DETECT_TEST_ONLY = UCDetectorPlugin.ID + ".detectTestOnly"; //$NON-NLS-1$
+  static final String FILTER_SOURCE_FOLDER = ID + ".sourceFolderFilter";
+  static final String FILTER_PACKAGE = ID + ".packageFilter";
+  static final String FILTER_CLASS = ID + ".classFilter";
+  static final String FILTER_METHOD = ID + ".methodFilter";
+  static final String FILTER_FIELD = ID + ".fieldFilter";
+  static final String FILTER_ANNOATIONS = ID + ".annotationsFilter";
+  static final String FILTER_IMPLEMENTS = ID + ".superClassFilter";
+  static final String FILTER_CONTAIN_STRING = ID + ".containString";
+  static final String FILTER_BEAN_METHOD = ID + ".beanMethodFilter";
+  static final String IGNORE_DEPRECATED = ID + ".ignoreDeprecated";
+  static final String DETECT_TEST_ONLY = ID + ".detectTestOnly";
   // ANALYZE -------------------------------------------------------------------
-  static final String ANALYZE_CLASSES = UCDetectorPlugin.ID + ".classes"; //$NON-NLS-1$
-  static final String ANALYZE_MEHTODS = UCDetectorPlugin.ID + ".methods"; //$NON-NLS-1$
-  static final String ANALYZE_FIELDS = UCDetectorPlugin.ID + ".member"; //$NON-NLS-1$
-  static final String ANALYZE_LITERALS_CHECK = UCDetectorPlugin.ID + ".literalsCheck"; //$NON-NLS-1$
-  static final String ANALYZE_CHECK_FULL_CLASS_NAME = UCDetectorPlugin.ID + ".checkFullClassName"; //$NON-NLS-1$
-  static final String ANALYZE_LITERALS = UCDetectorPlugin.ID + ".literals"; //$NON-NLS-1$
+  static final String ANALYZE_CLASSES = ID + ".classes";
+  static final String ANALYZE_MEHTODS = ID + ".methods";
+  static final String ANALYZE_FIELDS = ID + ".member";
+  static final String ANALYZE_LITERALS_CHECK = ID + ".literalsCheck";
+  static final String ANALYZE_CHECK_FULL_CLASS_NAME = ID + ".checkFullClassName";
+  static final String ANALYZE_LITERALS = ID + ".literals";
   // WARN_LIMIT ----------------------------------------------------------------
-  static final String WARN_LIMIT = UCDetectorPlugin.ID + ".warnLimit"; //$NON-NLS-1$
+  static final String WARN_LIMIT = ID + ".warnLimit";
   // KEYWORD -------------------------------------------------------------------
+
+  protected static final String CHANGE_ALL_VISIBILIY_COMBO = ID + ".changeAllVisibiliyCombo";
   /*  Feature Requests ID: 2490344: */
-  static final String ANALYZE_VISIBILITY_PROTECTED_CLASSES = UCDetectorPlugin.ID + ".visibility.protected.classes"; //$NON-NLS-1$
-  static final String ANALYZE_VISIBILITY_PRIVATE_CLASSES = UCDetectorPlugin.ID + ".visibility.private.classes"; //$NON-NLS-1$
+  static final String ANALYZE_VISIBILITY_PROTECTED_CLASSES = ID + ".visibility.protected.classes";
+  static final String ANALYZE_VISIBILITY_PRIVATE_CLASSES = ID + ".visibility.private.classes";
   //
-  static final String ANALYZE_VISIBILITY_PROTECTED_METHODS = UCDetectorPlugin.ID + ".visibility.protected.methods"; //$NON-NLS-1$
-  static final String ANALYZE_VISIBILITY_PRIVATE_METHODS = UCDetectorPlugin.ID + ".visibility.private.methods"; //$NON-NLS-1$
+  static final String ANALYZE_VISIBILITY_PROTECTED_METHODS = ID + ".visibility.protected.methods";
+  static final String ANALYZE_VISIBILITY_PRIVATE_METHODS = ID + ".visibility.private.methods";
   //
-  static final String ANALYZE_VISIBILITY_PROTECTED_FIELDS = UCDetectorPlugin.ID + ".visibility.protected.fields"; //$NON-NLS-1$
-  static final String ANALYZE_VISIBILITY_PRIVATE_FIELDS = UCDetectorPlugin.ID + ".visibility.private.fields"; //$NON-NLS-1$
-  static final String IGNORE_SYNTHETIC_ACCESS_EMULATION = UCDetectorPlugin.ID
-      + ".visibility.ignore.synthetic.access.emulation"; //$NON-NLS-1$
+  static final String ANALYZE_VISIBILITY_PROTECTED_FIELDS = ID + ".visibility.protected.fields";
+  static final String ANALYZE_VISIBILITY_PRIVATE_FIELDS = ID + ".visibility.private.fields";
+  static final String IGNORE_SYNTHETIC_ACCESS_EMULATION = ID + ".visibility.ignore.synthetic.access.emulation";
   //
-  static final String ANALYZE_VISIBILITY_PROTECTED_CONSTANTS = UCDetectorPlugin.ID + ".visibility.protected.constants"; //$NON-NLS-1$
-  static final String ANALYZE_VISIBILITY_PRIVATE_CONSTANTS = UCDetectorPlugin.ID + ".visibility.private.constants"; //$NON-NLS-1$
+  static final String ANALYZE_VISIBILITY_PROTECTED_CONSTANTS = ID + ".visibility.protected.constants";
+  static final String ANALYZE_VISIBILITY_PRIVATE_CONSTANTS = ID + ".visibility.private.constants";
   //
-  static final String ANALYZE_FINAL_FIELD = UCDetectorPlugin.ID + ".finalField"; //$NON-NLS-1$
-  static final String ANALYZE_FINAL_METHOD = UCDetectorPlugin.ID + ".finalMethod"; //$NON-NLS-1$
+  static final String ANALYZE_FINAL_FIELD = ID + ".finalField";
+  static final String ANALYZE_FINAL_METHOD = ID + ".finalMethod";
   //
-  static final String REPORT_FILE = UCDetectorPlugin.ID + ".reportFile"; //$NON-NLS-1$
+  static final String REPORT_FILE = ID + ".reportFile";
   // 
   private static final String[] EMPTY_ARRAY = new String[0];
   private static IPreferenceStore store_FOR_TEST;
   // CYCLE -------------------------------------------------------------------
-  static final String CYCLE_DEPTH = UCDetectorPlugin.ID + ".cycleDepth"; //$NON-NLS-1$
+  static final String CYCLE_DEPTH = ID + ".cycleDepth";
   static final int CYCLE_DEPTH_MIN = 2;
   static final int CYCLE_DEPTH_DEFAULT = 4;
   static final int CYCLE_DEPTH_MAX = 8;
 
-  /**
-   * Separator used in text fields, which contain lists. Value is ","
-   */
-  //private static final String LIST_SEPARATOR = "\\s*,\\s*";
-  private static final String LIST_SEPARATOR = ","; //$NON-NLS-1$
+  /** Separator used in text fields, which contain lists. Value is "," */
+  private static final String LIST_SEPARATOR = ","; // "\\s*,\\s*";
 
   // FILTER GROUP --------------------------------------------------------------
   /**
@@ -374,7 +373,7 @@ public final class Prefs {
       return Flags.isStatic(member.getFlags()) && Flags.isFinal(member.getFlags());
     }
     catch (JavaModelException e) {
-      Log.logError("Can't get isConstant: " + member, e); //$NON-NLS-1$
+      Log.logError("Can't get isConstant: " + member, e);
       return false;
     }
   }
@@ -462,7 +461,7 @@ public final class Prefs {
    * @param value , which should changed in preference store
    */
   public static void setUcdValue(String name, String value) {
-    getStore().setValue("org.ucdetector." + name, value); //$NON-NLS-1$
+    getStore().setValue("org.ucdetector." + name, value);
   }
 
   /**
@@ -498,8 +497,8 @@ public final class Prefs {
   }
 
   private static String simpleRegexToJavaRegex(String simpleRegex) {
-    String regex = simpleRegex.replaceAll("\\*", ".*"); //$NON-NLS-1$ //$NON-NLS-2$
-    return regex.replace("?", ".{1}"); //$NON-NLS-1$ //$NON-NLS-2$
+    String regex = simpleRegex.replaceAll("\\*", ".*");
+    return regex.replace("?", ".{1}");
   }
 
   /**
@@ -509,5 +508,4 @@ public final class Prefs {
     int cycleDepth = getStore().getInt(CYCLE_DEPTH);
     return cycleDepth < CYCLE_DEPTH_MIN ? CYCLE_DEPTH_MIN : cycleDepth > CYCLE_DEPTH_MAX ? CYCLE_DEPTH_MAX : cycleDepth;
   }
-
 }
