@@ -93,10 +93,9 @@ public class UCDetectorPlugin extends AbstractUIPlugin {
   public static String getPreferencesAsString() {
     StringBuilder sb = new StringBuilder();
     sb.append("\r\nUCDetector Plugin Preferences:\r\n");
-    Map<String, String> preferences = getDeltaPreferences();
-    sb.append(preferences.size());
-    sb.append(" preferences are different from default preferences:\r\n");
-    Set<Entry<String, String>> entrySet = preferences.entrySet();
+    Map<String, String> deltaPreferences = getDeltaPreferences();
+    sb.append(deltaPreferences.size()).append(" preferences are different from default preferences:\r\n");
+    Set<Entry<String, String>> entrySet = deltaPreferences.entrySet();
     for (Entry<String, String> entry : entrySet) {
       sb.append(String.format("\t%s=%s%n", entry.getKey(), entry.getValue()));
     }

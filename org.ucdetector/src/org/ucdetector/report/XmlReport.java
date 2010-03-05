@@ -369,7 +369,7 @@ public class XmlReport implements IUCDetectorReport {
       }
     }
     Element preferencesNode = appendChild(statistcs, "preferences", null);
-    Set<Entry<String, String>> preferencesSet = UCDetectorPlugin.getPreferences().entrySet();
+    Set<Entry<String, String>> preferencesSet = UCDetectorPlugin.getDeltaPreferences().entrySet();
     for (Entry<String, String> entry : preferencesSet) {
       Element preferenceNode = appendChild(preferencesNode, "preference", null);
       preferenceNode.setAttribute("key", entry.getKey());
