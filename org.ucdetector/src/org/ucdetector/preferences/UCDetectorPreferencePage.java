@@ -13,10 +13,16 @@ import org.eclipse.jface.preference.FieldEditorPreferencePage;
 import org.eclipse.jface.preference.FileFieldEditor;
 import org.eclipse.jface.preference.IntegerFieldEditor;
 import org.eclipse.jface.preference.StringFieldEditor;
+import org.eclipse.swt.SWT;
+import org.eclipse.swt.events.SelectionAdapter;
+import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.widgets.Button;
+import org.eclipse.swt.widgets.Combo;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Label;
+import org.eclipse.swt.widgets.TabFolder;
+import org.eclipse.swt.widgets.TabItem;
 import org.ucdetector.Messages;
 import org.ucdetector.UCDetectorPlugin;
 
@@ -27,6 +33,26 @@ import org.ucdetector.UCDetectorPlugin;
  * @see "http://www.eclipsepluginsite.com/preference-pages.html"
  */
 public class UCDetectorPreferencePage extends UCDetectorBasePreferencePage {
+  enum Mode {
+    classes_only, //
+    Default, //
+    full, //
+    ;
+
+    String toStringLocalized() {
+      return Messages.getString("PrefMode_" + this.name(), this.name()); //$NON-NLS-1$
+    }
+  }
+
+  private static final String[] MODES;
+
+  static {
+    Mode[] modes = Mode.values();
+    MODES = new String[modes.length];
+    for (int i = 0; i < modes.length; i++) {
+      MODES[i] = modes[i].toStringLocalized();
+    }
+  }
 
   public UCDetectorPreferencePage() {
     super(FieldEditorPreferencePage.GRID, Prefs.getStore());
@@ -34,12 +60,47 @@ public class UCDetectorPreferencePage extends UCDetectorBasePreferencePage {
 
   @Override
   public void createFieldEditors() {
-    Composite parentGroups = createComposite(getFieldEditorParent(), 1, 1, GridData.FILL_HORIZONTAL);
+    Composite parentGroups = createComposite(getFieldEditorParent(), 1, 1, GridData.FILL_BOTH);
     setTitle("UCDetector " + UCDetectorPlugin.getAboutUCDVersion()); //$NON-NLS-1$
-    createFilterGroup(parentGroups);
-    createDetectGroup(parentGroups);
-    createFileSearchGroup(parentGroups);
-    createOtherGroup(parentGroups);
+    createModeCombo(parentGroups);
+    // -----------------------------------------------
+    // org.eclipse.team.internal.ccvs.ui.CVSPreferencesPage.createGeneralTab()
+    TabFolder tabFolder = new TabFolder(parentGroups, SWT.NONE);
+    tabFolder.setLayoutData(createGridData(0, SWT.DEFAULT, SWT.FILL, SWT.CENTER, true, false));
+    // MAIN
+    Composite compositeMain = createComposite(tabFolder, 1, 1, GridData.FILL_HORIZONTAL);
+    TabItem tabMain = new TabItem(tabFolder, SWT.NONE);
+    tabMain.setText("Main");
+    tabMain.setControl(compositeMain);
+    // VISIBILITY
+    Composite compositeVisibility = createComposite(tabFolder, 1, 1, GridData.FILL_HORIZONTAL);
+    TabItem tabVisibility = new TabItem(tabFolder, SWT.NONE);
+    tabVisibility.setText("Visibility");
+    tabVisibility.setControl(compositeVisibility);
+    // -----------------------------------------------
+    createFilterGroup(compositeMain);
+    createDetectGroup(compositeMain);
+    createFileSearchGroup(compositeMain);
+    createOtherGroup(compositeVisibility);
+  }
+
+  private void createModeCombo(Composite parentGroups) {
+    Composite spacer = createComposite(parentGroups, 2, 1, GridData.FILL_HORIZONTAL);
+    Label label = new Label(spacer, SWT.LEFT);
+    label.setText("Select detection mode");
+    final Combo changeMode = new Combo(spacer, SWT.READ_ONLY);
+    changeMode.setItems(MODES);
+    changeMode.setText(Mode.Default.name());
+    changeMode.addSelectionListener(new SelectionAdapter() {
+      @Override
+      public void widgetSelected(SelectionEvent evt) {
+        int index = changeMode.getSelectionIndex();
+        if (index != -1) {
+          Mode mode = Mode.values()[index];
+          setPreferences(mode + ".properties"); //$NON-NLS-1$
+        }
+      }
+    });
   }
 
   /**
