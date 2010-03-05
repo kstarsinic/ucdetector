@@ -9,6 +9,7 @@ package org.ucdetector;
 
 import java.net.URL;
 import java.text.DateFormat;
+import java.util.Arrays;
 import java.util.Date;
 import java.util.LinkedHashMap;
 import java.util.Locale;
@@ -22,6 +23,7 @@ import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Path;
 import org.eclipse.core.runtime.Status;
+import org.eclipse.core.runtime.preferences.DefaultScope;
 import org.eclipse.core.runtime.preferences.IEclipsePreferences;
 import org.eclipse.core.runtime.preferences.InstanceScope;
 import org.eclipse.jdt.internal.ui.JavaPluginImages;
@@ -40,16 +42,17 @@ import org.osgi.service.prefs.BackingStoreException;
 /**
  * Default Activator-class of this plug-ins
  */
+@SuppressWarnings("nls")
 public class UCDetectorPlugin extends AbstractUIPlugin {
-  public static final String IMAGE_FINAL = "IMAGE_FINAL"; //$NON-NLS-1$
-  public static final String IMAGE_UCD = "IMAGE_UCD"; //$NON-NLS-1$
-  public static final String IMAGE_COMMENT = "IMAGE_COMMENT"; //$NON-NLS-1$
-  public static final String IMAGE_TODO = "IMAGE_TODO"; //$NON-NLS-1$
-  public static final String IMAGE_CYCLE = "IMAGE_CYCLE"; //$NON-NLS-1$
+  public static final String IMAGE_FINAL = "IMAGE_FINAL";
+  public static final String IMAGE_UCD = "IMAGE_UCD";
+  public static final String IMAGE_COMMENT = "IMAGE_COMMENT";
+  public static final String IMAGE_TODO = "IMAGE_TODO";
+  public static final String IMAGE_CYCLE = "IMAGE_CYCLE";
   /**
    * See MANIFEST.MF: Bundle-SymbolicName, and .project
    */
-  public static final String ID = "org.ucdetector"; //$NON-NLS-1$
+  public static final String ID = "org.ucdetector";
   // The shared instance.
   private static UCDetectorPlugin plugin;
   private static boolean isHeadlessMode = false;
@@ -59,8 +62,8 @@ public class UCDetectorPlugin extends AbstractUIPlugin {
    * see /org.ucdetector/help/contexts.xml
    * http://www.eclipse.org/articles/article.php?file=Article-AddingHelpToRCP/index.html
    */
-  public static final String HELP_ID = ID + ".ucd_context_id";//$NON-NLS-1$
-  public static final String HELP_ID_PREFERENCES = ID + ".ucd_context_id_preferences";//$NON-NLS-1$
+  public static final String HELP_ID = ID + ".ucd_context_id";
+  public static final String HELP_ID_PREFERENCES = ID + ".ucd_context_id_preferences";
   private final DateFormat dateFormat = DateFormat.getDateTimeInstance(DateFormat.MEDIUM, DateFormat.MEDIUM, Locale
       .getDefault());
 
@@ -69,14 +72,14 @@ public class UCDetectorPlugin extends AbstractUIPlugin {
   }
 
   private void dumpInformation() {
-    Log.logInfo("\tStart     : " + getNow()); //$NON-NLS-1$
-    Log.logInfo("\tOS        : " + getAboutOS()); //$NON-NLS-1$ 
-    Log.logInfo("\tJava      : " + getAboutJavaVersion()); //$NON-NLS-1$ 
-    Log.logInfo("\tEclipse   : " + getAboutEclipseVersion()); //$NON-NLS-1$
-    Log.logInfo("\tUCDetector: " + getAboutUCDVersion()); //$NON-NLS-1$
-    Log.logInfo("\tHome      : " + getAboutEclipseHome()); //$NON-NLS-1$ 
-    Log.logInfo("\tLogfile   : " + getAboutLogfile()); //$NON-NLS-1$ 
-    Log.logInfo("\tWorkspace : " + getAboutWorkspace()); //$NON-NLS-1$ 
+    Log.logInfo("\tStart     : " + getNow());
+    Log.logInfo("\tOS        : " + getAboutOS());
+    Log.logInfo("\tJava      : " + getAboutJavaVersion());
+    Log.logInfo("\tEclipse   : " + getAboutEclipseVersion());
+    Log.logInfo("\tUCDetector: " + getAboutUCDVersion());
+    Log.logInfo("\tHome      : " + getAboutEclipseHome());
+    Log.logInfo("\tLogfile   : " + getAboutLogfile());
+    Log.logInfo("\tWorkspace : " + getAboutWorkspace());
     Log.logInfo(getPreferencesAsString());
   }
 
@@ -86,41 +89,48 @@ public class UCDetectorPlugin extends AbstractUIPlugin {
     dumpInformation();
   }
 
+  /** @return all available preferences and all and all preferences which are different from default preferences   */
   public static String getPreferencesAsString() {
     StringBuilder sb = new StringBuilder();
-    sb.append("\r\nUCDetector Plugin Preferences:\r\n"); //$NON-NLS-1$
-    Map<String, String> preferences = getPreferences();
+    sb.append("\r\nUCDetector Plugin Preferences:\r\n");
+    Map<String, String> preferences = getDeltaPreferences();
     sb.append(preferences.size());
-    sb.append(" preferences are different from default preferences:\r\n"); //$NON-NLS-1$
+    sb.append(" preferences are different from default preferences:\r\n");
     Set<Entry<String, String>> entrySet = preferences.entrySet();
     for (Entry<String, String> entry : entrySet) {
-      sb.append(String.format("\t%s=%s%n", entry.getKey(), entry.getValue())); //$NON-NLS-1$
+      sb.append(String.format("\t%s=%s%n", entry.getKey(), entry.getValue()));
     }
     return sb.toString();
   }
 
-  public static Map<String, String> getPreferences() {
+  /** @return All preferences which are different from default preferences  */
+  public static Map<String, String> getDeltaPreferences() {
+    return getPreferencesImpl(new InstanceScope().getNode(ID));
+  }
+
+  /** @return All available preferences */
+  public static Map<String, String> getAllPreferences() {
+    return getPreferencesImpl(new DefaultScope().getNode(ID));
+  }
+
+  private static Map<String, String> getPreferencesImpl(IEclipsePreferences ePrefs) {
     Map<String, String> result = new LinkedHashMap<String, String>();
     try {
-      IEclipsePreferences node = new InstanceScope().getNode(ID);
-      // All preferences: node = new DefaultScope().getNode(UCDetectorPlugin.ID);
-      String[] propertyNames = node.keys();
+      String[] propertyNames = ePrefs.keys();
+      Arrays.sort(propertyNames);
       for (String propertyName : propertyNames) {
-        result.put(propertyName, node.get(propertyName, null));
+        result.put(propertyName, ePrefs.get(propertyName, null));
       }
     }
     catch (BackingStoreException ex) {
-      result.put("EXCEPTION", ex.getMessage()); //$NON-NLS-1$
-      Log.logError("Can't get preferences", ex); //$NON-NLS-1$
+      result.put("EXCEPTION", ex.getMessage());
+      Log.logError("Can't get preferences", ex);
     }
     return result;
   }
 
   public static void dumpList(String listString, String separator) {
-    Log.logInfo(listString //
-        .replace("[", separator) //$NON-NLS-1$ 
-        .replace(", ", separator) //$NON-NLS-1$
-        .replace("]", "")); //$NON-NLS-1$ //$NON-NLS-2$
+    Log.logInfo(listString.replace("[", separator).replace(", ", separator).replace("]", ""));
   }
 
   /**
@@ -156,25 +166,25 @@ public class UCDetectorPlugin extends AbstractUIPlugin {
   @Override
   protected void initializeImageRegistry(ImageRegistry registry) {
     super.initializeImageRegistry(registry);
-    registry.put(IMAGE_UCD, getUcdImage("ucd.gif")); //$NON-NLS-1$
+    registry.put(IMAGE_UCD, getUcdImage("ucd.gif"));
     registry.put(IMAGE_FINAL, JavaPluginImages.DESC_OVR_FINAL);
-    registry.put(IMAGE_COMMENT, getEclipseImage("org.eclipse.jdt.ui/icons/full/etool16/comment_edit.gif")); //$NON-NLS-1$
-    registry.put(IMAGE_TODO, getEclipseImage("org.eclipse.ui.ide/icons/full/elcl16/showtsk_tsk.gif")); //$NON-NLS-1$
-    registry.put(IMAGE_CYCLE, UCDetectorPlugin.getEclipseImage("org.eclipse.jdt.ui/icons/full/elcl16/refresh_nav.gif")); //$NON-NLS-1$
+    registry.put(IMAGE_COMMENT, getEclipseImage("org.eclipse.jdt.ui/icons/full/etool16/comment_edit.gif"));
+    registry.put(IMAGE_TODO, getEclipseImage("org.eclipse.ui.ide/icons/full/elcl16/showtsk_tsk.gif"));
+    registry.put(IMAGE_CYCLE, UCDetectorPlugin.getEclipseImage("org.eclipse.jdt.ui/icons/full/elcl16/refresh_nav.gif"));
   }
 
   private ImageDescriptor getUcdImage(String icon) {
-    IPath path = new Path("icons").append("/" + icon); //$NON-NLS-1$ //$NON-NLS-2$
+    IPath path = new Path("icons").append("/" + icon);
     return JavaPluginImages.createImageDescriptor(getDefault().getBundle(), path, true);
   }
 
   public static ImageDescriptor getEclipseImage(String icon) {
     try {
-      URL url = new URL("platform:/plugin/" + icon); //$NON-NLS-1$
+      URL url = new URL("platform:/plugin/" + icon);
       return ImageDescriptor.createFromURL(FileLocator.resolve(url));
     }
     catch (Exception ex) {
-      Log.logError("Can't get eclipse image", ex); //$NON-NLS-1$
+      Log.logError("Can't get eclipse image", ex);
       return null;
     }
   }
@@ -241,36 +251,35 @@ public class UCDetectorPlugin extends AbstractUIPlugin {
 
   // -------------------------------------------------------------------------
   public static String getAboutOS() {
-    return System.getProperty("os.name") + " - " //$NON-NLS-1$ //$NON-NLS-2$
-        + System.getProperty("os.version"); //$NON-NLS-1$
+    return System.getProperty("os.name") + " - " + System.getProperty("os.version");
   }
 
   public static String getAboutJavaVersion() {
-    return System.getProperty("java.runtime.version"); //$NON-NLS-1$
+    return System.getProperty("java.runtime.version");
   }
 
   public static String getAboutEclipseVersion() {
-    return System.getProperty("osgi.framework.version"); //$NON-NLS-1$
+    return System.getProperty("osgi.framework.version");
   }
 
   public static String getAboutUCDVersion() {
-    return (String) getDefault().getBundle().getHeaders().get("Bundle-Version"); //$NON-NLS-1$
+    return (String) getDefault().getBundle().getHeaders().get("Bundle-Version");
   }
 
   public static String getAboutEclipseHome() {
-    String eclipseHome = System.getProperty("osgi.install.area"); //$NON-NLS-1$
-    if (eclipseHome != null && eclipseHome.startsWith("file:")) { //$NON-NLS-1$
-      return eclipseHome.substring("file:".length()); //$NON-NLS-1$
+    String eclipseHome = System.getProperty("osgi.install.area");
+    if (eclipseHome != null && eclipseHome.startsWith("file:")) {
+      return eclipseHome.substring("file:".length());
     }
     return eclipseHome;
   }
 
   public static String getAboutLogfile() {
-    return System.getProperty("osgi.logfile"); //$NON-NLS-1$
+    return System.getProperty("osgi.logfile");
   }
 
   public static String getAboutWorkspace() {
-    return System.getProperty("osgi.instance.area"); //$NON-NLS-1$
+    return System.getProperty("osgi.instance.area");
   }
 
   public static String getHostName() {
@@ -278,7 +287,7 @@ public class UCDetectorPlugin extends AbstractUIPlugin {
       return java.net.InetAddress.getLocalHost().getHostName();
     }
     catch (Exception e) {
-      return "?"; //$NON-NLS-1$
+      return "?";
     }
   }
 }
