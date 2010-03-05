@@ -7,10 +7,19 @@
  */
 package org.ucdetector.preferences;
 
+import java.io.IOException;
+import java.io.InputStream;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
+import java.util.Map.Entry;
+
 import org.eclipse.jface.preference.ComboFieldEditor;
 import org.eclipse.jface.preference.FieldEditor;
 import org.eclipse.jface.preference.FieldEditorPreferencePage;
 import org.eclipse.jface.preference.IPreferenceStore;
+import org.eclipse.jface.preference.PreferenceStore;
 import org.eclipse.jface.preference.StringFieldEditor;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.layout.GridData;
@@ -31,6 +40,7 @@ import org.ucdetector.UCDetectorPlugin;
  */
 public abstract class UCDetectorBasePreferencePage extends FieldEditorPreferencePage implements
     IWorkbenchPreferencePage {
+  private final List<FieldEditor> fields = new ArrayList<FieldEditor>();
   /**
    * entryNames (first column) and values (second column) for the
    * ComboFieldEditor
@@ -52,9 +62,63 @@ public abstract class UCDetectorBasePreferencePage extends FieldEditorPreference
   @Override
   public boolean performOk() {
     boolean result = super.performOk();
-    Log.logInfo("New preferences: "// //$NON-NLS-1$
-        + UCDetectorPlugin.getPreferencesAsString());
+    Log.logInfo("New preferences: " + UCDetectorPlugin.getPreferencesAsString()); //$NON-NLS-1$
     return result;
+  }
+
+  @Override
+  protected void performApply() {
+    super.performApply();
+    //    dumpPreferencesPerPage();
+  }
+
+  void dumpPreferencesPerPage() {
+    List<String> orderedPreferences = new ArrayList<String>();
+    for (FieldEditor field : fields) {
+      orderedPreferences.add(field.getPreferenceName());
+    }
+    Map<String, String> allPreferences = UCDetectorPlugin.getAllPreferences();
+    for (String pref : orderedPreferences) {
+      System.out.println(pref + "=" + allPreferences.get(pref)); //$NON-NLS-1$
+    }
+  }
+
+  @Override
+  protected void performDefaults() {
+    super.performDefaults();
+    //    setPreferences("class_only.properties");
+  }
+
+  /**
+   * @param preferencesFile Set preferences from selected file
+   */
+  void setPreferences(String preferencesFile) {
+    PreferenceStore tempReplaceStore = new PreferenceStore();
+    InputStream in = getClass().getResourceAsStream(preferencesFile);
+    // Put default values
+    Set<Entry<String, String>> entrySet = UCDetectorPlugin.getAllPreferences().entrySet();
+    for (Entry<String, String> entry : entrySet) {
+      tempReplaceStore.putValue(entry.getKey(), entry.getValue());
+    }
+    try {
+      tempReplaceStore.load(in);
+      for (FieldEditor field : fields) {
+        IPreferenceStore originalStore = field.getPreferenceStore();
+        field.setPreferenceStore(tempReplaceStore);
+        field.load();
+        field.setPreferenceStore(originalStore);
+      }
+      checkState();
+    }
+    catch (IOException e) {
+      Log.logError("Can't load preferences", e); //$NON-NLS-1$
+    }
+  }
+
+  @Override
+  protected void addField(FieldEditor editor) {
+    fields.add(editor);
+    super.addField(editor);
   }
 
   // -------------------------------------------------------------------------
