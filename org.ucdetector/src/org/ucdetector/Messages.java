@@ -12,11 +12,28 @@ import org.eclipse.osgi.util.NLS;
 /**
  * Eclipse l10n of this plugin
  */
+@SuppressWarnings("nls")
 public final class Messages extends NLS {
-  private static final String BUNDLE_NAME = "org.ucdetector.messages"; //$NON-NLS-1$
+  private static final String BUNDLE_NAME = "org.ucdetector.messages";
   static {
     // initialize resource bundle
     NLS.initializeMessages(BUNDLE_NAME, Messages.class);
+  }
+
+  /**
+   * This method uses reflection to get string stored in static field!
+   * @param name java name of the static field in this class
+   * @param defaultString string to return, when field is not found
+   * @return string found in messages.properties
+   */
+  public static String getString(String name, String defaultString) {
+    try {
+      return (String) Messages.class.getDeclaredField(name).get(null);
+    }
+    catch (Exception ex) {
+      Log.logError("Can't get string for field: " + name, ex);
+      return defaultString;
+    }
   }
 
   private Messages() {
@@ -99,6 +116,13 @@ public final class Messages extends NLS {
   public static String PreferencePage_LiteralsToolTip; // NO_UCD
   public static String PreferencePage_WarnLimit; // NO_UCD
   public static String PreferencePage_WarnLimitToolTip; // NO_UCD
+  //  @UsedBy("reflection")
+  public static String PrefMode_classes_only;// NO_UCD
+  //  @UsedBy("reflection")
+  public static String PrefMode_full;// NO_UCD
+  //  @UsedBy("reflection")
+  public static String PrefMode_Default;// NO_UCD
+
   //
   public static String PreferencePage_GroupDetect; // NO_UCD
   public static String PreferencePage_GroupFileSearch; // NO_UCD
