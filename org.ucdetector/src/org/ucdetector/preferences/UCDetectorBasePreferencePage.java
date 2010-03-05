@@ -86,7 +86,7 @@ public abstract class UCDetectorBasePreferencePage extends FieldEditorPreference
   @Override
   protected void performDefaults() {
     super.performDefaults();
-    //    setPreferences("class_only.properties");
+    //    setPreferences("classes_only.properties");
   }
 
   /**
@@ -187,5 +187,12 @@ public abstract class UCDetectorBasePreferencePage extends FieldEditorPreference
     gd.horizontalSpan = hspan;
     g.setLayoutData(gd);
     return g;
+  }
+
+  protected static GridData createGridData(int width, int height, int hAlign, int vAlign, boolean hGrab, boolean vGrab) {
+    final GridData gd = new GridData(hAlign, vAlign, hGrab, vGrab);
+    gd.widthHint = width;
+    gd.heightHint = height;
+    return gd;
   }
 }
