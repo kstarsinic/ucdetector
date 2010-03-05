@@ -32,6 +32,7 @@ public class PreferenceInitializer extends AbstractPreferenceInitializer {
   private static final String FIELD_FILTER = "test*,*Test";
   private static final String ANNOATIONS_FILTER = "java.lang.Deprecated,";
   private static final String FILE_PATTERN_LITERAL_SEARCH = "*.xml,";
+  private static final String REPORT_DEFAULT_DIR = "ucdetector_reports";
   private static final String REPORT_DEFAULT_NAME = "UCDetetorReport.html";
 
   @Override
@@ -63,8 +64,9 @@ public class PreferenceInitializer extends AbstractPreferenceInitializer {
     // OTHER -------------------------------------------------------------------
     String report;
     try {
-      File workspace = Platform.getLocation().toFile();
-      report = new File(workspace, REPORT_DEFAULT_NAME).getCanonicalPath();
+      File workspaceDir = Platform.getLocation().toFile();
+      File reportDir = new File(workspaceDir, REPORT_DEFAULT_DIR);
+      report = new File(reportDir, REPORT_DEFAULT_NAME).getCanonicalPath();
     }
     catch (Exception e) {
       report = REPORT_DEFAULT_NAME;
