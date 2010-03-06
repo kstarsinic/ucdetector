@@ -82,7 +82,8 @@ public class XmlReport implements IUCDetectorReport {
   //
   private static final String EXTENSION_XML = ".xml";
   private static final String EXTENSION_HTML = ".html";
-  private static final String XSL_FILE = "org/ucdetector/report/html.xslt";
+  private static final String HTML_XSL_FILE = "org/ucdetector/report/html.xslt";
+  private static final String TEXT_XSL_FILE = "org/ucdetector/report/text.xslt";
 
   private static final DecimalFormat FORMAT_REPORT_NUMBER = new DecimalFormat("000");
 
@@ -272,7 +273,8 @@ public class XmlReport implements IUCDetectorReport {
     if (!Prefs.isWriteReportFile()) {
       return;
     }
-    String htmlFileName = appendFreeNumber(Prefs.getReportFile());
+    String reportFile = Prefs.getReportFile();
+    String htmlFileName = appendFreeNumber(reportFile);
     if (initXMLException != null) {
       logEndReportMessage(Messages.XMLReport_WriteError, IStatus.ERROR, initXMLException, htmlFileName);
       return;
@@ -400,14 +402,15 @@ public class XmlReport implements IUCDetectorReport {
   private static File writeDocumentToFile(Document docToWrite, String fileName) throws Exception {
     Source source = new DOMSource(docToWrite);
     File file = new File(fileName);
+    file.getParentFile().mkdirs();
     Result result = new StreamResult(new OutputStreamWriter(new FileOutputStream(file), "utf-8"));
     // Result result = new StreamResult(new OutputStreamWriter(new FI, "utf-8"));
     TransformerFactory tf = TransformerFactory.newInstance();
     Transformer xformer = tf.newTransformer();
     try {
-      tf.setAttribute("indent-number", Integer.valueOf(2));
       xformer.setOutputProperty(OutputKeys.INDENT, "yes");
       xformer.setOutputProperty(OutputKeys.METHOD, "xml");
+      tf.setAttribute("indent-number", Integer.valueOf(2));
     }
     catch (IllegalArgumentException ignore) {
       Log.logWarn("Can't change output format: " + ignore);
@@ -423,7 +426,7 @@ public class XmlReport implements IUCDetectorReport {
     InputStream xmlIn = null;
     try {
       TransformerFactory factory = TransformerFactory.newInstance();
-      InputStream xslIn = getClass().getClassLoader().getResourceAsStream(XSL_FILE);
+      InputStream xslIn = getClass().getClassLoader().getResourceAsStream(HTML_XSL_FILE); // TEXT_XSL_FILE, HTML_XSL_FILE
       Templates template = factory.newTemplates(new StreamSource(xslIn));
       Transformer xformer = template.newTransformer();
       xmlIn = new FileInputStream(file);
