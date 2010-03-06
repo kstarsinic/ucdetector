@@ -66,22 +66,10 @@ public class UCDetectorPreferencePage extends UCDetectorBasePreferencePage {
     // -----------------------------------------------
     // org.eclipse.team.internal.ccvs.ui.CVSPreferencesPage.createGeneralTab()
     TabFolder tabFolder = new TabFolder(parentGroups, SWT.NONE);
-    tabFolder.setLayoutData(createGridData(0, SWT.DEFAULT, SWT.FILL, SWT.CENTER, true, false));
-    // MAIN
-    Composite compositeMain = createComposite(tabFolder, 1, 1, GridData.FILL_HORIZONTAL);
-    TabItem tabMain = new TabItem(tabFolder, SWT.NONE);
-    tabMain.setText("Main");
-    tabMain.setControl(compositeMain);
-    // VISIBILITY
-    Composite compositeVisibility = createComposite(tabFolder, 1, 1, GridData.FILL_HORIZONTAL);
-    TabItem tabVisibility = new TabItem(tabFolder, SWT.NONE);
-    tabVisibility.setText("Visibility");
-    tabVisibility.setControl(compositeVisibility);
-    // -----------------------------------------------
-    createFilterGroup(compositeMain);
-    createDetectGroup(compositeMain);
-    createFileSearchGroup(compositeMain);
-    createOtherGroup(compositeVisibility);
+    tabFolder.setLayoutData(createGridData(500, SWT.DEFAULT, SWT.FILL, SWT.CENTER, true, false));
+    createFilterTab(tabFolder);
+    createMainTab(tabFolder);
+    createKeywordTab(tabFolder);
   }
 
   private void createModeCombo(Composite parentGroups) {
@@ -101,6 +89,33 @@ public class UCDetectorPreferencePage extends UCDetectorBasePreferencePage {
         }
       }
     });
+  }
+
+  private void createMainTab(TabFolder tabFolder) {
+    Composite compositeMain = createComposite(tabFolder, 1, 1, GridData.FILL_HORIZONTAL);
+    TabItem tabMain = new TabItem(tabFolder, SWT.NONE);
+    tabMain.setText("Detect");
+    tabMain.setControl(compositeMain);
+    createDetectGroup(compositeMain);
+    createFileSearchGroup(compositeMain);
+    createOtherGroup(compositeMain);
+  }
+
+  private void createFilterTab(TabFolder tabFolder) {
+    Composite compositeFilter = createComposite(tabFolder, 1, 1, GridData.FILL_HORIZONTAL);
+    TabItem tabFilter = new TabItem(tabFolder, SWT.NONE);
+    tabFilter.setText("Filter");
+    tabFilter.setControl(compositeFilter);
+    createFilterGroup(compositeFilter);
+  }
+
+  private void createKeywordTab(TabFolder tabFolder) {
+    Composite compositeVisibility = createComposite(tabFolder, 1, 1, GridData.FILL_HORIZONTAL);
+    TabItem tabVisibility = new TabItem(tabFolder, SWT.NONE);
+    tabVisibility.setText("Keywords");
+    tabVisibility.setControl(compositeVisibility);
+    createKeywordGroup(compositeVisibility);
+    createVisibilityGroupClasses(compositeVisibility);
   }
 
   /**
@@ -222,6 +237,77 @@ public class UCDetectorPreferencePage extends UCDetectorBasePreferencePage {
     cycleDepth.getLabelControl(spacer).setToolTipText(Messages.PreferencePage_MaxCycleSizeToolTip);
     this.addField(cycleDepth);
   }
+
+  // --------------------------------------------------------------------------
+  // VISIBILITY
+  // --------------------------------------------------------------------------
+  /**
+   * Create a group of keyword settings
+   * (analyze visibility, try to make methods or fields final)
+   */
+  private void createKeywordGroup(Composite parentGroups) {
+    Composite spacer = createGroup(parentGroups, Messages.PreferencePage_GroupFinal, 1, 1, GridData.FILL_HORIZONTAL);
+    // FINAL -------------------------------------------------------------------
+    ComboFieldEditor analyzeFinalMethod = createCombo(Prefs.ANALYZE_FINAL_METHOD,
+        Messages.PreferencePage_CheckFinalMethod, spacer);
+    this.addField(analyzeFinalMethod);
+    ComboFieldEditor analyzeFinalField = createCombo(Prefs.ANALYZE_FINAL_FIELD,
+        Messages.PreferencePage_CheckFinalField, spacer);
+    this.addField(analyzeFinalField);
+  }
+
+  /**
+   * Create a group of keyword settings
+   * (analyze visibility, try to make methods or fields final)
+   */
+  private void createVisibilityGroupClasses(Composite parentGroups) {
+    Composite spacer = createGroup(parentGroups, Messages.PreferencePage_GroupVisibility, 1, 1,
+        GridData.FILL_HORIZONTAL);
+    //
+    //    addLineHack(spacer);
+    this.addField(createCombo(Prefs.ANALYZE_VISIBILITY_PROTECTED_CLASSES,
+        Messages.PreferencePage_CheckProtectedClasses, spacer));
+    this.addField(createCombo(Prefs.ANALYZE_VISIBILITY_PRIVATE_CLASSES, Messages.PreferencePage_CheckPrivateClasses,
+        spacer));
+    addLineHack(spacer);
+
+    this.addField(createCombo(Prefs.ANALYZE_VISIBILITY_PROTECTED_METHODS,
+        Messages.PreferencePage_CheckProtectedMethods, spacer));
+    this.addField(createCombo(Prefs.ANALYZE_VISIBILITY_PRIVATE_METHODS, Messages.PreferencePage_CheckPrivateMethods,
+        spacer));
+    addLineHack(spacer);
+
+    this.addField(createCombo(Prefs.ANALYZE_VISIBILITY_PROTECTED_FIELDS, Messages.PreferencePage_CheckProtectedFields,
+        spacer));
+    this.addField(createCombo(Prefs.ANALYZE_VISIBILITY_PRIVATE_FIELDS, Messages.PreferencePage_CheckPrivateFields,
+        spacer));
+
+    // [ 2804064 ] Access to enclosing type - make 2743908 configurable
+    BooleanFieldEditor ignoreSyntheticAccessEmulation = new BooleanFieldEditor(Prefs.IGNORE_SYNTHETIC_ACCESS_EMULATION,
+        "    " //$NON-NLS-1$
+            + Messages.PreferencePage_ignoreSyntheticAccessEmulation, BooleanFieldEditor.SEPARATE_LABEL, spacer);
+    ignoreSyntheticAccessEmulation.getLabelControl(spacer).setToolTipText(
+        Messages.PreferencePage_ignoreSyntheticAccessEmulationTooltip);
+    this.addField(ignoreSyntheticAccessEmulation);
+    addLineHack(spacer);
+
+    this.addField(createCombo(Prefs.ANALYZE_VISIBILITY_PROTECTED_CONSTANTS,
+        Messages.PreferencePage_CheckProtectedConstants, spacer));
+    this.addField(createCombo(Prefs.ANALYZE_VISIBILITY_PRIVATE_CONSTANTS,
+        Messages.PreferencePage_CheckPrivateConstants, spacer));
+  }
+
+  private static void addLineHack(Composite spacer) {
+    //    Composite composite = createComposite(spacer, 2, 1, GridData.FILL_BOTH);
+    //    Label label = new Label(spacer, SWT.SEPARATOR | SWT.HORIZONTAL | SWT.WRAP);
+    //    label.setBackground(Display.getDefault().getSystemColor(SWT.COLOR_RED));
+    //    label = new Label(spacer, SWT.SEPARATOR | SWT.HORIZONTAL | SWT.WRAP);
+    //    GridData gd = new GridData(GridData.FILL_HORIZONTAL);
+    //    label.setLayoutData(gd);
+    Label label = new Label(spacer, SWT.WRAP);
+    label.setText("------");
+    label = new Label(spacer, SWT.WRAP);
+  } // --------------------------------------------------------------------------
 
   /**
    * Hack for layout problems. See also: IntegerFieldEditor.getNumberOfControls()

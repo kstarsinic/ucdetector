@@ -9,11 +9,13 @@
         class="org.ucdetector.preferences.UCDetectorPreferencePage"
         id="org.ucdetector.preferences.PreferencePage">
     </page>
+    <!--
     <page name="%preferencePages.name.keywords"
 	      class="org.ucdetector.preferences.UCDetectorPreferencePageKeywords"
         id="org.ucdetector.preferences.UCDetectorPreferencePageKeywords"
 		    category="org.ucdetector.preferences.PreferencePage">
    	</page>
+   	-->
   </extension>
 
   <!-- ===================================================================== -->
