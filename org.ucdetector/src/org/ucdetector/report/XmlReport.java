@@ -8,8 +8,9 @@
 package org.ucdetector.report;
 
 import java.io.File;
-import java.io.FileInputStream;
 import java.io.FileOutputStream;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStreamWriter;
 import java.io.PrintWriter;
@@ -18,7 +19,6 @@ import java.text.DecimalFormat;
 import java.util.Set;
 import java.util.Map.Entry;
 
-import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.transform.OutputKeys;
 import javax.xml.transform.Result;
@@ -80,8 +80,6 @@ public class XmlReport implements IUCDetectorReport {
       + "   - Constructor, Method\n" + "   - EnumConstant, Constant, Field\n" + " - markerType one of:\n"
       + "   - Reference, FewReference, VisibilityPrivate, VisibilityProtected, VisibilityDefault, Final, TestOnly\n";
   //
-  private static final String EXTENSION_XML = ".xml";
-  private static final String EXTENSION_HTML = ".html";
   private static final String HTML_XSL_FILE = "org/ucdetector/report/html.xslt";
   private static final String TEXT_XSL_FILE = "org/ucdetector/report/text.xslt";
 
@@ -267,48 +265,6 @@ public class XmlReport implements IUCDetectorReport {
   }
 
   /**
-   * Write report to xml file, do xslt transformation to an html file
-   */
-  public void endReport(Object[] selected, long start) throws CoreException {
-    if (!Prefs.isWriteReportFile()) {
-      return;
-    }
-    String reportFile = Prefs.getReportFile();
-    String htmlFileName = appendFreeNumber(reportFile);
-    if (initXMLException != null) {
-      logEndReportMessage(Messages.XMLReport_WriteError, IStatus.ERROR, initXMLException, htmlFileName);
-      return;
-    }
-    if (markerCount == 0 && detectionProblemCount == 0) {
-      logEndReportMessage(Messages.XMLReport_WriteNoWarnings, IStatus.INFO, initXMLException);
-      return;
-    }
-    appendStatistics(selected, start);
-    String xmlFileName;
-    if (htmlFileName.endsWith(EXTENSION_HTML)) {
-      xmlFileName = htmlFileName.replace(EXTENSION_HTML, EXTENSION_XML);
-    }
-    else {
-      xmlFileName = htmlFileName + EXTENSION_XML;
-    }
-    try {
-      File xmlFile = writeDocumentToFile(doc, xmlFileName);
-      Document htmlDocument = transformXSLT(xmlFile);
-      File htmlFile = writeDocumentToFile(htmlDocument, htmlFileName);
-      logEndReportMessage(Messages.XMLReport_WriteOk, IStatus.INFO, null, String.valueOf(markerCount), htmlFile
-          .getAbsoluteFile().toString());
-
-      if (Log.DEBUG) {
-        Log.logDebug("htmlFile= " + htmlFile.getCanonicalPath());
-        Log.logDebug("xmlFile = " + xmlFile.getCanonicalPath());
-      }
-    }
-    catch (Exception e) {
-      logEndReportMessage(Messages.XMLReport_WriteError, IStatus.ERROR, e, htmlFileName);
-    }
-  }
-
-  /**
    * @return File name, with does not exist, containing a number.
    * UCDetetorReport.html -&gt; UCDetetorReport_001.html
    */
@@ -397,51 +353,97 @@ public class XmlReport implements IUCDetectorReport {
   }
 
   /**
+   * Write report to xml file, do xslt transformation to an html file
+   */
+  public void endReport(Object[] selected, long start) throws CoreException {
+    if (!Prefs.isWriteReportFile()) {
+      return;
+    }
+    String reportFile = Prefs.getReportFile();
+    new File(reportFile).getParentFile().mkdirs();
+    String htmlFileName = appendFreeNumber(reportFile);
+    if (initXMLException != null) {
+      logEndReportMessage(Messages.XMLReport_WriteError, IStatus.ERROR, initXMLException, htmlFileName);
+      return;
+    }
+    if (markerCount == 0 && detectionProblemCount == 0) {
+      logEndReportMessage(Messages.XMLReport_WriteNoWarnings, IStatus.INFO, initXMLException);
+      return;
+    }
+    appendStatistics(selected, start);
+
+    String xmlFileName = convertFilename(htmlFileName, ".xml");
+    String txtFileName = convertFilename(htmlFileName, ".txt");
+    try {
+      writeDocumentToFile(doc, xmlFileName);
+      Document htmlDocument = transformToHTML(doc);
+      writeDocumentToFile(htmlDocument, htmlFileName);
+      writeTextFile(txtFileName);
+      logEndReportMessage(Messages.XMLReport_WriteOk, IStatus.INFO, null, String.valueOf(markerCount), htmlFileName);
+    }
+    catch (Exception e) {
+      logEndReportMessage(Messages.XMLReport_WriteError, IStatus.ERROR, e, htmlFileName);
+    }
+  }
+
+  private String convertFilename(String htmlFileName, String extension) {
+    if (htmlFileName.endsWith(".html")) {
+      return htmlFileName.replace(".html", extension);
+    }
+    return htmlFileName + extension;
+  }
+
+  private void writeTextFile(String txtFileName) throws Exception, IOException {
+    String text = transformToText(doc);
+    File file = new File(txtFileName);
+    FileWriter fileWriter = new FileWriter(file);
+    fileWriter.write(text);
+    fileWriter.close();
+    Log.logInfo("Wrote file= " + file.getCanonicalPath());
+  }
+
+  /**
    * writes an document do a file
    */
-  private static File writeDocumentToFile(Document docToWrite, String fileName) throws Exception {
+  private static void writeDocumentToFile(Document docToWrite, String fileName) throws Exception {
     Source source = new DOMSource(docToWrite);
     File file = new File(fileName);
-    file.getParentFile().mkdirs();
     Result result = new StreamResult(new OutputStreamWriter(new FileOutputStream(file), "utf-8"));
-    // Result result = new StreamResult(new OutputStreamWriter(new FI, "utf-8"));
     TransformerFactory tf = TransformerFactory.newInstance();
     Transformer xformer = tf.newTransformer();
     try {
+      tf.setAttribute("indent-number", Integer.valueOf(2));
       xformer.setOutputProperty(OutputKeys.INDENT, "yes");
       xformer.setOutputProperty(OutputKeys.METHOD, "xml");
-      tf.setAttribute("indent-number", Integer.valueOf(2));
     }
     catch (IllegalArgumentException ignore) {
       Log.logWarn("Can't change output format: " + ignore);
     }
     xformer.transform(source, result);
-    return file;
+    Log.logInfo("Wrote file= " + file.getCanonicalPath());
   }
 
-  /**
-   * Do an xslt transformation
-   */
-  private Document transformXSLT(File file) throws Exception {
-    InputStream xmlIn = null;
-    try {
-      TransformerFactory factory = TransformerFactory.newInstance();
-      InputStream xslIn = getClass().getClassLoader().getResourceAsStream(HTML_XSL_FILE); // TEXT_XSL_FILE, HTML_XSL_FILE
-      Templates template = factory.newTemplates(new StreamSource(xslIn));
-      Transformer xformer = template.newTransformer();
-      xmlIn = new FileInputStream(file);
-      Source source = new StreamSource(xmlIn);
-      DocumentBuilder builder = DocumentBuilderFactory.newInstance().newDocumentBuilder();
-      Document transformedDoc = builder.newDocument();
-      Result result = new DOMResult(transformedDoc);
-      xformer.transform(source, result);
-      xmlIn.close();
-      return transformedDoc;
-    }
-    finally {
-      if (xmlIn != null) {
-        xmlIn.close();
-      }
-    }
+  /** Transform from xml to html using xslt transformation */
+  private Document transformToHTML(Document xmlDoc) throws Exception {
+    InputStream xslIn = getClass().getClassLoader().getResourceAsStream(HTML_XSL_FILE); // TEXT_XSL_FILE, HTML_XSL_FILE
+    Templates template = TransformerFactory.newInstance().newTemplates(new StreamSource(xslIn));
+    Transformer xformer = template.newTransformer();
+    Source source = new DOMSource(xmlDoc);
+    Document transformedDoc = DocumentBuilderFactory.newInstance().newDocumentBuilder().newDocument();
+    Result result = new DOMResult(transformedDoc);
+    xformer.transform(source, result);
+    return transformedDoc;
+  }
+
+  /** Transform from xml to text using xslt transformation */
+  private String transformToText(Document xmlDoc) throws Exception {
+    InputStream xslIn = getClass().getClassLoader().getResourceAsStream(TEXT_XSL_FILE);
+    Templates template = TransformerFactory.newInstance().newTemplates(new StreamSource(xslIn));
+    Transformer xformer = template.newTransformer();
+    Source source = new DOMSource(xmlDoc);
+    StringWriter stringWriter = new StringWriter();
+    Result result = new StreamResult(stringWriter);
+    xformer.transform(source, result);
+    return stringWriter.toString();
   }
 }
