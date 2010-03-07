@@ -135,7 +135,7 @@ public class UCDApplication implements IApplication {
     catch (BackingStoreException ex) {
       Log.logError("Can't get preferences", ex);
     }
-    Log.logInfo("Report file is: " + Prefs.getReportFile());
+    Log.logInfo("Report directory is: " + Prefs.getReportDir());
   }
 
   private boolean hasOptionValue(String[] sArgs, int i) {

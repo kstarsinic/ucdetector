@@ -76,7 +76,7 @@ public class UCDetectorAction extends AbstractUCDetectorAction {
     StringBuilder mes = new StringBuilder();
     mes.append(NLS.bind(Messages.UCDetectorAction_ResultMessage, String.valueOf(created)));
     //
-    String reportFolder = Prefs.getReportFolder();
+    String reportFolder = Prefs.getReportDir();
     if (reportFolder != null && created > 0) {
       mes.append(". "); //$NON-NLS-1$
       String s = NLS.bind(Messages.UCDetectorAction_ResultReport, reportFolder);
