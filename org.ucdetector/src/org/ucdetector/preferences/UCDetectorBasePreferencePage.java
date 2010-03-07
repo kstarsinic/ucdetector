@@ -169,12 +169,12 @@ public abstract class UCDetectorBasePreferencePage extends FieldEditorPreference
   // LaunchingPreferencePage
   static Composite createGroup(Composite parent, String text, int columns, int hspan, int fill) {
     Group g = new Group(parent, SWT.NONE);
-    g.setLayout(new GridLayout(columns, false));
+    g.setLayout(new GridLayout(3, false));
     g.setText(text);
     GridData gd = new GridData(fill);
     gd.horizontalSpan = hspan;
     g.setLayoutData(gd);
-    Composite spacer = createComposite(g, 1, 1, GridData.FILL_HORIZONTAL);
+    Composite spacer = createComposite(g, columns, 1, fill);
     return spacer;
   }
 
