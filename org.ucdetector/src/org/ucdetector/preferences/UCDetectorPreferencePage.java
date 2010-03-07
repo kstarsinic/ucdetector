@@ -9,8 +9,8 @@ package org.ucdetector.preferences;
 
 import org.eclipse.jface.preference.BooleanFieldEditor;
 import org.eclipse.jface.preference.ComboFieldEditor;
+import org.eclipse.jface.preference.DirectoryFieldEditor;
 import org.eclipse.jface.preference.FieldEditorPreferencePage;
-import org.eclipse.jface.preference.FileFieldEditor;
 import org.eclipse.jface.preference.IntegerFieldEditor;
 import org.eclipse.jface.preference.StringFieldEditor;
 import org.eclipse.swt.SWT;
@@ -67,9 +67,22 @@ public class UCDetectorPreferencePage extends UCDetectorBasePreferencePage {
     // org.eclipse.team.internal.ccvs.ui.CVSPreferencesPage.createGeneralTab()
     TabFolder tabFolder = new TabFolder(parentGroups, SWT.NONE);
     tabFolder.setLayoutData(createGridData(500, SWT.DEFAULT, SWT.FILL, SWT.CENTER, true, false));
-    createFilterTab(tabFolder);
-    createMainTab(tabFolder);
-    createKeywordTab(tabFolder);
+
+    // FILTER -----------------------------------------------------------------
+    Composite composite = createTab(tabFolder, "Filter");
+    createFilterGroup(composite);
+    // MAIN -----------------------------------------------------------------
+    composite = createTab(tabFolder, "Detect");
+    createDetectGroup(composite);
+    createFileSearchGroup(composite);
+    createOtherGroup(composite);
+    // KEYWORD -----------------------------------------------------------------
+    composite = createTab(tabFolder, "Keywords");
+    createKeywordGroup(composite);
+    createVisibilityGroupClasses(composite);
+    // REPORT -----------------------------------------------------------------
+    composite = createTab(tabFolder, "Report");
+    createReportGroup(composite);
   }
 
   private void createModeCombo(Composite parentGroups) {
@@ -91,31 +104,12 @@ public class UCDetectorPreferencePage extends UCDetectorBasePreferencePage {
     });
   }
 
-  private void createMainTab(TabFolder tabFolder) {
-    Composite compositeMain = createComposite(tabFolder, 1, 1, GridData.FILL_HORIZONTAL);
+  private Composite createTab(TabFolder tabFolder, String tabText) {
+    Composite composite = createComposite(tabFolder, 1, 1, GridData.FILL_HORIZONTAL);
     TabItem tabMain = new TabItem(tabFolder, SWT.NONE);
-    tabMain.setText("Detect");
-    tabMain.setControl(compositeMain);
-    createDetectGroup(compositeMain);
-    createFileSearchGroup(compositeMain);
-    createOtherGroup(compositeMain);
-  }
-
-  private void createFilterTab(TabFolder tabFolder) {
-    Composite compositeFilter = createComposite(tabFolder, 1, 1, GridData.FILL_HORIZONTAL);
-    TabItem tabFilter = new TabItem(tabFolder, SWT.NONE);
-    tabFilter.setText("Filter");
-    tabFilter.setControl(compositeFilter);
-    createFilterGroup(compositeFilter);
-  }
-
-  private void createKeywordTab(TabFolder tabFolder) {
-    Composite compositeVisibility = createComposite(tabFolder, 1, 1, GridData.FILL_HORIZONTAL);
-    TabItem tabVisibility = new TabItem(tabFolder, SWT.NONE);
-    tabVisibility.setText("Keywords");
-    tabVisibility.setControl(compositeVisibility);
-    createKeywordGroup(compositeVisibility);
-    createVisibilityGroupClasses(compositeVisibility);
+    tabMain.setText(tabText);
+    tabMain.setControl(composite);
+    return composite;
   }
 
   /**
@@ -208,34 +202,28 @@ public class UCDetectorPreferencePage extends UCDetectorBasePreferencePage {
   // Don't use fileFieldEditor in other group: Layout problems!
   private void createOtherGroup(Composite parentGroups) {
     Composite spacer = createGroup(parentGroups, Messages.PreferencePage_GroupOthers, 1, 1, GridData.FILL_HORIZONTAL);
-    FileFieldEditor fileFieldEditor = new FileFieldEditor(Prefs.REPORT_FILE, Messages.PreferencePage_ReportFile, spacer) {
-      /**
-       * Permit all values entered!
-       */
-      @Override
-      protected boolean checkState() {
-        return true;
-      }
-    };
-    fileFieldEditor.setValidateStrategy(StringFieldEditor.VALIDATE_ON_FOCUS_LOST);
-    fileFieldEditor.setFileExtensions(new String[] { "*.html" }); //$NON-NLS-1$
-    fileFieldEditor.getLabelControl(spacer).setToolTipText(Messages.PreferencePage_ReportFileToolTip);
-    this.addField(fileFieldEditor);
-    // Cycle
     IntegerFieldEditor cycleDepth = new IntegerFieldEditor(Prefs.CYCLE_DEPTH, Messages.PreferencePage_MaxCycleSize,
-        spacer, 1) {
-      /** 
-       * Hack for layout problems. 
-       * */
-      @Override
-      public int getNumberOfControls() {
-        return 3;
-      }
-    };
+        spacer, 1);
     cycleDepth.setValidRange(Prefs.CYCLE_DEPTH_MIN, Prefs.CYCLE_DEPTH_MAX);
     cycleDepth.setEmptyStringAllowed(false);
     cycleDepth.getLabelControl(spacer).setToolTipText(Messages.PreferencePage_MaxCycleSizeToolTip);
     this.addField(cycleDepth);
+  }
+
+  private void createReportGroup(Composite parentGroups) {
+    Composite spacer = createGroup(parentGroups, Messages.PreferencePage_GroupOthers, 1, 1, GridData.FILL_HORIZONTAL);
+    appendBoolean(Prefs.REPORT_CREATE_HTML, "Create html report", spacer);
+    appendBoolean(Prefs.REPORT_CREATE_XML, "Create xml report", spacer);
+    appendBoolean(Prefs.REPORT_CREATE_TXT, "Create text report", spacer);
+    DirectoryFieldEditor path = new DirectoryFieldEditor(Prefs.REPORT_DIR, Messages.PreferencePage_ReportFile, spacer);
+    path.getLabelControl(spacer).setToolTipText(Messages.PreferencePage_ReportFileToolTip);
+    this.addField(path);
+  }
+
+  private void appendBoolean(String name, String text, Composite parent) {
+    BooleanFieldEditor bool = new BooleanFieldEditor(name, text, BooleanFieldEditor.SEPARATE_LABEL, parent);
+    bool.fillIntoGrid(parent, 3);
+    this.addField(bool);
   }
 
   // --------------------------------------------------------------------------
@@ -304,9 +292,13 @@ public class UCDetectorPreferencePage extends UCDetectorBasePreferencePage {
     //    label = new Label(spacer, SWT.SEPARATOR | SWT.HORIZONTAL | SWT.WRAP);
     //    GridData gd = new GridData(GridData.FILL_HORIZONTAL);
     //    label.setLayoutData(gd);
-    Label label = new Label(spacer, SWT.WRAP);
-    label.setText("------");
-    label = new Label(spacer, SWT.WRAP);
+    //    Label label = new Label(spacer, SWT.WRAP);
+    //    label.setText("------");
+    //    label = new Label(spacer, SWT.WRAP);
+    Label label = new Label(spacer, SWT.NONE);
+    GridData gd = new GridData(GridData.HORIZONTAL_ALIGN_FILL);
+    gd.horizontalSpan = 3;
+    label.setLayoutData(gd);
   } // --------------------------------------------------------------------------
 
   /**
