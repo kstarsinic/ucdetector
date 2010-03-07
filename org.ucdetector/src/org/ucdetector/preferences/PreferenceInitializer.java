@@ -33,7 +33,6 @@ public class PreferenceInitializer extends AbstractPreferenceInitializer {
   private static final String ANNOATIONS_FILTER = "java.lang.Deprecated,";
   private static final String FILE_PATTERN_LITERAL_SEARCH = "*.xml,";
   private static final String REPORT_DEFAULT_DIR = "ucdetector_reports";
-  private static final String REPORT_DEFAULT_NAME = "UCDetetorReport.html";
 
   @Override
   public void initializeDefaultPreferences() {
@@ -62,17 +61,19 @@ public class PreferenceInitializer extends AbstractPreferenceInitializer {
     // CYCLE -------------------------------------------------------------------
     store.setDefault(Prefs.CYCLE_DEPTH, Prefs.CYCLE_DEPTH_DEFAULT);
     // OTHER -------------------------------------------------------------------
-    String report;
+    String reportDir;
     try {
       File workspaceDir = Platform.getLocation().toFile();
-      File reportDir = new File(workspaceDir, REPORT_DEFAULT_DIR);
-      report = new File(reportDir, REPORT_DEFAULT_NAME).getCanonicalPath();
+      reportDir = new File(workspaceDir, REPORT_DEFAULT_DIR).getCanonicalPath();
     }
     catch (Exception e) {
-      report = REPORT_DEFAULT_NAME;
+      reportDir = REPORT_DEFAULT_DIR;
       Log.logError("Can't get report file name", e);
     }
-    store.setDefault(Prefs.REPORT_FILE, report);
+    store.setDefault(Prefs.REPORT_DIR, reportDir);
+    store.setDefault(Prefs.REPORT_CREATE_HTML, true);
+    store.setDefault(Prefs.REPORT_CREATE_XML, false);
+    store.setDefault(Prefs.REPORT_CREATE_TXT, false);
     // KEYWORDS ----------------------------------------------------------------
     store.setDefault(Prefs.ANALYZE_FINAL_METHOD, IGNORE.name());
     store.setDefault(Prefs.ANALYZE_FINAL_FIELD, IGNORE.name());

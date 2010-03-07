@@ -77,7 +77,10 @@ public final class Prefs {
   static final String ANALYZE_FINAL_FIELD = ID + ".finalField";
   static final String ANALYZE_FINAL_METHOD = ID + ".finalMethod";
   //
-  static final String REPORT_FILE = ID + ".reportFile";
+  static final String REPORT_DIR = ID + ".report.dir";
+  static final String REPORT_CREATE_HTML = ID + ".report.create.html";
+  static final String REPORT_CREATE_XML = ID + ".report.create.xml";
+  static final String REPORT_CREATE_TXT = ID + ".report.create.txt";
   // 
   private static final String[] EMPTY_ARRAY = new String[0];
   private static IPreferenceStore store_FOR_TEST;
@@ -410,22 +413,33 @@ public final class Prefs {
 
   // REPORT --------------------------------------------------------------------
   /**
-   * @return html report file
+   * @return report directory
    */
-  public static String getReportFile() {
-    return getString(REPORT_FILE);
+  public static String getReportDir() {
+    String dir = getString(REPORT_DIR);
+    if (dir == null || dir.length() == 0) {
+      dir = ".";
+    }
+    return new File(dir).getAbsolutePath();
   }
 
-  public static String getReportFolder() {
-    String fileName = getReportFile();
-    return fileName.length() == 0 ? null : new File(fileName).getParent();
+  public static boolean createHTMLReport() {
+    return getStore().getBoolean(REPORT_CREATE_HTML);
+  }
+
+  public static boolean createXMLReport() {
+    return getStore().getBoolean(REPORT_CREATE_XML);
+  }
+
+  public static boolean createTXTReport() {
+    return getStore().getBoolean(REPORT_CREATE_TXT);
   }
 
   /**
-   * @return <code>true</code> if we want to create a html report file
+   * @return <code>true</code> if we want to create a report file
    */
   public static boolean isWriteReportFile() {
-    return getReportFile().length() > 0;
+    return createHTMLReport() || createXMLReport() || createTXTReport();
   }
 
   // ---------------------------------------------------------------------------

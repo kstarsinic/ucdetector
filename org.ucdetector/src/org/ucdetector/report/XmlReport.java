@@ -266,27 +266,33 @@ public class XmlReport implements IUCDetectorReport {
 
   /**
    * @return File name, with does not exist, containing a number.
-   * UCDetetorReport.html -&gt; UCDetetorReport_001.html
+   * eg: UCDetetorReport_001
    */
   // Fix [2811049]  Html report is overridden each run
-  private String appendFreeNumber(String reportFile) {
-    int posDot = reportFile.lastIndexOf('.');
-    posDot = (posDot == -1) ? reportFile.length() : posDot;
-    String nameStart = reportFile.substring(0, posDot);
-    String nameEnd = reportFile.substring(posDot);
+  private String getReportNumberName(File reportDir) {
+    String[] files = reportDir.list();
+    files = (files == null) ? new String[0] : files;
     for (int i = 1; i < 1000; i++) {
-      String numberName = String.format("%s_%s%s",//
-          nameStart, FORMAT_REPORT_NUMBER.format(i), nameEnd);
-      if (!new File(numberName).exists()) {
-        return numberName;
+      String number = FORMAT_REPORT_NUMBER.format(i);
+      boolean found = false;
+      for (String file : files) {
+        if (file.contains(number)) {
+          found = true;
+          break;
+        }
+      }
+      if (!found) {
+        return "UCDetetorReport_" + number;
       }
     }
-    return reportFile;
+    return "UCDetetorReport";
   }
 
   /**
    * Create a <code>Status</code> and log it to the Eclipse log
    */
+
+  // TODO: Messages
   private static void logEndReportMessage(String message, int iStatus, Throwable ex, String... parms) {
     String mes = NLS.bind(message, parms);
     Status status = new Status(iStatus, UCDetectorPlugin.ID, iStatus, mes, ex);
@@ -359,9 +365,11 @@ public class XmlReport implements IUCDetectorReport {
     if (!Prefs.isWriteReportFile()) {
       return;
     }
-    String reportFile = Prefs.getReportFile();
-    new File(reportFile).getParentFile().mkdirs();
-    String htmlFileName = appendFreeNumber(reportFile);
+    File reportDir = new File(Prefs.getReportDir());
+    reportDir.mkdirs();
+    String baseFileName = getReportNumberName(reportDir);
+    File htmlFile = new File(reportDir, baseFileName + ".html");
+    String htmlFileName = htmlFile.getAbsolutePath();
     if (initXMLException != null) {
       logEndReportMessage(Messages.XMLReport_WriteError, IStatus.ERROR, initXMLException, htmlFileName);
       return;
@@ -372,13 +380,17 @@ public class XmlReport implements IUCDetectorReport {
     }
     appendStatistics(selected, start);
 
-    String xmlFileName = convertFilename(htmlFileName, ".xml");
-    String txtFileName = convertFilename(htmlFileName, ".txt");
     try {
-      writeDocumentToFile(doc, xmlFileName);
-      Document htmlDocument = transformToHTML(doc);
-      writeDocumentToFile(htmlDocument, htmlFileName);
-      writeTextFile(txtFileName);
+      if (Prefs.createHTMLReport()) {
+        Document htmlDocument = transformToHTML(doc);
+        writeDocumentToFile(htmlDocument, htmlFile);
+      }
+      if (Prefs.createXMLReport()) {
+        writeDocumentToFile(doc, new File(reportDir, baseFileName + ".xml"));
+      }
+      if (Prefs.createTXTReport()) {
+        writeTextFile(new File(reportDir, baseFileName + ".txt"));
+      }
       logEndReportMessage(Messages.XMLReport_WriteOk, IStatus.INFO, null, String.valueOf(markerCount), htmlFileName);
     }
     catch (Exception e) {
@@ -386,16 +398,8 @@ public class XmlReport implements IUCDetectorReport {
     }
   }
 
-  private String convertFilename(String htmlFileName, String extension) {
-    if (htmlFileName.endsWith(".html")) {
-      return htmlFileName.replace(".html", extension);
-    }
-    return htmlFileName + extension;
-  }
-
-  private void writeTextFile(String txtFileName) throws Exception, IOException {
+  private void writeTextFile(File file) throws Exception, IOException {
     String text = transformToText(doc);
-    File file = new File(txtFileName);
     FileWriter fileWriter = new FileWriter(file);
     fileWriter.write(text);
     fileWriter.close();
@@ -405,9 +409,8 @@ public class XmlReport implements IUCDetectorReport {
   /**
    * writes an document do a file
    */
-  private static void writeDocumentToFile(Document docToWrite, String fileName) throws Exception {
+  private static void writeDocumentToFile(Document docToWrite, File file) throws Exception {
     Source source = new DOMSource(docToWrite);
-    File file = new File(fileName);
     Result result = new StreamResult(new OutputStreamWriter(new FileOutputStream(file), "utf-8"));
     TransformerFactory tf = TransformerFactory.newInstance();
     Transformer xformer = tf.newTransformer();
