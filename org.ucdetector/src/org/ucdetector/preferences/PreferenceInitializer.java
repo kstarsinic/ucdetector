@@ -30,7 +30,7 @@ public class PreferenceInitializer extends AbstractPreferenceInitializer {
   private static final String CLASS_FILTER = "Test*,*Test";
   private static final String METHOD_FILTER = "test*,*Test";
   private static final String FIELD_FILTER = "test*,*Test";
-  private static final String ANNOATIONS_FILTER = "java.lang.Deprecated,";
+  private static final String ANNOATIONS_FILTER = "";
   private static final String FILE_PATTERN_LITERAL_SEARCH = "*.xml,";
   private static final String REPORT_DEFAULT_DIR = "ucdetector_reports";
 
@@ -92,5 +92,7 @@ public class PreferenceInitializer extends AbstractPreferenceInitializer {
     // constants
     store.setDefault(Prefs.ANALYZE_VISIBILITY_PROTECTED_CONSTANTS, WARN);
     store.setDefault(Prefs.ANALYZE_VISIBILITY_PRIVATE_CONSTANTS, WARN);
+    //
+    store.setDefault(Prefs.MODE_INDEX, UCDetectorPreferencePage.Mode.Default.ordinal());
   }
 }
