@@ -8,11 +8,14 @@
 package org.ucdetector.preferences;
 
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
-import java.util.ArrayList;
+import java.util.LinkedHashSet;
 import java.util.Map;
 import java.util.Properties;
+import java.util.Set;
 
 import org.eclipse.jface.dialogs.InputDialog;
 import org.eclipse.jface.preference.BooleanFieldEditor;
@@ -39,18 +42,20 @@ import org.ucdetector.UCDetectorPlugin;
 
 /**
  * Create the UCDetector preference page:<br>
- * Values are stored in:
- * <code>RUNTIME_WORSPACE_DIR\.metadata\.plugins\org.eclipse.core.runtime\.settings\org.ucdetector.prefs</code>
+ * Values are stored in property file:
+ * <code>WORSPACE/.metadata/.plugins/org.eclipse.core.runtime/.settings/org.ucdetector.prefs</code>
+ * <p>
+ * User specific modes are stored in: code>WORKSPACE/.metadata/.plugins/org.ucdetector/modes</code>
+ * <p>
  * @see "http://www.eclipsepluginsite.com/preference-pages.html"
  */
 public class UCDetectorPreferencePage extends UCDetectorBasePreferencePage {
   private static final String MODES_FILE_TYPE = ".properties"; //$NON-NLS-1$
 
-  enum Mode {
-    classes_only, //
-    Default, //
-    full, //
-    ;
+  /** built-in preferences mode */
+  private enum Mode {
+    // TODO: remove Default mode!
+    classes_only, Default, full;
 
     String toStringLocalized() {
       return Messages.getString("PrefMode_" + this.name(), this.name()); //$NON-NLS-1$
@@ -114,16 +119,21 @@ public class UCDetectorPreferencePage extends UCDetectorBasePreferencePage {
       @Override
       public void widgetSelected(SelectionEvent evt) {
         int index = modesCombo.getSelectionIndex();
-        if (index == -1) {
-          // nothing
-        }
-        else if (index < Mode.values().length) {
+        // built-in
+        if (index != -1 && index < Mode.values().length) {
           Mode mode = Mode.values()[index];
-          setPreferences(mode + MODES_FILE_TYPE);
+          setPreferences(getClass().getResourceAsStream(mode + MODES_FILE_TYPE));
           enableModeButtons(false);
         }
         // custom
         else {
+          String newMode = modesCombo.getText();
+          try {
+            setPreferences(new FileInputStream(getModesFile(newMode)));
+          }
+          catch (FileNotFoundException ex) {
+            Log.logError("Can't find modes file for mode: " + newMode, ex); //$NON-NLS-1$
+          }
           enableModeButtons(true);
         }
       }
@@ -134,7 +144,7 @@ public class UCDetectorPreferencePage extends UCDetectorBasePreferencePage {
       public void widgetSelected(SelectionEvent event) {
         Widget widget = event.widget;
         if (widget == saveButton) {
-          saveMode();
+          saveMode(modesCombo.getText());
         }
         else if (widget == addButton) {
           addMode();
@@ -149,56 +159,61 @@ public class UCDetectorPreferencePage extends UCDetectorBasePreferencePage {
     removeButton.addSelectionListener(selectionListener);
   }
 
+  /** Get built in modes and user specific modes */
   private String[] getModes() {
-    java.util.List<String> result = new ArrayList<String>();
-    Mode[] modes = Mode.values();
-    for (Mode mode : modes) {
+    Set<String> result = new LinkedHashSet<String>();
+    for (Mode mode : Mode.values()) {
       result.add(mode.toStringLocalized());
     }
-    String[] modesFiles = modesDir.list();
-    for (String modesFile : modesFiles) {
+    for (String modesFile : modesDir.list()) {
       result.add(modesFile.substring(0, modesFile.length() - MODES_FILE_TYPE.length()));
     }
+    Log.logDebug("Available modes are: " + result); //$NON-NLS-1$
     return result.toArray(new String[result.size()]);
   }
 
-  private void saveMode() {
-    saveMode(modesCombo.getText());
-  }
-
+  /** Add a user specific mode, and save it to a file */
   private void addMode() {
     InputDialog input = new InputDialog(getShell(), Messages.PreferencePage_NewMode, Messages.PreferencePage_ModeName,
         null, null);
     input.open();
     String newModeName = input.getValue();
-    if (newModeName == null || newModeName.trim().length() == 0) {
-      return;
+    if (newModeName != null && newModeName.trim().length() > 0) {
+      saveMode(newModeName);
+      Log.logDebug("Added new mode: " + newModeName); //$NON-NLS-1$
+      modesCombo.setItems(getModes());
+      modesCombo.setText(newModeName);
     }
-    saveMode(newModeName);
-    modesCombo.setItems(getModes());
-    modesCombo.setText(newModeName);
   }
 
+  /** Save it to a file in WORKSPACE/.metadata/.plugins/org.ucdetector/modes  */
   private void saveMode(String modeName) {
     Map<String, String> allPreferences = UCDetectorPlugin.getAllPreferences();
     Properties properties = new Properties();
     properties.putAll(allPreferences);
-    File file = new File(modesDir, modeName + MODES_FILE_TYPE);
+    File file = getModesFile(modeName);
     try {
       properties.store(new FileOutputStream(file), "Created by " + getClass().getName()); //$NON-NLS-1$
+      Log.logDebug("Saved mode to: " + file.getAbsolutePath()); //$NON-NLS-1$
     }
     catch (IOException ex) {
       Log.logError(String.format("Can't save mode '%s'", modeName), ex); //$NON-NLS-1$
     }
   }
 
+  private File getModesFile(String modeName) {
+    return new File(modesDir, modeName + MODES_FILE_TYPE);
+  }
+
   private void removeMode() {
     String modeToRemove = modesCombo.getText();
-    File file = new File(modesDir, modeToRemove + MODES_FILE_TYPE);
+    File file = getModesFile(modeToRemove);
     file.delete();
+    Log.logDebug("Deleted mode file: " + file.getAbsolutePath()); //$NON-NLS-1$
     modesCombo.setItems(getModes());
   }
 
+  /** save and remove buttons are only enabled for custom modes */
   private void enableModeButtons(boolean enabled) {
     saveButton.setEnabled(enabled);
     removeButton.setEnabled(enabled);
@@ -351,25 +366,22 @@ public class UCDetectorPreferencePage extends UCDetectorBasePreferencePage {
   private void createVisibilityGroupClasses(Composite parentGroups) {
     Composite spacer = createGroup(parentGroups, Messages.PreferencePage_GroupVisibility, 1, 1,
         GridData.FILL_HORIZONTAL);
-    //
-    //    addLineHack(spacer);
     this.addField(createCombo(Prefs.ANALYZE_VISIBILITY_PROTECTED_CLASSES,
         Messages.PreferencePage_CheckProtectedClasses, spacer));
     this.addField(createCombo(Prefs.ANALYZE_VISIBILITY_PRIVATE_CLASSES, Messages.PreferencePage_CheckPrivateClasses,
         spacer));
     addLineHack(spacer);
-
+    //
     this.addField(createCombo(Prefs.ANALYZE_VISIBILITY_PROTECTED_METHODS,
         Messages.PreferencePage_CheckProtectedMethods, spacer));
     this.addField(createCombo(Prefs.ANALYZE_VISIBILITY_PRIVATE_METHODS, Messages.PreferencePage_CheckPrivateMethods,
         spacer));
     addLineHack(spacer);
-
+    //
     this.addField(createCombo(Prefs.ANALYZE_VISIBILITY_PROTECTED_FIELDS, Messages.PreferencePage_CheckProtectedFields,
         spacer));
     this.addField(createCombo(Prefs.ANALYZE_VISIBILITY_PRIVATE_FIELDS, Messages.PreferencePage_CheckPrivateFields,
         spacer));
-
     // [ 2804064 ] Access to enclosing type - make 2743908 configurable
     BooleanFieldEditor ignoreSyntheticAccessEmulation = new BooleanFieldEditor(Prefs.IGNORE_SYNTHETIC_ACCESS_EMULATION,
         "    " //$NON-NLS-1$
@@ -378,7 +390,7 @@ public class UCDetectorPreferencePage extends UCDetectorBasePreferencePage {
         Messages.PreferencePage_ignoreSyntheticAccessEmulationTooltip);
     this.addField(ignoreSyntheticAccessEmulation);
     addLineHack(spacer);
-
+    //
     this.addField(createCombo(Prefs.ANALYZE_VISIBILITY_PROTECTED_CONSTANTS,
         Messages.PreferencePage_CheckProtectedConstants, spacer));
     this.addField(createCombo(Prefs.ANALYZE_VISIBILITY_PRIVATE_CONSTANTS,
@@ -386,24 +398,15 @@ public class UCDetectorPreferencePage extends UCDetectorBasePreferencePage {
   }
 
   private static void addLineHack(Composite spacer) {
-    //    Composite composite = createComposite(spacer, 2, 1, GridData.FILL_BOTH);
-    //    Label label = new Label(spacer, SWT.SEPARATOR | SWT.HORIZONTAL | SWT.WRAP);
-    //    label.setBackground(Display.getDefault().getSystemColor(SWT.COLOR_RED));
-    //    label = new Label(spacer, SWT.SEPARATOR | SWT.HORIZONTAL | SWT.WRAP);
-    //    GridData gd = new GridData(GridData.FILL_HORIZONTAL);
-    //    label.setLayoutData(gd);
     //    Label label = new Label(spacer, SWT.WRAP);
     //    label.setText("------");
-    //    label = new Label(spacer, SWT.WRAP);
     Label label = new Label(spacer, SWT.NONE);
     GridData gd = new GridData(GridData.HORIZONTAL_ALIGN_FILL);
     gd.horizontalSpan = 3;
     label.setLayoutData(gd);
   } // --------------------------------------------------------------------------
 
-  /**
-   * Hack for layout problems. See also: IntegerFieldEditor.getNumberOfControls()
-   * */
+  /** Hack for layout problems. See also: IntegerFieldEditor.getNumberOfControls() */
   @Override
   protected void adjustGridLayout() {
     //

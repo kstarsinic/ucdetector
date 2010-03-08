@@ -92,9 +92,8 @@ public abstract class UCDetectorBasePreferencePage extends FieldEditorPreference
   /**
    * @param preferencesFile Set preferences from selected file
    */
-  void setPreferences(String preferencesFile) {
+  void setPreferences(InputStream in) {
     PreferenceStore tempReplaceStore = new PreferenceStore();
-    InputStream in = getClass().getResourceAsStream(preferencesFile);
     // Put default values
     Set<Entry<String, String>> entrySet = UCDetectorPlugin.getAllPreferences().entrySet();
     for (Entry<String, String> entry : entrySet) {
