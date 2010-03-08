@@ -129,6 +129,8 @@ public final class Messages extends NLS {
   //
   public static String PreferencePage_NewMode; // NO_UCD
   public static String PreferencePage_ModeName; // NO_UCD
+  public static String PreferencePage_CantSetPreferences; // NO_UCD
+  public static String PreferencePage_ModeFileCantSave; // NO_UCD
   //
   public static String PreferencePage_CreateHtmlReport; // NO_UCD
   public static String PreferencePage_CreateXmlReport; // NO_UCD
