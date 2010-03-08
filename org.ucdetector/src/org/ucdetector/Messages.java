@@ -116,6 +116,24 @@ public final class Messages extends NLS {
   public static String PreferencePage_LiteralsToolTip; // NO_UCD
   public static String PreferencePage_WarnLimit; // NO_UCD
   public static String PreferencePage_WarnLimitToolTip; // NO_UCD
+  //
+  public static String PreferencePage_TabFilter; // NO_UCD
+  public static String PreferencePage_TabDetect; // NO_UCD
+  public static String PreferencePage_TabKeywords; // NO_UCD
+  public static String PreferencePage_TabReport; // NO_UCD
+  //
+  public static String PreferencePage_ModeLabel; // NO_UCD
+  public static String PreferencePage_ModeSave; // NO_UCD
+  public static String PreferencePage_ModeAdd; // NO_UCD
+  public static String PreferencePage_ModeRemove; // NO_UCD
+  //
+  public static String PreferencePage_NewMode; // NO_UCD
+  public static String PreferencePage_ModeName; // NO_UCD
+  //
+  public static String PreferencePage_CreateHtmlReport; // NO_UCD
+  public static String PreferencePage_CreateXmlReport; // NO_UCD
+  public static String PreferencePage_CreateTextReport; // NO_UCD
+
   //  @UsedBy("reflection")
   public static String PrefMode_classes_only;// NO_UCD
   //  @UsedBy("reflection")

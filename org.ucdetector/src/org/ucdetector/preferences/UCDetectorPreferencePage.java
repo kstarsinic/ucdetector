@@ -7,6 +7,14 @@
  */
 package org.ucdetector.preferences;
 
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Map;
+import java.util.Properties;
+
+import org.eclipse.jface.dialogs.InputDialog;
 import org.eclipse.jface.preference.BooleanFieldEditor;
 import org.eclipse.jface.preference.ComboFieldEditor;
 import org.eclipse.jface.preference.DirectoryFieldEditor;
@@ -16,6 +24,7 @@ import org.eclipse.jface.preference.StringFieldEditor;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
+import org.eclipse.swt.events.SelectionListener;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Combo;
@@ -23,6 +32,8 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.TabFolder;
 import org.eclipse.swt.widgets.TabItem;
+import org.eclipse.swt.widgets.Widget;
+import org.ucdetector.Log;
 import org.ucdetector.Messages;
 import org.ucdetector.UCDetectorPlugin;
 
@@ -33,6 +44,8 @@ import org.ucdetector.UCDetectorPlugin;
  * @see "http://www.eclipsepluginsite.com/preference-pages.html"
  */
 public class UCDetectorPreferencePage extends UCDetectorBasePreferencePage {
+  private static final String MODES_FILE_TYPE = ".properties"; //$NON-NLS-1$
+
   enum Mode {
     classes_only, //
     Default, //
@@ -44,18 +57,17 @@ public class UCDetectorPreferencePage extends UCDetectorBasePreferencePage {
     }
   }
 
-  private static final String[] MODES;
-
-  static {
-    Mode[] modes = Mode.values();
-    MODES = new String[modes.length];
-    for (int i = 0; i < modes.length; i++) {
-      MODES[i] = modes[i].toStringLocalized();
-    }
-  }
+  private Button saveButton;
+  private Button addButton;
+  private Button removeButton;
+  private Combo modesCombo;
+  private final File modesDir;
 
   public UCDetectorPreferencePage() {
     super(FieldEditorPreferencePage.GRID, Prefs.getStore());
+    File ucdDir = UCDetectorPlugin.getDefault().getStateLocation().toFile();
+    modesDir = new File(ucdDir, "modes"); //$NON-NLS-1$
+    modesDir.mkdirs();
   }
 
   @Override
@@ -67,41 +79,129 @@ public class UCDetectorPreferencePage extends UCDetectorBasePreferencePage {
     // org.eclipse.team.internal.ccvs.ui.CVSPreferencesPage.createGeneralTab()
     TabFolder tabFolder = new TabFolder(parentGroups, SWT.NONE);
     tabFolder.setLayoutData(createGridData(500, SWT.DEFAULT, SWT.FILL, SWT.CENTER, true, false));
-
     // FILTER -----------------------------------------------------------------
-    Composite composite = createTab(tabFolder, "Filter");
+    Composite composite = createTab(tabFolder, Messages.PreferencePage_TabFilter);
     createFilterGroup(composite);
     // MAIN -----------------------------------------------------------------
-    composite = createTab(tabFolder, "Detect");
+    composite = createTab(tabFolder, Messages.PreferencePage_TabDetect);
     createDetectGroup(composite);
     createFileSearchGroup(composite);
     createOtherGroup(composite);
     // KEYWORD -----------------------------------------------------------------
-    composite = createTab(tabFolder, "Keywords");
+    composite = createTab(tabFolder, Messages.PreferencePage_TabKeywords);
     createKeywordGroup(composite);
     createVisibilityGroupClasses(composite);
     // REPORT -----------------------------------------------------------------
-    composite = createTab(tabFolder, "Report");
+    composite = createTab(tabFolder, Messages.PreferencePage_TabReport);
     createReportGroup(composite);
   }
 
   private void createModeCombo(Composite parentGroups) {
-    Composite spacer = createComposite(parentGroups, 2, 1, GridData.FILL_HORIZONTAL);
+    Composite spacer = createComposite(parentGroups, 5, 1, GridData.FILL_HORIZONTAL);
     Label label = new Label(spacer, SWT.LEFT);
-    label.setText("Select detection mode");
-    final Combo changeMode = new Combo(spacer, SWT.READ_ONLY);
-    changeMode.setItems(MODES);
-    changeMode.setText(Mode.Default.name());
-    changeMode.addSelectionListener(new SelectionAdapter() {
+    label.setText(Messages.PreferencePage_ModeLabel);
+    modesCombo = new Combo(spacer, SWT.READ_ONLY);
+
+    saveButton = new Button(spacer, SWT.PUSH);
+    saveButton.setText(Messages.PreferencePage_ModeSave);
+    addButton = new Button(spacer, SWT.PUSH);
+    addButton.setText(Messages.PreferencePage_ModeAdd);
+    removeButton = new Button(spacer, SWT.PUSH);
+    removeButton.setText(Messages.PreferencePage_ModeRemove);
+    modesCombo.setItems(getModes());
+    modesCombo.setText(Mode.Default.toStringLocalized());
+    modesCombo.addSelectionListener(new SelectionAdapter() {
       @Override
       public void widgetSelected(SelectionEvent evt) {
-        int index = changeMode.getSelectionIndex();
-        if (index != -1) {
+        int index = modesCombo.getSelectionIndex();
+        if (index == -1) {
+          // nothing
+        }
+        else if (index < Mode.values().length) {
           Mode mode = Mode.values()[index];
-          setPreferences(mode + ".properties"); //$NON-NLS-1$
+          setPreferences(mode + MODES_FILE_TYPE);
+          enableModeButtons(false);
+        }
+        // custom
+        else {
+          enableModeButtons(true);
         }
       }
     });
+    //
+    SelectionListener selectionListener = new SelectionAdapter() {
+      @Override
+      public void widgetSelected(SelectionEvent event) {
+        Widget widget = event.widget;
+        if (widget == saveButton) {
+          saveMode();
+        }
+        else if (widget == addButton) {
+          addMode();
+        }
+        else if (widget == removeButton) {
+          removeMode();
+        }
+      }
+    };
+    saveButton.addSelectionListener(selectionListener);
+    addButton.addSelectionListener(selectionListener);
+    removeButton.addSelectionListener(selectionListener);
+  }
+
+  private String[] getModes() {
+    java.util.List<String> result = new ArrayList<String>();
+    Mode[] modes = Mode.values();
+    for (Mode mode : modes) {
+      result.add(mode.toStringLocalized());
+    }
+    String[] modesFiles = modesDir.list();
+    for (String modesFile : modesFiles) {
+      result.add(modesFile.substring(0, modesFile.length() - MODES_FILE_TYPE.length()));
+    }
+    return result.toArray(new String[result.size()]);
+  }
+
+  private void saveMode() {
+    saveMode(modesCombo.getText());
+  }
+
+  private void addMode() {
+    InputDialog input = new InputDialog(getShell(), Messages.PreferencePage_NewMode, Messages.PreferencePage_ModeName,
+        null, null);
+    input.open();
+    String newModeName = input.getValue();
+    if (newModeName == null || newModeName.trim().length() == 0) {
+      return;
+    }
+    saveMode(newModeName);
+    modesCombo.setItems(getModes());
+    modesCombo.setText(newModeName);
+  }
+
+  private void saveMode(String modeName) {
+    Map<String, String> allPreferences = UCDetectorPlugin.getAllPreferences();
+    Properties properties = new Properties();
+    properties.putAll(allPreferences);
+    File file = new File(modesDir, modeName + MODES_FILE_TYPE);
+    try {
+      properties.store(new FileOutputStream(file), "Created by " + getClass().getName()); //$NON-NLS-1$
+    }
+    catch (IOException ex) {
+      Log.logError(String.format("Can't save mode '%s'", modeName), ex); //$NON-NLS-1$
+    }
+  }
+
+  private void removeMode() {
+    String modeToRemove = modesCombo.getText();
+    File file = new File(modesDir, modeToRemove + MODES_FILE_TYPE);
+    file.delete();
+    modesCombo.setItems(getModes());
+  }
+
+  private void enableModeButtons(boolean enabled) {
+    saveButton.setEnabled(enabled);
+    removeButton.setEnabled(enabled);
   }
 
   private Composite createTab(TabFolder tabFolder, String tabText) {
@@ -212,9 +312,9 @@ public class UCDetectorPreferencePage extends UCDetectorBasePreferencePage {
 
   private void createReportGroup(Composite parentGroups) {
     Composite spacer = createGroup(parentGroups, Messages.PreferencePage_GroupOthers, 1, 1, GridData.FILL_HORIZONTAL);
-    appendBoolean(Prefs.REPORT_CREATE_HTML, "Create html report", spacer);
-    appendBoolean(Prefs.REPORT_CREATE_XML, "Create xml report", spacer);
-    appendBoolean(Prefs.REPORT_CREATE_TXT, "Create text report", spacer);
+    appendBoolean(Prefs.REPORT_CREATE_HTML, Messages.PreferencePage_CreateHtmlReport, spacer);
+    appendBoolean(Prefs.REPORT_CREATE_XML, Messages.PreferencePage_CreateXmlReport, spacer);
+    appendBoolean(Prefs.REPORT_CREATE_TXT, Messages.PreferencePage_CreateTextReport, spacer);
     DirectoryFieldEditor path = new DirectoryFieldEditor(Prefs.REPORT_DIR, Messages.PreferencePage_ReportFile, spacer);
     path.getLabelControl(spacer).setToolTipText(Messages.PreferencePage_ReportFileToolTip);
     this.addField(path);
