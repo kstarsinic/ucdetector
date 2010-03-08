@@ -288,11 +288,7 @@ public class XmlReport implements IUCDetectorReport {
     return "UCDetetorReport";
   }
 
-  /**
-   * Create a <code>Status</code> and log it to the Eclipse log
-   */
-
-  // TODO: Messages
+  /** Create a <code>Status</code> and log it to the Eclipse log */
   private static void logEndReportMessage(String message, int iStatus, Throwable ex, String... parms) {
     String mes = NLS.bind(message, parms);
     Status status = new Status(iStatus, UCDetectorPlugin.ID, iStatus, mes, ex);
@@ -369,9 +365,9 @@ public class XmlReport implements IUCDetectorReport {
     reportDir.mkdirs();
     String baseFileName = getReportNumberName(reportDir);
     File htmlFile = new File(reportDir, baseFileName + ".html");
-    String htmlFileName = htmlFile.getAbsolutePath();
+    String reportPath = reportDir.getAbsolutePath();
     if (initXMLException != null) {
-      logEndReportMessage(Messages.XMLReport_WriteError, IStatus.ERROR, initXMLException, htmlFileName);
+      logEndReportMessage(Messages.XMLReport_WriteError, IStatus.ERROR, initXMLException, reportPath);
       return;
     }
     if (markerCount == 0 && detectionProblemCount == 0) {
@@ -391,10 +387,10 @@ public class XmlReport implements IUCDetectorReport {
       if (Prefs.createTXTReport()) {
         writeTextFile(new File(reportDir, baseFileName + ".txt"));
       }
-      logEndReportMessage(Messages.XMLReport_WriteOk, IStatus.INFO, null, String.valueOf(markerCount), htmlFileName);
+      logEndReportMessage(Messages.XMLReport_WriteOk, IStatus.INFO, null, String.valueOf(markerCount), reportPath);
     }
     catch (Exception e) {
-      logEndReportMessage(Messages.XMLReport_WriteError, IStatus.ERROR, e, htmlFileName);
+      logEndReportMessage(Messages.XMLReport_WriteError, IStatus.ERROR, e, reportPath);
     }
   }
 
@@ -428,7 +424,7 @@ public class XmlReport implements IUCDetectorReport {
 
   /** Transform from xml to html using xslt transformation */
   private Document transformToHTML(Document xmlDoc) throws Exception {
-    InputStream xslIn = getClass().getClassLoader().getResourceAsStream(HTML_XSL_FILE); // TEXT_XSL_FILE, HTML_XSL_FILE
+    InputStream xslIn = getClass().getClassLoader().getResourceAsStream(HTML_XSL_FILE);
     Templates template = TransformerFactory.newInstance().newTemplates(new StreamSource(xslIn));
     Transformer xformer = template.newTransformer();
     Source source = new DOMSource(xmlDoc);
