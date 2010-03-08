@@ -8,3 +8,6 @@ New features:
  - [ 2923567 ] Do not report markers for deprecated class members
                TODO: Ignore all children for a class
  - Added cycle detection again, improved cycle view
+ - text report
+ - Detection modes
+ - better preferences
