@@ -31,7 +31,6 @@ import org.eclipse.swt.widgets.Label;
 import org.eclipse.ui.IWorkbench;
 import org.eclipse.ui.IWorkbenchPreferencePage;
 import org.eclipse.ui.PlatformUI;
-import org.ucdetector.Log;
 import org.ucdetector.Messages;
 import org.ucdetector.UCDetectorPlugin;
 
@@ -59,19 +58,6 @@ public abstract class UCDetectorBasePreferencePage extends FieldEditorPreference
     //
   }
 
-  @Override
-  public boolean performOk() {
-    boolean result = super.performOk();
-    Log.logInfo("New preferences: " + UCDetectorPlugin.getPreferencesAsString()); //$NON-NLS-1$
-    return result;
-  }
-
-  @Override
-  protected void performApply() {
-    super.performApply();
-    //    dumpPreferencesPerPage();
-  }
-
   void dumpPreferencesPerPage() {
     List<String> orderedPreferences = new ArrayList<String>();
     for (FieldEditor field : fields) {
@@ -83,35 +69,24 @@ public abstract class UCDetectorBasePreferencePage extends FieldEditorPreference
     }
   }
 
-  @Override
-  protected void performDefaults() {
-    super.performDefaults();
-    //    setPreferences("classes_only.properties");
-  }
-
   /**
    * @param preferencesFile Set preferences from selected file
    */
-  void setPreferences(InputStream in) {
+  void setPreferences(InputStream in) throws IOException {
     PreferenceStore tempReplaceStore = new PreferenceStore();
     // Put default values
     Set<Entry<String, String>> entrySet = UCDetectorPlugin.getAllPreferences().entrySet();
     for (Entry<String, String> entry : entrySet) {
       tempReplaceStore.putValue(entry.getKey(), entry.getValue());
     }
-    try {
-      tempReplaceStore.load(in);
-      for (FieldEditor field : fields) {
-        IPreferenceStore originalStore = field.getPreferenceStore();
-        field.setPreferenceStore(tempReplaceStore);
-        field.load();
-        field.setPreferenceStore(originalStore);
-      }
-      checkState();
+    tempReplaceStore.load(in);
+    for (FieldEditor field : fields) {
+      IPreferenceStore originalStore = field.getPreferenceStore();
+      field.setPreferenceStore(tempReplaceStore);
+      field.load();
+      field.setPreferenceStore(originalStore);
     }
-    catch (IOException e) {
-      Log.logError("Can't load preferences", e); //$NON-NLS-1$
-    }
+    checkState();
   }
 
   @Override

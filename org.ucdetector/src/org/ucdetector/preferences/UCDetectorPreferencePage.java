@@ -9,7 +9,6 @@ package org.ucdetector.preferences;
 
 import java.io.File;
 import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.LinkedHashSet;
@@ -24,6 +23,7 @@ import org.eclipse.jface.preference.DirectoryFieldEditor;
 import org.eclipse.jface.preference.FieldEditorPreferencePage;
 import org.eclipse.jface.preference.IntegerFieldEditor;
 import org.eclipse.jface.preference.StringFieldEditor;
+import org.eclipse.osgi.util.NLS;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
@@ -53,9 +53,11 @@ public class UCDetectorPreferencePage extends UCDetectorBasePreferencePage {
   private static final String MODES_FILE_TYPE = ".properties"; //$NON-NLS-1$
 
   /** built-in preferences mode */
-  private enum Mode {
-    // TODO: remove Default mode!
-    classes_only, Default, full;
+  enum Mode {
+    Default, //
+    classes_only, //
+    full, //
+    ;
 
     String toStringLocalized() {
       return Messages.getString("PrefMode_" + this.name(), this.name()); //$NON-NLS-1$
@@ -113,28 +115,43 @@ public class UCDetectorPreferencePage extends UCDetectorBasePreferencePage {
     addButton.setText(Messages.PreferencePage_ModeAdd);
     removeButton = new Button(spacer, SWT.PUSH);
     removeButton.setText(Messages.PreferencePage_ModeRemove);
-    modesCombo.setItems(getModes());
-    modesCombo.setText(Mode.Default.toStringLocalized());
+    //
+    String[] modes = getModes();
+    modesCombo.setItems(modes);
+    int savedIndex = getPreferenceStore().getInt(Prefs.MODE_INDEX);
+    boolean isValidIndex = (savedIndex >= 0 && savedIndex < modes.length);
+    modesCombo.setText(isValidIndex ? modes[savedIndex] : Mode.Default.toStringLocalized());
+
     modesCombo.addSelectionListener(new SelectionAdapter() {
       @Override
       public void widgetSelected(SelectionEvent evt) {
-        int index = modesCombo.getSelectionIndex();
-        // built-in
-        if (index != -1 && index < Mode.values().length) {
-          Mode mode = Mode.values()[index];
-          setPreferences(getClass().getResourceAsStream(mode + MODES_FILE_TYPE));
-          enableModeButtons(false);
+        updateModeButtons();
+        String modesFileName = null;
+        try {
+          int index = modesCombo.getSelectionIndex();
+          if (index == -1) {
+            // ignore
+          }
+          // default
+          else if (index == Mode.Default.ordinal()) {
+            performDefaults();
+          }
+          // built-in
+          else if (index < Mode.values().length) {
+            Mode mode = Mode.values()[index];
+            modesFileName = mode + MODES_FILE_TYPE;
+            setPreferences(getClass().getResourceAsStream(modesFileName));
+          }
+          // custom
+          else {
+            String newMode = modesCombo.getText();
+            modesFileName = getModesFile(newMode).getAbsolutePath();
+            setPreferences(new FileInputStream(modesFileName));
+          }
         }
-        // custom
-        else {
-          String newMode = modesCombo.getText();
-          try {
-            setPreferences(new FileInputStream(getModesFile(newMode)));
-          }
-          catch (FileNotFoundException ex) {
-            Log.logError("Can't find modes file for mode: " + newMode, ex); //$NON-NLS-1$
-          }
-          enableModeButtons(true);
+        catch (IOException ex) {
+          String message = NLS.bind(Messages.PreferencePage_CantSetPreferences, modesFileName);
+          UCDetectorPlugin.logErrorAndStatus(message, ex);
         }
       }
     });
@@ -154,6 +171,7 @@ public class UCDetectorPreferencePage extends UCDetectorBasePreferencePage {
         }
       }
     };
+    updateModeButtons();
     saveButton.addSelectionListener(selectionListener);
     addButton.addSelectionListener(selectionListener);
     removeButton.addSelectionListener(selectionListener);
@@ -183,21 +201,26 @@ public class UCDetectorPreferencePage extends UCDetectorBasePreferencePage {
       Log.logDebug("Added new mode: " + newModeName); //$NON-NLS-1$
       modesCombo.setItems(getModes());
       modesCombo.setText(newModeName);
+      updateModeButtons();
     }
   }
 
   /** Save it to a file in WORKSPACE/.metadata/.plugins/org.ucdetector/modes  */
   private void saveMode(String modeName) {
+    super.performApply();
     Map<String, String> allPreferences = UCDetectorPlugin.getAllPreferences();
+    Map<String, String> delta = UCDetectorPlugin.getDeltaPreferences();
     Properties properties = new Properties();
     properties.putAll(allPreferences);
-    File file = getModesFile(modeName);
+    properties.putAll(delta);
+    File modesFile = getModesFile(modeName);
     try {
-      properties.store(new FileOutputStream(file), "Created by " + getClass().getName()); //$NON-NLS-1$
-      Log.logDebug("Saved mode to: " + file.getAbsolutePath()); //$NON-NLS-1$
+      properties.store(new FileOutputStream(modesFile), "Created by " + getClass().getName()); //$NON-NLS-1$
+      Log.logDebug("Saved mode to: " + modesFile.getAbsolutePath()); //$NON-NLS-1$
     }
     catch (IOException ex) {
-      Log.logError(String.format("Can't save mode '%s'", modeName), ex); //$NON-NLS-1$
+      String message = NLS.bind(Messages.PreferencePage_ModeFileCantSave, modesFile.getAbsolutePath());
+      UCDetectorPlugin.logErrorAndStatus(message, ex);
     }
   }
 
@@ -211,10 +234,15 @@ public class UCDetectorPreferencePage extends UCDetectorBasePreferencePage {
     file.delete();
     Log.logDebug("Deleted mode file: " + file.getAbsolutePath()); //$NON-NLS-1$
     modesCombo.setItems(getModes());
+    modesCombo.setText(Mode.Default.toStringLocalized());
+    performDefaults();
+    updateModeButtons();
   }
 
   /** save and remove buttons are only enabled for custom modes */
-  private void enableModeButtons(boolean enabled) {
+  private void updateModeButtons() {
+    int index = modesCombo.getSelectionIndex();
+    boolean enabled = (index < 0 || index >= Mode.values().length);
     saveButton.setEnabled(enabled);
     removeButton.setEnabled(enabled);
   }
@@ -225,6 +253,21 @@ public class UCDetectorPreferencePage extends UCDetectorBasePreferencePage {
     tabMain.setText(tabText);
     tabMain.setControl(composite);
     return composite;
+  }
+
+  @Override
+  public boolean performOk() {
+    boolean result = super.performOk();
+    getPreferenceStore().setValue(Prefs.MODE_INDEX, modesCombo.getSelectionIndex());
+    Log.logInfo("New preferences: " + UCDetectorPlugin.getPreferencesAsString()); //$NON-NLS-1$
+    return result;
+  }
+
+  @Override
+  protected void performDefaults() {
+    super.performDefaults();
+    modesCombo.setText(Mode.Default.toStringLocalized());
+    //    dumpPreferencesPerPage();
   }
 
   /**
