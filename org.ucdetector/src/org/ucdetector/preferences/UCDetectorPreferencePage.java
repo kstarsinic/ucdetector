@@ -7,38 +7,34 @@
  */
 package org.ucdetector.preferences;
 
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.util.LinkedHashSet;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
-import java.util.Properties;
-import java.util.Set;
 
-import org.eclipse.jface.dialogs.InputDialog;
 import org.eclipse.jface.preference.BooleanFieldEditor;
 import org.eclipse.jface.preference.ComboFieldEditor;
 import org.eclipse.jface.preference.DirectoryFieldEditor;
+import org.eclipse.jface.preference.FieldEditor;
 import org.eclipse.jface.preference.FieldEditorPreferencePage;
 import org.eclipse.jface.preference.IntegerFieldEditor;
 import org.eclipse.jface.preference.StringFieldEditor;
-import org.eclipse.osgi.util.NLS;
 import org.eclipse.swt.SWT;
-import org.eclipse.swt.events.SelectionAdapter;
-import org.eclipse.swt.events.SelectionEvent;
-import org.eclipse.swt.events.SelectionListener;
 import org.eclipse.swt.layout.GridData;
+import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Button;
-import org.eclipse.swt.widgets.Combo;
 import org.eclipse.swt.widgets.Composite;
+import org.eclipse.swt.widgets.Control;
+import org.eclipse.swt.widgets.Group;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.TabFolder;
 import org.eclipse.swt.widgets.TabItem;
-import org.eclipse.swt.widgets.Widget;
+import org.eclipse.ui.IWorkbench;
+import org.eclipse.ui.IWorkbenchPreferencePage;
+import org.eclipse.ui.PlatformUI;
 import org.ucdetector.Log;
 import org.ucdetector.Messages;
 import org.ucdetector.UCDetectorPlugin;
+import org.ucdetector.preferences.ModesPanel.Mode;
 
 /**
  * Create the UCDetector preference page:<br>
@@ -49,39 +45,33 @@ import org.ucdetector.UCDetectorPlugin;
  * <p>
  * @see "http://www.eclipsepluginsite.com/preference-pages.html"
  */
-public class UCDetectorPreferencePage extends UCDetectorBasePreferencePage {
-  private static final String MODES_FILE_TYPE = ".properties"; //$NON-NLS-1$
-
-  /** built-in preferences mode */
-  enum Mode {
-    Default, //
-    classes_only, //
-    full, //
-    ;
-
-    String toStringLocalized() {
-      return Messages.getString("PrefMode_" + this.name(), this.name()); //$NON-NLS-1$
-    }
-  }
-
-  private Button saveButton;
-  private Button addButton;
-  private Button removeButton;
-  private Combo modesCombo;
-  private final File modesDir;
+public class UCDetectorPreferencePage extends FieldEditorPreferencePage implements IWorkbenchPreferencePage {
+  protected final List<FieldEditor> fields = new ArrayList<FieldEditor>();
+  /**
+   * entryNames (first column) and values (second column) for the
+   * ComboFieldEditor
+   */
+  static final String[][] WARN_LEVELS = new String[][] {
+      { WarnLevel.ERROR.toStringLocalized(), WarnLevel.ERROR.toString() },
+      { WarnLevel.WARNING.toStringLocalized(), WarnLevel.WARNING.toString() },
+      { WarnLevel.IGNORE.toStringLocalized(), WarnLevel.IGNORE.toString() } };
+  private ModesPanel modesPanel;
 
   public UCDetectorPreferencePage() {
-    super(FieldEditorPreferencePage.GRID, Prefs.getStore());
-    File ucdDir = UCDetectorPlugin.getDefault().getStateLocation().toFile();
-    modesDir = new File(ucdDir, "modes"); //$NON-NLS-1$
-    modesDir.mkdirs();
+    super(FieldEditorPreferencePage.GRID);
+    this.setPreferenceStore(Prefs.getStore());
+  }
+
+  public void init(IWorkbench workbench) {
+    //
   }
 
   @Override
   public void createFieldEditors() {
     Composite parentGroups = createComposite(getFieldEditorParent(), 1, 1, GridData.FILL_BOTH);
     setTitle("UCDetector " + UCDetectorPlugin.getAboutUCDVersion()); //$NON-NLS-1$
-    createModeCombo(parentGroups);
+    modesPanel = new ModesPanel(this, parentGroups);
+    modesPanel.createModeCombo();
     // -----------------------------------------------
     // org.eclipse.team.internal.ccvs.ui.CVSPreferencesPage.createGeneralTab()
     TabFolder tabFolder = new TabFolder(parentGroups, SWT.NONE);
@@ -103,162 +93,10 @@ public class UCDetectorPreferencePage extends UCDetectorBasePreferencePage {
     createReportGroup(composite);
   }
 
-  private void createModeCombo(Composite parentGroups) {
-    Composite spacer = createComposite(parentGroups, 5, 1, GridData.FILL_HORIZONTAL);
-    Label label = new Label(spacer, SWT.LEFT);
-    label.setText(Messages.PreferencePage_ModeLabel);
-    modesCombo = new Combo(spacer, SWT.READ_ONLY);
-
-    saveButton = new Button(spacer, SWT.PUSH);
-    saveButton.setText(Messages.PreferencePage_ModeSave);
-    addButton = new Button(spacer, SWT.PUSH);
-    addButton.setText(Messages.PreferencePage_ModeAdd);
-    removeButton = new Button(spacer, SWT.PUSH);
-    removeButton.setText(Messages.PreferencePage_ModeRemove);
-    //
-    String[] modes = getModes();
-    modesCombo.setItems(modes);
-    int savedIndex = getPreferenceStore().getInt(Prefs.MODE_INDEX);
-    boolean isValidIndex = (savedIndex >= 0 && savedIndex < modes.length);
-    modesCombo.setText(isValidIndex ? modes[savedIndex] : Mode.Default.toStringLocalized());
-
-    modesCombo.addSelectionListener(new SelectionAdapter() {
-      @Override
-      public void widgetSelected(SelectionEvent evt) {
-        updateModeButtons();
-        String modesFileName = null;
-        try {
-          int index = modesCombo.getSelectionIndex();
-          if (index == -1) {
-            // ignore
-          }
-          // default
-          else if (index == Mode.Default.ordinal()) {
-            performDefaults();
-          }
-          // built-in
-          else if (index < Mode.values().length) {
-            Mode mode = Mode.values()[index];
-            modesFileName = mode + MODES_FILE_TYPE;
-            setPreferences(getClass().getResourceAsStream(modesFileName));
-          }
-          // custom
-          else {
-            String newMode = modesCombo.getText();
-            modesFileName = getModesFile(newMode).getAbsolutePath();
-            setPreferences(new FileInputStream(modesFileName));
-          }
-        }
-        catch (IOException ex) {
-          String message = NLS.bind(Messages.PreferencePage_CantSetPreferences, modesFileName);
-          UCDetectorPlugin.logErrorAndStatus(message, ex);
-        }
-      }
-    });
-    //
-    SelectionListener selectionListener = new SelectionAdapter() {
-      @Override
-      public void widgetSelected(SelectionEvent event) {
-        Widget widget = event.widget;
-        if (widget == saveButton) {
-          saveMode(modesCombo.getText());
-        }
-        else if (widget == addButton) {
-          addMode();
-        }
-        else if (widget == removeButton) {
-          removeMode();
-        }
-      }
-    };
-    updateModeButtons();
-    saveButton.addSelectionListener(selectionListener);
-    addButton.addSelectionListener(selectionListener);
-    removeButton.addSelectionListener(selectionListener);
-  }
-
-  /** Get built in modes and user specific modes */
-  private String[] getModes() {
-    Set<String> result = new LinkedHashSet<String>();
-    for (Mode mode : Mode.values()) {
-      result.add(mode.toStringLocalized());
-    }
-    for (String modesFile : modesDir.list()) {
-      result.add(modesFile.substring(0, modesFile.length() - MODES_FILE_TYPE.length()));
-    }
-    Log.logDebug("Available modes are: " + result); //$NON-NLS-1$
-    return result.toArray(new String[result.size()]);
-  }
-
-  /** Add a user specific mode, and save it to a file */
-  private void addMode() {
-    InputDialog input = new InputDialog(getShell(), Messages.PreferencePage_NewMode, Messages.PreferencePage_ModeName,
-        null, null);
-    input.open();
-    String newModeName = input.getValue();
-    if (newModeName != null && newModeName.trim().length() > 0) {
-      saveMode(newModeName);
-      Log.logDebug("Added new mode: " + newModeName); //$NON-NLS-1$
-      modesCombo.setItems(getModes());
-      modesCombo.setText(newModeName);
-      updateModeButtons();
-    }
-  }
-
-  /** Save it to a file in WORKSPACE/.metadata/.plugins/org.ucdetector/modes  */
-  private void saveMode(String modeName) {
-    super.performApply();
-    Map<String, String> allPreferences = UCDetectorPlugin.getAllPreferences();
-    Map<String, String> delta = UCDetectorPlugin.getDeltaPreferences();
-    Properties properties = new Properties();
-    properties.putAll(allPreferences);
-    properties.putAll(delta);
-    File modesFile = getModesFile(modeName);
-    try {
-      properties.store(new FileOutputStream(modesFile), "Created by " + getClass().getName()); //$NON-NLS-1$
-      Log.logDebug("Saved mode to: " + modesFile.getAbsolutePath()); //$NON-NLS-1$
-    }
-    catch (IOException ex) {
-      String message = NLS.bind(Messages.PreferencePage_ModeFileCantSave, modesFile.getAbsolutePath());
-      UCDetectorPlugin.logErrorAndStatus(message, ex);
-    }
-  }
-
-  private File getModesFile(String modeName) {
-    return new File(modesDir, modeName + MODES_FILE_TYPE);
-  }
-
-  private void removeMode() {
-    String modeToRemove = modesCombo.getText();
-    File file = getModesFile(modeToRemove);
-    file.delete();
-    Log.logDebug("Deleted mode file: " + file.getAbsolutePath()); //$NON-NLS-1$
-    modesCombo.setItems(getModes());
-    modesCombo.setText(Mode.Default.toStringLocalized());
-    performDefaults();
-    updateModeButtons();
-  }
-
-  /** save and remove buttons are only enabled for custom modes */
-  private void updateModeButtons() {
-    int index = modesCombo.getSelectionIndex();
-    boolean enabled = (index < 0 || index >= Mode.values().length);
-    saveButton.setEnabled(enabled);
-    removeButton.setEnabled(enabled);
-  }
-
-  private Composite createTab(TabFolder tabFolder, String tabText) {
-    Composite composite = createComposite(tabFolder, 1, 1, GridData.FILL_HORIZONTAL);
-    TabItem tabMain = new TabItem(tabFolder, SWT.NONE);
-    tabMain.setText(tabText);
-    tabMain.setControl(composite);
-    return composite;
-  }
-
   @Override
   public boolean performOk() {
     boolean result = super.performOk();
-    getPreferenceStore().setValue(Prefs.MODE_INDEX, modesCombo.getSelectionIndex());
+    getPreferenceStore().setValue(Prefs.MODE_INDEX, modesPanel.getCombo().getSelectionIndex());
     Log.logInfo("New preferences: " + UCDetectorPlugin.getPreferencesAsString()); //$NON-NLS-1$
     return result;
   }
@@ -266,7 +104,7 @@ public class UCDetectorPreferencePage extends UCDetectorBasePreferencePage {
   @Override
   protected void performDefaults() {
     super.performDefaults();
-    modesCombo.setText(Mode.Default.toStringLocalized());
+    modesPanel.getCombo().setText(Mode.Default.toStringLocalized());
     //    dumpPreferencesPerPage();
   }
 
@@ -440,6 +278,14 @@ public class UCDetectorPreferencePage extends UCDetectorBasePreferencePage {
         Messages.PreferencePage_CheckPrivateConstants, spacer));
   }
 
+  private Composite createTab(TabFolder tabFolder, String tabText) {
+    Composite composite = createComposite(tabFolder, 1, 1, GridData.FILL_HORIZONTAL);
+    TabItem tabMain = new TabItem(tabFolder, SWT.NONE);
+    tabMain.setText(tabText);
+    tabMain.setControl(composite);
+    return composite;
+  }
+
   private static void addLineHack(Composite spacer) {
     //    Label label = new Label(spacer, SWT.WRAP);
     //    label.setText("------");
@@ -453,6 +299,23 @@ public class UCDetectorPreferencePage extends UCDetectorBasePreferencePage {
   @Override
   protected void adjustGridLayout() {
     //
+  }
+
+  void dumpPreferencesPerPage() {
+    List<String> orderedPreferences = new ArrayList<String>();
+    for (FieldEditor field : fields) {
+      orderedPreferences.add(field.getPreferenceName());
+    }
+    Map<String, String> allPreferences = UCDetectorPlugin.getAllPreferences();
+    for (String pref : orderedPreferences) {
+      System.out.println(pref + "=" + allPreferences.get(pref)); //$NON-NLS-1$
+    }
+  }
+
+  @Override
+  protected void addField(FieldEditor editor) {
+    fields.add(editor);
+    super.addField(editor);
   }
 
   /**
@@ -505,5 +368,76 @@ public class UCDetectorPreferencePage extends UCDetectorBasePreferencePage {
       analyzeLiterals.setEnabled(getBooleanValue(), parent);
       checkFullClassName.setEnabled(getBooleanValue(), parent);
     }
+  }
+
+  /**
+   * create an ComboFieldEditor with label, tooltip and do layout
+   */
+  static ComboFieldEditor createCombo(String name, String label, Composite parent) {
+    ComboFieldEditor combo = new ComboFieldEditor(name, label, WARN_LEVELS, parent);
+    combo.fillIntoGrid(parent, 2);
+    combo.getLabelControl(parent).setToolTipText(Messages.PreferencePage_ComboToolTip);
+    fillHorizontal(parent, combo);
+    return combo;
+  }
+
+  /**
+   * create an StringFieldEditor with label, tooltip and do layout
+   */
+  static StringFieldEditor createText(String name, String label, Composite parent, String toolTip) {
+    StringFieldEditor text = new StringFieldEditor(name, label, parent);
+    text.fillIntoGrid(parent, 2);
+    text.getLabelControl(parent).setToolTipText(toolTip);
+    return text;
+  }
+
+  private static void fillHorizontal(Composite parent, FieldEditor fieldEditor) {
+    Label labelControl = fieldEditor.getLabelControl(parent);
+    GridData gd = new GridData(GridData.FILL_HORIZONTAL);
+    labelControl.setLayoutData(gd);
+    // org.eclipse.swt.graphics. Color color
+    // = org.eclipse.swt.widgets.Display.getDefault().getSystemColor(SWT.
+    // COLOR_CYAN);
+    // labelControl.setBackground(color);
+  }
+
+  // -------------------------------------------------------------------------
+  // SWT
+  // -------------------------------------------------------------------------
+  @Override
+  // org.eclipse.help.ui.internal.preferences.HelpContentPreferencePage
+  protected Control createContents(Composite parent) {
+    PlatformUI.getWorkbench().getHelpSystem().setHelp(parent, UCDetectorPlugin.HELP_ID_PREFERENCES);
+    return super.createContents(parent);
+  }
+
+  // LaunchingPreferencePage
+  static Composite createGroup(Composite parent, String text, int columns, int hspan, int fill) {
+    Group g = new Group(parent, SWT.NONE);
+    g.setLayout(new GridLayout(3, false));
+    g.setText(text);
+    GridData gd = new GridData(fill);
+    gd.horizontalSpan = hspan;
+    g.setLayoutData(gd);
+    Composite spacer = createComposite(g, columns, 1, fill);
+    return spacer;
+  }
+
+  // SWTFactory
+  public static Composite createComposite(Composite parent, int columns, int hspan, int fill) {
+    Composite g = new Composite(parent, SWT.NONE);
+    g.setLayout(new GridLayout(columns, false));
+    g.setFont(parent.getFont());
+    GridData gd = new GridData(fill);
+    gd.horizontalSpan = hspan;
+    g.setLayoutData(gd);
+    return g;
+  }
+
+  protected static GridData createGridData(int width, int height, int hAlign, int vAlign, boolean hGrab, boolean vGrab) {
+    final GridData gd = new GridData(hAlign, vAlign, hGrab, vGrab);
+    gd.widthHint = width;
+    gd.heightHint = height;
+    return gd;
   }
 }

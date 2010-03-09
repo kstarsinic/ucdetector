@@ -93,6 +93,6 @@ public class PreferenceInitializer extends AbstractPreferenceInitializer {
     store.setDefault(Prefs.ANALYZE_VISIBILITY_PROTECTED_CONSTANTS, WARN);
     store.setDefault(Prefs.ANALYZE_VISIBILITY_PRIVATE_CONSTANTS, WARN);
     //
-    store.setDefault(Prefs.MODE_INDEX, UCDetectorPreferencePage.Mode.Default.ordinal());
+    store.setDefault(Prefs.MODE_INDEX, ModesPanel.Mode.Default.ordinal());
   }
 }
