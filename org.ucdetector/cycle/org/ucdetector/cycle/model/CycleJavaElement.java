@@ -30,7 +30,7 @@ public abstract class CycleJavaElement extends CycleBaseElement /*implements IAd
     return LABEL_PROVIDER_DELEGAT.getImage(getJavaElement());
   }
 
-  public static String getDefaultText(IJavaElement javaElement) {
+  protected static String getDefaultText(IJavaElement javaElement) {
     return LABEL_PROVIDER_DELEGAT.getText(javaElement);
   }
 
