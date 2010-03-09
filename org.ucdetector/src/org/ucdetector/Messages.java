@@ -8,6 +8,7 @@
 package org.ucdetector;
 
 import org.eclipse.osgi.util.NLS;
+import org.ucdetector.util.UsedBy;
 
 /**
  * Eclipse l10n of this plugin
@@ -49,7 +50,7 @@ public final class Messages extends NLS {
   public static String UCDetectorIterator_JobName; // NO_UCD
   public static String CleanMarkersIterator_JobName; // NO_UCD
   public static String UCDetectorIterator_MONITOR_INFO; // NO_UCD
-  public static String UCDetectorPreferencePageKeywords_ChangeAllCombos; // NO_UCD
+  //  public static String UCDetectorPreferencePageKeywords_ChangeAllCombos; // NO_UCD
   public static String AbstractUCDetectorIterator_NothingToDetectTitle; // NO_UCD
   public static String AbstractUCDetectorIterator_NothingToDetect; // NO_UCD
   // count
@@ -62,6 +63,7 @@ public final class Messages extends NLS {
   public static String CountIterator_Projects; // NO_UCD
 
   // PreferencePage ----------------------------------------------------------
+  public static String PreferencePage_ReduceVisibiltyWarning;//  "Reducing visibility of classes or methods may cause compile errors"
   public static String PreferencePage_CheckProtectedClasses; // NO_UCD
   public static String PreferencePage_CheckPrivateClasses; // NO_UCD
   //
@@ -102,6 +104,8 @@ public final class Messages extends NLS {
   public static String PreferencePage_IgnoreBeanMethodsToolTip;// NO_UCD
   public static String PreferencePage_IgnoreDeprecated; // NO_UCD
   public static String PreferencePage_IgnoreDeprecatedToolTip; // NO_UCD
+  public static String PreferencePage_IgnoreNoUcd; // NO_UCD
+  public static String PreferencePage_IgnoreNoUcdToolTip; // NO_UCD
   //
   public static String PreferencePage_Classes; // NO_UCD
   public static String PreferencePage_Methods; // NO_UCD
@@ -136,11 +140,11 @@ public final class Messages extends NLS {
   public static String PreferencePage_CreateXmlReport; // NO_UCD
   public static String PreferencePage_CreateTextReport; // NO_UCD
 
-  //  @UsedBy("reflection")
+  @UsedBy("reflection")
   public static String PrefMode_classes_only;// NO_UCD
-  //  @UsedBy("reflection")
+  @UsedBy("reflection")
   public static String PrefMode_full;// NO_UCD
-  //  @UsedBy("reflection")
+  @UsedBy("reflection")
   public static String PrefMode_Default;// NO_UCD
 
   //

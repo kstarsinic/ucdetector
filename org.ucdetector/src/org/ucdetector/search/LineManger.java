@@ -280,7 +280,10 @@ public class LineManger {
     int nextToken;
     try {
       while ((nextToken = scanner.getNextToken()) != ITerminalSymbols.TokenNameEOF) {
-        addIgnoreLineForToken(ignoreLines, scanner, NO_UCD_COMMENT, nextToken, ITerminalSymbols.TokenNameCOMMENT_LINE);
+        // We must run getNextToken() until end, to call scanner.getLineEnds() later 
+        if (Prefs.isIgnore_NO_UCD()) {
+          addIgnoreLineForToken(ignoreLines, scanner, NO_UCD_COMMENT, nextToken, ITerminalSymbols.TokenNameCOMMENT_LINE);
+        }
       }
     }
     catch (InvalidInputException e) {

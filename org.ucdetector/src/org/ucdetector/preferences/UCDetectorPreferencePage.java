@@ -24,6 +24,7 @@ import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
+import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Group;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.TabFolder;
@@ -147,6 +148,10 @@ public class UCDetectorPreferencePage extends FieldEditorPreferencePage implemen
         Messages.PreferencePage_IgnoreDeprecated, BooleanFieldEditor.SEPARATE_LABEL, spacer);
     deprecatedFilter.getLabelControl(spacer).setToolTipText(Messages.PreferencePage_IgnoreDeprecatedToolTip);
     this.addField(deprecatedFilter);
+    BooleanFieldEditor noUcdFilter = new BooleanFieldEditor(Prefs.IGNORE_NO_UCD, Messages.PreferencePage_IgnoreNoUcd,
+        BooleanFieldEditor.SEPARATE_LABEL, spacer);
+    noUcdFilter.getLabelControl(spacer).setToolTipText(Messages.PreferencePage_IgnoreNoUcdToolTip);
+    this.addField(noUcdFilter);
   }
 
   /**
@@ -247,6 +252,14 @@ public class UCDetectorPreferencePage extends FieldEditorPreferencePage implemen
   private void createVisibilityGroupClasses(Composite parentGroups) {
     Composite spacer = createGroup(parentGroups, Messages.PreferencePage_GroupVisibility, 1, 1,
         GridData.FILL_HORIZONTAL);
+    // visibility warning
+    Label infoLabel = new Label(spacer, SWT.LEFT);
+    infoLabel.setForeground(Display.getDefault().getSystemColor(SWT.COLOR_RED));
+    infoLabel.setText(Messages.PreferencePage_ReduceVisibiltyWarning);
+    GridData gd = new GridData(GridData.FILL_HORIZONTAL);
+    gd.horizontalSpan = 2;
+    infoLabel.setLayoutData(gd);
+
     this.addField(createCombo(Prefs.ANALYZE_VISIBILITY_PROTECTED_CLASSES,
         Messages.PreferencePage_CheckProtectedClasses, spacer));
     this.addField(createCombo(Prefs.ANALYZE_VISIBILITY_PRIVATE_CLASSES, Messages.PreferencePage_CheckPrivateClasses,

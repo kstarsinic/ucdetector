@@ -20,6 +20,7 @@ import org.eclipse.jdt.core.IType;
 import org.eclipse.osgi.util.NLS;
 import org.ucdetector.Log;
 import org.ucdetector.Messages;
+import org.ucdetector.UCDetectorPlugin;
 import org.ucdetector.report.IUCDetectorReport;
 import org.ucdetector.report.ReportParam;
 import org.ucdetector.search.LineManger;
@@ -31,7 +32,7 @@ import org.ucdetector.search.LineManger;
  */
 public final class MarkerFactory implements IUCDetectorReport {
   /** Marker prefix for all UCDetector markers  */
-  public static final String MARKER_PREFIX = "org.ucdetector."; //$NON-NLS-1$
+  public static final String MARKER_PREFIX = UCDetectorPlugin.ID + "."; //$NON-NLS-1$
   /**
    * See extension point="org.eclipse.core.resources.markers" in plugin.xml
    */

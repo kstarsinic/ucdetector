@@ -47,6 +47,7 @@ public final class Prefs {
   static final String FILTER_CONTAIN_STRING = ID + ".containString";
   static final String FILTER_BEAN_METHOD = ID + ".beanMethodFilter";
   static final String IGNORE_DEPRECATED = ID + ".ignoreDeprecated";
+  static final String IGNORE_NO_UCD = ID + ".ignore.NO_UCD";
   static final String DETECT_TEST_ONLY = ID + ".detectTestOnly";
   // ANALYZE -------------------------------------------------------------------
   static final String ANALYZE_CLASSES = ID + ".classes";
@@ -136,6 +137,13 @@ public final class Prefs {
    */
   public static boolean isIgnoreDeprecated() {
     return getStore().getBoolean(IGNORE_DEPRECATED);
+  }
+
+  /**
+   * @return <code>true</code>, when comment lines containing "NO_UCD" code should be ignored
+   */
+  public static boolean isIgnore_NO_UCD() {
+    return getStore().getBoolean(IGNORE_NO_UCD);
   }
 
   /**
@@ -477,7 +485,7 @@ public final class Prefs {
    * @param value , which should changed in preference store
    */
   public static void setUcdValue(String name, String value) {
-    getStore().setValue("org.ucdetector." + name, value);
+    getStore().setValue(UCDetectorPlugin.ID + "." + name, value);
   }
 
   /**
