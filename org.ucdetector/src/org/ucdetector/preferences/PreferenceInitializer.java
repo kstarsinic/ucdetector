@@ -79,7 +79,7 @@ public class PreferenceInitializer extends AbstractPreferenceInitializer {
     store.setDefault(Prefs.ANALYZE_FINAL_METHOD, IGNORE.name());
     store.setDefault(Prefs.ANALYZE_FINAL_FIELD, IGNORE.name());
     // VISIBILITY --------------------------------------------------------------
-    store.setDefault(Prefs.CHANGE_ALL_VISIBILIY_COMBO, WarnLevel.WARNING.ordinal());
+    //    store.setDefault(Prefs.CHANGE_ALL_VISIBILIY_COMBO, WarnLevel.WARNING.ordinal());
     // methods
     store.setDefault(Prefs.ANALYZE_VISIBILITY_PROTECTED_CLASSES, WARN);
     store.setDefault(Prefs.ANALYZE_VISIBILITY_PRIVATE_CLASSES, WARN);

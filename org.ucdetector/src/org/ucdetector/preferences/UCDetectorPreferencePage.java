@@ -48,6 +48,10 @@ import org.ucdetector.preferences.ModesPanel.Mode;
  */
 public class UCDetectorPreferencePage extends FieldEditorPreferencePage implements IWorkbenchPreferencePage {
   protected final List<FieldEditor> fields = new ArrayList<FieldEditor>();
+  /** Contains group names, tab names, preference names */
+  protected final List<String> extendedPreferences = new ArrayList<String>();
+  protected static final String GROUP_START = "# "; //$NON-NLS-1$
+  protected static final String TAB_START = "## "; //$NON-NLS-1$
   /**
    * entryNames (first column) and values (second column) for the
    * ComboFieldEditor
@@ -231,6 +235,7 @@ public class UCDetectorPreferencePage extends FieldEditorPreferencePage implemen
   }
 
   private Composite createTab(TabFolder tabFolder, String tabText) {
+    addTab(tabText);
     Composite composite = createComposite(tabFolder, 1, 1, GridData.FILL_HORIZONTAL);
     TabItem tabMain = new TabItem(tabFolder, SWT.NONE);
     tabMain.setText(tabText);
@@ -262,9 +267,18 @@ public class UCDetectorPreferencePage extends FieldEditorPreferencePage implemen
     }
   }
 
+  private void addTab(String tab) {
+    extendedPreferences.add(TAB_START + tab);
+  }
+
+  private void addGroup(String group) {
+    extendedPreferences.add(GROUP_START + group.replace("&", "")); //$NON-NLS-1$ //$NON-NLS-2$
+  }
+
   @Override
   protected void addField(FieldEditor editor) {
     fields.add(editor);
+    extendedPreferences.add(editor.getPreferenceName());
     super.addField(editor);
   }
 
@@ -351,7 +365,8 @@ public class UCDetectorPreferencePage extends FieldEditorPreferencePage implemen
   }
 
   // LaunchingPreferencePage
-  static Composite createGroup(Composite parent, String text) {
+  Composite createGroup(Composite parent, String text) {
+    addGroup(text);
     int columns = 1, hspan = 1, fill = GridData.FILL_HORIZONTAL;
     Group g = new Group(parent, SWT.NONE);
     g.setLayout(new GridLayout(3, false));

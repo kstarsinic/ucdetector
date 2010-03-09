@@ -8,12 +8,11 @@ package org.ucdetector.preferences;
 
 import java.io.File;
 import java.io.FileInputStream;
-import java.io.FileOutputStream;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.LinkedHashSet;
 import java.util.Map;
-import java.util.Properties;
 import java.util.Set;
 import java.util.Map.Entry;
 
@@ -37,6 +36,8 @@ import org.ucdetector.Messages;
 import org.ucdetector.UCDetectorPlugin;
 
 class ModesPanel {
+  private static final String SEPARATOR = "-----------------------------------------------------------------------------"; //$NON-NLS-1$
+  private static final String NL = System.getProperty("line.separator"); //$NON-NLS-1$
   private static final String MODES_FILE_TYPE = ".properties"; //$NON-NLS-1$
 
   /** built-in preferences mode */
@@ -153,7 +154,9 @@ class ModesPanel {
         result.add(modesFile.substring(0, modesFile.length() - MODES_FILE_TYPE.length()));
       }
     }
-    Log.logDebug("Available modes are: " + result); //$NON-NLS-1$
+    if (Log.DEBUG) {
+      Log.logDebug("Available modes are: " + result); //$NON-NLS-1$
+    }
     return result.toArray(new String[result.size()]);
   }
 
@@ -176,13 +179,42 @@ class ModesPanel {
   private void saveMode(String modeName) {
     page.performOk();
     Map<String, String> allPreferences = UCDetectorPlugin.getAllPreferences();
-    Map<String, String> delta = UCDetectorPlugin.getDeltaPreferences();
-    Properties properties = new Properties();
-    properties.putAll(allPreferences);
-    properties.putAll(delta);
+    allPreferences.putAll(UCDetectorPlugin.getDeltaPreferences());
+
+    StringBuilder sb = new StringBuilder();
+    sb.append("# ").append(SEPARATOR).append(NL);//$NON-NLS-1$
+    sb.append("# Created by  : " + getClass().getName()).append(NL);//$NON-NLS-1$
+    sb.append("# Created date: " + UCDetectorPlugin.getNow()).append(NL);//$NON-NLS-1$
+    sb.append("# ").append(SEPARATOR).append(NL);//$NON-NLS-1$
+    for (String extendedPreference : page.extendedPreferences) {
+      if (extendedPreference.startsWith(UCDetectorPreferencePage.TAB_START)) {
+        sb.append(NL);
+        sb.append(UCDetectorPreferencePage.TAB_START).append(SEPARATOR).append(NL);
+        sb.append(extendedPreference).append(NL);
+        sb.append(UCDetectorPreferencePage.TAB_START).append(SEPARATOR);
+      }
+      else if (extendedPreference.startsWith(UCDetectorPreferencePage.GROUP_START)) {
+        sb.append(extendedPreference);
+      }
+      else {
+        sb.append(extendedPreference).append('=').append(allPreferences.get(extendedPreference));
+        allPreferences.remove(extendedPreference);
+      }
+      sb.append(NL);
+    }
+    sb.append(NL);
+    //
+    if (Log.DEBUG) {
+      Log.logDebug(sb.toString());
+    }
+    // org.ucdetector.mode.index, old entries
+    Log.logDebug("Unhandled preferences :" + allPreferences); //$NON-NLS-1$
     File modesFile = getModesFile(modeName);
     try {
-      properties.store(new FileOutputStream(modesFile), "Created by " + getClass().getName()); //$NON-NLS-1$
+      FileWriter writer = new FileWriter(modesFile);
+      writer.write(sb.toString());
+      writer.close();
+      //      properties.store(new FileOutputStream(modesFile), "Created by " + getClass().getName()); //$NON-NLS-1$
       Log.logDebug("Saved mode to: " + modesFile.getAbsolutePath()); //$NON-NLS-1$
     }
     catch (IOException ex) {
