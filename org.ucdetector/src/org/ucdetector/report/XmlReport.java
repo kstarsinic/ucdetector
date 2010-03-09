@@ -415,9 +415,11 @@ public class XmlReport implements IUCDetectorReport {
     TransformerFactory tf = TransformerFactory.newInstance();
     Transformer xformer = tf.newTransformer();
     try {
-      tf.setAttribute("indent-number", Integer.valueOf(2));
-      xformer.setOutputProperty(OutputKeys.INDENT, "yes");
       xformer.setOutputProperty(OutputKeys.METHOD, "xml");
+      xformer.setOutputProperty(OutputKeys.INDENT, "yes");
+      xformer.setOutputProperty("{http://xml.apache.org/xslt}indent-amount", "2");
+      // http://bugs.sun.com/bugdatabase/view_bug.do?bug_id=6296446
+      tf.setAttribute("indent-number", Integer.valueOf(2));
     }
     catch (IllegalArgumentException ignore) {
       Log.logWarn("Can't change output format: " + ignore);
