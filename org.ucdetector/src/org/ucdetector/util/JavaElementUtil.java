@@ -653,11 +653,7 @@ public class JavaElementUtil {
     if (javaElement == null) {
       return "null"; //$NON-NLS-1$
     }
-    return String.format("%s\t[%s]", getElementName(javaElement), getClassName(javaElement)); //$NON-NLS-1$
-  }
-
-  private static String getClassName(Object object) {
-    return object == null ? "null" : object.getClass().getName(); //$NON-NLS-1$
+    return String.format("%s\t%s", getElementName(javaElement), Log.getClassName(javaElement)); //$NON-NLS-1$
   }
 
   /**
@@ -770,7 +766,7 @@ public class JavaElementUtil {
     @Override
     public boolean visit(MethodDeclaration node) {
       for (Object modifier : node.modifiers()) {
-        // System.out.println("modifier=" + modifier + " [" + modifier.getClass().getName() + "]");
+        // System.out.println("modifier=" + modifier + Log.getClassName(modifier));
         if (modifier instanceof Annotation) {
           Annotation ma = (Annotation) modifier;
           annotation = ma.getTypeName();

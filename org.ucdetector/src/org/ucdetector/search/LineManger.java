@@ -155,7 +155,7 @@ public class LineManger {
     protected boolean visitImpl(BodyDeclaration declaration, SimpleName name) {
       // System.out.println("declaration=" + declaration);
       for (Object modifier : declaration.modifiers()) {
-        // System.out.println("modifier=" + modifier + " [" + modifier.getClass().getName() + "]");
+        // System.out.println("modifier=" + modifier + Log.getClassName(modifier));
         if (modifier instanceof Annotation) {
           Annotation annotation = (Annotation) modifier;
           if (isIgnoreAnnotation(annotation)) {
@@ -255,7 +255,7 @@ public class LineManger {
     if (!(openable instanceof ICompilationUnit)) {
       Log.logError(String.format("openable NOT instanceof ICompilationUnit '%s' %s", //$NON-NLS-1$
           JavaElementUtil.getElementName(javaElement),//
-          javaElement.getClass().getName()));
+          Log.getClassName(javaElement)));
       return null;
     }
     ICompilationUnit compilationUnit = (ICompilationUnit) openable;

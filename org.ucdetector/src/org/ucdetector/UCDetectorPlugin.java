@@ -244,7 +244,7 @@ public class UCDetectorPlugin extends AbstractUIPlugin {
     return UCDetectorPlugin.isHeadlessMode;
   }
 
-  public DateFormat getDateFormat() {
+  private DateFormat getDateFormat() {
     return dateFormat;
   }
 

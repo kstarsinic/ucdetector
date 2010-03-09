@@ -180,7 +180,7 @@ public abstract class AbstractUCDetectorIterator extends UCDetectorCallBack {
    * @param javaElement to iterate
    * @throws CoreException if an error occurs during iterations
    */
-  public void iterate(IJavaElement javaElement) throws CoreException {
+  public final void iterate(IJavaElement javaElement) throws CoreException {
     if (getMonitor().isCanceled()) {
       return;
     }
@@ -305,7 +305,7 @@ public abstract class AbstractUCDetectorIterator extends UCDetectorCallBack {
     return selectedAsString.toString();
   }
 
-  public MarkerFactory getMarkerFactory() {
+  protected final MarkerFactory getMarkerFactory() {
     if (markerFactory == null) {
       List<IUCDetectorReport> reports = new ArrayList<IUCDetectorReport>();
       reports.add(new MarkerReport());

@@ -74,10 +74,14 @@ public class XmlReport implements IUCDetectorReport {
       + "    Public License v1.0 which accompanies this distribution, and is available at\n"
       + "    http://www.eclipse.org/legal/epl-v10.html\n";
   //
-  private static final String XML_INFO = "\n" + " - javaTypeSimple one of:\n"
-      + "   - Class, Method, Field, Initializer\n" + " - javaType one of:\n"
-      + "   - Annotation, Anonymous class, Enumeration, Interface, Local class, Member class, Class\n"
-      + "   - Constructor, Method\n" + "   - EnumConstant, Constant, Field\n" + " - markerType one of:\n"
+  private static final String XML_INFO = "\n" //
+      + " - javaTypeSimple one of:\n"//
+      + "   - Class, Method, Field, Initializer\n"//
+      + " - javaType one of:\n"//
+      + "   - Annotation, Anonymous class, Enumeration, Interface, Local class, Member class, Class\n"//
+      + "   - Constructor, Method\n" //
+      + "   - EnumConstant, Constant, Field\n"//
+      + " - markerType one of:\n"//
       + "   - Reference, FewReference, VisibilityPrivate, VisibilityProtected, VisibilityDefault, Final, TestOnly\n";
   //
   private static final String HTML_XSL_FILE = "org/ucdetector/report/html.xslt";

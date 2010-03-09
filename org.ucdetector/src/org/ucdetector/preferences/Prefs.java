@@ -86,7 +86,6 @@ public final class Prefs {
   static final String MODE_INDEX = ID + ".mode.index";
   // 
   private static final String[] EMPTY_ARRAY = new String[0];
-  private static IPreferenceStore store_FOR_TEST;
   // CYCLE -------------------------------------------------------------------
   static final String CYCLE_DEPTH = ID + ".cycleDepth";
   static final int CYCLE_DEPTH_MIN = 2;
@@ -455,14 +454,8 @@ public final class Prefs {
   // ---------------------------------------------------------------------------
   // HELPER
   // ---------------------------------------------------------------------------
-  protected static void setStore_FOR_TEST(IPreferenceStore store_FOR_TEST) { // NO_UCD
-    Prefs.store_FOR_TEST = store_FOR_TEST;
-  }
 
   protected static IPreferenceStore getStore() {
-    if (store_FOR_TEST != null) {
-      return store_FOR_TEST;
-    }
     return UCDetectorPlugin.getDefault().getPreferenceStore();
   }
 

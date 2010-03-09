@@ -25,10 +25,12 @@ public class Log {
    */
   public static final boolean DEBUG = isDebugOption("org.ucdetector/debug"); //$NON-NLS-1$
 
-  private static final String LOG_LEVEL_DEBUG = "DEBUG"; //$NON-NLS-1$
-  private static final String LOG_LEVEL_INFO = "INFO "; //$NON-NLS-1$
-  private static final String LOG_LEVEL_WARN = "WARN "; //$NON-NLS-1$
-  private static final String LOG_LEVEL_ERROR = "ERROR"; //$NON-NLS-1$
+  private static final String LOG_LEVEL_DEBUG /* */= "DEBUG"; //$NON-NLS-1$
+  private static final String LOG_LEVEL_INFO /*  */= "INFO "; //$NON-NLS-1$
+  private static final String LOG_LEVEL_WARN /*  */= "WARN "; //$NON-NLS-1$
+  private static final String LOG_LEVEL_ERROR /* */= "ERROR"; //$NON-NLS-1$
+  //
+  private static final String LEVEL_SEPARATOR = ": "; //$NON-NLS-1$
 
   public static void logDebug(String message) {
     Log.logImpl(LOG_LEVEL_DEBUG, message, null);
@@ -78,9 +80,9 @@ public class Log {
   }
 
   private static StringBuilder createLogMessage(String level, String message) {
-    String mes = (message == null) ? "" : message; //$NON-NLS-1$
-    StringBuilder sb = new StringBuilder(level.length() + 2 + mes.length());
-    sb.append(level).append(": ").append(mes); //$NON-NLS-1$
+    int length = level.length() + LEVEL_SEPARATOR.length() + (message == null ? 0 : message.length());
+    StringBuilder sb = new StringBuilder(length);
+    sb.append(level).append(LEVEL_SEPARATOR).append(message);
     return sb;
   }
 
