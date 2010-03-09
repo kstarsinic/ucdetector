@@ -87,8 +87,8 @@ public class UCDetectorPreferencePage extends FieldEditorPreferencePage implemen
     createOtherGroup(composite);
     // KEYWORD -----------------------------------------------------------------
     composite = createTab(tabFolder, Messages.PreferencePage_TabKeywords);
-    createKeywordGroup(composite);
-    createVisibilityGroupClasses(composite);
+    createFinalGroup(composite);
+    createVisibilityGroup(composite);
     // REPORT -----------------------------------------------------------------
     composite = createTab(tabFolder, Messages.PreferencePage_TabReport);
     createReportGroup(composite);
@@ -114,44 +114,29 @@ public class UCDetectorPreferencePage extends FieldEditorPreferencePage implemen
    * packages, classes, methods, fields
    */
   private void createFilterGroup(Composite parentGroups) {
-    Composite spacer = createGroup(parentGroups, Messages.PreferencePage_GroupFilter, 1, 1, GridData.FILL_HORIZONTAL);
-    StringFieldEditor sourceFilter = createText(Prefs.FILTER_SOURCE_FOLDER,
-        Messages.PreferencePage_IgnoreSourceFolderFilter, spacer,
+    Composite spacer = createGroup(parentGroups, Messages.PreferencePage_GroupFilter);
+    appendText(Prefs.FILTER_SOURCE_FOLDER, Messages.PreferencePage_IgnoreSourceFolderFilter, spacer,
         Messages.PreferencePage_IgnoreSourceFolderFilterToolTip);
-    this.addField(sourceFilter);
-    StringFieldEditor packageFilter = createText(Prefs.FILTER_PACKAGE, Messages.PreferencePage_IgnorePackageFilter,
-        spacer, Messages.PreferencePage_IgnorePackageFilterToolTip);
-    this.addField(packageFilter);
-    StringFieldEditor classFilter = createText(Prefs.FILTER_CLASS, Messages.PreferencePage_IgnoreClassFilter, spacer,
+    appendText(Prefs.FILTER_PACKAGE, Messages.PreferencePage_IgnorePackageFilter, spacer,
+        Messages.PreferencePage_IgnorePackageFilterToolTip);
+    appendText(Prefs.FILTER_CLASS, Messages.PreferencePage_IgnoreClassFilter, spacer,
         Messages.PreferencePage_IgnoreClassFilterToolTip);
-    this.addField(classFilter);
-    StringFieldEditor methodFilter = createText(Prefs.FILTER_METHOD, Messages.PreferencePage_IgnoreMethodFilter,
-        spacer, Messages.PreferencePage_IgnoreMethodFilterToolTip);
-    this.addField(methodFilter);
-    StringFieldEditor fieldFilter = createText(Prefs.FILTER_FIELD, Messages.PreferencePage_IgnoreFieldFilter, spacer,
+    appendText(Prefs.FILTER_METHOD, Messages.PreferencePage_IgnoreMethodFilter, spacer,
+        Messages.PreferencePage_IgnoreMethodFilterToolTip);
+    appendText(Prefs.FILTER_FIELD, Messages.PreferencePage_IgnoreFieldFilter, spacer,
         Messages.PreferencePage_IgnoreFieldFilterToolTip);
-    this.addField(fieldFilter);
-    StringFieldEditor annotationsFilter = createText(Prefs.FILTER_ANNOATIONS,
-        Messages.PreferencePage_IgnoreAnnotationsFilter, spacer, Messages.PreferencePage_IgnoreAnnotationsFilterToolTip);
-    this.addField(annotationsFilter);
-    StringFieldEditor implementsFilter = createText(Prefs.FILTER_IMPLEMENTS, Messages.PreferencePage_IgnoreImplements,
-        spacer, Messages.PreferencePage_IgnoreImplementsToolTip);
-    this.addField(implementsFilter);
-    StringFieldEditor containStringFilter = createText(Prefs.FILTER_CONTAIN_STRING,
-        Messages.PreferencePage_IgnoreContainString, spacer, Messages.PreferencePage_IgnoreContainStringToolTip);
-    this.addField(containStringFilter);
-    BooleanFieldEditor beanMethodFilter = new BooleanFieldEditor(Prefs.FILTER_BEAN_METHOD,
-        Messages.PreferencePage_IgnoreBeanMethods, BooleanFieldEditor.SEPARATE_LABEL, spacer);
-    beanMethodFilter.getLabelControl(spacer).setToolTipText(Messages.PreferencePage_IgnoreBeanMethodsToolTip);
-    this.addField(beanMethodFilter);
-    BooleanFieldEditor deprecatedFilter = new BooleanFieldEditor(Prefs.IGNORE_DEPRECATED,
-        Messages.PreferencePage_IgnoreDeprecated, BooleanFieldEditor.SEPARATE_LABEL, spacer);
-    deprecatedFilter.getLabelControl(spacer).setToolTipText(Messages.PreferencePage_IgnoreDeprecatedToolTip);
-    this.addField(deprecatedFilter);
-    BooleanFieldEditor noUcdFilter = new BooleanFieldEditor(Prefs.IGNORE_NO_UCD, Messages.PreferencePage_IgnoreNoUcd,
-        BooleanFieldEditor.SEPARATE_LABEL, spacer);
-    noUcdFilter.getLabelControl(spacer).setToolTipText(Messages.PreferencePage_IgnoreNoUcdToolTip);
-    this.addField(noUcdFilter);
+    appendText(Prefs.FILTER_ANNOATIONS, Messages.PreferencePage_IgnoreAnnotationsFilter, spacer,
+        Messages.PreferencePage_IgnoreAnnotationsFilterToolTip);
+    appendText(Prefs.FILTER_IMPLEMENTS, Messages.PreferencePage_IgnoreImplements, spacer,
+        Messages.PreferencePage_IgnoreImplementsToolTip);
+    appendText(Prefs.FILTER_CONTAIN_STRING, Messages.PreferencePage_IgnoreContainString, spacer,
+        Messages.PreferencePage_IgnoreContainStringToolTip);
+    appendBool(Prefs.FILTER_BEAN_METHOD, Messages.PreferencePage_IgnoreBeanMethods,
+        Messages.PreferencePage_IgnoreBeanMethodsToolTip, spacer, 2);
+    appendBool(Prefs.IGNORE_DEPRECATED, Messages.PreferencePage_IgnoreDeprecated,
+        Messages.PreferencePage_IgnoreDeprecatedToolTip, spacer, 2);
+    appendBool(Prefs.IGNORE_NO_UCD, Messages.PreferencePage_IgnoreNoUcd, Messages.PreferencePage_IgnoreNoUcdToolTip,
+        spacer, 2);
   }
 
   /**
@@ -159,21 +144,15 @@ public class UCDetectorPreferencePage extends FieldEditorPreferencePage implemen
    * search class names in text files
    */
   private void createDetectGroup(Composite parentGroups) {
-    Composite spacer = createGroup(parentGroups, Messages.PreferencePage_GroupDetect, 1, 1, GridData.FILL_HORIZONTAL);
+    Composite spacer = createGroup(parentGroups, Messages.PreferencePage_GroupDetect);
     IntegerFieldEditor warnLimit = new IntegerFieldEditor(Prefs.WARN_LIMIT, Messages.PreferencePage_WarnLimit, spacer);
     warnLimit.getLabelControl(spacer).setToolTipText(Messages.PreferencePage_WarnLimitToolTip);
     this.addField(warnLimit);
-    ComboFieldEditor analyzeClass = createCombo(Prefs.ANALYZE_CLASSES, Messages.PreferencePage_Classes, spacer);
-    this.addField(analyzeClass);
-    ComboFieldEditor analyzeMethod = createCombo(Prefs.ANALYZE_MEHTODS, Messages.PreferencePage_Methods, spacer);
-    this.addField(analyzeMethod);
-    ComboFieldEditor analyzeFields = createCombo(Prefs.ANALYZE_FIELDS, Messages.PreferencePage_Fields, spacer);
-    this.addField(analyzeFields);
-    // Detect code only used by tests
-    BooleanFieldEditor ignoreTestOnlyFilter = new BooleanFieldEditor(Prefs.DETECT_TEST_ONLY,
-        Messages.PreferencePage_DetectTestOnly, BooleanFieldEditor.SEPARATE_LABEL, spacer);
-    ignoreTestOnlyFilter.getLabelControl(spacer).setToolTipText(Messages.PreferencePage_DetectTestOnlyToolTip);
-    this.addField(ignoreTestOnlyFilter);
+    appendCombo(Prefs.ANALYZE_CLASSES, Messages.PreferencePage_Classes, spacer);
+    appendCombo(Prefs.ANALYZE_MEHTODS, Messages.PreferencePage_Methods, spacer);
+    appendCombo(Prefs.ANALYZE_FIELDS, Messages.PreferencePage_Fields, spacer);
+    appendBool(Prefs.DETECT_TEST_ONLY, Messages.PreferencePage_DetectTestOnly,
+        Messages.PreferencePage_DetectTestOnlyToolTip, spacer, 2);
   }
 
   /**
@@ -181,8 +160,7 @@ public class UCDetectorPreferencePage extends FieldEditorPreferencePage implemen
    * search class names in text files
    */
   private void createFileSearchGroup(Composite parentGroups) {
-    Composite spacer = createGroup(parentGroups, Messages.PreferencePage_GroupFileSearch, 1, 1,
-        GridData.FILL_HORIZONTAL);
+    Composite spacer = createGroup(parentGroups, Messages.PreferencePage_GroupFileSearch);
     SynchBooleanFieldEditor analyzeLiteralsCheck = new SynchBooleanFieldEditor(spacer);
     this.addField(analyzeLiteralsCheck);
     BooleanFieldEditor checkFullClassName = new BooleanFieldEditor(Prefs.ANALYZE_CHECK_FULL_CLASS_NAME,
@@ -190,11 +168,10 @@ public class UCDetectorPreferencePage extends FieldEditorPreferencePage implemen
     Label label = checkFullClassName.getLabelControl(spacer);
     label.setToolTipText(Messages.PreferencePage_CheckFullClassNameToolTip);
     this.addField(checkFullClassName);
-    StringFieldEditor analyzeLiterals = createText(Prefs.ANALYZE_LITERALS, Messages.PreferencePage_Literals, spacer,
+    StringFieldEditor analyzeLiterals = appendText(Prefs.ANALYZE_LITERALS, Messages.PreferencePage_Literals, spacer,
         Messages.PreferencePage_LiteralsToolTip);
     analyzeLiteralsCheck.setAnalyzeLiterals(analyzeLiterals);
     analyzeLiteralsCheck.setCheckFullClassName(checkFullClassName);
-    this.addField(analyzeLiterals);
   }
 
   /**
@@ -202,7 +179,7 @@ public class UCDetectorPreferencePage extends FieldEditorPreferencePage implemen
    */
   // Don't use fileFieldEditor in other group: Layout problems!
   private void createOtherGroup(Composite parentGroups) {
-    Composite spacer = createGroup(parentGroups, Messages.PreferencePage_GroupOthers, 1, 1, GridData.FILL_HORIZONTAL);
+    Composite spacer = createGroup(parentGroups, Messages.PreferencePage_GroupOthers);
     IntegerFieldEditor cycleDepth = new IntegerFieldEditor(Prefs.CYCLE_DEPTH, Messages.PreferencePage_MaxCycleSize,
         spacer, 1);
     cycleDepth.setValidRange(Prefs.CYCLE_DEPTH_MIN, Prefs.CYCLE_DEPTH_MAX);
@@ -212,46 +189,23 @@ public class UCDetectorPreferencePage extends FieldEditorPreferencePage implemen
   }
 
   private void createReportGroup(Composite parentGroups) {
-    Composite spacer = createGroup(parentGroups, Messages.PreferencePage_GroupOthers, 1, 1, GridData.FILL_HORIZONTAL);
-    appendBoolean(Prefs.REPORT_CREATE_HTML, Messages.PreferencePage_CreateHtmlReport, spacer);
-    appendBoolean(Prefs.REPORT_CREATE_XML, Messages.PreferencePage_CreateXmlReport, spacer);
-    appendBoolean(Prefs.REPORT_CREATE_TXT, Messages.PreferencePage_CreateTextReport, spacer);
+    Composite spacer = createGroup(parentGroups, Messages.PreferencePage_GroupOthers);
+    appendBool(Prefs.REPORT_CREATE_HTML, Messages.PreferencePage_CreateHtmlReport, null, spacer, 3);
+    appendBool(Prefs.REPORT_CREATE_XML, Messages.PreferencePage_CreateXmlReport, null, spacer, 3);
+    appendBool(Prefs.REPORT_CREATE_TXT, Messages.PreferencePage_CreateTextReport, null, spacer, 3);
     DirectoryFieldEditor path = new DirectoryFieldEditor(Prefs.REPORT_DIR, Messages.PreferencePage_ReportFile, spacer);
     path.getLabelControl(spacer).setToolTipText(Messages.PreferencePage_ReportFileToolTip);
     this.addField(path);
   }
 
-  private void appendBoolean(String name, String text, Composite parent) {
-    BooleanFieldEditor bool = new BooleanFieldEditor(name, text, BooleanFieldEditor.SEPARATE_LABEL, parent);
-    bool.fillIntoGrid(parent, 3);
-    this.addField(bool);
+  private void createFinalGroup(Composite parentGroups) {
+    Composite spacer = createGroup(parentGroups, Messages.PreferencePage_GroupFinal);
+    appendCombo(Prefs.ANALYZE_FINAL_METHOD, Messages.PreferencePage_CheckFinalMethod, spacer);
+    appendCombo(Prefs.ANALYZE_FINAL_FIELD, Messages.PreferencePage_CheckFinalField, spacer);
   }
 
-  // --------------------------------------------------------------------------
-  // VISIBILITY
-  // --------------------------------------------------------------------------
-  /**
-   * Create a group of keyword settings
-   * (analyze visibility, try to make methods or fields final)
-   */
-  private void createKeywordGroup(Composite parentGroups) {
-    Composite spacer = createGroup(parentGroups, Messages.PreferencePage_GroupFinal, 1, 1, GridData.FILL_HORIZONTAL);
-    // FINAL -------------------------------------------------------------------
-    ComboFieldEditor analyzeFinalMethod = createCombo(Prefs.ANALYZE_FINAL_METHOD,
-        Messages.PreferencePage_CheckFinalMethod, spacer);
-    this.addField(analyzeFinalMethod);
-    ComboFieldEditor analyzeFinalField = createCombo(Prefs.ANALYZE_FINAL_FIELD,
-        Messages.PreferencePage_CheckFinalField, spacer);
-    this.addField(analyzeFinalField);
-  }
-
-  /**
-   * Create a group of keyword settings
-   * (analyze visibility, try to make methods or fields final)
-   */
-  private void createVisibilityGroupClasses(Composite parentGroups) {
-    Composite spacer = createGroup(parentGroups, Messages.PreferencePage_GroupVisibility, 1, 1,
-        GridData.FILL_HORIZONTAL);
+  private void createVisibilityGroup(Composite parentGroups) {
+    Composite spacer = createGroup(parentGroups, Messages.PreferencePage_GroupVisibility);
     // visibility warning
     Label infoLabel = new Label(spacer, SWT.LEFT);
     infoLabel.setForeground(Display.getDefault().getSystemColor(SWT.COLOR_RED));
@@ -259,36 +213,21 @@ public class UCDetectorPreferencePage extends FieldEditorPreferencePage implemen
     GridData gd = new GridData(GridData.FILL_HORIZONTAL);
     gd.horizontalSpan = 2;
     infoLabel.setLayoutData(gd);
-
-    this.addField(createCombo(Prefs.ANALYZE_VISIBILITY_PROTECTED_CLASSES,
-        Messages.PreferencePage_CheckProtectedClasses, spacer));
-    this.addField(createCombo(Prefs.ANALYZE_VISIBILITY_PRIVATE_CLASSES, Messages.PreferencePage_CheckPrivateClasses,
-        spacer));
-    addLineHack(spacer);
     //
-    this.addField(createCombo(Prefs.ANALYZE_VISIBILITY_PROTECTED_METHODS,
-        Messages.PreferencePage_CheckProtectedMethods, spacer));
-    this.addField(createCombo(Prefs.ANALYZE_VISIBILITY_PRIVATE_METHODS, Messages.PreferencePage_CheckPrivateMethods,
-        spacer));
+    appendCombo(Prefs.ANALYZE_VISIBILITY_PROTECTED_CLASSES, Messages.PreferencePage_CheckProtectedClasses, spacer);
+    appendCombo(Prefs.ANALYZE_VISIBILITY_PRIVATE_CLASSES, Messages.PreferencePage_CheckPrivateClasses, spacer);
     addLineHack(spacer);
-    //
-    this.addField(createCombo(Prefs.ANALYZE_VISIBILITY_PROTECTED_FIELDS, Messages.PreferencePage_CheckProtectedFields,
-        spacer));
-    this.addField(createCombo(Prefs.ANALYZE_VISIBILITY_PRIVATE_FIELDS, Messages.PreferencePage_CheckPrivateFields,
-        spacer));
+    appendCombo(Prefs.ANALYZE_VISIBILITY_PROTECTED_METHODS, Messages.PreferencePage_CheckProtectedMethods, spacer);
+    appendCombo(Prefs.ANALYZE_VISIBILITY_PRIVATE_METHODS, Messages.PreferencePage_CheckPrivateMethods, spacer);
+    addLineHack(spacer);
+    appendCombo(Prefs.ANALYZE_VISIBILITY_PROTECTED_FIELDS, Messages.PreferencePage_CheckProtectedFields, spacer);
+    appendCombo(Prefs.ANALYZE_VISIBILITY_PRIVATE_FIELDS, Messages.PreferencePage_CheckPrivateFields, spacer);
     // [ 2804064 ] Access to enclosing type - make 2743908 configurable
-    BooleanFieldEditor ignoreSyntheticAccessEmulation = new BooleanFieldEditor(Prefs.IGNORE_SYNTHETIC_ACCESS_EMULATION,
-        "    " //$NON-NLS-1$
-            + Messages.PreferencePage_ignoreSyntheticAccessEmulation, BooleanFieldEditor.SEPARATE_LABEL, spacer);
-    ignoreSyntheticAccessEmulation.getLabelControl(spacer).setToolTipText(
-        Messages.PreferencePage_ignoreSyntheticAccessEmulationTooltip);
-    this.addField(ignoreSyntheticAccessEmulation);
+    appendBool(Prefs.IGNORE_SYNTHETIC_ACCESS_EMULATION, Messages.PreferencePage_ignoreSyntheticAccessEmulation,
+        Messages.PreferencePage_ignoreSyntheticAccessEmulationTooltip, spacer, 2);
     addLineHack(spacer);
-    //
-    this.addField(createCombo(Prefs.ANALYZE_VISIBILITY_PROTECTED_CONSTANTS,
-        Messages.PreferencePage_CheckProtectedConstants, spacer));
-    this.addField(createCombo(Prefs.ANALYZE_VISIBILITY_PRIVATE_CONSTANTS,
-        Messages.PreferencePage_CheckPrivateConstants, spacer));
+    appendCombo(Prefs.ANALYZE_VISIBILITY_PROTECTED_CONSTANTS, Messages.PreferencePage_CheckProtectedConstants, spacer);
+    appendCombo(Prefs.ANALYZE_VISIBILITY_PRIVATE_CONSTANTS, Messages.PreferencePage_CheckPrivateConstants, spacer);
   }
 
   private Composite createTab(TabFolder tabFolder, String tabText) {
@@ -300,13 +239,11 @@ public class UCDetectorPreferencePage extends FieldEditorPreferencePage implemen
   }
 
   private static void addLineHack(Composite spacer) {
-    //    Label label = new Label(spacer, SWT.WRAP);
-    //    label.setText("------");
     Label label = new Label(spacer, SWT.NONE);
     GridData gd = new GridData(GridData.HORIZONTAL_ALIGN_FILL);
     gd.horizontalSpan = 3;
     label.setLayoutData(gd);
-  } // --------------------------------------------------------------------------
+  }
 
   /** Hack for layout problems. See also: IntegerFieldEditor.getNumberOfControls() */
   @Override
@@ -346,10 +283,7 @@ public class UCDetectorPreferencePage extends FieldEditorPreferencePage implemen
       check.setToolTipText(Messages.PreferencePage_LiteralsCheckToolTip);
     }
 
-    /**
-     * Necessary, because first "literal check box" must be created, then
-     * analyzeLiterals
-     */
+    /** Necessary, because first "literal check box" must be created, then analyzeLiterals  */
     void setAnalyzeLiterals(StringFieldEditor analyzeLiterals) {
       this.analyzeLiterals = analyzeLiterals;
     }
@@ -358,9 +292,7 @@ public class UCDetectorPreferencePage extends FieldEditorPreferencePage implemen
       this.checkFullClassName = checkFullClassName;
     }
 
-    /**
-     * Hack to avoid ugly layout problems
-     */
+    /** Hack to avoid ugly layout problems */
     @Override
     public int getNumberOfControls() {
       return 2;
@@ -383,35 +315,29 @@ public class UCDetectorPreferencePage extends FieldEditorPreferencePage implemen
     }
   }
 
-  /**
-   * create an ComboFieldEditor with label, tooltip and do layout
-   */
-  static ComboFieldEditor createCombo(String name, String label, Composite parent) {
+  private void appendCombo(String name, String label, Composite parent) {
     ComboFieldEditor combo = new ComboFieldEditor(name, label, WARN_LEVELS, parent);
     combo.fillIntoGrid(parent, 2);
     combo.getLabelControl(parent).setToolTipText(Messages.PreferencePage_ComboToolTip);
-    fillHorizontal(parent, combo);
-    return combo;
+    Label labelControl = combo.getLabelControl(parent);
+    GridData gd = new GridData(GridData.FILL_HORIZONTAL);
+    labelControl.setLayoutData(gd);
+    addField(combo);
   }
 
-  /**
-   * create an StringFieldEditor with label, tooltip and do layout
-   */
-  static StringFieldEditor createText(String name, String label, Composite parent, String toolTip) {
+  private StringFieldEditor appendText(String name, String label, Composite parent, String toolTip) {
     StringFieldEditor text = new StringFieldEditor(name, label, parent);
     text.fillIntoGrid(parent, 2);
     text.getLabelControl(parent).setToolTipText(toolTip);
+    addField(text);
     return text;
   }
 
-  private static void fillHorizontal(Composite parent, FieldEditor fieldEditor) {
-    Label labelControl = fieldEditor.getLabelControl(parent);
-    GridData gd = new GridData(GridData.FILL_HORIZONTAL);
-    labelControl.setLayoutData(gd);
-    // org.eclipse.swt.graphics. Color color
-    // = org.eclipse.swt.widgets.Display.getDefault().getSystemColor(SWT.
-    // COLOR_CYAN);
-    // labelControl.setBackground(color);
+  private void appendBool(String name, String text, String tooltip, Composite parent, int columns) {
+    BooleanFieldEditor bool = new BooleanFieldEditor(name, text, BooleanFieldEditor.SEPARATE_LABEL, parent);
+    bool.fillIntoGrid(parent, columns);
+    bool.getLabelControl(parent).setToolTipText(tooltip);
+    this.addField(bool);
   }
 
   // -------------------------------------------------------------------------
@@ -425,7 +351,8 @@ public class UCDetectorPreferencePage extends FieldEditorPreferencePage implemen
   }
 
   // LaunchingPreferencePage
-  static Composite createGroup(Composite parent, String text, int columns, int hspan, int fill) {
+  static Composite createGroup(Composite parent, String text) {
+    int columns = 1, hspan = 1, fill = GridData.FILL_HORIZONTAL;
     Group g = new Group(parent, SWT.NONE);
     g.setLayout(new GridLayout(3, false));
     g.setText(text);
