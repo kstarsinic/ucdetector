@@ -16,6 +16,7 @@ import java.util.Map;
 import java.util.Set;
 import java.util.Map.Entry;
 
+import org.eclipse.jface.dialogs.IInputValidator;
 import org.eclipse.jface.dialogs.InputDialog;
 import org.eclipse.jface.preference.FieldEditor;
 import org.eclipse.jface.preference.IPreferenceStore;
@@ -162,8 +163,14 @@ class ModesPanel {
 
   /** Add a user specific mode, and save it to a file */
   private void addMode() {
+    IInputValidator validator = new IInputValidator() {
+      public String isValid(String fileName) {
+        boolean isValid = !fileName.matches(".*[\\\\/:*?|<>\"].*"); //$NON-NLS-1$
+        return isValid ? null : NLS.bind("Mode name \"{0}\" is not a valid file name", fileName);
+      }
+    };
     InputDialog input = new InputDialog(parent.getShell(), Messages.PreferencePage_NewMode,
-        Messages.PreferencePage_ModeName, null, null);
+        Messages.PreferencePage_ModeName, null, validator);
     input.open();
     String newModeName = input.getValue();
     if (newModeName != null && newModeName.trim().length() > 0) {

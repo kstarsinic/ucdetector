@@ -71,6 +71,8 @@ public class PreferenceInitializer extends AbstractPreferenceInitializer {
       reportDir = REPORT_DEFAULT_DIR;
       Log.logError("Can't get report file name", e);
     }
+    // Needed to avoid message: Path does not exists
+    new File(reportDir).mkdirs();
     store.setDefault(Prefs.REPORT_DIR, reportDir);
     store.setDefault(Prefs.REPORT_CREATE_HTML, true);
     store.setDefault(Prefs.REPORT_CREATE_XML, false);
