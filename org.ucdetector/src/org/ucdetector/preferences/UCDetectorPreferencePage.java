@@ -100,6 +100,10 @@ public class UCDetectorPreferencePage extends FieldEditorPreferencePage implemen
 
   @Override
   public boolean performOk() {
+    // ------------------------------------------------------------------------
+    // TODO: what's the difference between performOk() and ModesPanel.saveMode(String)?
+    // ------------------------------------------------------------------------
+
     boolean result = super.performOk();
     getPreferenceStore().setValue(Prefs.MODE_INDEX, modesPanel.getCombo().getSelectionIndex());
     Log.logInfo("New preferences: " + UCDetectorPlugin.getPreferencesAsString()); //$NON-NLS-1$
