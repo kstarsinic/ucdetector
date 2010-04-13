@@ -1,7 +1,8 @@
 UCDetector 1.5.0 from 2010-:
 Bugfixes:
  - [ 2922801 ] Quick fix exception on enum declaration 
- - [ 2968753] protected abstract method cannot be made private
+ - [ 2968753 ] protected abstract method cannot be made private
+ - [ 2986496 ] Marker don't disappear when deleting a complete line
  
 
 New features:
