@@ -110,8 +110,11 @@ abstract class AbstractUCDQuickFix extends WorkbenchMarkerResolution {
       }
       originalUnit.getResource().refreshLocal(IResource.DEPTH_ONE, null);
       if (part instanceof ITextEditor) {// needs org.eclipse.ui.editors
-        ITextEditor textEditor = (ITextEditor) part;
-        textEditor.selectAndReveal(startPosition, 0);//set cursor at edit position
+        // Fix bug 2996487:Applying quick fix scrolls page
+        if (startPosition > 0) {
+          ITextEditor textEditor = (ITextEditor) part;
+          textEditor.selectAndReveal(startPosition, 0);//set cursor at edit position
+        }
       }
     }
     catch (Exception e) {

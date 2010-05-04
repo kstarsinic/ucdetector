@@ -42,7 +42,8 @@ class VisibilityQuickFix extends AbstractUCDQuickFix {
     // default -> private
     else if (modifierFound == null && modifierNew != null) {
       listRewrite.insertFirst(modifierNew, null);
-      startPosition = modifierNew.getStartPosition();
+      // Fix bug 2996487: modifierNew has no start position!
+      // startPosition = modifierNew.getStartPosition();
     }
     // public -> default
     else if (modifierFound != null && modifierNew == null) {

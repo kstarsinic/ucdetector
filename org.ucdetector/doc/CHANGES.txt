@@ -3,6 +3,7 @@ Bugfixes:
  - [ 2922801 ] Quick fix exception on enum declaration 
  - [ 2968753 ] protected abstract method cannot be made private
  - [ 2986496 ] Marker don't disappear when deleting a complete line
+ - [ 2996487 ] Applying quick fix scrolls page
  
 
 New features:
