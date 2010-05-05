@@ -31,7 +31,8 @@ public class PreferenceInitializer extends AbstractPreferenceInitializer {
   private static final String METHOD_FILTER = "test*,*Test";
   private static final String FIELD_FILTER = "test*,*Test";
   private static final String ANNOATIONS_FILTER = "";
-  private static final String FILE_PATTERN_LITERAL_SEARCH = "*.xml,";
+  // feature 2996537: Eclipse Plug-in/Extension detection: added MANIFEST.MF
+  private static final String FILE_PATTERN_LITERAL_SEARCH = "*.xml,MANIFEST.MF,";
   private static final String REPORT_DEFAULT_DIR = "ucdetector_reports";
 
   @Override

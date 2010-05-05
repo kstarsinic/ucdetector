@@ -204,9 +204,9 @@ public final class Prefs {
    * @return <code>true</code>, when this filter is active
    */
   public static boolean isFilterClassContainingString() {
-    String[] strings = getStrings(FILTER_CONTAIN_STRING);
+    String[] strings = getStrings(FILTER_CONTAIN_STRING, true);
     for (String string : strings) {
-      if (string.trim().length() > 0) {
+      if (string.length() > 0) {
         return true;
       }
     }
@@ -218,7 +218,7 @@ public final class Prefs {
    * @return <code>true</code>, the class contains one of the strings
    */
   public static boolean filterClassContainingString(String classAsString) {
-    String[] stringsToFindInFile = getStrings(FILTER_CONTAIN_STRING);
+    String[] stringsToFindInFile = getStrings(FILTER_CONTAIN_STRING, false);
     for (String stringToFindInFile : stringsToFindInFile) {
       if (stringToFindInFile.trim().length() > 0) {
         if (classAsString != null && classAsString.contains(stringToFindInFile)) {
@@ -283,11 +283,11 @@ public final class Prefs {
 
   // LITERALS ----------------------------
   /**
-   * @return File pattern to search like: "*.java,*.xml"
+   * @return File pattern to search like: "*.xml,MANIFEST.MF,"
    */
   public static String[] getFilePatternLiteralSearch() {
     if (isUCDetectionInLiterals()) {
-      return getStrings(ANALYZE_LITERALS);
+      return getStrings(ANALYZE_LITERALS, true);
     }
     return EMPTY_ARRAY;
   }
@@ -467,10 +467,17 @@ public final class Prefs {
   }
 
   /**
-   * @return array of strings splitted by {@link #LIST_SEPARATOR}
+   * @return array of strings splitted by {@link #LIST_SEPARATOR}, strings maybe trimmed
    */
-  private static String[] getStrings(String name) {
-    return getStore().getString(name).split(LIST_SEPARATOR);
+  private static String[] getStrings(String name, boolean trim) {
+    String[] strings = getStore().getString(name).split(LIST_SEPARATOR);
+    if (trim) {
+      // Bugs 2996965: Property File name pattern to search
+      for (int i = 0; i < strings.length; i++) {
+        strings[i] = strings[i].trim();
+      }
+    }
+    return strings;
   }
 
   /**
@@ -505,7 +512,7 @@ public final class Prefs {
    * @return an array, created splitting the filter text by LIST_SEPARATOR
    */
   private static String[] parseFilters(String filterName) {
-    String[] strings = getStrings(filterName);
+    String[] strings = getStrings(filterName, true);
     String[] filters = new String[strings.length];
     for (int i = 0; i < strings.length; i++) {
       filters[i] = simpleRegexToJavaRegex(strings[i]);
