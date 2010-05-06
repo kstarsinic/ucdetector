@@ -50,8 +50,8 @@ public class UCDetectorPreferencePage extends FieldEditorPreferencePage implemen
   protected final List<FieldEditor> fields = new ArrayList<FieldEditor>();
   /** Contains group names, tab names, preference names */
   protected final List<String> extendedPreferences = new ArrayList<String>();
-  protected static final String GROUP_START = "# "; //$NON-NLS-1$
-  protected static final String TAB_START = "## "; //$NON-NLS-1$
+  protected static final String GROUP_START/**/= "# Group: "; //$NON-NLS-1$
+  protected static final String TAB_START/*  */= "##  Tab: "; //$NON-NLS-1$
   /**
    * entryNames (first column) and values (second column) for the
    * ComboFieldEditor

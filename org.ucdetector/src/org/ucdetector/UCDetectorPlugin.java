@@ -9,10 +9,10 @@ package org.ucdetector;
 
 import java.net.URL;
 import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.Arrays;
 import java.util.Date;
 import java.util.LinkedHashMap;
-import java.util.Locale;
 import java.util.Map;
 import java.util.Set;
 import java.util.Map.Entry;
@@ -64,23 +64,28 @@ public class UCDetectorPlugin extends AbstractUIPlugin {
    */
   public static final String HELP_ID = ID + ".ucd_context_id";
   public static final String HELP_ID_PREFERENCES = ID + ".ucd_context_id_preferences";
-  private final DateFormat dateFormat = DateFormat.getDateTimeInstance(DateFormat.MEDIUM, DateFormat.MEDIUM, Locale
-      .getDefault());
+  //private final DateFormat dateFormat = DateFormat.getDateTimeInstance(DateFormat.MEDIUM, DateFormat.MEDIUM, Locale.getDefault());
+  private final DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+  public static final String SEPARATOR = "-----------------------------------------------------------------------------"; //$NON-NLS-1$
 
   public UCDetectorPlugin() {
     UCDetectorPlugin.plugin = this;
   }
 
   private void dumpInformation() {
-    Log.logInfo("\tStart     : " + getNow());
-    Log.logInfo("\tOS        : " + getAboutOS());
-    Log.logInfo("\tJava      : " + getAboutJavaVersion());
-    Log.logInfo("\tEclipse   : " + getAboutEclipseVersion());
-    Log.logInfo("\tUCDetector: " + getAboutUCDVersion());
-    Log.logInfo("\tHome      : " + getAboutEclipseHome());
-    Log.logInfo("\tLogfile   : " + getAboutLogfile());
-    Log.logInfo("\tWorkspace : " + getAboutWorkspace());
+    Log.logInfo(SEPARATOR);
+    Log.logInfo("Starting UCDetector Plug-In: " + getAboutUCDVersion());
+    Log.logInfo(SEPARATOR);
+    Log.logInfo("Start     : " + getNow());
+    Log.logInfo("OS        : " + getAboutOS());
+    Log.logInfo("Java      : " + getAboutJavaVersion());
+    Log.logInfo("Eclipse   : " + getAboutEclipseVersion());
+    Log.logInfo("Home      : " + getAboutEclipseHome());
+    Log.logInfo("Logfile   : " + getAboutLogfile());
+    Log.logInfo("Workspace : " + getAboutWorkspace());
+    Log.logInfo("Log level : " + (Log.DEBUG ? Log.LOG_LEVEL_DEBUG : Log.LOG_LEVEL_INFO));
     Log.logInfo(getPreferencesAsString());
+    Log.logInfo(SEPARATOR);
   }
 
   @Override
@@ -92,12 +97,12 @@ public class UCDetectorPlugin extends AbstractUIPlugin {
   /** @return all available preferences and all and all preferences which are different from default preferences   */
   public static String getPreferencesAsString() {
     StringBuilder sb = new StringBuilder();
-    sb.append("\r\nUCDetector Plugin Preferences:\r\n");
     Map<String, String> deltaPreferences = getDeltaPreferences();
-    sb.append(deltaPreferences.size()).append(" preferences are different from default preferences:\r\n");
+    sb.append(String.format("%s UCDetector preferences are different from default preferences:", //
+        "" + deltaPreferences.size()));
     Set<Entry<String, String>> entrySet = deltaPreferences.entrySet();
     for (Entry<String, String> entry : entrySet) {
-      sb.append(String.format("\t%s=%s%n", entry.getKey(), entry.getValue()));
+      sb.append(String.format("%n\t%s=%s", entry.getKey(), entry.getValue()));
     }
     return sb.toString();
   }

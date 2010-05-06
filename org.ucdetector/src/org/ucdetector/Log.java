@@ -23,10 +23,11 @@ public class Log {
    * 
    * @see "http://wiki.eclipse.org/FAQ_How_do_I_use_the_platform_debug_tracing_facility%3F"
    */
+  // TODO 2010-05-06: Use log level to warn or error!
   public static final boolean DEBUG = isDebugOption("org.ucdetector/debug"); //$NON-NLS-1$
 
-  private static final String LOG_LEVEL_DEBUG /* */= "DEBUG"; //$NON-NLS-1$
-  private static final String LOG_LEVEL_INFO /*  */= "INFO "; //$NON-NLS-1$
+  static final String LOG_LEVEL_DEBUG /* */= "DEBUG"; //$NON-NLS-1$
+  static final String LOG_LEVEL_INFO /*  */= "INFO "; //$NON-NLS-1$
   private static final String LOG_LEVEL_WARN /*  */= "WARN "; //$NON-NLS-1$
   private static final String LOG_LEVEL_ERROR /* */= "ERROR"; //$NON-NLS-1$
   //

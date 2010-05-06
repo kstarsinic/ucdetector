@@ -37,7 +37,6 @@ import org.ucdetector.Messages;
 import org.ucdetector.UCDetectorPlugin;
 
 class ModesPanel {
-  private static final String SEPARATOR = "-----------------------------------------------------------------------------"; //$NON-NLS-1$
   private static final String NL = System.getProperty("line.separator"); //$NON-NLS-1$
   private static final String MODES_FILE_TYPE = ".properties"; //$NON-NLS-1$
 
@@ -166,7 +165,7 @@ class ModesPanel {
     IInputValidator validator = new IInputValidator() {
       public String isValid(String fileName) {
         boolean isValid = !fileName.matches(".*[\\\\/:*?|<>\"].*"); //$NON-NLS-1$
-        return isValid ? null : NLS.bind("Mode name \"{0}\" is not a valid file name", fileName);
+        return isValid ? null : NLS.bind(Messages.ModesPanel_invalid_mode_name, fileName);
       }
     };
     InputDialog input = new InputDialog(parent.getShell(), Messages.PreferencePage_NewMode,
@@ -189,16 +188,19 @@ class ModesPanel {
     allPreferences.putAll(UCDetectorPlugin.getDeltaPreferences());
 
     StringBuilder sb = new StringBuilder();
-    sb.append("# ").append(SEPARATOR).append(NL);//$NON-NLS-1$
+    sb.append("# ").append(UCDetectorPlugin.SEPARATOR).append(NL);//$NON-NLS-1$
+    sb.append("# UCDetector mode preference file").append(NL);//$NON-NLS-1$
+    sb.append("# ").append(UCDetectorPlugin.SEPARATOR).append(NL);//$NON-NLS-1$
+    sb.append("# Mode        : " + modeName).append(NL);//$NON-NLS-1$
     sb.append("# Created by  : " + getClass().getName()).append(NL);//$NON-NLS-1$
     sb.append("# Created date: " + UCDetectorPlugin.getNow()).append(NL);//$NON-NLS-1$
-    sb.append("# ").append(SEPARATOR).append(NL);//$NON-NLS-1$
+    sb.append("# ").append(UCDetectorPlugin.SEPARATOR).append(NL);//$NON-NLS-1$
     for (String extendedPreference : page.extendedPreferences) {
       if (extendedPreference.startsWith(UCDetectorPreferencePage.TAB_START)) {
         sb.append(NL);
-        sb.append(UCDetectorPreferencePage.TAB_START).append(SEPARATOR).append(NL);
+        sb.append(UCDetectorPreferencePage.TAB_START).append(UCDetectorPlugin.SEPARATOR).append(NL);
         sb.append(extendedPreference).append(NL);
-        sb.append(UCDetectorPreferencePage.TAB_START).append(SEPARATOR);
+        sb.append(UCDetectorPreferencePage.TAB_START).append(UCDetectorPlugin.SEPARATOR);
       }
       else if (extendedPreference.startsWith(UCDetectorPreferencePage.GROUP_START)) {
         sb.append(extendedPreference);
