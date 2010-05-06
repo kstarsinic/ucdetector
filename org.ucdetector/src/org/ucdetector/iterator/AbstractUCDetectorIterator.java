@@ -93,8 +93,7 @@ public abstract class AbstractUCDetectorIterator extends UCDetectorCallBack {
    */
   public final void iterate(IJavaElement[] selectionsUI) throws CoreException {
     if (DEBUG) {
-      Log.logDebug(String.format("%s selections to iterate: %s", String //$NON-NLS-1$
-          .valueOf(selectionsUI.length), getSelectedString(selectionsUI)));
+      Log.logDebug("%s selections to iterate: %s", String.valueOf(selectionsUI.length), getSelectedString(selectionsUI)); //$NON-NLS-1$
     }
     try {
       this.selections = selectionsUI;
@@ -136,7 +135,7 @@ public abstract class AbstractUCDetectorIterator extends UCDetectorCallBack {
       return;
     }
     if (DEBUG) {
-      Log.logDebug(String.format("Iterate Resource '%s' %s", resource.getName(), Log.getClassName(resource)));//$NON-NLS-1$
+      Log.logDebug("Iterate Resource '%s' %s", resource.getName(), Log.getClassName(resource));//$NON-NLS-1$
     }
     if (resource instanceof IFile) {
       IFile file = (IFile) resource;
@@ -155,7 +154,7 @@ public abstract class AbstractUCDetectorIterator extends UCDetectorCallBack {
       handleResourceWorkspaceRoot(workspaceRoot);
     }
     else {
-      Log.logWarn(String.format("UNHANDLED RESOURCE %s:%s", resource.getName(), resource.getClass().getSimpleName()));//$NON-NLS-1$
+      Log.logWarn("UNHANDLED RESOURCE %s:%s", resource.getName(), resource.getClass().getSimpleName());//$NON-NLS-1$
     }
     if (resource instanceof IContainer) {
       IContainer container = (IContainer) resource;
@@ -185,8 +184,8 @@ public abstract class AbstractUCDetectorIterator extends UCDetectorCallBack {
       return;
     }
     if (DEBUG) {
-      Log.logDebug(String.format("Iterate JavaElement '%s' %s",//$NON-NLS-1$
-          JavaElementUtil.getElementName(javaElement), Log.getClassName(javaElement)));
+      Log.logDebug("Iterate JavaElement '%s' %s", JavaElementUtil.getElementName(javaElement), //$NON-NLS-1$
+          Log.getClassName(javaElement));
     }
     handleStartElement(javaElement);
     boolean doChildren = true;
@@ -262,9 +261,8 @@ public abstract class AbstractUCDetectorIterator extends UCDetectorCallBack {
     else {
       // ILocalVariable
       // ITypeParameter
-      Log.logWarn(String.format("UNHANDLED TYPE %s:%s", //$NON-NLS-1$
-          JavaElementUtil.getElementName(javaElement), //
-          javaElement.getClass().getSimpleName()));
+      Log.logWarn("UNHANDLED TYPE %s:%s", //$NON-NLS-1$
+          JavaElementUtil.getElementName(javaElement), javaElement.getClass().getSimpleName());
     }
     // CHILDREN
     if (doChildren) {
@@ -322,7 +320,7 @@ public abstract class AbstractUCDetectorIterator extends UCDetectorCallBack {
    */
   protected final void debugHandle(String what, IMember member) {
     if (DEBUG) {
-      Log.logDebug(String.format("    Handle %s '%s'", what, JavaElementUtil.getElementName(member))); //$NON-NLS-1$
+      Log.logDebug("    Handle %s '%s'", what, JavaElementUtil.getElementName(member)); //$NON-NLS-1$
     }
   }
 
@@ -332,9 +330,7 @@ public abstract class AbstractUCDetectorIterator extends UCDetectorCallBack {
    */
   protected final void debugNotHandle(String what, IMember member, String reason) {
     if (DEBUG) {
-      String mes = String.format("    Ignore %s '%s' because: %s", //$NON-NLS-1$
-          what, JavaElementUtil.getElementName(member), reason);
-      Log.logDebug(mes);
+      Log.logDebug("    Ignore %s '%s' because: %s", what, JavaElementUtil.getElementName(member), reason); //$NON-NLS-1$
     }
   }
 }

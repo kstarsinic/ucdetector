@@ -253,9 +253,8 @@ public class LineManger {
   private IScanner createScanner(IJavaElement javaElement) throws CoreException {
     IOpenable openable = javaElement.getOpenable();
     if (!(openable instanceof ICompilationUnit)) {
-      Log.logError(String.format("openable NOT instanceof ICompilationUnit '%s' %s", //$NON-NLS-1$
-          JavaElementUtil.getElementName(javaElement),//
-          Log.getClassName(javaElement)));
+      Log.logError("openable NOT instanceof ICompilationUnit '%s' %s", //$NON-NLS-1$
+          JavaElementUtil.getElementName(javaElement), Log.getClassName(javaElement));
       return null;
     }
     ICompilationUnit compilationUnit = (ICompilationUnit) openable;

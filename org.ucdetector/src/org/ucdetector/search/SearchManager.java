@@ -414,8 +414,7 @@ public class SearchManager {
     }
 
     if (DEBUG) {
-      Log.logDebug(String.format("Text search of %s classname '%s'", //$NON-NLS-1$
-          searchFullClassName ? "full" : "simple", searchString));// //$NON-NLS-1$ //$NON-NLS-2$
+      Log.logDebug("Text search of %s classname '%s'", searchFullClassName ? "full" : "simple", searchString);// //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
     }
     if (searchString == null || searchString.length() == 0) {
       return 0;
@@ -441,8 +440,7 @@ public class SearchManager {
     // bug fix [ 2373808 ]: Classes found by text search should have no markers
     if (requestor.found > 0) {
       if (Log.DEBUG) {
-        Log.logDebug(String.format("Matches found searching class name '%s' in text files", //$NON-NLS-1$
-            searchString));
+        Log.logDebug("Matches found searching class name '%s' in text files", searchString); //$NON-NLS-1$
       }
       noRefTypes.add(type);
     }
@@ -472,7 +470,7 @@ public class SearchManager {
 
     @Override
     public String toString() {
-      return "'" + searchString + "' found=" + found; //$NON-NLS-1$ //$NON-NLS-2$
+      return String.format("'%s' found=%s", searchString, Integer.valueOf(found)); //$NON-NLS-1$ 
     }
 
     UCDFileSearchRequestor(String searchString, VisibilityHandler visibilityHandler) {
@@ -496,9 +494,8 @@ public class SearchManager {
         int offset = matchAccess.getMatchOffset();
         int length = matchAccess.getMatchLength();
         String match = matchAccess.getFileContent(offset, length);
-        Log.logDebug(String.format("    TEXT MATCH {%s%s%s}. isMatchOk: %s. in: %s", //$NON-NLS-1$
-            beforeChar, match, afterChar, isClassNamMatchOk, //
-            matchAccess.getFile()));
+        Log.logDebug("    TEXT MATCH {%s%s%s}. isMatchOk: %s. in: %s", //$NON-NLS-1$
+            beforeChar, match, afterChar, isClassNamMatchOk, matchAccess.getFile());
       }
       if (isClassNamMatchOk) {
         this.found++;
@@ -535,8 +532,8 @@ public class SearchManager {
 
     @Override
     public String toString() {
-      return searchStart.getElementName() + " found=" + found + ", foundTest=" //$NON-NLS-1$ //$NON-NLS-2$
-          + foundTest;
+      return String.format("%s found=%s, foundTest=%s", searchStart.getElementName(), Integer.valueOf(found), //$NON-NLS-1$
+          Integer.valueOf(foundTest));
     }
 
     UCDSearchRequestor(IMember searchStart, VisibilityHandler visibilityHandler, LineManger lineManager) {

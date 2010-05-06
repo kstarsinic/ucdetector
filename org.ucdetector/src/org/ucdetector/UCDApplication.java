@@ -167,8 +167,8 @@ public class UCDApplication implements IApplication {
         continue;
       }
       if (!javaProject.exists()) {
-        Log.logInfo("\tDoes not exist: " + projectName + "\t\t if this is a problem, "
-            + "open project in eclipse IDE, restart ant");
+        Log.logInfo("\tDoes not exist: %s\t\t if this is a problem, open project in eclipse IDE, restart ant",
+            projectName);
         continue;
       }
       if (!javaProject.isOpen()) {

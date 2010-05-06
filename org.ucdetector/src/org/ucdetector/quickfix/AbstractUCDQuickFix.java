@@ -76,11 +76,11 @@ abstract class AbstractUCDQuickFix extends WorkbenchMarkerResolution {
     ICompilationUnit originalUnit = null;
     try {
       if (Log.DEBUG) {
-        Log.logDebug(String.format("%s.run(). Marker=%s", getClass().getSimpleName(), dumpMarker(marker)));
+        Log.logDebug("%s.run(). Marker=%s", getClass().getSimpleName(), dumpMarker(marker));
       }
       int charStart = marker.getAttribute(IMarker.CHAR_START, -1);
       if (charStart == -1) {
-        Log.logWarn(String.format("CHAR_START missing for marker: '%s'", dumpMarker(marker)));
+        Log.logWarn("CHAR_START missing for marker: '%s'", dumpMarker(marker));
         return;
       }
       originalUnit = getCompilationUnit();
@@ -92,7 +92,7 @@ abstract class AbstractUCDQuickFix extends WorkbenchMarkerResolution {
       FindNodeToChangeVisitor visitor = new FindNodeToChangeVisitor(charStart);
       firstType.accept(visitor);
       if (visitor.nodeToChange == null) {
-        Log.logWarn(String.format("Node to change not found for marker: '%s'", dumpMarker(marker)));
+        Log.logWarn("Node to change not found for marker: '%s'", dumpMarker(marker));
         return;
       }
       int startPosition = runImpl(visitor.nodeToChange);
@@ -153,8 +153,8 @@ abstract class AbstractUCDQuickFix extends WorkbenchMarkerResolution {
         nodeToChange = declaration;
       }
       if (Log.DEBUG && found) {
-        Log.logDebug(String.format("NodeToChange: %s. char postion: %s<=%s<=%s.", //
-            name.getIdentifier(), "" + startPos, "" + charStart, "" + endPos));
+        Log.logDebug("NodeToChange: %s. char postion: %s<=%s<=%s.", //
+            name.getIdentifier(), "" + startPos, "" + charStart, "" + endPos);
       }
       return nodeToChange == null;
     }

@@ -26,33 +26,58 @@ public class Log {
   // TODO 2010-05-06: Use log level to warn or error!
   public static final boolean DEBUG = isDebugOption("org.ucdetector/debug"); //$NON-NLS-1$
 
-  static final String LOG_LEVEL_DEBUG /* */= "DEBUG"; //$NON-NLS-1$
-  static final String LOG_LEVEL_INFO /*  */= "INFO "; //$NON-NLS-1$
-  private static final String LOG_LEVEL_WARN /*  */= "WARN "; //$NON-NLS-1$
-  private static final String LOG_LEVEL_ERROR /* */= "ERROR"; //$NON-NLS-1$
-  //
+  enum LogLevel {
+    @SuppressWarnings("hiding")
+    DEBUG, INFO, WARN, ERROR,
+  }
+
   private static final String LEVEL_SEPARATOR = ": "; //$NON-NLS-1$
 
+  // DEBUG --------------------------------------------------------------------
   public static void logDebug(String message) {
-    Log.logImpl(LOG_LEVEL_DEBUG, message, null);
+    Log.logImpl(LogLevel.DEBUG, message, null);
   }
 
+  public static void logDebug(String format, Object... args) {
+    logDebug(String.format(format, args));
+  }
+
+  // INFO ---------------------------------------------------------------------
   public static void logInfo(String message) {
-    Log.logImpl(LOG_LEVEL_INFO, message, null);
+    Log.logImpl(LogLevel.INFO, message, null);
   }
 
+  public static void logInfo(String format, Object... args) {
+    logInfo(String.format(format, args));
+  }
+
+  // WARN ---------------------------------------------------------------------
   public static void logWarn(String message) {
-    Log.logImpl(LOG_LEVEL_WARN, message, null);
+    Log.logImpl(LogLevel.WARN, message, null);
   }
 
+  public static void logWarn(String format, Object... args) {
+    logWarn(String.format(format, args));
+  }
+
+  // ERROR --------------------------------------------------------------------
   public static void logError(String message) {
-    Log.logImpl(LOG_LEVEL_ERROR, message, null);
+    Log.logImpl(LogLevel.ERROR, message, null);
+  }
+
+  public static void logError(String format, Object... args) {
+    logError(String.format(format, args));
   }
 
   public static void logError(String message, Throwable ex) {
-    Log.logImpl(LOG_LEVEL_ERROR, message, ex);
+    Log.logImpl(LogLevel.ERROR, message, ex);
   }
 
+  public static void logError(String format, Throwable ex, Object... args) {
+    logError(String.format(format, args), ex);
+  }
+
+  // STATUS -------------------------------------------------------------------
   public static void logStatus(IStatus status) {
     if (status.getSeverity() == IStatus.ERROR) {
       Log.logError(status.getMessage(), status.getException());
@@ -68,11 +93,11 @@ public class Log {
   /**
    * Very simple logging to System.out and System.err
    */
-  private static void logImpl(String level, String message, Throwable ex) {
-    if ((Log.DEBUG && LOG_LEVEL_DEBUG.equals(level)) || LOG_LEVEL_INFO.equals(level)) {
+  private static void logImpl(LogLevel level, String message, Throwable ex) {
+    if ((Log.DEBUG && level == LogLevel.DEBUG) || level == LogLevel.INFO) {
       System.out.println(createLogMessage(level, message));
     }
-    else if (LOG_LEVEL_WARN.equals(level) || LOG_LEVEL_ERROR.equals(level)) {
+    else if (level == LogLevel.WARN || level == LogLevel.ERROR) {
       System.err.println(createLogMessage(level, message));
       if (ex != null) {
         ex.printStackTrace();
@@ -80,11 +105,11 @@ public class Log {
     }
   }
 
-  private static StringBuilder createLogMessage(String level, String message) {
-    int length = level.length() + LEVEL_SEPARATOR.length() + (message == null ? 0 : message.length());
+  private static String createLogMessage(LogLevel level, String message) {
+    int length = level.name().length() + LEVEL_SEPARATOR.length() + (message == null ? 0 : message.length());
     StringBuilder sb = new StringBuilder(length);
     sb.append(level).append(LEVEL_SEPARATOR).append(message);
-    return sb;
+    return sb.toString();
   }
 
   /**

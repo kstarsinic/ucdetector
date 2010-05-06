@@ -6,6 +6,9 @@
  */
 package org.ucdetector.preferences;
 
+import static org.ucdetector.preferences.UCDetectorPreferencePage.GROUP_START;
+import static org.ucdetector.preferences.UCDetectorPreferencePage.TAB_START;
+
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileWriter;
@@ -37,7 +40,7 @@ import org.ucdetector.Messages;
 import org.ucdetector.UCDetectorPlugin;
 
 class ModesPanel {
-  private static final String NL = System.getProperty("line.separator"); //$NON-NLS-1$
+  //  private static final String NL = System.getProperty("line.separator"); //$NON-NLS-1$
   private static final String MODES_FILE_TYPE = ".properties"; //$NON-NLS-1$
 
   /** built-in preferences mode */
@@ -155,7 +158,7 @@ class ModesPanel {
       }
     }
     if (Log.DEBUG) {
-      Log.logDebug("Available modes are: " + result); //$NON-NLS-1$
+      Log.logDebug("Available modes are: %s", result); //$NON-NLS-1$
     }
     return result.toArray(new String[result.size()]);
   }
@@ -174,7 +177,7 @@ class ModesPanel {
     String newModeName = input.getValue();
     if (newModeName != null && newModeName.trim().length() > 0) {
       saveMode(newModeName);
-      Log.logDebug("Added new mode: " + newModeName); //$NON-NLS-1$
+      Log.logDebug("Added new mode: %s", newModeName); //$NON-NLS-1$
       getCombo().setItems(getModes());
       getCombo().setText(newModeName);
       updateModeButtons();
@@ -182,49 +185,45 @@ class ModesPanel {
   }
 
   /** Save it to a file in WORKSPACE/.metadata/.plugins/org.ucdetector/modes  */
+  @SuppressWarnings("nls")
   private void saveMode(String modeName) {
     page.performOk();
     Map<String, String> allPreferences = UCDetectorPlugin.getAllPreferences();
     allPreferences.putAll(UCDetectorPlugin.getDeltaPreferences());
 
     StringBuilder sb = new StringBuilder();
-    sb.append("# ").append(UCDetectorPlugin.SEPARATOR).append(NL);//$NON-NLS-1$
-    sb.append("# UCDetector mode preference file").append(NL);//$NON-NLS-1$
-    sb.append("# ").append(UCDetectorPlugin.SEPARATOR).append(NL);//$NON-NLS-1$
-    sb.append("# Mode        : " + modeName).append(NL);//$NON-NLS-1$
-    sb.append("# Created by  : " + getClass().getName()).append(NL);//$NON-NLS-1$
-    sb.append("# Created date: " + UCDetectorPlugin.getNow()).append(NL);//$NON-NLS-1$
-    sb.append("# ").append(UCDetectorPlugin.SEPARATOR).append(NL);//$NON-NLS-1$
+    sb.append(String.format("### ----------------------------------------------------------------------------%n"));
+    sb.append(String.format("###               UCDetector preference file for mode: '%s'%n", modeName));
+    sb.append(String.format("### ----------------------------------------------------------------------------%n"));
+    sb.append(String.format("### Created by  : %s%n", getClass().getName()));
+    sb.append(String.format("### Created date: %s%n", UCDetectorPlugin.getNow()));
+    sb.append(String.format("### ----------------------------------------------------------------------------%n"));
     for (String extendedPreference : page.extendedPreferences) {
-      if (extendedPreference.startsWith(UCDetectorPreferencePage.TAB_START)) {
-        sb.append(NL);
-        sb.append(UCDetectorPreferencePage.TAB_START).append(UCDetectorPlugin.SEPARATOR).append(NL);
-        sb.append(extendedPreference).append(NL);
-        sb.append(UCDetectorPreferencePage.TAB_START).append(UCDetectorPlugin.SEPARATOR);
+      if (extendedPreference.startsWith(TAB_START)) {
+        sb.append(String.format("%n## -----------------------------------------------------------------------------%n"));
+        sb.append(String.format("## Tab: %s%n", extendedPreference.substring(TAB_START.length())));
+        sb.append(String.format("## -----------------------------------------------------------------------------%n"));
       }
-      else if (extendedPreference.startsWith(UCDetectorPreferencePage.GROUP_START)) {
-        sb.append(extendedPreference);
+      else if (extendedPreference.startsWith(GROUP_START)) {
+        sb.append(String.format("%n# Group: %s%n", extendedPreference.substring(GROUP_START.length())));
       }
       else {
-        sb.append(extendedPreference).append('=').append(allPreferences.get(extendedPreference));
+        sb.append(String.format("%s=%s%n", extendedPreference, allPreferences.get(extendedPreference)));
         allPreferences.remove(extendedPreference);
       }
-      sb.append(NL);
     }
-    sb.append(NL);
     //
     if (Log.DEBUG) {
       Log.logDebug(sb.toString());
     }
     // org.ucdetector.mode.index, old entries
-    Log.logDebug("Unhandled preferences :" + allPreferences); //$NON-NLS-1$
+    Log.logDebug("Unhandled preferences :" + allPreferences);
     File modesFile = getModesFile(modeName);
     try {
       FileWriter writer = new FileWriter(modesFile);
       writer.write(sb.toString());
       writer.close();
-      //      properties.store(new FileOutputStream(modesFile), "Created by " + getClass().getName()); //$NON-NLS-1$
-      Log.logDebug("Saved mode to: " + modesFile.getAbsolutePath()); //$NON-NLS-1$
+      Log.logDebug("Saved mode to: %s", modesFile.getAbsolutePath()); //$NON-NLS-1$
     }
     catch (IOException ex) {
       String message = NLS.bind(Messages.PreferencePage_ModeFileCantSave, modesFile.getAbsolutePath());
@@ -240,7 +239,7 @@ class ModesPanel {
     String modeToRemove = getCombo().getText();
     File file = getModesFile(modeToRemove);
     file.delete();
-    Log.logDebug("Deleted mode file: " + file.getAbsolutePath()); //$NON-NLS-1$
+    Log.logDebug("Deleted mode file: %s", file.getAbsolutePath()); //$NON-NLS-1$
     getCombo().setItems(getModes());
     getCombo().setText(Mode.Default.toStringLocalized());
     page.performDefaults();

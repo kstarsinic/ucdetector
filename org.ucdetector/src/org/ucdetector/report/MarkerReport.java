@@ -102,7 +102,7 @@ public class MarkerReport implements IUCDetectorReport {
    */
   private void flushReport() throws CoreException {
     if (Log.DEBUG) {
-      Log.logDebug(String.format("flushReport will create %s markers", Integer.valueOf(markersToFlash.size())));//$NON-NLS-1$
+      Log.logDebug("flushReport will create %s markers", Integer.valueOf(markersToFlash.size()));//$NON-NLS-1$
     }
     for (ReportParam reportParamToCreate : markersToFlash) {
       createMarker(reportParamToCreate);
