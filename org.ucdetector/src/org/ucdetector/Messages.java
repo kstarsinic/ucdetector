@@ -222,5 +222,6 @@ public final class Messages extends NLS {
   // REPORT --------------------------------------------------------------------
   public static String SearchResultRoot_Name; // NO_UCD
   public static String SearchResult_get_text; // NO_UCD
-
+  // ModesPanel ---------------------------------------------------------------
+  public static String ModesPanel_invalid_mode_name; // NO_UCD
 }
