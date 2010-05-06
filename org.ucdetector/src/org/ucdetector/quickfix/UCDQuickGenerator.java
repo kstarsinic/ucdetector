@@ -50,7 +50,7 @@ public class UCDQuickGenerator implements IMarkerResolutionGenerator2 {
       return resolutions.toArray(new IMarkerResolution[resolutions.size()]);
     }
     catch (CoreException e) {
-      Log.logError("Can't get UCDetector resolutions", e); //$NON-NLS-1$
+      Log.logError("Can't get UCDetector resolutions for marker: " + marker, e); //$NON-NLS-1$
     }
     return new IMarkerResolution[0];
   }
@@ -60,7 +60,7 @@ public class UCDQuickGenerator implements IMarkerResolutionGenerator2 {
       return !MarkerFactory.UCD_MARKER_USED_FEW.equals(marker.getType());
     }
     catch (CoreException e) {
-      Log.logError("Can't get UCD resolutions", e); //$NON-NLS-1$
+      Log.logError("Can't get UCD resolutions for marker: " + marker, e); //$NON-NLS-1$
       return false;
     }
   }

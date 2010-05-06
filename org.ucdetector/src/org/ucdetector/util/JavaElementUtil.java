@@ -610,7 +610,7 @@ public class JavaElementUtil {
       }
     }
     catch (JavaModelException ex) {
-      Log.logError("Can't get gmemberTypeString", ex); //$NON-NLS-1$
+      Log.logError("Can't get memberTypeString for member: " + member, ex); //$NON-NLS-1$
     }
     return "???"; //$NON-NLS-1$
   }
@@ -736,7 +736,7 @@ public class JavaElementUtil {
         }
       }
       catch (JavaModelException e) {
-        Log.logError("Can't run isTestCode()", e); //$NON-NLS-1$
+        Log.logError("Can't run isTestCode() for method: " + method, e); //$NON-NLS-1$
       }
     }
     return false;

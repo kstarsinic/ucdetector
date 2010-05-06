@@ -315,7 +315,8 @@ public class LineManger {
             return String.valueOf(chars, start, end - start).trim();
           }
           catch (Exception e) {
-            Log.logError("Can't get line", e); //$NON-NLS-1$
+            Log.logError("Can't get piece of code for element: " //$NON-NLS-1$
+                + JavaElementUtil.getElementName(element) + ", offset: " + offset, e); //$NON-NLS-1$
           }
         }
       }

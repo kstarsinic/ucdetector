@@ -129,7 +129,7 @@ public class UCDetectorPlugin extends AbstractUIPlugin {
     }
     catch (BackingStoreException ex) {
       result.put("EXCEPTION", ex.getMessage());
-      Log.logError("Can't get preferences", ex);
+      Log.logError("Can't get preferences for " + ePrefs, ex);
     }
     return result;
   }
@@ -189,7 +189,7 @@ public class UCDetectorPlugin extends AbstractUIPlugin {
       return ImageDescriptor.createFromURL(FileLocator.resolve(url));
     }
     catch (Exception ex) {
-      Log.logError("Can't get eclipse image", ex);
+      Log.logError("Can't get eclipse image: " + icon, ex);
       return null;
     }
   }

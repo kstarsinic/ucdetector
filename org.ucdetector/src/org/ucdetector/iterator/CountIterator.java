@@ -81,10 +81,10 @@ public class CountIterator extends AbstractUCDetectorIterator {
   @Override
   protected boolean handleType(IType type) throws CoreException {
     if (isPrivate(type) || Prefs.filterType(type)) {
-      debugNotHandle("type", type, "isPrivate || filterType"); //$NON-NLS-1$ //$NON-NLS-2$
+      debugNotHandle(type, "isPrivate || filterType"); //$NON-NLS-1$ 
       return true;
     }
-    debugHandle("type", type); //$NON-NLS-1$
+    debugHandle(type);
     classes++;
     return true;
   }
@@ -92,20 +92,19 @@ public class CountIterator extends AbstractUCDetectorIterator {
   @Override
   protected void handleMethod(IMethod method) throws CoreException {
     if (isPrivate(method) || Prefs.filterMethod(method)) {
-      debugNotHandle("method", method, "isPrivate || filterMethod"); //$NON-NLS-1$ //$NON-NLS-2$
+      debugNotHandle(method, "isPrivate || filterMethod"); //$NON-NLS-1$ 
       return;
     }
-    debugHandle("method", method); //$NON-NLS-1$
+    debugHandle(method);
     methods++;
   }
 
   @Override
   protected void handleField(IField field) throws CoreException {
     if (isPrivate(field) || Prefs.filterField(field)) {
-      debugNotHandle("field", field, "isPrivate || filterField"); //$NON-NLS-1$ //$NON-NLS-2$
       return;
     }
-    debugHandle("field", field); //$NON-NLS-1$
+    debugHandle(field);
     fields++;
   }
 

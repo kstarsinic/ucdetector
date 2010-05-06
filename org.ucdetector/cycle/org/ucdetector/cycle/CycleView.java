@@ -56,13 +56,14 @@ import org.ucdetector.Log;
 import org.ucdetector.Messages;
 import org.ucdetector.UCDetectorPlugin;
 import org.ucdetector.cycle.model.Cycle;
-import org.ucdetector.cycle.model.CycleRegionIterator;
+import org.ucdetector.cycle.model.CycleBaseElement;
 import org.ucdetector.cycle.model.CycleJavaElement;
 import org.ucdetector.cycle.model.CycleRegion;
+import org.ucdetector.cycle.model.CycleRegionIterator;
 import org.ucdetector.cycle.model.CycleType;
-import org.ucdetector.cycle.model.CycleBaseElement;
 import org.ucdetector.cycle.model.SearchResult;
 import org.ucdetector.cycle.model.SearchResultRoot;
+import org.ucdetector.util.JavaElementUtil;
 
 /**
  * 
@@ -326,7 +327,7 @@ public class CycleView extends ViewPart { //
           }
         }
         catch (Exception e) {
-          Log.logError("Can't open editor", e); //$NON-NLS-1$
+          Log.logError("Can't open javalement in editor: " + JavaElementUtil.getElementName(element), e); //$NON-NLS-1$
         }
       }
     };

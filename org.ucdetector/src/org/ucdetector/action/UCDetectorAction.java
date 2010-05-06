@@ -25,6 +25,7 @@ import org.ucdetector.iterator.AbstractUCDetectorIterator;
 import org.ucdetector.iterator.UCDetectorIterator;
 import org.ucdetector.preferences.Prefs;
 import org.ucdetector.search.UCDProgressMonitor;
+import org.ucdetector.util.JavaElementUtil;
 
 /**
  * Run "detect"
@@ -51,21 +52,24 @@ public class UCDetectorAction extends AbstractUCDetectorAction {
   private final class OpenInEditorAction extends Action {
     @Override
     public void run() {
+      String objectToShow = null;
       try {
         UCDProgressMonitor monitor = iterator.getMonitor();
         if (monitor.isFinished()) {
           // See org.eclipse.ui.views.markers.MarkerViewUtil.getViewId()
+          objectToShow = IPageLayout.ID_PROBLEM_VIEW;
           UCDetectorPlugin.getActivePage().showView(IPageLayout.ID_PROBLEM_VIEW);
           return;
         }
         IJavaElement element = monitor.getActiveSearchElement();
         if (element != null) {
+          objectToShow = JavaElementUtil.getElementName(element);
           IEditorPart part = JavaUI.openInEditor(element, true, false);
           JavaUI.revealInEditor(part, element);
         }
       }
       catch (Exception ex) {
-        Log.logError("Can't open view", ex);//$NON-NLS-1$
+        Log.logError("Can't open view for object: " + objectToShow, ex);//$NON-NLS-1$
       }
     }
   }

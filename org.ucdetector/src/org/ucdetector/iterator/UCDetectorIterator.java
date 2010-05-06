@@ -27,9 +27,6 @@ import org.ucdetector.util.StopWatch;
  * must be searched, run detection afterward
  * */
 public class UCDetectorIterator extends AbstractUCDetectorIterator {
-  private static final String FIELD = "field"; //$NON-NLS-1$
-  private static final String METHOD = "method"; //$NON-NLS-1$
-  private static final String TYPE = "type"; //$NON-NLS-1$
   private final Set<TypeContainer> typeContainers = new LinkedHashSet<TypeContainer>();
   private TypeContainer iteratedTypeContainer = null;
 
@@ -58,25 +55,25 @@ public class UCDetectorIterator extends AbstractUCDetectorIterator {
   @Override
   protected boolean handleType(IType type) throws CoreException {
     if (isPrivate(type)) {
-      debugNotHandle(TYPE, type, "isPrivate"); //$NON-NLS-1$
+      debugNotHandle(type, "isPrivate"); //$NON-NLS-1$
       return false;
     }
     if (type.isAnonymous()) {
-      debugNotHandle(TYPE, type, "isAnonymous"); //$NON-NLS-1$
+      debugNotHandle(type, "isAnonymous"); //$NON-NLS-1$
       return false;
     }
     if (!Prefs.isUCDetectionInClasses()) {
-      debugNotHandle(TYPE, type, "!isUCDetectionInClasses"); //$NON-NLS-1$
+      debugNotHandle(type, "!isUCDetectionInClasses"); //$NON-NLS-1$
       return false;
     }
     if (Prefs.filterType(type)) {
-      debugNotHandle(TYPE, type, "filterType"); //$NON-NLS-1$
+      debugNotHandle(type, "filterType"); //$NON-NLS-1$
       return false;
     }
     if (Prefs.isFilterClassContainingString() && type.getCompilationUnit() != null) {
       String classAsString = type.getCompilationUnit().getSource();
       if (Prefs.filterClassContainingString(classAsString)) {
-        debugNotHandle(TYPE, type, "filterClassContainingString"); //$NON-NLS-1$
+        debugNotHandle(type, "filterClassContainingString"); //$NON-NLS-1$
         return false;
       }
     }
@@ -87,12 +84,12 @@ public class UCDetectorIterator extends AbstractUCDetectorIterator {
         String simple = superType.getElementName();
         String full = superType.getFullyQualifiedName('.');
         if (Prefs.filterImplements(simple) || Prefs.filterImplements(full)) {
-          debugNotHandle(TYPE, type, "filterImplementingOrExtending"); //$NON-NLS-1$
+          debugNotHandle(type, "filterImplementingOrExtending"); //$NON-NLS-1$
           return false;
         }
       }
     }
-    debugHandle(TYPE, type);
+    debugHandle(type);
     addType(type);
     return true;
   }
@@ -107,53 +104,53 @@ public class UCDetectorIterator extends AbstractUCDetectorIterator {
   protected void handleMethod(IMethod method) throws CoreException {
     // Fix Bug [ 2153699 ] Find unused abstract methods
     if (isPrivate(method)) {
-      debugNotHandle(METHOD, method, "isPrivate");//$NON-NLS-1$
+      debugNotHandle(method, "isPrivate");//$NON-NLS-1$
       return;
     }
     if (method.isMainMethod()) {
-      debugNotHandle(METHOD, method, "isMainMethod"); //$NON-NLS-1$
+      debugNotHandle(method, "isMainMethod"); //$NON-NLS-1$
       return;
     }
     if (!Prefs.isUCDetectionInMethods()) {
-      debugNotHandle(METHOD, method, "!isUCDetectionInMethods"); //$NON-NLS-1$
+      debugNotHandle(method, "!isUCDetectionInMethods"); //$NON-NLS-1$
       return;
     }
     if (Prefs.filterMethod(method)) {
-      debugNotHandle(METHOD, method, "filterMethod"); //$NON-NLS-1$
+      debugNotHandle(method, "filterMethod"); //$NON-NLS-1$
       return;
     }
     // ignore default constructors
     if (method.isConstructor() && method.getNumberOfParameters() == 0) {
-      debugNotHandle(METHOD, method, "default constructor"); //$NON-NLS-1$
+      debugNotHandle(method, "default constructor"); //$NON-NLS-1$
       return;
     }
     if (Prefs.isFilterBeanMethod() && JavaElementUtil.isBeanMethod(method)) {
-      debugNotHandle(METHOD, method, "bean method"); //$NON-NLS-1$
+      debugNotHandle(method, "bean method"); //$NON-NLS-1$
       return;
     }
-    debugHandle(METHOD, method);
+    debugHandle(method);
     getIteratedTypeContainer().getMethods().add(method);
   }
 
   @Override
   protected void handleField(IField field) throws CoreException {
     if (Prefs.filterField(field)) {
-      debugNotHandle(FIELD, field, "filterField"); //$NON-NLS-1$
+      debugNotHandle(field, "filterField"); //$NON-NLS-1$
     }
     else if (!Prefs.isUCDetectionInFields()) {
-      debugNotHandle(FIELD, field, "!isUCDetectionInFields"); //$NON-NLS-1$
+      debugNotHandle(field, "!isUCDetectionInFields"); //$NON-NLS-1$
     }
     else if (Prefs.isCheckUseFinalField()) {
       // we need even private fields here!
-      debugHandle(FIELD, field);
+      debugHandle(field);
       getIteratedTypeContainer().getFields().add(field);
     }
     else if (!isPrivate(field)) {
-      debugHandle(FIELD, field);
+      debugHandle(field);
       getIteratedTypeContainer().getFields().add(field);
     }
     else {
-      debugNotHandle(FIELD, field, "!isCheckUseFinalField || isUCDetectionInFields"); //$NON-NLS-1$
+      debugNotHandle(field, "!isCheckUseFinalField || isUCDetectionInFields"); //$NON-NLS-1$
     }
   }
 

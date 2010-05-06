@@ -385,7 +385,7 @@ public final class Prefs {
       return Flags.isStatic(member.getFlags()) && Flags.isFinal(member.getFlags());
     }
     catch (JavaModelException e) {
-      Log.logError("Can't get isConstant: " + member, e);
+      Log.logError("Can't get isConstant for: " + member, e);
       return false;
     }
   }

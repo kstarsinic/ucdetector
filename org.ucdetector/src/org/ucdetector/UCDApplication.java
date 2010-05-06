@@ -133,7 +133,7 @@ public class UCDApplication implements IApplication {
       Log.logInfo("\tAvaiable Options  : " + avaiable);
     }
     catch (BackingStoreException ex) {
-      Log.logError("Can't get preferences", ex);
+      Log.logError("Can't get preferences for node: " + node, ex);
     }
     Log.logInfo("Report directory is: " + Prefs.getReportDir());
   }

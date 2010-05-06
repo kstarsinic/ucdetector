@@ -35,7 +35,7 @@ public class Log {
 
   // DEBUG --------------------------------------------------------------------
   public static void logDebug(String message) {
-    Log.logImpl(LogLevel.DEBUG, message, null);
+    logImpl(LogLevel.DEBUG, message);
   }
 
   public static void logDebug(String format, Object... args) {
@@ -44,7 +44,7 @@ public class Log {
 
   // INFO ---------------------------------------------------------------------
   public static void logInfo(String message) {
-    Log.logImpl(LogLevel.INFO, message, null);
+    logImpl(LogLevel.INFO, message);
   }
 
   public static void logInfo(String format, Object... args) {
@@ -53,7 +53,7 @@ public class Log {
 
   // WARN ---------------------------------------------------------------------
   public static void logWarn(String message) {
-    Log.logImpl(LogLevel.WARN, message, null);
+    logImpl(LogLevel.WARN, message);
   }
 
   public static void logWarn(String format, Object... args) {
@@ -62,7 +62,7 @@ public class Log {
 
   // ERROR --------------------------------------------------------------------
   public static void logError(String message) {
-    Log.logImpl(LogLevel.ERROR, message, null);
+    logImpl(LogLevel.ERROR, message);
   }
 
   public static void logError(String format, Object... args) {
@@ -70,31 +70,35 @@ public class Log {
   }
 
   public static void logError(String message, Throwable ex) {
-    Log.logImpl(LogLevel.ERROR, message, ex);
+    logImpl(LogLevel.ERROR, message, ex);
   }
 
-  public static void logError(String format, Throwable ex, Object... args) {
-    logError(String.format(format, args), ex);
-  }
+  //  public static void logError(String format, Throwable ex, Object... args) {
+  //    logError(String.format(format, args), ex);
+  //  }
 
   // STATUS -------------------------------------------------------------------
   public static void logStatus(IStatus status) {
     if (status.getSeverity() == IStatus.ERROR) {
-      Log.logError(status.getMessage(), status.getException());
+      logError(status.getMessage(), status.getException());
     }
     else if (status.getSeverity() == IStatus.WARNING) {
-      Log.logWarn(status.getMessage());
+      logWarn(status.getMessage());
     }
     else {
-      Log.logInfo(status.getMessage());
+      logInfo(status.getMessage());
     }
+  }
+
+  private static void logImpl(LogLevel level, String message) {
+    logImpl(level, message, null);
   }
 
   /**
    * Very simple logging to System.out and System.err
    */
   private static void logImpl(LogLevel level, String message, Throwable ex) {
-    if ((Log.DEBUG && level == LogLevel.DEBUG) || level == LogLevel.INFO) {
+    if ((DEBUG && level == LogLevel.DEBUG) || level == LogLevel.INFO) {
       System.out.println(createLogMessage(level, message));
     }
     else if (level == LogLevel.WARN || level == LogLevel.ERROR) {

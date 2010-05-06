@@ -112,8 +112,7 @@ class FinalHandler {
 
     @Override
     public String toString() {
-      return field.getElementName() + ".hasWriteAccess=" //$NON-NLS-1$
-          + fieldHasWriteAccessFromMethod;
+      return field.getElementName() + ".hasWriteAccess=" + fieldHasWriteAccessFromMethod; //$NON-NLS-1$
     }
 
     @Override

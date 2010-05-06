@@ -127,7 +127,7 @@ public class XmlReport implements IUCDetectorReport {
       markers.appendChild(doc.createComment(XML_INFO));
     }
     catch (Throwable e) {
-      Log.logError("XML problems", e);
+      Log.logError("Can't create xml report: ", e);
       initXMLException = e;
     }
   }

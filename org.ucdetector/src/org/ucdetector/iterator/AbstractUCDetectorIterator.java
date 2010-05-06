@@ -318,9 +318,10 @@ public abstract class AbstractUCDetectorIterator extends UCDetectorCallBack {
   /**
    * Debug, that a member will be handled!
    */
-  protected final void debugHandle(String what, IMember member) {
+  protected final void debugHandle(IMember member) {
     if (DEBUG) {
-      Log.logDebug("    Handle %s '%s'", what, JavaElementUtil.getElementName(member)); //$NON-NLS-1$
+      Log.logDebug("    Handle %s '%s'", // //$NON-NLS-1$
+          JavaElementUtil.getMemberTypeString(member), JavaElementUtil.getElementName(member));
     }
   }
 
@@ -328,9 +329,10 @@ public abstract class AbstractUCDetectorIterator extends UCDetectorCallBack {
    * Debug, that a member will not be handled, because it is
    * filtered, private...
    */
-  protected final void debugNotHandle(String what, IMember member, String reason) {
+  protected final void debugNotHandle(IMember member, String reason) {
     if (DEBUG) {
-      Log.logDebug("    Ignore %s '%s' because: %s", what, JavaElementUtil.getElementName(member), reason); //$NON-NLS-1$
+      Log.logDebug("    Ignore %s '%s' because: %s",// //$NON-NLS-1$
+          JavaElementUtil.getMemberTypeString(member), JavaElementUtil.getElementName(member), reason);
     }
   }
 }

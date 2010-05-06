@@ -169,9 +169,8 @@ public class SearchManager {
       if (ex instanceof OperationCanceledException) {
         throw (OperationCanceledException) ex;
       }
-      String message = "Problems searching " //$NON-NLS-1$
-          + JavaElementUtil.getMemberTypeString(member)//
-          + " " + JavaElementUtil.getElementName(member); //$NON-NLS-1$
+      String message = String.format("Problems searching %s %s", // //$NON-NLS-1$
+          JavaElementUtil.getMemberTypeString(member), JavaElementUtil.getElementName(member));
       Log.logError(message, ex);
       Status status = new Status(IStatus.ERROR, UCDetectorPlugin.ID, IStatus.ERROR, message, ex);
       markerFactory.reportDetectionProblem(status);
@@ -609,8 +608,7 @@ public class SearchManager {
           return !isStatic;
         }
         catch (JavaModelException ex) {
-          Log.logError("Can't get flags of: " + importDecl.getElementName(), //$NON-NLS-1$
-              ex);
+          Log.logError("Can't get flags of: " + importDecl.getElementName(), ex); //$NON-NLS-1$
           return false;
         }
       }
