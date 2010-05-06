@@ -65,17 +65,9 @@ public class Log {
     logImpl(LogLevel.ERROR, message);
   }
 
-  public static void logError(String format, Object... args) {
-    logError(String.format(format, args));
-  }
-
   public static void logError(String message, Throwable ex) {
     logImpl(LogLevel.ERROR, message, ex);
   }
-
-  //  public static void logError(String format, Throwable ex, Object... args) {
-  //    logError(String.format(format, args), ex);
-  //  }
 
   // STATUS -------------------------------------------------------------------
   public static void logStatus(IStatus status) {
