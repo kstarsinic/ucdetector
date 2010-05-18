@@ -164,7 +164,7 @@ public class LineManger {
         }
       }
       // [ 2923567 ] Do not report markers for deprecated class members
-      if (!Prefs.isIgnoreDeprecated()) {
+      if (Prefs.isFilterDeprecated()) {
         Javadoc javadoc = declaration.getJavadoc();
         if (javadoc != null && javadoc.tags() != null) {
           List<TagElement> tags = javadoc.tags();
@@ -188,10 +188,10 @@ public class LineManger {
       if (isUsedByAnnotation(visibleName)) {
         return true;
       }
-      if (!Prefs.isIgnoreDeprecated() && isDeprecatedAnnotation(visibleName)) {
+      if (Prefs.isFilterDeprecated() && isDeprecatedAnnotation(visibleName)) {
         return true;
       }
-      if (Prefs.filterAnnotation(visibleName)) {
+      if (Prefs.isFilterAnnotation(visibleName)) {
         return true;
       }
       // Match org.ucdetector.example.FilterMeAnnotation AND FilterMeAnnotation
@@ -200,7 +200,7 @@ public class LineManger {
       if (typeBinding != null) {
         String name = typeBinding.getName();
         String fullName = typeBinding.getQualifiedName();
-        if (Prefs.filterAnnotation(fullName) || Prefs.filterAnnotation(name)) {
+        if (Prefs.isFilterAnnotation(fullName) || Prefs.isFilterAnnotation(name)) {
           return true;
         }
       }
@@ -280,7 +280,7 @@ public class LineManger {
     try {
       while ((nextToken = scanner.getNextToken()) != ITerminalSymbols.TokenNameEOF) {
         // We must run getNextToken() until end, to call scanner.getLineEnds() later 
-        if (Prefs.isIgnore_NO_UCD()) {
+        if (Prefs.isFilter_NO_UCD()) {
           addIgnoreLineForToken(ignoreLines, scanner, NO_UCD_COMMENT, nextToken, ITerminalSymbols.TokenNameCOMMENT_LINE);
         }
       }
