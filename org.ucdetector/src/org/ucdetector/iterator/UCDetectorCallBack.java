@@ -231,7 +231,7 @@ public class UCDetectorCallBack { // NO_UCD
    * This could be a lot of stuff in case of big jars!
    */
   protected boolean doPackageFragmentRootChildren(IPackageFragmentRoot packageFragmentRoot) {
-    return !packageFragmentRoot.isArchive() && !Prefs.filterPackageFragmentRoot(packageFragmentRoot);
+    return !packageFragmentRoot.isArchive() && !Prefs.isFilterPackageFragmentRoot(packageFragmentRoot);
   }
 
   /**
@@ -239,7 +239,7 @@ public class UCDetectorCallBack { // NO_UCD
    * children of packages, which are classes
    */
   protected boolean doPackageChildren(IPackageFragment packageFragment) { //
-    return !Prefs.filterPackage(packageFragment);
+    return !Prefs.isFilterPackage(packageFragment);
   }
 
   /**

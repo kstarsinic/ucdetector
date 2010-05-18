@@ -66,14 +66,14 @@ public class UCDetectorIterator extends AbstractUCDetectorIterator {
       debugNotHandle(type, "!isUCDetectionInClasses"); //$NON-NLS-1$
       return false;
     }
-    if (Prefs.filterType(type)) {
-      debugNotHandle(type, "filterType"); //$NON-NLS-1$
+    if (Prefs.isFilterType(type)) {
+      debugNotHandle(type, "isFilterType"); //$NON-NLS-1$
       return false;
     }
     if (Prefs.isFilterClassContainingString() && type.getCompilationUnit() != null) {
       String classAsString = type.getCompilationUnit().getSource();
-      if (Prefs.filterClassContainingString(classAsString)) {
-        debugNotHandle(type, "filterClassContainingString"); //$NON-NLS-1$
+      if (Prefs.isFilterClassContainingString(classAsString)) {
+        debugNotHandle(type, "isFilterClassContainingString"); //$NON-NLS-1$
         return false;
       }
     }
@@ -83,8 +83,8 @@ public class UCDetectorIterator extends AbstractUCDetectorIterator {
       for (IType superType : superTypes) {
         String simple = superType.getElementName();
         String full = superType.getFullyQualifiedName('.');
-        if (Prefs.filterImplements(simple) || Prefs.filterImplements(full)) {
-          debugNotHandle(type, "filterImplementingOrExtending"); //$NON-NLS-1$
+        if (Prefs.isFilterImplements(simple) || Prefs.isFilterImplements(full)) {
+          debugNotHandle(type, "isFilterImplements"); //$NON-NLS-1$
           return false;
         }
       }
@@ -115,8 +115,8 @@ public class UCDetectorIterator extends AbstractUCDetectorIterator {
       debugNotHandle(method, "!isUCDetectionInMethods"); //$NON-NLS-1$
       return;
     }
-    if (Prefs.filterMethod(method)) {
-      debugNotHandle(method, "filterMethod"); //$NON-NLS-1$
+    if (Prefs.isFilterMethod(method)) {
+      debugNotHandle(method, "isFilterMethod"); //$NON-NLS-1$
       return;
     }
     // ignore default constructors
@@ -125,7 +125,7 @@ public class UCDetectorIterator extends AbstractUCDetectorIterator {
       return;
     }
     if (Prefs.isFilterBeanMethod() && JavaElementUtil.isBeanMethod(method)) {
-      debugNotHandle(method, "bean method"); //$NON-NLS-1$
+      debugNotHandle(method, "isFilterBeanMethod"); //$NON-NLS-1$
       return;
     }
     debugHandle(method);
@@ -134,8 +134,8 @@ public class UCDetectorIterator extends AbstractUCDetectorIterator {
 
   @Override
   protected void handleField(IField field) throws CoreException {
-    if (Prefs.filterField(field)) {
-      debugNotHandle(field, "filterField"); //$NON-NLS-1$
+    if (Prefs.isFilterField(field)) {
+      debugNotHandle(field, "isFilterField"); //$NON-NLS-1$
     }
     else if (!Prefs.isUCDetectionInFields()) {
       debugNotHandle(field, "!isUCDetectionInFields"); //$NON-NLS-1$

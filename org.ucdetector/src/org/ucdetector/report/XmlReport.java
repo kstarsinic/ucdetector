@@ -381,14 +381,14 @@ public class XmlReport implements IUCDetectorReport {
     appendStatistics(selected, start);
 
     try {
-      if (Prefs.createHTMLReport()) {
+      if (Prefs.isCreateReportHTML()) {
         Document htmlDocument = transformToHTML(doc);
         writeDocumentToFile(htmlDocument, htmlFile);
       }
-      if (Prefs.createXMLReport()) {
+      if (Prefs.isCreateReportXML()) {
         writeDocumentToFile(doc, new File(reportDir, baseFileName + ".xml"));
       }
-      if (Prefs.createTXTReport()) {
+      if (Prefs.isCreateReportTXT()) {
         writeTextFile(new File(reportDir, baseFileName + ".txt"));
       }
       logEndReportMessage(Messages.XMLReport_WriteOk, IStatus.INFO, null, String.valueOf(markerCount), reportPath);

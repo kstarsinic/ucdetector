@@ -32,8 +32,8 @@ public class CycleIterator extends AbstractUCDetectorIterator {
       debugNotHandle(type, "isPrivate || isLocal || isAnonymous"); //$NON-NLS-1$ 
       return false;
     }
-    if (Prefs.filterType(type)) {
-      debugNotHandle(type, "filterType"); //$NON-NLS-1$ 
+    if (Prefs.isFilterType(type)) {
+      debugNotHandle(type, "isFilterType"); //$NON-NLS-1$ 
       return false;
     }
     ICompilationUnit compilationUnit = type.getCompilationUnit();

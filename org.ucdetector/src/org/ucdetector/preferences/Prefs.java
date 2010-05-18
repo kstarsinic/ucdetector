@@ -101,9 +101,9 @@ public final class Prefs {
    * @return <code>true</code>, when the IPackageFragmentRoot
    * matches the source folder filter
    */
-  public static boolean filterPackageFragmentRoot(IPackageFragmentRoot root) {
+  public static boolean isFilterPackageFragmentRoot(IPackageFragmentRoot root) {
     String sourceFolder = JavaElementUtil.getSourceFolderProjectRelativePath(root);
-    return sourceFolder == null || matchFilter(FILTER_SOURCE_FOLDER, sourceFolder);
+    return sourceFolder == null || isMatchFilter(FILTER_SOURCE_FOLDER, sourceFolder);
   }
 
   /**
@@ -111,8 +111,8 @@ public final class Prefs {
    * @return <code>true</code>, when the IPackageFragment
    * matches the package filter
    */
-  public static boolean filterPackage(IPackageFragment packageFragment) {
-    return matchFilter(FILTER_PACKAGE, packageFragment.getElementName());
+  public static boolean isFilterPackage(IPackageFragment packageFragment) {
+    return isMatchFilter(FILTER_PACKAGE, packageFragment.getElementName());
   }
 
   /**
@@ -120,8 +120,8 @@ public final class Prefs {
    * @return <code>true</code>, when the type
    * matches the type filter
    */
-  public static boolean filterType(IType type) {
-    return matchFilter(FILTER_CLASS, type.getElementName());
+  public static boolean isFilterType(IType type) {
+    return isMatchFilter(FILTER_CLASS, type.getElementName());
   }
 
   /**
@@ -132,16 +132,16 @@ public final class Prefs {
   }
 
   /**
-   * @return <code>true</code>, when deprecated code should be ignored
+   * @return <code>true</code>, when deprecated code should be filtered
    */
-  public static boolean isIgnoreDeprecated() {
+  public static boolean isFilterDeprecated() {
     return getStore().getBoolean(IGNORE_DEPRECATED);
   }
 
   /**
-   * @return <code>true</code>, when comment lines containing "NO_UCD" code should be ignored
+   * @return <code>true</code>, when comment lines containing "NO_UCD" code should be filtered
    */
-  public static boolean isIgnore_NO_UCD() {
+  public static boolean isFilter_NO_UCD() {
     return getStore().getBoolean(IGNORE_NO_UCD);
   }
 
@@ -165,8 +165,8 @@ public final class Prefs {
    * @return <code>true</code>, when the method
    * matches the method filter
    */
-  public static boolean filterMethod(IMethod method) {
-    return matchFilter(FILTER_METHOD, method.getElementName());
+  public static boolean isFilterMethod(IMethod method) {
+    return isMatchFilter(FILTER_METHOD, method.getElementName());
   }
 
   /**
@@ -174,8 +174,8 @@ public final class Prefs {
    * @return <code>true</code>, when the field
    * matches the field filter
    */
-  public static boolean filterField(IField field) {
-    return matchFilter(FILTER_FIELD, field.getElementName());
+  public static boolean isFilterField(IField field) {
+    return isMatchFilter(FILTER_FIELD, field.getElementName());
   }
 
   /**
@@ -183,8 +183,8 @@ public final class Prefs {
    * @return <code>true</code>, when the annotation matches the field filter
    */
   // [ 2832790 ] Custom annotation filter
-  public static boolean filterAnnotation(String annotation) {
-    return matchFilter(FILTER_ANNOATIONS, annotation);
+  public static boolean isFilterAnnotation(String annotation) {
+    return isMatchFilter(FILTER_ANNOATIONS, annotation);
   }
 
   /**
@@ -192,8 +192,8 @@ public final class Prefs {
    * @return <code>true</code>, when the className matches the field filter
    */
   // [ 2929828 ] Filter to exclude classes extending/implementing
-  public static boolean filterImplements(String className) {
-    return matchFilter(FILTER_IMPLEMENTS, className);
+  public static boolean isFilterImplements(String className) {
+    return isMatchFilter(FILTER_IMPLEMENTS, className);
   }
 
   public static boolean isFilterImplements() {
@@ -217,7 +217,7 @@ public final class Prefs {
    * @param classAsString Class text content as a String
    * @return <code>true</code>, the class contains one of the strings
    */
-  public static boolean filterClassContainingString(String classAsString) {
+  public static boolean isFilterClassContainingString(String classAsString) {
     String[] stringsToFindInFile = getStrings(FILTER_CONTAIN_STRING, false);
     for (String stringToFindInFile : stringsToFindInFile) {
       if (stringToFindInFile.trim().length() > 0) {
@@ -432,15 +432,15 @@ public final class Prefs {
     return new File(dir).getAbsolutePath();
   }
 
-  public static boolean createHTMLReport() {
+  public static boolean isCreateReportHTML() {
     return getStore().getBoolean(REPORT_CREATE_HTML);
   }
 
-  public static boolean createXMLReport() {
+  public static boolean isCreateReportXML() {
     return getStore().getBoolean(REPORT_CREATE_XML);
   }
 
-  public static boolean createTXTReport() {
+  public static boolean isCreateReportTXT() {
     return getStore().getBoolean(REPORT_CREATE_TXT);
   }
 
@@ -448,7 +448,7 @@ public final class Prefs {
    * @return <code>true</code> if we want to create a report file
    */
   public static boolean isWriteReportFile() {
-    return createHTMLReport() || createXMLReport() || createTXTReport();
+    return isCreateReportHTML() || isCreateReportXML() || isCreateReportTXT();
   }
 
   // ---------------------------------------------------------------------------
@@ -492,7 +492,7 @@ public final class Prefs {
    * @return <code>true</code>, when the name matches one of the Strings
    * found in the preference filteName.<br>
    */
-  private static boolean matchFilter(String filterName, String name) {
+  private static boolean isMatchFilter(String filterName, String name) {
     String[] filters = parseFilters(filterName);
     for (String regex : filters) {
       // IPackageFragmentRoot can be "", filter can be ""
