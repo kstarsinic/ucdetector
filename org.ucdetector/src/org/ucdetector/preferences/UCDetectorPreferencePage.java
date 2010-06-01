@@ -105,8 +105,8 @@ public class UCDetectorPreferencePage extends FieldEditorPreferencePage implemen
     // ------------------------------------------------------------------------
     // TODO: what's the difference between performOk() and ModesPanel.saveMode(String)?
     // ------------------------------------------------------------------------
-
     boolean result = super.performOk();
+    modesPanel.saveMode();
     getPreferenceStore().setValue(Prefs.MODE_INDEX, modesPanel.getCombo().getSelectionIndex());
     Log.logInfo("New preferences: " + UCDetectorPlugin.getPreferencesAsString()); //$NON-NLS-1$
     return result;
@@ -116,6 +116,7 @@ public class UCDetectorPreferencePage extends FieldEditorPreferencePage implemen
   protected void performDefaults() {
     super.performDefaults();
     modesPanel.getCombo().setText(Mode.Default.toStringLocalized());
+    modesPanel.updateModeButtons();
     //    dumpPreferencesPerPage();
   }
 
@@ -296,11 +297,12 @@ public class UCDetectorPreferencePage extends FieldEditorPreferencePage implemen
     private final Composite parent;
     private StringFieldEditor analyzeLiterals;
     private BooleanFieldEditor checkFullClassName;
+    private final Button check;
 
     SynchBooleanFieldEditor(Composite parent) {
       super(Prefs.ANALYZE_LITERALS_CHECK, Messages.PreferencePage_LiteralsCheck, parent);
       this.parent = parent;
-      Button check = getChangeControl(parent);
+      check = getChangeControl(parent);
       check.setToolTipText(Messages.PreferencePage_LiteralsCheckToolTip);
     }
 
@@ -331,8 +333,10 @@ public class UCDetectorPreferencePage extends FieldEditorPreferencePage implemen
     }
 
     private void synchronizeAnalyzeLiteralsCheck() {
-      analyzeLiterals.setEnabled(getBooleanValue(), parent);
-      checkFullClassName.setEnabled(getBooleanValue(), parent);
+      if (check.isEnabled()) { // needed because modes panel may set enabled checkBox
+        analyzeLiterals.setEnabled(getBooleanValue(), parent);
+        checkFullClassName.setEnabled(getBooleanValue(), parent);
+      }
     }
   }
 

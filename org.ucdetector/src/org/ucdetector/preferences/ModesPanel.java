@@ -20,6 +20,7 @@ import java.util.Set;
 import java.util.Map.Entry;
 
 import org.eclipse.jface.dialogs.IInputValidator;
+import org.eclipse.jface.dialogs.IMessageProvider;
 import org.eclipse.jface.dialogs.InputDialog;
 import org.eclipse.jface.preference.FieldEditor;
 import org.eclipse.jface.preference.IPreferenceStore;
@@ -34,7 +35,6 @@ import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Combo;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
-import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Widget;
 import org.ucdetector.Log;
@@ -58,14 +58,14 @@ class ModesPanel {
     }
   }
 
-  private final Button saveButton;
+  //  private final Button saveButton;
   private final Button newButton;
   private final Button removeButton;
   private final Combo modesCombo;
   private final File modesDir;
   private final Composite parent;
   private final Composite modesPanelComposite;
-  private final Label builtInInfoLabel;
+  //  private final Label builtInInfoLabel;
   private final UCDetectorPreferencePage page;
 
   ModesPanel(UCDetectorPreferencePage page, Composite parentGroups) {
@@ -74,7 +74,7 @@ class ModesPanel {
     File ucdDir = UCDetectorPlugin.getDefault().getStateLocation().toFile();
     modesDir = new File(ucdDir, "modes"); //$NON-NLS-1$
     modesDir.mkdirs();
-    modesPanelComposite = UCDetectorPreferencePage.createComposite(parent, 5, 1, GridData.FILL_HORIZONTAL);
+    modesPanelComposite = UCDetectorPreferencePage.createComposite(parent, 4, 1, GridData.FILL_HORIZONTAL);
     Label label = new Label(modesPanelComposite, SWT.LEFT);
     label.setText(Messages.ModesPanel_ModeLabel);
     modesCombo = new Combo(modesPanelComposite, SWT.READ_ONLY);
@@ -82,13 +82,13 @@ class ModesPanel {
     newButton.setText(Messages.ModesPanel_ModeNew);
     removeButton = new Button(modesPanelComposite, SWT.PUSH);
     removeButton.setText(Messages.ModesPanel_ModeRemove);
-    saveButton = new Button(modesPanelComposite, SWT.PUSH);
-    saveButton.setText(Messages.ModesPanel_ModeSave);
+    //    saveButton = new Button(modesPanelComposite, SWT.PUSH);
+    //    saveButton.setText(Messages.ModesPanel_ModeSave);
     //
-    builtInInfoLabel = new Label(modesPanelComposite, SWT.LEFT);
+    //    builtInInfoLabel = new Label(modesPanelComposite, SWT.LEFT);
     //    builtInInfoLabel.setFont(new Font(parent.getDisplay(), "Arial", 10, SWT.BOLD));
-    builtInInfoLabel.setForeground(Display.getDefault().getSystemColor(SWT.COLOR_RED));
-    builtInInfoLabel.setText(NLS.bind(Messages.ModesPanel_ModePressNewHint, Messages.ModesPanel_ModeNew));
+    //    builtInInfoLabel.setForeground(Display.getDefault().getSystemColor(SWT.COLOR_RED));
+    //    builtInInfoLabel.setText(NLS.bind(Messages.ModesPanel_ModePressNewHint, Messages.ModesPanel_ModeNew));
 
     createModeCombo();
   }
@@ -138,10 +138,11 @@ class ModesPanel {
       @Override
       public void widgetSelected(SelectionEvent event) {
         Widget widget = event.widget;
-        if (widget == saveButton) {
+        /*if (widget == saveButton) {
           saveMode(getCombo().getText());
         }
-        else if (widget == newButton) {
+        else */
+        if (widget == newButton) {
           addMode();
         }
         else if (widget == removeButton) {
@@ -150,7 +151,7 @@ class ModesPanel {
       }
     };
     updateModeButtons();
-    saveButton.addSelectionListener(selectionListener);
+    //    saveButton.addSelectionListener(selectionListener);
     newButton.addSelectionListener(selectionListener);
     removeButton.addSelectionListener(selectionListener);
   }
@@ -202,10 +203,16 @@ class ModesPanel {
     }
   }
 
+  void saveMode() {
+    if (getCombo().getSelectionIndex() >= Mode.values().length) {
+      saveMode(getCombo().getText()); // custom
+    }
+  }
+
   /** Save it to a file in WORKSPACE/.metadata/.plugins/org.ucdetector/modes  */
   @SuppressWarnings("nls")
-  private void saveMode(String modeName) {
-    page.performOk();
+  void saveMode(String modeName) {
+    //    page.performOk();
     Map<String, String> allPreferences = UCDetectorPlugin.getAllPreferences();
     allPreferences.putAll(UCDetectorPlugin.getDeltaPreferences());
 
@@ -268,7 +275,7 @@ class ModesPanel {
   protected void updateModeButtons() {
     int index = getCombo().getSelectionIndex();
     boolean isCustom = (index < 0 || index >= Mode.values().length);
-    saveButton.setEnabled(isCustom);
+    //    saveButton.setEnabled(isCustom);
     removeButton.setEnabled(isCustom);
 
     for (Composite group : page.groups) {
@@ -277,7 +284,8 @@ class ModesPanel {
         control.setEnabled(isCustom);
       }
     }
-    builtInInfoLabel.setVisible(!isCustom);
+    //    builtInInfoLabel.setVisible(!isCustom);
+    page.setMessage(isCustom ? null : Messages.ModesPanel_ModePressNewHint, IMessageProvider.WARNING);
   }
 
   /**
