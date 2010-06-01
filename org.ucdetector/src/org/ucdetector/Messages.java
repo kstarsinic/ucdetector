@@ -7,6 +7,8 @@
  */
 package org.ucdetector;
 
+import java.lang.reflect.Field;
+
 import org.eclipse.osgi.util.NLS;
 import org.ucdetector.util.UsedBy;
 
@@ -29,7 +31,8 @@ public final class Messages extends NLS {
    */
   public static String getString(String name, String defaultString) {
     try {
-      return (String) Messages.class.getDeclaredField(name).get(null);
+      Field field = Messages.class.getDeclaredField(name);
+      return (String) field.get(null);
     }
     catch (Exception ex) {
       Log.logError("Can't get string for field: " + name, ex);
