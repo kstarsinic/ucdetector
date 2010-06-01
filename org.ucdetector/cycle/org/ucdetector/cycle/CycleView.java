@@ -368,7 +368,7 @@ public class CycleView extends ViewPart { //
     if (hasInput) {
       try {
         // tree.select(tree.getItem(0));// Compatibility: since 3.4
-        Method method = tree.getClass().getMethod("select", new Class[] { TreeItem.class });
+        Method method = tree.getClass().getMethod("select", new Class[] { TreeItem.class }); //$NON-NLS-1$
         method.invoke(tree, tree.getItem(0));
       }
       catch (Exception e) {
