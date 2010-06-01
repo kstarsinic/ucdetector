@@ -129,26 +129,9 @@ public final class Messages extends NLS {
   public static String PreferencePage_TabKeywords; // NO_UCD
   public static String PreferencePage_TabReport; // NO_UCD
   //
-  public static String PreferencePage_ModeLabel; // NO_UCD
-  public static String PreferencePage_ModeSave; // NO_UCD
-  public static String PreferencePage_ModeNew; // NO_UCD
-  public static String PreferencePage_ModeRemove; // NO_UCD
-  //
-  public static String PreferencePage_NewMode; // NO_UCD
-  public static String PreferencePage_ModeName; // NO_UCD
-  public static String PreferencePage_CantSetPreferences; // NO_UCD
-  public static String PreferencePage_ModeFileCantSave; // NO_UCD
-  //
   public static String PreferencePage_CreateHtmlReport; // NO_UCD
   public static String PreferencePage_CreateXmlReport; // NO_UCD
   public static String PreferencePage_CreateTextReport; // NO_UCD
-
-  @UsedBy("reflection")
-  public static String PrefMode_classes_only;// NO_UCD
-  @UsedBy("reflection")
-  public static String PrefMode_full;// NO_UCD
-  @UsedBy("reflection")
-  public static String PrefMode_Default;// NO_UCD
 
   //
   public static String PreferencePage_GroupDetect; // NO_UCD
@@ -227,4 +210,22 @@ public final class Messages extends NLS {
   public static String SearchResult_get_text; // NO_UCD
   // ModesPanel ---------------------------------------------------------------
   public static String ModesPanel_invalid_mode_name; // NO_UCD
+  //
+  public static String ModesPanel_ModeLabel; // NO_UCD
+  public static String ModesPanel_ModeSave; // NO_UCD
+  public static String ModesPanel_ModeNew; // NO_UCD
+  public static String ModesPanel_ModeRemove; // NO_UCD
+  public static String ModesPanel_ModePressNewHint; // NO_UCD
+  public static String ModesPanel_ModeAlreadyExists; // NO_UCD
+  //
+  public static String ModesPanel_NewMode; // NO_UCD
+  public static String ModesPanel_ModeName; // NO_UCD
+  public static String ModesPanel_CantSetPreferences; // NO_UCD
+  public static String ModesPanel_ModeFileCantSave; // NO_UCD
+  @UsedBy("reflection")
+  public static String ModesPanel_mode_classes_only;// NO_UCD
+  @UsedBy("reflection")
+  public static String ModesPanel_mode_full;// NO_UCD
+  @UsedBy("reflection")
+  public static String ModesPanel_mode_Default;// NO_UCD
 }

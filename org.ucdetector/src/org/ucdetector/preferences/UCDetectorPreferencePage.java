@@ -19,12 +19,12 @@ import org.eclipse.jface.preference.FieldEditorPreferencePage;
 import org.eclipse.jface.preference.IntegerFieldEditor;
 import org.eclipse.jface.preference.StringFieldEditor;
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.graphics.Font;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
-import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Group;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.TabFolder;
@@ -48,6 +48,8 @@ import org.ucdetector.preferences.ModesPanel.Mode;
  */
 public class UCDetectorPreferencePage extends FieldEditorPreferencePage implements IWorkbenchPreferencePage {
   protected final List<FieldEditor> fields = new ArrayList<FieldEditor>();
+  /** Hack to enable/disable children of groups (=fields)  */
+  protected final List<Composite> groups = new ArrayList<Composite>();
   /** Contains group names, tab names, preference names */
   protected final List<String> extendedPreferences = new ArrayList<String>();
   protected static final String GROUP_START/**/= "# "; //$NON-NLS-1$
@@ -76,7 +78,6 @@ public class UCDetectorPreferencePage extends FieldEditorPreferencePage implemen
     Composite parentGroups = createComposite(getFieldEditorParent(), 1, 1, GridData.FILL_BOTH);
     setTitle("UCDetector " + UCDetectorPlugin.getAboutUCDVersion()); //$NON-NLS-1$
     modesPanel = new ModesPanel(this, parentGroups);
-    modesPanel.createModeCombo();
     // -----------------------------------------------
     // org.eclipse.team.internal.ccvs.ui.CVSPreferencesPage.createGeneralTab()
     TabFolder tabFolder = new TabFolder(parentGroups, SWT.NONE);
@@ -96,6 +97,7 @@ public class UCDetectorPreferencePage extends FieldEditorPreferencePage implemen
     // REPORT -----------------------------------------------------------------
     composite = createTab(tabFolder, Messages.PreferencePage_TabReport);
     createReportGroup(composite);
+    modesPanel.updateModeButtons();
   }
 
   @Override
@@ -216,7 +218,8 @@ public class UCDetectorPreferencePage extends FieldEditorPreferencePage implemen
     Composite spacer = createGroup(parentGroups, Messages.PreferencePage_GroupVisibility);
     // visibility warning
     Label infoLabel = new Label(spacer, SWT.LEFT);
-    infoLabel.setForeground(Display.getDefault().getSystemColor(SWT.COLOR_RED));
+    // infoLabel.setForeground(Display.getDefault().getSystemColor(SWT.COLOR_RED));
+    infoLabel.setFont(new Font(spacer.getDisplay(), "Arial", 10, SWT.BOLD)); //$NON-NLS-1$
     infoLabel.setText(Messages.PreferencePage_ReduceVisibiltyWarning);
     GridData gd = new GridData(GridData.FILL_HORIZONTAL);
     gd.horizontalSpan = 2;
@@ -378,8 +381,9 @@ public class UCDetectorPreferencePage extends FieldEditorPreferencePage implemen
     GridData gd = new GridData(fill);
     gd.horizontalSpan = hspan;
     g.setLayoutData(gd);
-    Composite spacer = createComposite(g, columns, 1, fill);
-    return spacer;
+    Composite group = createComposite(g, columns, 1, fill);
+    groups.add(group);
+    return group;
   }
 
   // SWTFactory
