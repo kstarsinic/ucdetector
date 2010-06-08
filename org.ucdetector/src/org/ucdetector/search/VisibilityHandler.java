@@ -143,10 +143,9 @@ class VisibilityHandler {
       if (JavaElementUtil.isInterfaceMethod(method)) {
         return false;
       }
-      // TODO Bug [ 2968753] protected abstract method cannot be made private
-      // TODO: review all references from JavaElementUtil.isInterfaceMethod(method)
-      // TODO: review all marker creation of methods, check for isAbstract()
-      // TODO: review Bug2968753
+      // TODO - Bug [ 2968753] protected abstract method cannot be made private, see also Bug2968753
+      //      - review all references from JavaElementUtil.isInterfaceMethod(method)
+      //      - review all marker creation of methods, check for isAbstract()
       if (Flags.isAbstract(method.getFlags())) {
         return false;
       }

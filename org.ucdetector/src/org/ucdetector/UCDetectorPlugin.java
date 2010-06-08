@@ -38,7 +38,6 @@ import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.plugin.AbstractUIPlugin;
 import org.osgi.framework.BundleContext;
 import org.osgi.service.prefs.BackingStoreException;
-import org.ucdetector.Log.LogLevel;
 
 /**
  * Default Activator-class of this plug-ins
@@ -84,7 +83,7 @@ public class UCDetectorPlugin extends AbstractUIPlugin {
     Log.logInfo("Home      : " + getAboutEclipseHome());
     Log.logInfo("Logfile   : " + getAboutLogfile());
     Log.logInfo("Workspace : " + getAboutWorkspace());
-    Log.logInfo("Log level : " + (Log.DEBUG ? LogLevel.DEBUG : LogLevel.INFO));
+    Log.logInfo("Log level : " + Log.LOG_LEVEL.toString());
     Log.logInfo(getPreferencesAsString());
     Log.logInfo(SEPARATOR);
   }

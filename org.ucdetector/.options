@@ -2,8 +2,8 @@
 # add programm parameter "-debug" to eclipse.ini
 # and put this file in your eclipse install directory
 
-# Turn on debugging for the org.ucdetector plugin.
-org.ucdetector/debug=true
+# Turn on debugging for the org.ucdetector plugin: DEBUG, INFO, WARN, ERROR, OFF
+org.ucdetector/logLevel=DEBUG
 
 # Turn on debugging for iterator: Which java elements are visited
 org.ucdetector/debug/iterator=true

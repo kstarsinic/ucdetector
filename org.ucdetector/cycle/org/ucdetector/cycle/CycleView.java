@@ -67,7 +67,7 @@ import org.ucdetector.util.JavaElementUtil;
 /**
  * 
  */
-// TODO: Use AbstractTextSearchViewPage?
+// Use AbstractTextSearchViewPage?
 public class CycleView extends ViewPart { // 
   public static final String ID = "org.ucdetector.cycle.view.CycleView"; //$NON-NLS-1$
   private static CycleView INSTANCE = null;

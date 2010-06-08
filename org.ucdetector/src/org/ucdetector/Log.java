@@ -15,7 +15,13 @@ import org.eclipse.core.runtime.Platform;
  * <p>
  * @see "http://wiki.eclipse.org/FAQ_How_do_I_write_to_the_console_from_a_plug-in_%3F"
  */
+@SuppressWarnings("nls")
 public class Log {
+  enum LogLevel {
+    @SuppressWarnings("hiding")
+    DEBUG, INFO, WARN, ERROR, OFF,
+  }
+
   /**
    * To activate debug traces add line
    * <pre>org.ucdetector/debug=true</pre>
@@ -23,15 +29,16 @@ public class Log {
    * 
    * @see "http://wiki.eclipse.org/FAQ_How_do_I_use_the_platform_debug_tracing_facility%3F"
    */
-  // TODO 2010-05-06: Use log level to warn or error!
-  public static final boolean DEBUG = isDebugOption("org.ucdetector/debug"); //$NON-NLS-1$
+  protected static final LogLevel LOG_LEVEL = getLogLevelOption("org.ucdetector/logLevel");
+  public static final boolean DEBUG = LogLevel.DEBUG == LOG_LEVEL;
 
-  enum LogLevel {
-    @SuppressWarnings("hiding")
-    DEBUG, INFO, WARN, ERROR,
+  private static final String LEVEL_SEPARATOR = ": ";
+
+  static {
+    if (Log.LOG_LEVEL.ordinal() > Log.LogLevel.INFO.ordinal()) {
+      System.out.println("Log level : " + Log.LOG_LEVEL); // we need to log to System.out
+    }
   }
-
-  private static final String LEVEL_SEPARATOR = ": "; //$NON-NLS-1$
 
   // DEBUG --------------------------------------------------------------------
   public static void logDebug(String message) {
@@ -91,13 +98,15 @@ public class Log {
    * Very simple logging to System.out and System.err
    */
   private static void logImpl(LogLevel level, String message, Throwable ex) {
-    if ((DEBUG && level == LogLevel.DEBUG) || level == LogLevel.INFO) {
-      System.out.println(createLogMessage(level, message));
-    }
-    else if (level == LogLevel.WARN || level == LogLevel.ERROR) {
-      System.err.println(createLogMessage(level, message));
-      if (ex != null) {
-        ex.printStackTrace();
+    if (level.ordinal() >= LOG_LEVEL.ordinal()) {
+      if (level == LogLevel.DEBUG || level == LogLevel.INFO) {
+        System.out.println(createLogMessage(level, message));
+      }
+      else if (level == LogLevel.WARN || level == LogLevel.ERROR) {
+        System.err.println(createLogMessage(level, message));
+        if (ex != null) {
+          ex.printStackTrace();
+        }
       }
     }
   }
@@ -115,7 +124,17 @@ public class Log {
    */
   public static boolean isDebugOption(String key) {
     String option = Platform.getDebugOption(key);
-    return "true".equalsIgnoreCase(option); //$NON-NLS-1$
+    return "true".equalsIgnoreCase(option);
+  }
+
+  private static LogLevel getLogLevelOption(String key) {
+    String option = Platform.getDebugOption(key);
+    for (LogLevel logLevel : LogLevel.values()) {
+      if (logLevel.toString().equals(option)) {
+        return logLevel;
+      }
+    }
+    return LogLevel.INFO;
   }
 
   public static int getDebugOption(String key, int defaultValue) {
@@ -132,6 +151,6 @@ public class Log {
   }
 
   public static String getClassName(Object o) {
-    return String.format("[%s]", o == null ? "?" : o.getClass().getName()); //$NON-NLS-1$ //$NON-NLS-2$
+    return String.format("[%s]", o == null ? "?" : o.getClass().getName());
   }
 }
