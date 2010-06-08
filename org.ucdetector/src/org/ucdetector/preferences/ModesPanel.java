@@ -150,7 +150,7 @@ class ModesPanel {
         }
       }
     };
-    updateModeButtons();
+    // updateModeButtons();
     //    saveButton.addSelectionListener(selectionListener);
     newButton.addSelectionListener(selectionListener);
     removeButton.addSelectionListener(selectionListener);
@@ -194,12 +194,26 @@ class ModesPanel {
         newName, validator);
     input.open();
     String newModeName = input.getValue();
+    addMode(newModeName);
+  }
+
+  private void addMode(String newModeName) {
+    page.performOk();
     if (newModeName != null && newModeName.trim().length() > 0) {
       saveMode(newModeName);
       Log.logDebug("Added new mode: %s", newModeName); //$NON-NLS-1$
       getCombo().setItems(getModes());
       getCombo().setText(newModeName);
       updateModeButtons();
+    }
+  }
+
+  /** Uses the stored settings (to create a custom mode) */
+  protected void createMyMode() {
+    String version = Prefs.getStore().getString(Prefs.PREFS_VERSION);
+    if (version == null || version.length() == 0) {
+      addMode("MyMode"); //$NON-NLS-1$
+      Prefs.getStore().setValue(Prefs.PREFS_VERSION, UCDetectorPlugin.getAboutUCDVersion());
     }
   }
 

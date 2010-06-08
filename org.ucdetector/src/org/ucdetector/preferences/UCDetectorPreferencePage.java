@@ -97,6 +97,7 @@ public class UCDetectorPreferencePage extends FieldEditorPreferencePage implemen
     composite = createTab(tabFolder, Messages.PreferencePage_TabReport);
     createReportGroup(composite);
     modesPanel.updateModeButtons();
+    modesPanel.createMyMode();
   }
 
   @Override
@@ -116,6 +117,7 @@ public class UCDetectorPreferencePage extends FieldEditorPreferencePage implemen
     super.performDefaults();
     modesPanel.getCombo().setText(Mode.Default.toStringLocalized());
     modesPanel.updateModeButtons();
+    super.performOk();
     //    dumpPreferencesPerPage();
   }
 
