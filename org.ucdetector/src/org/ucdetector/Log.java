@@ -47,6 +47,7 @@ public class Log {
     logImpl(LogLevel.INFO, message);
   }
 
+  @SuppressWarnings("ucd")
   public static void logInfo(String format, Object... args) {
     logInfo(String.format(format, args));
   }

@@ -40,7 +40,7 @@ import org.ucdetector.search.UCDProgressMonitor;
  * Base class for actions in this plugin
  */
 // Don't change visibility to default!
-public abstract class AbstractUCDetectorAction extends ActionDelegate {
+public abstract class AbstractUCDetectorAction extends ActionDelegate { // NO_UCD
   protected IJavaElement[] selections;
 
   @Override

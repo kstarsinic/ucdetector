@@ -43,7 +43,7 @@ public final class MarkerFactory implements IUCDetectorReport {
   public static final String UCD_MARKER_USE_PROTECTED = MARKER_PREFIX + "analyzeMarkerVisibilityProtected"; //$NON-NLS-1$
   public static final String UCD_MARKER_USE_DEFAULT = MARKER_PREFIX + "analyzeMarkerVisibilityDefault"; //$NON-NLS-1$
   public static final String UCD_MARKER_USE_FINAL = MARKER_PREFIX + "analyzeMarkerFinal"; //$NON-NLS-1$
-  public static final String UCD_MARKER_TEST_ONLY = MARKER_PREFIX + "analyzeMarkerTestOnly"; //$NON-NLS-1$
+  public static final String UCD_MARKER_TEST_ONLY = MARKER_PREFIX + "analyzeMarkerTestOnly"; //$NON-NLS-1$ // NO_UCD
   // ADDING NEW MARKER? ADD ALSO TO plugin.xml!
 
   private final List<IUCDetectorReport> reports;

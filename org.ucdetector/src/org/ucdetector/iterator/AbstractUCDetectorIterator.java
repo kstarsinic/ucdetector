@@ -179,7 +179,7 @@ public abstract class AbstractUCDetectorIterator extends UCDetectorCallBack {
    * @param javaElement to iterate
    * @throws CoreException if an error occurs during iterations
    */
-  public final void iterate(IJavaElement javaElement) throws CoreException {
+  protected final void iterate(IJavaElement javaElement) throws CoreException {
     if (getMonitor().isCanceled()) {
       return;
     }

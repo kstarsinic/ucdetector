@@ -57,7 +57,7 @@ public class UCDetectorPreferencePage extends FieldEditorPreferencePage implemen
    * entryNames (first column) and values (second column) for the
    * ComboFieldEditor
    */
-  static final String[][] WARN_LEVELS = new String[][] {
+  private static final String[][] WARN_LEVELS = new String[][] {
       { WarnLevel.ERROR.toStringLocalized(), WarnLevel.ERROR.toString() },
       { WarnLevel.WARNING.toStringLocalized(), WarnLevel.WARNING.toString() },
       { WarnLevel.IGNORE.toStringLocalized(), WarnLevel.IGNORE.toString() } };
@@ -102,9 +102,6 @@ public class UCDetectorPreferencePage extends FieldEditorPreferencePage implemen
 
   @Override
   public boolean performOk() {
-    // ------------------------------------------------------------------------
-    // TODO: what's the difference between performOk() and ModesPanel.saveMode(String)?
-    // ------------------------------------------------------------------------
     boolean result = super.performOk();
     modesPanel.saveMode();
     getPreferenceStore().setValue(Prefs.MODE_INDEX, modesPanel.getCombo().getSelectionIndex());
@@ -118,7 +115,6 @@ public class UCDetectorPreferencePage extends FieldEditorPreferencePage implemen
     modesPanel.getCombo().setText(Mode.Default.toStringLocalized());
     modesPanel.updateModeButtons();
     super.performOk();
-    //    dumpPreferencesPerPage();
   }
 
   /**
@@ -218,14 +214,12 @@ public class UCDetectorPreferencePage extends FieldEditorPreferencePage implemen
 
   private void createVisibilityGroup(Composite parentGroups) {
     Composite spacer = createGroup(parentGroups, Messages.PreferencePage_GroupVisibility);
-    // visibility warning
-    Label infoLabel = new Label(spacer, SWT.LEFT);
-    // infoLabel.setForeground(Display.getDefault().getSystemColor(SWT.COLOR_RED));
-    infoLabel.setFont(new Font(spacer.getDisplay(), "Arial", 10, SWT.BOLD)); //$NON-NLS-1$
-    infoLabel.setText(Messages.PreferencePage_ReduceVisibiltyWarning);
+    Label visibilityWarnLabel = new Label(spacer, SWT.LEFT); // setForeground(Display.getDefault().getSystemColor(SWT.COLOR_RED));
+    visibilityWarnLabel.setFont(new Font(spacer.getDisplay(), "Arial", 10, SWT.BOLD)); //$NON-NLS-1$
+    visibilityWarnLabel.setText(Messages.PreferencePage_ReduceVisibiltyWarning);
     GridData gd = new GridData(GridData.FILL_HORIZONTAL);
     gd.horizontalSpan = 2;
-    infoLabel.setLayoutData(gd);
+    visibilityWarnLabel.setLayoutData(gd);
     //
     appendCombo(Prefs.ANALYZE_VISIBILITY_PROTECTED_CLASSES, Messages.PreferencePage_CheckProtectedClasses, spacer);
     appendCombo(Prefs.ANALYZE_VISIBILITY_PRIVATE_CLASSES, Messages.PreferencePage_CheckPrivateClasses, spacer);
@@ -264,17 +258,6 @@ public class UCDetectorPreferencePage extends FieldEditorPreferencePage implemen
   protected void adjustGridLayout() {
     //
   }
-
-  //  void dumpPreferencesPerPage() {
-  //    List<String> orderedPreferences = new ArrayList<String>();
-  //    for (FieldEditor field : fields) {
-  //      orderedPreferences.add(field.getPreferenceName());
-  //    }
-  //    Map<String, String> allPreferences = UCDetectorPlugin.getAllPreferences();
-  //    for (String pref : orderedPreferences) {
-  //      System.out.println(pref + "=" + allPreferences.get(pref)); //$NON-NLS-1$
-  //    }
-  //  }
 
   private void addTab(String tab) {
     extendedPreferences.add(TAB_START + tab);
@@ -377,7 +360,7 @@ public class UCDetectorPreferencePage extends FieldEditorPreferencePage implemen
   }
 
   // LaunchingPreferencePage
-  Composite createGroup(Composite parent, String text) {
+  private Composite createGroup(Composite parent, String text) {
     addGroup(text);
     int columns = 1, hspan = 1, fill = GridData.FILL_HORIZONTAL;
     Group g = new Group(parent, SWT.NONE);
@@ -392,7 +375,7 @@ public class UCDetectorPreferencePage extends FieldEditorPreferencePage implemen
   }
 
   // SWTFactory
-  public static Composite createComposite(Composite parent, int columns, int hspan, int fill) {
+  protected static Composite createComposite(Composite parent, int columns, int hspan, int fill) {
     Composite g = new Composite(parent, SWT.NONE);
     g.setLayout(new GridLayout(columns, false));
     g.setFont(parent.getFont());
@@ -402,7 +385,7 @@ public class UCDetectorPreferencePage extends FieldEditorPreferencePage implemen
     return g;
   }
 
-  protected static GridData createGridData(int width, int height, int hAlign, int vAlign, boolean hGrab, boolean vGrab) {
+  private static GridData createGridData(int width, int height, int hAlign, int vAlign, boolean hGrab, boolean vGrab) {
     final GridData gd = new GridData(hAlign, vAlign, hGrab, vGrab);
     gd.widthHint = width;
     gd.heightHint = height;

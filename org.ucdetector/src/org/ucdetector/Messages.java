@@ -66,7 +66,7 @@ public final class Messages extends NLS {
   public static String CountIterator_Projects; // NO_UCD
 
   // PreferencePage ----------------------------------------------------------
-  public static String PreferencePage_ReduceVisibiltyWarning;//  "Reducing visibility of classes or methods may cause compile errors"
+  public static String PreferencePage_ReduceVisibiltyWarning;// NO_UCD
   public static String PreferencePage_CheckProtectedClasses; // NO_UCD
   public static String PreferencePage_CheckPrivateClasses; // NO_UCD
   //
@@ -212,7 +212,6 @@ public final class Messages extends NLS {
   public static String ModesPanel_invalid_mode_name; // NO_UCD
   //
   public static String ModesPanel_ModeLabel; // NO_UCD
-  public static String ModesPanel_ModeSave; // NO_UCD
   public static String ModesPanel_ModeNew; // NO_UCD
   public static String ModesPanel_ModeRemove; // NO_UCD
   public static String ModesPanel_ModePressNewHint; // NO_UCD

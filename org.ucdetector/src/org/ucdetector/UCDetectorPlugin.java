@@ -67,7 +67,7 @@ public class UCDetectorPlugin extends AbstractUIPlugin {
   public static final String HELP_ID_PREFERENCES = ID + ".ucd_context_id_preferences";
   //private final DateFormat dateFormat = DateFormat.getDateTimeInstance(DateFormat.MEDIUM, DateFormat.MEDIUM, Locale.getDefault());
   private final DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-  public static final String SEPARATOR = "-----------------------------------------------------------------------------"; //$NON-NLS-1$
+  private static final String SEPARATOR = "-----------------------------------------------------------------------------"; //$NON-NLS-1$
 
   public UCDetectorPlugin() {
     UCDetectorPlugin.plugin = this;
@@ -183,7 +183,7 @@ public class UCDetectorPlugin extends AbstractUIPlugin {
     return JavaPluginImages.createImageDescriptor(getDefault().getBundle(), path, true);
   }
 
-  public static ImageDescriptor getEclipseImage(String icon) {
+  private static ImageDescriptor getEclipseImage(String icon) {
     try {
       URL url = new URL("platform:/plugin/" + icon);
       return ImageDescriptor.createFromURL(FileLocator.resolve(url));
