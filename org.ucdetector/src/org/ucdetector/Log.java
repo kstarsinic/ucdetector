@@ -36,7 +36,7 @@ public class Log {
 
   static {
     if (Log.LOG_LEVEL.ordinal() > Log.LogLevel.INFO.ordinal()) {
-      System.out.println("Log level : " + Log.LOG_LEVEL); // we need to log to System.out
+      System.out.println("UCDetector Log level: " + Log.LOG_LEVEL); // we need to log to System.out
     }
   }
 
