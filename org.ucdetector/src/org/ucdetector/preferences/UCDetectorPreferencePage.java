@@ -9,7 +9,6 @@ package org.ucdetector.preferences;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 
 import org.eclipse.jface.preference.BooleanFieldEditor;
 import org.eclipse.jface.preference.ComboFieldEditor;
@@ -264,16 +263,16 @@ public class UCDetectorPreferencePage extends FieldEditorPreferencePage implemen
     //
   }
 
-  void dumpPreferencesPerPage() {
-    List<String> orderedPreferences = new ArrayList<String>();
-    for (FieldEditor field : fields) {
-      orderedPreferences.add(field.getPreferenceName());
-    }
-    Map<String, String> allPreferences = UCDetectorPlugin.getAllPreferences();
-    for (String pref : orderedPreferences) {
-      System.out.println(pref + "=" + allPreferences.get(pref)); //$NON-NLS-1$
-    }
-  }
+  //  void dumpPreferencesPerPage() {
+  //    List<String> orderedPreferences = new ArrayList<String>();
+  //    for (FieldEditor field : fields) {
+  //      orderedPreferences.add(field.getPreferenceName());
+  //    }
+  //    Map<String, String> allPreferences = UCDetectorPlugin.getAllPreferences();
+  //    for (String pref : orderedPreferences) {
+  //      System.out.println(pref + "=" + allPreferences.get(pref)); //$NON-NLS-1$
+  //    }
+  //  }
 
   private void addTab(String tab) {
     extendedPreferences.add(TAB_START + tab);

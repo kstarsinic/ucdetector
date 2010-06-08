@@ -220,7 +220,7 @@ class ModesPanel {
     sb.append(String.format("### ----------------------------------------------------------------------------%n"));
     sb.append(String.format("###               UCDetector preference file for mode: '%s'%n", modeName));
     sb.append(String.format("### ----------------------------------------------------------------------------%n"));
-    sb.append(String.format("### Created by  : %s%n", getClass().getName()));
+    sb.append(String.format("### Created by  : UCDetector %s%n", UCDetectorPlugin.getAboutUCDVersion()));
     sb.append(String.format("### Created date: %s%n", UCDetectorPlugin.getNow()));
     sb.append(String.format("### ----------------------------------------------------------------------------%n"));
     for (String extendedPreference : page.extendedPreferences) {
