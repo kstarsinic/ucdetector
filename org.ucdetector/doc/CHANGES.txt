@@ -1,4 +1,4 @@
-UCDetector 1.5.0 from 2010-:
+UCDetector 1.5.0 from 2010-06-10:
 Bugfixes:
  - [ 2922801 ] Quick fix exception on enum declaration 
  - [ 2968753 ] protected abstract method cannot be made private
@@ -11,11 +11,9 @@ Bugfixes:
 New features:
  - [ 2929828 ] Added filter to exclude classes extending/implementing
  - [ 2923567 ] Do not report markers for deprecated class members
-               TODO: Ignore all children for a class
+ - [ 2824564 ] Add detection setting profiles
  - Added cycle detection again, improved cycle view
- - text report
- - Detection modes
- - better preferences
+ - Added new text report
  
 // -----------------------------------------------------------------------------
 UCDetector 1.4.0 from 2010-01-03:
