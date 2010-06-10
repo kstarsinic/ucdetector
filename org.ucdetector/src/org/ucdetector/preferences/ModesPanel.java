@@ -14,7 +14,11 @@ import java.io.FileInputStream;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
 import java.util.LinkedHashSet;
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.Map.Entry;
@@ -143,7 +147,9 @@ class ModesPanel {
     for (Mode mode : Mode.values()) {
       result.add(mode.toStringLocalized());
     }
-    for (String modesFile : modesDir.list()) {
+    List<String> modesFiles = new ArrayList<String>(Arrays.asList(modesDir.list()));
+    Collections.sort(modesFiles, String.CASE_INSENSITIVE_ORDER);
+    for (String modesFile : modesFiles) {
       if (modesFile.endsWith(MODES_FILE_TYPE)) {
         result.add(modesFile.substring(0, modesFile.length() - MODES_FILE_TYPE.length()));
       }
@@ -182,7 +188,7 @@ class ModesPanel {
     page.performOk();
     if (newModeName != null && newModeName.trim().length() > 0) {
       saveMode(newModeName);
-      Log.logDebug("Added new mode: %s", newModeName); //$NON-NLS-1$
+      Log.logInfo("Added new mode: %s", newModeName); //$NON-NLS-1$
       getCombo().setItems(getModes());
       getCombo().setText(newModeName);
       updateModeButtons();
@@ -193,6 +199,7 @@ class ModesPanel {
   protected void createMyMode() {
     String version = Prefs.getStore().getString(Prefs.PREFS_VERSION);
     if (version == null || version.length() == 0) {
+      Log.logInfo("Adding mode: MyMode"); //$NON-NLS-1$
       addMode("MyMode"); //$NON-NLS-1$
       Prefs.getStore().setValue(Prefs.PREFS_VERSION, UCDetectorPlugin.getAboutUCDVersion());
     }
@@ -235,7 +242,7 @@ class ModesPanel {
     if (Log.DEBUG) {
       Log.logDebug(sb.toString());
     }
-    // org.ucdetector.mode.index, old entries
+    // org.ucdetector.internal.mode.index, old entries
     Log.logDebug("Unhandled preferences :" + allPreferences);
     File modesFile = getModesFile(modeName);
     try {
