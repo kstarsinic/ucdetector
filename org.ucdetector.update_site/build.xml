@@ -6,6 +6,7 @@
   <!--                      SEND                                             -->
   <!-- ===================================================================== -->
   <target name="send" description="Send Update Site files to sourceforge">
+    <echo>ant.home = ${ant.home}</echo>
     <property name="ucd.props" location="${user.home}/.ucdetector.properties" />
     <property file="${user.home}/.ucdetector.properties" />
     <property name="todir"

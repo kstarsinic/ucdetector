@@ -22,16 +22,15 @@ Steps to create new Version:
    - check help
 
  - Create:
+   - use eclipse 3.3 and java 1.5:
    - ucd.jar, source.jar, additional: /org.ucdetector/build/build.xml -> run as Ant Build
-	 - check contents of source.jar, ucdetector.jar (help up to date?)
+	 - check ucdetector.jar (Version file must contain eclipse 3.3 and java 1.5)
+	 - check source.jar (missing files? additional files?)
 
  - Smoke test:
 
    - deploy org.ucdetector.jar and org.ucdetector.additional.jar to a CLEAN eclipse 3.3, java5
-	 - Run UCDetector detecting code in org.ucdetector.example/examples with settings:
-	   - org.ucdetector.example.FilterMeAnnotation
-	   - IGNORE THIS CODE
-	   - javax.swing.event.CellEditorListener,AbstractButton
+	 - Run UCDetector detecting code in org.ucdetector.example/examples with settings: release_settings.properties
 	   
 	 - [Run UCDetector in: jEdit, JUnit]
 	 - run UCDetector with: change warn limit to 2
@@ -42,11 +41,14 @@ Steps to create new Version:
    - UCDetector setting: All warning, simple class name
    - count
    - delete markers
-   - [cycle detect: /org.ucdetector.example/cycle]
+   - cycle detect: /org.ucdetector.example/cycle
    - check UCDMarker: /org.ucdetector.example/example
 	 - check html report
 	 - Add version number to html report: <title> tag: version 1.0.0
 	 - Commit html/xml report to: /org.ucdetector.example/reports/
+	 
+  - smoke test with eclipse 3.5
+    - check error log view
 
  - Sourceforge:
      - https://sourceforge.net/project/admin/?group_id=219599
@@ -56,11 +58,11 @@ Steps to create new Version:
 		 - Category
 	 - Firefox! project Admin/File admin/file manager
 		 - create folder
-		 - upload jar, source.jar, changes.txt
+		 - upload jar, source.jar, changes.txt (only text of last version!)
 
  - update site (http://ucdetector.sourceforge.net/update):
 	 - /org.ucdetector.update_site/site.xml click: synchronize, build all
-	 - /org.ucdetector.update_site/build.xml:send -d
+	 - /org.ucdetector.update_site/build.xml:send -d  (when there are problems in eclipse, use command line)
 	 - check if update site works
 
  - update homepage: run /org.ucdetector.website/build.xml:homepage -d
