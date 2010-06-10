@@ -20,9 +20,7 @@
   <!-- ===================================================================== -->
   <!-- EXPORT UCDETECTOR JARS                                                -->
   <!-- ===================================================================== -->
-  <target name="plugin-export"
-          depends="version-info"
-          description="Export plugins">
+  <target name="plugin-export" depends="version-info" description="Export plugins">
     <ant target="source" />
     <pde.exportPlugins destination="${ECLIPSE_HOME}"
                        exportSource="false"
@@ -36,13 +34,13 @@
   <!-- EXPORT UCDETECTOR SOURCE                                              -->
   <!-- ===================================================================== -->
   <target name="source" depends="version-info" description="Export source.zip">
-    <property name="source.zip"
-              location="${ECLIPSE_HOME}/plugins/org.ucdetector.source_${Bundle-Version}.zip" />
+    <property name="source.zip" location="${ECLIPSE_HOME}/plugins/org.ucdetector.source_${Bundle-Version}.zip" />
     <zip destfile="${source.zip}">
       <fileset dir="..">
         <include name="**" />
         <exclude name="bin/**" />
         <exclude name="ant/build.properties" />
+        <exclude name="doc/dictionary.dic" />
       </fileset>
     </zip>
     <echo>Created source zip: ${source.zip}</echo>
@@ -51,16 +49,13 @@
   <!-- ===================================================================== -->
   <!-- VERSION INFO                                                          -->
   <!-- ===================================================================== -->
-  <target name="version-info"
-          depends="prepare"
-          description="Create version info file">
+  <target name="version-info" depends="prepare" description="Create version info file">
     <property name="version.file" location="../VERSION.TXT" />
     <copy file="version.txt_template" tofile="${version.file}" overwrite="true">
       <filterset>
         <filter token="BUILD_UCD" value="${Bundle-Version}" />
         <filter token="BUILD_DATE" value="${NOW}" />
-        <filter token="BUILD_JAVA"
-                value="${java.runtime.version} - ${java.specification.vendor}" />
+        <filter token="BUILD_JAVA" value="${java.runtime.version} - ${java.specification.vendor}" />
         <filter token="BUILD_ECLIPSE" value="${osgi.framework.version}" />
         <filter token="BUILD_OS" value="${os.name}" />
       </filterset>
