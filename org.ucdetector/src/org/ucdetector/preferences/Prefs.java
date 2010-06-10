@@ -83,8 +83,9 @@ public final class Prefs {
   static final String REPORT_CREATE_XML = ID + ".report.create.xml";
   static final String REPORT_CREATE_TXT = ID + ".report.create.txt";
   //
-  static final String MODE_INDEX = ID + ".mode.index";
-  static final String PREFS_VERSION = ID + ".version";
+  public static final String INTERNAL = ID + ".internal";
+  static final String MODE_INDEX = INTERNAL + ".mode.index";
+  static final String PREFS_VERSION = INTERNAL + ".version";
   // 
   private static final String[] EMPTY_ARRAY = new String[0];
   // CYCLE -------------------------------------------------------------------
