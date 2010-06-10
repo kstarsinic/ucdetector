@@ -12,6 +12,7 @@ import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Arrays;
 import java.util.Date;
+import java.util.HashSet;
 import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.Set;
@@ -38,6 +39,7 @@ import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.plugin.AbstractUIPlugin;
 import org.osgi.framework.BundleContext;
 import org.osgi.service.prefs.BackingStoreException;
+import org.ucdetector.preferences.Prefs;
 
 /**
  * Default Activator-class of this plug-ins
@@ -107,9 +109,16 @@ public class UCDetectorPlugin extends AbstractUIPlugin {
     return sb.toString();
   }
 
-  /** @return All preferences which are different from default preferences  */
+  /** @return All preferences which are different from default preferences, without internal preferences  */
   public static Map<String, String> getDeltaPreferences() {
-    return getPreferencesImpl(new InstanceScope().getNode(ID));
+    Map<String, String> allDeltas = getPreferencesImpl(new InstanceScope().getNode(ID));
+    Set<String> keySetClone = new HashSet<String>(allDeltas.keySet());
+    for (String key : keySetClone) {
+      if (key.startsWith(Prefs.INTERNAL)) {
+        allDeltas.remove(key);
+      }
+    }
+    return allDeltas;
   }
 
   /** @return All available preferences */
