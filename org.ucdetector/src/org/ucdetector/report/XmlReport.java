@@ -111,6 +111,10 @@ public class XmlReport implements IUCDetectorReport {
     }
     try {
       doc = DocumentBuilderFactory.newInstance().newDocumentBuilder().newDocument();
+      // TODO: add <?xml-stylesheet and put stylesheet in report dir
+      //      ProcessingInstruction instruction = doc.createProcessingInstruction(//
+      //          "xml-stylesheet", "type=\"text/xsl\" HREF=\"html.xslt\"");
+      //      doc.insertBefore(instruction, doc.getDocumentElement());
       Element root = doc.createElement("ucdetector");
       root.appendChild(doc.createComment(COPY_RIGHT));
       doc.appendChild(root);
