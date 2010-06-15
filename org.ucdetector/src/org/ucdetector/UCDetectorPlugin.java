@@ -7,7 +7,6 @@
  */
 package org.ucdetector;
 
-import java.net.URL;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Arrays;
@@ -19,15 +18,16 @@ import java.util.Set;
 import java.util.Map.Entry;
 
 import org.eclipse.core.runtime.CoreException;
-import org.eclipse.core.runtime.FileLocator;
 import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Path;
+import org.eclipse.core.runtime.Platform;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.core.runtime.preferences.DefaultScope;
 import org.eclipse.core.runtime.preferences.IEclipsePreferences;
 import org.eclipse.core.runtime.preferences.InstanceScope;
 import org.eclipse.jdt.internal.ui.JavaPluginImages;
+import org.eclipse.jdt.ui.JavaUI;
 import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.jface.resource.ImageRegistry;
 import org.eclipse.swt.graphics.Image;
@@ -36,7 +36,9 @@ import org.eclipse.ui.ISharedImages;
 import org.eclipse.ui.IWorkbenchPage;
 import org.eclipse.ui.IWorkbenchWindow;
 import org.eclipse.ui.PlatformUI;
+import org.eclipse.ui.internal.ide.IDEWorkbenchPlugin;
 import org.eclipse.ui.plugin.AbstractUIPlugin;
+import org.osgi.framework.Bundle;
 import org.osgi.framework.BundleContext;
 import org.osgi.service.prefs.BackingStoreException;
 import org.ucdetector.preferences.Prefs;
@@ -179,27 +181,17 @@ public class UCDetectorPlugin extends AbstractUIPlugin {
   @Override
   protected void initializeImageRegistry(ImageRegistry registry) {
     super.initializeImageRegistry(registry);
-    registry.put(IMAGE_UCD, getUcdImage("ucd.gif"));
-    registry.put(IMAGE_FINAL, JavaPluginImages.DESC_OVR_FINAL);
-    registry.put(IMAGE_COMMENT, getEclipseImage("org.eclipse.jdt.ui/icons/full/etool16/comment_edit.gif"));
-    registry.put(IMAGE_TODO, getEclipseImage("org.eclipse.ui.ide/icons/full/elcl16/showtsk_tsk.gif"));
-    registry.put(IMAGE_CYCLE, UCDetectorPlugin.getEclipseImage("org.eclipse.jdt.ui/icons/full/elcl16/refresh_nav.gif"));
+    registry.put(IMAGE_UCD, createImage(ID, "icons/ucd.gif"));
+    registry.put(IMAGE_FINAL, createImage(JavaUI.ID_PLUGIN, "icons/full/ovr16/final_co.gif"));
+    registry.put(IMAGE_COMMENT, createImage(JavaUI.ID_PLUGIN, "icons/full/etool16/comment_edit.gif"));
+    registry.put(IMAGE_CYCLE, createImage(JavaUI.ID_PLUGIN, "icons/full/elcl16/refresh_nav.gif"));
+    registry.put(IMAGE_TODO, createImage(IDEWorkbenchPlugin.IDE_WORKBENCH, "icons/full/elcl16/showtsk_tsk.gif"));
   }
 
-  private ImageDescriptor getUcdImage(String icon) {
-    IPath path = new Path("icons").append("/" + icon);
-    return JavaPluginImages.createImageDescriptor(getDefault().getBundle(), path, true);
-  }
-
-  private static ImageDescriptor getEclipseImage(String icon) {
-    try {
-      URL url = new URL("platform:/plugin/" + icon);
-      return ImageDescriptor.createFromURL(FileLocator.resolve(url));
-    }
-    catch (Exception ex) {
-      Log.logError("Can't get eclipse image: " + icon, ex);
-      return null;
-    }
+  private static ImageDescriptor createImage(String bundleName, String icon) {
+    IPath path = new Path(icon);
+    Bundle bundle = Platform.getBundle(bundleName);
+    return JavaPluginImages.createImageDescriptor(bundle, path, true);
   }
 
   /**
@@ -215,7 +207,7 @@ public class UCDetectorPlugin extends AbstractUIPlugin {
 
   public static Status logErrorAndStatus(String message, Throwable ex) {
     Status status = new Status(IStatus.ERROR, ID, IStatus.ERROR, message, ex);
-    UCDetectorPlugin.logStatus(status);
+    logStatus(status);
     return status;
   }
 
