@@ -91,7 +91,7 @@ public class UCDetectorPreferencePage extends FieldEditorPreferencePage implemen
     composite = createTab(tabFolder, Messages.PreferencePage_TabDetect);
     createDetectGroup(composite);
     createFileSearchGroup(composite);
-    createOtherGroup(composite);
+    createCylceGroup(composite);
     // KEYWORD -----------------------------------------------------------------
     composite = createTab(tabFolder, Messages.PreferencePage_TabKeywords);
     createFinalGroup(composite);
@@ -185,12 +185,8 @@ public class UCDetectorPreferencePage extends FieldEditorPreferencePage implemen
     analyzeLiteralsCheck.setCheckFullClassName(checkFullClassName);
   }
 
-  /**
-   * Create a group of other settings
-   */
-  // Don't use fileFieldEditor in other group: Layout problems!
-  private void createOtherGroup(Composite parentGroups) {
-    Composite spacer = createGroup(parentGroups, Messages.PreferencePage_GroupOthers);
+  private void createCylceGroup(Composite parentGroups) {
+    Composite spacer = createGroup(parentGroups, Messages.PreferencePage_GroupCycles);
     IntegerFieldEditor cycleDepth = new IntegerFieldEditor(Prefs.CYCLE_DEPTH, Messages.PreferencePage_MaxCycleSize,
         spacer, 1);
     cycleDepth.setValidRange(Prefs.CYCLE_DEPTH_MIN, Prefs.CYCLE_DEPTH_MAX);
@@ -200,7 +196,7 @@ public class UCDetectorPreferencePage extends FieldEditorPreferencePage implemen
   }
 
   private void createReportGroup(Composite parentGroups) {
-    Composite spacer = createGroup(parentGroups, Messages.PreferencePage_GroupOthers);
+    Composite spacer = createGroup(parentGroups, Messages.PreferencePage_GroupReports);
     appendBool(Prefs.REPORT_CREATE_HTML, Messages.PreferencePage_CreateHtmlReport, null, spacer, 3);
     appendBool(Prefs.REPORT_CREATE_XML, Messages.PreferencePage_CreateXmlReport, null, spacer, 3);
     appendBool(Prefs.REPORT_CREATE_TXT, Messages.PreferencePage_CreateTextReport, null, spacer, 3);
