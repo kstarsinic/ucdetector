@@ -137,7 +137,8 @@ public final class Messages extends NLS {
   //
   public static String PreferencePage_GroupDetect; // NO_UCD
   public static String PreferencePage_GroupFileSearch; // NO_UCD
-  public static String PreferencePage_GroupOthers; // NO_UCD
+  public static String PreferencePage_GroupCycles; // NO_UCD
+  public static String PreferencePage_GroupReports; // NO_UCD
   public static String PreferencePage_GroupFilter; // NO_UCD
   public static String PreferencePage_GroupFinal; // NO_UCD
   public static String PreferencePage_GroupVisibility; // NO_UCD
