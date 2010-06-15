@@ -1,3 +1,11 @@
+UCDetector 1.6.0 from 2010-??-??:
+Bugfixes:
+ 
+
+New features:
+ - [ 2810803 ] Added again: Combobox to change all visibility combos
+ 
+// -----------------------------------------------------------------------------
 UCDetector 1.5.0 from 2010-06-10:
 Bugfixes:
  - [ 2922801 ] Quick fix exception on enum declaration 
