@@ -62,18 +62,19 @@ public final class Prefs {
 
   //  protected static final String CHANGE_ALL_VISIBILIY_COMBO = ID + ".changeAllVisibiliyCombo";
   /*  Feature Requests ID: 2490344: */
-  static final String ANALYZE_VISIBILITY_PROTECTED_CLASSES = ID + ".visibility.protected.classes";
-  static final String ANALYZE_VISIBILITY_PRIVATE_CLASSES = ID + ".visibility.private.classes";
+  static final String ANALYZE_VISIBILITY_PREFIX = ID + ".visibility";
+  static final String ANALYZE_VISIBILITY_PROTECTED_CLASSES = ANALYZE_VISIBILITY_PREFIX + ".protected.classes";
+  static final String ANALYZE_VISIBILITY_PRIVATE_CLASSES = ANALYZE_VISIBILITY_PREFIX + ".private.classes";
   //
-  static final String ANALYZE_VISIBILITY_PROTECTED_METHODS = ID + ".visibility.protected.methods";
-  static final String ANALYZE_VISIBILITY_PRIVATE_METHODS = ID + ".visibility.private.methods";
+  static final String ANALYZE_VISIBILITY_PROTECTED_METHODS = ANALYZE_VISIBILITY_PREFIX + ".protected.methods";
+  static final String ANALYZE_VISIBILITY_PRIVATE_METHODS = ANALYZE_VISIBILITY_PREFIX + ".private.methods";
   //
-  static final String ANALYZE_VISIBILITY_PROTECTED_FIELDS = ID + ".visibility.protected.fields";
-  static final String ANALYZE_VISIBILITY_PRIVATE_FIELDS = ID + ".visibility.private.fields";
-  static final String IGNORE_SYNTHETIC_ACCESS_EMULATION = ID + ".visibility.ignore.synthetic.access.emulation";
+  static final String ANALYZE_VISIBILITY_PROTECTED_FIELDS = ANALYZE_VISIBILITY_PREFIX + ".protected.fields";
+  static final String ANALYZE_VISIBILITY_PRIVATE_FIELDS = ANALYZE_VISIBILITY_PREFIX + ".private.fields";
+  static final String IGNORE_SYNTHETIC_ACCESS_EMULATION = ID + ".ignore.synthetic.access.emulation";
   //
-  static final String ANALYZE_VISIBILITY_PROTECTED_CONSTANTS = ID + ".visibility.protected.constants";
-  static final String ANALYZE_VISIBILITY_PRIVATE_CONSTANTS = ID + ".visibility.private.constants";
+  static final String ANALYZE_VISIBILITY_PROTECTED_CONSTANTS = ANALYZE_VISIBILITY_PREFIX + ".protected.constants";
+  static final String ANALYZE_VISIBILITY_PRIVATE_CONSTANTS = ANALYZE_VISIBILITY_PREFIX + ".private.constants";
   //
   static final String ANALYZE_FINAL_FIELD = ID + ".finalField";
   static final String ANALYZE_FINAL_METHOD = ID + ".finalMethod";

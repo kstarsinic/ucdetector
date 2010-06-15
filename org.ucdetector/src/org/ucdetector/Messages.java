@@ -66,6 +66,7 @@ public final class Messages extends NLS {
   public static String CountIterator_Projects; // NO_UCD
 
   // PreferencePage ----------------------------------------------------------
+  public static String PreferencePage_ChangeVisibilityCombos;// NO_UCD
   public static String PreferencePage_ReduceVisibiltyWarning;// NO_UCD
   public static String PreferencePage_CheckProtectedClasses; // NO_UCD
   public static String PreferencePage_CheckPrivateClasses; // NO_UCD
