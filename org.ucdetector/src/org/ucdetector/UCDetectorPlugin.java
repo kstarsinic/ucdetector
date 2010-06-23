@@ -190,6 +190,7 @@ public class UCDetectorPlugin extends AbstractUIPlugin {
 
   private static ImageDescriptor createImage(String bundleName, String icon) {
     IPath path = new Path(icon);
+    // Other example: AbstractUIPlugin.imageDescriptorFromPlugin("plugin.name", "icons/xxx.gif");
     Bundle bundle = Platform.getBundle(bundleName);
     return JavaPluginImages.createImageDescriptor(bundle, path, true);
   }
