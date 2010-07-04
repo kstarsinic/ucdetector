@@ -1,5 +1,6 @@
 UCDetector 1.6.0 from 2010-??-??:
 Bugfixes:
+ - fixed missing QuickFix icons
  
 
 New features:
