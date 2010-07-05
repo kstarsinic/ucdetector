@@ -23,6 +23,7 @@ import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.graphics.Font;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
+import org.eclipse.swt.program.Program;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Combo;
 import org.eclipse.swt.widgets.Composite;
@@ -203,6 +204,21 @@ public class UCDetectorPreferencePage extends FieldEditorPreferencePage implemen
     DirectoryFieldEditor path = new DirectoryFieldEditor(Prefs.REPORT_DIR, Messages.PreferencePage_ReportFile, spacer);
     path.getLabelControl(spacer).setToolTipText(Messages.PreferencePage_ReportFileToolTip);
     this.addField(path);
+    //
+    addLineHack(spacer);
+    Button ok = new Button(spacer, SWT.PUSH);
+    ok.setText(Messages.PreferencePage_BrowseReportsDir);
+    ok.addSelectionListener(new SelectionAdapter() {
+      @Override
+      public void widgetSelected(SelectionEvent e) {
+        Program p = Program.findProgram("html"); //$NON-NLS-1$
+        p = (p == null ? Program.findProgram("htm") : p); //$NON-NLS-1$
+        if (p != null) {
+          // java 6: Desktop.getInstance().open(file);
+          p.execute(Prefs.getReportDir());
+        }
+      }
+    });
   }
 
   private void createFinalGroup(Composite parentGroups) {
