@@ -133,6 +133,7 @@ public final class Messages extends NLS {
   public static String PreferencePage_CreateHtmlReport; // NO_UCD
   public static String PreferencePage_CreateXmlReport; // NO_UCD
   public static String PreferencePage_CreateTextReport; // NO_UCD
+  public static String PreferencePage_BrowseReportsDir; // NO_UCD
 
   //
   public static String PreferencePage_GroupDetect; // NO_UCD
