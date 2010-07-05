@@ -9,19 +9,22 @@ package org.ucdetector.preferences;
 import static org.ucdetector.preferences.UCDetectorPreferencePage.GROUP_START;
 import static org.ucdetector.preferences.UCDetectorPreferencePage.TAB_START;
 
+import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 import java.util.Map.Entry;
+import java.util.Set;
 
 import org.eclipse.jface.dialogs.IInputValidator;
 import org.eclipse.jface.dialogs.IMessageProvider;
@@ -88,9 +91,10 @@ class ModesPanel {
   private void createModeCombo() {
     String[] modes = getModes();
     getCombo().setItems(modes);
-    int savedIndex = page.getPreferenceStore().getInt(Prefs.MODE_INDEX);
-    boolean isValidIndex = (savedIndex >= 0 && savedIndex < modes.length);
-    getCombo().setText(isValidIndex ? modes[savedIndex] : Mode.Default.toStringLocalized());
+    // Default first
+    getCombo().setText(Mode.Default.toStringLocalized());
+    getCombo().setText(Prefs.getModeName());
+    getCombo().setToolTipText(modesDir.getAbsolutePath());
 
     getCombo().addSelectionListener(new SelectionAdapter() {
       @Override
@@ -108,15 +112,13 @@ class ModesPanel {
           }
           // built-in
           else if (index < Mode.values().length) {
-            Mode mode = Mode.values()[index];
-            modesFileName = mode + MODES_FILE_TYPE;
+            Mode builtInMode = Mode.values()[index];
+            modesFileName = builtInMode + MODES_FILE_TYPE;
             setPreferences(getClass().getResourceAsStream(modesFileName));
           }
           // custom
           else {
-            String newMode = getCombo().getText();
-            modesFileName = getModesFile(newMode).getAbsolutePath();
-            setPreferences(new FileInputStream(modesFileName));
+            modesFileName = setCustomPreferences();
           }
         }
         catch (IOException ex) {
@@ -139,6 +141,18 @@ class ModesPanel {
     };
     newButton.addSelectionListener(selectionListener);
     removeButton.addSelectionListener(selectionListener);
+  }
+
+  private String setCustomPreferences() {
+    String customMode = getCombo().getText();
+    String modesFileName = getModesFile(customMode).getAbsolutePath();
+    try {
+      setPreferences(new FileInputStream(modesFileName));
+    }
+    catch (IOException e) {
+      Log.logError("Can't set custom preferences", e);
+    }
+    return modesFileName;
   }
 
   /** Get built in modes and user specific modes */
@@ -187,18 +201,21 @@ class ModesPanel {
   private void addMode(String newModeName) {
     page.performOk();
     if (newModeName != null && newModeName.trim().length() > 0) {
+      // set default, when report directory is missing
+      Prefs.getStore().setValue(Prefs.REPORT_DIR, Prefs.getReportDir());
       saveMode(newModeName);
       Log.logInfo("Added new mode: %s", newModeName); //$NON-NLS-1$
       getCombo().setItems(getModes());
       getCombo().setText(newModeName);
       updateModeButtons();
+      setCustomPreferences();
     }
   }
 
   /** Uses the stored settings (to create a custom mode) */
   protected void createMyMode() {
     String version = Prefs.getStore().getString(Prefs.PREFS_VERSION);
-    if (version == null || version.length() == 0) {
+    if (version.length() == 0) {
       Log.logInfo("Adding mode: MyMode"); //$NON-NLS-1$
       addMode("MyMode"); //$NON-NLS-1$
       Prefs.getStore().setValue(Prefs.PREFS_VERSION, UCDetectorPlugin.getAboutUCDVersion());
@@ -223,6 +240,7 @@ class ModesPanel {
     sb.append(String.format("### ----------------------------------------------------------------------------%n"));
     sb.append(String.format("### Created by  : UCDetector %s%n", UCDetectorPlugin.getAboutUCDVersion()));
     sb.append(String.format("### Created date: %s%n", UCDetectorPlugin.getNow()));
+    sb.append(String.format("### This class can't be loaded by java.util.Properties.load()%n"));
     sb.append(String.format("### ----------------------------------------------------------------------------%n"));
     for (String extendedPreference : page.extendedPreferences) {
       if (extendedPreference.startsWith(TAB_START)) {
@@ -255,6 +273,29 @@ class ModesPanel {
       String message = NLS.bind(Messages.ModesPanel_ModeFileCantSave, modesFile.getAbsolutePath());
       UCDetectorPlugin.logErrorAndStatus(message, ex);
     }
+  }
+
+  /**
+   * [ 3025571 ] Exception loading modes: Malformed  &#92;uxxxx encoding
+   * <p>
+   * java.util.Properties.load() fails, because of file names containing Strings (file names)
+   *  which are similar to unicode signs
+   */
+  private Map<String, String> loadMode(InputStream in) throws IOException {
+    Map<String, String> result = new HashMap<String, String>();
+    BufferedReader reader = new BufferedReader(new InputStreamReader(in));
+    String line = null;
+    while ((line = reader.readLine()) != null) {
+      line = line.trim();
+      int index = line.indexOf('=');
+      if (line.startsWith("#") || index == -1) { //$NON-NLS-1$
+        continue;// comment
+      }
+      String key = line.substring(0, index);
+      String value = (line.length() == index ? "" : line.substring(index + 1)); //$NON-NLS-1$
+      result.put(key, value);
+    }
+    return result;
   }
 
   private File getModesFile(String modeName) {
@@ -293,16 +334,22 @@ class ModesPanel {
   private void setPreferences(InputStream in) throws IOException {
     PreferenceStore tempReplaceStore = new PreferenceStore();
     // Put default values
-    Set<Entry<String, String>> entrySet = UCDetectorPlugin.getAllPreferences().entrySet();
-    for (Entry<String, String> entry : entrySet) {
-      tempReplaceStore.putValue(entry.getKey(), entry.getValue());
-    }
-    tempReplaceStore.load(in);
+    Map<String, String> allPreferences = UCDetectorPlugin.getAllPreferences();
+    addAll(tempReplaceStore, allPreferences);
+    Map<String, String> savedMode = loadMode(in);
+    addAll(tempReplaceStore, savedMode);
     for (FieldEditor field : page.fields) {
       IPreferenceStore originalStore = field.getPreferenceStore();
       field.setPreferenceStore(tempReplaceStore);
       field.load();
       field.setPreferenceStore(originalStore);
+    }
+  }
+
+  private void addAll(PreferenceStore tempReplaceStore, Map<String, String> allPreferences) {
+    Set<Entry<String, String>> entrySet = allPreferences.entrySet();
+    for (Entry<String, String> entry : entrySet) {
+      tempReplaceStore.putValue(entry.getKey(), entry.getValue());
     }
   }
 
