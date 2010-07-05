@@ -16,8 +16,8 @@ import java.io.OutputStreamWriter;
 import java.io.PrintWriter;
 import java.io.StringWriter;
 import java.text.DecimalFormat;
-import java.util.Set;
 import java.util.Map.Entry;
+import java.util.Set;
 
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.transform.OutputKeys;
@@ -326,6 +326,7 @@ public class XmlReport implements IUCDetectorReport {
     appendAbout("logfile", "Logfile", UCDetectorPlugin.getAboutLogfile(), false);
     appendAbout("workspace", "Workspace", UCDetectorPlugin.getAboutWorkspace(), false);
     appendAbout("warnings", "Warnings", String.valueOf(markerCount), true);
+    appendAbout("mode", "Mode", Prefs.getModeName(), true);
     appendAbout("host", "Host", UCDetectorPlugin.getHostName(), false);
     //
     Element searched = appendChild(statistcs, "searched", null);
@@ -370,7 +371,6 @@ public class XmlReport implements IUCDetectorReport {
       return;
     }
     File reportDir = new File(Prefs.getReportDir());
-    reportDir.mkdirs();
     String baseFileName = getReportNumberName(reportDir);
     File htmlFile = new File(reportDir, baseFileName + ".html");
     String reportPath = reportDir.getAbsolutePath();
