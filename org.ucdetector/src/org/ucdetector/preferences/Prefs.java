@@ -85,7 +85,7 @@ public final class Prefs {
   static final String REPORT_CREATE_TXT = ID + ".report.create.txt";
   //
   public static final String INTERNAL = ID + ".internal";
-  static final String MODE_INDEX = INTERNAL + ".mode.index";
+  static final String MODE_NAME = INTERNAL + ".mode.name";
   static final String PREFS_VERSION = INTERNAL + ".version";
   // 
   private static final String[] EMPTY_ARRAY = new String[0];
@@ -429,10 +429,12 @@ public final class Prefs {
    */
   public static String getReportDir() {
     String dir = getString(REPORT_DIR);
-    if (dir == null || dir.length() == 0) {
-      dir = ".";
+    if (dir.length() == 0) {
+      dir = PreferenceInitializer.getReportDirDefault();
     }
-    return new File(dir).getAbsolutePath();
+    File reportDir = new File(dir);
+    reportDir.mkdirs();
+    return reportDir.getAbsolutePath();
   }
 
   public static boolean isCreateReportHTML() {
@@ -445,6 +447,10 @@ public final class Prefs {
 
   public static boolean isCreateReportTXT() {
     return getStore().getBoolean(REPORT_CREATE_TXT);
+  }
+
+  public static String getModeName() {
+    return getStore().getString(MODE_NAME);
   }
 
   /**
@@ -465,7 +471,7 @@ public final class Prefs {
   /**
    * @return never <code>null</code>. Returns "" instead!
    */
-  private static String getString(String name) {
+  protected static String getString(String name) {
     return getStore().getString(name);
   }
 
