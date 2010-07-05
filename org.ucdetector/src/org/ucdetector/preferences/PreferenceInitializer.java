@@ -33,7 +33,7 @@ public class PreferenceInitializer extends AbstractPreferenceInitializer {
   private static final String ANNOATIONS_FILTER = "";
   // feature 2996537: Eclipse Plug-in/Extension detection: added MANIFEST.MF
   private static final String FILE_PATTERN_LITERAL_SEARCH = "*.xml,MANIFEST.MF,";
-  private static final String REPORT_DEFAULT_DIR = "ucdetector_reports";
+  static final String REPORT_DEFAULT_DIR = "ucdetector_reports";
 
   @Override
   public void initializeDefaultPreferences() {
@@ -62,19 +62,7 @@ public class PreferenceInitializer extends AbstractPreferenceInitializer {
     store.setDefault(Prefs.ANALYZE_LITERALS, FILE_PATTERN_LITERAL_SEARCH);
     // CYCLE -------------------------------------------------------------------
     store.setDefault(Prefs.CYCLE_DEPTH, Prefs.CYCLE_DEPTH_DEFAULT);
-    // OTHER -------------------------------------------------------------------
-    String reportDir;
-    try {
-      File workspaceDir = Platform.getLocation().toFile();
-      reportDir = new File(workspaceDir, REPORT_DEFAULT_DIR).getCanonicalPath();
-    }
-    catch (Exception e) {
-      reportDir = REPORT_DEFAULT_DIR;
-      Log.logError("Can't get report file name", e);
-    }
-    // Needed to avoid message: Path does not exists
-    new File(reportDir).mkdirs();
-    store.setDefault(Prefs.REPORT_DIR, reportDir);
+    store.setDefault(Prefs.REPORT_DIR, getReportDirDefault());
     store.setDefault(Prefs.REPORT_CREATE_HTML, true);
     store.setDefault(Prefs.REPORT_CREATE_XML, false);
     store.setDefault(Prefs.REPORT_CREATE_TXT, false);
@@ -97,6 +85,21 @@ public class PreferenceInitializer extends AbstractPreferenceInitializer {
     store.setDefault(Prefs.ANALYZE_VISIBILITY_PROTECTED_CONSTANTS, WARN);
     store.setDefault(Prefs.ANALYZE_VISIBILITY_PRIVATE_CONSTANTS, WARN);
     //
-    store.setDefault(Prefs.MODE_INDEX, ModesPanel.Mode.Default.ordinal());
+    store.setDefault(Prefs.MODE_NAME, ModesPanel.Mode.Default.toStringLocalized());
+  }
+
+  public static String getReportDirDefault() {
+    String reportDir;
+    try {
+      File workspaceDir = Platform.getLocation().toFile();
+      reportDir = new File(workspaceDir, REPORT_DEFAULT_DIR).getCanonicalPath();
+    }
+    catch (Exception e) {
+      reportDir = REPORT_DEFAULT_DIR;
+      Log.logError("Can't get report file name", e);
+    }
+    // Needed to avoid message: Path does not exists
+    new File(reportDir).mkdirs();
+    return reportDir;
   }
 }
