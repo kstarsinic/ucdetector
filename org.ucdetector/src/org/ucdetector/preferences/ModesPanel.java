@@ -23,8 +23,8 @@ import java.util.HashMap;
 import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Map;
-import java.util.Map.Entry;
 import java.util.Set;
+import java.util.Map.Entry;
 
 import org.eclipse.jface.dialogs.IInputValidator;
 import org.eclipse.jface.dialogs.IMessageProvider;
@@ -77,6 +77,7 @@ class ModesPanel {
     File ucdDir = UCDetectorPlugin.getDefault().getStateLocation().toFile();
     modesDir = new File(ucdDir, "modes"); //$NON-NLS-1$
     modesDir.mkdirs();
+    Log.logInfo("modesDir is '%s'", modesDir.getAbsolutePath()); //$NON-NLS-1$
     modesPanelComposite = UCDetectorPreferencePage.createComposite(parent, 4, 1, GridData.FILL_HORIZONTAL);
     Label label = new Label(modesPanelComposite, SWT.LEFT);
     label.setText(Messages.ModesPanel_ModeLabel);
@@ -150,7 +151,7 @@ class ModesPanel {
       setPreferences(new FileInputStream(modesFileName));
     }
     catch (IOException e) {
-      Log.logError("Can't set custom preferences", e);
+      Log.logError("Can't set custom preferences", e); //$NON-NLS-1$
     }
     return modesFileName;
   }
@@ -235,18 +236,18 @@ class ModesPanel {
     allPreferences.putAll(UCDetectorPlugin.getDeltaPreferences());
 
     StringBuilder sb = new StringBuilder();
-    sb.append(String.format("### ----------------------------------------------------------------------------%n"));
+    sb.append(String.format("### -------------------------------------------------------------------------%n"));
     sb.append(String.format("###               UCDetector preference file for mode: '%s'%n", modeName));
-    sb.append(String.format("### ----------------------------------------------------------------------------%n"));
+    sb.append(String.format("### -------------------------------------------------------------------------%n"));
     sb.append(String.format("### Created by  : UCDetector %s%n", UCDetectorPlugin.getAboutUCDVersion()));
     sb.append(String.format("### Created date: %s%n", UCDetectorPlugin.getNow()));
     sb.append(String.format("### This class can't be loaded by java.util.Properties.load()%n"));
-    sb.append(String.format("### ----------------------------------------------------------------------------%n"));
+    sb.append(String.format("### -------------------------------------------------------------------------%n"));
     for (String extendedPreference : page.extendedPreferences) {
       if (extendedPreference.startsWith(TAB_START)) {
-        sb.append(String.format("%n## -----------------------------------------------------------------------------%n"));
+        sb.append(String.format("%n## --------------------------------------------------------------------------%n"));
         sb.append(String.format("## Tab: %s%n", extendedPreference.substring(TAB_START.length())));
-        sb.append(String.format("## -----------------------------------------------------------------------------%n"));
+        sb.append(String.format("## --------------------------------------------------------------------------%n"));
       }
       else if (extendedPreference.startsWith(GROUP_START)) {
         sb.append(String.format("%n# Group: %s%n", extendedPreference.substring(GROUP_START.length())));
@@ -263,15 +264,18 @@ class ModesPanel {
     // org.ucdetector.internal.mode.index, old entries
     Log.logDebug("Unhandled preferences :" + allPreferences);
     File modesFile = getModesFile(modeName);
+    FileWriter writer = null;
     try {
-      FileWriter writer = new FileWriter(modesFile);
+      writer = new FileWriter(modesFile);
       writer.write(sb.toString());
-      writer.close();
       Log.logDebug("Saved mode to: %s", modesFile.getAbsolutePath()); //$NON-NLS-1$
     }
     catch (IOException ex) {
       String message = NLS.bind(Messages.ModesPanel_ModeFileCantSave, modesFile.getAbsolutePath());
       UCDetectorPlugin.logErrorAndStatus(message, ex);
+    }
+    finally {
+      UCDetectorPlugin.closeSave(writer);
     }
   }
 
@@ -284,16 +288,21 @@ class ModesPanel {
   private Map<String, String> loadMode(InputStream in) throws IOException {
     Map<String, String> result = new HashMap<String, String>();
     BufferedReader reader = new BufferedReader(new InputStreamReader(in));
-    String line = null;
-    while ((line = reader.readLine()) != null) {
-      line = line.trim();
-      int index = line.indexOf('=');
-      if (line.startsWith("#") || index == -1) { //$NON-NLS-1$
-        continue;// comment
+    try {
+      String line = null;
+      while ((line = reader.readLine()) != null) {
+        line = line.trim();
+        int index = line.indexOf('=');
+        if (line.startsWith("#") || index == -1) { //$NON-NLS-1$
+          continue;// comment
+        }
+        String key = line.substring(0, index);
+        String value = (line.length() == index ? "" : line.substring(index + 1)); //$NON-NLS-1$
+        result.put(key, value);
       }
-      String key = line.substring(0, index);
-      String value = (line.length() == index ? "" : line.substring(index + 1)); //$NON-NLS-1$
-      result.put(key, value);
+    }
+    finally {
+      UCDetectorPlugin.closeSave(reader);
     }
     return result;
   }
@@ -305,8 +314,13 @@ class ModesPanel {
   private void removeMode() {
     String modeToRemove = getCombo().getText();
     File file = getModesFile(modeToRemove);
-    file.delete();
-    Log.logDebug("Deleted mode file: %s", file.getAbsolutePath()); //$NON-NLS-1$
+    boolean deleteOk = file.delete();
+    if (deleteOk) {
+      Log.logInfo("Deleted mode '%s' - file is %s", modeToRemove, file.getAbsolutePath()); //$NON-NLS-1$
+    }
+    else {
+      Log.logWarn("Can't delete mode '%s' - file is %s", modeToRemove, file.getAbsolutePath()); //$NON-NLS-1$
+    }
     getCombo().setItems(getModes());
     getCombo().setText(Mode.Default.toStringLocalized());
     page.performDefaults();

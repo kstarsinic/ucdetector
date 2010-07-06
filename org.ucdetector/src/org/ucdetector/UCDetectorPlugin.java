@@ -7,6 +7,7 @@
  */
 package org.ucdetector;
 
+import java.io.Closeable;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Arrays;
@@ -253,6 +254,17 @@ public class UCDetectorPlugin extends AbstractUIPlugin {
 
   private DateFormat getDateFormat() {
     return dateFormat;
+  }
+
+  public static void closeSave(Closeable closable) {
+    if (closable != null) {
+      try {
+        closable.close();
+      }
+      catch (Exception e) {
+        // ignore
+      }
+    }
   }
 
   // -------------------------------------------------------------------------
