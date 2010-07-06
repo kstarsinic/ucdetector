@@ -8,11 +8,14 @@
 <xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
   <xsl:output encoding="UTF-8" indent="no" method="text" doctype-public="-//W3C//DTD HTML 4.01 Transitional//EN" doctype-system="http://www.w3.org/TR/html4/transitional.dtd"/>
   <xsl:template match="/">
-    <!--  tab = &#x9;     new line  = &#xA;  -->
+    <!--  
+          &#x9; = tab
+          &#xA; = new line
+     -->
     <!-- First line: about -->
     <xsl:value-of select="concat('UCDetector Report', '&#x9;', /ucdetector/statistics/abouts/about[@name='reportCreated']/value, '&#xA;')"/>
     <!-- Second line: header -->
-    <xsl:value-of select="concat('location', '&#x9;', 'description', '&#xA;')"/>
+    <xsl:value-of select="concat('Location', '&#x9;', 'Description', '&#x9;', 'Java type', '&#x9;', 'Marker type', '&#xA;')"/>
     <xsl:for-each select="/ucdetector/markers/marker">
       <!--  org.eclipse.swt.SWT.error(SWT.java:3634) -->
       <!-- if not default package -->
@@ -33,7 +36,7 @@
       <xsl:if test="field">
         <xsl:value-of select="field"/>
       </xsl:if>
-      <xsl:value-of select="concat('(', resourceName, ':', line, ')', '&#x9;', description, '&#xA;')"/>
+      <xsl:value-of select="concat('(', resourceName, ':', line, ')', '&#x9;', description, '&#x9;', javaType, '&#x9;', markerType, '&#xA;')"/>
     </xsl:for-each>
   </xsl:template>
 </xsl:stylesheet>
