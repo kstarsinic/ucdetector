@@ -421,7 +421,8 @@ public class XmlReport implements IUCDetectorReport {
     try {
       xformer.setOutputProperty(OutputKeys.METHOD, "xml");
       xformer.setOutputProperty(OutputKeys.INDENT, "yes");
-      xformer.setOutputProperty("{http://xml.apache.org/xslt}indent-amount", "2");
+      xformer.setOutputProperty("{http://xml.apache.org/xslt}indent-amount", "2");//$NON-NLS-1$ //$NON-NLS-2$
+      xformer.setOutputProperty("{http://xml.apache.org/xalan}indent-amount", "2"); //$NON-NLS-1$ //$NON-NLS-2$
       // http://bugs.sun.com/bugdatabase/view_bug.do?bug_id=6296446
       tf.setAttribute("indent-number", Integer.valueOf(2));
     }
