@@ -23,12 +23,13 @@ import java.util.HashMap;
 import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 import java.util.Map.Entry;
+import java.util.Set;
 
 import org.eclipse.jface.dialogs.IInputValidator;
 import org.eclipse.jface.dialogs.IMessageProvider;
 import org.eclipse.jface.dialogs.InputDialog;
+import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.jface.preference.FieldEditor;
 import org.eclipse.jface.preference.IPreferenceStore;
 import org.eclipse.jface.preference.PreferenceStore;
@@ -52,10 +53,7 @@ class ModesPanel {
 
   /** built-in preferences mode */
   enum Mode {
-    Default, //
-    classes_only, //
-    full, //
-    ;
+    Default, classes_only, full;
 
     String toStringLocalized() {
       // Reflection!
@@ -65,6 +63,7 @@ class ModesPanel {
 
   private final Button newButton;
   private final Button removeButton;
+  private final Button renameButton;
   private final Combo modesCombo;
   private final File modesDir;
   private final Composite parent;
@@ -78,18 +77,41 @@ class ModesPanel {
     modesDir = new File(ucdDir, "modes"); //$NON-NLS-1$
     modesDir.mkdirs();
     Log.logInfo("modesDir is '%s'", modesDir.getAbsolutePath()); //$NON-NLS-1$
-    modesPanelComposite = UCDetectorPreferencePage.createComposite(parent, 4, 1, GridData.FILL_HORIZONTAL);
+    modesPanelComposite = UCDetectorPreferencePage.createComposite(parent, 5, 1, GridData.FILL_HORIZONTAL);
     Label label = new Label(modesPanelComposite, SWT.LEFT);
     label.setText(Messages.ModesPanel_ModeLabel);
     modesCombo = new Combo(modesPanelComposite, SWT.READ_ONLY);
     newButton = new Button(modesPanelComposite, SWT.PUSH);
-    newButton.setText(Messages.ModesPanel_ModeNew);
     removeButton = new Button(modesPanelComposite, SWT.PUSH);
-    removeButton.setText(Messages.ModesPanel_ModeRemove);
-    createModeCombo();
+    renameButton = new Button(modesPanelComposite, SWT.PUSH);
+    createButtonsDetails();
+    createModeComboDetails();
   }
 
-  private void createModeCombo() {
+  private void createButtonsDetails() {
+    newButton.setText(Messages.ModesPanel_ModeNew);
+    removeButton.setText(Messages.ModesPanel_ModeRemove);
+    renameButton.setText(Messages.ModesPanel_ModeRename);
+    SelectionListener selectionListener = new SelectionAdapter() {
+      @Override
+      public void widgetSelected(SelectionEvent event) {
+        if (event.widget == newButton) {
+          addMode();
+        }
+        else if (event.widget == removeButton) {
+          removeMode();
+        }
+        else if (event.widget == renameButton) {
+          remameMode();
+        }
+      }
+    };
+    newButton.addSelectionListener(selectionListener);
+    removeButton.addSelectionListener(selectionListener);
+    renameButton.addSelectionListener(selectionListener);
+  }
+
+  private void createModeComboDetails() {
     String[] modes = getModes();
     getCombo().setItems(modes);
     // Default first
@@ -102,57 +124,32 @@ class ModesPanel {
       public void widgetSelected(SelectionEvent evt) {
         updateModeButtons();
         String modesFileName = null;
-        try {
-          int index = getCombo().getSelectionIndex();
-          if (index == -1) {
-            // ignore
-          }
-          // default
-          else if (index == Mode.Default.ordinal()) {
-            page.performDefaults();
-          }
-          // built-in
-          else if (index < Mode.values().length) {
-            Mode builtInMode = Mode.values()[index];
-            modesFileName = builtInMode + MODES_FILE_TYPE;
-            setPreferences(getClass().getResourceAsStream(modesFileName));
-          }
-          // custom
-          else {
-            modesFileName = setCustomPreferences();
-          }
+        int index = getCombo().getSelectionIndex();
+        if (index == -1) {
+          // ignore
         }
-        catch (IOException ex) {
-          String message = NLS.bind(Messages.ModesPanel_CantSetPreferences, modesFileName);
-          UCDetectorPlugin.logErrorAndStatus(message, ex);
+        else if (index == Mode.Default.ordinal()) {
+          // default
+          page.performDefaults();
+        }
+        else if (index < Mode.values().length) {
+          // built-in
+          Mode builtInMode = Mode.values()[index];
+          modesFileName = builtInMode + MODES_FILE_TYPE;
+          setPreferences(false, modesFileName);
+        }
+        else {
+          // custom
+          modesFileName = setCustomPreferences();
         }
       }
     });
-    //
-    SelectionListener selectionListener = new SelectionAdapter() {
-      @Override
-      public void widgetSelected(SelectionEvent event) {
-        if (event.widget == newButton) {
-          addMode();
-        }
-        else if (event.widget == removeButton) {
-          removeMode();
-        }
-      }
-    };
-    newButton.addSelectionListener(selectionListener);
-    removeButton.addSelectionListener(selectionListener);
   }
 
   private String setCustomPreferences() {
     String customMode = getCombo().getText();
     String modesFileName = getModesFile(customMode).getAbsolutePath();
-    try {
-      setPreferences(new FileInputStream(modesFileName));
-    }
-    catch (IOException e) {
-      Log.logError("Can't set custom preferences", e); //$NON-NLS-1$
-    }
+    setPreferences(true, modesFileName);
     return modesFileName;
   }
 
@@ -177,26 +174,18 @@ class ModesPanel {
 
   /** Add a user specific mode, and save it to a file */
   private void addMode() {
-    IInputValidator validator = new IInputValidator() {
-      public String isValid(String fileName) {
-        String[] modes = getModes();
-        for (String mode : modes) {
-          if (mode.equals(fileName)) {
-            return Messages.ModesPanel_ModeAlreadyExists;
-          }
-        }
-        boolean isValidFileName = !fileName.matches(".*[\\\\/:*?|<>\"].*"); //$NON-NLS-1$
-        return isValidFileName ? null : NLS.bind(Messages.ModesPanel_invalid_mode_name, fileName);
-      }
-    };
+    String newName = "CopyOf_" + getActiveModeName(); //$NON-NLS-1$
+    InputDialog input = new InputDialog(parent.getShell(), Messages.ModesPanel_NewMode, Messages.ModesPanel_ModeName,
+        newName, new ValidFileNameValidator());
+    input.open();
+    addMode(input.getValue());
+  }
+
+  /** Get name of mode from combo without 'built-in' */
+  private String getActiveModeName() {
     int index = getCombo().getSelectionIndex();
     boolean isBuiltIn = index != -1 && index < Mode.values().length;
-    String newName = "CopyOf_" + (isBuiltIn ? Mode.values()[index].name() : getCombo().getText()); //$NON-NLS-1$
-    InputDialog input = new InputDialog(parent.getShell(), Messages.ModesPanel_NewMode, Messages.ModesPanel_ModeName,
-        newName, validator);
-    input.open();
-    String newModeName = input.getValue();
-    addMode(newModeName);
+    return (isBuiltIn ? Mode.values()[index].name() : getCombo().getText());
   }
 
   private void addMode(String newModeName) {
@@ -234,7 +223,6 @@ class ModesPanel {
   void saveMode(String modeName) {
     Map<String, String> allPreferences = UCDetectorPlugin.getAllPreferences();
     allPreferences.putAll(UCDetectorPlugin.getDeltaPreferences());
-
     StringBuilder sb = new StringBuilder();
     sb.append(String.format("### -------------------------------------------------------------------------%n"));
     sb.append(String.format("###               UCDetector preference file for mode: '%s'%n", modeName));
@@ -257,17 +245,14 @@ class ModesPanel {
         allPreferences.remove(extendedPreference);
       }
     }
-    //
-    if (Log.DEBUG) {
-      Log.logDebug(sb.toString());
-    }
-    // org.ucdetector.internal.mode.index, old entries
+    String fileText = sb.toString();
+    Log.logDebug(fileText);
     Log.logDebug("Unhandled preferences :" + allPreferences);
     File modesFile = getModesFile(modeName);
     FileWriter writer = null;
     try {
       writer = new FileWriter(modesFile);
-      writer.write(sb.toString());
+      writer.write(fileText);
       Log.logDebug("Saved mode to: %s", modesFile.getAbsolutePath()); //$NON-NLS-1$
     }
     catch (IOException ex) {
@@ -285,10 +270,12 @@ class ModesPanel {
    * java.util.Properties.load() fails, because of file names containing Strings (file names)
    *  which are similar to unicode signs
    */
-  private Map<String, String> loadMode(InputStream in) throws IOException {
+  private Map<String, String> loadMode(boolean isFile, String modesFileName) {
     Map<String, String> result = new HashMap<String, String>();
-    BufferedReader reader = new BufferedReader(new InputStreamReader(in));
+    BufferedReader reader = null;
     try {
+      InputStream in = isFile ? new FileInputStream(modesFileName) : getClass().getResourceAsStream(modesFileName);
+      reader = new BufferedReader(new InputStreamReader(in));
       String line = null;
       while ((line = reader.readLine()) != null) {
         line = line.trim();
@@ -300,6 +287,10 @@ class ModesPanel {
         String value = (line.length() == index ? "" : line.substring(index + 1)); //$NON-NLS-1$
         result.put(key, value);
       }
+    }
+    catch (IOException ex) {
+      String message = NLS.bind(Messages.ModesPanel_CantSetPreferences, modesFileName);
+      UCDetectorPlugin.logErrorAndStatus(message, ex);
     }
     finally {
       UCDetectorPlugin.closeSave(reader);
@@ -313,18 +304,33 @@ class ModesPanel {
 
   private void removeMode() {
     String modeToRemove = getCombo().getText();
+    boolean doRemove = MessageDialog.openQuestion(parent.getShell(), Messages.ModesPanel_ModeRemove,
+        Messages.ModesPanel_ModeRemoveQuestion + modeToRemove);
+    if (!doRemove) {
+      return;
+    }
     File file = getModesFile(modeToRemove);
     boolean deleteOk = file.delete();
-    if (deleteOk) {
-      Log.logInfo("Deleted mode '%s' - file is %s", modeToRemove, file.getAbsolutePath()); //$NON-NLS-1$
-    }
-    else {
-      Log.logWarn("Can't delete mode '%s' - file is %s", modeToRemove, file.getAbsolutePath()); //$NON-NLS-1$
-    }
+    Log.logSuccess(deleteOk, String.format("Delete mode '%s' - file is %s", modeToRemove, file.getAbsolutePath()));//$NON-NLS-1$
     getCombo().setItems(getModes());
     getCombo().setText(Mode.Default.toStringLocalized());
     page.performDefaults();
     updateModeButtons();
+  }
+
+  private void remameMode() {
+    String oldName = getActiveModeName();
+    InputDialog input = new InputDialog(parent.getShell(), Messages.ModesPanel_ModeRename,
+        Messages.ModesPanel_ModeName, oldName, new ValidFileNameValidator());
+    input.open();
+    String newName = input.getValue();
+    File oldModesFile = getModesFile(oldName);
+    File newModesFile = getModesFile(newName);
+    boolean renameOK = oldModesFile.renameTo(newModesFile);
+    Log.logSuccess(renameOK,
+        String.format("Rename mode '%s' to '%s' - new file: %s", oldName, newName, newModesFile.getAbsolutePath()));//$NON-NLS-1$
+    getCombo().setItems(getModes());
+    getCombo().setText(newName);
   }
 
   /** buttons 'save' and 'remove' are only enabled for custom modes */
@@ -332,6 +338,7 @@ class ModesPanel {
     int index = getCombo().getSelectionIndex();
     boolean isCustom = (index < 0 || index >= Mode.values().length);
     removeButton.setEnabled(isCustom);
+    renameButton.setEnabled(isCustom);
 
     for (Composite group : page.groups) {
       Control[] controls = group.getChildren();
@@ -345,12 +352,12 @@ class ModesPanel {
   /**
    * @param preferencesFile Set preferences from selected file
    */
-  private void setPreferences(InputStream in) throws IOException {
+  private void setPreferences(boolean isFile, String modesFilename) {
     PreferenceStore tempReplaceStore = new PreferenceStore();
     // Put default values
     Map<String, String> allPreferences = UCDetectorPlugin.getAllPreferences();
     addAll(tempReplaceStore, allPreferences);
-    Map<String, String> savedMode = loadMode(in);
+    Map<String, String> savedMode = loadMode(isFile, modesFilename);
     addAll(tempReplaceStore, savedMode);
     for (FieldEditor field : page.fields) {
       IPreferenceStore originalStore = field.getPreferenceStore();
@@ -369,5 +376,18 @@ class ModesPanel {
 
   Combo getCombo() {
     return modesCombo;
+  }
+
+  private final class ValidFileNameValidator implements IInputValidator {
+    public String isValid(String fileName) {
+      String[] modes = getModes();
+      for (String mode : modes) {
+        if (mode.equals(fileName)) {
+          return Messages.ModesPanel_ModeAlreadyExists;
+        }
+      }
+      boolean isValidFileName = !fileName.matches(".*[\\\\/:*?|<>\"].*"); //$NON-NLS-1$
+      return isValidFileName ? null : NLS.bind(Messages.ModesPanel_invalid_mode_name, fileName);
+    }
   }
 }

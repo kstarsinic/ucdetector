@@ -6,6 +6,7 @@ Bugfixes:
 
 New features:
  - [ 2810803 ] Added again: Combobox to change all visibility combos
+ - Rename modes
  
 // -----------------------------------------------------------------------------
 UCDetector 1.5.0 from 2010-06-10:

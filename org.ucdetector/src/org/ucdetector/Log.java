@@ -59,6 +59,15 @@ public class Log {
     logInfo(String.format(format, args));
   }
 
+  public static void logSuccess(boolean success, String message) {
+    if (success) {
+      Log.logInfo("OK: " + message); //$NON-NLS-1$
+    }
+    else {
+      Log.logWarn("FAIL: " + message); //$NON-NLS-1$
+    }
+  }
+
   // WARN ---------------------------------------------------------------------
   public static void logWarn(String message) {
     logImpl(LogLevel.WARN, message);

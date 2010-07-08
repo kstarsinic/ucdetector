@@ -217,6 +217,8 @@ public final class Messages extends NLS {
   public static String ModesPanel_ModeLabel; // NO_UCD
   public static String ModesPanel_ModeNew; // NO_UCD
   public static String ModesPanel_ModeRemove; // NO_UCD
+  public static String ModesPanel_ModeRename; // NO_UCD
+  public static String ModesPanel_ModeRemoveQuestion; // NO_UCD
   public static String ModesPanel_ModePressNewHint; // NO_UCD
   public static String ModesPanel_ModeAlreadyExists; // NO_UCD
   //
