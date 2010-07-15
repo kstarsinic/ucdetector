@@ -74,10 +74,10 @@ public class Log {
 
   public static void logSuccess(boolean success, String message) {
     if (success) {
-      Log.logInfo("OK: " + message); //$NON-NLS-1$
+      Log.logInfo("OK: " + message);
     }
     else {
-      Log.logWarn("FAIL: " + message); //$NON-NLS-1$
+      Log.logWarn("FAIL: " + message);
     }
   }
 
@@ -179,19 +179,6 @@ public class Log {
       }
     }
     return null;
-  }
-
-  public static int getDebugOption(String key, int defaultValue) {
-    String option = Platform.getDebugOption(key);
-    if (option == null || option.length() == 0) {
-      return defaultValue;
-    }
-    try {
-      return Integer.parseInt(option);
-    }
-    catch (NumberFormatException e) {
-      return defaultValue;
-    }
   }
 
   public static boolean isDebug() {

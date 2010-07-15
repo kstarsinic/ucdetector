@@ -246,8 +246,10 @@ class ModesPanel {
       }
     }
     String fileText = sb.toString();
-    Log.logDebug(fileText);
-    Log.logDebug("Unhandled preferences :" + allPreferences);
+    if (Log.isDebug()) {
+      Log.logDebug(fileText);
+      Log.logDebug("Unhandled preferences :" + allPreferences);
+    }
     File modesFile = getModesFile(modeName);
     FileWriter writer = null;
     try {
