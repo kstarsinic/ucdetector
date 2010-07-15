@@ -12,7 +12,6 @@ import java.io.PrintStream;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Platform;
 import org.eclipse.swt.SWT;
-import org.eclipse.swt.graphics.Color;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.ui.PartInitException;
 import org.eclipse.ui.console.ConsolePlugin;
@@ -42,13 +41,16 @@ public class Log {
    */
   private static final LogLevel LOG_LEVEL_OPTIONS_FILE;
   private static MessageConsole console;
-  private static MessageConsoleStream consoleStream;
-  private static Color RED;
+  private static PrintStream consoleStreamInfo;
+  private static PrintStream consoleStreamWarn;
 
   static {
     LOG_LEVEL_OPTIONS_FILE = getLogLevelOption("org.ucdetector/logLevel");
     if (Log.getAcitveLogLevel().ordinal() > Log.LogLevel.INFO.ordinal()) {
       System.out.println("UCDetector Log level: " + Log.getAcitveLogLevel()); // we need to log to System.out
+    }
+    if (LOG_LEVEL_OPTIONS_FILE != null) {
+      logWarn("Eclipse .options file overrides preferences log level. Log level is: " + LOG_LEVEL_OPTIONS_FILE);
     }
   }
 
@@ -66,7 +68,6 @@ public class Log {
     logImpl(LogLevel.INFO, message);
   }
 
-  @SuppressWarnings("ucd")
   public static void logInfo(String format, Object... args) {
     logInfo(String.format(format, args));
   }
@@ -111,6 +112,7 @@ public class Log {
     }
   }
 
+  // LOG IMPL -------------------------------------------------------------------
   private static void logImpl(LogLevel level, String message) {
     logImpl(level, message, null);
   }
@@ -123,37 +125,41 @@ public class Log {
       return;
     }
     boolean isWarn = level.ordinal() > LogLevel.INFO.ordinal();
-    PrintStream stream = isWarn ? System.err : System.out;
     String formattedMessage = String.format("%-5s: %s", level, message);
-    stream.println(formattedMessage);
-    if (ex != null) {
-      ex.printStackTrace(stream);
-    }
-    logToEclipseConsole(isWarn, formattedMessage);
+    logToStream(isWarn ? System.err : System.out, formattedMessage, ex);
+    logToEclipseConsole(isWarn, formattedMessage, ex);
   }
 
-  private static void logToEclipseConsole(boolean isWarn, String formattedMessage) {
-    if (UCDetectorPlugin.isHeadlessMode()) {
+  private static void logToEclipseConsole(boolean isWarn, String formattedMessage, Throwable ex) {
+    if (UCDetectorPlugin.isHeadlessMode() || !Prefs.isLogToEclipse()) {
       return;
     }
     if (console == null) {
       initConsole();
     }
-    consoleStream.setColor(isWarn ? RED : null);
-    consoleStream.println(formattedMessage);
+    logToStream(isWarn ? consoleStreamWarn : consoleStreamInfo, formattedMessage, ex);
+  }
+
+  private static void logToStream(PrintStream stream, String message, Throwable ex) {
+    stream.println(message);
+    if (ex != null) {
+      ex.printStackTrace(stream);
+    }
   }
 
   private static void initConsole() {
     console = new MessageConsole("UCDetector", null);
     ConsolePlugin.getDefault().getConsoleManager().addConsoles(new IConsole[] { console });
+    consoleStreamInfo = new PrintStream(console.newMessageStream());
+    MessageConsoleStream messageStream = console.newMessageStream();
+    messageStream.setColor(Display.getDefault().getSystemColor(SWT.COLOR_RED));
+    consoleStreamWarn = new PrintStream(messageStream);
     try {
       UCDetectorPlugin.getActivePage().showView(IConsoleConstants.ID_CONSOLE_VIEW);
     }
     catch (PartInitException ex) {
       logError("Can't init console", ex);
     }
-    consoleStream = console.newMessageStream();
-    RED = Display.getDefault().getSystemColor(SWT.COLOR_RED);
   }
 
   /**

@@ -209,37 +209,6 @@ public class UCDetectorPreferencePage extends FieldEditorPreferencePage implemen
     this.addField(cycleDepth);
   }
 
-  private void createReportGroup(Composite parentGroups) {
-    Composite spacer = createGroup(parentGroups, Messages.PreferencePage_GroupReports);
-    appendBool(Prefs.REPORT_CREATE_HTML, Messages.PreferencePage_CreateHtmlReport, null, spacer, 3);
-    appendBool(Prefs.REPORT_CREATE_XML, Messages.PreferencePage_CreateXmlReport, null, spacer, 3);
-    appendBool(Prefs.REPORT_CREATE_TXT, Messages.PreferencePage_CreateTextReport, null, spacer, 3);
-    DirectoryFieldEditor path = new DirectoryFieldEditor(Prefs.REPORT_DIR, Messages.PreferencePage_ReportFile, spacer);
-    path.getLabelControl(spacer).setToolTipText(Messages.PreferencePage_ReportFileToolTip);
-    this.addField(path);
-    //
-    addLineHack(spacer);
-    Button ok = new Button(spacer, SWT.PUSH);
-    ok.setText(Messages.PreferencePage_BrowseReportsDir);
-    ok.addSelectionListener(new SelectionAdapter() {
-      @Override
-      public void widgetSelected(SelectionEvent e) {
-        Program p = Program.findProgram("html"); //$NON-NLS-1$
-        p = (p == null ? Program.findProgram("htm") : p); //$NON-NLS-1$
-        if (p != null) {
-          // java 6: Desktop.getInstance().open(file);
-          p.execute(Prefs.getReportDir());
-        }
-      }
-    });
-  }
-
-  private void createOtherGroup(Composite parentGroups) {
-    Composite spacer = createGroup(parentGroups, Messages.PreferencePage_GroupLogging);
-    ComboFieldEditor combo = new ComboFieldEditor(Prefs.LOG_LEVEL, Messages.PreferencePage_LogLevel, LOG_LEVELS, spacer);
-    addField(combo);
-  }
-
   private void createFinalGroup(Composite parentGroups) {
     Composite spacer = createGroup(parentGroups, Messages.PreferencePage_GroupFinal);
     appendCombo(Prefs.ANALYZE_FINAL_METHOD, Messages.PreferencePage_CheckFinalMethod, spacer);
@@ -273,6 +242,38 @@ public class UCDetectorPreferencePage extends FieldEditorPreferencePage implemen
     addLineHack(spacer);
     appendCombo(Prefs.ANALYZE_VISIBILITY_PROTECTED_CONSTANTS, Messages.PreferencePage_CheckProtectedConstants, spacer);
     appendCombo(Prefs.ANALYZE_VISIBILITY_PRIVATE_CONSTANTS, Messages.PreferencePage_CheckPrivateConstants, spacer);
+  }
+
+  private void createReportGroup(Composite parentGroups) {
+    Composite spacer = createGroup(parentGroups, Messages.PreferencePage_GroupReports);
+    appendBool(Prefs.REPORT_CREATE_HTML, Messages.PreferencePage_CreateHtmlReport, null, spacer, 3);
+    appendBool(Prefs.REPORT_CREATE_XML, Messages.PreferencePage_CreateXmlReport, null, spacer, 3);
+    appendBool(Prefs.REPORT_CREATE_TXT, Messages.PreferencePage_CreateTextReport, null, spacer, 3);
+    DirectoryFieldEditor path = new DirectoryFieldEditor(Prefs.REPORT_DIR, Messages.PreferencePage_ReportFile, spacer);
+    path.getLabelControl(spacer).setToolTipText(Messages.PreferencePage_ReportFileToolTip);
+    this.addField(path);
+    //
+    addLineHack(spacer);
+    Button ok = new Button(spacer, SWT.PUSH);
+    ok.setText(Messages.PreferencePage_BrowseReportsDir);
+    ok.addSelectionListener(new SelectionAdapter() {
+      @Override
+      public void widgetSelected(SelectionEvent e) {
+        Program p = Program.findProgram("html"); //$NON-NLS-1$
+        p = (p == null ? Program.findProgram("htm") : p); //$NON-NLS-1$
+        if (p != null) {
+          // java 6: Desktop.getInstance().open(file);
+          p.execute(Prefs.getReportDir());
+        }
+      }
+    });
+  }
+
+  private void createOtherGroup(Composite parentGroups) {
+    Composite spacer = createGroup(parentGroups, Messages.PreferencePage_GroupLogging);
+    ComboFieldEditor combo = new ComboFieldEditor(Prefs.LOG_LEVEL, Messages.PreferencePage_LogLevel, LOG_LEVELS, spacer);
+    addField(combo);
+    appendBool(Prefs.LOG_TO_ECLIPSE, Messages.PreferencePage_LogToEclipse, null, spacer, 2);
   }
 
   private Combo changeVisibiliyCombo;
