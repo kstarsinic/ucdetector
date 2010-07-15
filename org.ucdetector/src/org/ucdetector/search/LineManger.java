@@ -255,7 +255,7 @@ public class LineManger {
     IOpenable openable = javaElement.getOpenable();
     if (!(openable instanceof ICompilationUnit)) {
       Log.logWarn("openable NOT instanceof ICompilationUnit '%s' %s", //$NON-NLS-1$
-          JavaElementUtil.getElementName(javaElement), Log.getClassName(javaElement));
+          JavaElementUtil.getElementName(javaElement), JavaElementUtil.getClassName(javaElement));
       return null;
     }
     ICompilationUnit compilationUnit = (ICompilationUnit) openable;

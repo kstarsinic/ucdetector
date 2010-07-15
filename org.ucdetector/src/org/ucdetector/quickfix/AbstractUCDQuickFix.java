@@ -75,7 +75,7 @@ abstract class AbstractUCDQuickFix extends WorkbenchMarkerResolution {
     this.marker = marker2;
     ICompilationUnit originalUnit = null;
     try {
-      if (Log.DEBUG) {
+      if (Log.isDebug()) {
         Log.logDebug("%s.run(). Marker=%s", getClass().getSimpleName(), dumpMarker(marker));
       }
       int charStart = marker.getAttribute(IMarker.CHAR_START, -1);
@@ -152,7 +152,7 @@ abstract class AbstractUCDQuickFix extends WorkbenchMarkerResolution {
       if (found) {
         nodeToChange = declaration;
       }
-      if (Log.DEBUG && found) {
+      if (Log.isDebug() && found) {
         Log.logDebug("NodeToChange: %s. char postion: %s<=%s<=%s.", //
             name.getIdentifier(), "" + startPos, "" + charStart, "" + endPos);
       }

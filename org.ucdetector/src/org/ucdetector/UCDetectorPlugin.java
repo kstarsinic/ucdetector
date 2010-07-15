@@ -15,8 +15,8 @@ import java.util.Date;
 import java.util.HashSet;
 import java.util.LinkedHashMap;
 import java.util.Map;
-import java.util.Set;
 import java.util.Map.Entry;
+import java.util.Set;
 
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IPath;
@@ -81,14 +81,14 @@ public class UCDetectorPlugin extends AbstractUIPlugin {
     Log.logInfo(SEPARATOR);
     Log.logInfo("Starting UCDetector Plug-In version " + getAboutUCDVersion());
     Log.logInfo(SEPARATOR);
-    Log.logInfo("Time     : " + getNow());
+    Log.logInfo("Time      : " + getNow());
     Log.logInfo("OS        : " + getAboutOS());
     Log.logInfo("Java      : " + getAboutJavaVersion());
     Log.logInfo("Eclipse   : " + getAboutEclipseVersion());
     Log.logInfo("Home      : " + getAboutEclipseHome());
     Log.logInfo("Logfile   : " + getAboutLogfile());
     Log.logInfo("Workspace : " + getAboutWorkspace());
-    Log.logInfo("Log level : " + Log.LOG_LEVEL.toString());
+    Log.logInfo("Log level : " + Log.getAcitveLogLevel().toString());
     Log.logInfo(getPreferencesAsString());
     Log.logInfo(SEPARATOR);
   }

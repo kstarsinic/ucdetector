@@ -135,7 +135,7 @@ public abstract class AbstractUCDetectorIterator extends UCDetectorCallBack {
       return;
     }
     if (DEBUG) {
-      Log.logDebug("Iterate Resource '%s' %s", resource.getName(), Log.getClassName(resource));//$NON-NLS-1$
+      Log.logDebug("Iterate Resource '%s' %s", resource.getName(), JavaElementUtil.getClassName(resource));//$NON-NLS-1$
     }
     if (resource instanceof IFile) {
       IFile file = (IFile) resource;
@@ -185,7 +185,7 @@ public abstract class AbstractUCDetectorIterator extends UCDetectorCallBack {
     }
     if (DEBUG) {
       Log.logDebug("Iterate JavaElement '%s' %s", JavaElementUtil.getElementName(javaElement), //$NON-NLS-1$
-          Log.getClassName(javaElement));
+          JavaElementUtil.getClassName(javaElement));
     }
     handleStartElement(javaElement);
     boolean doChildren = true;

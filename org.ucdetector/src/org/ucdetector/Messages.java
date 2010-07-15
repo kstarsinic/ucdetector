@@ -129,17 +129,20 @@ public final class Messages extends NLS {
   public static String PreferencePage_TabDetect; // NO_UCD
   public static String PreferencePage_TabKeywords; // NO_UCD
   public static String PreferencePage_TabReport; // NO_UCD
+  public static String PreferencePage_TabOther; // NO_UCD
   //
   public static String PreferencePage_CreateHtmlReport; // NO_UCD
   public static String PreferencePage_CreateXmlReport; // NO_UCD
   public static String PreferencePage_CreateTextReport; // NO_UCD
   public static String PreferencePage_BrowseReportsDir; // NO_UCD
+  public static String PreferencePage_LogLevel; // NO_UCD
 
   //
   public static String PreferencePage_GroupDetect; // NO_UCD
   public static String PreferencePage_GroupFileSearch; // NO_UCD
   public static String PreferencePage_GroupCycles; // NO_UCD
   public static String PreferencePage_GroupReports; // NO_UCD
+  public static String PreferencePage_GroupLogging; // NO_UCD
   public static String PreferencePage_GroupFilter; // NO_UCD
   public static String PreferencePage_GroupFinal; // NO_UCD
   public static String PreferencePage_GroupVisibility; // NO_UCD

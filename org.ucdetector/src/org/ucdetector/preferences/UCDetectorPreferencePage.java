@@ -36,6 +36,7 @@ import org.eclipse.ui.IWorkbench;
 import org.eclipse.ui.IWorkbenchPreferencePage;
 import org.eclipse.ui.PlatformUI;
 import org.ucdetector.Log;
+import org.ucdetector.Log.LogLevel;
 import org.ucdetector.Messages;
 import org.ucdetector.UCDetectorPlugin;
 import org.ucdetector.preferences.ModesPanel.Mode;
@@ -64,7 +65,15 @@ public class UCDetectorPreferencePage extends FieldEditorPreferencePage implemen
   private static final String[][] WARN_LEVELS = new String[][] {
       { WarnLevel.ERROR.toStringLocalized(), WarnLevel.ERROR.toString() },
       { WarnLevel.WARNING.toStringLocalized(), WarnLevel.WARNING.toString() },
-      { WarnLevel.IGNORE.toStringLocalized(), WarnLevel.IGNORE.toString() } };
+      { WarnLevel.IGNORE.toStringLocalized(), WarnLevel.IGNORE.toString() } //
+  };
+  private static final String[][] LOG_LEVELS = new String[][] {
+      { LogLevel.DEBUG.toString(), LogLevel.DEBUG.toString() },//
+      { LogLevel.INFO.toString(), LogLevel.INFO.toString() },//
+      { LogLevel.WARN.toString(), LogLevel.WARN.toString() },//
+      { LogLevel.ERROR.toString(), LogLevel.ERROR.toString() },//
+      { LogLevel.OFF.toString(), LogLevel.OFF.toString() }, //
+  };
   private ModesPanel modesPanel;
 
   public UCDetectorPreferencePage() {
@@ -100,6 +109,10 @@ public class UCDetectorPreferencePage extends FieldEditorPreferencePage implemen
     // REPORT -----------------------------------------------------------------
     composite = createTab(tabFolder, Messages.PreferencePage_TabReport);
     createReportGroup(composite);
+    // OTHER ------------------------------------------------------------------
+    composite = createTab(tabFolder, Messages.PreferencePage_TabOther);
+    createOtherGroup(composite);
+    //
     modesPanel.updateModeButtons();
     modesPanel.createMyMode();
   }
@@ -109,7 +122,7 @@ public class UCDetectorPreferencePage extends FieldEditorPreferencePage implemen
     boolean result = super.performOk();
     modesPanel.saveMode();
     getPreferenceStore().setValue(Prefs.MODE_NAME, modesPanel.getCombo().getText());
-    Log.logInfo("New preferences: " + UCDetectorPlugin.getPreferencesAsString()); //$NON-NLS-1$
+    Log.logDebug("New preferences: " + UCDetectorPlugin.getPreferencesAsString()); //$NON-NLS-1$
     return result;
   }
 
@@ -219,6 +232,12 @@ public class UCDetectorPreferencePage extends FieldEditorPreferencePage implemen
         }
       }
     });
+  }
+
+  private void createOtherGroup(Composite parentGroups) {
+    Composite spacer = createGroup(parentGroups, Messages.PreferencePage_GroupLogging);
+    ComboFieldEditor combo = new ComboFieldEditor(Prefs.LOG_LEVEL, Messages.PreferencePage_LogLevel, LOG_LEVELS, spacer);
+    addField(combo);
   }
 
   private void createFinalGroup(Composite parentGroups) {

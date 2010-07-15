@@ -84,7 +84,7 @@ public class MarkerReport implements IUCDetectorReport {
   }
 
   public boolean reportMarker(ReportParam reportParam) throws CoreException {
-    if (Log.DEBUG) {
+    if (Log.isDebug()) {
       Log.logDebug("    Add to queue: " + reportParam); //$NON-NLS-1$
     }
     markersToFlash.add(reportParam);
@@ -101,7 +101,7 @@ public class MarkerReport implements IUCDetectorReport {
    * Create markers and clean cache;
    */
   private void flushReport() throws CoreException {
-    if (Log.DEBUG) {
+    if (Log.isDebug()) {
       Log.logDebug("flushReport will create %s markers", Integer.valueOf(markersToFlash.size()));//$NON-NLS-1$
     }
     for (ReportParam reportParamToCreate : markersToFlash) {

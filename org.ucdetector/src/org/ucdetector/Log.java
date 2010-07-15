@@ -7,8 +7,20 @@
  */
 package org.ucdetector;
 
+import java.io.PrintStream;
+
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Platform;
+import org.eclipse.swt.SWT;
+import org.eclipse.swt.graphics.Color;
+import org.eclipse.swt.widgets.Display;
+import org.eclipse.ui.PartInitException;
+import org.eclipse.ui.console.ConsolePlugin;
+import org.eclipse.ui.console.IConsole;
+import org.eclipse.ui.console.IConsoleConstants;
+import org.eclipse.ui.console.MessageConsole;
+import org.eclipse.ui.console.MessageConsoleStream;
+import org.ucdetector.preferences.Prefs;
 
 /**
  * Simple logging API for UCDetector.
@@ -17,8 +29,7 @@ import org.eclipse.core.runtime.Platform;
  */
 @SuppressWarnings("nls")
 public class Log {
-  enum LogLevel {
-    @SuppressWarnings("hiding")
+  public enum LogLevel {
     DEBUG, INFO, WARN, ERROR, OFF,
   }
 
@@ -29,14 +40,15 @@ public class Log {
    * 
    * @see "http://wiki.eclipse.org/FAQ_How_do_I_use_the_platform_debug_tracing_facility%3F"
    */
-  protected static final LogLevel LOG_LEVEL = getLogLevelOption("org.ucdetector/logLevel");
-  public static final boolean DEBUG = LogLevel.DEBUG == LOG_LEVEL;
-
-  private static final String LEVEL_SEPARATOR = ": ";
+  private static final LogLevel LOG_LEVEL_OPTIONS_FILE;
+  private static MessageConsole console;
+  private static MessageConsoleStream consoleStream;
+  private static Color RED;
 
   static {
-    if (Log.LOG_LEVEL.ordinal() > Log.LogLevel.INFO.ordinal()) {
-      System.out.println("UCDetector Log level: " + Log.LOG_LEVEL); // we need to log to System.out
+    LOG_LEVEL_OPTIONS_FILE = getLogLevelOption("org.ucdetector/logLevel");
+    if (Log.getAcitveLogLevel().ordinal() > Log.LogLevel.INFO.ordinal()) {
+      System.out.println("UCDetector Log level: " + Log.getAcitveLogLevel()); // we need to log to System.out
     }
   }
 
@@ -107,24 +119,41 @@ public class Log {
    * Very simple logging to System.out and System.err
    */
   private static void logImpl(LogLevel level, String message, Throwable ex) {
-    if (level.ordinal() >= LOG_LEVEL.ordinal()) {
-      if (level == LogLevel.DEBUG || level == LogLevel.INFO) {
-        System.out.println(createLogMessage(level, message));
-      }
-      else if (level == LogLevel.WARN || level == LogLevel.ERROR) {
-        System.err.println(createLogMessage(level, message));
-        if (ex != null) {
-          ex.printStackTrace();
-        }
-      }
+    if (level.ordinal() < getAcitveLogLevel().ordinal()) {
+      return;
     }
+    boolean isWarn = level.ordinal() > LogLevel.INFO.ordinal();
+    PrintStream stream = isWarn ? System.err : System.out;
+    String formattedMessage = String.format("%-5s: %s", level, message);
+    stream.println(formattedMessage);
+    if (ex != null) {
+      ex.printStackTrace(stream);
+    }
+    logToEclipseConsole(isWarn, formattedMessage);
   }
 
-  private static String createLogMessage(LogLevel level, String message) {
-    int length = level.name().length() + LEVEL_SEPARATOR.length() + (message == null ? 0 : message.length());
-    StringBuilder sb = new StringBuilder(length);
-    sb.append(level).append(LEVEL_SEPARATOR).append(message);
-    return sb.toString();
+  private static void logToEclipseConsole(boolean isWarn, String formattedMessage) {
+    if (UCDetectorPlugin.isHeadlessMode()) {
+      return;
+    }
+    if (console == null) {
+      initConsole();
+    }
+    consoleStream.setColor(isWarn ? RED : null);
+    consoleStream.println(formattedMessage);
+  }
+
+  private static void initConsole() {
+    console = new MessageConsole("UCDetector", null);
+    ConsolePlugin.getDefault().getConsoleManager().addConsoles(new IConsole[] { console });
+    try {
+      UCDetectorPlugin.getActivePage().showView(IConsoleConstants.ID_CONSOLE_VIEW);
+    }
+    catch (PartInitException ex) {
+      logError("Can't init console", ex);
+    }
+    consoleStream = console.newMessageStream();
+    RED = Display.getDefault().getSystemColor(SWT.COLOR_RED);
   }
 
   /**
@@ -143,7 +172,7 @@ public class Log {
         return logLevel;
       }
     }
-    return LogLevel.INFO;
+    return null;
   }
 
   public static int getDebugOption(String key, int defaultValue) {
@@ -159,7 +188,11 @@ public class Log {
     }
   }
 
-  public static String getClassName(Object o) {
-    return String.format("[%s]", o == null ? "?" : o.getClass().getName());
+  public static boolean isDebug() {
+    return (getAcitveLogLevel() == LogLevel.DEBUG);
+  }
+
+  protected static LogLevel getAcitveLogLevel() {
+    return LOG_LEVEL_OPTIONS_FILE == null ? Prefs.getLogLevel() : LOG_LEVEL_OPTIONS_FILE;
   }
 }

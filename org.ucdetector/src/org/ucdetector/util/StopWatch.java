@@ -18,7 +18,7 @@ import org.ucdetector.Log;
  * Simple stop watch to measure performance
  */
 public class StopWatch {
-  private static final int MINIMUM_DURATION = Log.getDebugOption("org.ucdetector/debug/search/duration", 1000); //$NON-NLS-1$
+  private static final int MINIMUM_DURATION = 1000;// Log.getDebugOption("org.ucdetector/debug/search/duration", 1000); 
   private final String message;
   private long start = System.currentTimeMillis();
   private static final DecimalFormat DOUBLE_FORMAT = new DecimalFormat("0.00", new DecimalFormatSymbols(Locale.US)); //$NON-NLS-1$
@@ -39,7 +39,7 @@ public class StopWatch {
     long duration = System.currentTimeMillis() - start;
     start = System.currentTimeMillis();
     // traces for slow stuff
-    if (Log.DEBUG && duration > MINIMUM_DURATION) {
+    if (Log.isDebug() && duration > MINIMUM_DURATION) {
       StringBuilder sb = new StringBuilder();
       if (info != null) {
         sb.append(info).append(" "); //$NON-NLS-1$

@@ -83,7 +83,7 @@ public class UCDProgressMonitor implements IProgressMonitor {
   }
 
   public void subTask(String name) {
-    if (Log.DEBUG) {
+    if (Log.isDebug()) {
       Log.logDebug(/*"Task.subTask: " + */name);
     }
     else if (UCDetectorPlugin.isHeadlessMode()) {

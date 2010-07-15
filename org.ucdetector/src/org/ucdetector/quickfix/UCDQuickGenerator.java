@@ -28,7 +28,7 @@ public class UCDQuickGenerator implements IMarkerResolutionGenerator2 {
   public IMarkerResolution[] getResolutions(IMarker marker) {
     try {
       String markerType = marker.getType();
-      if (Log.DEBUG) {
+      if (Log.isDebug()) {
         Log.logDebug("UCDQuickFixer.getResolutions() for: " + markerType); //$NON-NLS-1$
       }
       List<IMarkerResolution> resolutions = new ArrayList<IMarkerResolution>();

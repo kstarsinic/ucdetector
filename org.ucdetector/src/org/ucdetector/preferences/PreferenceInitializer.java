@@ -16,6 +16,7 @@ import org.eclipse.core.runtime.Platform;
 import org.eclipse.core.runtime.preferences.AbstractPreferenceInitializer;
 import org.eclipse.jface.preference.IPreferenceStore;
 import org.ucdetector.Log;
+import org.ucdetector.Log.LogLevel;
 import org.ucdetector.UCDetectorPlugin;
 
 /**
@@ -66,6 +67,7 @@ public class PreferenceInitializer extends AbstractPreferenceInitializer {
     store.setDefault(Prefs.REPORT_CREATE_HTML, true);
     store.setDefault(Prefs.REPORT_CREATE_XML, false);
     store.setDefault(Prefs.REPORT_CREATE_TXT, false);
+    store.setDefault(Prefs.LOG_LEVEL, LogLevel.INFO.toString());
     // KEYWORDS ----------------------------------------------------------------
     store.setDefault(Prefs.ANALYZE_FINAL_METHOD, IGNORE.name());
     store.setDefault(Prefs.ANALYZE_FINAL_FIELD, IGNORE.name());

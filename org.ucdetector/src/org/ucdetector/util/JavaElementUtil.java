@@ -653,7 +653,7 @@ public class JavaElementUtil {
     if (javaElement == null) {
       return "null"; //$NON-NLS-1$
     }
-    return String.format("%s\t%s", getElementName(javaElement), Log.getClassName(javaElement)); //$NON-NLS-1$
+    return String.format("%s\t%s", getElementName(javaElement), getClassName(javaElement)); //$NON-NLS-1$
   }
 
   /**
@@ -858,6 +858,10 @@ public class JavaElementUtil {
       return hierarchy.getAllSupertypes(type);
     }
     return new IType[0];
+  }
+
+  public static String getClassName(Object o) {
+    return String.format("[%s]", o == null ? "?" : o.getClass().getName()); //$NON-NLS-1$//$NON-NLS-2$
   }
 
   /*

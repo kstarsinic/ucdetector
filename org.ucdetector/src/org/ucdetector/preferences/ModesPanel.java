@@ -166,7 +166,7 @@ class ModesPanel {
         result.add(modesFile.substring(0, modesFile.length() - MODES_FILE_TYPE.length()));
       }
     }
-    if (Log.DEBUG) {
+    if (Log.isDebug()) {
       Log.logDebug("Available modes are: %s", result); //$NON-NLS-1$
     }
     return result.toArray(new String[result.size()]);

@@ -96,7 +96,7 @@ public class SearchManager {
             fill(searchProblems.size(), 2),//
             JavaElementUtil.getTypeName(container.getType()), //
             UCDetectorPlugin.getNow());
-        if (Log.DEBUG) {
+        if (Log.isDebug()) {
           Log.logDebug(message);
         }
         else if (pos == 1 || pos % 10 == 0 || pos == typeContainers.size()) {
@@ -438,7 +438,7 @@ public class SearchManager {
     }
     // bug fix [ 2373808 ]: Classes found by text search should have no markers
     if (requestor.found > 0) {
-      if (Log.DEBUG) {
+      if (Log.isDebug()) {
         Log.logDebug("Matches found searching class name '%s' in text files", searchString); //$NON-NLS-1$
       }
       noRefTypes.add(type);

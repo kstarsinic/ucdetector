@@ -66,7 +66,7 @@ class CycleCalculator {
       Stack<TypeAndMatches> path = new Stack<TypeAndMatches>();
       IType startType = typeAndMatches.getRoot();
       searchCycles(startType, path, allCycles);
-      if (Log.DEBUG) {
+      if (Log.isDebug()) {
         int found = allCycles.size() - prevSize;
         Log.logDebug(found + " cycles found for " //$NON-NLS-1$
             + typeAndMatches.getRoot().getElementName() + " (including double cycles)"); //$NON-NLS-1$
@@ -120,7 +120,7 @@ class CycleCalculator {
         result.add(cycleToAdd);
       }
     }
-    if (Log.DEBUG) {
+    if (Log.isDebug()) {
       int removed = cyclesFound.size() - result.size();
       Log.logDebug("Removed double cycle: " + removed); //$NON-NLS-1$
     }

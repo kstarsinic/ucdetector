@@ -22,6 +22,7 @@ import org.eclipse.jdt.core.IType;
 import org.eclipse.jdt.core.JavaModelException;
 import org.eclipse.jface.preference.IPreferenceStore;
 import org.ucdetector.Log;
+import org.ucdetector.Log.LogLevel;
 import org.ucdetector.UCDetectorPlugin;
 import org.ucdetector.util.JavaElementUtil;
 
@@ -83,6 +84,8 @@ public final class Prefs {
   static final String REPORT_CREATE_HTML = ID + ".report.create.html";
   static final String REPORT_CREATE_XML = ID + ".report.create.xml";
   static final String REPORT_CREATE_TXT = ID + ".report.create.txt";
+  //
+  static final String LOG_LEVEL = ID + ".log.level";
   //
   public static final String INTERNAL = ID + ".internal";
   static final String MODE_NAME = INTERNAL + ".mode.name";
@@ -447,6 +450,10 @@ public final class Prefs {
 
   public static boolean isCreateReportTXT() {
     return getStore().getBoolean(REPORT_CREATE_TXT);
+  }
+
+  public static LogLevel getLogLevel() {
+    return LogLevel.valueOf(getString(LOG_LEVEL));
   }
 
   public static String getModeName() {
