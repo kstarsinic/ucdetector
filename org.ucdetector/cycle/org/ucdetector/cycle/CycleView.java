@@ -500,7 +500,7 @@ public class CycleView extends ViewPart { //
    * Compatibility: Copy class from org.eclipse.search2.internal.ui.basic.views.ExpandAllAction.ExpandAllAction()
    * because of API changes from eclipse 3.2 to 3.3
    */
-  private class ExpandAllAction extends Action {
+  private static class ExpandAllAction extends Action {
 
     private TreeViewer fViewer;
 

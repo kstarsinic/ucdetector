@@ -35,7 +35,7 @@ public final class Messages extends NLS {
       return (String) field.get(null);
     }
     catch (Exception ex) {
-      Log.logError("Can't get string for field: " + name, ex);
+      // Log.logError("Can't get string for field: " + name, ex);
       return defaultString;
     }
   }

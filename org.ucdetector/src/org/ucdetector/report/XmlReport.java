@@ -49,6 +49,7 @@ import org.eclipse.osgi.util.NLS;
 import org.ucdetector.Log;
 import org.ucdetector.Messages;
 import org.ucdetector.UCDetectorPlugin;
+import org.ucdetector.preferences.PreferenceInitializer;
 import org.ucdetector.preferences.Prefs;
 import org.ucdetector.util.JavaElementUtil;
 import org.ucdetector.util.MarkerFactory;
@@ -370,7 +371,7 @@ public class XmlReport implements IUCDetectorReport {
     if (!Prefs.isWriteReportFile()) {
       return;
     }
-    File reportDir = new File(Prefs.getReportDir());
+    File reportDir = new File(PreferenceInitializer.getReportDir());
     String baseFileName = getReportNumberName(reportDir);
     File htmlFile = new File(reportDir, baseFileName + ".html");
     String reportPath = reportDir.getAbsolutePath();
@@ -404,9 +405,14 @@ public class XmlReport implements IUCDetectorReport {
 
   private void writeTextFile(File file) throws Exception, IOException {
     String text = transformToText(doc);
-    FileWriter fileWriter = new FileWriter(file);
-    fileWriter.write(text);
-    fileWriter.close();
+    FileWriter fileWriter = null;
+    try {
+      fileWriter = new FileWriter(file);
+      fileWriter.write(text);
+    }
+    finally {
+      UCDetectorPlugin.closeSave(fileWriter);
+    }
     Log.logInfo("Wrote file= " + file.getCanonicalPath());
   }
 

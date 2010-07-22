@@ -23,7 +23,7 @@ import org.ucdetector.Messages;
 import org.ucdetector.UCDetectorPlugin;
 import org.ucdetector.iterator.AbstractUCDetectorIterator;
 import org.ucdetector.iterator.UCDetectorIterator;
-import org.ucdetector.preferences.Prefs;
+import org.ucdetector.preferences.PreferenceInitializer;
 import org.ucdetector.search.UCDProgressMonitor;
 import org.ucdetector.util.JavaElementUtil;
 
@@ -80,7 +80,7 @@ public class UCDetectorAction extends AbstractUCDetectorAction {
     StringBuilder mes = new StringBuilder();
     mes.append(NLS.bind(Messages.UCDetectorAction_ResultMessage, String.valueOf(created)));
     //
-    String reportFolder = Prefs.getReportDir();
+    String reportFolder = PreferenceInitializer.getReportDir();
     if (reportFolder != null && created > 0) {
       mes.append(". "); //$NON-NLS-1$
       String s = NLS.bind(Messages.UCDetectorAction_ResultReport, reportFolder);

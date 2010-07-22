@@ -7,7 +7,6 @@
  */
 package org.ucdetector.preferences;
 
-import java.io.File;
 import java.util.regex.Pattern;
 import java.util.regex.PatternSyntaxException;
 
@@ -425,20 +424,6 @@ public final class Prefs {
    */
   public static boolean isCheckUseFinalMethod() {
     return WarnLevel.IGNORE != getCheckUseFinalMethod();
-  }
-
-  // REPORT --------------------------------------------------------------------
-  /**
-   * @return report directory
-   */
-  public static String getReportDir() {
-    String dir = getString(REPORT_DIR);
-    if (dir.length() == 0) {
-      dir = PreferenceInitializer.getReportDirDefault();
-    }
-    File reportDir = new File(dir);
-    reportDir.mkdirs();
-    return reportDir.getAbsolutePath();
   }
 
   public static boolean isCreateReportHTML() {

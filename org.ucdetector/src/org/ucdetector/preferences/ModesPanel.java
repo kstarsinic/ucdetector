@@ -123,7 +123,6 @@ class ModesPanel {
       @Override
       public void widgetSelected(SelectionEvent evt) {
         updateModeButtons();
-        String modesFileName = null;
         int index = getCombo().getSelectionIndex();
         if (index == -1) {
           // ignore
@@ -135,12 +134,12 @@ class ModesPanel {
         else if (index < Mode.values().length) {
           // built-in
           Mode builtInMode = Mode.values()[index];
-          modesFileName = builtInMode + MODES_FILE_TYPE;
+          String modesFileName = builtInMode + MODES_FILE_TYPE;
           setPreferences(false, modesFileName);
         }
         else {
           // custom
-          modesFileName = setCustomPreferences();
+          setCustomPreferences();
         }
       }
     });
@@ -192,7 +191,7 @@ class ModesPanel {
     page.performOk();
     if (newModeName != null && newModeName.trim().length() > 0) {
       // set default, when report directory is missing
-      Prefs.getStore().setValue(Prefs.REPORT_DIR, Prefs.getReportDir());
+      Prefs.getStore().setValue(Prefs.REPORT_DIR, PreferenceInitializer.getReportDir());
       saveMode(newModeName);
       Log.logInfo("Added new mode: %s", newModeName); //$NON-NLS-1$
       getCombo().setItems(getModes());

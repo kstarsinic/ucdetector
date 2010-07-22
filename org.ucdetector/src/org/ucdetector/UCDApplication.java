@@ -12,8 +12,8 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 import java.util.Map.Entry;
+import java.util.Set;
 
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.IResource;
@@ -30,6 +30,7 @@ import org.eclipse.jdt.core.IJavaProject;
 import org.eclipse.jdt.core.JavaCore;
 import org.osgi.service.prefs.BackingStoreException;
 import org.ucdetector.iterator.UCDetectorIterator;
+import org.ucdetector.preferences.PreferenceInitializer;
 import org.ucdetector.preferences.Prefs;
 import org.ucdetector.search.UCDProgressMonitor;
 
@@ -135,7 +136,7 @@ public class UCDApplication implements IApplication {
     catch (BackingStoreException ex) {
       Log.logError("Can't get preferences for node: " + node, ex);
     }
-    Log.logInfo("Report directory is: " + Prefs.getReportDir());
+    Log.logInfo("Report directory is: " + PreferenceInitializer.getReportDir());
   }
 
   private boolean hasOptionValue(String[] sArgs, int i) {

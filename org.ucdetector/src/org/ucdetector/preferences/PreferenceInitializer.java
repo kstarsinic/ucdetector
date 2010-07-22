@@ -34,7 +34,7 @@ public class PreferenceInitializer extends AbstractPreferenceInitializer {
   private static final String ANNOATIONS_FILTER = "";
   // feature 2996537: Eclipse Plug-in/Extension detection: added MANIFEST.MF
   private static final String FILE_PATTERN_LITERAL_SEARCH = "*.xml,MANIFEST.MF,";
-  static final String REPORT_DEFAULT_DIR = "ucdetector_reports";
+  private static final String REPORT_DEFAULT_DIR = "ucdetector_reports";
 
   @Override
   public void initializeDefaultPreferences() {
@@ -91,7 +91,21 @@ public class PreferenceInitializer extends AbstractPreferenceInitializer {
     store.setDefault(Prefs.MODE_NAME, ModesPanel.Mode.Default.toStringLocalized());
   }
 
-  public static String getReportDirDefault() {
+  // REPORT --------------------------------------------------------------------
+  /**
+   * @return report directory
+   */
+  public static String getReportDir() {
+    String dir = Prefs.getString(Prefs.REPORT_DIR);
+    if (dir.length() == 0) {
+      dir = getReportDirDefault();
+    }
+    File reportDir = new File(dir);
+    reportDir.mkdirs();
+    return reportDir.getAbsolutePath();
+  }
+
+  static String getReportDirDefault() {
     String reportDir;
     try {
       File workspaceDir = Platform.getLocation().toFile();

@@ -265,7 +265,7 @@ public class UCDetectorPreferencePage extends FieldEditorPreferencePage implemen
         p = (p == null ? Program.findProgram("htm") : p); //$NON-NLS-1$
         if (p != null) {
           // java 6: Desktop.getInstance().open(file);
-          p.execute(Prefs.getReportDir());
+          p.execute(PreferenceInitializer.getReportDir());
         }
       }
     });
