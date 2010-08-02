@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<site>
+   <feature url="features/org.ucdetector.feature_1.5.3.jar" id="org.ucdetector.feature" version="1.5.3">
+      <category name="org.ucdetector"/>
+   </feature>
+   <category-def name="org.ucdetector" label="org.ucdetector"/>
+</site>
