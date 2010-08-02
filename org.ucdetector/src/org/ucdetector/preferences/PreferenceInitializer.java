@@ -60,6 +60,7 @@ public class PreferenceInitializer extends AbstractPreferenceInitializer {
     // CLASS NAMES IN FILES ----------------------------------------------------
     store.setDefault(Prefs.ANALYZE_LITERALS_CHECK, true);
     store.setDefault(Prefs.ANALYZE_CHECK_FULL_CLASS_NAME, true);
+    store.setDefault(Prefs.ANALYZE_CHECK_SIMPLE_CLASS_NAME, false);
     store.setDefault(Prefs.ANALYZE_LITERALS, FILE_PATTERN_LITERAL_SEARCH);
     // CYCLE -------------------------------------------------------------------
     store.setDefault(Prefs.CYCLE_DEPTH, Prefs.CYCLE_DEPTH_DEFAULT);

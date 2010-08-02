@@ -117,7 +117,9 @@ public final class Messages extends NLS {
   public static String PreferencePage_DetectTestOnly; // NO_UCD
   public static String PreferencePage_DetectTestOnlyToolTip; // NO_UCD
   public static String PreferencePage_CheckFullClassName; // NO_UCD
+  public static String PreferencePage_CheckSimleClassName; // NO_UCD
   public static String PreferencePage_CheckFullClassNameToolTip; // NO_UCD
+  public static String PreferencePage_CheckSimpleClassNameToolTip; // NO_UCD
   public static String PreferencePage_LiteralsCheck; // NO_UCD
   public static String PreferencePage_LiteralsCheckToolTip; // NO_UCD
   public static String PreferencePage_Literals; // NO_UCD

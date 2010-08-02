@@ -282,8 +282,8 @@ public class SearchManager {
     int found = searchImpl(field, searchInfo, false);
     watch.end("    searchImpl"); //$NON-NLS-1$
     if (found > 0 && !hasReadAccess(field)) {
-      String message = NLS.bind(Messages.MarkerFactory_MarkerReferenceFieldNeverRead, new Object[] { JavaElementUtil
-          .getElementName(field) });
+      String message = NLS.bind(Messages.MarkerFactory_MarkerReferenceFieldNeverRead,
+          new Object[] { JavaElementUtil.getElementName(field) });
       // found=0 needed here, to create reference marker!
       markerFactory.createReferenceMarker(field, message, line, 0);
     }
@@ -403,47 +403,50 @@ public class SearchManager {
     updateMonitorMessage(type, Messages.SearchManager_SearchClassNameAsLiteral, searchInfo);
     FileTextSearchScope scope = FileTextSearchScope.newWorkspaceScope(Prefs.getFilePatternLiteralSearch(), /*exclude bin dir */
     false);
-    String searchString;
-    boolean searchFullClassName = Prefs.isUCDetectionInLiteralsFullClassName();
-    if (searchFullClassName) {
-      searchString = type.getFullyQualifiedName();
+    List<String> searchStrings = new ArrayList<String>();
+    if (Prefs.isUCDetectionInLiteralsFullClassName()) {
+      String fullClassName = type.getFullyQualifiedName();
+      searchStrings.add(fullClassName);
+      Log.logDebug("Text search of full classname '%s'", fullClassName);// //$NON-NLS-1$ 
     }
-    else {
-      searchString = type.getElementName();
+    if (Prefs.isUCDetectionInLiteralsSimpleClassName()) {
+      String simpleClassName = type.getElementName();
+      searchStrings.add(simpleClassName);
+      Log.logDebug("Text search of simple classname '%s'", simpleClassName);// //$NON-NLS-1$ 
     }
-
-    if (DEBUG) {
-      Log.logDebug("Text search of %s classname '%s'", searchFullClassName ? "full" : "simple", searchString);// //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
-    }
-    if (searchString == null || searchString.length() == 0) {
-      return 0;
-    }
-    Pattern searchPattern = Pattern.compile(Pattern.quote(searchString));
-    UCDFileSearchRequestor requestor = new UCDFileSearchRequestor(searchString, visibilityHandler);
-    try {
-      // If we use monitor here, progressbar is very confusing!
-      if (UCDetectorPlugin.isHeadlessMode()) {
-        // special search without UI stuff, which fails in headless mode
-        new UCDTextSearchVisitor(requestor, searchPattern).search(scope, null);
+    int requestorFound = 0;
+    for (String searchString : searchStrings) {
+      if (searchString == null || searchString.length() == 0) {
+        continue;
       }
-      else {
-        TextSearchEngine.create().search(scope, requestor, searchPattern, null);
+      Pattern searchPattern = Pattern.compile(Pattern.quote(searchString));
+      UCDFileSearchRequestor requestor = new UCDFileSearchRequestor(searchString, visibilityHandler);
+      try {
+        // If we use monitor here, progressbar is very confusing!
+        if (UCDetectorPlugin.isHeadlessMode()) {
+          // special search without UI stuff, which fails in headless mode
+          new UCDTextSearchVisitor(requestor, searchPattern).search(scope, null);
+        }
+        else {
+          TextSearchEngine.create().search(scope, requestor, searchPattern, null);
+        }
       }
-    }
-    catch (OperationCanceledException e) {
-      // ignore
-    }
-    catch (OutOfMemoryError e) {
-      UCDetectorPlugin.handleOutOfMemoryError(e);
-    }
-    // bug fix [ 2373808 ]: Classes found by text search should have no markers
-    if (requestor.found > 0) {
-      if (Log.isDebug()) {
-        Log.logDebug("Matches found searching class name '%s' in text files", searchString); //$NON-NLS-1$
+      catch (OperationCanceledException e) {
+        // ignore
       }
-      noRefTypes.add(type);
+      catch (OutOfMemoryError e) {
+        UCDetectorPlugin.handleOutOfMemoryError(e);
+      }
+      // bug fix [ 2373808 ]: Classes found by text search should have no markers
+      if (requestor.found > 0) {
+        if (Log.isDebug()) {
+          Log.logDebug("Matches found searching class name '%s' in text files", searchString); //$NON-NLS-1$
+        }
+        noRefTypes.add(type);
+      }
+      requestorFound += requestor.found;
     }
-    return requestor.found;
+    return requestorFound;
   }
 
   /**

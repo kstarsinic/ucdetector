@@ -190,15 +190,23 @@ public class UCDetectorPreferencePage extends FieldEditorPreferencePage implemen
     Composite spacer = createGroup(parentGroups, Messages.PreferencePage_GroupFileSearch);
     SynchBooleanFieldEditor analyzeLiteralsCheck = new SynchBooleanFieldEditor(spacer);
     this.addField(analyzeLiteralsCheck);
+    //
     BooleanFieldEditor checkFullClassName = new BooleanFieldEditor(Prefs.ANALYZE_CHECK_FULL_CLASS_NAME,
         Messages.PreferencePage_CheckFullClassName, BooleanFieldEditor.SEPARATE_LABEL, spacer);
     Label label = checkFullClassName.getLabelControl(spacer);
     label.setToolTipText(Messages.PreferencePage_CheckFullClassNameToolTip);
     this.addField(checkFullClassName);
+    //
+    BooleanFieldEditor checkSimpleClassName = new BooleanFieldEditor(Prefs.ANALYZE_CHECK_SIMPLE_CLASS_NAME,
+        Messages.PreferencePage_CheckSimleClassName, BooleanFieldEditor.SEPARATE_LABEL, spacer);
+    label = checkSimpleClassName.getLabelControl(spacer);
+    label.setToolTipText(Messages.PreferencePage_CheckSimpleClassNameToolTip);
+    this.addField(checkSimpleClassName);
+    //
     StringFieldEditor analyzeLiterals = appendText(Prefs.ANALYZE_LITERALS, Messages.PreferencePage_Literals, spacer,
         Messages.PreferencePage_LiteralsToolTip);
     analyzeLiteralsCheck.setAnalyzeLiterals(analyzeLiterals);
-    analyzeLiteralsCheck.setCheckFullClassName(checkFullClassName);
+    analyzeLiteralsCheck.setCheckFullClassName(checkFullClassName, checkSimpleClassName);
   }
 
   private void createCylceGroup(Composite parentGroups) {
@@ -349,7 +357,7 @@ public class UCDetectorPreferencePage extends FieldEditorPreferencePage implemen
   private static class SynchBooleanFieldEditor extends BooleanFieldEditor {
     private final Composite parent;
     private StringFieldEditor analyzeLiterals;
-    private BooleanFieldEditor checkFullClassName;
+    private BooleanFieldEditor[] checkXClassNames;
     private final Button check;
 
     SynchBooleanFieldEditor(Composite parent) {
@@ -364,8 +372,8 @@ public class UCDetectorPreferencePage extends FieldEditorPreferencePage implemen
       this.analyzeLiterals = analyzeLiterals;
     }
 
-    void setCheckFullClassName(BooleanFieldEditor checkFullClassName) {
-      this.checkFullClassName = checkFullClassName;
+    void setCheckFullClassName(BooleanFieldEditor... checkXClassNames) {
+      this.checkXClassNames = checkXClassNames;
     }
 
     /** Hack to avoid ugly layout problems */
@@ -388,7 +396,9 @@ public class UCDetectorPreferencePage extends FieldEditorPreferencePage implemen
     private void synchronizeAnalyzeLiteralsCheck() {
       if (check.isEnabled()) { // needed because modes panel may set enabled checkBox
         analyzeLiterals.setEnabled(getBooleanValue(), parent);
-        checkFullClassName.setEnabled(getBooleanValue(), parent);
+        for (BooleanFieldEditor checkXClassName : checkXClassNames) {
+          checkXClassName.setEnabled(getBooleanValue(), parent);
+        }
       }
     }
   }

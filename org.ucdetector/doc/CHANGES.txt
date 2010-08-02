@@ -2,11 +2,12 @@ UCDetector 1.6.0 from 2010-??-??:
 Bugfixes:
  - fixed missing QuickFix icons
  - [ 3025571 ] Exception loading modes: Malformed \uxxxx encoding
- 
 
 New features:
  - [ 2810803 ] Added again: Combobox to change all visibility combos
- - Rename modes
+ - [ 3014516 ] Search class name in file: Full AND simple
+ - New button: Rename mode
+ - New option: Log to Eclipse Console View
  
 // -----------------------------------------------------------------------------
 UCDetector 1.5.0 from 2010-06-10:

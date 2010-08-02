@@ -55,6 +55,7 @@ public final class Prefs {
   static final String ANALYZE_FIELDS = ID + ".member";
   static final String ANALYZE_LITERALS_CHECK = ID + ".literalsCheck";
   static final String ANALYZE_CHECK_FULL_CLASS_NAME = ID + ".checkFullClassName";
+  static final String ANALYZE_CHECK_SIMPLE_CLASS_NAME = ID + ".checkSimpleClassName";
   static final String ANALYZE_LITERALS = ID + ".literals";
   // WARN_LIMIT ----------------------------------------------------------------
   static final String WARN_LIMIT = ID + ".warnLimit";
@@ -310,6 +311,13 @@ public final class Prefs {
    */
   public static boolean isUCDetectionInLiteralsFullClassName() {
     return getStore().getBoolean(ANALYZE_CHECK_FULL_CLASS_NAME) && getString(ANALYZE_LITERALS).length() > 0;
+  }
+
+  /**
+   * @return <code>true</code> if we should detect SIMPLE class names in literals as well
+   */
+  public static boolean isUCDetectionInLiteralsSimpleClassName() {
+    return getStore().getBoolean(ANALYZE_CHECK_SIMPLE_CLASS_NAME) && getString(ANALYZE_LITERALS).length() > 0;
   }
 
   // WARN GROUP ----------------------------------------------------------------
