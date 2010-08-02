@@ -480,12 +480,13 @@ public class CycleView extends ViewPart { //
       }
     }
 
-    // TODO 2010-06-10: Broken: select previous/next match!
     private void internalSetSelection(TreeItem treeItem) {
       if (treeItem != null) {
         Object data = treeItem.getData();
         if (data != null) {
           viewer.setSelection(new StructuredSelection(data), true);
+          // open previous/next match!
+          openAction.run();
         }
       }
     }
