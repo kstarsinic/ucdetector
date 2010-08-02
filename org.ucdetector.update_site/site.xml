@@ -4,9 +4,9 @@
       UCDetector update site
    </description>
    <feature url="features/org.ucdetector.feature_1.5.3.jar" id="org.ucdetector.feature" version="1.5.3">
-      <category name="ucd_category"/>
+      <category name="org.ucdetector"/>
    </feature>
-   <category-def name="ucd_category" label="UCDetector Category">
+   <category-def name="org.ucdetector" label="UCDetector Category">
       <description>
          Category for UCDetector (Unnecessary Code Detector)
       </description>
