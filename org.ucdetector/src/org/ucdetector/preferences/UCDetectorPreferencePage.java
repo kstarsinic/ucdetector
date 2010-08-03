@@ -266,6 +266,7 @@ public class UCDetectorPreferencePage extends FieldEditorPreferencePage implemen
     addLineHack(spacer);
     Button ok = new Button(spacer, SWT.PUSH);
     ok.setText(Messages.PreferencePage_BrowseReportsDir);
+    ok.setToolTipText(Messages.PreferencePage_BrowseReportsDirToolTip);
     ok.addSelectionListener(new SelectionAdapter() {
       @Override
       public void widgetSelected(SelectionEvent e) {
