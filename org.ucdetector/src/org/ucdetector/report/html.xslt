@@ -171,7 +171,7 @@ ECLIPSE_HOME/dropins/org.ucdetector_*.jar/org/ucdetector/report/html.xslt
 							</td>
 							<!-- NR -->
 							<td align="right">
-								<xsl:value-of select="nr"/>
+								<xsl:value-of select="@nr"/>
 							</td>
 							<!-- LEVEL
 							<td>

@@ -154,8 +154,9 @@ public class XmlReport implements IUCDetectorReport {
     Element marker = null;
     try {
       markerCount++;
-      markers.appendChild(doc.createComment(" === Marker number " + markerCount));
+      //markers.appendChild(doc.createComment(" === Marker number " + markerCount));
       marker = doc.createElement("marker");
+      marker.setAttribute("nr", String.valueOf(markerCount));
       markers.appendChild(marker);
       IMember javaElement = reportParam.getJavaElement();
       IResource resource = javaElement.getResource();
@@ -235,7 +236,7 @@ public class XmlReport implements IUCDetectorReport {
         // NODE: NoReferenceExample.java
         appendChild(marker, "resourceName", resource.getName());
       }
-      appendChild(marker, "nr", String.valueOf(markerCount));
+      // appendChild(marker, "nr", String.valueOf(markerCount));
     }
     catch (Throwable ex) {
       Log.logError("XML problems", ex);
