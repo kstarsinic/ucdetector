@@ -2,10 +2,10 @@
 <contexts>
    <context id="ucd_context_id">
       <description>UCDetector Unnecessary Code Detector.</description>
-      <topic href="http://www.ucdetector.org/index.html" label="UCDetector" />
+      <topic href="http://www.ucdetector.org/index.html" label="UCDetector (online)" />
    </context>
    <context id="ucd_context_id_preferences">
       <description>UCDetector preferences</description>
-      <topic href="http://www.ucdetector.org/preferences.html" label="Preferences" />
+      <topic href="http://www.ucdetector.org/preferences.html" label="Preferences (online)" />
    </context>
 </contexts>
