@@ -1,5 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<site>
+<site
+pack200="true" 
+digestURL="http://ucdetector.sourceforge.net/update"
+>
    <description name="UCDetector update site" url="http://ucdetector.sourceforge.net/update">
       UCDetector update site
    </description>
@@ -7,6 +10,8 @@
       <category name="UCDetector"/>
    </feature>
    <category-def name="UCDetector" label="UCDetector">
-      <description>UCDetector (Unnecessary Code Detector)</description>
+      <description>
+         UCDetector (Unnecessary Code Detector)
+      </description>
    </category-def>
 </site>
