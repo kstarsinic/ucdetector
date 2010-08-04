@@ -13,11 +13,10 @@
     <property name="jar.name" location="org.ucdetector_1.5.3.jar" />
 
     <!-- LAUNCHER -->
-    <echo>Rename eclipse launcher (HACK to create $LAUNCHER)</echo>
-    <copy tofile="${ECLIPSE_HOME}/plugins/org.eclipse.equinox.launcher.jar" verbose="true">
-      <fileset dir="${ECLIPSE_HOME}/plugins" includes="**/org.eclipse.equinox.launcher_*.jar" />
-    </copy>
-    <property name="LAUNCHER" location="${ECLIPSE_HOME}/plugins/org.eclipse.equinox.launcher.jar" />
+    <pathconvert property="LAUNCHER">
+      <fileset dir="${ECLIPSE_HOME}/plugins" includes="org.eclipse.equinox.launcher_*.jar" />
+    </pathconvert>
+    <echo>LAUNCHER = '${LAUNCHER}' - when LAUNCHER is empty, create new property 'LAUNCHER'</echo>
 
     <!-- 1. Step -->
     <echo>1. For each JAR file in question, "condition" or "repack" the JAR file to prepare it for the second part.</echo>

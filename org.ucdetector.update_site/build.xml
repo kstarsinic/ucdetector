@@ -2,9 +2,9 @@
 <project name="UCDetectorUpdate Site" default="send" basedir=".">
   <description>Create UCDetector Update Site</description>
 
-  <!-- ===================================================================== -->
-  <!--                      SEND                                             -->
-  <!-- ===================================================================== -->
+  <!-- =====================================================================
+       SEND
+       ===================================================================== -->
   <target name="send" description="Send Update Site files to sourceforge">
     <echo>ant.home = ${ant.home}</echo>
     <property name="ucd.props" location="${user.home}/.ucdetector.properties" />
