@@ -18,7 +18,9 @@
     </pathconvert>
     <echo>LAUNCHER = '${LAUNCHER}' - when LAUNCHER is empty, create new property 'LAUNCHER'</echo>
 
-    <!-- 1. Step -->
+    <!-- Step 4 and 5 -->
+
+    <!-- 1. Part -->
     <echo>1. For each JAR file in question, "condition" or "repack" the JAR file to prepare it for the second part.</echo>
     <java jar="${LAUNCHER}" fork="true" failonerror="true">
       <arg line="-debug -consolelog" />
@@ -27,7 +29,7 @@
       <arg line="${basedir}/plugins/${jar.name}" />
     </java>
 
-    <!-- 2. Step -->
+    <!-- 2. Part -->
     <echo>2. Generate .jar.pack.gz files from a set of conditioned JAR files. Also generate digest.zip</echo>
     <java jar="${LAUNCHER}" fork="true" failonerror="true">
       <arg line="-debug -consolelog" />
