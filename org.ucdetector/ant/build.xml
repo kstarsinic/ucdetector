@@ -10,9 +10,9 @@
 
   <property name="build.properties" location="build.properties" />
 
-  <!-- ===================================================================== -->
-  <!-- DETECT                                                                -->
-  <!-- ===================================================================== -->
+  <!-- =====================================================================
+       DETECT
+       ===================================================================== -->
   <target name="detect" description="Run UCDetector using java">
     <property file="build.properties" />
     <echo>
@@ -25,16 +25,16 @@ buildtype    = ${ucd.buildtype}
 ucdoption    = ${ucd.options}
 --------------------------------------------------------------------------------
 </echo>
-    <!-- Use next lines, to show more properties
-    <property environment="env"/>
-    <echoproperties /> 
-    -->
+    <!-- Show more properties: <property environment="env"/> <echoproperties /> -->
     <available file="${build.properties}" property="build.properties.present" />
     <antcall target="create-build.properties" />
 
-    <ant target="copy-launcher" inheritrefs="true" />
-    <property name="LAUNCHER"
-              location="${ECLIPSE_HOME}/plugins/org.eclipse.equinox.launcher.jar" />
+    <!-- LAUNCHER -->
+    <pathconvert property="LAUNCHER">
+      <fileset dir="${ECLIPSE_HOME}/plugins" includes="org.eclipse.equinox.launcher_*.jar" />
+    </pathconvert>
+    <echo>LAUNCHER = '${LAUNCHER}' - when LAUNCHER is empty, create new property 'LAUNCHER'</echo>
+
     <java jar="${LAUNCHER}" fork="true">
       <arg line="-application org.ucdetector.ucd" />
       <arg line="-consolelog" />
@@ -46,34 +46,18 @@ ucdoption    = ${ucd.options}
     </java>
   </target>
 
-  <!-- ===================================================================== -->
-  <!-- CREATE-BUILD.PROPERTIES                                               -->
-  <!-- ===================================================================== -->
+  <!-- =====================================================================
+       CREATE-BUILD.PROPERTIES
+       ===================================================================== -->
   <target name="create-build.properties" unless="build.properties.present">
     <copy file="build.properties_template" tofile="${build.properties}" />
     <echo>Created ${build.properties}</echo>
     <fail>Please edit new file ${build.properties} ant start build again!</fail>
   </target>
-
-  <!-- ===================================================================== -->
-  <!-- COPY LAUNCHER                                                         -->
-  <!-- ===================================================================== -->
-  <target name="copy-launcher" unless="LAUNCHER" description="copy">
-    <!--  Hack from 
-      http://wiki.eclipse.org/Starting_Eclipse_Commandline_With_Equinox_Launcher
-      get path to equinox jar inside ${eclipse.home} folder (copy/rename actual jar) 
-    -->
-    <copy tofile="${ECLIPSE_HOME}/plugins/org.eclipse.equinox.launcher.jar"
-          verbose="true">
-      <fileset dir="${ECLIPSE_HOME}/plugins"
-               includes="**/org.eclipse.equinox.launcher_*.jar" />
-    </copy>
-  </target>
 </project>
-
-<!-- ==================================================================== -->
-<!-- DETECT 2                                                             -->
-<!-- ==================================================================== 
+  <!-- =====================================================================
+       DETECT 2
+       =====================================================================
   <target name="detect-exe"
           description="Run UCDetector using eclipse executable">
     <property name="EXCECUTABLE" location="/opt/eclipse-3.4/eclipse" />

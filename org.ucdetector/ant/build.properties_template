@@ -22,12 +22,6 @@ ECLIPSE_HOME=
 
 
 # ==============================================================================
-# uncomment next line, to avoid ant script copy/rename launcher.jar
-# ==============================================================================
-#LAUNCHER=${ECLIPSE_HOME}/plugins/org.eclipse.equinox.launcher_1.0.0.v20070606.jar
-
-
-# ==============================================================================
 # Command line option: -debug
 # remove, for less logging
 # ==============================================================================
