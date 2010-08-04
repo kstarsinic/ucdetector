@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project name="UCDetectorUpdate Site" default="opt" basedir=".">
+<project name="UCDetectorUpdate Site" default="send" basedir=".">
   <description>Create UCDetector Update Site</description>
 
   <!-- ===================================================================== -->
@@ -24,36 +24,6 @@
       </fileset>
     </scp>
     <echo>Finished sending udpate site.</echo>
-  </target>
-
-  <!-- =====================================================================
-       dist
-       ===================================================================== -->
-  <!-- http://wiki.eclipse.org/Update_Site_Optimization -->
-  <target name="opt" description="Site Optimizer">
-    <property name="ECLIPSE_HOME" location="/opt/eclipse-3.6" />
-    <copy tofile="${ECLIPSE_HOME}/plugins/org.eclipse.equinox.launcher.jar" verbose="true">
-      <fileset dir="${ECLIPSE_HOME}/plugins" includes="**/org.eclipse.equinox.launcher_*.jar" />
-    </copy>
-    <property name="LAUNCHER" location="${ECLIPSE_HOME}/plugins/org.eclipse.equinox.launcher.jar" />
-
-    <java jar="${LAUNCHER}" fork="true" failonerror="true" maxmemory="512m">
-      <arg line="-debug -consolelog" />
-      <arg line="-application org.eclipse.update.core.siteOptimizer" />
-      <arg line="-jarProcessor -verbose -processAll -repack -outputDir ${basedir}/plugins" />
-      <arg line="${basedir}/plugins/org.ucdetector_1.5.3.jar" />
-    </java>
-
-    <java jar="${LAUNCHER}" fork="true" failonerror="true" maxmemory="512m">
-      <arg line="-debug -consolelog" />
-      <arg line="-application org.eclipse.update.core.siteOptimizer" />
-      <arg line="-digestBuilder" />
-      <arg line="-digestOutputDir=${basedir}" />
-      <arg line="-siteXML=${basedir}/site.xml" />
-      <arg line="-jarProcessor -verbose -pack -outputDir ${basedir} ${basedir}" />
-    </java>
-    <!--
-    -->
   </target>
 </project>
 <!--

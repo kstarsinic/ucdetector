@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project name="UCDetectorUpdate Site" default="optimize" basedir=".">
+  <description>Prepare UCDetector p2 Update Site</description>
+
+  <!-- =====================================================================
+       UPDATE SITE OPTIMIZATION
+       http://wiki.eclipse.org/Update_Site_Optimization
+       http://plosquare.blogspot.com/2009/05/migrating-eclipse-update-sites-to-p2.html
+       ===================================================================== -->
+  <target name="optimize" description="Site Optimizer">
+    <!-- CUSTOM -->
+    <property name="ECLIPSE_HOME" location="/opt/eclipse-3.6" />
+    <property name="jar.name" location="org.ucdetector_1.5.3.jar" />
+
+    <!-- LAUNCHER -->
+    <echo>Rename eclipse launcher (HACK to create $LAUNCHER)</echo>
+    <copy tofile="${ECLIPSE_HOME}/plugins/org.eclipse.equinox.launcher.jar" verbose="true">
+      <fileset dir="${ECLIPSE_HOME}/plugins" includes="**/org.eclipse.equinox.launcher_*.jar" />
+    </copy>
+    <property name="LAUNCHER" location="${ECLIPSE_HOME}/plugins/org.eclipse.equinox.launcher.jar" />
+
+    <!-- 1. Step -->
+    <echo>1. For each JAR file in question, "condition" or "repack" the JAR file to prepare it for the second part.</echo>
+    <java jar="${LAUNCHER}" fork="true" failonerror="true">
+      <arg line="-debug -consolelog" />
+      <arg line="-application org.eclipse.update.core.siteOptimizer" />
+      <arg line="-jarProcessor -verbose -processAll -repack -outputDir ${basedir}/plugins" />
+      <arg line="${basedir}/plugins/${jar.name}" />
+    </java>
+
+    <!-- 2. Step -->
+    <echo>2. Generate .jar.pack.gz files from a set of conditioned JAR files. Also generate digest.zip</echo>
+    <java jar="${LAUNCHER}" fork="true" failonerror="true">
+      <arg line="-debug -consolelog" />
+      <arg line="-application org.eclipse.update.core.siteOptimizer" />
+      <arg line="-digestBuilder" />
+      <arg line="-digestOutputDir=${basedir}" />
+      <arg line="-siteXML=${basedir}/site.xml" />
+      <arg line="-jarProcessor -verbose -pack -outputDir ${basedir} ${basedir}" />
+    </java>
+  </target>
+</project>
