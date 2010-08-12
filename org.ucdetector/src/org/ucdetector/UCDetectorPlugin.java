@@ -154,6 +154,7 @@ public class UCDetectorPlugin extends AbstractUIPlugin {
    */
   @Override
   public void stop(BundleContext context) throws Exception {
+    Log.logInfo("Stopping UCDetector Plug-In");
     super.stop(context);
     UCDetectorPlugin.plugin = null;
   }
