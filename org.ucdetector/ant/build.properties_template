@@ -6,17 +6,17 @@
 #
 # ~ does not work on Linux. Use ${user.home} instead!
 # ==============================================================================
-# WORKSPACE=C:/ucdetector_workspace
-# WORKSPACE=/home/ucdetector/workspace
+# WORKSPACE=C:/workspaces/ucdetector-headless
+# WORKSPACE=/home/ucdetector/workspace-headless
 # ==============================================================================
-WORKSPACE=${user.home}/workspace
+WORKSPACE=${user.home}/workspace-headless
 
 
 # ==============================================================================
 # Directory of eclipse executable
 # ==============================================================================
-# ECLIPSE_HOME=/opt/eclipse-3.3-clean
-# ECLIPSE_HOME=C:/eclipse/eclipse-3.3
+# ECLIPSE_HOME=/opt/eclipse-3.5-headless
+# ECLIPSE_HOME=C:/eclipse/eclipse-3.5-headless
 # ==============================================================================
 ECLIPSE_HOME=
 
@@ -59,6 +59,9 @@ ucd.buildtype=
 # ==============================================================================
 # ucd.options=warnLimit=1,finalMethod=IGNORE
 # ==============================================================================
-ucd.options=
+ucd.options=report.create.html=true,\
+            report.create.xml=true,\
+            report.create.txt=true
+
 
 
