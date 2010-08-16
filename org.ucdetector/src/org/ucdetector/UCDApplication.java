@@ -7,6 +7,7 @@
  */
 package org.ucdetector;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
@@ -65,44 +66,42 @@ public class UCDApplication implements IApplication {
   }
 
   public Object start(IApplicationContext context) throws Exception {
-    Object args = context.getArguments().get(IApplicationContext.APPLICATION_ARGS);
-    if (args instanceof String[]) {
-      String[] sArgs = (String[]) args;
-      parseCommandLine(sArgs);
-    }
+    parseCommandLine((String[]) context.getArguments().get(IApplicationContext.APPLICATION_ARGS));
     startImpl();
     return IApplication.EXIT_OK;
   }
 
   private void parseCommandLine(String[] sArgs) {
     String sBuildType = null;
-
     for (int i = 0; i < sArgs.length; i++) {
-      //
-      if (sArgs[i].equals("-projects")) {
-        if (hasOptionValue(sArgs, i)) {
+      boolean hasOptionValue = hasOptionValue(sArgs, i);
+      Log.logDebug("sArgs[%s]=%-15s, hasOptionValue=%s", "" + i, sArgs[i], "" + hasOptionValue);
+      if (sArgs[i].equals("-ucd.projects")) {
+        if (hasOptionValue) {
           projectsToIterate = Arrays.asList(sArgs[i + 1].split(","));
-          i++;
         }
       }
-      if (sArgs[i].equals("-buildtype")) {
-        if (hasOptionValue(sArgs, i)) {
+      if (sArgs[i].equals("-ucd.buildtype")) {
+        if (hasOptionValue) {
           sBuildType = sArgs[i + 1];
-          i++;
         }
       }
-      if (sArgs[i].equals("-options")) {
-        if (hasOptionValue(sArgs, i)) {
+      if (sArgs[i].equals("-ucd.options")) {
+        if (hasOptionValue) {
           List<String> keyValues = Arrays.asList(sArgs[i + 1].split(","));
+          Log.logDebug("\tucd.options.keyValues=" + keyValues);
           for (String keyValue : keyValues) {
             int index = keyValue.indexOf("=");
             if (index != -1) {
-              String key = keyValue.substring(0, index);
-              String value = keyValue.substring(index + 1);
+              String key = keyValue.substring(0, index).trim();
+              String value = keyValue.substring(index + 1).trim();
               ucdOptions.put(key, value);
             }
           }
         }
+      }
+      if (hasOptionValue) {
+        i++;
       }
     }
     //
@@ -117,21 +116,25 @@ public class UCDApplication implements IApplication {
     else {
       buildType = IncrementalProjectBuilder.AUTO_BUILD;
     }
-    Log.logInfo("\tucd option        : " + ucdOptions);
+    Log.logInfo("\tInput ucd options : " + ucdOptions);
     Set<Entry<String, String>> optionSet = ucdOptions.entrySet();
     for (Entry<String, String> option : optionSet) {
       String key = option.getKey();
       String value = option.getValue();
-      Log.logInfo("\tSet ucd option    : " + (key + "->" + value));
+      Log.logInfo("\tSet ucd option    : %s=%s", key, value);
       Prefs.setUcdValue(key, value);
     }
     String prefs = UCDetectorPlugin.getPreferencesAsString();
     Log.logInfo(prefs.replace(", ", "\n\t"));
     IEclipsePreferences node = new DefaultScope().getNode(UCDetectorPlugin.ID);
     try {
-      String avaiable = Arrays.asList(node.keys()).toString().replace(", ", "\n\t").replace("[", "\n\t").replace("]",
-          "\n\t");
-      Log.logInfo("\tAvaiable Options  : " + avaiable);
+      String[] keys = node.keys();
+      Arrays.sort(keys);
+      Log.logInfo("Avaiable Options (to modify chang key 'ucd.options' in build.properties): ");
+      for (String key : keys) {
+        int startIndex = (UCDetectorPlugin.ID + ".").length();
+        Log.logInfo("\t" + key.substring(startIndex));
+      }
     }
     catch (BackingStoreException ex) {
       Log.logError("Can't get preferences for node: " + node, ex);
@@ -155,10 +158,25 @@ public class UCDApplication implements IApplication {
     IWorkspaceRoot root = workspace.getRoot();
 
     IProject[] projects = root.getProjects();
+    Log.logInfo("\tprojects found in workspace (before create): " + projects.length);
+    File rootDir = root.getLocation().toFile();
+    File[] rootFiles = rootDir.listFiles();
+    for (File rootFile : rootFiles) {
+      File dotProject = new File(rootFile, ".project");
+      if (dotProject.exists()) {
+        IProject project = root.getProject(rootFile.getName());
+        if (!project.exists()) {
+          Log.logInfo("\tCreate project for: " + rootFile.getAbsolutePath());
+          project.create(ucdMonitor);
+          project.open(ucdMonitor);
+        }
+      }
+    }
+    projects = root.getProjects();
+    Log.logInfo("\tprojects found in workspace (after  create): " + projects.length);
     List<IJavaProject> openProjects = new ArrayList<IJavaProject>();
     Log.logInfo("\tWorkspace: " + root.getLocation());
 
-    Log.logInfo("\tprojects found in workspace: " + projects.length);
     for (IProject project : projects) {
       IJavaProject javaProject = JavaCore.create(project);
       String projectName = javaProject.getElementName();
