@@ -2,6 +2,7 @@ UCDetector 1.6.0 from 2010-??-??:
 Bugfixes:
  - fixed missing QuickFix icons
  - [ 3025571 ] Exception loading modes: Malformed \uxxxx encoding
+ - [ 3046637 ] Headless fails to recognize projects
 
 New features:
  - [ 2810803 ] Added again: Combobox to change all visibility combos
