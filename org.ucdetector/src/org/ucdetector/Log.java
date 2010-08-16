@@ -44,6 +44,7 @@ public class Log {
   private static PrintStream consoleStreamWarn;
 
   static {
+    activeLogLevel = LogLevel.INFO;
     LOG_LEVEL_OPTIONS_FILE = getLogLevelOption("org.ucdetector/logLevel");
     if (Log.getAcitveLogLevel().ordinal() > Log.LogLevel.INFO.ordinal()) {
       System.out.println("UCDetector Log level: " + Log.getAcitveLogLevel()); // we need to log to System.out
@@ -189,6 +190,6 @@ public class Log {
   static LogLevel activeLogLevel = LogLevel.INFO;
 
   protected static LogLevel getAcitveLogLevel() {
-    return LOG_LEVEL_OPTIONS_FILE == null ? activeLogLevel /*Prefs.getLogLevel()*/: LOG_LEVEL_OPTIONS_FILE;
+    return LOG_LEVEL_OPTIONS_FILE == null ? activeLogLevel : LOG_LEVEL_OPTIONS_FILE;
   }
 }
