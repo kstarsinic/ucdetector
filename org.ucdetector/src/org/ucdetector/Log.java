@@ -19,7 +19,6 @@ import org.eclipse.ui.console.IConsole;
 import org.eclipse.ui.console.IConsoleConstants;
 import org.eclipse.ui.console.MessageConsole;
 import org.eclipse.ui.console.MessageConsoleStream;
-import org.ucdetector.preferences.Prefs;
 
 /**
  * Simple logging API for UCDetector.
@@ -130,8 +129,10 @@ public class Log {
     logToEclipseConsole(isWarn, formattedMessage, ex);
   }
 
+  static boolean logToEclipse;
+
   private static void logToEclipseConsole(boolean isWarn, String formattedMessage, Throwable ex) {
-    if (UCDetectorPlugin.isHeadlessMode() || !Prefs.isLogToEclipse()) {
+    if (UCDetectorPlugin.isHeadlessMode() || !logToEclipse /*!Prefs.isLogToEclipse()*/) {
       return;
     }
     if (console == null) {
@@ -185,7 +186,9 @@ public class Log {
     return (getAcitveLogLevel() == LogLevel.DEBUG);
   }
 
+  static LogLevel activeLogLevel = LogLevel.INFO;
+
   protected static LogLevel getAcitveLogLevel() {
-    return LOG_LEVEL_OPTIONS_FILE == null ? Prefs.getLogLevel() : LOG_LEVEL_OPTIONS_FILE;
+    return LOG_LEVEL_OPTIONS_FILE == null ? activeLogLevel /*Prefs.getLogLevel()*/: LOG_LEVEL_OPTIONS_FILE;
   }
 }

@@ -31,6 +31,8 @@ import org.eclipse.jdt.internal.ui.JavaPluginImages;
 import org.eclipse.jdt.ui.JavaUI;
 import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.jface.resource.ImageRegistry;
+import org.eclipse.jface.util.IPropertyChangeListener;
+import org.eclipse.jface.util.PropertyChangeEvent;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.ui.ISharedImages;
@@ -42,13 +44,14 @@ import org.eclipse.ui.plugin.AbstractUIPlugin;
 import org.osgi.framework.Bundle;
 import org.osgi.framework.BundleContext;
 import org.osgi.service.prefs.BackingStoreException;
+import org.ucdetector.Log.LogLevel;
 import org.ucdetector.preferences.Prefs;
 
 /**
  * Default Activator-class of this plug-ins
  */
 @SuppressWarnings("nls")
-public class UCDetectorPlugin extends AbstractUIPlugin {
+public class UCDetectorPlugin extends AbstractUIPlugin implements IPropertyChangeListener {
   public static final String IMAGE_FINAL = "IMAGE_FINAL";
   public static final String IMAGE_UCD = "IMAGE_UCD";
   public static final String IMAGE_COMMENT = "IMAGE_COMMENT";
@@ -75,6 +78,7 @@ public class UCDetectorPlugin extends AbstractUIPlugin {
 
   public UCDetectorPlugin() {
     UCDetectorPlugin.plugin = this;
+    getPreferenceStore().addPropertyChangeListener(this);
   }
 
   private void dumpInformation() {
@@ -307,6 +311,17 @@ public class UCDetectorPlugin extends AbstractUIPlugin {
     }
     catch (Exception e) {
       return "?";
+    }
+  }
+
+  public void propertyChange(PropertyChangeEvent event) {
+    String property = event.getProperty();
+    String newValue = event.getNewValue().toString();
+    if (property.equals(Prefs.LOG_LEVEL)) {
+      Log.activeLogLevel = LogLevel.valueOf(newValue);
+    }
+    if (property.equals(Prefs.LOG_TO_ECLIPSE)) {
+      Log.logToEclipse = Boolean.parseBoolean(newValue);
     }
   }
 }

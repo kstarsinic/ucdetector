@@ -85,8 +85,8 @@ public final class Prefs {
   static final String REPORT_CREATE_XML = ID + ".report.create.xml";
   static final String REPORT_CREATE_TXT = ID + ".report.create.txt";
   //
-  static final String LOG_LEVEL = ID + ".log.level";
-  static final String LOG_TO_ECLIPSE = ID + ".log.toEclipse";
+  public static final String LOG_LEVEL = ID + ".log.level";
+  public static final String LOG_TO_ECLIPSE = ID + ".log.toEclipse";
   //
   public static final String INTERNAL = ID + ".internal";
   static final String MODE_NAME = INTERNAL + ".mode.name";
