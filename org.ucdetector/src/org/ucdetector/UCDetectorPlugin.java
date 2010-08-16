@@ -78,7 +78,6 @@ public class UCDetectorPlugin extends AbstractUIPlugin implements IPropertyChang
 
   public UCDetectorPlugin() {
     UCDetectorPlugin.plugin = this;
-    getPreferenceStore().addPropertyChangeListener(this);
   }
 
   private void dumpInformation() {
@@ -101,6 +100,7 @@ public class UCDetectorPlugin extends AbstractUIPlugin implements IPropertyChang
   public void start(BundleContext context) throws Exception {
     super.start(context);
     dumpInformation();
+    getPreferenceStore().addPropertyChangeListener(this);
   }
 
   /** @return all available preferences and all and all preferences which are different from default preferences   */
