@@ -40,9 +40,9 @@ ucdoption    = ${ucd.options}
       <arg line="-consolelog" />
       <arg line="${ucd.debug}" />
       <arg line="-data ${WORKSPACE}" />
-      <arg line="-projects ${ucd.projects}" />
-      <arg line="-buildtype ${ucd.buildtype}" />
-      <arg line="-ucdoptions ${ucd.options}" />
+      <arg line="-ucd.projects ${ucd.projects}" />
+      <arg line="-ucd.buildtype ${ucd.buildtype}" />
+      <arg line="-ucd.options ${ucd.options}" />
     </java>
   </target>
 
@@ -55,7 +55,8 @@ ucdoption    = ${ucd.options}
     <fail>Please edit new file ${build.properties} ant start build again!</fail>
   </target>
 </project>
-  <!-- =====================================================================
+
+<!-- =====================================================================
        DETECT 2
        =====================================================================
   <target name="detect-exe"
