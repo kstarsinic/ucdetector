@@ -28,6 +28,9 @@
                        plugins="org.ucdetector,org.ucdetector.additional,org.ucdetector.cycle"
                        useJARFormat="true" />
     <echo>Plugins will be exported to: ${ECLIPSE_HOME}/plugins</echo>
+    <!--
+    <move file="${ECLIPSE_HOME}/plugins/org.ucdetector_${Bundle-Version}.jar" todir="${ECLIPSE_HOME}/dropins" />
+    -->
   </target>
 
   <!-- ===================================================================== -->
