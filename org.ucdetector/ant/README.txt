@@ -4,25 +4,33 @@ Build manager may need to run UCDetector without starting the Eclipse IDE
 (=Eclipse headless mode).
 Send feedback to feedback@ucdetector.org
 
+
 Requirements:
 - java    (>=5.0)
 - Eclipse (>=3.3)
-- ECLIPSE_HOME/dropins/org.ucdetector_x.y.z.jar
+- ant     (>= 1.7.1)
+- org.ucdetector_x.y.z.jar
 
-Workspace:
-- An eclipse workspace with java projects is needed (no compile errors)
-  (When you develop with eclipse, you already have one)
-- Set your favorite UCDetector preferences in Eclipse IDE
+
+Create Workspace:
+- Put java projects in a NEW directory (WORKSPACE)
+
+
+Install eclipse:
+- Unpack downloaded eclipse in a NEW directory (ECLIPSE_HOME)
+- Put org.ucdetector_x.y.z.jar in ECLIPSE_HOME/dropins/
+
 
 Run scripts:
-- unzip org.ucdetector.source_x.y.z.zip/ant to a new directory
+- unzip org.ucdetector_x.y.z.zip/ant to a new directory
 - $ cd ant
 - $ ant
-- Edit build.properties: Change WORKSPACE, ECLIPSE_HOME, LAUNCHER [maybe more]
+- Edit build.properties: Change at least WORKSPACE, ECLIPSE_HOME
 - $ ant
-- [it is also possible to run ./detect.sh or detect.bat]
+- [it is also possible to run ./detect.sh or detect.bat (no ant needed)]
+
 
 Check logging:
+ - Check created reports
  - There may appear some UI Exceptions, which could be ignored
  - There may appear some 'org.eclipse.jdt.core.search' Exceptions, which could be ignored
- - At the end, a html and xml report is created
