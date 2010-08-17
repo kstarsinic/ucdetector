@@ -25,6 +25,7 @@
         <exclude name=".project" />
         <exclude name="build.xml" />
         <exclude name="*.launch" />
+        <exclude name="_old_releases/**" />
       </fileset>
     </scp>
     <echo>Finished sending udpate site.</echo>

@@ -1,4 +1,12 @@
 UCDetector 1.6.0 from 2010-??-??:
+New features:
+ -
+
+Bugfixes:
+ -
+
+// -----------------------------------------------------------------------------
+UCDetector 1.6.0 from 2010-08-17:
 Bugfixes:
  - fixed missing QuickFix icons
  - [ 3025571 ] Exception loading modes: Malformed \uxxxx encoding
