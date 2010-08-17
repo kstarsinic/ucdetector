@@ -218,8 +218,8 @@ class ModesPanel {
   }
 
   /** Save it to a file in WORKSPACE/.metadata/.plugins/org.ucdetector/modes  */
-  private @SuppressWarnings("nls")
-  void saveMode(String modeName) {
+  @SuppressWarnings("nls")
+  private void saveMode(String modeName) {
     Map<String, String> allPreferences = UCDetectorPlugin.getAllPreferences();
     allPreferences.putAll(UCDetectorPlugin.getDeltaPreferences());
     StringBuilder sb = new StringBuilder();
@@ -271,11 +271,12 @@ class ModesPanel {
    * java.util.Properties.load() fails, because of file names containing Strings (file names)
    *  which are similar to unicode signs
    */
-  private Map<String, String> loadMode(boolean isFile, String modesFileName) {
+  public static Map<String, String> loadMode(boolean isFile, String modesFileName) {
     Map<String, String> result = new HashMap<String, String>();
     BufferedReader reader = null;
     try {
-      InputStream in = isFile ? new FileInputStream(modesFileName) : getClass().getResourceAsStream(modesFileName);
+      InputStream in = isFile ? new FileInputStream(modesFileName) : ModesPanel.class
+          .getResourceAsStream(modesFileName);
       reader = new BufferedReader(new InputStreamReader(in));
       String line = null;
       while ((line = reader.readLine()) != null) {
