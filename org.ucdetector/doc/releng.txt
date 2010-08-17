@@ -22,14 +22,14 @@ Steps to create new Version:
    - check help
 
  - Create:
-   - use eclipse 3.3 and java 1.5:
+   - use eclipse 3.5 and java 1.5:
    - ucd.jar, source.jar, additional: /org.ucdetector/build/build.xml -> run as Ant Build
-	 - check ucdetector.jar (Version file must contain eclipse 3.3 and java 1.5)
+	 - check ucdetector.jar (Version file must contain eclipse 3.5 and java 1.5)
 	 - check source.jar (missing files? additional files?)
 
  - Smoke test:
 
-   - deploy org.ucdetector.jar and org.ucdetector.additional.jar to a CLEAN eclipse 3.3, java5
+   - deploy org.ucdetector.jar and org.ucdetector.additional.jar to a CLEAN eclipse 3.5, java5
 	 - Run UCDetector detecting code in org.ucdetector.example/examples with settings: release_settings.properties
 	   
 	 - [Run UCDetector in: jEdit, JUnit]
@@ -47,8 +47,6 @@ Steps to create new Version:
 	 - Add version number to html report: <title> tag: version 1.0.0
 	 - Commit html/xml report to: /org.ucdetector.example/reports/
 	 
-  - smoke test with eclipse 3.5
-    - check error log view
 
  - Sourceforge:
      - https://sourceforge.net/project/admin/?group_id=219599

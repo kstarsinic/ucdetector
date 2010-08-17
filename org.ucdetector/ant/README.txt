@@ -7,7 +7,7 @@ Send feedback to feedback@ucdetector.org
 
 Requirements:
 - java    (>=5.0)
-- Eclipse (>=3.3)
+- Eclipse (>=3.5)
 - ant     (>= 1.7.1)
 - org.ucdetector_x.y.z.jar
 

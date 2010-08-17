@@ -61,7 +61,7 @@ ucdoption    = ${ucd.options}
        =====================================================================
   <target name="detect-exe"
           description="Run UCDetector using eclipse executable">
-    <property name="EXCECUTABLE" location="/opt/eclipse-3.4/eclipse" />
+    <property name="EXCECUTABLE" location="/opt/eclipse-3.5/eclipse" />
     <echo>EXCECUTABLE = ${EXCECUTABLE}</echo>
     <echo>WORKSPACE   = ${WORKSPACE}</echo>
 

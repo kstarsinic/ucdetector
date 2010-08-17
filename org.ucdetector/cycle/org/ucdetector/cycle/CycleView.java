@@ -7,7 +7,6 @@
  */
 package org.ucdetector.cycle;
 
-import java.lang.reflect.Method;
 import java.util.List;
 
 import org.eclipse.jdt.core.IJavaElement;
@@ -33,6 +32,8 @@ import org.eclipse.jface.viewers.TreeViewer;
 import org.eclipse.jface.viewers.Viewer;
 import org.eclipse.search.internal.ui.SearchPluginImages;
 import org.eclipse.search2.internal.ui.SearchMessages;
+import org.eclipse.search2.internal.ui.basic.views.CollapseAllAction;
+import org.eclipse.search2.internal.ui.basic.views.ExpandAllAction;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.dnd.Clipboard;
 import org.eclipse.swt.dnd.TextTransfer;
@@ -366,14 +367,15 @@ public class CycleView extends ViewPart { //
     boolean hasInput = tree != null && tree.getItemCount() > 0;
     label.setText(hasInput ? "" : Messages.CycleView_run_ucd_for_results); //$NON-NLS-1$
     if (hasInput) {
-      try {
-        // tree.select(tree.getItem(0));// Compatibility: since 3.4
-        Method method = tree.getClass().getMethod("select", new Class[] { TreeItem.class }); //$NON-NLS-1$
-        method.invoke(tree, tree.getItem(0));
-      }
-      catch (Exception e) {
-        tree.setSelection(tree.getItem(0));// Compatibility: since 3.2
-      }
+      tree.select(tree.getItem(0));
+      // try {
+      //   // tree.select(tree.getItem(0));// Compatibility: since 3.4
+      //   Method method = tree.getClass().getMethod("select", new Class[] { TreeItem.class }); //$NON-NLS-1$
+      //   method.invoke(tree, tree.getItem(0));
+      // }
+      // catch (Exception e) {
+      //   tree.setSelection(tree.getItem(0));// Compatibility: since 3.2
+      // }
     }
   }
 
@@ -497,58 +499,57 @@ public class CycleView extends ViewPart { //
     }
   }
 
-  /**
-   * Compatibility: Copy class from org.eclipse.search2.internal.ui.basic.views.ExpandAllAction.ExpandAllAction()
-   * because of API changes from eclipse 3.2 to 3.3
-   */
-  private static class ExpandAllAction extends Action {
+  //  /**
+  //   * Compatibility: Copy class from org.eclipse.search2.internal.ui.basic.views.ExpandAllAction
+  //   * because of API changes from eclipse 3.2 to 3.3
+  //   */
+  //  private static class ExpandAllAction extends Action {
+  //
+  //    private TreeViewer fViewer;
+  //
+  //    public ExpandAllAction() {
+  //      super(SearchMessages.ExpandAllAction_label);
+  //      setToolTipText(SearchMessages.ExpandAllAction_tooltip);
+  //      SearchPluginImages.setImageDescriptors(this, SearchPluginImages.T_LCL,
+  //          SearchPluginImages.IMG_LCL_SEARCH_EXPAND_ALL);
+  //    }
+  //
+  //    public void setViewer(TreeViewer viewer) {
+  //      fViewer = viewer;
+  //    }
+  //
+  //    @Override
+  //    public void run() {
+  //      if (fViewer != null) {
+  //        fViewer.expandAll();
+  //      }
+  //    }
+  //  }
 
-    private TreeViewer fViewer;
-
-    public ExpandAllAction() {
-      super(SearchMessages.ExpandAllAction_label);
-      setToolTipText(SearchMessages.ExpandAllAction_tooltip);
-      SearchPluginImages.setImageDescriptors(this, SearchPluginImages.T_LCL,
-          SearchPluginImages.IMG_LCL_SEARCH_EXPAND_ALL);
-    }
-
-    public void setViewer(TreeViewer viewer) {
-      fViewer = viewer;
-    }
-
-    @Override
-    public void run() {
-      if (fViewer != null) {
-        fViewer.expandAll();
-      }
-    }
-  }
-
-  /**
-   * Compatibility: Copy class from org.eclipse.search2.internal.ui.basic.views.CollapseAllAction.CollapseAllAction()
-   * because of API changes from eclipse 3.2 to 3.3
-   */
-  private static class CollapseAllAction extends Action {
-
-    private TreeViewer fViewer;
-
-    public CollapseAllAction() {
-      super(SearchMessages.CollapseAllAction_0);
-      setToolTipText(SearchMessages.CollapseAllAction_1);
-      SearchPluginImages.setImageDescriptors(this, SearchPluginImages.T_LCL,
-          SearchPluginImages.IMG_LCL_SEARCH_COLLAPSE_ALL);
-    }
-
-    public void setViewer(TreeViewer viewer) {
-      fViewer = viewer;
-    }
-
-    @Override
-    public void run() {
-      if (fViewer != null) {
-        fViewer.collapseAll();
-      }
-    }
-  }
-
+  //  /**
+  //   * Compatibility: Copy class from org.eclipse.search2.internal.ui.basic.views.CollapseAllAction
+  //   * because of API changes from eclipse 3.2 to 3.3
+  //   */
+  //  private static class CollapseAllAction extends Action {
+  //
+  //    private TreeViewer fViewer;
+  //
+  //    public CollapseAllAction() {
+  //      super(SearchMessages.CollapseAllAction_0);
+  //      setToolTipText(SearchMessages.CollapseAllAction_1);
+  //      SearchPluginImages.setImageDescriptors(this, SearchPluginImages.T_LCL,
+  //          SearchPluginImages.IMG_LCL_SEARCH_COLLAPSE_ALL);
+  //    }
+  //
+  //    public void setViewer(TreeViewer viewer) {
+  //      fViewer = viewer;
+  //    }
+  //
+  //    @Override
+  //    public void run() {
+  //      if (fViewer != null) {
+  //        fViewer.collapseAll();
+  //      }
+  //    }
+  //  }
 }

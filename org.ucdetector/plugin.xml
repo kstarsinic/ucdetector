@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<?eclipse version="3.3"?>
+<?eclipse version="3.5"?>
 <plugin>
   <!-- ===================================================================== -->
   <!-- PREFERENCE PAGE                                                       -->
@@ -118,7 +118,7 @@
   <!-- ===================================================================== -->
    <!-- MARKER                                                               -->
   <!-- ===================================================================== -->
-  <!-- base see also attributes in: eclipse-3.3\plugins\org.eclipse.jdt.core_3.3.0.v_771.jar -->
+  <!-- base see also attributes in: eclipse-3.5\plugins\org.eclipse.jdt.core_3.5.0.v_771.jar -->
   <!-- *** 1 *** -->
   <extension
       id="org.ucdetector.analyzeMarker"
