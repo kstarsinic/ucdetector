@@ -165,7 +165,7 @@ public class UCDetectorPlugin extends AbstractUIPlugin implements IPropertyChang
    */
   @Override
   public void stop(BundleContext context) throws Exception {
-    Log.logInfo("Stopping UCDetector Plug-In");
+    Log.logInfo("Stopping UCDetector Plug-In at " + getNow());
     super.stop(context);
     UCDetectorPlugin.plugin = null;
   }
