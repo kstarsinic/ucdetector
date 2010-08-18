@@ -135,7 +135,11 @@ public class UCDApplication implements IApplication {
     workspaceRoot.refreshLocal(IResource.DEPTH_INFINITE, ucdMonitor);
     Log.logInfo("Build workspace... Please wait...!");
     workspace.build(buildType, ucdMonitor);
+    iterate(ucdMonitor, workspaceRoot, allProjects);
+  }
 
+  private void iterate(UCDProgressMonitor ucdMonitor, IWorkspaceRoot workspaceRoot, List<IJavaProject> allProjects)
+      throws CoreException {
     UCDetectorIterator iterator = new UCDetectorIterator();
     iterator.setMonitor(ucdMonitor);
     List<IJavaElement> javaElementsToIterate = new ArrayList<IJavaElement>();
@@ -145,20 +149,18 @@ public class UCDApplication implements IApplication {
     else {
       for (String resourceToIterate : resourcesToIterate) {
         Path path = new Path(resourceToIterate);
-        System.out.println("path: " + path);
+        IJavaElement javaElement;
         if (path.segmentCount() == 1) {
           IProject project = workspaceRoot.getProject(resourceToIterate);
-          IJavaProject javaProject = JavaCore.create(project);
-          javaProject.open(ucdMonitor);
-          Log.logInfo("resource=%s, javaProject=%s", resourceToIterate, javaProject);
-          javaElementsToIterate.add(javaProject);
+          javaElement = JavaCore.create(project);
+          Log.logInfo("resource=%s, javaProject=%s", resourceToIterate, javaElement);
         }
         else {
           IFolder folder = workspaceRoot.getFolder(path);
-          IJavaElement javaElement = JavaCore.create(folder);
+          javaElement = JavaCore.create(folder);
           Log.logInfo("resource=%s, folder=%s, javaElement=%s", resourceToIterate, folder, javaElement);
-          javaElementsToIterate.add(javaElement);
         }
+        javaElementsToIterate.add(javaElement);
       }
     }
     iterator.iterate(javaElementsToIterate.toArray(new IJavaElement[javaElementsToIterate.size()]));
@@ -169,6 +171,10 @@ public class UCDApplication implements IApplication {
     List<IJavaProject> projects = new ArrayList<IJavaProject>();
     File rootDir = workspaceRoot.getLocation().toFile();
     File[] rootFiles = rootDir.listFiles();
+    // ---------------------------------------------------------------------------
+    // workspaceRoot.getProjects() DOES NOT WORK, when workspace is completely new 
+    // We must use low level stuff here:
+    // ---------------------------------------------------------------------------
     for (File rootFile : rootFiles) {
       File dotProject = new File(rootFile, ".project");
       if (!dotProject.exists()) {

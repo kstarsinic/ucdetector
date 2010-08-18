@@ -38,6 +38,8 @@ ucd.debug=-debug
 # ucd.projects=/org.ucdetector.example/example,\
 #              /org.ucdetector
 # ==============================================================================
+#ucd.projects=/org.ucdetector.example/example
+#ucd.projects=/org.ucdetector.example
 ucd.projects=
 
 
