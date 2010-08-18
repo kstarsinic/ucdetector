@@ -7,6 +7,8 @@
  */
 package org.ucdetector;
 
+import java.io.File;
+import java.io.IOException;
 import java.io.PrintStream;
 
 import org.eclipse.core.runtime.IStatus;
@@ -191,5 +193,17 @@ public class Log {
 
   protected static LogLevel getAcitveLogLevel() {
     return LOG_LEVEL_OPTIONS_FILE == null ? activeLogLevel : LOG_LEVEL_OPTIONS_FILE;
+  }
+
+  public static String getCanonicalPath(File file) {
+    if (file == null) {
+      return null;
+    }
+    try {
+      return file.getCanonicalPath();
+    }
+    catch (IOException e) {
+      return file.getAbsolutePath();
+    }
   }
 }

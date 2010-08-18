@@ -35,7 +35,8 @@ ucd.debug=-debug
 #   - SET OPTIONS HERE
 # leave empty, to build ALL projects
 # ==============================================================================
-# ucd.projects=org.ucdetector.example,org.ucdetector
+# ucd.projects=/org.ucdetector.example/example,\
+#              /org.ucdetector
 # ==============================================================================
 ucd.projects=
 
@@ -59,9 +60,7 @@ ucd.buildtype=
 # ==============================================================================
 # ucd.options=warnLimit=1,finalMethod=IGNORE
 # ==============================================================================
-ucd.options=report.create.html=true,\
-            report.create.xml=true,\
-            report.create.txt=true
+ucd.options=options.properties
 
 
 

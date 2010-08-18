@@ -1,9 +1,9 @@
 UCDetector 1.6.0 from 2010-??-??:
 New features:
- -
+ - Headless: Iterate over resources, set option file
 
 Bugfixes:
- -
+ - Cancel broken in active mode, buttons: "Rename..." and "New..."  
 
 // -----------------------------------------------------------------------------
 UCDetector 1.6.0 from 2010-08-17:

@@ -10,12 +10,14 @@ package org.ucdetector;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Set;
 
+import org.eclipse.core.resources.IFolder;
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.IResource;
 import org.eclipse.core.resources.IWorkspace;
@@ -23,13 +25,13 @@ import org.eclipse.core.resources.IWorkspaceRoot;
 import org.eclipse.core.resources.IncrementalProjectBuilder;
 import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.CoreException;
-import org.eclipse.core.runtime.preferences.DefaultScope;
-import org.eclipse.core.runtime.preferences.IEclipsePreferences;
+import org.eclipse.core.runtime.IProgressMonitor;
+import org.eclipse.core.runtime.Path;
 import org.eclipse.equinox.app.IApplication;
 import org.eclipse.equinox.app.IApplicationContext;
+import org.eclipse.jdt.core.IJavaElement;
 import org.eclipse.jdt.core.IJavaProject;
 import org.eclipse.jdt.core.JavaCore;
-import org.osgi.service.prefs.BackingStoreException;
 import org.ucdetector.iterator.UCDetectorIterator;
 import org.ucdetector.preferences.PreferenceInitializer;
 import org.ucdetector.preferences.Prefs;
@@ -50,35 +52,36 @@ import org.ucdetector.search.UCDProgressMonitor;
  */
 @SuppressWarnings("nls")
 public class UCDApplication implements IApplication {
-  /**
-   * @see org.eclipse.core.resources.IncrementalProjectBuilder
-   */
+  /** @see org.eclipse.core.resources.IncrementalProjectBuilder */
   private static final Map<String, Integer> BUILD_TYPES = new HashMap<String, Integer>();
-  private final Map<String, String> ucdOptions = new HashMap<String, String>();
-  private List<String> projectsToIterate = null;
+  private List<String> resourcesToIterate = Collections.emptyList();
   private int buildType = 0;
 
+  private static final String AUTO_BUILD = "AUTO_BUILD";
   static {
     BUILD_TYPES.put("FULL_BUILD", Integer.valueOf(IncrementalProjectBuilder.FULL_BUILD));
-    BUILD_TYPES.put("AUTO_BUILD", Integer.valueOf(IncrementalProjectBuilder.AUTO_BUILD));
-    BUILD_TYPES.put("CLEAN_BUILD", Integer.valueOf(IncrementalProjectBuilder.CLEAN_BUILD));
+    BUILD_TYPES.put(AUTO_BUILD, Integer.valueOf(IncrementalProjectBuilder.AUTO_BUILD));
     BUILD_TYPES.put("INCREMENTAL_BUILD", Integer.valueOf(IncrementalProjectBuilder.INCREMENTAL_BUILD));
+    BUILD_TYPES.put("CLEAN_BUILD", Integer.valueOf(IncrementalProjectBuilder.CLEAN_BUILD));
   }
 
   public Object start(IApplicationContext context) throws Exception {
+    UCDetectorPlugin.setHeadlessMode(true);// MUST BE BEFORE LOGGING!
+    Log.logInfo("Starting UCDetector Application");
     parseCommandLine((String[]) context.getArguments().get(IApplicationContext.APPLICATION_ARGS));
     startImpl();
     return IApplication.EXIT_OK;
   }
 
   private void parseCommandLine(String[] sArgs) {
-    String sBuildType = null;
+    String sBuildType = AUTO_BUILD;
+    Map<String, String> ucdOptions = Collections.emptyMap();
     for (int i = 0; i < sArgs.length; i++) {
       boolean hasOptionValue = hasOptionValue(sArgs, i);
       Log.logDebug("sArgs[%s]=%-15s, hasOptionValue=%s", "" + i, sArgs[i], "" + hasOptionValue);
       if (sArgs[i].equals("-ucd.projects")) {
         if (hasOptionValue) {
-          projectsToIterate = Arrays.asList(sArgs[i + 1].split(","));
+          resourcesToIterate = Arrays.asList(sArgs[i + 1].split(","));
         }
       }
       if (sArgs[i].equals("-ucd.buildtype")) {
@@ -88,15 +91,11 @@ public class UCDApplication implements IApplication {
       }
       if (sArgs[i].equals("-ucd.options")) {
         if (hasOptionValue) {
-          List<String> keyValues = Arrays.asList(sArgs[i + 1].split(","));
-          Log.logDebug("\tucd.options.keyValues=" + keyValues);
-          for (String keyValue : keyValues) {
-            int index = keyValue.indexOf("=");
-            if (index != -1) {
-              String key = keyValue.substring(0, index).trim();
-              String value = keyValue.substring(index + 1).trim();
-              ucdOptions.put(key, value);
-            }
+          String optionFileName = sArgs[i + 1];
+          File optionFile = new File(".", optionFileName);
+          Log.logInfo("\toptionFile: %s exists: %s", Log.getCanonicalPath(optionFile), "" + optionFile.exists());
+          if (optionFile.exists()) {
+            ucdOptions = UCDetectorPlugin.loadModeFile(true, optionFile.getAbsolutePath());
           }
         }
       }
@@ -104,41 +103,17 @@ public class UCDApplication implements IApplication {
         i++;
       }
     }
-    //
-    String info = (projectsToIterate == null) ? "ALL" : projectsToIterate.toString();
-    Log.logInfo("\tprojects to detect: " + (info));
-    //
-    sBuildType = (sBuildType == null) ? "AUTO_BUILD" : sBuildType;
+    Log.logInfo("\tresources to iterate: " + (resourcesToIterate == null ? "ALL" : resourcesToIterate.toString()));
     Log.logInfo("\tBuildType         : " + sBuildType);
-    if (BUILD_TYPES.containsKey(sBuildType)) {
-      buildType = BUILD_TYPES.get(sBuildType).intValue();
-    }
-    else {
-      buildType = IncrementalProjectBuilder.AUTO_BUILD;
-    }
-    Log.logInfo("\tInput ucd options : " + ucdOptions);
+    buildType = BUILD_TYPES.containsKey(sBuildType) ? BUILD_TYPES.get(sBuildType).intValue()
+        : IncrementalProjectBuilder.AUTO_BUILD;
     Set<Entry<String, String>> optionSet = ucdOptions.entrySet();
     for (Entry<String, String> option : optionSet) {
-      String key = option.getKey();
-      String value = option.getValue();
-      Log.logInfo("\tSet ucd option    : %s=%s", key, value);
-      Prefs.setUcdValue(key, value);
+      //Log.logInfo("\tSet ucd option    : %s=%s", option.getKey(), option.getValue());
+      Prefs.setValue(option.getKey(), option.getValue());
     }
     String prefs = UCDetectorPlugin.getPreferencesAsString();
     Log.logInfo(prefs.replace(", ", "\n\t"));
-    IEclipsePreferences node = new DefaultScope().getNode(UCDetectorPlugin.ID);
-    try {
-      String[] keys = node.keys();
-      Arrays.sort(keys);
-      Log.logInfo("Avaiable Options (to modify chang key 'ucd.options' in build.properties): ");
-      for (String key : keys) {
-        int startIndex = (UCDetectorPlugin.ID + ".").length();
-        Log.logInfo("\t" + key.substring(startIndex));
-      }
-    }
-    catch (BackingStoreException ex) {
-      Log.logError("Can't get preferences for node: " + node, ex);
-    }
     Log.logInfo("Report directory is: " + PreferenceInitializer.getReportDir());
   }
 
@@ -146,79 +121,71 @@ public class UCDApplication implements IApplication {
     return i < (sArgs.length - 1) && !sArgs[i + 1].startsWith("-");
   }
 
-  /**
-   * @throws CoreException if an error occurs accessing the contents
-   *    of its underlying resource
-   */
+  /** @throws CoreException if an error occurs accessing the contents of its underlying resource */
   public void startImpl() throws CoreException {
     Log.logInfo("Run UCDetector");
-    UCDetectorPlugin.setHeadlessMode(true);
     UCDProgressMonitor ucdMonitor = new UCDProgressMonitor();
     IWorkspace workspace = ResourcesPlugin.getWorkspace();
-    IWorkspaceRoot root = workspace.getRoot();
-
-    IProject[] projects = root.getProjects();
-    Log.logInfo("\tprojects found in workspace (before create): " + projects.length);
-    File rootDir = root.getLocation().toFile();
-    File[] rootFiles = rootDir.listFiles();
-    for (File rootFile : rootFiles) {
-      File dotProject = new File(rootFile, ".project");
-      if (dotProject.exists()) {
-        IProject project = root.getProject(rootFile.getName());
-        if (!project.exists()) {
-          Log.logInfo("\tCreate project for: " + rootFile.getAbsolutePath());
-          project.create(ucdMonitor);
-          project.open(ucdMonitor);
-        }
-      }
-    }
-    projects = root.getProjects();
-    Log.logInfo("\tprojects found in workspace (after  create): " + projects.length);
-    List<IJavaProject> openProjects = new ArrayList<IJavaProject>();
-    Log.logInfo("\tWorkspace: " + root.getLocation());
-
-    for (IProject project : projects) {
-      IJavaProject javaProject = JavaCore.create(project);
-      String projectName = javaProject.getElementName();
-      boolean ignore = projectsToIterate != null && !projectsToIterate.contains(projectName);
-      if (ignore) {
-        Log.logInfo("\tIgnore        : " + projectName);
-        continue;
-      }
-      if (!javaProject.exists()) {
-        Log.logInfo("\tDoes not exist: %s\t\t if this is a problem, open project in eclipse IDE, restart ant",
-            projectName);
-        continue;
-      }
-      if (!javaProject.isOpen()) {
-        Log.logInfo("\tTry to open   : " + projectName);
-        javaProject.open(ucdMonitor);
-      }
-      if (javaProject.isOpen()) {
-        Log.logInfo("\tIs open       : " + projectName);
-        openProjects.add(javaProject);
-      }
-      else {
-        Log.logInfo("\tIs closed     : " + projectName);
-      }
-    }
-
-    Log.logInfo("Refresh workspace...Please wait...!");
-    root.refreshLocal(IResource.DEPTH_INFINITE, ucdMonitor);
-
+    IWorkspaceRoot workspaceRoot = workspace.getRoot();
+    List<IJavaProject> allProjects = createProjects(ucdMonitor, workspaceRoot);
+    IProject[] projects = workspaceRoot.getProjects();
+    Log.logInfo("\tprojects found in workspace: " + projects.length);
+    Log.logInfo("\tWorkspace: " + workspaceRoot.getLocation());
+    Log.logInfo("Refresh workspace... Please wait...!");
+    workspaceRoot.refreshLocal(IResource.DEPTH_INFINITE, ucdMonitor);
     Log.logInfo("Build workspace... Please wait...!");
     workspace.build(buildType, ucdMonitor);
 
     UCDetectorIterator iterator = new UCDetectorIterator();
     iterator.setMonitor(ucdMonitor);
-    Log.logInfo("Number of projects to iterate: " + openProjects.size());
-    for (IJavaProject openProject : openProjects) {
-      Log.logInfo("\tProject to iterate   : " + openProject.getElementName());
+    List<IJavaElement> javaElementsToIterate = new ArrayList<IJavaElement>();
+    if (resourcesToIterate.isEmpty()) {
+      javaElementsToIterate.addAll(allProjects);
     }
-    iterator.iterate(openProjects.toArray(new IJavaProject[openProjects.size()]));
+    else {
+      for (String resourceToIterate : resourcesToIterate) {
+        Path path = new Path(resourceToIterate);
+        System.out.println("path: " + path);
+        if (path.segmentCount() == 1) {
+          IProject project = workspaceRoot.getProject(resourceToIterate);
+          IJavaProject javaProject = JavaCore.create(project);
+          javaProject.open(ucdMonitor);
+          Log.logInfo("resource=%s, javaProject=%s", resourceToIterate, javaProject);
+          javaElementsToIterate.add(javaProject);
+        }
+        else {
+          IFolder folder = workspaceRoot.getFolder(path);
+          IJavaElement javaElement = JavaCore.create(folder);
+          Log.logInfo("resource=%s, folder=%s, javaElement=%s", resourceToIterate, folder, javaElement);
+          javaElementsToIterate.add(javaElement);
+        }
+      }
+    }
+    iterator.iterate(javaElementsToIterate.toArray(new IJavaElement[javaElementsToIterate.size()]));
+  }
+
+  private List<IJavaProject> createProjects(IProgressMonitor monitor, IWorkspaceRoot workspaceRoot)
+      throws CoreException {
+    List<IJavaProject> projects = new ArrayList<IJavaProject>();
+    File rootDir = workspaceRoot.getLocation().toFile();
+    File[] rootFiles = rootDir.listFiles();
+    for (File rootFile : rootFiles) {
+      File dotProject = new File(rootFile, ".project");
+      if (!dotProject.exists()) {
+        continue;
+      }
+      IProject project = workspaceRoot.getProject(rootFile.getName());
+      if (!project.exists()) {
+        Log.logInfo("\tCreate project for: " + rootFile.getAbsolutePath());
+        project.create(monitor);
+      }
+      project.open(monitor);
+      projects.add(JavaCore.create(project));
+    }
+    return projects;
   }
 
   public void stop() {
-    Log.logInfo("Finished UCDetector");
+    Log.logInfo("Stopping UCDetector Application");
   }
 }

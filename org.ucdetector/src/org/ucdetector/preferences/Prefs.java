@@ -495,11 +495,11 @@ public final class Prefs {
   }
 
   /**
-   * @param name prefix "org.ucdetector." is added
+   * @param name name of preference
    * @param value , which should changed in preference store
    */
-  public static void setUcdValue(String name, String value) {
-    getStore().setValue(UCDetectorPlugin.ID + "." + name, value);
+  public static void setValue(String name, String value) {
+    getStore().setValue(name, value);
   }
 
   /**

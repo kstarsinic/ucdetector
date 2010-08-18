@@ -9,17 +9,12 @@ package org.ucdetector.preferences;
 import static org.ucdetector.preferences.UCDetectorPreferencePage.GROUP_START;
 import static org.ucdetector.preferences.UCDetectorPreferencePage.TAB_START;
 
-import java.io.BufferedReader;
 import java.io.File;
-import java.io.FileInputStream;
 import java.io.FileWriter;
 import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
-import java.util.HashMap;
 import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Map;
@@ -33,6 +28,7 @@ import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.jface.preference.FieldEditor;
 import org.eclipse.jface.preference.IPreferenceStore;
 import org.eclipse.jface.preference.PreferenceStore;
+import org.eclipse.jface.window.Window;
 import org.eclipse.osgi.util.NLS;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.SelectionAdapter;
@@ -176,8 +172,9 @@ class ModesPanel {
     String newName = "CopyOf_" + getActiveModeName(); //$NON-NLS-1$
     InputDialog input = new InputDialog(parent.getShell(), Messages.ModesPanel_NewMode, Messages.ModesPanel_ModeName,
         newName, new ValidFileNameValidator());
-    input.open();
-    addMode(input.getValue());
+    if (input.open() == Window.OK) {
+      addMode(input.getValue());
+    }
   }
 
   /** Get name of mode from combo without 'built-in' */
@@ -265,41 +262,6 @@ class ModesPanel {
     }
   }
 
-  /**
-   * [ 3025571 ] Exception loading modes: Malformed  &#92;uxxxx encoding
-   * <p>
-   * java.util.Properties.load() fails, because of file names containing Strings (file names)
-   *  which are similar to unicode signs
-   */
-  public static Map<String, String> loadMode(boolean isFile, String modesFileName) {
-    Map<String, String> result = new HashMap<String, String>();
-    BufferedReader reader = null;
-    try {
-      InputStream in = isFile ? new FileInputStream(modesFileName) : ModesPanel.class
-          .getResourceAsStream(modesFileName);
-      reader = new BufferedReader(new InputStreamReader(in));
-      String line = null;
-      while ((line = reader.readLine()) != null) {
-        line = line.trim();
-        int index = line.indexOf('=');
-        if (line.startsWith("#") || index == -1) { //$NON-NLS-1$
-          continue;// comment
-        }
-        String key = line.substring(0, index);
-        String value = (line.length() == index ? "" : line.substring(index + 1)); //$NON-NLS-1$
-        result.put(key, value);
-      }
-    }
-    catch (IOException ex) {
-      String message = NLS.bind(Messages.ModesPanel_CantSetPreferences, modesFileName);
-      UCDetectorPlugin.logErrorAndStatus(message, ex);
-    }
-    finally {
-      UCDetectorPlugin.closeSave(reader);
-    }
-    return result;
-  }
-
   private File getModesFile(String modeName) {
     return new File(modesDir, modeName + MODES_FILE_TYPE);
   }
@@ -324,7 +286,9 @@ class ModesPanel {
     String oldName = getActiveModeName();
     InputDialog input = new InputDialog(parent.getShell(), Messages.ModesPanel_ModeRename,
         Messages.ModesPanel_ModeName, oldName, new ValidFileNameValidator());
-    input.open();
+    if (input.open() == Window.CANCEL) {
+      return;
+    }
     String newName = input.getValue();
     File oldModesFile = getModesFile(oldName);
     File newModesFile = getModesFile(newName);
@@ -359,7 +323,7 @@ class ModesPanel {
     // Put default values
     Map<String, String> allPreferences = UCDetectorPlugin.getAllPreferences();
     addAll(tempReplaceStore, allPreferences);
-    Map<String, String> savedMode = loadMode(isFile, modesFilename);
+    Map<String, String> savedMode = UCDetectorPlugin.loadModeFile(isFile, modesFilename);
     addAll(tempReplaceStore, savedMode);
     for (FieldEditor field : page.fields) {
       IPreferenceStore originalStore = field.getPreferenceStore();
