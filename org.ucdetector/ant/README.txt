@@ -27,7 +27,6 @@ Run scripts:
 - $ ant
 - Edit build.properties: Change at least WORKSPACE, ECLIPSE_HOME
 - $ ant
-- [it is also possible to run ./detect.sh or detect.bat (no ant needed)]
 
 
 Check logging:

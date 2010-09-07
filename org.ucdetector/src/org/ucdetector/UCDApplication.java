@@ -8,6 +8,7 @@
 package org.ucdetector;
 
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
@@ -32,6 +33,11 @@ import org.eclipse.equinox.app.IApplicationContext;
 import org.eclipse.jdt.core.IJavaElement;
 import org.eclipse.jdt.core.IJavaProject;
 import org.eclipse.jdt.core.JavaCore;
+import org.eclipse.pde.internal.core.PDECore;
+import org.eclipse.pde.internal.core.target.provisional.ITargetDefinition;
+import org.eclipse.pde.internal.core.target.provisional.ITargetHandle;
+import org.eclipse.pde.internal.core.target.provisional.ITargetPlatformService;
+import org.eclipse.pde.internal.core.target.provisional.LoadTargetDefinitionJob;
 import org.ucdetector.iterator.UCDetectorIterator;
 import org.ucdetector.preferences.PreferenceInitializer;
 import org.ucdetector.preferences.Prefs;
@@ -42,8 +48,6 @@ import org.ucdetector.search.UCDProgressMonitor;
  * <p>
  * See also files:
  * <ul>
- * <li>ant/detect.sh</li>
- * <li>ant/detect.bat</li>
  * <li>ant/build.xml</li>
  * </ul>
  * <p>
@@ -56,6 +60,8 @@ public class UCDApplication implements IApplication {
   private static final Map<String, Integer> BUILD_TYPES = new HashMap<String, Integer>();
   private List<String> resourcesToIterate = Collections.emptyList();
   private int buildType = 0;
+  private File targetPlatformFile = null;
+  private final UCDProgressMonitor ucdMonitor = new UCDProgressMonitor();
 
   private static final String AUTO_BUILD = "AUTO_BUILD";
   static {
@@ -69,8 +75,29 @@ public class UCDApplication implements IApplication {
     UCDetectorPlugin.setHeadlessMode(true);// MUST BE BEFORE LOGGING!
     Log.logInfo("Starting UCDetector Application");
     parseCommandLine((String[]) context.getArguments().get(IApplicationContext.APPLICATION_ARGS));
+    loadTargetPlatform();
     startImpl();
     return IApplication.EXIT_OK;
+  }
+
+  private void loadTargetPlatform() throws CoreException, FileNotFoundException {
+    if (targetPlatformFile == null) {
+      Log.logInfo("Use eclipse as target platform");
+      return;
+    }
+    Log.logInfo("Use target platform declared in: " + targetPlatformFile.getAbsolutePath());
+    if (!targetPlatformFile.exists()) {
+      throw new FileNotFoundException("Can't find target platform file: " + targetPlatformFile);
+    }
+    Log.logInfo("START: loadTargetPlatform");
+    ITargetPlatformService tps = (ITargetPlatformService) PDECore.getDefault().acquireService(
+        ITargetPlatformService.class.getName());
+    ITargetHandle targetHandle = tps.getTarget(targetPlatformFile.toURI());
+    ITargetDefinition targetDefinition = targetHandle.getTargetDefinition();
+    new LoadTargetDefinitionJob(targetDefinition).run(ucdMonitor);
+    //    LoadTargetDefinitionJob.load(targetDefinition);
+    Log.logInfo("END: loadTargetPlatform");
+
   }
 
   private void parseCommandLine(String[] sArgs) {
@@ -87,6 +114,11 @@ public class UCDApplication implements IApplication {
       if (sArgs[i].equals("-ucd.buildtype")) {
         if (hasOptionValue) {
           sBuildType = sArgs[i + 1];
+        }
+      }
+      if (sArgs[i].equals("-ucd.targetPlatform")) {
+        if (hasOptionValue) {
+          targetPlatformFile = new File(sArgs[i + 1]);
         }
       }
       if (sArgs[i].equals("-ucd.options")) {
@@ -124,7 +156,6 @@ public class UCDApplication implements IApplication {
   /** @throws CoreException if an error occurs accessing the contents of its underlying resource */
   public void startImpl() throws CoreException {
     Log.logInfo("Run UCDetector");
-    UCDProgressMonitor ucdMonitor = new UCDProgressMonitor();
     IWorkspace workspace = ResourcesPlugin.getWorkspace();
     IWorkspaceRoot workspaceRoot = workspace.getRoot();
     List<IJavaProject> allProjects = createProjects(ucdMonitor, workspaceRoot);
@@ -135,10 +166,10 @@ public class UCDApplication implements IApplication {
     workspaceRoot.refreshLocal(IResource.DEPTH_INFINITE, ucdMonitor);
     Log.logInfo("Build workspace... Please wait...!");
     workspace.build(buildType, ucdMonitor);
-    iterate(ucdMonitor, workspaceRoot, allProjects);
+    iterate(workspaceRoot, allProjects);
   }
 
-  private void iterate(UCDProgressMonitor ucdMonitor, IWorkspaceRoot workspaceRoot, List<IJavaProject> allProjects)
+  private void iterate(IWorkspaceRoot workspaceRoot, List<IJavaProject> allProjects)
       throws CoreException {
     UCDetectorIterator iterator = new UCDetectorIterator();
     iterator.setMonitor(ucdMonitor);

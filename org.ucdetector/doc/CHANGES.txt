@@ -1,12 +1,12 @@
-UCDetector 1.6.0 from 2010-??-??:
+UCDetector 1.7.0 from 2010-??-??:
 New features:
+ - [ 3049290 ] Set target platform in headless mode
  - Headless: Iterate over resources, set option file
 
 Bugfixes:
  - Cancel broken in active mode, buttons: "Rename..." and "New..."  
 
 Todo:
- - request [ 3049290 ] Set target platform in headless mode
  - bug     [ 3048617 ] Modifier wrong place
  - bug     [ 2926266 ] Method cannot be private if called on subclass
   

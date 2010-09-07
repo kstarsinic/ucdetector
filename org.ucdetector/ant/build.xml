@@ -16,14 +16,16 @@
   <target name="detect" description="Run UCDetector using java">
     <property file="build.properties" />
     <echo>
---------------------------------------------------------------------------------
-ECLIPSE_HOME = ${ECLIPSE_HOME}
-LAUNCHER     = ${LAUNCHER}
-WORKSPACE    = ${WORKSPACE}
-projects     = ${ucd.projects}
-buildtype    = ${ucd.buildtype}
-ucdoption    = ${ucd.options}
---------------------------------------------------------------------------------
+# -----------------------------------------------------------------------------
+# ECLIPSE_HOME       = ${ECLIPSE_HOME}
+# LAUNCHER           = ${LAUNCHER}
+# WORKSPACE          = ${WORKSPACE}
+# ucd.projects       = ${ucd.projects}
+# ucd.buildtype      = ${ucd.buildtype}
+# ucd.options        = ${ucd.options}
+# ucd.debug          = ${ucd.debug}
+# ucd.targetPlatform = ${ucd.targetPlatform}
+# -----------------------------------------------------------------------------
 </echo>
     <!-- Show more properties: <property environment="env"/> <echoproperties /> -->
     <available file="${build.properties}" property="build.properties.present" />
@@ -43,6 +45,7 @@ ucdoption    = ${ucd.options}
       <arg line="-ucd.projects ${ucd.projects}" />
       <arg line="-ucd.buildtype ${ucd.buildtype}" />
       <arg line="-ucd.options ${ucd.options}" />
+      <arg line="-ucd.targetPlatform ${ucd.targetPlatform}" />
     </java>
   </target>
 
@@ -55,24 +58,3 @@ ucdoption    = ${ucd.options}
     <fail>Please edit new file ${build.properties} ant start build again!</fail>
   </target>
 </project>
-
-<!-- =====================================================================
-       DETECT 2
-       =====================================================================
-  <target name="detect-exe"
-          description="Run UCDetector using eclipse executable">
-    <property name="EXCECUTABLE" location="/opt/eclipse-3.5/eclipse" />
-    <echo>EXCECUTABLE = ${EXCECUTABLE}</echo>
-    <echo>WORKSPACE   = ${WORKSPACE}</echo>
-
-    <exec executable="${EXCECUTABLE}">
-      <arg value="-application" />
-      <arg value="org.ucdetector.ucd" />
-      <arg value="-consolelog" />
-      <arg value="-debug" />
-      <arg value="-nosplash" />
-      <arg value="-data" />
-      <arg value="-${WORKSPACE}" />
-    </exec>
-  </target>
-  -->

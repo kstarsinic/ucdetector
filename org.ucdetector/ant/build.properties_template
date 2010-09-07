@@ -1,9 +1,13 @@
 # ==============================================================================
-# Workspace directory (parent folder of projects)
-# If you don't know, where WORKSPACE is,
-# Open menu: Help/About eclipse SDK/Installation details/Configuration
-# And search for 'osgi.instance.area'
-#
+# Copyright (c) 2010 Joerg Spieler
+# All rights reserved. This program and the accompanying materials
+# are made available under the terms of the Eclipse Public License v1.0
+# which accompanies this distribution, and is available at
+# http://www.eclipse.org/legal/epl-v10.html
+# ==============================================================================
+
+# ==============================================================================
+# Put java projects in a NEW directory: WORKSPACE
 # ~ does not work on Linux. Use ${user.home} instead!
 # ==============================================================================
 # WORKSPACE=C:/workspaces/ucdetector-headless
@@ -13,7 +17,7 @@ WORKSPACE=${user.home}/workspace-headless
 
 
 # ==============================================================================
-# Directory of eclipse executable
+# Directory of eclipse executable - use a new eclipse installation!
 # ==============================================================================
 # ECLIPSE_HOME=/opt/eclipse-3.5-headless
 # ECLIPSE_HOME=C:/eclipse/eclipse-3.5-headless
@@ -29,40 +33,41 @@ ucd.debug=-debug
 
 
 # ==============================================================================
-# Command line option: -projects
-# THERE ARE 2 WAYS TO SET OPTIONS:
-#   - SET OPTIONS IN ECLIPSE
-#   - SET OPTIONS HERE
-# leave empty, to build ALL projects
+# Projects to build
+# Leave empty, to build ALL projects
 # ==============================================================================
 # ucd.projects=/org.ucdetector.example/example,\
 #              /org.ucdetector
 # ==============================================================================
-#ucd.projects=/org.ucdetector.example/example
-#ucd.projects=/org.ucdetector.example
 ucd.projects=
 
 
 # ==============================================================================
-# Command line option: -buildtype
-# One of:
-# FULL_BUILD, AUTO_BUILD, CLEAN_BUILD, INCREMENTAL_BUILD.
-# Default is AUTO_BUILD
-# See: org.eclipse.core.resources.IncrementalProjectBuilder
+# Build type
+# One of: AUTO_BUILD (default), FULL_BUILD, CLEAN_BUILD, INCREMENTAL_BUILD
+# For details see: org.eclipse.core.resources.IncrementalProjectBuilder
 # ==============================================================================
 # ucd.buildtype=AUTO_BUILD
 # ==============================================================================
-ucd.buildtype=
+ucd.buildtype=AUTO_BUILD
 
 
 # ==============================================================================
-# Command line option: -options
-# Usage: key1=value1,key2=value2
-# For more details see class: org.ucdetector.preferences.Prefs
+# UCDetector preferences
 # ==============================================================================
-# ucd.options=warnLimit=1,finalMethod=IGNORE
+# Edit options.properties below, or set UCDetector preferences in eclipse IDE
+# and use mode file from: WORKSPACE_IDE/.metadata/.plugins/org.ucdetector/modes/
+# ==============================================================================
+# ucd.options=options.properties
 # ==============================================================================
 ucd.options=options.properties
 
 
-
+# ==============================================================================
+# Target Platform
+# ==============================================================================
+# Only needed, if you use a target platform different to ECLIPSE_HOME
+# CHANGE file ucd.target, when using target platform!
+# ==============================================================================
+# ucd.targetPlatform=ucd.target
+ucd.targetPlatform=
