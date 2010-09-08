@@ -330,6 +330,7 @@ public class XmlReport implements IUCDetectorReport {
     appendAbout("warnings", "Warnings", String.valueOf(markerCount), true);
     appendAbout("mode", "Mode", Prefs.getModeName(), true);
     appendAbout("host", "Host", UCDetectorPlugin.getHostName(), false);
+    appendAbout("headless", "headless", "" + UCDetectorPlugin.isHeadlessMode(), false);
     //
     Element searched = appendChild(statistcs, "searched", null);
     for (Object selection : selected) {
