@@ -34,7 +34,7 @@ class VisibilityQuickFix extends AbstractUCDQuickFix {
     ListRewrite listRewrite = getListRewrite(nodeToChange);
     Modifier modifierFound = getModifierVisibility(nodeToChange);
     Modifier modifierNew = getModifierNew(nodeToChange);
-    int startPosition = nodeToChange.getStartPosition();
+    int startPosition = -1;
     // default -> default
     if (modifierFound == null && modifierNew == null) {
       // nothing

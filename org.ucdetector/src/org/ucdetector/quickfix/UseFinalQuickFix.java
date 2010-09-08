@@ -30,11 +30,10 @@ class UseFinalQuickFix extends AbstractUCDQuickFix {
     ListRewrite listRewrite = getListRewrite(nodeToChange);
     Modifier modifierFound = getModifierVisibility(nodeToChange);
     Modifier modifierFinal = nodeToChange.getAST().newModifier(Modifier.ModifierKeyword.FINAL_KEYWORD);
-    int startPosition;
+    int startPosition = -1;
     // default -> final
     if (modifierFound == null) {
       listRewrite.insertFirst(modifierFinal, null);
-      startPosition = nodeToChange.getStartPosition();
     }
     // public -> public final
     else {

@@ -96,6 +96,10 @@ abstract class AbstractUCDQuickFix extends WorkbenchMarkerResolution {
         return;
       }
       int startPosition = runImpl(visitor.nodeToChange);
+      if (startPosition == -1) {
+        // When start position is unknown, use line of marker
+        startPosition = doc.getLineInformationOfOffset(charStart).getOffset();
+      }
       marker.delete();
       commitChanges();
       // -----------------------------------------------------------------------
