@@ -1,12 +1,7 @@
 //------------------------------------------------------------------------------
 TODO:
- - create an extension point for "org.ucdetector.additional"
- - Add sample html/xml report to homepage
- - remove // NO_UCD in code
  - check comment 3, Wrong default visibility marker for classes - ID: 2539795,
    http://sourceforge.net/tracker/?func=detail&aid=2539795&group_id=219599&atid=1046865
- - /org.eclipse.pde.core/src/org/eclipse/pde/internal/core/target/provisional/ITargetPlatformService.java
-
  - Unused class: Delete class
 //------------------------------------------------------------------------------
 Code examples:

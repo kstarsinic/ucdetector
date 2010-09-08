@@ -1,10 +1,9 @@
 UCDetector 1.7.0 from 2010-??-??:
 New features:
  - [ 3049290 ] Set target platform in headless mode
- - Headless: Iterate over resources, set option file
+ - Headless: Iterate over projects or resources. Use option file
 
 Bugfixes:
- - Cancel broken in active mode, buttons: "Rename..." and "New..."  
 
 Todo:
  - bug     [ 3048617 ] Modifier wrong place
@@ -16,6 +15,7 @@ Bugfixes:
  - fixed missing QuickFix icons
  - [ 3025571 ] Exception loading modes: Malformed \uxxxx encoding
  - [ 3046637 ] Headless fails to recognize projects
+ - Cancel broken in active mode, buttons: "Rename..." and "New..."  
 
 New features:
  - [ 2810803 ] Added again: Combobox to change all visibility combos
