@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<?pde version="3.6"?>
+<target name="ucd">
+	<locations>
+    <!-- =======================================================================
+    Change next line or
+    edit this file with Eclipse target editor
+    for custom target platform
+    ======================================================================== -->
+		<location path="/opt/eclipse-3.6" type="Directory"/>
+	</locations>
+</target>

@@ -8,8 +8,6 @@
 <project name="Run UCDetector" default="detect" basedir=".">
   <description>Run UCDetector in headless mode</description>
 
-  <property name="build.properties" location="build.properties" />
-
   <!-- =====================================================================
        DETECT
        ===================================================================== -->
@@ -26,9 +24,11 @@
 # ucd.targetPlatform = ${ucd.targetPlatform}
 # -----------------------------------------------------------------------------
 </echo>
-    <!-- Show more properties: <property environment="env"/> <echoproperties /> -->
-    <available file="${build.properties}" property="build.properties.present" />
-    <antcall target="create-build.properties" />
+
+    <available file="${ECLIPSE_HOME}" property="ECLIPSE_HOME.exists" />
+    <fail unless="ECLIPSE_HOME.exists" message="Missing ${ECLIPSE_HOME}. Edit ECLIPSE_HOME in build.properties" />
+    <available file="${WORKSPACE}" property="WORKSPACE.exists" />
+    <fail unless="WORKSPACE.exists" message="Missing ${WORKSPACE}. Edit WORKSPACE in build.properties" />
 
     <!-- LAUNCHER -->
     <pathconvert property="LAUNCHER">
@@ -46,14 +46,5 @@
       <arg line="-ucd.options ${ucd.options}" />
       <arg line="-ucd.targetPlatform ${ucd.targetPlatform}" />
     </java>
-  </target>
-
-  <!-- =====================================================================
-       CREATE-BUILD.PROPERTIES
-       ===================================================================== -->
-  <target name="create-build.properties" unless="build.properties.present">
-    <copy file="build.properties_template" tofile="${build.properties}" />
-    <echo>Created ${build.properties}</echo>
-    <fail>Please edit new file ${build.properties} ant start build again!</fail>
   </target>
 </project>

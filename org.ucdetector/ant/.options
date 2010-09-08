@@ -1,3 +1,0 @@
-# Turn on debugging for the org.ucdetector plugin: DEBUG, INFO, WARN, ERROR, OFF
-org.ucdetector/logLevel=DEBUG
-
