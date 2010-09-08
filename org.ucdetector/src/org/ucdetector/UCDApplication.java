@@ -42,6 +42,7 @@ import org.ucdetector.iterator.UCDetectorIterator;
 import org.ucdetector.preferences.PreferenceInitializer;
 import org.ucdetector.preferences.Prefs;
 import org.ucdetector.search.UCDProgressMonitor;
+import org.ucdetector.util.StopWatch;
 
 /**
  * Run UCDetector in headless mode. Entry point is an eclipse application.
@@ -72,22 +73,28 @@ public class UCDApplication implements IApplication {
   }
 
   public Object start(IApplicationContext context) throws Exception {
-    UCDetectorPlugin.setHeadlessMode(true);// MUST BE BEFORE LOGGING!
-    Log.logInfo("Starting UCDetector Application");
-    parseCommandLine((String[]) context.getArguments().get(IApplicationContext.APPLICATION_ARGS));
-    loadTargetPlatform();
-    // Run it twice because of Exception, when running it with a complete workspace
-    //    [java] java.lang.NullPointerException
-    //    [java]   at org.eclipse.pde.internal.core.target.AbstractBundleContainer.getVMArguments(AbstractBundleContainer.java:525)
-    //    [java]   at org.eclipse.pde.internal.core.target.TargetPlatformService.newDefaultTargetDefinition(TargetPlatformService.java:525)
-    //    [java]   at org.eclipse.pde.internal.core.PluginModelManager.initDefaultTargetPlatformDefinition(PluginModelManager.java:575)
-    //    [java]   at org.eclipse.pde.internal.core.PluginModelManager.initializeTable(PluginModelManager.java:528)
-    //    [java]   at org.eclipse.pde.internal.core.PluginModelManager.getExternalModelManager(PluginModelManager.java:1013)
-    //    [java]   at org.eclipse.pde.internal.core.TargetPlatformResetJob.run(TargetPlatformResetJob.java:36)
-    //    [java]   at org.eclipse.core.internal.jobs.Worker.run(Worker.java:54)
-    Log.logInfo("Run 'load target platform' again, because of Exception, when running it with a complete workspace");
-    loadTargetPlatform();
-    startImpl();
+    long start = System.currentTimeMillis();
+    try {
+      UCDetectorPlugin.setHeadlessMode(true);// MUST BE BEFORE LOGGING!
+      Log.logInfo("Starting UCDetector Application");
+      parseCommandLine((String[]) context.getArguments().get(IApplicationContext.APPLICATION_ARGS));
+      loadTargetPlatform();
+      // Run it twice because of Exception, when running it with a complete workspace
+      //    [java] java.lang.NullPointerException
+      //    [java]   at org.eclipse.pde.internal.core.target.AbstractBundleContainer.getVMArguments(AbstractBundleContainer.java:525)
+      //    [java]   at org.eclipse.pde.internal.core.target.TargetPlatformService.newDefaultTargetDefinition(TargetPlatformService.java:525)
+      //    [java]   at org.eclipse.pde.internal.core.PluginModelManager.initDefaultTargetPlatformDefinition(PluginModelManager.java:575)
+      //    [java]   at org.eclipse.pde.internal.core.PluginModelManager.initializeTable(PluginModelManager.java:528)
+      //    [java]   at org.eclipse.pde.internal.core.PluginModelManager.getExternalModelManager(PluginModelManager.java:1013)
+      //    [java]   at org.eclipse.pde.internal.core.TargetPlatformResetJob.run(TargetPlatformResetJob.java:36)
+      //    [java]   at org.eclipse.core.internal.jobs.Worker.run(Worker.java:54)
+      Log.logInfo("Run 'load target platform' again, because of Exception, when running it with a complete workspace");
+      loadTargetPlatform();
+      startImpl();
+    }
+    finally {
+      Log.logInfo("Time to run UCDetector Application: " + StopWatch.timeAsString(System.currentTimeMillis() - start));
+    }
     return IApplication.EXIT_OK;
   }
 

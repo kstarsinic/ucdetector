@@ -57,6 +57,9 @@ public class StopWatch {
     if (seconds <= 60) {
       return StopWatch.DOUBLE_FORMAT.format(seconds) + " seconds";//$NON-NLS-1$
     }
-    return StopWatch.DOUBLE_FORMAT.format(seconds / 60d) + " minutes";//$NON-NLS-1$
+    if (seconds <= 3600) {
+      return StopWatch.DOUBLE_FORMAT.format(seconds / 60d) + " minutes";//$NON-NLS-1$
+    }
+    return StopWatch.DOUBLE_FORMAT.format(seconds / 3600d) + " hours";//$NON-NLS-1$
   }
 }
