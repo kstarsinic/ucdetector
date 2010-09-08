@@ -18,7 +18,6 @@
     <echo>
 # -----------------------------------------------------------------------------
 # ECLIPSE_HOME       = ${ECLIPSE_HOME}
-# LAUNCHER           = ${LAUNCHER}
 # WORKSPACE          = ${WORKSPACE}
 # ucd.projects       = ${ucd.projects}
 # ucd.buildtype      = ${ucd.buildtype}
