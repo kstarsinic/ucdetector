@@ -1,8 +1,0 @@
-About this UCDetector build
-
-UCDetector version: @BUILD_UCD@
-Date created      : @BUILD_DATE@
-Java version      : @BUILD_JAVA@
-Eclipse version   : @BUILD_ECLIPSE@
-Operation system  : @BUILD_OS@
-Provided by       : Joerg Spieler
