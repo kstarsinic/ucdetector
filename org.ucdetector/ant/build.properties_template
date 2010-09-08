@@ -27,8 +27,9 @@ ECLIPSE_HOME=
 
 # ==============================================================================
 # Command line option: -debug
-# remove, for less logging
+# Leave empty, for less logging
 # ==============================================================================
+#ucd.debug=
 ucd.debug=-debug
 
 

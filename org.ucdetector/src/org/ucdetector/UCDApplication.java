@@ -76,6 +76,17 @@ public class UCDApplication implements IApplication {
     Log.logInfo("Starting UCDetector Application");
     parseCommandLine((String[]) context.getArguments().get(IApplicationContext.APPLICATION_ARGS));
     loadTargetPlatform();
+    // Run it twice because of Exception, when running it with a complete workspace
+    //    [java] java.lang.NullPointerException
+    //    [java]   at org.eclipse.pde.internal.core.target.AbstractBundleContainer.getVMArguments(AbstractBundleContainer.java:525)
+    //    [java]   at org.eclipse.pde.internal.core.target.TargetPlatformService.newDefaultTargetDefinition(TargetPlatformService.java:525)
+    //    [java]   at org.eclipse.pde.internal.core.PluginModelManager.initDefaultTargetPlatformDefinition(PluginModelManager.java:575)
+    //    [java]   at org.eclipse.pde.internal.core.PluginModelManager.initializeTable(PluginModelManager.java:528)
+    //    [java]   at org.eclipse.pde.internal.core.PluginModelManager.getExternalModelManager(PluginModelManager.java:1013)
+    //    [java]   at org.eclipse.pde.internal.core.TargetPlatformResetJob.run(TargetPlatformResetJob.java:36)
+    //    [java]   at org.eclipse.core.internal.jobs.Worker.run(Worker.java:54)
+    Log.logInfo("Run 'load target platform' again, because of Exception, when running it with a complete workspace");
+    loadTargetPlatform();
     startImpl();
     return IApplication.EXIT_OK;
   }
@@ -169,8 +180,7 @@ public class UCDApplication implements IApplication {
     iterate(workspaceRoot, allProjects);
   }
 
-  private void iterate(IWorkspaceRoot workspaceRoot, List<IJavaProject> allProjects)
-      throws CoreException {
+  private void iterate(IWorkspaceRoot workspaceRoot, List<IJavaProject> allProjects) throws CoreException {
     UCDetectorIterator iterator = new UCDetectorIterator();
     iterator.setMonitor(ucdMonitor);
     List<IJavaElement> javaElementsToIterate = new ArrayList<IJavaElement>();
@@ -184,12 +194,12 @@ public class UCDApplication implements IApplication {
         if (path.segmentCount() == 1) {
           IProject project = workspaceRoot.getProject(resourceToIterate);
           javaElement = JavaCore.create(project);
-          Log.logInfo("resource=%s, javaProject=%s", resourceToIterate, javaElement);
+          Log.logInfo("resource=%s, javaProject=%s", resourceToIterate, javaElement.getElementName());
         }
         else {
           IFolder folder = workspaceRoot.getFolder(path);
           javaElement = JavaCore.create(folder);
-          Log.logInfo("resource=%s, folder=%s, javaElement=%s", resourceToIterate, folder, javaElement);
+          Log.logInfo("resource=%s, folder=%s, javaElement=%s", resourceToIterate, folder, javaElement.getElementName());
         }
         javaElementsToIterate.add(javaElement);
       }
@@ -217,7 +227,15 @@ public class UCDApplication implements IApplication {
         project.create(monitor);
       }
       project.open(monitor);
-      projects.add(JavaCore.create(project));
+      IJavaProject javaProject = JavaCore.create(project);
+      // Running headless throws exception for no java projects!
+      if (javaProject.exists()) {
+        projects.add(javaProject);
+        Log.logInfo("Project created: " + javaProject.getElementName());
+      }
+      else {
+        Log.logWarn("Ignore project (maybe it is not a java project): " + javaProject.getElementName());
+      }
     }
     return projects;
   }
