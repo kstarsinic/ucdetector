@@ -18,5 +18,5 @@ public interface IUCDetectorReport {
 
   void reportDetectionProblem(IStatus status);
 
-  void endReport(Object[] selected, long start) throws CoreException;
+  void endReport() throws CoreException;
 }

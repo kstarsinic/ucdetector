@@ -89,9 +89,9 @@ public final class MarkerFactory implements IUCDetectorReport {
     }
   }
 
-  public void endReport(Object[] selected, long start) throws CoreException {
+  public void endReport() throws CoreException {
     for (IUCDetectorReport report : reports) {
-      report.endReport(selected, start);
+      report.endReport();
     }
   }
 

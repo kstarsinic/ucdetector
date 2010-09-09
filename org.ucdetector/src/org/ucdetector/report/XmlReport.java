@@ -98,9 +98,33 @@ public class XmlReport implements IUCDetectorReport {
   private int detectionProblemCount;
   private Throwable initXMLException;
   private Element abouts;
+  private final IJavaElement[] objectsToIterate;
+  private final long timeStart;
+  private final String reportNumberName;
+  private Element nodeCreated;
+  private Element nodeCreatedTS;
+  private Element nodeDuration;
+  private Element nodeDurationTS;
+  private Element nodeFinished;
+  private boolean isFirstStatistic = true;
+  private boolean endReportCalled;
 
-  public XmlReport() {
+  public XmlReport(IJavaElement[] objectsToIterate, long timeStart) {
+    this.objectsToIterate = objectsToIterate;
+    this.timeStart = timeStart;
+    reportNumberName = getReportNumberName();
     initXML();
+    if (UCDetectorPlugin.isHeadlessMode()) {
+      Runtime.getRuntime().addShutdownHook(new Thread() {
+        @Override
+        public void run() {
+          if (!endReportCalled) {
+            Log.logWarn("Try to write reports in ShutdownHook");
+            writeReports(true);
+          }
+        }
+      });
+    }
   }
 
   /**
@@ -237,6 +261,10 @@ public class XmlReport implements IUCDetectorReport {
         appendChild(marker, "resourceName", resource.getName());
       }
       // appendChild(marker, "nr", String.valueOf(markerCount));
+      if (UCDetectorPlugin.isHeadlessMode() && markerCount % 20 == 0) {
+        Log.logInfo("Flush reports. Maker count: %3s", "" + markerCount);
+        writeReports(false);
+      }
     }
     catch (Throwable ex) {
       Log.logError("XML problems", ex);
@@ -263,23 +291,12 @@ public class XmlReport implements IUCDetectorReport {
   }
 
   /**
-   * Append a child node and a text node
-   */
-  private Element appendChild(Element parent, String tagName, String text) {
-    Element childNode = doc.createElement(tagName);
-    if (text != null) {
-      childNode.appendChild(doc.createTextNode(text));
-    }
-    parent.appendChild(childNode);
-    return childNode;
-  }
-
-  /**
    * @return File name, with does not exist, containing a number.
    * eg: UCDetetorReport_001
    */
   // Fix [2811049]  Html report is overridden each run
-  private String getReportNumberName(File reportDir) {
+  private String getReportNumberName() {
+    File reportDir = new File(PreferenceInitializer.getReportDir());
     String[] files = reportDir.list();
     files = (files == null) ? new String[0] : files;
     for (int i = 1; i < 1000; i++) {
@@ -312,40 +329,44 @@ public class XmlReport implements IUCDetectorReport {
   /**
    * Append statistics like: date, searchDuration, searched elements
    */
-  private void appendStatistics(Object[] selected, long start) {
+  private void appendStatistics(boolean isEndReport) {
     long now = System.currentTimeMillis();
-    long duration = (now - start);
+    long duration = (now - timeStart);
+    String durationString = StopWatch.timeAsString(duration);
     abouts = appendChild(statistcs, "abouts", null);
-    appendAbout("reportCreated", "Created report", UCDetectorPlugin.getNow(), true);
-    appendAbout("reportCreatedTS", "Created report", "" + now, false);
-    appendAbout("operatingSystem", "Operating system", UCDetectorPlugin.getAboutOS(), true);
-    appendAbout("javaVersion", "Java", UCDetectorPlugin.getAboutJavaVersion(), true);
-    appendAbout("eclipseVersion", "Eclipse", UCDetectorPlugin.getAboutEclipseVersion(), true);
-    appendAbout("ucdetectorVersion", "UCDetector", UCDetectorPlugin.getAboutUCDVersion(), true);
-    appendAbout("searchDuration", "Search duration", StopWatch.timeAsString(duration), true);
-    appendAbout("searchDurationTS", "Search duration", "" + duration, false);
-    appendAbout("eclipseHome", "Eclipse home", UCDetectorPlugin.getAboutEclipseHome(), false);
-    appendAbout("logfile", "Logfile", UCDetectorPlugin.getAboutLogfile(), false);
-    appendAbout("workspace", "Workspace", UCDetectorPlugin.getAboutWorkspace(), false);
-    appendAbout("warnings", "Warnings", String.valueOf(markerCount), true);
-    appendAbout("mode", "Mode", Prefs.getModeName(), true);
-    appendAbout("host", "Host", UCDetectorPlugin.getHostName(), false);
-    appendAbout("headless", "headless", "" + UCDetectorPlugin.isHeadlessMode(), false);
+    // Nodes change after each flush
+    nodeCreated = appendAbout("reportCreated", "Created report", UCDetectorPlugin.getNow(), true, nodeCreated);
+    nodeCreatedTS = appendAbout("reportCreatedTS", "Created report", "" + now, false, nodeCreatedTS);
+    nodeDuration = appendAbout("searchDuration", "Search duration", durationString, true, nodeDuration);
+    nodeDurationTS = appendAbout("searchDurationTS", "Search duration", "" + duration, false, nodeDurationTS);
+    nodeFinished = appendAbout("detectionFinished", "Detection Finished", "" + isEndReport, false, nodeFinished);
     //
-    Element searched = appendChild(statistcs, "searched", null);
-    for (Object selection : selected) {
-      if (selection instanceof IJavaElement) {
-        IJavaElement javaElement = (IJavaElement) selection;
+    if (isFirstStatistic) {
+      isFirstStatistic = false;
+      appendAbout("operatingSystem", "Operating system", UCDetectorPlugin.getAboutOS(), true, null);
+      appendAbout("javaVersion", "Java", UCDetectorPlugin.getAboutJavaVersion(), true, null);
+      appendAbout("eclipseVersion", "Eclipse", UCDetectorPlugin.getAboutEclipseVersion(), true, null);
+      appendAbout("ucdetectorVersion", "UCDetector", UCDetectorPlugin.getAboutUCDVersion(), true, null);
+      appendAbout("eclipseHome", "Eclipse home", UCDetectorPlugin.getAboutEclipseHome(), false, null);
+      appendAbout("logfile", "Logfile", UCDetectorPlugin.getAboutLogfile(), false, null);
+      appendAbout("workspace", "Workspace", UCDetectorPlugin.getAboutWorkspace(), false, null);
+      appendAbout("warnings", "Warnings", String.valueOf(markerCount), true, null);
+      appendAbout("mode", "Mode", Prefs.getModeName(), true, null);
+      appendAbout("host", "Host", UCDetectorPlugin.getHostName(), false, null);
+      appendAbout("headless", "headless", "" + UCDetectorPlugin.isHeadlessMode(), false, null);
+      //
+      Element searched = appendChild(statistcs, "searched", null);
+      for (IJavaElement javaElement : objectsToIterate) {
         Element search = appendChild(searched, "search", JavaElementUtil.getElementName(javaElement));
         search.setAttribute("class", javaElement.getClass().getSimpleName());
       }
-    }
-    Element preferencesNode = appendChild(statistcs, "preferences", null);
-    Set<Entry<String, String>> preferencesSet = UCDetectorPlugin.getDeltaPreferences().entrySet();
-    for (Entry<String, String> entry : preferencesSet) {
-      Element preferenceNode = appendChild(preferencesNode, "preference", null);
-      preferenceNode.setAttribute("key", entry.getKey());
-      preferenceNode.setAttribute("value", entry.getValue());
+      Element preferencesNode = appendChild(statistcs, "preferences", null);
+      Set<Entry<String, String>> preferencesSet = UCDetectorPlugin.getDeltaPreferences().entrySet();
+      for (Entry<String, String> entry : preferencesSet) {
+        Element preferenceNode = appendChild(preferencesNode, "preference", null);
+        preferenceNode.setAttribute("key", entry.getKey());
+        preferenceNode.setAttribute("value", entry.getValue());
+      }
     }
   }
 
@@ -357,7 +378,10 @@ public class XmlReport implements IUCDetectorReport {
    *  &lt;/about>
    * </pre>
    */
-  private Element appendAbout(String nodeName, String nodeNiceName, String value, boolean show) {
+  private Element appendAbout(String nodeName, String nodeNiceName, String value, boolean show, Element alreadyCreated) {
+    if (alreadyCreated != null) {
+      alreadyCreated.getParentNode().removeChild(alreadyCreated);
+    }
     Element about = appendChild(abouts, "about", null);
     about.setAttribute("name", nodeName);
     about.setAttribute("show", Boolean.toString(show));
@@ -367,15 +391,30 @@ public class XmlReport implements IUCDetectorReport {
   }
 
   /**
-   * Write report to xml file, do xslt transformation to an html file
+   * Append a child node and a text node
    */
-  public void endReport(Object[] selected, long start) throws CoreException {
+  private Element appendChild(Element parent, String tagName, String text) {
+    Element childNode = doc.createElement(tagName);
+    if (text != null) {
+      childNode.appendChild(doc.createTextNode(text));
+    }
+    parent.appendChild(childNode);
+    return childNode;
+  }
+
+  public void endReport() throws CoreException {
+    endReportCalled = true;
+    writeReports(true);
+  }
+
+  /**
+   * Write report to xml file, do xslt transformation to an html file or text file
+   */
+  private void writeReports(boolean isEndReport) {
     if (!Prefs.isWriteReportFile()) {
       return;
     }
     File reportDir = new File(PreferenceInitializer.getReportDir());
-    String baseFileName = getReportNumberName(reportDir);
-    File htmlFile = new File(reportDir, baseFileName + ".html");
     String reportPath = reportDir.getAbsolutePath();
     if (initXMLException != null) {
       logEndReportMessage(Messages.XMLReport_WriteError, IStatus.ERROR, initXMLException, reportPath);
@@ -385,18 +424,20 @@ public class XmlReport implements IUCDetectorReport {
       logEndReportMessage(Messages.XMLReport_WriteNoWarnings, IStatus.INFO, initXMLException);
       return;
     }
-    appendStatistics(selected, start);
-
+    appendStatistics(isEndReport);
     try {
       if (Prefs.isCreateReportHTML()) {
         Document htmlDocument = transformToHTML(doc);
+        File htmlFile = new File(reportDir, reportNumberName + ".html");
         writeDocumentToFile(htmlDocument, htmlFile);
       }
       if (Prefs.isCreateReportXML()) {
-        writeDocumentToFile(doc, new File(reportDir, baseFileName + ".xml"));
+        File xmlFile = new File(reportDir, reportNumberName + ".xml");
+        writeDocumentToFile(doc, xmlFile);
       }
       if (Prefs.isCreateReportTXT()) {
-        writeTextFile(new File(reportDir, baseFileName + ".txt"));
+        File txtFile = new File(reportDir, reportNumberName + ".txt");
+        writeTextFile(txtFile);
       }
       logEndReportMessage(Messages.XMLReport_WriteOk, IStatus.INFO, null, String.valueOf(markerCount), reportPath);
     }

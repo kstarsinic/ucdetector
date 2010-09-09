@@ -110,7 +110,7 @@ public class MarkerReport implements IUCDetectorReport {
     markersToFlash.clear();
   }
 
-  public void endReport(Object[] selected, long start) throws CoreException {
+  public void endReport() throws CoreException {
     flushReport();
     Log.logInfo(totalMarkerCount + " markers created"); //$NON-NLS-1$
   }
