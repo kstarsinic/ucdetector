@@ -39,6 +39,7 @@
       <fileset dir="..">
         <exclude name="bin/**" />
         <exclude name="doc/dictionary.dic" />
+        <exclude name="build/output/**" />
       </fileset>
     </zip>
     <echo>Created source zip: ${source.zip}</echo>
