@@ -6,12 +6,12 @@
        PREPARE
        ===================================================================== -->
   <target name="prepare" description="Load and dump properties">
-    <!-- get ECLIPSE_HOME -->
-    <property file="local.properties" />
+    <property name="output.dir" location="output" />
+    <delete dir="${output.dir}" />
     <!-- get Bundle-Version -->
     <property file="../META-INF/MANIFEST.MF" />
-    <echo>ECLIPSE_HOME       = ${ECLIPSE_HOME}</echo>
     <echo>UCDetector version = ${Bundle-Version}</echo>
+    <echo>output.dir         = ${output.dir}</echo>
     <tstamp>
       <format property="NOW" pattern="yyyy-MM-dd HH:mm z" locale="en" />
     </tstamp>
@@ -22,22 +22,21 @@
        ===================================================================== -->
   <target name="plugin-export" depends="version-info" description="Export plugins">
     <ant target="source" />
-    <pde.exportPlugins destination="${ECLIPSE_HOME}"
+    <pde.exportPlugins destination="${output.dir}"
                        exportSource="false"
                        exportType="directory"
-                       plugins="org.ucdetector,org.ucdetector.additional,org.ucdetector.cycle"
+                       plugins="org.ucdetector,org.ucdetector.additional"
                        useJARFormat="true" />
-    <echo>Please wait. Plugins will be exported to: ${ECLIPSE_HOME}/plugins</echo>
+    <echo>Please wait. Plugins will be exported to: ${output.dir}/plugins</echo>
   </target>
 
   <!-- =====================================================================
        EXPORT UCDETECTOR SOURCE
        ===================================================================== -->
   <target name="source" depends="version-info" description="Export source.zip">
-    <property name="source.zip" location="${ECLIPSE_HOME}/plugins/org.ucdetector.source_${Bundle-Version}.zip" />
+    <property name="source.zip" location="${output.dir}/plugins/org.ucdetector.source_${Bundle-Version}.zip" />
     <zip destfile="${source.zip}">
       <fileset dir="..">
-        <include name="**" />
         <exclude name="bin/**" />
         <exclude name="doc/dictionary.dic" />
       </fileset>
