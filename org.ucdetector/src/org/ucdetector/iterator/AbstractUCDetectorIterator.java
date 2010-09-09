@@ -58,7 +58,7 @@ public abstract class AbstractUCDetectorIterator extends UCDetectorCallBack {
   static final String NL = System.getProperty("line.separator"); //$NON-NLS-1$
   private UCDProgressMonitor monitor;
   /** Elements selected in the UI */
-  protected IJavaElement[] selections;
+  protected IJavaElement[] objectsToIterate;
 
   private IPackageFragment activePackage;
   private final List<IPackageFragment> visitedPackages = new ArrayList<IPackageFragment>();
@@ -88,17 +88,17 @@ public abstract class AbstractUCDetectorIterator extends UCDetectorCallBack {
 
   /**
    * Start point for all for all iterations
-   * @param selectionsUI elements selected in user interface (projects, packages, classes, methods, fields)
+   * @param javaElements elements selected in user interface (projects, packages, classes, methods, fields)
    * @throws CoreException when a problems happened during iteration
    */
-  public final void iterate(IJavaElement[] selectionsUI) throws CoreException {
+  public final void iterate(IJavaElement[] javaElements) throws CoreException {
+    this.objectsToIterate = javaElements;
     if (DEBUG) {
-      Log.logDebug("%s selections to iterate: %s", String.valueOf(selectionsUI.length), getSelectedString(selectionsUI)); //$NON-NLS-1$
+      Log.logDebug("%s selections to iterate: %s", String.valueOf(javaElements.length), getSelectedString(javaElements)); //$NON-NLS-1$
     }
     try {
-      this.selections = selectionsUI;
-      handleStartGlobal(selections);
-      for (IJavaElement selection : selections) {
+      handleStartGlobal(javaElements);
+      for (IJavaElement selection : javaElements) {
         if (selection instanceof IPackageFragment) {
           activePackage = (IPackageFragment) selection;
         }
@@ -115,11 +115,11 @@ public abstract class AbstractUCDetectorIterator extends UCDetectorCallBack {
         }
         handleEndSelectedElement(selection);
       }
-      handleEndGlobal(selections);
+      handleEndGlobal(javaElements);
     }
     finally {
       if (markerFactory != null) {
-        markerFactory.endReport(selections, timeStart);
+        markerFactory.endReport();
         timeEnd = System.currentTimeMillis();
         Log.logInfo("Detection time: " //$NON-NLS-1$
             + StopWatch.timeAsString(timeEnd - timeStart));
@@ -308,7 +308,7 @@ public abstract class AbstractUCDetectorIterator extends UCDetectorCallBack {
       List<IUCDetectorReport> reports = new ArrayList<IUCDetectorReport>();
       reports.add(new MarkerReport());
       if (Prefs.isWriteReportFile()) {
-        reports.add(new XmlReport());
+        reports.add(new XmlReport(objectsToIterate, timeStart));
       }
       markerFactory = MarkerFactory.createInstance(reports);
     }
