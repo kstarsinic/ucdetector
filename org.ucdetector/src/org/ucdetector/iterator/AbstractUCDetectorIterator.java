@@ -19,6 +19,7 @@ import org.eclipse.core.resources.IWorkspaceRoot;
 import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.Platform;
+import org.eclipse.jdt.core.Flags;
 import org.eclipse.jdt.core.IClassFile;
 import org.eclipse.jdt.core.ICompilationUnit;
 import org.eclipse.jdt.core.IField;
@@ -36,6 +37,7 @@ import org.eclipse.jdt.core.IPackageFragmentRoot;
 import org.eclipse.jdt.core.IParent;
 import org.eclipse.jdt.core.IType;
 import org.eclipse.jdt.core.JavaCore;
+import org.eclipse.jdt.core.JavaModelException;
 import org.ucdetector.Log;
 import org.ucdetector.preferences.Prefs;
 import org.ucdetector.report.IUCDetectorReport;
@@ -48,10 +50,9 @@ import org.ucdetector.util.StopWatch;
 
 /**
  * Base Class to iterate over projects, packages, classes, methods, fields...
- * Extend this class, to create your custom detector. Override methods found
- * in {@link UCDetectorCallBack}
+ * Extend this class, to create your custom detector. Override methods handleX()
  */
-public abstract class AbstractUCDetectorIterator extends UCDetectorCallBack {
+public abstract class AbstractUCDetectorIterator {
   static final boolean DEBUG = "true".equalsIgnoreCase(Platform //$NON-NLS-1$ // NO_UCD
       .getDebugOption("org.ucdetector/debug/iterator")); //$NON-NLS-1$
   static final String SEP = ", "; //$NON-NLS-1$ // NO_UCD
@@ -334,5 +335,232 @@ public abstract class AbstractUCDetectorIterator extends UCDetectorCallBack {
       Log.logDebug("    Ignore %s '%s' because: %s",// //$NON-NLS-1$
           JavaElementUtil.getMemberTypeString(member), JavaElementUtil.getElementName(member), reason);
     }
+  }
+
+  // ---------------------------------------------------------------------------
+  // GENERIC HANDLERS
+  // ---------------------------------------------------------------------------
+  /**
+   * @param javaElements to handle
+   * @throws CoreException in classes overriding this method */
+  public void handleStartGlobal(IJavaElement[] javaElements) throws CoreException {
+    //
+  }
+
+  /**
+   * @param javaElements to handle
+   * @throws CoreException in classes overriding this method */
+  public void handleEndGlobal(IJavaElement[] javaElements) throws CoreException {
+    //
+  }
+
+  /**  @param javaElement to handle
+   * @throws CoreException in classes overriding this method */
+  public void handleStartSelectedElement(IJavaElement javaElement) throws CoreException {
+    //
+  }
+
+  /**  @param javaElement to handle
+   * @throws CoreException in classes overriding this method */
+  public void handleEndSelectedElement(IJavaElement javaElement) throws CoreException {
+    //
+  }
+
+  /**
+   * #########################################################
+   * OVERRIDE THIS METHOD, TO DUMP ALL ITERATED IJavaElement's
+   * #########################################################
+   *
+   * @param javaElement to handle
+   * @throws CoreException in classes overriding this method */
+  public void handleStartElement(IJavaElement javaElement) throws CoreException {
+    // Dumping all javaElements
+    // System.out.println(JavaElementUtil.getElementName(javaElement) + " - "
+    //    + JavaElementUtil.getClassName(javaElement));
+  }
+
+  /**
+   * @param javaElement to handle
+   * @throws CoreException in classes overriding this method */
+  public void handleEndElement(IJavaElement javaElement) throws CoreException {
+    //
+  }
+
+  // ---------------------------------------------------------------------------
+  // JAVA ELEMENT HANDLERS
+  // ---------------------------------------------------------------------------
+
+  /**
+   * @param javaModel
+   */
+  protected void handleJavaModel(IJavaModel javaModel) {
+    //
+  }
+
+  /**
+   * @param javaProject
+   */
+  protected void handleJavaProject(IJavaProject javaProject) {
+    //
+
+  }
+
+  /**
+   * @param packageFragmentRoot
+   */
+  protected void handlePackageFragmentRoot(IPackageFragmentRoot packageFragmentRoot) {
+    //
+  }
+
+  /**
+   * @param packageFragment
+   */
+  protected void handlePackageFragment(IPackageFragment packageFragment) {
+    //
+  }
+
+  /** @param classFile
+   * @throws CoreException in classes overriding this method */
+  // CLASS ---------------------------------------------------------------------
+  protected void handleClassFile(IClassFile classFile) throws CoreException {
+    //
+
+  }
+
+  /** @param compilationUnit
+   * @throws CoreException in classes overriding this method */
+  protected void handleCompilationUnit(ICompilationUnit compilationUnit) throws CoreException {
+    //
+  }
+
+  /** @param type
+   * @return <code>true</code> when children of this class should be iterated
+   * @throws CoreException in classes overriding this method
+   * */
+  protected boolean handleType(IType type) throws CoreException {
+    return true;
+  }
+
+  // SUP CLASS -----------------------------------------------------------------
+  /** @param packageDeclaration
+   * @throws CoreException */
+  protected void handlePackageDeclaration(IPackageDeclaration packageDeclaration) throws CoreException {
+    //
+  }
+
+  /** @param importContainer
+   * @throws CoreException */
+  protected void handleImportContainer(IImportContainer importContainer)//
+      throws CoreException {
+    //
+  }
+
+  /** @param importDeclaration
+   * @throws CoreException */
+  protected void handleImportDeclaration(IImportDeclaration importDeclaration)//
+      throws CoreException {
+    //
+  }
+
+  /** @param field
+   * @throws CoreException */
+  protected void handleField(IField field) throws CoreException {
+    //
+  }
+
+  /** @param initializer
+   * @throws CoreException */
+  protected void handleInitializer(IInitializer initializer)//
+      throws CoreException {
+    //
+  }
+
+  /** @param method
+   * @throws CoreException */
+  protected void handleMethod(IMethod method) throws CoreException {
+    //
+  }
+
+  // ---------------------------------------------------------------------------
+  // RESOURCE HANDLERS
+  // ---------------------------------------------------------------------------
+  /** @param file
+   * @throws CoreException */
+  protected void handleResourceFile(IFile file) throws CoreException {
+    //
+  }
+
+  /** @param folder
+   * @throws CoreException */
+  protected void handleResourceFolder(IFolder folder) throws CoreException {
+    //
+  }
+
+  /** @param project
+   * @throws CoreException */
+  protected void handleResourceProject(IProject project) throws CoreException {
+    //
+  }
+
+  /** @param workspaceRoot
+   * @throws CoreException */
+  protected void handleResourceWorkspaceRoot(IWorkspaceRoot workspaceRoot) throws CoreException {
+    //
+  }
+
+  // ---------------------------------------------------------------------------
+  // DO
+  // ---------------------------------------------------------------------------
+  /**
+   * Override and return <code>false</code>, if you don't want
+   * to iterate a selected element. In this case, nothing will be iterated!
+   */
+  protected boolean doSelectedElement() {
+    return true;
+  }
+
+  /**
+   * Override and return <code>true</code>, if you don't want to iterate
+   *  resources like files and folders.
+   */
+  protected boolean doResources() {
+    return false;
+  }
+
+  /**
+   * Override and return <code>true</code>, if you don't want to iterate
+   * PackageFragmentRoot children (children of jars...)
+   * This could be a lot of stuff in case of big jars!
+   */
+  protected boolean doPackageFragmentRootChildren(IPackageFragmentRoot packageFragmentRoot) {
+    return !packageFragmentRoot.isArchive() && !Prefs.isFilterPackageFragmentRoot(packageFragmentRoot);
+  }
+
+  /**
+   * Override and return <code>true</code>, if you don't want to iterate
+   * children of packages, which are classes
+   */
+  protected boolean doPackageChildren(IPackageFragment packageFragment) { //
+    return !Prefs.isFilterPackage(packageFragment);
+  }
+
+  /**
+   * Override and return <code>true</code>, if you don't want to iterate
+   * children of importContainer, which are all imports.
+   * @param importContainer
+   */
+  protected boolean doImportContainerChildren(IImportContainer importContainer) {
+    return false;
+  }
+
+  // ---------------------------------------------------------------------------
+  // HELPER
+  // ---------------------------------------------------------------------------
+  protected static final boolean isPrivate(IMember member) throws JavaModelException {
+    return Flags.isPrivate(member.getFlags());
+  }
+
+  protected static final boolean isPublic(IMember member) throws JavaModelException {
+    return Flags.isPublic(member.getFlags());
   }
 }

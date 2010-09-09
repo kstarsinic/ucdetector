@@ -90,7 +90,7 @@
         adaptable="true"
         id="org.ucdetector.popupMenus.project.Analyze"
         objectClass="org.eclipse.jdt.core.IJavaElement">
-      <action class="org.ucdetector.action.CycleAction"
+      <action class="org.ucdetector.cycle.CycleAction"
           enablesFor="+"
           id="org.ucdetector.cycle.CycleAction"
           label="%CycleAction.label"
