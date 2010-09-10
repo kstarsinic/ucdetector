@@ -261,8 +261,8 @@ public class XmlReport implements IUCDetectorReport {
         appendChild(marker, "resourceName", resource.getName());
       }
       // appendChild(marker, "nr", String.valueOf(markerCount));
-      if (UCDetectorPlugin.isHeadlessMode() && markerCount % 20 == 0) {
-        Log.logInfo("Flush reports. Maker count: %3s", "" + markerCount);
+      if (UCDetectorPlugin.isHeadlessMode() && markerCount % 50 == 0) {
+        Log.logInfo("Flush reports!");
         writeReports(false);
       }
     }
@@ -414,6 +414,7 @@ public class XmlReport implements IUCDetectorReport {
     if (!Prefs.isWriteReportFile()) {
       return;
     }
+    long start = System.currentTimeMillis();
     File reportDir = new File(PreferenceInitializer.getReportDir());
     String reportPath = reportDir.getAbsolutePath();
     if (initXMLException != null) {
@@ -439,6 +440,8 @@ public class XmlReport implements IUCDetectorReport {
         File txtFile = new File(reportDir, reportNumberName + ".txt");
         writeTextFile(txtFile);
       }
+      long duration = System.currentTimeMillis() - start;
+      Log.logInfo("Created reports in: %s", StopWatch.timeAsString(duration));
       logEndReportMessage(Messages.XMLReport_WriteOk, IStatus.INFO, null, String.valueOf(markerCount), reportPath);
     }
     catch (Exception e) {
