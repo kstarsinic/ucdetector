@@ -122,8 +122,7 @@ public abstract class AbstractUCDetectorIterator {
       if (markerFactory != null) {
         markerFactory.endReport();
         timeEnd = System.currentTimeMillis();
-        Log.logInfo("Detection time: " //$NON-NLS-1$
-            + StopWatch.timeAsString(timeEnd - timeStart));
+        Log.logInfo("Detection time: " + StopWatch.timeAsString(timeEnd - timeStart)); //$NON-NLS-1$
       }
     }
   }

@@ -213,11 +213,9 @@ class VisibilityHandler {
    */
   private boolean needVisibilityMarker(IMember member, int found) {
     boolean decreaseVisibility = visibilityStart.value > visibilityMaxFound.value;
-    return found > 0
-        && decreaseVisibility
-        && (Prefs.isCheckReduceVisibilityProtected(member) && visibilityMaxFound == VISIBILITY.PROTECTED || Prefs
-            .isCheckReduceVisibilityToPrivate(member)
-            && visibilityMaxFound == VISIBILITY.PRIVATE);
+    return found > 0 && decreaseVisibility && (//
+        Prefs.isCheckReduceVisibilityProtected(member) && visibilityMaxFound == VISIBILITY.PROTECTED || //
+        Prefs.isCheckReduceVisibilityToPrivate(member) && visibilityMaxFound == VISIBILITY.PRIVATE);
   }
 
   boolean isMaxVisibilityFoundPublic() {
