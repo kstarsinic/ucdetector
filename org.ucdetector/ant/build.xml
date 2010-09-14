@@ -5,46 +5,67 @@
   Public License v1.0 which accompanies this distribution, and is available at
   http://www.eclipse.org/legal/epl-v10.html
   ========================================================================= -->
-<project name="Run UCDetector" default="detect" basedir=".">
+<project name="Run UCDetector" default="ucdetector" basedir=".">
   <description>Run UCDetector in headless mode</description>
 
   <!-- =====================================================================
-       DETECT
+       UCDETECTOR
        ===================================================================== -->
-  <target name="detect" description="Run UCDetector using java">
-    <property file="build.properties" />
+  <target name="ucdetector" description="export preferences to file">
+    <!--
+Build type:
+    One of: AUTO_BUILD (default), FULL_BUILD, CLEAN_BUILD, INCREMENTAL_BUILD 
+    For details see: org.eclipse.core.resources.IncrementalProjectBuilder
+
+UCDetector preferences:
+    Edit options.properties below, or set UCDetector preferences in eclipse IDE
+    and use mode file from: WORKSPACE_IDE/.metadata/.plugins/org.ucdetector/modes/
+
+Target Platform:
+    Only needed, if you use a target platform different to ECLIPSE_HOME
+    CHANGE file ucdetector.target, when using target platform!
+-->
+    <ucdetector buildType="AUTO_BUILD" optionsFile="options.properties" targetPlatformFile="ucdetector.target">
+      <!-- Resources to build: Leave empty, to build ALL projects
+      <iterate name="org.ucdetector" />
+      -->
+    </ucdetector>
+  </target>
+
+  <!-- =====================================================================
+       START
+       ===================================================================== -->
+  <target name="start" description="Run UCDetector using java">
+    <property name="WORKSPACE" location="../workspace" />
+    <property name="ECLIPSE_HOME" location="../eclipse" />
+    <property name="debug" location="true" />
+
     <echo>
 # -----------------------------------------------------------------------------
-# ECLIPSE_HOME       = ${ECLIPSE_HOME}
-# WORKSPACE          = ${WORKSPACE}
-# ucd.projects       = ${ucd.projects}
-# ucd.buildtype      = ${ucd.buildtype}
-# ucd.options        = ${ucd.options}
-# ucd.debug          = ${ucd.debug}
-# ucd.targetPlatform = ${ucd.targetPlatform}
+# ECLIPSE_HOME = ${ECLIPSE_HOME}
+# WORKSPACE    = ${WORKSPACE}
+# debug        = ${debug}
 # -----------------------------------------------------------------------------
 </echo>
 
     <available file="${ECLIPSE_HOME}" property="ECLIPSE_HOME.exists" />
-    <fail unless="ECLIPSE_HOME.exists" message="Missing ${ECLIPSE_HOME}. Edit ECLIPSE_HOME in build.properties" />
+    <fail unless="ECLIPSE_HOME.exists" message="Missing ${ECLIPSE_HOME}. Edit property ECLIPSE_HOME" />
     <available file="${WORKSPACE}" property="WORKSPACE.exists" />
-    <fail unless="WORKSPACE.exists" message="Missing ${WORKSPACE}. Edit WORKSPACE in build.properties" />
+    <fail unless="WORKSPACE.exists" message="Missing ${WORKSPACE}. Edit property WORKSPACE" />
 
     <!-- LAUNCHER -->
     <pathconvert property="LAUNCHER">
       <fileset dir="${ECLIPSE_HOME}/plugins" includes="org.eclipse.equinox.launcher_*.jar" />
     </pathconvert>
-    <echo>LAUNCHER = '${LAUNCHER}' - when LAUNCHER is empty, create new property 'LAUNCHER'</echo>
+    <echo>LAUNCHER = '${LAUNCHER}'
+when LAUNCHER is empty, create new property 'LAUNCHER'</echo>
 
     <java jar="${LAUNCHER}" fork="true">
-      <arg line="-application org.ucdetector.ucd" />
-      <arg line="-consolelog" />
+      <arg line="-application org.eclipse.ant.core.antRunner" />
+      <arg line="-buildfile build.xml" />
       <arg line="${ucd.debug}" />
+      <arg line="-clean" />
       <arg line="-data ${WORKSPACE}" />
-      <arg line="-ucd.projects ${ucd.projects}" />
-      <arg line="-ucd.buildtype ${ucd.buildtype}" />
-      <arg line="-ucd.options ${ucd.options}" />
-      <arg line="-ucd.targetPlatform ${ucd.targetPlatform}" />
     </java>
   </target>
 </project>

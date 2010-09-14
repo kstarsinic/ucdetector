@@ -6,17 +6,75 @@
  */
 package org.ucdetector.ant;
 
+import java.io.File;
+import java.util.ArrayList;
+import java.util.List;
+
 import org.apache.tools.ant.BuildException;
 import org.apache.tools.ant.Task;
+import org.ucdetector.UCDHeadless;
 
+@SuppressWarnings("nls")
 public class UCDTask extends Task {
-
-  public UCDTask() {
-    // TODO Auto-generated constructor stub
-  }
+  private String buildType;
+  private String optionsFile;
+  private String targetPlatformFile;
+  private final List<Iterate> iterateList = new ArrayList<Iterate>();
 
   @Override
   public void execute() throws BuildException {
-    System.out.println("Running: UCDTask");
+    System.out.println("buildType         : " + buildType);
+    System.out.println("optionsFile       : " + new File(optionsFile).getAbsolutePath());
+    System.out.println("targetPlatformFile: " + new File(targetPlatformFile).getAbsolutePath());
+    System.out.println("iterateList       : " + iterateList);
+    List<String> resourcesToIterate = new ArrayList<String>();
+    for (Iterate iterate : iterateList) {
+      resourcesToIterate.add(iterate.getName());
+    }
+    try {
+      new UCDHeadless(buildType, optionsFile, targetPlatformFile, resourcesToIterate).run();
+    }
+    catch (Exception e) {
+      throw new BuildException(e);
+    }
+  }
+
+  // --------------------------------------------------------------------------
+  // ANT Attributes, Nested Elements
+  // http://ant.apache.org/manual/tutorial-writing-tasks.html
+  // --------------------------------------------------------------------------
+  public Iterate createIterate() {
+    Iterate i = new Iterate();
+    iterateList.add(i);
+    return i;
+  }
+
+  public class Iterate {
+    private String name;
+
+    public void setName(String name) {
+      this.name = name;
+    }
+
+    public String getName() {
+      return name;
+    }
+
+    @Override
+    public String toString() {
+      return name;
+    }
+  }
+
+  public void setBuildType(String buildType) {
+    this.buildType = buildType;
+  }
+
+  public void setOptionsFile(String optionsFile) {
+    this.optionsFile = optionsFile;
+  }
+
+  public void setTargetPlatformFile(String targetPlatformFile) {
+    this.targetPlatformFile = targetPlatformFile;
   }
 }

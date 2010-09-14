@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <?eclipse version="3.5"?>
 <plugin>
-  <!-- ===================================================================== -->
-  <!-- PREFERENCE PAGE                                                       -->
-  <!-- ===================================================================== -->
+  <!-- =====================================================================
+       PREFERENCE PAGE 
+       ===================================================================== -->
   <extension point="org.eclipse.ui.preferencePages">
     <page name="%preferencePages.name"
         class="org.ucdetector.preferences.UCDetectorPreferencePage"
@@ -18,16 +18,16 @@
    	-->
   </extension>
 
-  <!-- ===================================================================== -->
-  <!-- PREFERENCES                                                           -->
-  <!-- ===================================================================== -->
+  <!-- =====================================================================
+       PREFERENCES
+       ===================================================================== -->
   <extension point="org.eclipse.core.runtime.preferences">
     <initializer class="org.ucdetector.preferences.PreferenceInitializer"/>
   </extension>
   
-  <!-- ===================================================================== -->
-  <!-- POP UP                                                                -->
-  <!-- ===================================================================== -->
+  <!-- =====================================================================
+       POP UP
+       ===================================================================== -->
   <extension point="org.eclipse.ui.popupMenus">
   
   <!-- =====================================================================
@@ -100,9 +100,9 @@
     </objectContribution>
   </extension>
   
-  <!-- ===================================================================== -->
-  <!-- COMMAND+BINDINGS to declare shortcut  Alt+Shift+U                     -->
-  <!-- ===================================================================== -->
+  <!-- =====================================================================
+       OMMAND+BINDINGS to declare shortcut  Alt+Shift+U
+       ===================================================================== -->
 	<extension point="org.eclipse.ui.commands"> 
 		<command name="%command.name.0" 
 		       id="org.ucdetector.definitionId.ucd"> 
@@ -115,9 +115,10 @@
          sequence="M2+M3+U"
          /> 
   </extension>
-  <!-- ===================================================================== -->
-   <!-- MARKER                                                               -->
-  <!-- ===================================================================== -->
+
+  <!-- =====================================================================
+       MARKER
+       ===================================================================== -->
   <!-- base see also attributes in: eclipse-3.5\plugins\org.eclipse.jdt.core_3.5.0.v_771.jar -->
   <!-- *** 1 *** -->
   <extension
@@ -288,9 +289,9 @@
         label="%specification.label.test.only"/>
   </extension>
 
-  <!-- ===================================================================== -->
-  <!-- QUICK FIX                                                             -->
-  <!-- ===================================================================== -->
+  <!-- =====================================================================
+       QUICK FIX
+       ===================================================================== -->
   <!-- http://wiki.eclipse.org/FAQ_How_do_I_implement_Quick_Fixes_for_my_own_language%3F   -->
   <extension point="org.eclipse.ui.ide.markerResolution">
     <markerResolutionGenerator
@@ -330,23 +331,23 @@
      class="org.ucdetector.quickfix.UCDQuickGenerator"/>
   </extension>
 
-  <!-- ===================================================================== -->
-  <!-- HELP.TOC                                                              -->
-  <!-- ===================================================================== -->
+  <!-- =====================================================================
+       HELP.TOC
+       ===================================================================== -->
   <extension point="org.eclipse.help.toc">
     <toc file="help/toc.xml" primary="true"></toc>
   </extension>
 
-  <!-- ===================================================================== -->
-  <!-- HELP.CONTEXTS                                                         -->
-  <!-- ===================================================================== -->
+  <!-- =====================================================================
+       HELP.CONTEXTS
+       ===================================================================== -->
   <extension point="org.eclipse.help.contexts">
     <contexts file="help/contexts.xml" plugin="org.ucdetector"></contexts>
   </extension>
 
-  <!-- ===================================================================== -->
-  <!-- CYCLE VIEW                                                            -->
-  <!-- ===================================================================== -->
+  <!-- =====================================================================
+       CYCLE VIEW
+       ===================================================================== -->
    <extension point="org.eclipse.ui.views">
       <category  name="%category.name.CycleView" id="org.ucdetector.cycle.CycleView">
       </category>
@@ -358,11 +359,10 @@
       </view>
    </extension>
    
-  <!-- ===================================================================== -->
-  <!-- INTRO                                                                 -->
-  <!-- ===================================================================== 
-  http://www.eclipse.org/eclipse/platform-ua/proposals/shared-intro/shared-intro.htm#enhancements
-  -->
+  <!-- =====================================================================
+       INTRO
+       http://www.eclipse.org/eclipse/platform-ua/proposals/shared-intro/shared-intro.htm#enhancements
+       ===================================================================== -->
   <extension point="org.eclipse.ui.intro.configExtension">
      <configExtension 
            configId="org.eclipse.ui.intro.universalConfig"
@@ -377,20 +377,20 @@
      </theme>
   </extension>
 
-  <!-- ===================================================================== -->
-  <!-- APPLICATIONS                                                          -->
-  <!-- ===================================================================== -->
+  <!-- =====================================================================
+       APPLICATIONS
+       =====================================================================
   <extension id="ucd"
         point="org.eclipse.core.runtime.applications">
      <application>
         <run class="org.ucdetector.UCDApplication" />
      </application>
   </extension>
+   -->
   
-  
-  <!-- ===================================================================== -->
-  <!-- ANT                                                          -->
-  <!-- ===================================================================== -->
+  <!-- =====================================================================
+       ANT
+       ===================================================================== -->
     <extension point="org.eclipse.ant.core.antTasks">
       <antTask class="org.ucdetector.ant.UCDTask"
             eclipseRuntime="true"
@@ -399,13 +399,4 @@
             name="ucdetector">
       </antTask>
    </extension>
-   
-   <extension point="org.eclipse.ant.core.extraClasspathEntries">
-      <extraClasspathEntry 
-            eclipseRuntime="true"
-            library="lib/ucdetector-ant.jar"
-            headless="true">
-      </extraClasspathEntry>
-   </extension>
-    
 </plugin>
