@@ -386,4 +386,26 @@
         <run class="org.ucdetector.UCDApplication" />
      </application>
   </extension>
+  
+  
+  <!-- ===================================================================== -->
+  <!-- ANT                                                          -->
+  <!-- ===================================================================== -->
+    <extension point="org.eclipse.ant.core.antTasks">
+      <antTask class="org.ucdetector.ant.UCDTask"
+            eclipseRuntime="true"
+            headless="true"
+            library="lib/ucdetector-ant.jar"
+            name="ucdetector">
+      </antTask>
+   </extension>
+   
+   <extension point="org.eclipse.ant.core.extraClasspathEntries">
+      <extraClasspathEntry 
+            eclipseRuntime="true"
+            library="lib/ucdetector-ant.jar"
+            headless="true">
+      </extraClasspathEntry>
+   </extension>
+    
 </plugin>
