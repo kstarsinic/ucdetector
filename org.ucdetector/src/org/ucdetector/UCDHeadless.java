@@ -47,9 +47,11 @@ public class UCDHeadless {
   public UCDHeadless(String buildType, String optionsFile, String targetPlatformFile, List<String> resourcesToIterate) {
     UCDetectorPlugin.setHeadlessMode(true);// MUST BE BEFORE LOGGING!
     this.buildType = getBuildType(buildType);
-    this.targetPlatformFile = new File(targetPlatformFile);
+    this.targetPlatformFile = targetPlatformFile == null ? null : new File(targetPlatformFile);
     this.resourcesToIterate = resourcesToIterate;
-    loadOptions(optionsFile);
+    if (optionsFile != null) {
+      loadOptions(optionsFile);
+    }
   }
 
   /** @see org.eclipse.core.resources.IncrementalProjectBuilder */

@@ -6,7 +6,6 @@
  */
 package org.ucdetector.ant;
 
-import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -14,7 +13,6 @@ import org.apache.tools.ant.BuildException;
 import org.apache.tools.ant.Task;
 import org.ucdetector.UCDHeadless;
 
-@SuppressWarnings("nls")
 public class UCDTask extends Task {
   private String buildType;
   private String optionsFile;
@@ -23,10 +21,7 @@ public class UCDTask extends Task {
 
   @Override
   public void execute() throws BuildException {
-    System.out.println("buildType         : " + buildType);
-    System.out.println("optionsFile       : " + new File(optionsFile).getAbsolutePath());
-    System.out.println("targetPlatformFile: " + new File(targetPlatformFile).getAbsolutePath());
-    System.out.println("iterateList       : " + iterateList);
+    System.out.println("Running UCDetector Ant Task");
     List<String> resourcesToIterate = new ArrayList<String>();
     for (Iterate iterate : iterateList) {
       resourcesToIterate.add(iterate.getName());

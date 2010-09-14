@@ -5,13 +5,13 @@
   Public License v1.0 which accompanies this distribution, and is available at
   http://www.eclipse.org/legal/epl-v10.html
   ========================================================================= -->
-<project name="Run UCDetector" default="ucdetector" basedir=".">
+<project name="Run UCDetector" default="detect" basedir=".">
   <description>Run UCDetector in headless mode</description>
 
   <!-- =====================================================================
        UCDETECTOR
        ===================================================================== -->
-  <target name="ucdetector" description="export preferences to file">
+  <target name="run-ucdetector" description="export preferences to file">
     <!--
 Build type:
     One of: AUTO_BUILD (default), FULL_BUILD, CLEAN_BUILD, INCREMENTAL_BUILD 
@@ -24,8 +24,9 @@ UCDetector preferences:
 Target Platform:
     Only needed, if you use a target platform different to ECLIPSE_HOME
     CHANGE file ucdetector.target, when using target platform!
+    targetPlatformFile="ucdetector.target"
 -->
-    <ucdetector buildType="AUTO_BUILD" optionsFile="options.properties" targetPlatformFile="ucdetector.target">
+    <ucdetector buildType="AUTO_BUILD" optionsFile="options.properties">
       <!-- Resources to build: Leave empty, to build ALL projects
       <iterate name="org.ucdetector" />
       -->
@@ -33,12 +34,12 @@ Target Platform:
   </target>
 
   <!-- =====================================================================
-       START
+       DETECT
        ===================================================================== -->
-  <target name="start" description="Run UCDetector using java">
+  <target name="detect" description="Run UCDetector using java">
     <property name="WORKSPACE" location="../workspace" />
     <property name="ECLIPSE_HOME" location="../eclipse" />
-    <property name="debug" location="true" />
+    <property name="debug" value="true" />
 
     <echo>
 # -----------------------------------------------------------------------------
@@ -62,10 +63,11 @@ when LAUNCHER is empty, create new property 'LAUNCHER'</echo>
 
     <java jar="${LAUNCHER}" fork="true">
       <arg line="-application org.eclipse.ant.core.antRunner" />
-      <arg line="-buildfile build.xml" />
-      <arg line="${ucd.debug}" />
+      <arg line="${debug}" />
       <arg line="-clean" />
       <arg line="-data ${WORKSPACE}" />
+      <arg line="-buildfile build.xml" />
+      <arg line="run-ucdetector" />
     </java>
   </target>
 </project>
