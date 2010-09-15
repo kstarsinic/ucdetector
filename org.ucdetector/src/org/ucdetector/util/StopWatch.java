@@ -19,6 +19,7 @@ import org.ucdetector.Log;
  */
 public class StopWatch {
   private static final int MINIMUM_DURATION = 1000;// Log.getDebugOption("org.ucdetector/debug/search/duration", 1000); 
+  private static final int MINIMUM_DURATION_WARN = MINIMUM_DURATION * 10;
   private final String message;
   private long start = System.currentTimeMillis();
   private static final DecimalFormat DOUBLE_FORMAT = new DecimalFormat("0.00", new DecimalFormatSymbols(Locale.US)); //$NON-NLS-1$
@@ -40,16 +41,23 @@ public class StopWatch {
     start = System.currentTimeMillis();
     // traces for slow stuff
     if (Log.isDebug() && duration > MINIMUM_DURATION) {
-      StringBuilder sb = new StringBuilder();
-      if (info != null) {
-        sb.append(info).append(" "); //$NON-NLS-1$
-      }
-      if (message != null) {
-        sb.append(message);
-      }
-      sb.append(": ").append(timeAsString(duration)); //$NON-NLS-1$
-      Log.logDebug(sb.toString());
+      Log.logDebug(createLogMessage(info, duration));
     }
+    else if (duration > MINIMUM_DURATION_WARN) {
+      Log.logWarn(createLogMessage(info, duration));
+    }
+  }
+
+  private String createLogMessage(String info, long duration) {
+    StringBuilder sb = new StringBuilder();
+    if (info != null) {
+      sb.append("Duration: ").append(info).append(" "); //$NON-NLS-1$ //$NON-NLS-2$
+    }
+    if (message != null) {
+      sb.append(message);
+    }
+    sb.append(": ").append(timeAsString(duration)); //$NON-NLS-1$
+    return sb.toString();
   }
 
   public static String timeAsString(long millis) {

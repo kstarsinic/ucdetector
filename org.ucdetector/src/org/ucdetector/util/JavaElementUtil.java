@@ -196,6 +196,8 @@ public class JavaElementUtil {
    */
   public static boolean isSerializationMethod(IMethod method) {
     String methodName = method.getElementName();
+    // TODO: Same as: org.eclipse.jdt.internal.compiler.problem.ProblemReporter.unusedPrivateMethod()
+    // TODO: Check org.eclipse.jdt.internal.compiler.lookup.TypeConstants.VALUEOF
     switch (method.getNumberOfParameters()) {
       case 0: {
         return "writeReplace".equals(methodName) //$NON-NLS-1$
@@ -223,6 +225,7 @@ public class JavaElementUtil {
   *      exception occurs while accessing its corresponding resource.
    * @see "http://java.sun.com/javase/6/docs/platform/serialization/spec/output.html"
    */
+  // TODO: Same as: org.eclipse.jdt.internal.compiler.problem.ProblemReporter.unusedPrivateField()
   public static boolean isSerializationField(IField field) throws JavaModelException {
     if (isConstant(field)) {
       return "serialVersionUID".equals(field.getElementName()) //$NON-NLS-1$

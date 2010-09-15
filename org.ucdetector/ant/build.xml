@@ -13,22 +13,29 @@
        ===================================================================== -->
   <target name="run-ucdetector" description="export preferences to file">
     <!--
-Build type:
+            ATTRIBUTES
+buildType:
     One of: AUTO_BUILD (default), FULL_BUILD, CLEAN_BUILD, INCREMENTAL_BUILD 
     For details see: org.eclipse.core.resources.IncrementalProjectBuilder
+    Example: buildType="AUTO_BUILD"
 
-UCDetector preferences:
-    Edit options.properties below, or set UCDetector preferences in eclipse IDE
-    and use mode file from: WORKSPACE_IDE/.metadata/.plugins/org.ucdetector/modes/
+optionsFile:
+    - Edit options.properties file
+    - Or set UCDetector preferences in eclipse IDE
+      and use mode file from: WORKSPACE_IDE/.metadata/.plugins/org.ucdetector/modes/
+      Example: optionsFile="options.properties"
 
-Target Platform:
+targetPlatformFile:
     Only needed, if you use a target platform different to ECLIPSE_HOME
     CHANGE file ucdetector.target, when using target platform!
-    targetPlatformFile="ucdetector.target"
+    Examples:
+      targetPlatformFile="ucdetector.target"
+      targetPlatformFile="../workspace/myProject/myTarget.target"
 -->
     <ucdetector buildType="AUTO_BUILD" optionsFile="options.properties">
       <!-- Resources to build: Leave empty, to build ALL projects
-      <iterate name="org.ucdetector" />
+      <iterate name="myProject/src" />
+      <iterate name="myOtherProject/src/main" />
       -->
     </ucdetector>
   </target>
@@ -39,7 +46,7 @@ Target Platform:
   <target name="detect" description="Run UCDetector using java">
     <property name="WORKSPACE" location="../workspace" />
     <property name="ECLIPSE_HOME" location="../eclipse" />
-    <property name="debug" value="true" />
+    <property name="debug" value="-debug" />
 
     <echo>
 # -----------------------------------------------------------------------------
@@ -62,10 +69,10 @@ Target Platform:
 when LAUNCHER is empty, create new property 'LAUNCHER'</echo>
 
     <java jar="${LAUNCHER}" fork="true">
-      <arg line="-application org.eclipse.ant.core.antRunner" />
       <arg line="${debug}" />
       <arg line="-clean" />
       <arg line="-data ${WORKSPACE}" />
+      <arg line="-application org.eclipse.ant.core.antRunner" />
       <arg line="-buildfile build.xml" />
       <arg line="run-ucdetector" />
     </java>
