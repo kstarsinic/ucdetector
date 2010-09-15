@@ -192,25 +192,28 @@ public class JavaElementUtil {
    * <li><code>private void readObjectNoData() throws ObjectStreamException;</code></li>
    * <li></li>
    * </ul>
+   * @throws JavaModelException when there is a problem
    * @see "http://java.sun.com/javase/6/docs/platform/serialization/spec/output.html"
+   * @see org.eclipse.jdt.internal.compiler.problem.ProblemReporter#unusedPrivateMethod
    */
-  public static boolean isSerializationMethod(IMethod method) {
+  @SuppressWarnings("nls")
+  public static boolean isSerializationMethod(IMethod method) throws JavaModelException {
+    if (Flags.isStatic(method.getFlags())) {
+      return false;
+    }
     String methodName = method.getElementName();
-    // TODO: Same as: org.eclipse.jdt.internal.compiler.problem.ProblemReporter.unusedPrivateMethod()
-    // TODO: Check org.eclipse.jdt.internal.compiler.lookup.TypeConstants.VALUEOF
     switch (method.getNumberOfParameters()) {
       case 0: {
-        return "writeReplace".equals(methodName) //$NON-NLS-1$
-            || "readResolve".equals(methodName) //$NON-NLS-1$
-            || "readObjectNoData".equals(methodName); //$NON-NLS-1$
+        return "writeReplace".equals(methodName) // ANY-ACCESS-MODIFIER
+            || "readResolve".equals(methodName) // ANY-ACCESS-MODIFIER
+            || "readObjectNoData".equals(methodName);// private
       }
       case 1: {
-        return "writeObject".equals(methodName) //$NON-NLS-1$
-            || "readObject".equals(methodName);//$NON-NLS-1$
+        return "writeObject".equals(methodName)// private
+            || "readObject".equals(methodName);// private
       }
-      default:
-        return false;
     }
+    return false;
   }
 
   /**
@@ -218,14 +221,14 @@ public class JavaElementUtil {
    * @param field to check
    * @return <code>true</code> if field is like
    * <ul>
-   *         <li><code>static final long serialVersionUID</code></li>
+   *         <li><code>ANY-ACCESS-MODIFIER static final long serialVersionUID = 42L;</code></li>
    *         <li><code>private static final ObjectStreamField[] serialPersistentFields</code></li>
    * </ul>
    * @throws JavaModelException if this element does not exist or if an
   *      exception occurs while accessing its corresponding resource.
-   * @see "http://java.sun.com/javase/6/docs/platform/serialization/spec/output.html"
+   * @see "http://download.oracle.com/javase/1.5.0/docs/api/java/io/Serializable.html"
+   * @see org.eclipse.jdt.internal.compiler.problem.ProblemReporter#unusedPrivateField
    */
-  // TODO: Same as: org.eclipse.jdt.internal.compiler.problem.ProblemReporter.unusedPrivateField()
   public static boolean isSerializationField(IField field) throws JavaModelException {
     if (isConstant(field)) {
       return "serialVersionUID".equals(field.getElementName()) //$NON-NLS-1$
