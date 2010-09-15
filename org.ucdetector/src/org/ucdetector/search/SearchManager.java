@@ -557,31 +557,65 @@ public class SearchManager {
       }
       checkCancelSearch(matchJavaElement, found, foundTest);
       visibilityHandler.checkVisibility(matchJavaElement, found, foundTest);
+      //      parseMatch(match, matchJavaElement);
     }
 
     //TODO: request 2893808: Check for unnecessary (boolean) parameters
-    //    private void checkUnusedBoolean(SearchMatch match, IJavaElement matchElement) {
+    //           Bug 2926266: Method cannot be private if called on subclass
+    //    @SuppressWarnings("nls")
+    //    private void parseMatch(SearchMatch match, IJavaElement matchElement) {
     //      if (match instanceof MethodReferenceMatch) {
     //        MethodReferenceMatch method = (MethodReferenceMatch) match;
     //        System.out.println("method: " + method);
     //        int offset = method.getOffset();
-    //        int length = method.getLength();
     //        try {
-    //          String code = lineManager
-    //              .getPieceOfCode(matchElement, offset, length);
+    //          String code = lineManager.getPieceOfCode(matchElement, offset);
     //          System.out.println("code: " + code);
     //          ASTParser parser = ASTParser.newParser(AST.JLS3);
-    //          parser.setSource(code.toCharArray());
-    //          parser.setKind(ASTParser.K_STATEMENTS);
-    //          //          parser.setResolveBindings(true);
-    //          //          ASTNode createAST = parser.createAST(null);
-    //          //          FindUcdSuppressWarningsVisitor visitor = new FindUcdSuppressWarningsVisitor(
-    //          //              scanner);
-    //          //          createAST.accept(visitor);
+    //          ICompilationUnit compilationUnit = JavaElementUtil.getTypeFor(matchElement, true).getCompilationUnit();
+    //          parser.setSource(compilationUnit); // compilationUnit needed for resolve bindings!
+    //          parser.setKind(ASTParser.K_COMPILATION_UNIT);
+    //          parser.setResolveBindings(true);
+    //          ASTNode ast = parser.createAST(null);
+    //          ASTVisitor visitor = new MethodInvocationVisitor(offset);
+    //          ast.accept(visitor);
     //        }
-    //        catch (CoreException e) {
+    //        catch (Exception e) {
     //          e.printStackTrace();
     //        }
+    //      }
+    //    }
+    //
+    //    @SuppressWarnings("nls")
+    //    private static final class MethodInvocationVisitor extends ASTVisitor {
+    //      private final int offset;
+    //
+    //      private MethodInvocationVisitor(int offset) {
+    //        this.offset = offset;
+    //      }
+    //
+    //      @Override
+    //      public boolean visit(MethodDeclaration declaration) {
+    //        int start = declaration.getStartPosition();
+    //        int length = declaration.getLength();
+    //        boolean found = start < offset && offset <= (start + length);
+    //        //        System.out.printf("found %s: %s%n", found, declaration.getName());
+    //        return found;
+    //      }
+    //
+    //      @Override
+    //      public boolean visit(MethodInvocation node) {
+    //        System.out.println("methodBinding: " + node.getName());
+    //        System.out.println("MethodInvocation: " + node.toString());
+    //        IMethodBinding methodBinding = node.resolveMethodBinding();
+    //        System.out.println("methodBinding: " + methodBinding);
+    //        IMethod methodFound = (IMethod) methodBinding.getJavaElement();
+    //        if (methodFound.isBinary()) {
+    //          return true;
+    //        }
+    //        // if (visitedMethods.contains(methodFound)) return true;
+    //        System.out.println("methodFound: " + methodFound.getDeclaringType().getElementName());
+    //        return true;
     //      }
     //    }
 
