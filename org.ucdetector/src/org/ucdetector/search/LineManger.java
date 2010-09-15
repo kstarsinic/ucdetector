@@ -30,6 +30,7 @@ import org.eclipse.jdt.core.compiler.InvalidInputException;
 import org.eclipse.jdt.core.dom.AST;
 import org.eclipse.jdt.core.dom.ASTNode;
 import org.eclipse.jdt.core.dom.ASTParser;
+import org.eclipse.jdt.core.dom.AbstractTypeDeclaration;
 import org.eclipse.jdt.core.dom.Annotation;
 import org.eclipse.jdt.core.dom.ArrayInitializer;
 import org.eclipse.jdt.core.dom.BodyDeclaration;
@@ -40,6 +41,7 @@ import org.eclipse.jdt.core.dom.SimpleName;
 import org.eclipse.jdt.core.dom.SingleMemberAnnotation;
 import org.eclipse.jdt.core.dom.StringLiteral;
 import org.eclipse.jdt.core.dom.TagElement;
+import org.eclipse.jdt.core.dom.TextElement;
 import org.ucdetector.Log;
 import org.ucdetector.UCDetectorPlugin;
 import org.ucdetector.preferences.Prefs;
@@ -68,25 +70,28 @@ public class LineManger {
   /**
    * parsed java files
    */
-  private final Map<ICompilationUnit, ScannerTimestamp> scannerMap //
-  = new HashMap<ICompilationUnit, ScannerTimestamp>();
+  private final Map<ICompilationUnit, ScannerTimestamp> scannerMap = new HashMap<ICompilationUnit, ScannerTimestamp>();
   /**
    * lines containing "NO_UCD
    */
-  private final Map<IScanner, Set<Integer>> ignoreLineMap //
-  = new HashMap<IScanner, Set<Integer>>();
+  private final Map<IScanner, Set<Integer>> ignoreLineMap = new HashMap<IScanner, Set<Integer>>();
 
   /**
    * position in file of each end of line
    */
-  private final Map<ICompilationUnit, int[]> lineEndsMap //
-  = new HashMap<ICompilationUnit, int[]>();
+  private final Map<ICompilationUnit, int[]> lineEndsMap = new HashMap<ICompilationUnit, int[]>();
 
   /**
    * parsed java files
    */
-  private final Map<ICompilationUnit, char[]> contentsMap //
-  = new HashMap<ICompilationUnit, char[]>();
+  private final Map<ICompilationUnit, char[]> contentsMap = new HashMap<ICompilationUnit, char[]>();
+
+  /** Contains author from javadoc */
+  private static final Map<IType, String> authorMap = new HashMap<IType, String>();
+
+  public LineManger() {
+    authorMap.clear();
+  }
 
   /**
    * @param element class, method or field to get the line in source code
@@ -99,6 +104,10 @@ public class LineManger {
     int offset = sourceRange.getOffset();
     int lineNbr = getLine(element, offset);
     return lineNbr;
+  }
+
+  public static String getAuthor(IJavaElement javaElement) {
+    return authorMap.get(JavaElementUtil.getTypeFor(javaElement, true));
   }
 
   /**
@@ -124,23 +133,24 @@ public class LineManger {
    * Get the lines for which the @SuppressWarnings annotations are<p>
    * See feature request: Want annotations, not comments, to indicate non-dead code - ID: 2658675
    */
-  private static Set<Integer> findUcdSuppressWarningLines(IScanner scanner, ICompilationUnit compilationUnit) {
+  private static FindIgnoreLinesVisitor findUcdSuppressWarningLines(IScanner scanner, ICompilationUnit compilationUnit) {
     ASTParser parser = ASTParser.newParser(AST.JLS3);
     parser.setSource(compilationUnit); // compilationUnit needed for resolve bindings!
     parser.setKind(ASTParser.K_COMPILATION_UNIT);
     parser.setResolveBindings(true);
     ASTNode createAST = parser.createAST(null);
-    FindUcdSuppressWarningsVisitor visitor = new FindUcdSuppressWarningsVisitor(scanner);
+    FindIgnoreLinesVisitor visitor = new FindIgnoreLinesVisitor(scanner);
     createAST.accept(visitor);
     // System.out.println("ignoreLines=" + visitor.ignoreLines);
-    return visitor.ignoreLines;
+    return visitor;
   }
 
-  private static class FindUcdSuppressWarningsVisitor extends ASTMemberVisitor {
+  private static class FindIgnoreLinesVisitor extends ASTMemberVisitor {
     final Set<Integer> ignoreLines = new LinkedHashSet<Integer>();
     private final IScanner scanner;
+    private String firstAuthor;
 
-    protected FindUcdSuppressWarningsVisitor(IScanner scanner) {
+    protected FindIgnoreLinesVisitor(IScanner scanner) {
       this.scanner = scanner;
     }
 
@@ -150,7 +160,6 @@ public class LineManger {
      * Then we try to find @SuppressWarnings<br>
      * then we look for the value of the annotation like @SuppressWarnings("ucd")
      */
-    @SuppressWarnings("unchecked")
     @Override
     protected boolean visitImpl(BodyDeclaration declaration, SimpleName name) {
       // System.out.println("declaration=" + declaration);
@@ -168,10 +177,28 @@ public class LineManger {
       if (Prefs.isFilterDeprecated()) {
         Javadoc javadoc = declaration.getJavadoc();
         if (javadoc != null && javadoc.tags() != null) {
+          @SuppressWarnings("unchecked")
           List<TagElement> tags = javadoc.tags();
           for (TagElement tag : tags) {
-            if ("@deprecated".equals(tag.getTagName())) { //$NON-NLS-1$
+            if (TagElement.TAG_DEPRECATED.equals(tag.getTagName())) {
               ignoreLines.add(Integer.valueOf(scanner.getLineNumber(name.getStartPosition())));
+            }
+          }
+        }
+      }
+      if (declaration instanceof AbstractTypeDeclaration) {
+        Javadoc javadoc = declaration.getJavadoc();
+        if (javadoc != null && javadoc.tags() != null) {
+          @SuppressWarnings("unchecked")
+          List<TagElement> tags = javadoc.tags();
+          for (TagElement tag : tags) {
+            if (TagElement.TAG_AUTHOR.equals(tag.getTagName())) {
+              @SuppressWarnings("unchecked")
+              List<TextElement> fragments = tag.fragments();
+              if (!fragments.isEmpty() && firstAuthor == null) {
+                firstAuthor = fragments.get(0).getText();
+                break;
+              }
             }
           }
         }
@@ -292,8 +319,13 @@ public class LineManger {
     }
     scannerMap.put(compilationUnit, new ScannerTimestamp(scanner, timeStamp));
     lineEndsMap.put(compilationUnit, scanner.getLineEnds());
-    Set<Integer> annotationsIgnoreLines = findUcdSuppressWarningLines(scanner, compilationUnit);
-    ignoreLines.addAll(annotationsIgnoreLines);
+    FindIgnoreLinesVisitor visitor = findUcdSuppressWarningLines(scanner, compilationUnit);
+    ignoreLines.addAll(visitor.ignoreLines);
+    if (visitor.firstAuthor != null) {
+      IType type = JavaElementUtil.getTypeFor(javaElement, true);
+      //      System.out.println(type.getElementName() + "->" + visitor.firstAuthor);
+      authorMap.put(type, visitor.firstAuthor.trim());
+    }
     return scanner;
   }
 

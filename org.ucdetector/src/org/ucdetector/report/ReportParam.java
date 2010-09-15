@@ -14,6 +14,7 @@ import org.eclipse.jdt.core.IMethod;
 import org.eclipse.jdt.core.IType;
 import org.ucdetector.preferences.Prefs;
 import org.ucdetector.preferences.WarnLevel;
+import org.ucdetector.search.LineManger;
 import org.ucdetector.util.MarkerFactory;
 
 /**
@@ -27,6 +28,7 @@ public class ReportParam {
   private final WarnLevel level;
   /**  2803618  Add number of references to report */
   private final int referenceCount;
+  private final String author;
 
   @Override
   public String toString() {
@@ -63,6 +65,7 @@ public class ReportParam {
     this.markerType = markerType;
     this.level = warnLevel == null ? calculateWarnLevel() : warnLevel;
     this.referenceCount = referenceCount;
+    this.author = LineManger.getAuthor(javaElement);
   }
 
   private WarnLevel calculateWarnLevel() {
@@ -119,5 +122,9 @@ public class ReportParam {
 
   protected int getReferenceCount() {
     return referenceCount;
+  }
+
+  public String getAuthor() {
+    return author;
   }
 }

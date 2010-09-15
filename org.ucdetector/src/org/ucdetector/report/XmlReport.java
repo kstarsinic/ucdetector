@@ -213,6 +213,7 @@ public class XmlReport implements IUCDetectorReport {
 
       // NODE: 123
       appendChild(marker, "line", String.valueOf(reportParam.getLine()));
+      appendChild(marker, "author", reportParam.getAuthor());
 
       String markerType = reportParam.getMarkerType();
       if (markerType.startsWith(MarkerFactory.UCD_MARKER)) {
