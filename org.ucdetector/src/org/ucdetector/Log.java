@@ -145,9 +145,13 @@ public class Log {
   }
 
   private static void logToStream(PrintStream stream, String message, Throwable ex) {
-    stream.println(message);
-    if (ex != null) {
-      ex.printStackTrace(stream);
+    if (stream != null) {
+      if (message != null) {
+        stream.println(message);
+      }
+      if (ex != null) {
+        ex.printStackTrace(stream);
+      }
     }
   }
 
