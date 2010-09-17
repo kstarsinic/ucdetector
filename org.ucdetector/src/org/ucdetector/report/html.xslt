@@ -167,7 +167,7 @@ ECLIPSE_HOME/dropins/org.ucdetector_*.jar/org/ucdetector/report/html.xslt
 								</xsl:if>
 
 								<!-- Link in Eclipse Stack Trace Console View: (SWT.java:3634) -->
-								<xsl:value-of select="concat('(', resourceName, ':', line, ')')"/>
+								<xsl:value-of select="concat('(', resourceName, ':', @line, ')')"/>
 							</td>
 							<!-- NR -->
 							<td align="right">
@@ -184,15 +184,15 @@ ECLIPSE_HOME/dropins/org.ucdetector_*.jar/org/ucdetector/report/html.xslt
 							</td>
 							<!-- Reference Count -->
 							<td align="right">
-								<xsl:value-of select="referenceCount"/>
+								<xsl:value-of select="@referenceCount"/>
 							</td>
 							<!-- JAVA TYPE -->
 							<td>
-								<xsl:value-of select="javaType"/>
+								<xsl:value-of select="javaType/@long"/>
 							</td>
 							<!-- MARKER TYPE -->
 							<td>
-								<xsl:value-of select="markerType"/>
+								<xsl:value-of select="@markerType"/>
 							</td>
 						</tr>
 					</xsl:for-each>

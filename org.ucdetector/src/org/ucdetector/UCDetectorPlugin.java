@@ -24,6 +24,7 @@ import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Set;
 
+import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.IStatus;
@@ -309,7 +310,8 @@ public class UCDetectorPlugin extends AbstractUIPlugin implements IPropertyChang
   }
 
   public static String getAboutWorkspace() {
-    return System.getProperty("osgi.instance.area");
+    IPath location = ResourcesPlugin.getWorkspace().getRoot().getLocation();
+    return location == null ? System.getProperty("osgi.instance.area") : location.toOSString();
   }
 
   public static String getHostName() {

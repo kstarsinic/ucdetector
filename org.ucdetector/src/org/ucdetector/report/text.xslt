@@ -36,7 +36,7 @@
       <xsl:if test="field">
         <xsl:value-of select="field"/>
       </xsl:if>
-      <xsl:value-of select="concat('(', resourceName, ':', line, ')', '&#x9;', description, '&#x9;', javaType, '&#x9;', markerType, '&#xA;')"/>
+      <xsl:value-of select="concat('(', resourceName, ':', @line, ')', '&#x9;', description, '&#x9;', javaType/@long, '&#x9;', @markerType, '&#xA;')"/>
     </xsl:for-each>
   </xsl:template>
 </xsl:stylesheet>
