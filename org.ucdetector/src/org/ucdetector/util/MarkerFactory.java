@@ -31,19 +31,18 @@ import org.ucdetector.search.LineManger;
  * CALL endReport() TO FLUSH MARKERS!!!
  */
 public final class MarkerFactory implements IUCDetectorReport {
-  /** Marker prefix for all UCDetector markers  */
-  public static final String MARKER_PREFIX = UCDetectorPlugin.ID + "."; //$NON-NLS-1$
   /**
+   * Marker prefix for all UCDetector markers
    * See extension point="org.eclipse.core.resources.markers" in plugin.xml
    */
-  public static final String UCD_MARKER = MARKER_PREFIX + "analyzeMarker"; //$NON-NLS-1$
-  public static final String UCD_MARKER_UNUSED = MARKER_PREFIX + "analyzeMarkerReference"; //$NON-NLS-1$
-  public static final String UCD_MARKER_USED_FEW = MARKER_PREFIX + "analyzeMarkerFewReference"; //$NON-NLS-1$
-  public static final String UCD_MARKER_USE_PRIVATE = MARKER_PREFIX + "analyzeMarkerVisibilityPrivate"; //$NON-NLS-1$
-  public static final String UCD_MARKER_USE_PROTECTED = MARKER_PREFIX + "analyzeMarkerVisibilityProtected"; //$NON-NLS-1$
-  public static final String UCD_MARKER_USE_DEFAULT = MARKER_PREFIX + "analyzeMarkerVisibilityDefault"; //$NON-NLS-1$
-  public static final String UCD_MARKER_USE_FINAL = MARKER_PREFIX + "analyzeMarkerFinal"; //$NON-NLS-1$
-  public static final String UCD_MARKER_TEST_ONLY = MARKER_PREFIX + "analyzeMarkerTestOnly"; //$NON-NLS-1$ // NO_UCD
+  public static final String UCD_MARKER = UCDetectorPlugin.ID + ".analyzeMarker"; //$NON-NLS-1$
+  public static final String UCD_MARKER_UNUSED = UCD_MARKER + "Reference"; //$NON-NLS-1$
+  public static final String UCD_MARKER_USED_FEW = UCD_MARKER + "FewReference"; //$NON-NLS-1$
+  public static final String UCD_MARKER_USE_PRIVATE = UCD_MARKER + "VisibilityPrivate"; //$NON-NLS-1$
+  public static final String UCD_MARKER_USE_PROTECTED = UCD_MARKER + "VisibilityProtected"; //$NON-NLS-1$
+  public static final String UCD_MARKER_USE_DEFAULT = UCD_MARKER + "VisibilityDefault"; //$NON-NLS-1$
+  public static final String UCD_MARKER_USE_FINAL = UCD_MARKER + "Final"; //$NON-NLS-1$
+  public static final String UCD_MARKER_TEST_ONLY = UCD_MARKER + "TestOnly"; //$NON-NLS-1$ // NO_UCD
   // ADDING NEW MARKER? ADD ALSO TO plugin.xml!
 
   private final List<IUCDetectorReport> reports;

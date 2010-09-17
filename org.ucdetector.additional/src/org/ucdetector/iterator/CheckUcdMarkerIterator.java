@@ -41,7 +41,7 @@ import org.ucdetector.util.MarkerFactory;
 public class CheckUcdMarkerIterator extends AbstractUCDetectorIterator {
   /** human readable String to use for marker tags  */
   private static final Map<String, String> markerMap;
-  private static final String CHECK_UCD_MARKERS = MarkerFactory.MARKER_PREFIX + "analyzeMarkerCheckUcdMarkers";
+  private static final String CHECK_UCD_MARKERS = MarkerFactory.UCD_MARKER + "CheckUcdMarkers";
   private int markersCount;
   private int badMarkerCount;
 
