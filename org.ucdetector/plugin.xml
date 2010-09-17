@@ -243,48 +243,48 @@
     <!-- references -->
     <specification
         annotationType="org.ucdetector.analyzeAnnotationReference"
-        icon="icons/not_found_obj.gif"
-        quickFixIcon="icons/not_found_obj.gif"
+        icon="icons/Reference.gif"
+        quickFixIcon="icons/Reference.gif"
         includeOnPreferencePage="true"
         label="%specification.label.references"/>
     <!-- few references -->
     <specification
         annotationType="org.ucdetector.analyzeAnnotationFewReference"
-        icon="icons/few_found_obj.gif"
+        icon="icons/FewReference.gif"
         includeOnPreferencePage="true"
         label="%specification.label.few.references"/>
     <!-- visibility -->
     <specification
         annotationType="org.ucdetector.analyzeAnnotationVisibilityPrivate"
-        icon="icons/use_private.gif"
-        quickFixIcon="icons/use_private.gif"
+        icon="icons/VisibilityPrivate.gif"
+        quickFixIcon="icons/VisibilityPrivate.gif"
         includeOnPreferencePage="true"
         label="%specification.label.private"/>
     <specification
         annotationType="org.ucdetector.analyzeAnnotationVisibilityProtected"
-        icon="icons/use_protected.gif"
-        quickFixIcon="icons/use_protected.gif"
+        icon="icons/VisibilityProtected.gif"
+        quickFixIcon="icons/VisibilityProtected.gif"
         includeOnPreferencePage="true"
         label="%specification.label.protected"/>
     <specification
         annotationType="org.ucdetector.analyzeAnnotationVisibilityDefault"
-        icon="icons/use_default.gif"
-        quickFixIcon="icons/use_default.gif"
+        icon="icons/VisibilityDefault.gif"
+        quickFixIcon="icons/VisibilityDefault.gif"
         includeOnPreferencePage="true"
         highlightPreferenceValue="true"
         label="%specification.label.default"/>
     <!-- -->
     <specification
         annotationType="org.ucdetector.analyzeAnnotationFinal"
-        icon="icons/use_final.gif"
-        quickFixIcon="icons/use_final.gif"
+        icon="icons/Final.gif"
+        quickFixIcon="icons/Final.gif"
         includeOnPreferencePage="true"
         label="%specification.label.final"/>
     <!-- -->
     <specification
         annotationType="org.ucdetector.analyzeAnnotationTestOnly"
-        icon="icons/testOnly.gif"
-        quickFixIcon="icons/testOnly.gif"
+        icon="icons/TestOnly.gif"
+        quickFixIcon="icons/TestOnly.gif"
         includeOnPreferencePage="true"
         label="%specification.label.test.only"/>
   </extension>

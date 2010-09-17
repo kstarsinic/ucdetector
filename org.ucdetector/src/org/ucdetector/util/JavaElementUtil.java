@@ -37,7 +37,6 @@ import org.eclipse.jdt.core.search.SearchPattern;
 import org.eclipse.jdt.core.search.SearchRequestor;
 import org.eclipse.jdt.internal.ui.search.JavaSearchScopeFactory;
 import org.ucdetector.Log;
-import org.ucdetector.Messages;
 import org.ucdetector.UCDetectorPlugin;
 import org.ucdetector.search.CountSearchRequestor;
 
@@ -549,11 +548,47 @@ public class JavaElementUtil {
     return subPackages;
   }
 
+  @SuppressWarnings("nls")
+  public enum MemberInfo {
+    // org.eclipse.jdt.ui/icons/full/obj16/field_public_obj.gif: 
+    Annotation("Annotation", "annotation_obj.gif"), //
+    Class("Class", "class_obj.gif"), //
+    ClassAnonymous("Anonymous class", "innerclass_public_obj.gif"), //
+    ClassLocal("Local class", "innerclass_public_obj.gif"), //
+    ClassMember("Member class", "innerclass_public_obj.gif"), //
+    Constant("Constant", "field_public_obj.gif"), //
+    Constructor("Constructor", "methpub_obj.gif"), //
+    Enum("Enum", "enum_obj.gif"), //
+    EnumConstant("EnumConstant", "field_public_obj.gif"), //
+    Field("Field", "field_public_obj.gif"), //
+    Initializer("Initializer", "methpub_obj.gif"), //
+    Interface("Interface", "int_obj.gif"), //
+    Method("Method", "methpub_obj.gif"), //
+    ;
+
+    private final String info;
+    private final String icon;
+
+    MemberInfo(String info, String icon) {
+      this.info = info;
+      this.icon = icon;
+    }
+
+    @Override
+    public String toString() {
+      return info;
+    }
+
+    public String getIcon() {
+      return icon;
+    }
+  }
+
   /**
-   * @param member to crate a string for
-   * @return "???" if unknown, otherwise:<p>
-   * For classes:
-   * <ul>
+  * @param member to crate a string for
+  * @return "???" if unknown, otherwise:<p>
+  * For classes:
+  * <ul>
   * <li>"Annotation"</li>
   * <li>"Anonymous class"</li>
   * <li>"Enumeration"</li>
@@ -571,6 +606,7 @@ public class JavaElementUtil {
   * <li>"EnumConstant"</li>
   * <li>"Constant"</li>
   * <li>"Field"</li>
+  * <li>"Initializer"</li>
   * </ul>
   */
   public static String getMemberTypeString(IMember member) {
@@ -578,41 +614,41 @@ public class JavaElementUtil {
       if (member instanceof IType) {
         IType type = (IType) member;
         if (type.isAnnotation()) {
-          return "Annotation"; //$NON-NLS-1$
+          return MemberInfo.Annotation.toString();
         }
         if (type.isAnonymous()) {
-          return "Anonymous class"; //$NON-NLS-1$
+          return MemberInfo.ClassAnonymous.toString();
         }
         if (type.isEnum()) {
-          return "Enumeration"; //$NON-NLS-1$
+          return MemberInfo.Enum.toString();
         }
         if (type.isInterface()) {
-          return "Interface"; //$NON-NLS-1$
+          return MemberInfo.Interface.toString();
         }
         if (type.isLocal()) {
-          return "Local class"; //$NON-NLS-1$
+          return MemberInfo.ClassLocal.toString();
         }
         if (type.isMember()) {
-          return "Member class"; //$NON-NLS-1$
+          return MemberInfo.ClassMember.toString();
         }
-        return Messages.JavaElementUtil_Class;
+        return MemberInfo.Class.toString();
       }
       if (member instanceof IMethod) {
         IMethod method = (IMethod) member;
         if (method.isConstructor()) {
-          return Messages.JavaElementUtil_Constructor;
+          return MemberInfo.Constructor.toString();
         }
-        return Messages.JavaElementUtil_Method;
+        return MemberInfo.Method.toString();
       }
       if (member instanceof IField) {
         IField field = (IField) member;
         if (field.isEnumConstant()) {
-          return "EnumConstant"; //$NON-NLS-1$
+          return MemberInfo.EnumConstant.toString();
         }
         if (JavaElementUtil.isConstant(field)) {
-          return Messages.JavaElementUtil_Constant;
+          return MemberInfo.Constant.toString();
         }
-        return Messages.JavaElementUtil_Field;
+        return MemberInfo.Field.toString();
       }
     }
     catch (JavaModelException ex) {
@@ -625,24 +661,24 @@ public class JavaElementUtil {
    * @param member to crate a string for
    * @return "???" if unknown, otherwise:<p>
    * <ul>
-   * <li>"class"</li>
-   * <li>"method"</li>
-   * <li>"field"</li>
-   * <li>"initializer"</li>
+   * <li>"Class"</li>
+   * <li>"Method"</li>
+   * <li>"Field"</li>
+   * <li>"Initializer"</li>
    * </ul>
    */
   public static String getMemberTypeStringSimple(IMember member) {
     if (member instanceof IType) {
-      return Messages.JavaElementUtil_Class;
+      return MemberInfo.Class.toString();
     }
     if (member instanceof IMethod) {
-      return Messages.JavaElementUtil_Method;
+      return MemberInfo.Method.toString();
     }
     if (member instanceof IField) {
-      return Messages.JavaElementUtil_Field;
+      return MemberInfo.Field.toString();
     }
     if (member instanceof IInitializer) {
-      return Messages.JavaElementUtil_Initializer;
+      return MemberInfo.Initializer.toString();
     }
     return "???"; //$NON-NLS-1$
   }

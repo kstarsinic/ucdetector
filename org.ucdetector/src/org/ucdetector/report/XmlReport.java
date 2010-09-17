@@ -12,6 +12,7 @@ import java.io.FileOutputStream;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.OutputStream;
 import java.io.OutputStreamWriter;
 import java.io.PrintWriter;
 import java.io.StringWriter;
@@ -34,8 +35,10 @@ import javax.xml.transform.stream.StreamSource;
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.IResource;
 import org.eclipse.core.runtime.CoreException;
+import org.eclipse.core.runtime.FileLocator;
 import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.IStatus;
+import org.eclipse.core.runtime.Path;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.jdt.core.IField;
 import org.eclipse.jdt.core.IJavaElement;
@@ -45,6 +48,7 @@ import org.eclipse.jdt.core.IPackageFragment;
 import org.eclipse.jdt.core.IPackageFragmentRoot;
 import org.eclipse.jdt.core.IType;
 import org.eclipse.osgi.util.NLS;
+import org.osgi.framework.Bundle;
 import org.ucdetector.Log;
 import org.ucdetector.Messages;
 import org.ucdetector.UCDetectorPlugin;
@@ -418,6 +422,7 @@ public class XmlReport implements IUCDetectorReport {
       return;
     }
     appendStatistics(isEndReport);
+    copyIconFiles(reportDir);
     try {
       if (Prefs.isCreateReportHTML()) {
         Document htmlDocument = transformToHTML(doc);
@@ -438,6 +443,39 @@ public class XmlReport implements IUCDetectorReport {
     }
     catch (Exception e) {
       logEndReportMessage(Messages.XMLReport_WriteError, IStatus.ERROR, e, reportPath);
+    }
+  }
+
+  private static final String[] ICONS = new String[] { "FewReference.gif", "Reference.gif", "TestOnly.gif", "ucd.gif",
+      "ucdetector32.png", "VisibilityDefault.gif", "Final.gif", "VisibilityPrivate.gif", "VisibilityProtected.gif",
+      "ElementClass.gif", "ElementField.gif", "ElementMethod.gif" };
+
+  private void copyIconFiles(File reportDir) {
+    File iconsOutDir = new File(reportDir, ".icons");
+    iconsOutDir.mkdirs();
+    try {
+      for (String iconName : ICONS) {
+        Path iconPath = new Path("icons");
+        File outFile = new File(iconsOutDir, iconName);
+        Bundle bundle = UCDetectorPlugin.getDefault().getBundle();
+        copyToIconDir(iconPath, iconName, outFile, bundle);
+      }
+      //      for (JavaElementUtil.MemberInfo memberInfo : JavaElementUtil.MemberInfo.values()) {
+      //        Path iconPath = new Path("icons/full/obj16/");
+      //        File outFile = new File(iconsOutDir, memberInfo.getIcon());
+      //        Bundle bundle = Platform.getBundle("org.eclipse.jdt.ui");
+      //        copyToIconDir(iconPath, memberInfo.getIcon(), outFile, bundle);
+      //      }
+    }
+    catch (IOException ex) {
+      Log.logError("Problems copying icon files", ex);
+    }
+  }
+
+  private void copyToIconDir(Path iconPath, String iconName, File outFile, Bundle bundle) throws IOException {
+    if (!outFile.exists()) {
+      InputStream inStream = FileLocator.openStream(bundle, iconPath.append(iconName), false);
+      copyStream(inStream, new FileOutputStream(outFile));
     }
   }
 
@@ -499,5 +537,13 @@ public class XmlReport implements IUCDetectorReport {
     Result result = new StreamResult(stringWriter);
     xformer.transform(source, result);
     return stringWriter.toString();
+  }
+
+  private static void copyStream(InputStream inStream, OutputStream outStream) throws IOException {
+    byte[] buffer = new byte[1024];
+    int read;
+    while ((read = inStream.read(buffer)) != -1) {
+      outStream.write(buffer, 0, read);
+    }
   }
 }

@@ -161,7 +161,7 @@ ECLIPSE_HOME/dropins/org.ucdetector_*.jar/org/ucdetector/report/html.xslt
 									<xsl:value-of select="method"/>
 								</xsl:if>
 
-								<!-- filed -->
+								<!-- field -->
 								<xsl:if test="field">
 									<xsl:value-of select="field"/>
 								</xsl:if>
@@ -188,10 +188,14 @@ ECLIPSE_HOME/dropins/org.ucdetector_*.jar/org/ucdetector/report/html.xslt
 							</td>
 							<!-- JAVA TYPE -->
 							<td>
+								<img src=".icons/Element{javaType/@simple}.gif" alt="{javaType/@long}" />
+								<xsl:text> </xsl:text>
 								<xsl:value-of select="javaType/@long"/>
 							</td>
 							<!-- MARKER TYPE -->
 							<td>
+								<img src=".icons/{@markerType}.gif" alt="{@markerType}" />
+								<xsl:text> </xsl:text>
 								<xsl:value-of select="@markerType"/>
 							</td>
 						</tr>

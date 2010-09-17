@@ -158,12 +158,12 @@ public final class Messages extends NLS {
   public static String PreferencePage_ReportFile; // NO_UCD
   public static String PreferencePage_ReportFileToolTip; // NO_UCD
   // SearchManager -----------------------------------------------------------
-  public static String JavaElementUtil_Class; // NO_UCD
-  public static String JavaElementUtil_Constructor; // NO_UCD
-  public static String JavaElementUtil_Field; // NO_UCD
-  public static String JavaElementUtil_Constant; // NO_UCD
-  public static String JavaElementUtil_Method; // NO_UCD
-  public static String JavaElementUtil_Initializer; // NO_UCD
+  //  public static String JavaElementUtil_Class; // NO_UCD
+  //  public static String JavaElementUtil_Constructor; // NO_UCD
+  //  public static String JavaElementUtil_Field; // NO_UCD
+  //  public static String JavaElementUtil_Constant; // NO_UCD
+  //  public static String JavaElementUtil_Method; // NO_UCD
+  //  public static String JavaElementUtil_Initializer; // NO_UCD
   //
   public static String MarkerFactory_MarkerVisibility; // NO_UCD
   public static String MarkerFactory_VisibilityCompileErrorForClass; // NO_UCD
