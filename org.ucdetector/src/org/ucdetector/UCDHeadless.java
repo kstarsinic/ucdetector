@@ -90,8 +90,8 @@ public class UCDHeadless {
       Log.logInfo("Starting UCDetector Headless");
       loadTargetPlatform();
       // Run it twice because of Exception, when running it with a complete workspace: See end of file
-      //      Log.logInfo("Run 'load target platform' again, because of Exception, when running it with a complete workspace");
-      //      loadTargetPlatform();
+      Log.logInfo("Run 'load target platform' again, because of Exception, when running it with a complete workspace");
+      loadTargetPlatform();
       IWorkspace workspace = ResourcesPlugin.getWorkspace();
       IWorkspaceRoot workspaceRoot = workspace.getRoot();
       List<IJavaProject> allProjects = createProjects(ucdMonitor, workspaceRoot);

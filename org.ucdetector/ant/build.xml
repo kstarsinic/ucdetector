@@ -8,6 +8,9 @@
 <project name="Run UCDetector" default="detect" basedir=".">
   <description>Run UCDetector in headless mode</description>
 
+  <property name="WORKSPACE" location="../workspace" />
+  <property name="ECLIPSE_HOME" location="../eclipse" />
+
   <!-- =====================================================================
        UCDETECTOR
        ===================================================================== -->
@@ -15,7 +18,7 @@
     <!--
             ATTRIBUTES
 buildType:
-    One of: AUTO_BUILD (default), FULL_BUILD, CLEAN_BUILD, INCREMENTAL_BUILD 
+    One of: AUTO_BUILD (default), FULL_BUILD (clean all and build all), CLEAN_BUILD, INCREMENTAL_BUILD 
     For details see: org.eclipse.core.resources.IncrementalProjectBuilder
     Example: buildType="AUTO_BUILD"
 
@@ -30,11 +33,11 @@ targetPlatformFile:
     CHANGE file ucdetector.target, when using target platform!
     Examples:
       targetPlatformFile="ucdetector.target"
-      targetPlatformFile="../workspace/myProject/myTarget.target"
+      targetPlatformFile="${WORKSPACE}/myProject/myTarget.target"
 -->
     <ucdetector buildType="AUTO_BUILD" optionsFile="options.properties">
       <!-- Resources to build: Leave empty, to build ALL projects
-      <iterate name="myProject/src" />
+      <iterate name="myProject" />
       <iterate name="myOtherProject/src/main" />
       -->
     </ucdetector>
@@ -44,8 +47,6 @@ targetPlatformFile:
        DETECT
        ===================================================================== -->
   <target name="detect" description="Run UCDetector using java">
-    <property name="WORKSPACE" location="../workspace" />
-    <property name="ECLIPSE_HOME" location="../eclipse" />
     <property name="debug" value="-debug" />
 
     <echo>

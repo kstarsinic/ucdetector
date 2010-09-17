@@ -14,10 +14,14 @@ Directory setup:
 - Create a new base directory          : ucdetector-headless
 - Put java projects in                 : ucdetector-headless/workspace
 - Unpack downloaded eclipse to         : ucdetector-headless/eclipse
-- Put org.ucdetector_x.y.z.jar in      : ucdetector-headless/eclipse/dropins
+- Put org.ucdetector_x.y.z.jar in      : ucdetector-headless/eclipse/plugins    (dropins folder does not work!)
 - unzip org.ucdetector_x.y.z.zip/ant to: ucdetector-headless/ant
 
 Run UCDetector:
 - $ cd ucdetector-headless/ant
 - $ ant
 - check created reports
+
+
+Workarround to get compile errors:
+ - ucdetector-headless/workspace/.metadata/.plugins/org.eclipse.core.resources/.projects/myProject/.markers.snap
