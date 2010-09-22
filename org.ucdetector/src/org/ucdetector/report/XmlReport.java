@@ -417,10 +417,11 @@ public class XmlReport implements IUCDetectorReport {
       logEndReportMessage(Messages.XMLReport_WriteError, IStatus.ERROR, initXMLException, reportPath);
       return;
     }
-    if (markerCount == 0 && detectionProblemCount == 0) {
-      logEndReportMessage(Messages.XMLReport_WriteNoWarnings, IStatus.INFO, initXMLException);
-      return;
-    }
+    // 
+    //if (markerCount == 0 && detectionProblemCount == 0) {
+    //  logEndReportMessage(Messages.XMLReport_WriteNoWarnings, IStatus.INFO, initXMLException);
+    //  return;
+    //}
     appendStatistics(isEndReport);
     copyIconFiles(reportDir);
     try {

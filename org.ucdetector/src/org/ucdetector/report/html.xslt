@@ -36,7 +36,7 @@ ECLIPSE_HOME/dropins/org.ucdetector_*.jar/org/ucdetector/report/html.xslt
 					 =============================================================== -->
 						<td valign="top">
 							<h3 align="center">About search</h3>
-							<table border="1">
+							<table border="1" style="empty-cells:show">
 								<tr bgcolor="#C0C0C0">
 									<th>Property</th>
 									<th>Value</th>
@@ -64,7 +64,7 @@ ECLIPSE_HOME/dropins/org.ucdetector_*.jar/org/ucdetector/report/html.xslt
 						=============================================================== -->
 						<td valign="top">
 							<h3 align="center">Preferences</h3>
-							<table border="1">
+							<table border="1" style="empty-cells:show">
 								<tr bgcolor="#C0C0C0">
 									<th>Preference</th>
 									<th>Value</th>
@@ -93,7 +93,7 @@ ECLIPSE_HOME/dropins/org.ucdetector_*.jar/org/ucdetector/report/html.xslt
 				     SEARCH IN
 				     =============================================================== -->
 							<h3 align="center">Searched in</h3>
-							<table border="1">
+							<table border="1" style="empty-cells:show">
 								<tr bgcolor="#C0C0C0">
 									<th>Element</th>
 									<th>Type</th>
@@ -121,16 +121,16 @@ ECLIPSE_HOME/dropins/org.ucdetector_*.jar/org/ucdetector/report/html.xslt
 				
 			  <!--	<xsl:value-of select="concat('Searched started: ', /ucdetector/statistics/dateStarted, '. Duration: ', /ucdetector/statistics/searchDuration)"/> -->
 				<h3>Warnings</h3>
-				<table border="1">
+				<table border="1" style="empty-cells:show">
 					<thead align="center">
 						<tr bgcolor="#C0C0C0">
-							<th>Location*</th>
 							<th>Nr</th>
-							<!-- <th>Warn level</th> -->
+							<th>Java</th>
+							<th>Marker</th>
 							<th>Description</th>
 							<th>References**</th>
-							<th>Java Type</th>
-							<th>Marker Type</th>
+							<th>Author</th>
+							<th>Location*</th>
 						</tr>
 					</thead>
 					<xsl:for-each select="/ucdetector/markers/marker">
@@ -141,8 +141,43 @@ ECLIPSE_HOME/dropins/org.ucdetector_*.jar/org/ucdetector/report/html.xslt
 							</xsl:choose>
 						</xsl:variable>
 						<tr bgcolor="{$color}">
+							<!-- NR -->
+							<td align="right">
+								<xsl:value-of select="@nr"/>
+							</td>
+							<!-- JAVA TYPE -->
+							<td>
+								<img src=".icons/Element{javaType/@simple}.gif" alt="{javaType/@long}" />
+								<!--
+								<xsl:text> </xsl:text>
+								<xsl:value-of select="javaType/@long"/>
+								-->
+							</td>
+							<!-- MARKER TYPE -->
+							<td>
+								<img src=".icons/{@markerType}.gif" alt="{@markerType}" />
+								<!--
+								<xsl:text> </xsl:text>
+								<xsl:value-of select="@markerType"/>
+								-->
+							</td>
+							<!-- DESCRIPTION -->
+							<td>
+								<xsl:value-of select="description"/>
+							</td>
+							<!-- Reference Count -->
+							<td align="right">
+								<xsl:value-of select="@referenceCount"/>
+							</td>
+							<!-- Author -->
+							<td align="right">
+								<xsl:value-of select="author"/>
+							</td>
+							<!-- LOCATION -->
 							<td>
   							<!--  org.eclipse.swt.SWT.error(SWT.java:3634) -->
+			         <!-- For link in stack trace console space is needed here! -->
+								<xsl:text> </xsl:text>
 			         <!-- if not default package -->
 								<xsl:if test="string-length(package) &gt; 0">
 									<xsl:value-of select="concat(package, '.')"/>
@@ -167,36 +202,7 @@ ECLIPSE_HOME/dropins/org.ucdetector_*.jar/org/ucdetector/report/html.xslt
 								</xsl:if>
 
 								<!-- Link in Eclipse Stack Trace Console View: (SWT.java:3634) -->
-								<xsl:value-of select="concat('(', resourceName, ':', @line, ')')"/>
-							</td>
-							<!-- NR -->
-							<td align="right">
-								<xsl:value-of select="@nr"/>
-							</td>
-							<!-- LEVEL
-							<td>
-								<xsl:value-of select="level"/>
-							</td>
-							 -->
-							<!-- DESCRIPTION -->
-							<td>
-								<xsl:value-of select="description"/>
-							</td>
-							<!-- Reference Count -->
-							<td align="right">
-								<xsl:value-of select="@referenceCount"/>
-							</td>
-							<!-- JAVA TYPE -->
-							<td>
-								<img src=".icons/Element{javaType/@simple}.gif" alt="{javaType/@long}" />
-								<xsl:text> </xsl:text>
-								<xsl:value-of select="javaType/@long"/>
-							</td>
-							<!-- MARKER TYPE -->
-							<td>
-								<img src=".icons/{@markerType}.gif" alt="{@markerType}" />
-								<xsl:text> </xsl:text>
-								<xsl:value-of select="@markerType"/>
+								<xsl:value-of select="concat('(', class, '.java:', @line, ')')"/>
 							</td>
 						</tr>
 					</xsl:for-each>
