@@ -32,20 +32,31 @@ public class StopWatch {
     this.message = JavaElementUtil.getElementName(member);
   }
 
+  public String end(String info) {
+    return end(info, false);
+  }
+
   /**
    * Prints a message to UCDetectorPlugin logging
    * @param info String to append to message
+   * @param doLog do logging
+   * @return log message
    */
-  public void end(String info) {
+  public String end(String info, boolean doLog) {
     long duration = System.currentTimeMillis() - start;
+    // reset
     start = System.currentTimeMillis();
-    // traces for slow stuff
-    if (Log.isDebug() && duration > MINIMUM_DURATION) {
-      Log.logDebug(createLogMessage(info, duration));
+    String logMessage = createLogMessage(info, duration);
+    if (doLog) {
+      // Logging slow stuff
+      if (Log.isDebug() && duration > MINIMUM_DURATION) {
+        Log.logDebug(logMessage);
+      }
+      else if (duration > MINIMUM_DURATION_WARN) {
+        Log.logWarn(logMessage);
+      }
     }
-    else if (duration > MINIMUM_DURATION_WARN) {
-      Log.logWarn(createLogMessage(info, duration));
-    }
+    return logMessage;
   }
 
   private String createLogMessage(String info, long duration) {

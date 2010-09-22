@@ -94,14 +94,22 @@ public class UCDHeadless {
       loadTargetPlatform();
       IWorkspace workspace = ResourcesPlugin.getWorkspace();
       IWorkspaceRoot workspaceRoot = workspace.getRoot();
+      //
+      StopWatch stopWatch = new StopWatch();
       List<IJavaProject> allProjects = createProjects(ucdMonitor, workspaceRoot);
+      Log.logInfo(stopWatch.end("createProjects", false));
+      //
       IProject[] projects = workspaceRoot.getProjects();
       Log.logInfo("\tprojects found in workspace: " + projects.length);
       Log.logInfo("\tWorkspace: " + workspaceRoot.getLocation());
       Log.logInfo("Refresh workspace... Please wait...!");
       workspaceRoot.refreshLocal(IResource.DEPTH_INFINITE, ucdMonitor);
+      Log.logInfo(stopWatch.end("Refresh workspace", false));
+      //
       Log.logInfo("Build workspace... Please wait...!");
       workspace.build(buildType, ucdMonitor);
+      Log.logInfo(stopWatch.end("Build workspace", false));
+      //
       iterate(workspaceRoot, allProjects);
     }
     finally {
@@ -114,6 +122,7 @@ public class UCDHeadless {
       Log.logInfo("Use eclipse as target platform");
       return;
     }
+    StopWatch stopWatch = new StopWatch();
     Log.logInfo("Use target platform declared in: " + targetPlatformFile.getAbsolutePath());
     if (!targetPlatformFile.exists()) {
       throw new FileNotFoundException("Can't find target platform file: " + targetPlatformFile);
@@ -125,7 +134,7 @@ public class UCDHeadless {
     ITargetDefinition targetDefinition = targetHandle.getTargetDefinition();
     new LoadTargetDefinitionJob(targetDefinition).run(ucdMonitor);
     //    LoadTargetDefinitionJob.load(targetDefinition);
-    Log.logInfo("END: loadTargetPlatform");
+    Log.logInfo(stopWatch.end("END: loadTargetPlatform", false));
   }
 
   private void iterate(IWorkspaceRoot workspaceRoot, List<IJavaProject> allProjects) throws CoreException {
