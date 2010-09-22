@@ -1,13 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project default="plugin-export" name="export plugin" basedir=".">
   <description>Export UCDetector plugin</description>
+  <property name="output.dir" location="output" />
+  <property name="output.plugins.dir" location="${output.dir}/plugins" />
 
   <!-- =====================================================================
        PREPARE
        ===================================================================== -->
   <target name="prepare" description="Load and dump properties">
     <property file="local.properties" />
-    <property name="output.dir" location="output" />
     <!-- get Bundle-Version -->
     <property file="../META-INF/MANIFEST.MF" />
     <echo>UCDetector version = ${Bundle-Version}</echo>
@@ -15,6 +16,8 @@
     <tstamp>
       <format property="NOW" pattern="yyyy-MM-dd HH:mm z" locale="en" />
     </tstamp>
+    <delete dir="${output.plugins.dir}" />
+    <mkdir dir="${output.plugins.dir}" />
   </target>
 
   <!-- =====================================================================
@@ -27,14 +30,14 @@
                        exportType="directory"
                        plugins="org.ucdetector,org.ucdetector.additional"
                        useJARFormat="true" />
-    <echo>Please wait. Plugins will be exported to: ${output.dir}/plugins</echo>
+    <echo>Please wait. Plugins will be exported to: ${output.plugins.dir}</echo>
   </target>
 
   <!-- =====================================================================
        EXPORT UCDETECTOR SOURCE
        ===================================================================== -->
   <target name="source" depends="version-info" description="Export source.zip">
-    <property name="source.zip" location="${output.dir}/plugins/org.ucdetector.source_${Bundle-Version}.zip" />
+    <property name="source.zip" location="${output.plugins.dir}/org.ucdetector.source_${Bundle-Version}.zip" />
     <zip destfile="${source.zip}">
       <fileset dir="..">
         <exclude name="bin/**" />
