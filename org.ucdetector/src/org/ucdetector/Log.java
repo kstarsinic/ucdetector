@@ -21,6 +21,7 @@ import org.eclipse.ui.console.IConsole;
 import org.eclipse.ui.console.IConsoleConstants;
 import org.eclipse.ui.console.MessageConsole;
 import org.eclipse.ui.console.MessageConsoleStream;
+import org.ucdetector.preferences.Prefs;
 
 /**
  * Simple logging API for UCDetector.
@@ -33,6 +34,7 @@ public class Log {
     DEBUG, INFO, WARN, ERROR, OFF,
   }
 
+  private static boolean isLogInited;
   /**
    * To activate debug traces add line
    * <pre>org.ucdetector/debug=true</pre>
@@ -40,16 +42,21 @@ public class Log {
    * 
    * @see "http://wiki.eclipse.org/FAQ_How_do_I_use_the_platform_debug_tracing_facility%3F"
    */
-  private static final LogLevel LOG_LEVEL_OPTIONS_FILE;
+  private static LogLevel LOG_LEVEL_OPTIONS_FILE;
   private static MessageConsole console;
   private static PrintStream consoleStreamInfo;
   private static PrintStream consoleStreamWarn;
 
-  static {
-    activeLogLevel = LogLevel.INFO;
+  private static void initLog() {
+    if (isLogInited) {
+      return;
+    }
+    isLogInited = true;
+    setActiveLogLevel(Prefs.getLogLevel());
+    setLogToEclipse(Prefs.isLogToEclipse());
     LOG_LEVEL_OPTIONS_FILE = getLogLevelOption("org.ucdetector/logLevel");
-    if (Log.getAcitveLogLevel().ordinal() > Log.LogLevel.INFO.ordinal()) {
-      System.out.println("UCDetector Log level: " + Log.getAcitveLogLevel()); // we need to log to System.out
+    if (getActiveLogLevel().ordinal() > LogLevel.INFO.ordinal()) {
+      System.out.println("UCDetector Log level: " + getActiveLogLevel()); // we need to log to System.out
     }
     if (LOG_LEVEL_OPTIONS_FILE != null) {
       logWarn("Eclipse .options file overrides preferences log level. Log level is: " + LOG_LEVEL_OPTIONS_FILE);
@@ -76,10 +83,10 @@ public class Log {
 
   public static void logSuccess(boolean success, String message) {
     if (success) {
-      Log.logInfo("OK: " + message);
+      logInfo("OK: " + message);
     }
     else {
-      Log.logWarn("FAIL: " + message);
+      logWarn("FAIL: " + message);
     }
   }
 
@@ -123,7 +130,8 @@ public class Log {
    * Very simple logging to System.out and System.err
    */
   private static void logImpl(LogLevel level, String message, Throwable ex) {
-    if (level.ordinal() < getAcitveLogLevel().ordinal()) {
+    initLog();
+    if (level.ordinal() < getActiveLogLevel().ordinal()) {
       return;
     }
     boolean isWarn = level.ordinal() > LogLevel.INFO.ordinal();
@@ -132,10 +140,8 @@ public class Log {
     logToEclipseConsole(isWarn, formattedMessage, ex);
   }
 
-  static boolean logToEclipse;
-
   private static void logToEclipseConsole(boolean isWarn, String formattedMessage, Throwable ex) {
-    if (UCDetectorPlugin.isHeadlessMode() || !logToEclipse /*!Prefs.isLogToEclipse()*/) {
+    if (UCDetectorPlugin.isHeadlessMode() || !isLogToEclipse()) {
       return;
     }
     if (console == null) {
@@ -156,18 +162,22 @@ public class Log {
   }
 
   private static void initConsole() {
-    console = new MessageConsole("UCDetector", null);
-    ConsolePlugin.getDefault().getConsoleManager().addConsoles(new IConsole[] { console });
-    consoleStreamInfo = new PrintStream(console.newMessageStream());
-    MessageConsoleStream messageStream = console.newMessageStream();
-    messageStream.setColor(Display.getDefault().getSystemColor(SWT.COLOR_RED));
-    consoleStreamWarn = new PrintStream(messageStream);
-    try {
-      UCDetectorPlugin.getActivePage().showView(IConsoleConstants.ID_CONSOLE_VIEW);
-    }
-    catch (PartInitException ex) {
-      logError("Can't init console", ex);
-    }
+    Display.getDefault().asyncExec(new Runnable() {
+      public void run() {
+        console = new MessageConsole("UCDetector", null);
+        ConsolePlugin.getDefault().getConsoleManager().addConsoles(new IConsole[] { console });
+        consoleStreamInfo = new PrintStream(console.newMessageStream());
+        MessageConsoleStream messageStream = console.newMessageStream();
+        messageStream.setColor(Display.getDefault().getSystemColor(SWT.COLOR_RED));
+        consoleStreamWarn = new PrintStream(messageStream);
+        try {
+          UCDetectorPlugin.getActivePage().showView(IConsoleConstants.ID_CONSOLE_VIEW);
+        }
+        catch (PartInitException ex) {
+          logError("Can't init console", ex);
+        }
+      }
+    });
   }
 
   /**
@@ -190,12 +200,17 @@ public class Log {
   }
 
   public static boolean isDebug() {
-    return (getAcitveLogLevel() == LogLevel.DEBUG);
+    return (getActiveLogLevel() == LogLevel.DEBUG);
   }
 
-  static LogLevel activeLogLevel = LogLevel.INFO;
+  private static LogLevel activeLogLevel = LogLevel.INFO;
 
-  protected static LogLevel getAcitveLogLevel() {
+  public static void setActiveLogLevel(LogLevel logLevel) {
+    //    System.out.println("NEW LOG LEVEL: " + logLevel);
+    Log.activeLogLevel = logLevel;
+  }
+
+  protected static LogLevel getActiveLogLevel() {
     return LOG_LEVEL_OPTIONS_FILE == null ? activeLogLevel : LOG_LEVEL_OPTIONS_FILE;
   }
 
@@ -209,5 +224,16 @@ public class Log {
     catch (IOException e) {
       return file.getAbsolutePath();
     }
+  }
+
+  private static boolean logToEclipse;
+
+  static void setLogToEclipse(boolean log) {
+    //    System.out.println("NEW LOG TO ECLIPSE: " + log);
+    Log.logToEclipse = log;
+  }
+
+  static boolean isLogToEclipse() {
+    return logToEclipse;
   }
 }
