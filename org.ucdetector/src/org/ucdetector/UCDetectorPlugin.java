@@ -354,12 +354,12 @@ public class UCDetectorPlugin extends AbstractUIPlugin implements IPropertyChang
       String line = null;
       while ((line = reader.readLine()) != null) {
         line = line.trim();
-        int index = line.indexOf('=');
-        if (line.startsWith("#") || index == -1) { //$NON-NLS-1$
-          continue;// comment
+        int indexEquals = line.indexOf('=');
+        if (line.startsWith("#") || indexEquals == -1) { //$NON-NLS-1$
+          continue;// comment or no '='
         }
-        String key = line.substring(0, index);
-        String value = (line.length() == index ? "" : line.substring(index + 1)); //$NON-NLS-1$
+        String key = line.substring(0, indexEquals).trim();
+        String value = line.substring(indexEquals + 1).trim();
         result.put(key, value);
       }
     }

@@ -12,9 +12,11 @@ import static org.ucdetector.preferences.UCDetectorPreferencePage.TAB_START;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.text.MessageFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
+import java.util.LinkedHashMap;
 import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Map;
@@ -49,7 +51,7 @@ class ModesPanel {
 
   /** built-in preferences mode */
   enum Mode {
-    Default, classes_only, full;
+    Default, classes_only, unused_only, full;
 
     String toStringLocalized() {
       // Reflection!
@@ -227,20 +229,25 @@ class ModesPanel {
     sb.append(String.format("### Created date: %s%n", UCDetectorPlugin.getNow()));
     sb.append(String.format("### This class can't be loaded by java.util.Properties.load()%n"));
     sb.append(String.format("### -------------------------------------------------------------------------%n"));
+    Map<String, String> groupPrefs = new LinkedHashMap<String, String>();
     for (String extendedPreference : page.extendedPreferences) {
       if (extendedPreference.startsWith(TAB_START)) {
+        flushGroupPrefs(groupPrefs, sb);
+        String tab = extendedPreference.substring(TAB_START.length());
         sb.append(String.format("%n## --------------------------------------------------------------------------%n"));
-        sb.append(String.format("## Tab: %s%n", extendedPreference.substring(TAB_START.length())));
+        sb.append(String.format("## Tab: %s%n", tab.startsWith("&") ? tab.substring(1) : tab));
         sb.append(String.format("## --------------------------------------------------------------------------%n"));
       }
       else if (extendedPreference.startsWith(GROUP_START)) {
+        flushGroupPrefs(groupPrefs, sb);
         sb.append(String.format("%n# Group: %s%n", extendedPreference.substring(GROUP_START.length())));
       }
       else {
-        sb.append(String.format("%s=%s%n", extendedPreference, allPreferences.get(extendedPreference)));
+        groupPrefs.put(extendedPreference, allPreferences.get(extendedPreference));
         allPreferences.remove(extendedPreference);
       }
     }
+    flushGroupPrefs(groupPrefs, sb);
     String fileText = sb.toString();
     if (Log.isDebug()) {
       Log.logDebug(fileText);
@@ -260,6 +267,19 @@ class ModesPanel {
     finally {
       UCDetectorPlugin.closeSave(writer);
     }
+  }
+
+  /** Nice key value formatting only */
+  private void flushGroupPrefs(Map<String, String> groupPrefs, StringBuilder sb) {
+    int maxKeyLength = 0;
+    for (String key : groupPrefs.keySet()) {
+      maxKeyLength = Math.max(maxKeyLength, key.length());
+    }
+    String format = MessageFormat.format("%-{0}s = %s%n", String.valueOf(maxKeyLength)); //$NON-NLS-1$
+    for (Entry<String, String> entry : groupPrefs.entrySet()) {
+      sb.append(String.format(format, entry.getKey(), entry.getValue()));
+    }
+    groupPrefs.clear();
   }
 
   private File getModesFile(String modeName) {

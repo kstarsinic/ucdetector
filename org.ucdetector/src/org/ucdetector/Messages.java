@@ -233,10 +233,13 @@ public final class Messages extends NLS {
   public static String ModesPanel_ModeName; // NO_UCD
   public static String ModesPanel_CantSetPreferences; // NO_UCD
   public static String ModesPanel_ModeFileCantSave; // NO_UCD
+  // MODE STRINGS --------------------------------------------------------------
+  @UsedBy("reflection")
+  public static String ModesPanel_mode_Default;// NO_UCD
   @UsedBy("reflection")
   public static String ModesPanel_mode_classes_only;// NO_UCD
   @UsedBy("reflection")
-  public static String ModesPanel_mode_full;// NO_UCD
+  public static String ModesPanel_mode_unused_only;// NO_UCD
   @UsedBy("reflection")
-  public static String ModesPanel_mode_Default;// NO_UCD
+  public static String ModesPanel_mode_full;// NO_UCD
 }
