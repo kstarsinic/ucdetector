@@ -349,7 +349,8 @@ public class UCDetectorPlugin extends AbstractUIPlugin implements IPropertyChang
     Map<String, String> result = new HashMap<String, String>();
     BufferedReader reader = null;
     try {
-      InputStream in = isFile ? new FileInputStream(modeFileName) : Prefs.class.getResourceAsStream(modeFileName);
+      InputStream in = isFile ? new FileInputStream(modeFileName) //
+          : Prefs.class.getResourceAsStream("modes/" + modeFileName);
       reader = new BufferedReader(new InputStreamReader(in));
       String line = null;
       while ((line = reader.readLine()) != null) {
