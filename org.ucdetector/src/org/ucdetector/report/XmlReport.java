@@ -111,11 +111,15 @@ public class XmlReport implements IUCDetectorReport {
   private Element nodeFinished;
   private boolean isFirstStatistic = true;
   private boolean endReportCalled;
+  private String javaProjectName = "unkown_project";
 
   public XmlReport(IJavaElement[] objectsToIterate, long timeStart) {
     this.objectsToIterate = objectsToIterate;
+    if (objectsToIterate.length > 0 && objectsToIterate[0].getJavaProject() != null) {
+      javaProjectName = objectsToIterate[0].getJavaProject().getElementName();
+    }
     this.timeStart = timeStart;
-    reportNumberName = getReportNumberName();
+    reportNumberName = getReportName();
     initXML();
     if (UCDetectorPlugin.isHeadlessMode()) {
       Runtime.getRuntime().addShutdownHook(new Thread() {
@@ -291,24 +295,30 @@ public class XmlReport implements IUCDetectorReport {
    * eg: UCDetetorReport_001
    */
   // Fix [2811049]  Html report is overridden each run
-  private String getReportNumberName() {
+  private String getReportName() {
+    String reportFile = Prefs.getReportFile();
+    reportFile = reportFile.replace("${project}", javaProjectName);
+    reportFile = reportFile.replace("${date}", UCDetectorPlugin.getNowFile());
+    //
     File reportDir = new File(PreferenceInitializer.getReportDir());
-    String[] files = reportDir.list();
-    files = (files == null) ? new String[0] : files;
-    for (int i = 1; i < 1000; i++) {
-      String number = FORMAT_REPORT_NUMBER.format(i);
-      boolean found = false;
-      for (String file : files) {
-        if (file.contains(number)) {
-          found = true;
-          break;
+    if (reportFile.contains("${number}")) {
+      String[] files = reportDir.list();
+      files = (files == null) ? new String[0] : files;
+      for (int i = 1; i < 1000; i++) {
+        String number = FORMAT_REPORT_NUMBER.format(i);
+        boolean numberExists = false;
+        for (String file : files) {
+          if (file.contains(number)) {
+            numberExists = true;
+            break;
+          }
+        }
+        if (!numberExists) {
+          return reportFile.replace("${number}", number);
         }
       }
-      if (!found) {
-        return "UCDetetorReport_" + number;
-      }
     }
-    return "UCDetetorReport";
+    return reportFile;
   }
 
   /** Create a <code>Status</code> and log it to the Eclipse log */

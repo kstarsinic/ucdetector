@@ -82,6 +82,7 @@ public class UCDetectorPlugin extends AbstractUIPlugin implements IPropertyChang
   public static final String HELP_ID_PREFERENCES = ID + ".ucd_context_id_preferences";
   //private final DateFormat dateFormat = DateFormat.getDateTimeInstance(DateFormat.MEDIUM, DateFormat.MEDIUM, Locale.getDefault());
   private final DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+  private final DateFormat dateFormatFile = new SimpleDateFormat("yyyy-MM-dd_HHmmss");
   private static final String SEPARATOR = "-----------------------------------------------------------------------------"; //$NON-NLS-1$
 
   public UCDetectorPlugin() {
@@ -99,7 +100,7 @@ public class UCDetectorPlugin extends AbstractUIPlugin implements IPropertyChang
     Log.logInfo("Home      : " + getAboutEclipseHome());
     Log.logInfo("Logfile   : " + getAboutLogfile());
     Log.logInfo("Workspace : " + getAboutWorkspace());
-    Log.logInfo("Log level : " + Log.getAcitveLogLevel().toString());
+    Log.logInfo("Log level : " + Log.getActiveLogLevel().toString());
     Log.logInfo(getPreferencesAsString());
     Log.logInfo(SEPARATOR);
   }
@@ -243,6 +244,10 @@ public class UCDetectorPlugin extends AbstractUIPlugin implements IPropertyChang
     return getDefault().getDateFormat().format(new Date());
   }
 
+  public static String getNowFile() {
+    return getDefault().getDateFormatFile().format(new Date());
+  }
+
   // -------------------------------------------------------------------------
 
   public static IWorkbenchPage getActivePage() {
@@ -267,6 +272,10 @@ public class UCDetectorPlugin extends AbstractUIPlugin implements IPropertyChang
 
   private DateFormat getDateFormat() {
     return dateFormat;
+  }
+
+  private DateFormat getDateFormatFile() {
+    return dateFormatFile;
   }
 
   public static void closeSave(Closeable closable) {
@@ -327,10 +336,10 @@ public class UCDetectorPlugin extends AbstractUIPlugin implements IPropertyChang
     String property = event.getProperty();
     String newValue = event.getNewValue().toString();
     if (property.equals(Prefs.LOG_LEVEL)) {
-      Log.activeLogLevel = LogLevel.valueOf(newValue);
+      Log.setActiveLogLevel(LogLevel.valueOf(newValue));
     }
     if (property.equals(Prefs.LOG_TO_ECLIPSE)) {
-      Log.logToEclipse = Boolean.parseBoolean(newValue);
+      Log.setLogToEclipse(Boolean.parseBoolean(newValue));
     }
   }
 
@@ -373,4 +382,13 @@ public class UCDetectorPlugin extends AbstractUIPlugin implements IPropertyChang
     }
     return result;
   }
+  //  private static boolean isValidFileChar(char c) {
+  //    if (c < 32 || c > 127) {
+  //      return false;
+  //    }
+  //    if ((c >= '0' && c <= '9') || (c >= 'A' && c <= 'Z') || (c >= 'a' && c <= 'z')) {
+  //      return true;
+  //    }
+  //    return " !#$%&'()+,-.=?@[]^_".indexOf(c) > -1;
+  //  }
 }

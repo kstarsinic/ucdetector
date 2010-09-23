@@ -259,8 +259,12 @@ public class UCDetectorPreferencePage extends FieldEditorPreferencePage implemen
     appendBool(Prefs.REPORT_CREATE_HTML, Messages.PreferencePage_CreateHtmlReport, null, spacer, 3);
     appendBool(Prefs.REPORT_CREATE_XML, Messages.PreferencePage_CreateXmlReport, null, spacer, 3);
     appendBool(Prefs.REPORT_CREATE_TXT, Messages.PreferencePage_CreateTextReport, null, spacer, 3);
-    DirectoryFieldEditor path = new DirectoryFieldEditor(Prefs.REPORT_DIR, Messages.PreferencePage_ReportFile, spacer);
-    path.getLabelControl(spacer).setToolTipText(Messages.PreferencePage_ReportFileToolTip);
+    //
+    appendText(Prefs.REPORT_FILE, Messages.PreferencePage_ReportFile, spacer,
+        Messages.PreferencePage_ReportFileToolTip, 3);
+    //
+    DirectoryFieldEditor path = new DirectoryFieldEditor(Prefs.REPORT_DIR, Messages.PreferencePage_ReportDir, spacer);
+    path.getLabelControl(spacer).setToolTipText(Messages.PreferencePage_ReportDirToolTip);
     this.addField(path);
     //
     addLineHack(spacer);
@@ -415,8 +419,12 @@ public class UCDetectorPreferencePage extends FieldEditorPreferencePage implemen
   }
 
   private StringFieldEditor appendText(String name, String label, Composite parent, String toolTip) {
+    return appendText(name, label, parent, toolTip, 2);
+  }
+
+  private StringFieldEditor appendText(String name, String label, Composite parent, String toolTip, int columns) {
     StringFieldEditor text = new StringFieldEditor(name, label, parent);
-    text.fillIntoGrid(parent, 2);
+    text.fillIntoGrid(parent, columns);
     text.getLabelControl(parent).setToolTipText(toolTip);
     addField(text);
     return text;

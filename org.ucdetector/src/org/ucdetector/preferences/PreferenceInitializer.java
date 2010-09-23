@@ -65,6 +65,7 @@ public class PreferenceInitializer extends AbstractPreferenceInitializer {
     // CYCLE -------------------------------------------------------------------
     store.setDefault(Prefs.CYCLE_DEPTH, Prefs.CYCLE_DEPTH_DEFAULT);
     store.setDefault(Prefs.REPORT_DIR, getReportDirDefault());
+    store.setDefault(Prefs.REPORT_FILE, "UCDetetorReport_${number}");
     store.setDefault(Prefs.REPORT_CREATE_HTML, true);
     store.setDefault(Prefs.REPORT_CREATE_XML, false);
     store.setDefault(Prefs.REPORT_CREATE_TXT, false);

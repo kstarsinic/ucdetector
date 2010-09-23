@@ -81,6 +81,7 @@ public final class Prefs {
   static final String ANALYZE_FINAL_METHOD = ID + ".finalMethod";
   //
   static final String REPORT_DIR = ID + ".report.dir";
+  static final String REPORT_FILE = ID + ".report.file";
   static final String REPORT_CREATE_HTML = ID + ".report.create.html";
   static final String REPORT_CREATE_XML = ID + ".report.create.xml";
   static final String REPORT_CREATE_TXT = ID + ".report.create.txt";
@@ -432,6 +433,10 @@ public final class Prefs {
    */
   public static boolean isCheckUseFinalMethod() {
     return WarnLevel.IGNORE != getCheckUseFinalMethod();
+  }
+
+  public static String getReportFile() {
+    return getStore().getString(REPORT_FILE);
   }
 
   public static boolean isCreateReportHTML() {

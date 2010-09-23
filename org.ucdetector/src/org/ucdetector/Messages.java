@@ -155,6 +155,8 @@ public final class Messages extends NLS {
   public static String WarnLevel_Warning; // NO_UCD
   public static String WarnLevel_Ignore; // NO_UCD
   // -------------------------------------------------------------------------
+  public static String PreferencePage_ReportDir; // NO_UCD
+  public static String PreferencePage_ReportDirToolTip; // NO_UCD
   public static String PreferencePage_ReportFile; // NO_UCD
   public static String PreferencePage_ReportFileToolTip; // NO_UCD
   // SearchManager -----------------------------------------------------------

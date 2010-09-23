@@ -88,6 +88,9 @@ public class SearchManager {
     try {
       int pos = 0;
       for (TypeContainer container : typeContainers) {
+        if (monitor.isCanceled()) {
+          return;
+        }
         pos++;
         String message = String.format("Search %s of %s types. Markers %s. Exceptions %s. Class %s - %s", //$NON-NLS-1$
             fill(pos, 4),//
