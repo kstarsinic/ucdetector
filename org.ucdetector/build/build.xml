@@ -16,7 +16,7 @@
     <tstamp>
       <format property="NOW" pattern="yyyy-MM-dd HH:mm z" locale="en" />
     </tstamp>
-    <delete dir="${output.plugins.dir}" />
+    <delete dir="${output.plugins.dir}" failonerror="false" />
     <mkdir dir="${output.plugins.dir}" />
   </target>
 
