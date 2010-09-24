@@ -177,7 +177,7 @@ ECLIPSE_HOME/dropins/org.ucdetector_*.jar/org/ucdetector/report/html.xslt
 							<td>
   							<!--  org.eclipse.swt.SWT.error(SWT.java:3634) -->
 			         <!-- For link in stack trace console space is needed here! -->
-								<xsl:text> </xsl:text>
+								<xsl:text>&#160;</xsl:text>
 			         <!-- if not default package -->
 								<xsl:if test="string-length(package) &gt; 0">
 									<xsl:value-of select="concat(package, '.')"/>

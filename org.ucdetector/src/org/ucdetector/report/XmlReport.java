@@ -16,7 +16,10 @@ import java.io.OutputStream;
 import java.io.OutputStreamWriter;
 import java.io.PrintWriter;
 import java.io.StringWriter;
+import java.text.DateFormat;
 import java.text.DecimalFormat;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.Map.Entry;
 import java.util.Set;
 import java.util.SortedSet;
@@ -114,6 +117,9 @@ public class XmlReport implements IUCDetectorReport {
   private boolean isFirstStatistic = true;
   private boolean endReportCalled;
   private final String javaProjectName;
+  //
+  private final DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+  private final DateFormat timeFormat = new SimpleDateFormat("HHmmss");
 
   public XmlReport(IJavaElement[] objectsToIterate, long timeStart) {
     this.objectsToIterate = objectsToIterate;
@@ -308,10 +314,11 @@ public class XmlReport implements IUCDetectorReport {
   private String getReportName() {
     String reportFile = Prefs.getReportFile();
     reportFile = reportFile.replace("${project}", javaProjectName);
-    reportFile = reportFile.replace("${date}", UCDetectorPlugin.getNowFile());
+    reportFile = reportFile.replace("${date}", dateFormat.format(new Date()));
+    reportFile = reportFile.replace("${time}", timeFormat.format(new Date()));
     //
     File reportDir = new File(PreferenceInitializer.getReportDir());
-    if (reportFile.contains("${number}")) {
+    if (reportFile.contains(PreferenceInitializer.FILE_NAME_REPLACE_NUMBER)) {
       String[] files = reportDir.list();
       files = (files == null) ? new String[0] : files;
       for (int i = 1; i < 1000; i++) {
@@ -324,7 +331,7 @@ public class XmlReport implements IUCDetectorReport {
           }
         }
         if (!numberExists) {
-          return reportFile.replace("${number}", number);
+          return reportFile.replace(PreferenceInitializer.FILE_NAME_REPLACE_NUMBER, number);
         }
       }
     }

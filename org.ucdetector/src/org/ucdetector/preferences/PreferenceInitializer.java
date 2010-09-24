@@ -35,6 +35,7 @@ public class PreferenceInitializer extends AbstractPreferenceInitializer {
   // feature 2996537: Eclipse Plug-in/Extension detection: added MANIFEST.MF
   private static final String FILE_PATTERN_LITERAL_SEARCH = "*.xml,MANIFEST.MF,";
   private static final String REPORT_DEFAULT_DIR = "ucdetector_reports";
+  public static final String FILE_NAME_REPLACE_NUMBER = "${number}";
 
   @Override
   public void initializeDefaultPreferences() {

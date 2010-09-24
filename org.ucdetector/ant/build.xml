@@ -10,6 +10,7 @@
 
   <property name="WORKSPACE" location="../workspace" />
   <property name="ECLIPSE_HOME" location="../eclipse" />
+  <property name="reports.dir" location="${WORKSPACE}/ucdetector_reports" />
 
   <!-- =====================================================================
        UCDETECTOR
@@ -55,7 +56,7 @@ report:
 # -----------------------------------------------------------------------------
 # ECLIPSE_HOME = ${ECLIPSE_HOME}
 # WORKSPACE    = ${WORKSPACE}
-# debug        = ${debug}
+# reports.dir  = ${reports.dir}
 # -----------------------------------------------------------------------------
 </echo>
 

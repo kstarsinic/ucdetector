@@ -60,6 +60,7 @@ import org.ucdetector.preferences.Prefs;
  */
 @SuppressWarnings("nls")
 public class UCDetectorPlugin extends AbstractUIPlugin implements IPropertyChangeListener {
+  private static final int MEGA_BYTE = 1024 * 1024;
   public static final String IMAGE_FINAL = "IMAGE_FINAL";
   public static final String IMAGE_UCD = "IMAGE_UCD";
   public static final String IMAGE_COMMENT = "IMAGE_COMMENT";
@@ -82,7 +83,6 @@ public class UCDetectorPlugin extends AbstractUIPlugin implements IPropertyChang
   public static final String HELP_ID_PREFERENCES = ID + ".ucd_context_id_preferences";
   //private final DateFormat dateFormat = DateFormat.getDateTimeInstance(DateFormat.MEDIUM, DateFormat.MEDIUM, Locale.getDefault());
   private final DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-  private final DateFormat dateFormatFile = new SimpleDateFormat("yyyy-MM-dd_HHmmss");
   private static final String SEPARATOR = "-----------------------------------------------------------------------------"; //$NON-NLS-1$
 
   public UCDetectorPlugin() {
@@ -90,7 +90,6 @@ public class UCDetectorPlugin extends AbstractUIPlugin implements IPropertyChang
   }
 
   private void dumpInformation() {
-    long maxMemory = Runtime.getRuntime().maxMemory() / (1024 * 1024);
     Log.logInfo(SEPARATOR);
     Log.logInfo("Starting UCDetector Plug-In version " + getAboutUCDVersion());
     Log.logInfo(SEPARATOR);
@@ -102,9 +101,17 @@ public class UCDetectorPlugin extends AbstractUIPlugin implements IPropertyChang
     Log.logInfo("Logfile   : " + getAboutLogfile());
     Log.logInfo("Workspace : " + getAboutWorkspace());
     Log.logInfo("Log level : " + Log.getActiveLogLevel().toString());
-    Log.logInfo("maxMemory : " + maxMemory + " MB");
     Log.logInfo(getPreferencesAsString());
+    logMemoryInfo();
     Log.logInfo(SEPARATOR);
+  }
+
+  public static void logMemoryInfo() {
+    long used = (Runtime.getRuntime().totalMemory() - Runtime.getRuntime().freeMemory()) / MEGA_BYTE;
+    long max = Runtime.getRuntime().maxMemory() / MEGA_BYTE;
+    long percentUsed = (100 * used) / max;
+    String message = String.format("Memory: %s MB max, %s %% used", String.valueOf(max), String.valueOf(percentUsed));
+    Log.log(percentUsed > 80 ? LogLevel.WARN : LogLevel.INFO, message);
   }
 
   @Override
@@ -246,10 +253,6 @@ public class UCDetectorPlugin extends AbstractUIPlugin implements IPropertyChang
     return getDefault().getDateFormat().format(new Date());
   }
 
-  public static String getNowFile() {
-    return getDefault().getDateFormatFile().format(new Date());
-  }
-
   // -------------------------------------------------------------------------
 
   public static IWorkbenchPage getActivePage() {
@@ -274,10 +277,6 @@ public class UCDetectorPlugin extends AbstractUIPlugin implements IPropertyChang
 
   private DateFormat getDateFormat() {
     return dateFormat;
-  }
-
-  private DateFormat getDateFormatFile() {
-    return dateFormatFile;
   }
 
   public static void closeSave(Closeable closable) {

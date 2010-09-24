@@ -65,7 +65,7 @@ public class Log {
 
   // DEBUG --------------------------------------------------------------------
   public static void logDebug(String message) {
-    logImpl(LogLevel.DEBUG, message);
+    log(LogLevel.DEBUG, message);
   }
 
   public static void logDebug(String format, Object... args) {
@@ -74,7 +74,7 @@ public class Log {
 
   // INFO ---------------------------------------------------------------------
   public static void logInfo(String message) {
-    logImpl(LogLevel.INFO, message);
+    log(LogLevel.INFO, message);
   }
 
   public static void logInfo(String format, Object... args) {
@@ -92,7 +92,7 @@ public class Log {
 
   // WARN ---------------------------------------------------------------------
   public static void logWarn(String message) {
-    logImpl(LogLevel.WARN, message);
+    log(LogLevel.WARN, message);
   }
 
   public static void logWarn(String format, Object... args) {
@@ -101,7 +101,7 @@ public class Log {
 
   // ERROR --------------------------------------------------------------------
   public static void logError(String message) {
-    logImpl(LogLevel.ERROR, message);
+    log(LogLevel.ERROR, message);
   }
 
   public static void logError(String message, Throwable ex) {
@@ -121,11 +121,11 @@ public class Log {
     }
   }
 
-  // LOG IMPL -------------------------------------------------------------------
-  private static void logImpl(LogLevel level, String message) {
+  public static void log(LogLevel level, String message) {
     logImpl(level, message, null);
   }
 
+  // LOG IMPL -------------------------------------------------------------------
   /**
    * Very simple logging to System.out and System.err
    */

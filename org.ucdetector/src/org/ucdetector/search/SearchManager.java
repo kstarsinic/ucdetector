@@ -139,6 +139,7 @@ public class SearchManager {
     Log.logInfo("    Classes to detect: " + typeContainers.size()); //$NON-NLS-1$
     Log.logInfo("    Methods to detect: " + methodsToDetect); //$NON-NLS-1$
     Log.logInfo("    Fields  to detect: " + fieldsToDetect); //$NON-NLS-1$
+    UCDetectorPlugin.logMemoryInfo();
   }
 
   private String fill(int i, int length) {
