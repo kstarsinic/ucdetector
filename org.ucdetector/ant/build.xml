@@ -34,8 +34,12 @@ targetPlatformFile:
     Examples:
       targetPlatformFile="ucdetector.target"
       targetPlatformFile="${WORKSPACE}/myProject/myTarget.target"
+
+report:
+    eachproject (default), single
+    Example: report="eachproject"
 -->
-    <ucdetector buildType="AUTO_BUILD" optionsFile="options.properties">
+    <ucdetector buildType="AUTO_BUILD" optionsFile="options.properties" report="eachproject">
       <!-- Resources to build: Leave empty, to build ALL projects
       <iterate name="myProject" />
       <iterate name="myOtherProject/src/main" />
@@ -47,8 +51,6 @@ targetPlatformFile:
        DETECT
        ===================================================================== -->
   <target name="detect" description="Run UCDetector using java">
-    <property name="debug" value="-debug" />
-
     <echo>
 # -----------------------------------------------------------------------------
 # ECLIPSE_HOME = ${ECLIPSE_HOME}
@@ -69,8 +71,8 @@ targetPlatformFile:
     <echo>LAUNCHER = '${LAUNCHER}'
 when LAUNCHER is empty, create new property 'LAUNCHER'</echo>
 
-    <java jar="${LAUNCHER}" fork="true">
-      <arg line="${debug}" />
+    <java jar="${LAUNCHER}" fork="true" maxmemory="1024m">
+      <!-- <arg line="-debug" />  -->
       <arg line="-clean" />
       <arg line="-data ${WORKSPACE}" />
       <arg line="-application org.eclipse.ant.core.antRunner" />

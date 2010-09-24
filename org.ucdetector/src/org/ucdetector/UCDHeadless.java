@@ -18,11 +18,11 @@ import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.IResource;
 import org.eclipse.core.resources.IWorkspace;
 import org.eclipse.core.resources.IWorkspaceRoot;
-import org.eclipse.core.resources.IncrementalProjectBuilder;
 import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.Path;
+import org.eclipse.core.runtime.Platform;
 import org.eclipse.jdt.core.IJavaElement;
 import org.eclipse.jdt.core.IJavaProject;
 import org.eclipse.jdt.core.JavaCore;
@@ -31,6 +31,7 @@ import org.eclipse.pde.internal.core.target.provisional.ITargetDefinition;
 import org.eclipse.pde.internal.core.target.provisional.ITargetHandle;
 import org.eclipse.pde.internal.core.target.provisional.ITargetPlatformService;
 import org.eclipse.pde.internal.core.target.provisional.LoadTargetDefinitionJob;
+import org.osgi.framework.Bundle;
 import org.ucdetector.iterator.UCDetectorIterator;
 import org.ucdetector.preferences.PreferenceInitializer;
 import org.ucdetector.preferences.Prefs;
@@ -40,39 +41,28 @@ import org.ucdetector.util.StopWatch;
 @SuppressWarnings("nls")
 public class UCDHeadless {
   private final UCDProgressMonitor ucdMonitor = new UCDProgressMonitor();
-  private final List<String> resourcesToIterate;
   private final int buildType;
   private final File targetPlatformFile;
+  private final Report report;
+  private final List<String> resourcesToIterate;
 
-  public UCDHeadless(String buildType, String optionsFile, String targetPlatformFile, List<String> resourcesToIterate) {
+  public enum Report {
+    single, eachproject
+  }
+
+  public UCDHeadless(int buildType, File optionsFile, File targetPlatformFile, Report report,
+      List<String> resourcesToIterate) {
     UCDetectorPlugin.setHeadlessMode(true);// MUST BE BEFORE LOGGING!
-    this.buildType = getBuildType(buildType);
-    this.targetPlatformFile = targetPlatformFile == null ? null : new File(targetPlatformFile);
+    this.report = report;
+    this.buildType = buildType;
+    this.targetPlatformFile = targetPlatformFile;
     this.resourcesToIterate = resourcesToIterate;
     if (optionsFile != null) {
       loadOptions(optionsFile);
     }
   }
 
-  /** @see org.eclipse.core.resources.IncrementalProjectBuilder */
-  private int getBuildType(String sBuildType) {
-    if ("FULL_BUILD".equals(sBuildType)) {
-      return IncrementalProjectBuilder.FULL_BUILD;
-    }
-    if ("AUTO_BUILD".equals(sBuildType)) {
-      return IncrementalProjectBuilder.AUTO_BUILD;
-    }
-    if ("INCREMENTAL_BUILD".equals(sBuildType)) {
-      return IncrementalProjectBuilder.INCREMENTAL_BUILD;
-    }
-    if ("CLEAN_BUILD".equals(sBuildType)) {
-      return IncrementalProjectBuilder.CLEAN_BUILD;
-    }
-    return IncrementalProjectBuilder.AUTO_BUILD;
-  }
-
-  private void loadOptions(String optionsFile) {
-    File optionFile = new File(".", optionsFile);
+  private void loadOptions(File optionFile) {
     Log.logInfo("\toptionFile: %s exists: %s", Log.getCanonicalPath(optionFile), "" + optionFile.exists());
     if (optionFile.exists()) {
       Map<String, String> ucdOptions = UCDetectorPlugin.loadModeFile(true, optionFile.getAbsolutePath());
@@ -88,9 +78,18 @@ public class UCDHeadless {
     long start = System.currentTimeMillis();
     try {
       Log.logInfo("Starting UCDetector Headless");
+      try {
+        Log.logInfo("TRY TO START DS  - eclipse bug 314814");
+        Bundle fwAdminBundle = Platform.getBundle("org.eclipse.equinox.ds");
+        fwAdminBundle.start();
+      }
+      catch (Exception e) {
+        Log.logError("PROBLEMS STARTING DS", e);
+      }
       loadTargetPlatform();
       // Run it twice because of Exception, when running it with a complete workspace: See end of file
-      Log.logInfo("Run 'load target platform' again, because of Exception, when running it with a complete workspace");
+      // https://bugs.eclipse.org/bugs/show_bug.cgi?id=314814
+      Log.logInfo("Load target platform again, because of Exception - eclipse bug 314814");
       loadTargetPlatform();
       IWorkspace workspace = ResourcesPlugin.getWorkspace();
       IWorkspaceRoot workspaceRoot = workspace.getRoot();
@@ -138,8 +137,6 @@ public class UCDHeadless {
   }
 
   private void iterate(IWorkspaceRoot workspaceRoot, List<IJavaProject> allProjects) throws CoreException {
-    UCDetectorIterator iterator = new UCDetectorIterator();
-    iterator.setMonitor(ucdMonitor);
     List<IJavaElement> javaElementsToIterate = new ArrayList<IJavaElement>();
     if (resourcesToIterate.isEmpty()) {
       javaElementsToIterate.addAll(allProjects);
@@ -161,7 +158,18 @@ public class UCDHeadless {
         javaElementsToIterate.add(javaElement);
       }
     }
-    iterator.iterate(javaElementsToIterate.toArray(new IJavaElement[javaElementsToIterate.size()]));
+    if (Report.eachproject == report) {
+      for (IJavaElement javaElement : javaElementsToIterate) {
+        UCDetectorIterator iterator = new UCDetectorIterator();
+        iterator.setMonitor(ucdMonitor);
+        iterator.iterate(new IJavaElement[] { javaElement });
+      }
+    }
+    else {
+      UCDetectorIterator iterator = new UCDetectorIterator();
+      iterator.setMonitor(ucdMonitor);
+      iterator.iterate(javaElementsToIterate.toArray(new IJavaElement[javaElementsToIterate.size()]));
+    }
   }
 
   private List<IJavaProject> createProjects(IProgressMonitor monitor, IWorkspaceRoot workspaceRoot)

@@ -6,38 +6,73 @@
  */
 package org.ucdetector.ant;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.tools.ant.BuildException;
 import org.apache.tools.ant.Task;
+import org.eclipse.core.resources.IncrementalProjectBuilder;
 import org.ucdetector.Log;
 import org.ucdetector.UCDHeadless;
+import org.ucdetector.UCDHeadless.Report;
 
 @SuppressWarnings("nls")
 public class UCDTask extends Task {
-  private String buildType;
-  private String optionsFile;
-  private String targetPlatformFile;
+  private String sBuildType;
+  private String sOptionsFile;
+  private String sTargetPlatformFile;
+  private String sReport;
   private final List<Iterate> iterateList = new ArrayList<Iterate>();
 
   @Override
   public void execute() throws BuildException {
+    Report report = parseReport(sReport);
+    int buildType = parseBuildType(sBuildType);
+    File targetPlatformFile = sTargetPlatformFile == null ? null : new File(sTargetPlatformFile);
+    File optionsFile = sOptionsFile == null ? null : new File(sOptionsFile);
     Log.logInfo("StartUCDetector Ant Task");
-    Log.logInfo("    buildType         : " + buildType);
-    Log.logInfo("    optionsFile       : " + optionsFile);
-    Log.logInfo("    targetPlatformFile: " + targetPlatformFile);
+    Log.logInfo("    buildType         : " + sBuildType + " (" + buildType + ")");
+    Log.logInfo("    optionsFile       : " + optionsFile.getAbsolutePath());
+    Log.logInfo("    targetPlatformFile: " + targetPlatformFile.getAbsolutePath());
+    Log.logInfo("    report            : " + report);
     Log.logInfo("    iterateList       : " + iterateList);
     List<String> resourcesToIterate = new ArrayList<String>();
     for (Iterate iterate : iterateList) {
       resourcesToIterate.add(iterate.getName());
     }
     try {
-      new UCDHeadless(buildType, optionsFile, targetPlatformFile, resourcesToIterate).run();
+      new UCDHeadless(buildType, optionsFile, targetPlatformFile, report, resourcesToIterate).run();
     }
     catch (Exception e) {
       throw new BuildException(e);
     }
+  }
+
+  private Report parseReport(String reportString) {
+    for (Report rep : Report.values()) {
+      if (rep.name().equals(reportString)) {
+        return rep;
+      }
+    }
+    return Report.eachproject;
+  }
+
+  /** @see org.eclipse.core.resources.IncrementalProjectBuilder */
+  private int parseBuildType(String buildType) {
+    if ("FULL_BUILD".equals(buildType)) {
+      return IncrementalProjectBuilder.FULL_BUILD;
+    }
+    if ("AUTO_BUILD".equals(buildType)) {
+      return IncrementalProjectBuilder.AUTO_BUILD;
+    }
+    if ("INCREMENTAL_BUILD".equals(buildType)) {
+      return IncrementalProjectBuilder.INCREMENTAL_BUILD;
+    }
+    if ("CLEAN_BUILD".equals(buildType)) {
+      return IncrementalProjectBuilder.CLEAN_BUILD;
+    }
+    return IncrementalProjectBuilder.AUTO_BUILD;
   }
 
   // --------------------------------------------------------------------------
@@ -68,14 +103,18 @@ public class UCDTask extends Task {
   }
 
   public void setBuildType(String buildType) {
-    this.buildType = buildType;
+    this.sBuildType = buildType;
   }
 
   public void setOptionsFile(String optionsFile) {
-    this.optionsFile = optionsFile;
+    this.sOptionsFile = optionsFile;
   }
 
   public void setTargetPlatformFile(String targetPlatformFile) {
-    this.targetPlatformFile = targetPlatformFile;
+    this.sTargetPlatformFile = targetPlatformFile;
+  }
+
+  public void setReport(String report) {
+    this.sReport = report;
   }
 }
