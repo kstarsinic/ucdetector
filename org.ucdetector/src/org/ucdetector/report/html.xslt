@@ -24,10 +24,11 @@ ECLIPSE_HOME/dropins/org.ucdetector_*.jar/org/ucdetector/report/html.xslt
 		<html>
 			<head>
 				<title>UCDetector Report</title>
-				<link rel="icon" href="http://www.ucdetector.org/ucdetector.ico" type="image/x-icon"/>
+				<link rel="icon" href=".icons/ucd.gif" type="image/gif"/>
 			</head>
 			<body bgcolor="#FFFFE0">
-				<h2 align="center">UCDetector Report</h2>
+				<h2 align="center">
+					<img src=".icons/ucdetector32.png" alt="UCDetector"/>UCDetector Report</h2>
 				
 				<table border="0"><!-- top table containing columns for about, preferences, searched in -->
 					<tr>
@@ -214,8 +215,7 @@ ECLIPSE_HOME/dropins/org.ucdetector_*.jar/org/ucdetector/report/html.xslt
 				<p>
 * To get links to the source locations, copy and paste first column (or table) to Eclipse 'Java Stack Trace Console'<br></br>
 ** Set 'Detect code with max number of references' &gt; 0<br></br>
-To create custom reports change ECLIPSE_HOME/dropins/org.ucdetector_*.jar/org/ucdetector/report/html.xslt
-       </p>
+				</p>
 
 				<!-- ===================================================================
 				     PROBLEMS
@@ -235,6 +235,15 @@ To create custom reports change ECLIPSE_HOME/dropins/org.ucdetector_*.jar/org/uc
 						</xsl:for-each>
 					</ul>
 				</xsl:if>
+				<div align="right">
+					<font color="#a0a0a0">
+						<hr></hr>
+						<xsl:text>Created with </xsl:text>
+						<a href="http://www.ucdetector.org/">UCDetector
+						<xsl:value-of select="/ucdetector/statistics/abouts/about[@name ='ucdetectorVersion']/value"/>
+						</a>
+					</font>
+				</div>
 			</body>
 		</html>
 	</xsl:template>
