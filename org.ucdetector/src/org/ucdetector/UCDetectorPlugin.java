@@ -116,7 +116,7 @@ public class UCDetectorPlugin extends AbstractUIPlugin implements IPropertyChang
   public static String getPreferencesAsString() {
     StringBuilder sb = new StringBuilder();
     Map<String, String> deltaPreferences = getDeltaPreferences();
-    sb.append(String.format("%s UCDetector preferences are different from default preferences:", //
+    sb.append(String.format("       %s UCDetector preferences are different from default preferences:", //
         "" + deltaPreferences.size()));
     Set<Entry<String, String>> entrySet = deltaPreferences.entrySet();
     for (Entry<String, String> entry : entrySet) {
