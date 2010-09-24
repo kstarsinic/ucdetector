@@ -89,8 +89,8 @@ public class UCDHeadless {
       loadTargetPlatform();
       // Run it twice because of Exception, when running it with a complete workspace: See end of file
       // https://bugs.eclipse.org/bugs/show_bug.cgi?id=314814
-      Log.logInfo("Load target platform again, because of Exception - eclipse bug 314814");
-      loadTargetPlatform();
+      // Log.logInfo("Load target platform again, because of Exception - eclipse bug 314814");
+      //loadTargetPlatform();
       IWorkspace workspace = ResourcesPlugin.getWorkspace();
       IWorkspaceRoot workspaceRoot = workspace.getRoot();
       //

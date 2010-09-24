@@ -90,6 +90,7 @@ public class UCDetectorPlugin extends AbstractUIPlugin implements IPropertyChang
   }
 
   private void dumpInformation() {
+    long maxMemory = Runtime.getRuntime().maxMemory() / (1024 * 1024);
     Log.logInfo(SEPARATOR);
     Log.logInfo("Starting UCDetector Plug-In version " + getAboutUCDVersion());
     Log.logInfo(SEPARATOR);
@@ -101,6 +102,7 @@ public class UCDetectorPlugin extends AbstractUIPlugin implements IPropertyChang
     Log.logInfo("Logfile   : " + getAboutLogfile());
     Log.logInfo("Workspace : " + getAboutWorkspace());
     Log.logInfo("Log level : " + Log.getActiveLogLevel().toString());
+    Log.logInfo("maxMemory : " + maxMemory + " MB");
     Log.logInfo(getPreferencesAsString());
     Log.logInfo(SEPARATOR);
   }

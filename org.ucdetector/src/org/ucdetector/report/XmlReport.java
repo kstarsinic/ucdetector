@@ -19,6 +19,8 @@ import java.io.StringWriter;
 import java.text.DecimalFormat;
 import java.util.Map.Entry;
 import java.util.Set;
+import java.util.SortedSet;
+import java.util.TreeSet;
 
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.transform.OutputKeys;
@@ -111,15 +113,13 @@ public class XmlReport implements IUCDetectorReport {
   private Element nodeFinished;
   private boolean isFirstStatistic = true;
   private boolean endReportCalled;
-  private String javaProjectName = "unkown_project";
+  private final String javaProjectName;
 
   public XmlReport(IJavaElement[] objectsToIterate, long timeStart) {
     this.objectsToIterate = objectsToIterate;
-    if (objectsToIterate.length > 0 && objectsToIterate[0].getJavaProject() != null) {
-      javaProjectName = objectsToIterate[0].getJavaProject().getElementName();
-    }
+    this.javaProjectName = getProjectName();
     this.timeStart = timeStart;
-    reportNumberName = getReportName();
+    this.reportNumberName = getReportName();
     initXML();
     if (UCDetectorPlugin.isHeadlessMode()) {
       Runtime.getRuntime().addShutdownHook(new Thread() {
@@ -132,6 +132,16 @@ public class XmlReport implements IUCDetectorReport {
         }
       });
     }
+  }
+
+  private String getProjectName() {
+    SortedSet<String> projects = new TreeSet<String>();
+    for (IJavaElement element : objectsToIterate) {
+      if (element.getJavaProject() != null) {
+        projects.add(element.getJavaProject().getElementName());
+      }
+    }
+    return projects.size() == 0 ? "unknown_project" : projects.size() == 1 ? projects.first() : "several_projects";
   }
 
   /**
@@ -428,10 +438,10 @@ public class XmlReport implements IUCDetectorReport {
       return;
     }
     // 
-    //if (markerCount == 0 && detectionProblemCount == 0) {
-    //  logEndReportMessage(Messages.XMLReport_WriteNoWarnings, IStatus.INFO, initXMLException);
-    //  return;
-    //}
+    if (markerCount == 0 && detectionProblemCount == 0) {
+      logEndReportMessage(Messages.XMLReport_WriteNoWarnings, IStatus.INFO, initXMLException);
+      return;
+    }
     appendStatistics(isEndReport);
     copyIconFiles(reportDir);
     try {

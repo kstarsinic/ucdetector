@@ -39,7 +39,7 @@ report:
     eachproject (default), single
     Example: report="eachproject"
 -->
-    <ucdetector buildType="AUTO_BUILD" optionsFile="options.properties" report="eachproject">
+    <ucdetector buildType="FULL_BUILD" optionsFile="options.properties" report="eachproject">
       <!-- Resources to build: Leave empty, to build ALL projects
       <iterate name="myProject" />
       <iterate name="myOtherProject/src/main" />
