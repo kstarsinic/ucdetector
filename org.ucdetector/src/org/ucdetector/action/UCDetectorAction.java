@@ -29,6 +29,9 @@ import org.ucdetector.util.JavaElementUtil;
 
 /**
  * Run "detect"
+ * <p>
+ * @author Joerg Spieler
+ * @since 2008-02-29
  */
 public class UCDetectorAction extends AbstractUCDetectorAction {
   UCDetectorIterator iterator;

@@ -27,6 +27,9 @@ import org.ucdetector.util.JavaElementUtil;
 
 /**
  * Constant definitions for plug-in preferences, offer access to preferences
+ * <p>
+ * @author Joerg Spieler
+ * @since 2008-02-29
  */
 @SuppressWarnings("nls")
 public final class Prefs {

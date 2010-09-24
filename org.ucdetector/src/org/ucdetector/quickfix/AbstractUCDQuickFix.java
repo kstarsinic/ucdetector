@@ -59,6 +59,9 @@ import org.ucdetector.util.MarkerFactory;
  * 
  * @see <a href="http://help.eclipse.org/help32/index.jsp?topic=/org.eclipse.jdt.doc.isv/reference/api/org/eclipse/jdt/core/dom/rewrite/ASTRewrite.html" >javadoc ASTRewrite</a>
  * @see <a href="http://www.eclipse.org/articles/article.php?file=Article-JavaCodeManipulation_AST/index.html">Abstract Syntax Tree</a>
+ * <p>
+ * @author Joerg Spieler
+ * @since 2008-09-22
  */
 @SuppressWarnings("nls")
 abstract class AbstractUCDQuickFix extends WorkbenchMarkerResolution {

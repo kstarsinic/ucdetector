@@ -18,6 +18,9 @@ import org.ucdetector.UCDetectorPlugin;
 
 /**
  * Fixes code by adding keyword <code>final</code>
+ * <p>
+ * @author Joerg Spieler
+ * @since 2008-09-22
  */
 class UseFinalQuickFix extends AbstractUCDQuickFix {
 

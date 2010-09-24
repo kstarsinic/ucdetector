@@ -22,6 +22,9 @@ import org.ucdetector.UCDetectorPlugin;
 /**
  * Class used to initialize default preference values.
  * See: {@link  org.ucdetector.preferences.Prefs#LIST_SEPARATOR}
+ * <p>
+ * @author Joerg Spieler
+ * @since 2008-02-29
  */
 @SuppressWarnings("nls")
 public class PreferenceInitializer extends AbstractPreferenceInitializer {

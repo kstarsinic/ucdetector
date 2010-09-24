@@ -51,6 +51,9 @@ import org.ucdetector.util.StopWatch;
 /**
  * Base Class to iterate over projects, packages, classes, methods, fields...
  * Extend this class, to create your custom detector. Override methods handleX()
+ * <p>
+ * @author Joerg Spieler
+ * @since 2008-02-29
  */
 public abstract class AbstractUCDetectorIterator {
   static final boolean DEBUG = "true".equalsIgnoreCase(Platform //$NON-NLS-1$ // NO_UCD

@@ -11,6 +11,9 @@ import org.ucdetector.Messages;
 
 /**
  * Enum for the warn level in the preference page
+ * <p>
+ * @author Joerg Spieler
+ * @since 2008-02-29
  */
 public enum WarnLevel {
   /**

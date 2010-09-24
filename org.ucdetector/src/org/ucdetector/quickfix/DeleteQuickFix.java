@@ -18,6 +18,9 @@ import org.ucdetector.UCDetectorPlugin;
 
 /**
  * Fixes code by deleting all affected lines
+ * <p>
+ * @author Joerg Spieler
+ * @since 2008-09-22
  */
 class DeleteQuickFix extends AbstractUCDQuickFix {
   protected DeleteQuickFix(IMarker marker) {

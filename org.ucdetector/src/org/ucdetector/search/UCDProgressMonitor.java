@@ -19,6 +19,9 @@ import org.ucdetector.UCDetectorPlugin;
 /**
  * Wrap an IProgressMonitor and do logging, when IProgressMonitor methods
  * are called
+ * <p>
+ * @author Joerg Spieler
+ * @since 2008-09-17
  */
 public class UCDProgressMonitor implements IProgressMonitor {
   private String taskName = ""; //$NON-NLS-1$

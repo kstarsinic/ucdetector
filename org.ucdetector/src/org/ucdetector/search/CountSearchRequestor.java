@@ -13,6 +13,9 @@ import org.eclipse.jdt.core.search.SearchRequestor;
 
 /**
  * Count number of matches
+ * <p>
+ * @author Joerg Spieler
+ * @since 2009-12-31
  */
 public class CountSearchRequestor extends SearchRequestor {
   private int found = 0;

@@ -51,6 +51,9 @@ import org.ucdetector.util.UsedBy;
 
 /**
  * Get the source code line of classes, methods, fields
+ * <p>
+ * @author Joerg Spieler
+ * @since 2008-02-29
  */
 public class LineManger {
   /**

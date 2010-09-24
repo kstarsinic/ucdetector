@@ -19,6 +19,9 @@ import org.ucdetector.Messages;
 
 /**
  * 'Fixes' code by adding line comment at end of line: "// NO_UCD"
+ * <p>
+ * @author Joerg Spieler
+ * @since 2008-09-22
  */
 class NoUcdTagQuickFix extends AbstractUCDQuickFix {
   static final String NO_UCD_COMMENT = " // NO_UCD";//$NON-NLS-1$

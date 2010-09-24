@@ -18,6 +18,9 @@ import org.ucdetector.Messages;
 
 /**
  * 'Fixes' code by adding @SuppressWarnings("ucd")
+ * <p>
+ * @author Joerg Spieler
+ * @since 2009-07-04
  */
 class UseSuppressWarningsQuickFix extends AbstractUCDQuickFix {
 

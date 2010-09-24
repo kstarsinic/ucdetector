@@ -17,6 +17,9 @@ import org.ucdetector.UCDetectorPlugin;
 
 /**
  * Fixes code by commenting all affected lines
+ * <p>
+ * @author Joerg Spieler
+ * @since 2008-09-22
  */
 class LineCommentQuickFix extends AbstractUCDQuickFix {
 

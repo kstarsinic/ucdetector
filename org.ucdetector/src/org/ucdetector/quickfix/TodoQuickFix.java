@@ -16,6 +16,9 @@ import org.ucdetector.UCDetectorPlugin;
 
 /**
  * 'Fixes' code by adding a todo comment and a NO_UCD comment
+ * <p>
+ * @author Joerg Spieler
+ * @since 2009-12-21
  */
 class TodoQuickFix extends AbstractUCDQuickFix {
   private static final String TODO_UCD = "// TODO from UCDetector: "; //$NON-NLS-1$

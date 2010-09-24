@@ -18,6 +18,13 @@ import org.ucdetector.UCDHeadless;
 import org.ucdetector.UCDHeadless.Report;
 
 @SuppressWarnings("nls")
+/**
+ * UCDetector <a href="http://ant.apache.org/">ant<a> task. Needed to call UCDetector in headless mode from command line.
+ * <p>
+ * @author Joerg Spieler
+ * @since 2008-05-08
+ * 
+ */
 public class UCDTask extends Task {
   private String sBuildType;
   private String sOptionsFile;

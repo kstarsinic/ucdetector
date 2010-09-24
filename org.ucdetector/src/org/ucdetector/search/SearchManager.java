@@ -46,6 +46,9 @@ import org.ucdetector.util.StopWatch;
 
 /**
  * Search for class, methods, fields using the eclipse search mechanism
+ * <p>
+ * @author Joerg Spieler
+ * @since 2008-02-29
  */
 public class SearchManager {
   private static final boolean DEBUG = Log.isDebugOption("org.ucdetector/debug/search"); //$NON-NLS-1$

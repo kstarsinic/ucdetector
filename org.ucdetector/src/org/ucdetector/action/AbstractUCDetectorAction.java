@@ -38,6 +38,9 @@ import org.ucdetector.search.UCDProgressMonitor;
 
 /**
  * Base class for actions in this plugin
+ * <p>
+ * @author Joerg Spieler
+ * @since 2008-02-29
  */
 // Don't change visibility to default!
 public abstract class AbstractUCDetectorAction extends ActionDelegate { // NO_UCD

@@ -29,6 +29,9 @@ import org.eclipse.jdt.core.dom.VariableDeclarationFragment;
  * <li>fields</li>
  * </ul>
  * See concrete classes of {@link org.eclipse.jdt.core.dom.BodyDeclaration}
+ * <p>
+ * @author Joerg Spieler
+ * @since 2009-05-01
  */
 public abstract class ASTMemberVisitor extends ASTVisitor {
 

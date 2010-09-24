@@ -11,7 +11,10 @@ import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IStatus;
 
 /**
- *
+ * Interface for all kind of reports 
+ * <p>
+ * @author Joerg Spieler
+ * @since 2008-09-17
  */
 public interface IUCDetectorReport {
   boolean reportMarker(ReportParam reportParam) throws CoreException;

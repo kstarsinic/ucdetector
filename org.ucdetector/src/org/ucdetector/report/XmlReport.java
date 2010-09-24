@@ -68,12 +68,16 @@ import org.w3c.dom.Element;
 /**
  * Creates text report files like:
  * <ul>
- * <li>html-file</li>
- * <li>xml-file</li>
+ * <li>html</li>
+ * <li>xml</li>
+ * <li>text</li>
  * </ul>
  * This class uses xslt transformation.<br>
- * This class tries to not throw Exceptions.
- * @see "file://org.ucdetector/src/org/ucdetector/report/html.xslt"
+ * This class tries not to throw Exceptions.
+ * @see "src/org/ucdetector/report/html.xslt"
+ * <p>
+ * @author Joerg Spieler
+ * @since 2008-08-27
  */
 @SuppressWarnings("nls")
 public class XmlReport implements IUCDetectorReport {
@@ -159,7 +163,7 @@ public class XmlReport implements IUCDetectorReport {
     }
     try {
       doc = DocumentBuilderFactory.newInstance().newDocumentBuilder().newDocument();
-      // TODO: add <?xml-stylesheet and put stylesheet in report dir
+      // TODO: add <?xml-stylesheet type="text/xsl" href="html.xslt" ?> and put stylesheet in report dir
       //      ProcessingInstruction instruction = doc.createProcessingInstruction(//
       //          "xml-stylesheet", "type=\"text/xsl\" HREF=\"html.xslt\"");
       //      doc.insertBefore(instruction, doc.getDocumentElement());

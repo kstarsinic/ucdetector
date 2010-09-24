@@ -25,6 +25,9 @@ import org.ucdetector.util.MarkerFactory;
  * This class helps to find the minimum necessary visibility. If class is public
  * and has only references in the same package, this class will tell to use the
  * modifier "protected" instead of "public"
+ * <p>
+ * @author Joerg Spieler
+ * @since 2008-02-29
  */
 class VisibilityHandler {
   private enum VISIBILITY {

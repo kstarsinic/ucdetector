@@ -27,6 +27,9 @@ import org.ucdetector.preferences.Prefs;
  * <li>methods</li>
  * <li>fields</li>
  * </ul>
+ * <p>
+ * @author Joerg Spieler
+ * @since 2008-02-29
  */
 public class CountIterator extends AbstractUCDetectorIterator {
   private int projects = 0;

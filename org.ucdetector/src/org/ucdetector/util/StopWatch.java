@@ -16,6 +16,9 @@ import org.ucdetector.Log;
 
 /**
  * Simple stop watch to measure performance
+ * <p>
+ * @author Joerg Spieler
+ * @since 2008-05-08
  */
 public class StopWatch {
   private static final int MINIMUM_DURATION = 1000;// Log.getDebugOption("org.ucdetector/debug/search/duration", 1000); 

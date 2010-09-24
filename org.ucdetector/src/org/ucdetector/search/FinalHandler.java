@@ -27,6 +27,9 @@ import org.ucdetector.util.MarkerFactory;
 /**
  * Helper class to detect if fields or methods could use the keyword
  * <code>final</code>.
+ * <p>
+ * @author Joerg Spieler
+ * @since 2008-05-08
  */
 class FinalHandler {
   private final MarkerFactory markerFactory;

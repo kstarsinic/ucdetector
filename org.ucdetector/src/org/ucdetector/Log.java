@@ -27,6 +27,8 @@ import org.ucdetector.preferences.Prefs;
  * Simple logging API for UCDetector.
  * <p>
  * @see "http://wiki.eclipse.org/FAQ_How_do_I_write_to_the_console_from_a_plug-in_%3F"
+ * @author Joerg Spieler
+ * @since 2008-09-13
  */
 @SuppressWarnings("nls")
 public class Log {

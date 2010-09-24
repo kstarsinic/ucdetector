@@ -49,6 +49,9 @@ import org.ucdetector.preferences.ModesPanel.Mode;
  * User specific modes are stored in: code>WORKSPACE/.metadata/.plugins/org.ucdetector/modes</code>
  * <p>
  * @see "http://www.eclipsepluginsite.com/preference-pages.html"
+ * <p>
+ * @author Joerg Spieler
+ * @since 2008-02-29
  */
 public class UCDetectorPreferencePage extends FieldEditorPreferencePage implements IWorkbenchPreferencePage {
   protected final List<FieldEditor> fields = new ArrayList<FieldEditor>();

@@ -26,7 +26,10 @@ import org.ucdetector.util.JavaElementUtil;
 import org.ucdetector.util.MarkerFactory;
 
 /**
- * Create a marker
+ * Create a marker in eclipse marker view
+ * <p>
+ * @author Joerg Spieler
+ * @since 2008-08-27
  */
 public class MarkerReport implements IUCDetectorReport {
   /** Don't create each marker. Do a batch creation instead */

@@ -57,6 +57,9 @@ import org.ucdetector.preferences.Prefs;
 
 /**
  * Default Activator-class of this plug-ins
+ * <p>
+ * @author Joerg Spieler
+ * @since 2008-02-29
  */
 @SuppressWarnings("nls")
 public class UCDetectorPlugin extends AbstractUIPlugin implements IPropertyChangeListener {

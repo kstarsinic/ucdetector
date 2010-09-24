@@ -29,6 +29,9 @@ import org.ucdetector.search.LineManger;
  * Create ERROR, WARN markers. Delete markers<p>
  * 
  * CALL endReport() TO FLUSH MARKERS!!!
+ * <p>
+ * @author Joerg Spieler
+ * @since 2008-02-29
  */
 public final class MarkerFactory implements IUCDetectorReport {
   /**

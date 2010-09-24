@@ -25,6 +25,9 @@ import org.ucdetector.util.StopWatch;
 /**
  * Unnecessary Code Detector Iterator Collect types, methods an fields which
  * must be searched, run detection afterward
+ * <p>
+ * @author Joerg Spieler
+ * @since 2008-02-29
  * */
 public class UCDetectorIterator extends AbstractUCDetectorIterator {
   private final Set<TypeContainer> typeContainers = new LinkedHashSet<TypeContainer>();

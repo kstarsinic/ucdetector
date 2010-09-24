@@ -14,6 +14,9 @@ import org.ucdetector.util.MarkerFactory;
 
 /**
  * Delete Markers of selected <code>IJavaElement</code> and its children
+ * <p>
+ * @author Joerg Spieler
+ * @since 2008-02-29
  */
 public class CleanMarkersIterator extends AbstractUCDetectorIterator {
 

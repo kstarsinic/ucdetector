@@ -46,6 +46,12 @@ import org.ucdetector.Log;
 import org.ucdetector.Messages;
 import org.ucdetector.UCDetectorPlugin;
 
+/**
+ * Create/rename/delete modes (UCDetector preferences)
+ * <p>
+ * @author Joerg Spieler
+ * @since 2010-03-09
+ */
 class ModesPanel {
   private static final String MODES_FILE_TYPE = ".properties"; //$NON-NLS-1$
 

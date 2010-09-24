@@ -24,7 +24,13 @@ import java.lang.annotation.Target;
 @Target({ TYPE, FIELD, METHOD, CONSTRUCTOR, ANNOTATION_TYPE })
 @Retention(RetentionPolicy.SOURCE)
 /**
+ * Annotation to mark code as "used". This annotation might be usefully to show how 
+ * code is used, when it has no references.
+ * <p>
  * Examples: @UsedBy("reflection", "external", "framework")
+ * <p>
+ * @author Joerg Spieler
+ * @since 2009-08-25
  */
 public @interface UsedBy {
   String[] value(); // NO_UCD

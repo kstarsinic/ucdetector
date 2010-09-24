@@ -22,6 +22,9 @@ import org.ucdetector.util.MarkerFactory;
 /**
  * Fixes code by changing visibility to <code>protected</code>
  * default or <code>private</code>
+ * <p>
+ * @author Joerg Spieler
+ * @since 2008-09-18
  */
 class VisibilityQuickFix extends AbstractUCDQuickFix {
 

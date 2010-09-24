@@ -48,6 +48,9 @@ import org.ucdetector.search.CountSearchRequestor;
  * <li>types (=classes)</li>
  * </ul>
  * Calculates inheritance for methods
+ * <p>
+ * @author Joerg Spieler
+ * @since 2008-02-29
  */
 public class JavaElementUtil {
   private final static NullProgressMonitor NULL_MONITOR = new NullProgressMonitor();

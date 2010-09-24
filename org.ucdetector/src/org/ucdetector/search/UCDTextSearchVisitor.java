@@ -41,6 +41,9 @@ import org.ucdetector.Log;
  *   <li><code>import org.eclipse.jface.*</code></li>
  *   <li><code>import org.eclipse.ui.*</code></li>
  * </ul>
+ * <p>
+ * @author Joerg Spieler
+ * @since 2009-03-02
  */
 class UCDTextSearchVisitor {
   private final TextSearchRequestor fCollector;

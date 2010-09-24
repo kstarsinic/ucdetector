@@ -14,6 +14,9 @@ import org.ucdetector.util.UsedBy;
 
 /**
  * Eclipse l10n of this plugin
+ * <p>
+ * @author Joerg Spieler
+ * @since 2008-02-29
  */
 @SuppressWarnings("nls")
 public final class Messages extends NLS {

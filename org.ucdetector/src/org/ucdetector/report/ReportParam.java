@@ -19,6 +19,9 @@ import org.ucdetector.util.MarkerFactory;
 
 /**
  * This class contains parameters for a report (for a marker)
+ * <p>
+ * @author Joerg Spieler
+ * @since 2008-098-09
  */
 public class ReportParam {
   private final IMember javaElement;

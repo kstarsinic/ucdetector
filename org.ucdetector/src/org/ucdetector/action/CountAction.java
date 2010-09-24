@@ -20,6 +20,9 @@ import org.ucdetector.iterator.CountIterator;
 
 /**
  * Run "count", show a dialog about counted classes, methods, fields...
+ * <p>
+ * @author Joerg Spieler
+ * @since 2008-02-29
  */
 public class CountAction extends AbstractUCDetectorAction {
   CountIterator iterator;

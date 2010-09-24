@@ -14,7 +14,10 @@ import org.eclipse.jdt.core.IMethod;
 import org.eclipse.jdt.core.IType;
 
 /**
- * Contains a type and its methods/fields 
+ * Contains a type and its methods/fields
+ * <p>
+ * @author Joerg Spieler
+ * @since 2009-07-18
  */
 public class TypeContainer {
   private final IType type;

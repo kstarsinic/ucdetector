@@ -38,6 +38,12 @@ import org.ucdetector.preferences.Prefs;
 import org.ucdetector.search.UCDProgressMonitor;
 import org.ucdetector.util.StopWatch;
 
+/**
+ * Run UCDetector in headless mode (no UI)
+ * <p>
+ * @author Joerg Spieler
+ * @since 2010-09-15
+ */
 @SuppressWarnings("nls")
 public class UCDHeadless {
   private final UCDProgressMonitor ucdMonitor = new UCDProgressMonitor();

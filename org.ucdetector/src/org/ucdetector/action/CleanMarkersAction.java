@@ -13,6 +13,9 @@ import org.ucdetector.iterator.CleanMarkersIterator;
 
 /**
  * Run "clean markers"
+ * <p>
+ * @author Joerg Spieler
+ * @since 2008-02-29
  */
 public class CleanMarkersAction extends AbstractUCDetectorAction {
 
