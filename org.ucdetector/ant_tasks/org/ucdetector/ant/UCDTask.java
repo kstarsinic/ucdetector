@@ -39,9 +39,9 @@ public class UCDTask extends Task {
     File targetPlatformFile = sTargetPlatformFile == null ? null : new File(sTargetPlatformFile);
     File optionsFile = sOptionsFile == null ? null : new File(sOptionsFile);
     Log.info("StartUCDetector Ant Task");
-    Log.info("    buildType         : " + sBuildType + " (" + buildType + ")");
-    Log.info("    optionsFile       : " + (optionsFile == null ? null : optionsFile.getAbsolutePath()));
-    Log.info("    targetPlatformFile: " + (targetPlatformFile == null ? null : targetPlatformFile.getAbsolutePath()));
+    Log.info("    buildType         : " + sBuildType);// + " (" + buildType + ")");
+    Log.info("    optionsFile       : " + (optionsFile == null ? "" : optionsFile.getAbsolutePath()));
+    Log.info("    targetPlatformFile: " + (targetPlatformFile == null ? "" : targetPlatformFile.getAbsolutePath()));
     Log.info("    report            : " + report);
     Log.info("    iterateList       : " + iterateList);
     List<String> resourcesToIterate = new ArrayList<String>();
