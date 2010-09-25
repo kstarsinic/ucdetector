@@ -126,7 +126,7 @@ public class UCDetectorPreferencePage extends FieldEditorPreferencePage implemen
     modesPanel.saveMode();
     getPreferenceStore().setValue(Prefs.MODE_NAME, modesPanel.getCombo().getText());
     if (Log.isDebug()) {
-      Log.logDebug("New preferences: " + UCDetectorPlugin.getPreferencesAsString()); //$NON-NLS-1$
+      Log.debug("New preferences: " + UCDetectorPlugin.getPreferencesAsString()); //$NON-NLS-1$
     }
     return result;
   }

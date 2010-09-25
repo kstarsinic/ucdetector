@@ -284,7 +284,7 @@ public class LineManger {
   private IScanner createScanner(IJavaElement javaElement) throws CoreException {
     IOpenable openable = javaElement.getOpenable();
     if (!(openable instanceof ICompilationUnit)) {
-      Log.logWarn("openable NOT instanceof ICompilationUnit '%s' %s", //$NON-NLS-1$
+      Log.warn("openable NOT instanceof ICompilationUnit '%s' %s", //$NON-NLS-1$
           JavaElementUtil.getElementName(javaElement), JavaElementUtil.getClassName(javaElement));
       return null;
     }
@@ -351,7 +351,7 @@ public class LineManger {
             return String.valueOf(chars, start, end - start).trim();
           }
           catch (Exception e) {
-            Log.logError("Can't get piece of code for element: " //$NON-NLS-1$
+            Log.error("Can't get piece of code for element: " //$NON-NLS-1$
                 + JavaElementUtil.getElementName(element) + ", offset: " + offset, e); //$NON-NLS-1$
           }
         }

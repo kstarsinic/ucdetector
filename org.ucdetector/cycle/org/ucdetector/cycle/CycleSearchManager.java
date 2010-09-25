@@ -78,7 +78,7 @@ public class CycleSearchManager {
       //
       searchResult.setCycles(cycleList);
       if (Log.isDebug()) {
-        Log.logDebug("Found cycles:\r\n" + searchResult); //$NON-NLS-1$
+        Log.debug("Found cycles:\r\n" + searchResult); //$NON-NLS-1$
       }
       root.getChildren().add(searchResult);
       projectNr++;
@@ -108,7 +108,7 @@ public class CycleSearchManager {
       result.add(typeAndMatches);
       if (Log.isDebug()) {
         int found = typeAndMatches.getTypeSearchMatches().size();
-        Log.logDebug("Found %s references for %s", Integer.valueOf(found), type.getElementName()); //$NON-NLS-1$
+        Log.debug("Found %s references for %s", Integer.valueOf(found), type.getElementName()); //$NON-NLS-1$
       }
     }
     return result;
@@ -128,7 +128,7 @@ public class CycleSearchManager {
     NLS.bind(Messages.CycleSearchManager_MonitorProject, bindings)
         : NLS.bind(Messages.CycleSearchManager_Monitor, bindings);
     if (Log.isDebug()) {
-      Log.logDebug(message);
+      Log.debug(message);
     }
     return message;
   }

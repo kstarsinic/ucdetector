@@ -157,7 +157,7 @@ public abstract class AbstractUCDetectorAction extends ActionDelegate { // NO_UC
         }
       }
       catch (JavaModelException e) {
-        Log.logError("Can't get allAccessible for javaElement: " + javaElement, e); //$NON-NLS-1$
+        Log.error("Can't get allAccessible for javaElement: " + javaElement, e); //$NON-NLS-1$
         return false;
       }
     }

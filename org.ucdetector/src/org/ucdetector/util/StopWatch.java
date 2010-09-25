@@ -53,10 +53,10 @@ public class StopWatch {
     if (doLog) {
       // Logging slow stuff
       if (Log.isDebug() && duration > MINIMUM_DURATION) {
-        Log.logDebug(logMessage);
+        Log.debug(logMessage);
       }
       else if (duration > MINIMUM_DURATION_WARN) {
-        Log.logWarn(logMessage);
+        Log.warn(logMessage);
       }
     }
     return logMessage;

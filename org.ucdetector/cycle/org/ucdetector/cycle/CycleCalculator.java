@@ -68,7 +68,7 @@ class CycleCalculator {
       searchCycles(startType, path, allCycles);
       if (Log.isDebug()) {
         int found = allCycles.size() - prevSize;
-        Log.logDebug(found + " cycles found for " //$NON-NLS-1$
+        Log.debug(found + " cycles found for " //$NON-NLS-1$
             + typeAndMatches.getRoot().getElementName() + " (including double cycles)"); //$NON-NLS-1$
       }
       prevSize = allCycles.size();
@@ -122,7 +122,7 @@ class CycleCalculator {
     }
     if (Log.isDebug()) {
       int removed = cyclesFound.size() - result.size();
-      Log.logDebug("Removed double cycle: " + removed); //$NON-NLS-1$
+      Log.debug("Removed double cycle: " + removed); //$NON-NLS-1$
     }
     return result;
   }

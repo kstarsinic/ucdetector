@@ -403,7 +403,7 @@ public final class Prefs {
       return Flags.isStatic(member.getFlags()) && Flags.isFinal(member.getFlags());
     }
     catch (JavaModelException e) {
-      Log.logError("Can't get isConstant for: " + member, e);
+      Log.error("Can't get isConstant for: " + member, e);
       return false;
     }
   }
@@ -524,7 +524,7 @@ public final class Prefs {
         }
       }
       catch (PatternSyntaxException e) {
-        Log.logWarn(e.getMessage());
+        Log.warn(e.getMessage());
       }
     }
     return false;

@@ -429,7 +429,7 @@ public class JavaElementUtil {
       isSearchException = true;
       // Java Search throws an NullPointerException in Eclipse 3.4M5
       String mes = "Java search problems. UCDetecor will ignore this exception. Maybe a 'org.eclipse.jdt.core.search' bug!"; //$NON-NLS-1$
-      Log.logError(mes, throwable);
+      Log.error(mes, throwable);
     }
     return isSearchException;
   }
@@ -655,7 +655,7 @@ public class JavaElementUtil {
       }
     }
     catch (JavaModelException ex) {
-      Log.logError("Can't get memberTypeString for member: " + member, ex); //$NON-NLS-1$
+      Log.error("Can't get memberTypeString for member: " + member, ex); //$NON-NLS-1$
     }
     return "???"; //$NON-NLS-1$
   }
@@ -781,7 +781,7 @@ public class JavaElementUtil {
         }
       }
       catch (JavaModelException e) {
-        Log.logError("Can't run isTestCode() for method: " + method, e); //$NON-NLS-1$
+        Log.error("Can't run isTestCode() for method: " + method, e); //$NON-NLS-1$
       }
     }
     return false;

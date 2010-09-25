@@ -66,7 +66,7 @@ class TypeAndMatches {
       lineNr = lineManger.getLine(matchtedType, match.getOffset());
     }
     catch (CoreException e) {
-      Log.logError("Can't get line for matchtedType: " + JavaElementUtil.getElementName(matchtedType), e); //$NON-NLS-1$
+      Log.error("Can't get line for matchtedType: " + JavaElementUtil.getElementName(matchtedType), e); //$NON-NLS-1$
       return;
     }
     int offset = match.getOffset();

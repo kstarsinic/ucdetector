@@ -98,7 +98,7 @@ public abstract class AbstractUCDetectorIterator {
   public final void iterate(IJavaElement[] javaElements) throws CoreException {
     this.objectsToIterate = javaElements;
     if (DEBUG) {
-      Log.logDebug("%s selections to iterate: %s", String.valueOf(javaElements.length), getSelectedString(javaElements)); //$NON-NLS-1$
+      Log.debug("%s selections to iterate: %s", String.valueOf(javaElements.length), getSelectedString(javaElements)); //$NON-NLS-1$
     }
     try {
       handleStartGlobal(javaElements);
@@ -125,7 +125,7 @@ public abstract class AbstractUCDetectorIterator {
       if (markerFactory != null) {
         markerFactory.endReport();
         timeEnd = System.currentTimeMillis();
-        Log.logInfo("Detection time: " + StopWatch.timeAsString(timeEnd - timeStart)); //$NON-NLS-1$
+        Log.info("Detection time: " + StopWatch.timeAsString(timeEnd - timeStart)); //$NON-NLS-1$
       }
     }
   }
@@ -138,7 +138,7 @@ public abstract class AbstractUCDetectorIterator {
       return;
     }
     if (DEBUG) {
-      Log.logDebug("Iterate Resource '%s' %s", resource.getName(), JavaElementUtil.getClassName(resource));//$NON-NLS-1$
+      Log.debug("Iterate Resource '%s' %s", resource.getName(), JavaElementUtil.getClassName(resource));//$NON-NLS-1$
     }
     if (resource instanceof IFile) {
       IFile file = (IFile) resource;
@@ -157,7 +157,7 @@ public abstract class AbstractUCDetectorIterator {
       handleResourceWorkspaceRoot(workspaceRoot);
     }
     else {
-      Log.logWarn("UNHANDLED RESOURCE %s:%s", resource.getName(), resource.getClass().getSimpleName());//$NON-NLS-1$
+      Log.warn("UNHANDLED RESOURCE %s:%s", resource.getName(), resource.getClass().getSimpleName());//$NON-NLS-1$
     }
     if (resource instanceof IContainer) {
       IContainer container = (IContainer) resource;
@@ -187,7 +187,7 @@ public abstract class AbstractUCDetectorIterator {
       return;
     }
     if (DEBUG) {
-      Log.logDebug("Iterate JavaElement '%s' %s", JavaElementUtil.getElementName(javaElement), //$NON-NLS-1$
+      Log.debug("Iterate JavaElement '%s' %s", JavaElementUtil.getElementName(javaElement), //$NON-NLS-1$
           JavaElementUtil.getClassName(javaElement));
     }
     handleStartElement(javaElement);
@@ -264,7 +264,7 @@ public abstract class AbstractUCDetectorIterator {
     else {
       // ILocalVariable
       // ITypeParameter
-      Log.logWarn("UNHANDLED TYPE %s:%s", //$NON-NLS-1$
+      Log.warn("UNHANDLED TYPE %s:%s", //$NON-NLS-1$
           JavaElementUtil.getElementName(javaElement), javaElement.getClass().getSimpleName());
     }
     // CHILDREN
@@ -323,7 +323,7 @@ public abstract class AbstractUCDetectorIterator {
    */
   protected final void debugHandle(IMember member) {
     if (DEBUG) {
-      Log.logDebug("    Handle %s '%s'", // //$NON-NLS-1$
+      Log.debug("    Handle %s '%s'", // //$NON-NLS-1$
           JavaElementUtil.getMemberTypeString(member), JavaElementUtil.getElementName(member));
     }
   }
@@ -334,7 +334,7 @@ public abstract class AbstractUCDetectorIterator {
    */
   protected final void debugNotHandle(IMember member, String reason) {
     if (DEBUG) {
-      Log.logDebug("    Ignore %s '%s' because: %s",// //$NON-NLS-1$
+      Log.debug("    Ignore %s '%s' because: %s",// //$NON-NLS-1$
           JavaElementUtil.getMemberTypeString(member), JavaElementUtil.getElementName(member), reason);
     }
   }

@@ -44,13 +44,13 @@ public class UCDProgressMonitor implements IProgressMonitor {
   }
 
   public void beginTask(String name, int totalWork) {
-    Log.logInfo("Task.beginTask '" + name + "'"); //$NON-NLS-1$ //$NON-NLS-2$
+    Log.info("Task.beginTask '" + name + "'"); //$NON-NLS-1$ //$NON-NLS-2$
     this.taskName = name;
     delegate.beginTask(taskName, totalWork);
   }
 
   public void done() {
-    Log.logInfo("Task.done '" + taskName + "'"); //$NON-NLS-1$ //$NON-NLS-2$
+    Log.info("Task.done '" + taskName + "'"); //$NON-NLS-1$ //$NON-NLS-2$
     delegate.done();
     isFinished = true;
   }
@@ -58,7 +58,7 @@ public class UCDProgressMonitor implements IProgressMonitor {
   public void internalWorked(double work) {
     String sWork = FORMAT_DOUBLE.format(work);
     if (UCDetectorPlugin.isHeadlessMode() && !sWork.equals(lastWork)) {
-      Log.logInfo("Task.internalWorked " + sWork); //$NON-NLS-1$
+      Log.info("Task.internalWorked " + sWork); //$NON-NLS-1$
     }
     lastWork = sWork;
     delegate.internalWorked(work);
@@ -75,22 +75,22 @@ public class UCDProgressMonitor implements IProgressMonitor {
   }
 
   public void setCanceled(boolean value) {
-    Log.logInfo("Task.setCanceled: " + value); //$NON-NLS-1$
+    Log.info("Task.setCanceled: " + value); //$NON-NLS-1$
     delegate.setCanceled(value);
   }
 
   public void setTaskName(String name) {
-    Log.logInfo("Task.setTaskName " + name); //$NON-NLS-1$
+    Log.info("Task.setTaskName " + name); //$NON-NLS-1$
     this.taskName = name;
     delegate.setTaskName(name);
   }
 
   public void subTask(String name) {
     if (Log.isDebug()) {
-      Log.logDebug(/*"Task.subTask: " + */name);
+      Log.debug(/*"Task.subTask: " + */name);
     }
     else if (UCDetectorPlugin.isHeadlessMode()) {
-      Log.logInfo(/*"Task.subTask: " + */name);
+      Log.info(/*"Task.subTask: " + */name);
     }
     delegate.subTask(name);
   }

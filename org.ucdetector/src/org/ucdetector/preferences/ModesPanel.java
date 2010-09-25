@@ -80,7 +80,7 @@ class ModesPanel {
     File ucdDir = UCDetectorPlugin.getDefault().getStateLocation().toFile();
     modesDir = new File(ucdDir, "modes"); //$NON-NLS-1$
     modesDir.mkdirs();
-    Log.logInfo("modesDir is '%s'", modesDir.getAbsolutePath()); //$NON-NLS-1$
+    Log.info("modesDir is '%s'", modesDir.getAbsolutePath()); //$NON-NLS-1$
     modesPanelComposite = UCDetectorPreferencePage.createComposite(parent, 5, 1, GridData.FILL_HORIZONTAL);
     Label label = new Label(modesPanelComposite, SWT.LEFT);
     label.setText(Messages.ModesPanel_ModeLabel);
@@ -170,7 +170,7 @@ class ModesPanel {
       }
     }
     if (Log.isDebug()) {
-      Log.logDebug("Available modes are: %s", result); //$NON-NLS-1$
+      Log.debug("Available modes are: %s", result); //$NON-NLS-1$
     }
     return result.toArray(new String[result.size()]);
   }
@@ -198,7 +198,7 @@ class ModesPanel {
       // set default, when report directory is missing
       Prefs.getStore().setValue(Prefs.REPORT_DIR, PreferenceInitializer.getReportDir());
       saveMode(newModeName);
-      Log.logInfo("Added new mode: %s", newModeName); //$NON-NLS-1$
+      Log.info("Added new mode: %s", newModeName); //$NON-NLS-1$
       getCombo().setItems(getModes());
       getCombo().setText(newModeName);
       updateModeButtons();
@@ -210,7 +210,7 @@ class ModesPanel {
   protected void createMyMode() {
     String version = Prefs.getStore().getString(Prefs.PREFS_VERSION);
     if (version.length() == 0) {
-      Log.logInfo("Adding mode: MyMode"); //$NON-NLS-1$
+      Log.info("Adding mode: MyMode"); //$NON-NLS-1$
       addMode("MyMode"); //$NON-NLS-1$
       Prefs.getStore().setValue(Prefs.PREFS_VERSION, UCDetectorPlugin.getAboutUCDVersion());
     }
@@ -256,15 +256,15 @@ class ModesPanel {
     flushGroupPrefs(groupPrefs, sb);
     String fileText = sb.toString();
     if (Log.isDebug()) {
-      Log.logDebug(fileText);
-      Log.logDebug("Unhandled preferences :" + allPreferences);
+      Log.debug(fileText);
+      Log.debug("Unhandled preferences :" + allPreferences);
     }
     File modesFile = getModesFile(modeName);
     FileWriter writer = null;
     try {
       writer = new FileWriter(modesFile);
       writer.write(fileText);
-      Log.logDebug("Saved mode to: %s", modesFile.getAbsolutePath()); //$NON-NLS-1$
+      Log.debug("Saved mode to: %s", modesFile.getAbsolutePath()); //$NON-NLS-1$
     }
     catch (IOException ex) {
       String message = NLS.bind(Messages.ModesPanel_ModeFileCantSave, modesFile.getAbsolutePath());
@@ -301,7 +301,7 @@ class ModesPanel {
     }
     File file = getModesFile(modeToRemove);
     boolean deleteOk = file.delete();
-    Log.logSuccess(deleteOk, String.format("Delete mode '%s' - file is %s", modeToRemove, file.getAbsolutePath()));//$NON-NLS-1$
+    Log.success(deleteOk, String.format("Delete mode '%s' - file is %s", modeToRemove, file.getAbsolutePath()));//$NON-NLS-1$
     getCombo().setItems(getModes());
     getCombo().setText(Mode.Default.toStringLocalized());
     page.performDefaults();
@@ -319,7 +319,7 @@ class ModesPanel {
     File oldModesFile = getModesFile(oldName);
     File newModesFile = getModesFile(newName);
     boolean renameOK = oldModesFile.renameTo(newModesFile);
-    Log.logSuccess(renameOK,
+    Log.success(renameOK,
         String.format("Rename mode '%s' to '%s' - new file: %s", oldName, newName, newModesFile.getAbsolutePath()));//$NON-NLS-1$
     getCombo().setItems(getModes());
     getCombo().setText(newName);

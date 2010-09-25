@@ -119,7 +119,7 @@ public class PreferenceInitializer extends AbstractPreferenceInitializer {
     }
     catch (Exception e) {
       reportDir = REPORT_DEFAULT_DIR;
-      Log.logError("Can't get report file name", e);
+      Log.error("Can't get report file name", e);
     }
     // Needed to avoid message: Path does not exists
     new File(reportDir).mkdirs();

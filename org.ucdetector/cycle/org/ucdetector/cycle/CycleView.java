@@ -327,7 +327,7 @@ public class CycleView extends ViewPart { //
           }
         }
         catch (Exception e) {
-          Log.logError("Can't open javalement in editor: " + JavaElementUtil.getElementName(element), e); //$NON-NLS-1$
+          Log.error("Can't open javalement in editor: " + JavaElementUtil.getElementName(element), e); //$NON-NLS-1$
         }
       }
     };

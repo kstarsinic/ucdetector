@@ -103,10 +103,10 @@ public class SearchManager {
             JavaElementUtil.getTypeName(container.getType()), //
             UCDetectorPlugin.getNow());
         if (Log.isDebug()) {
-          Log.logDebug(message);
+          Log.debug(message);
         }
         else if (pos == 1 || pos % 10 == 0 || pos == typeContainers.size()) {
-          Log.logInfo(message);
+          Log.info(message);
         }
         if (container.getType() != null) {
           searchAndHandleException(container.getType());
@@ -120,9 +120,9 @@ public class SearchManager {
       }
     }
     catch (OperationCanceledException e) {
-      Log.logInfo("Search canceled: " + e.getMessage()); //$NON-NLS-1$
+      Log.info("Search canceled: " + e.getMessage()); //$NON-NLS-1$
     }
-    Log.logInfo("Search end: " + UCDetectorPlugin.getNow()); //$NON-NLS-1$
+    Log.info("Search end: " + UCDetectorPlugin.getNow()); //$NON-NLS-1$
     if (searchProblems.size() > 0) {
       IStatus[] stati = searchProblems.toArray(new IStatus[searchProblems.size()]);
       MultiStatus status = new MultiStatus(UCDetectorPlugin.ID, IStatus.ERROR, stati, stati.length
@@ -138,10 +138,10 @@ public class SearchManager {
       methodsToDetect += container.getMethods().size();
       fieldsToDetect += container.getFields().size();
     }
-    Log.logInfo("Detection start      : " + UCDetectorPlugin.getNow()); //$NON-NLS-1$
-    Log.logInfo("    Classes to detect: " + typeContainers.size()); //$NON-NLS-1$
-    Log.logInfo("    Methods to detect: " + methodsToDetect); //$NON-NLS-1$
-    Log.logInfo("    Fields  to detect: " + fieldsToDetect); //$NON-NLS-1$
+    Log.info("Detection start      : " + UCDetectorPlugin.getNow()); //$NON-NLS-1$
+    Log.info("    Classes to detect: " + typeContainers.size()); //$NON-NLS-1$
+    Log.info("    Methods to detect: " + methodsToDetect); //$NON-NLS-1$
+    Log.info("    Fields  to detect: " + fieldsToDetect); //$NON-NLS-1$
   }
 
   private String fill(int i, int length) {
@@ -177,7 +177,7 @@ public class SearchManager {
       }
       String message = String.format("Problems searching %s %s", // //$NON-NLS-1$
           JavaElementUtil.getMemberTypeString(member), JavaElementUtil.getElementName(member));
-      Log.logError(message, ex);
+      Log.error(message, ex);
       Status status = new Status(IStatus.ERROR, UCDetectorPlugin.ID, IStatus.ERROR, message, ex);
       markerFactory.reportDetectionProblem(status);
       searchProblems.add(status);
@@ -413,12 +413,12 @@ public class SearchManager {
     if (Prefs.isUCDetectionInLiteralsFullClassName()) {
       String fullClassName = type.getFullyQualifiedName();
       searchStrings.add(fullClassName);
-      Log.logDebug("Text search of full classname '%s'", fullClassName);// //$NON-NLS-1$ 
+      Log.debug("Text search of full classname '%s'", fullClassName);// //$NON-NLS-1$ 
     }
     if (Prefs.isUCDetectionInLiteralsSimpleClassName()) {
       String simpleClassName = type.getElementName();
       searchStrings.add(simpleClassName);
-      Log.logDebug("Text search of simple classname '%s'", simpleClassName);// //$NON-NLS-1$ 
+      Log.debug("Text search of simple classname '%s'", simpleClassName);// //$NON-NLS-1$ 
     }
     int requestorFound = 0;
     for (String searchString : searchStrings) {
@@ -446,7 +446,7 @@ public class SearchManager {
       // bug fix [ 2373808 ]: Classes found by text search should have no markers
       if (requestor.found > 0) {
         if (Log.isDebug()) {
-          Log.logDebug("Matches found searching class name '%s' in text files", searchString); //$NON-NLS-1$
+          Log.debug("Matches found searching class name '%s' in text files", searchString); //$NON-NLS-1$
         }
         noRefTypes.add(type);
       }
@@ -502,7 +502,7 @@ public class SearchManager {
         int offset = matchAccess.getMatchOffset();
         int length = matchAccess.getMatchLength();
         String match = matchAccess.getFileContent(offset, length);
-        Log.logDebug("    TEXT MATCH {%s%s%s}. isMatchOk: %s. in: %s", //$NON-NLS-1$
+        Log.debug("    TEXT MATCH {%s%s%s}. isMatchOk: %s. in: %s", //$NON-NLS-1$
             beforeChar, match, afterChar, isClassNamMatchOk, matchAccess.getFile());
       }
       if (isClassNamMatchOk) {
@@ -651,7 +651,7 @@ public class SearchManager {
           return !isStatic;
         }
         catch (JavaModelException ex) {
-          Log.logError("Can't get flags of: " + importDecl.getElementName(), ex); //$NON-NLS-1$
+          Log.error("Can't get flags of: " + importDecl.getElementName(), ex); //$NON-NLS-1$
           return false;
         }
       }

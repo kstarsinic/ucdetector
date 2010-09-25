@@ -199,7 +199,7 @@ class UCDTextSearchVisitor {
       }
     }
     catch (IndexOutOfBoundsException e) {
-      Log.logError("Problems in hasBinaryContent for file: " + file, e); //$NON-NLS-1$
+      Log.error("Problems in hasBinaryContent for file: " + file, e); //$NON-NLS-1$
     }
     return false;
   }

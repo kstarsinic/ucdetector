@@ -79,11 +79,11 @@ abstract class AbstractUCDQuickFix extends WorkbenchMarkerResolution {
     ICompilationUnit originalUnit = null;
     try {
       if (Log.isDebug()) {
-        Log.logDebug("%s.run(). Marker=%s", getClass().getSimpleName(), dumpMarker(marker));
+        Log.debug("%s.run(). Marker=%s", getClass().getSimpleName(), dumpMarker(marker));
       }
       int charStart = marker.getAttribute(IMarker.CHAR_START, -1);
       if (charStart == -1) {
-        Log.logWarn("CHAR_START missing for marker: '%s'", dumpMarker(marker));
+        Log.warn("CHAR_START missing for marker: '%s'", dumpMarker(marker));
         return;
       }
       originalUnit = getCompilationUnit();
@@ -95,7 +95,7 @@ abstract class AbstractUCDQuickFix extends WorkbenchMarkerResolution {
       FindNodeToChangeVisitor visitor = new FindNodeToChangeVisitor(charStart);
       firstType.accept(visitor);
       if (visitor.nodeToChange == null) {
-        Log.logWarn("Node to change not found for marker: '%s'", dumpMarker(marker));
+        Log.warn("Node to change not found for marker: '%s'", dumpMarker(marker));
         return;
       }
       int startPosition = runImpl(visitor.nodeToChange);
@@ -160,7 +160,7 @@ abstract class AbstractUCDQuickFix extends WorkbenchMarkerResolution {
         nodeToChange = declaration;
       }
       if (Log.isDebug() && found) {
-        Log.logDebug("NodeToChange: %s. char postion: %s<=%s<=%s.", //
+        Log.debug("NodeToChange: %s. char postion: %s<=%s<=%s.", //
             name.getIdentifier(), "" + startPos, "" + charStart, "" + endPos);
       }
       return nodeToChange == null;
@@ -185,7 +185,7 @@ abstract class AbstractUCDQuickFix extends WorkbenchMarkerResolution {
         return (ICompilationUnit) javaElement;
       }
     }
-    Log.logWarn("Can't find CompilationUnit: " + marker.getType());
+    Log.warn("Can't find CompilationUnit: " + marker.getType());
     return null;
   }
 
@@ -263,7 +263,7 @@ abstract class AbstractUCDQuickFix extends WorkbenchMarkerResolution {
         }
       }
       catch (Exception e) {
-        Log.logError("Can't compare markers: " + e.getMessage());
+        Log.error("Can't compare markers: " + e.getMessage());
       }
     }
     return false;

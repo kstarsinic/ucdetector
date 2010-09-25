@@ -38,12 +38,12 @@ public class UCDTask extends Task {
     int buildType = parseBuildType(sBuildType);
     File targetPlatformFile = sTargetPlatformFile == null ? null : new File(sTargetPlatformFile);
     File optionsFile = sOptionsFile == null ? null : new File(sOptionsFile);
-    Log.logInfo("StartUCDetector Ant Task");
-    Log.logInfo("    buildType         : " + sBuildType + " (" + buildType + ")");
-    Log.logInfo("    optionsFile       : " + (optionsFile == null ? null : optionsFile.getAbsolutePath()));
-    Log.logInfo("    targetPlatformFile: " + (targetPlatformFile == null ? null : targetPlatformFile.getAbsolutePath()));
-    Log.logInfo("    report            : " + report);
-    Log.logInfo("    iterateList       : " + iterateList);
+    Log.info("StartUCDetector Ant Task");
+    Log.info("    buildType         : " + sBuildType + " (" + buildType + ")");
+    Log.info("    optionsFile       : " + (optionsFile == null ? null : optionsFile.getAbsolutePath()));
+    Log.info("    targetPlatformFile: " + (targetPlatformFile == null ? null : targetPlatformFile.getAbsolutePath()));
+    Log.info("    report            : " + report);
+    Log.info("    iterateList       : " + iterateList);
     List<String> resourcesToIterate = new ArrayList<String>();
     for (Iterate iterate : iterateList) {
       resourcesToIterate.add(iterate.getName());

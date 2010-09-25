@@ -61,77 +61,60 @@ public class Log {
       System.out.println("UCDetector Log level: " + getActiveLogLevel()); // we need to log to System.out
     }
     if (LOG_LEVEL_OPTIONS_FILE != null) {
-      logWarn("Eclipse .options file overrides preferences log level. Log level is: " + LOG_LEVEL_OPTIONS_FILE);
+      warn("Eclipse .options file overrides preferences log level. Log level is: " + LOG_LEVEL_OPTIONS_FILE);
     }
   }
 
   // DEBUG --------------------------------------------------------------------
-  public static void logDebug(String message) {
-    log(LogLevel.DEBUG, message);
-  }
-
-  public static void logDebug(String format, Object... args) {
-    logDebug(String.format(format, args));
+  public static void debug(String format, Object... args) {
+    debug(String.format(format, args));
   }
 
   // INFO ---------------------------------------------------------------------
-  public static void logInfo(String message) {
-    log(LogLevel.INFO, message);
+  public static void info(String format, Object... args) {
+    info(String.format(format, args));
   }
 
-  public static void logInfo(String format, Object... args) {
-    logInfo(String.format(format, args));
-  }
-
-  public static void logSuccess(boolean success, String message) {
-    if (success) {
-      logInfo("OK: " + message);
-    }
-    else {
-      logWarn("FAIL: " + message);
-    }
+  public static void success(boolean success, String message) {
+    log(success ? LogLevel.INFO : LogLevel.WARN, (success ? "OK: " : "FAIL: ") + message);
   }
 
   // WARN ---------------------------------------------------------------------
-  public static void logWarn(String message) {
-    log(LogLevel.WARN, message);
-  }
-
-  public static void logWarn(String format, Object... args) {
-    logWarn(String.format(format, args));
+  public static void warn(String format, Object... args) {
+    warn(String.format(format, args));
   }
 
   // ERROR --------------------------------------------------------------------
-  public static void logError(String message) {
+  public static void error(String message) {
     log(LogLevel.ERROR, message);
   }
 
-  public static void logError(String message, Throwable ex) {
-    logImpl(LogLevel.ERROR, message, ex);
+  public static void error(String message, Throwable ex) {
+    log(LogLevel.ERROR, message, ex);
   }
 
   // STATUS -------------------------------------------------------------------
-  public static void logStatus(IStatus status) {
+  public static void status(IStatus status) {
     if (status.getSeverity() == IStatus.ERROR) {
-      logError(status.getMessage(), status.getException());
+      error(status.getMessage(), status.getException());
     }
     else if (status.getSeverity() == IStatus.WARNING) {
-      logWarn(status.getMessage());
+      warn(status.getMessage());
     }
     else {
-      logInfo(status.getMessage());
+      info(status.getMessage());
     }
-  }
-
-  public static void log(LogLevel level, String message) {
-    logImpl(level, message, null);
   }
 
   // LOG IMPL -------------------------------------------------------------------
+  public static void log(LogLevel level, String message) {
+    log(level, message, null);
+  }
+
   /**
    * Very simple logging to System.out and System.err
    */
-  private static void logImpl(LogLevel level, String message, Throwable ex) {
+  private static void log(LogLevel level, String message, Throwable ex) {
     initLog();
     if (level.ordinal() < getActiveLogLevel().ordinal()) {
       return;
@@ -176,7 +159,7 @@ public class Log {
           UCDetectorPlugin.getActivePage().showView(IConsoleConstants.ID_CONSOLE_VIEW);
         }
         catch (PartInitException ex) {
-          logError("Can't init console", ex);
+          error("Can't init console", ex);
         }
       }
     });

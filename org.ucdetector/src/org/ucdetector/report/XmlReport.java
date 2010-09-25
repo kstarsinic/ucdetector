@@ -136,9 +136,9 @@ public class XmlReport implements IUCDetectorReport {
         @Override
         public void run() {
           if (!endReportCalled) {
-            Log.logWarn("Process interrupted? Try to write reports in ShutdownHook");
+            Log.warn("Process interrupted? Try to write reports in ShutdownHook");
             writeReports(true);
-            Log.logWarn("Wrote reports in ShutdownHook");
+            Log.warn("Wrote reports in ShutdownHook");
           }
         }
       });
@@ -181,7 +181,7 @@ public class XmlReport implements IUCDetectorReport {
       markers.appendChild(doc.createComment(XML_INFO));
     }
     catch (Throwable e) {
-      Log.logError("Can't create xml report: ", e);
+      Log.error("Can't create xml report: ", e);
       initXMLException = e;
     }
   }
@@ -283,12 +283,12 @@ public class XmlReport implements IUCDetectorReport {
         // appendChild(marker, "resourceName", resource.getName()); // NODE: NoReferenceExample.java
       }
       if (UCDetectorPlugin.isHeadlessMode() && markerCount % 50 == 0) {
-        Log.logInfo("Flush reports!");
+        Log.info("Flush reports!");
         writeReports(false);
       }
     }
     catch (Throwable ex) {
-      Log.logError("XML problems", ex);
+      Log.error("XML problems", ex);
       if (marker != null) {
         appendChild(marker, "ExceptionForCreatingMarker", ex.getMessage());
       }
@@ -351,7 +351,7 @@ public class XmlReport implements IUCDetectorReport {
       UCDetectorPlugin.logStatus(status); // Create status in Error Log View
       return;
     }
-    Log.logStatus(status);
+    Log.status(status);
   }
 
   /**
@@ -471,7 +471,7 @@ public class XmlReport implements IUCDetectorReport {
         writeTextFile(txtFile);
       }
       long duration = System.currentTimeMillis() - start;
-      Log.logInfo("Created reports in: %s", StopWatch.timeAsString(duration));
+      Log.info("Created reports in: %s", StopWatch.timeAsString(duration));
       logEndReportMessage(Messages.XMLReport_WriteOk, IStatus.INFO, null, String.valueOf(markerCount), reportPath);
     }
     catch (Exception e) {
@@ -501,7 +501,7 @@ public class XmlReport implements IUCDetectorReport {
       //      }
     }
     catch (IOException ex) {
-      Log.logError("Problems copying icon files", ex);
+      Log.error("Problems copying icon files", ex);
     }
   }
 
@@ -522,7 +522,7 @@ public class XmlReport implements IUCDetectorReport {
     finally {
       UCDetectorPlugin.closeSave(fileWriter);
     }
-    Log.logInfo("Wrote file= " + file.getCanonicalPath());
+    Log.info("Wrote file= " + file.getCanonicalPath());
   }
 
   /**
@@ -542,10 +542,10 @@ public class XmlReport implements IUCDetectorReport {
       tf.setAttribute("indent-number", Integer.valueOf(2));
     }
     catch (IllegalArgumentException ignore) {
-      Log.logWarn("Can't change output format: " + ignore);
+      Log.warn("Can't change output format: " + ignore);
     }
     xformer.transform(source, result);
-    Log.logInfo("Wrote file= " + file.getCanonicalPath());
+    Log.info("Wrote file= " + file.getCanonicalPath());
   }
 
   /** Transform from xml to html using xslt transformation */

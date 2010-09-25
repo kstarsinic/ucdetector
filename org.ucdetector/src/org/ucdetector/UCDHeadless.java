@@ -69,28 +69,28 @@ public class UCDHeadless {
   }
 
   private void loadOptions(File optionFile) {
-    Log.logInfo("\toptionFile: %s exists: %s", Log.getCanonicalPath(optionFile), "" + optionFile.exists());
+    Log.info("\toptionFile: %s exists: %s", Log.getCanonicalPath(optionFile), "" + optionFile.exists());
     if (optionFile.exists()) {
       Map<String, String> ucdOptions = UCDetectorPlugin.loadModeFile(true, optionFile.getAbsolutePath());
       for (Entry<String, String> option : ucdOptions.entrySet()) {
         Prefs.setValue(option.getKey(), option.getValue());
       }
-      Log.logInfo(UCDetectorPlugin.getPreferencesAsString().replace(", ", "\n\t"));
-      Log.logInfo("Report directory is: " + PreferenceInitializer.getReportDir());
+      Log.info(UCDetectorPlugin.getPreferencesAsString().replace(", ", "\n\t"));
+      Log.info("Report directory is: " + PreferenceInitializer.getReportDir());
     }
   }
 
   public void run() throws FileNotFoundException, CoreException {
     long start = System.currentTimeMillis();
     try {
-      Log.logInfo("Starting UCDetector Headless");
+      Log.info("Starting UCDetector Headless");
       try {
-        Log.logInfo("TRY TO START DS  - eclipse bug 314814");
+        Log.info("TRY TO START DS  - eclipse bug 314814");
         Bundle fwAdminBundle = Platform.getBundle("org.eclipse.equinox.ds");
         fwAdminBundle.start();
       }
       catch (Exception e) {
-        Log.logError("PROBLEMS STARTING DS", e);
+        Log.error("PROBLEMS STARTING DS", e);
       }
       loadTargetPlatform();
       // Run it twice because of Exception, when running it with a complete workspace: See end of file
@@ -102,47 +102,47 @@ public class UCDHeadless {
       //
       StopWatch stopWatch = new StopWatch();
       List<IJavaProject> allProjects = createProjects(ucdMonitor, workspaceRoot);
-      Log.logInfo(stopWatch.end("createProjects", false));
+      Log.info(stopWatch.end("createProjects", false));
       //
       IProject[] projects = workspaceRoot.getProjects();
-      Log.logInfo("\tprojects found in workspace: " + projects.length);
-      Log.logInfo("\tWorkspace: " + workspaceRoot.getLocation());
-      Log.logInfo("Refresh workspace... Please wait...!");
+      Log.info("\tprojects found in workspace: " + projects.length);
+      Log.info("\tWorkspace: " + workspaceRoot.getLocation());
+      Log.info("Refresh workspace... Please wait...!");
       workspaceRoot.refreshLocal(IResource.DEPTH_INFINITE, ucdMonitor);
-      Log.logInfo(stopWatch.end("Refresh workspace", false));
+      Log.info(stopWatch.end("Refresh workspace", false));
       //
-      Log.logInfo("Build workspace... Please wait...!");
+      Log.info("Build workspace... Please wait...!");
       workspace.build(buildType, ucdMonitor);
-      Log.logInfo(stopWatch.end("Build workspace", false));
+      Log.info(stopWatch.end("Build workspace", false));
       //
       if (projects.length == 0) {
-        Log.logWarn("NO PROJECTS FOUND - NOTHING TODO");
+        Log.warn("NO PROJECTS FOUND - NOTHING TODO");
       }
       iterate(workspaceRoot, allProjects);
     }
     finally {
-      Log.logInfo("Time to run UCDetector Headless: " + StopWatch.timeAsString(System.currentTimeMillis() - start));
+      Log.info("Time to run UCDetector Headless: " + StopWatch.timeAsString(System.currentTimeMillis() - start));
     }
   }
 
   private void loadTargetPlatform() throws CoreException, FileNotFoundException {
     if (targetPlatformFile == null) {
-      Log.logInfo("Use eclipse as target platform");
+      Log.info("Use eclipse as target platform");
       return;
     }
     StopWatch stopWatch = new StopWatch();
-    Log.logInfo("Use target platform declared in: " + targetPlatformFile.getAbsolutePath());
+    Log.info("Use target platform declared in: " + targetPlatformFile.getAbsolutePath());
     if (!targetPlatformFile.exists()) {
       throw new FileNotFoundException("Can't find target platform file: " + targetPlatformFile);
     }
-    Log.logInfo("START: loadTargetPlatform");
+    Log.info("START: loadTargetPlatform");
     ITargetPlatformService tps = (ITargetPlatformService) PDECore.getDefault().acquireService(
         ITargetPlatformService.class.getName());
     ITargetHandle targetHandle = tps.getTarget(targetPlatformFile.toURI());
     ITargetDefinition targetDefinition = targetHandle.getTargetDefinition();
     new LoadTargetDefinitionJob(targetDefinition).run(ucdMonitor);
     //    LoadTargetDefinitionJob.load(targetDefinition);
-    Log.logInfo(stopWatch.end("END: loadTargetPlatform", false));
+    Log.info(stopWatch.end("END: loadTargetPlatform", false));
   }
 
   private void iterate(IWorkspaceRoot workspaceRoot, List<IJavaProject> allProjects) throws CoreException {
@@ -157,15 +157,15 @@ public class UCDHeadless {
         if (path.segmentCount() == 1) {
           IProject project = workspaceRoot.getProject(resourceToIterate);
           javaElement = JavaCore.create(project);
-          Log.logInfo("resource=%s, javaProject=%s", resourceToIterate, javaElement.getElementName());
+          Log.info("resource=%s, javaProject=%s", resourceToIterate, javaElement.getElementName());
         }
         else {
           IFolder folder = workspaceRoot.getFolder(path);
           javaElement = JavaCore.create(folder);
-          Log.logInfo("resource=%s, folder=%s, javaElement=%s", resourceToIterate, folder, javaElement.getElementName());
+          Log.info("resource=%s, folder=%s, javaElement=%s", resourceToIterate, folder, javaElement.getElementName());
         }
         if (!javaElement.exists()) {
-          Log.logWarn("Ignore resource: '%s'. Possible reasons: It is not a java element, it does not exists",
+          Log.warn("Ignore resource: '%s'. Possible reasons: It is not a java element, it does not exists",
               resourceToIterate);
         }
         javaElementsToIterate.add(javaElement);
@@ -201,7 +201,7 @@ public class UCDHeadless {
       }
       IProject project = workspaceRoot.getProject(rootFile.getName());
       if (!project.exists()) {
-        Log.logInfo("\tCreate project for: " + rootFile.getAbsolutePath());
+        Log.info("\tCreate project for: " + rootFile.getAbsolutePath());
         project.create(monitor);
       }
       project.open(monitor);
@@ -209,10 +209,10 @@ public class UCDHeadless {
       // Running headless throws exception for no java projects!
       if (javaProject.exists()) {
         projects.add(javaProject);
-        Log.logInfo("Project created: " + javaProject.getElementName());
+        Log.info("Project created: " + javaProject.getElementName());
       }
       else {
-        Log.logWarn("Ignore project '%s'. Maybe it is not a java project!", javaProject.getElementName());
+        Log.warn("Ignore project '%s'. Maybe it is not a java project!", javaProject.getElementName());
       }
     }
     return projects;

@@ -93,20 +93,20 @@ public class UCDetectorPlugin extends AbstractUIPlugin implements IPropertyChang
   }
 
   private void dumpInformation() {
-    Log.logInfo(SEPARATOR);
-    Log.logInfo("Starting UCDetector Plug-In version " + getAboutUCDVersion());
-    Log.logInfo(SEPARATOR);
-    Log.logInfo("Time      : " + getNow());
-    Log.logInfo("OS        : " + getAboutOS());
-    Log.logInfo("Java      : " + getAboutJavaVersion());
-    Log.logInfo("Eclipse   : " + getAboutEclipseVersion());
-    Log.logInfo("Home      : " + getAboutEclipseHome());
-    Log.logInfo("Logfile   : " + getAboutLogfile());
-    Log.logInfo("Workspace : " + getAboutWorkspace());
-    Log.logInfo("Log level : " + Log.getActiveLogLevel().toString());
+    Log.info(SEPARATOR);
+    Log.info("Starting UCDetector Plug-In version " + getAboutUCDVersion());
+    Log.info(SEPARATOR);
+    Log.info("Time      : " + getNow());
+    Log.info("OS        : " + getAboutOS());
+    Log.info("Java      : " + getAboutJavaVersion());
+    Log.info("Eclipse   : " + getAboutEclipseVersion());
+    Log.info("Home      : " + getAboutEclipseHome());
+    Log.info("Logfile   : " + getAboutLogfile());
+    Log.info("Workspace : " + getAboutWorkspace());
+    Log.info("Log level : " + Log.getActiveLogLevel().toString());
     logMemoryInfo();
-    Log.logInfo(getPreferencesAsString());
-    Log.logInfo(SEPARATOR);
+    Log.info(getPreferencesAsString());
+    Log.info(SEPARATOR);
   }
 
   public static void logMemoryInfo() {
@@ -168,13 +168,13 @@ public class UCDetectorPlugin extends AbstractUIPlugin implements IPropertyChang
     }
     catch (BackingStoreException ex) {
       result.put("EXCEPTION", ex.getMessage());
-      Log.logError("Can't get preferences for " + ePrefs, ex);
+      Log.error("Can't get preferences for " + ePrefs, ex);
     }
     return result;
   }
 
   public static void dumpList(String listString, String separator) {
-    Log.logInfo(listString.replace("[", separator).replace(", ", separator).replace("]", ""));
+    Log.info(listString.replace("[", separator).replace(", ", separator).replace("]", ""));
   }
 
   /**
@@ -182,7 +182,7 @@ public class UCDetectorPlugin extends AbstractUIPlugin implements IPropertyChang
    */
   @Override
   public void stop(BundleContext context) throws Exception {
-    Log.logInfo("Stopping UCDetector Plug-In at " + getNow());
+    Log.info("Stopping UCDetector Plug-In at " + getNow());
     super.stop(context);
     UCDetectorPlugin.plugin = null;
   }
@@ -233,7 +233,7 @@ public class UCDetectorPlugin extends AbstractUIPlugin implements IPropertyChang
     if (ucd != null && ucd.getLog() != null) {
       ucd.getLog().log(status);
     }
-    Log.logStatus(status);
+    Log.status(status);
   }
 
   public static Status logErrorAndStatus(String message, Throwable ex) {

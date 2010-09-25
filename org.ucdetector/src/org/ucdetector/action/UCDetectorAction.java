@@ -72,7 +72,7 @@ public class UCDetectorAction extends AbstractUCDetectorAction {
         }
       }
       catch (Exception ex) {
-        Log.logError("Can't open view for object: " + objectToShow, ex);//$NON-NLS-1$
+        Log.error("Can't open view for object: " + objectToShow, ex);//$NON-NLS-1$
       }
     }
   }
