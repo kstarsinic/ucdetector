@@ -104,8 +104,8 @@ public class UCDetectorPlugin extends AbstractUIPlugin implements IPropertyChang
     Log.logInfo("Logfile   : " + getAboutLogfile());
     Log.logInfo("Workspace : " + getAboutWorkspace());
     Log.logInfo("Log level : " + Log.getActiveLogLevel().toString());
-    Log.logInfo(getPreferencesAsString());
     logMemoryInfo();
+    Log.logInfo(getPreferencesAsString());
     Log.logInfo(SEPARATOR);
   }
 
@@ -113,7 +113,10 @@ public class UCDetectorPlugin extends AbstractUIPlugin implements IPropertyChang
     long used = (Runtime.getRuntime().totalMemory() - Runtime.getRuntime().freeMemory()) / MEGA_BYTE;
     long max = Runtime.getRuntime().maxMemory() / MEGA_BYTE;
     long percentUsed = (100 * used) / max;
-    String message = String.format("Memory: %s MB max, %s %% used", String.valueOf(max), String.valueOf(percentUsed));
+    String message = String.format("Memory: %s MB max, %s MB used (%s %%)", //
+        String.valueOf(max),//
+        String.valueOf(used),//
+        String.valueOf(percentUsed));
     Log.log(percentUsed > 80 ? LogLevel.WARN : LogLevel.INFO, message);
   }
 
@@ -128,7 +131,7 @@ public class UCDetectorPlugin extends AbstractUIPlugin implements IPropertyChang
   public static String getPreferencesAsString() {
     StringBuilder sb = new StringBuilder();
     Map<String, String> deltaPreferences = getDeltaPreferences();
-    sb.append(String.format("       %s UCDetector preferences are different from default preferences:", //
+    sb.append(String.format("        %s UCDetector preferences are different from default preferences:", //
         "" + deltaPreferences.size()));
     Set<Entry<String, String>> entrySet = deltaPreferences.entrySet();
     for (Entry<String, String> entry : entrySet) {

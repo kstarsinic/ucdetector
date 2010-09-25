@@ -115,6 +115,9 @@ public class UCDHeadless {
       workspace.build(buildType, ucdMonitor);
       Log.logInfo(stopWatch.end("Build workspace", false));
       //
+      if (projects.length == 0) {
+        Log.logWarn("NO PROJECTS FOUND - NOTHING TODO");
+      }
       iterate(workspaceRoot, allProjects);
     }
     finally {
@@ -161,6 +164,10 @@ public class UCDHeadless {
           javaElement = JavaCore.create(folder);
           Log.logInfo("resource=%s, folder=%s, javaElement=%s", resourceToIterate, folder, javaElement.getElementName());
         }
+        if (!javaElement.exists()) {
+          Log.logWarn("Ignore resource: '%s'. Possible reasons: It is not a java element, it does not exists",
+              resourceToIterate);
+        }
         javaElementsToIterate.add(javaElement);
       }
     }
@@ -205,7 +212,7 @@ public class UCDHeadless {
         Log.logInfo("Project created: " + javaProject.getElementName());
       }
       else {
-        Log.logWarn("Ignore project (maybe it is not a java project): " + javaProject.getElementName());
+        Log.logWarn("Ignore project '%s'. Maybe it is not a java project!", javaProject.getElementName());
       }
     }
     return projects;

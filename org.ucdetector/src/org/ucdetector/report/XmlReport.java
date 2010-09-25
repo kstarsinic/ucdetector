@@ -136,8 +136,9 @@ public class XmlReport implements IUCDetectorReport {
         @Override
         public void run() {
           if (!endReportCalled) {
-            Log.logWarn("Try to write reports in ShutdownHook");
+            Log.logWarn("Process interrupted? Try to write reports in ShutdownHook");
             writeReports(true);
+            Log.logWarn("Wrote reports in ShutdownHook");
           }
         }
       });

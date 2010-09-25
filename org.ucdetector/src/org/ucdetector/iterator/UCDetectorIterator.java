@@ -16,6 +16,7 @@ import org.eclipse.jdt.core.IJavaElement;
 import org.eclipse.jdt.core.IMethod;
 import org.eclipse.jdt.core.IType;
 import org.ucdetector.Messages;
+import org.ucdetector.UCDetectorPlugin;
 import org.ucdetector.preferences.Prefs;
 import org.ucdetector.search.SearchManager;
 import org.ucdetector.util.JavaElementUtil;
@@ -168,7 +169,9 @@ public class UCDetectorIterator extends AbstractUCDetectorIterator {
     getMonitor().worked(1);
     SearchManager searchManager = new SearchManager(getMonitor(), totalSize, getMarkerFactory());
     try {
+      UCDetectorPlugin.logMemoryInfo();
       searchManager.search(typeContainers);
+      UCDetectorPlugin.logMemoryInfo();
     }
     finally {
       stopWatch.end("Time to run UCDetector"); //$NON-NLS-1$
