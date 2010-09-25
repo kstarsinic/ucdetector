@@ -36,8 +36,8 @@ public class UCDTask extends Task {
   public void execute() throws BuildException {
     Report report = parseReport(sReport);
     int buildType = parseBuildType(sBuildType);
-    File targetPlatformFile = sTargetPlatformFile == null ? null : new File(sTargetPlatformFile);
-    File optionsFile = sOptionsFile == null ? null : new File(sOptionsFile);
+    File targetPlatformFile = getFile(sTargetPlatformFile, "targetPlatformFile");
+    File optionsFile = getFile(sOptionsFile, "optionsFile");
     Log.info("StartUCDetector Ant Task");
     Log.info("    buildType         : " + sBuildType);// + " (" + buildType + ")");
     Log.info("    optionsFile       : " + (optionsFile == null ? "" : optionsFile.getAbsolutePath()));
@@ -56,22 +56,36 @@ public class UCDTask extends Task {
     }
   }
 
+  private File getFile(String fileName, String about) {
+    File result = null;
+    if (fileName != null) {
+      result = new File(fileName);
+      if (!result.exists()) {
+        throw new BuildException(about + " does not exist: " + result.getAbsolutePath());
+      }
+    }
+    return result;
+  }
+
   private Report parseReport(String reportString) {
+    if (reportString == null || reportString.length() == 0) {
+      return Report.eachproject;
+    }
     for (Report rep : Report.values()) {
       if (rep.name().equals(reportString)) {
         return rep;
       }
     }
-    return Report.eachproject;
+    throw new BuildException("Unknown report: '" + reportString + "'");
   }
 
   /** @see org.eclipse.core.resources.IncrementalProjectBuilder */
   private int parseBuildType(String buildType) {
+    if (buildType == null || buildType.length() == 0 || "AUTO_BUILD".equals(buildType)) {
+      return IncrementalProjectBuilder.AUTO_BUILD;
+    }
     if ("FULL_BUILD".equals(buildType)) {
       return IncrementalProjectBuilder.FULL_BUILD;
-    }
-    if ("AUTO_BUILD".equals(buildType)) {
-      return IncrementalProjectBuilder.AUTO_BUILD;
     }
     if ("INCREMENTAL_BUILD".equals(buildType)) {
       return IncrementalProjectBuilder.INCREMENTAL_BUILD;
@@ -79,7 +93,7 @@ public class UCDTask extends Task {
     if ("CLEAN_BUILD".equals(buildType)) {
       return IncrementalProjectBuilder.CLEAN_BUILD;
     }
-    return IncrementalProjectBuilder.AUTO_BUILD;
+    throw new BuildException("Unknown buildType: '" + buildType + "'");
   }
 
   // --------------------------------------------------------------------------
