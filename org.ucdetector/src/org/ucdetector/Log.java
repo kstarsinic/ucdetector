@@ -93,7 +93,7 @@ public class Log {
     log(LogLevel.ERROR, message, ex);
   }
 
-  // STATUS -------------------------------------------------------------------
+  // STATUS --------------------------------------------------------------------
   public static void status(IStatus status) {
     if (status.getSeverity() == IStatus.ERROR) {
       error(status.getMessage(), status.getException());

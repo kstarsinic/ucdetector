@@ -127,7 +127,7 @@ public class SearchManager {
       IStatus[] stati = searchProblems.toArray(new IStatus[searchProblems.size()]);
       MultiStatus status = new MultiStatus(UCDetectorPlugin.ID, IStatus.ERROR, stati, stati.length
           + " errors happened during UCDetection", null); //$NON-NLS-1$
-      UCDetectorPlugin.logStatus(status);
+      UCDetectorPlugin.logToEclipseLog(status);
     }
   }
 

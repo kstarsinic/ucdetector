@@ -268,7 +268,7 @@ class ModesPanel {
     }
     catch (IOException ex) {
       String message = NLS.bind(Messages.ModesPanel_ModeFileCantSave, modesFile.getAbsolutePath());
-      UCDetectorPlugin.logErrorAndStatus(message, ex);
+      UCDetectorPlugin.logToEclipseLog(message, ex);
     }
     finally {
       UCDetectorPlugin.closeSave(writer);

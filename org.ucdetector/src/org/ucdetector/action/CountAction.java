@@ -37,7 +37,7 @@ public class CountAction extends AbstractUCDetectorAction {
   protected IStatus postIteration() {
     // show message for count dialog, create status
     final IStatus status = new Status(IStatus.INFO, UCDetectorPlugin.ID, IStatus.INFO, iterator.toString(), null);
-    UCDetectorPlugin.logStatus(status);
+    UCDetectorPlugin.logToEclipseLog(status);
     Display.getDefault().asyncExec(new Runnable() {
       public void run() {
         Shell shell = UCDetectorPlugin.getShell();

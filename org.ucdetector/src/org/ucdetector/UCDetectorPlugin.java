@@ -89,7 +89,7 @@ public class UCDetectorPlugin extends AbstractUIPlugin implements IPropertyChang
   private static final String SEPARATOR = "-----------------------------------------------------------------------------"; //$NON-NLS-1$
 
   public UCDetectorPlugin() {
-    UCDetectorPlugin.plugin = this;
+    plugin = this;
   }
 
   private void dumpInformation() {
@@ -184,7 +184,7 @@ public class UCDetectorPlugin extends AbstractUIPlugin implements IPropertyChang
   public void stop(BundleContext context) throws Exception {
     Log.info("Stopping UCDetector Plug-In at " + getNow());
     super.stop(context);
-    UCDetectorPlugin.plugin = null;
+    plugin = null;
   }
 
   /**
@@ -194,7 +194,7 @@ public class UCDetectorPlugin extends AbstractUIPlugin implements IPropertyChang
    * @throws CoreException which contains the {@link OutOfMemoryError}
    */
   public static void handleOutOfMemoryError(OutOfMemoryError e) throws CoreException {
-    Status status = logErrorAndStatus(Messages.OutOfMemoryError_Hint, e);
+    Status status = logToEclipseLog(Messages.OutOfMemoryError_Hint, e);
     throw new CoreException(status);
   }
 
@@ -202,7 +202,7 @@ public class UCDetectorPlugin extends AbstractUIPlugin implements IPropertyChang
   * @return the shared instance.
   */
   public static UCDetectorPlugin getDefault() {
-    return UCDetectorPlugin.plugin;
+    return plugin;
   }
 
   // ---------------------------------------------------------------------------
@@ -225,23 +225,6 @@ public class UCDetectorPlugin extends AbstractUIPlugin implements IPropertyChang
     return JavaPluginImages.createImageDescriptor(bundle, path, true);
   }
 
-  /**
-   * @param status which is be logged to default log
-   */
-  public static void logStatus(IStatus status) {
-    UCDetectorPlugin ucd = getDefault();
-    if (ucd != null && ucd.getLog() != null) {
-      ucd.getLog().log(status);
-    }
-    Log.status(status);
-  }
-
-  public static Status logErrorAndStatus(String message, Throwable ex) {
-    Status status = new Status(IStatus.ERROR, ID, IStatus.ERROR, message, ex);
-    logStatus(status);
-    return status;
-  }
-
   public static final Image getSharedImage(String id) {
     ISharedImages sharedImages = PlatformUI.getWorkbench().getSharedImages();
     return sharedImages.getImage(id);
@@ -256,7 +239,7 @@ public class UCDetectorPlugin extends AbstractUIPlugin implements IPropertyChang
   }
 
   public static String getNow() {
-    return getDefault().getDateFormat().format(new Date());
+    return getDefault().dateFormat.format(new Date());
   }
 
   // -------------------------------------------------------------------------
@@ -279,10 +262,6 @@ public class UCDetectorPlugin extends AbstractUIPlugin implements IPropertyChang
 
   public static boolean isHeadlessMode() {
     return UCDetectorPlugin.isHeadlessMode;
-  }
-
-  private DateFormat getDateFormat() {
-    return dateFormat;
   }
 
   public static void closeSave(Closeable closable) {
@@ -350,6 +329,22 @@ public class UCDetectorPlugin extends AbstractUIPlugin implements IPropertyChang
     }
   }
 
+  // STATUS -------------------------------------------------------------------
+  /** @param status which is be logged to default log */
+  public static void logToEclipseLog(IStatus status) {
+    UCDetectorPlugin ucd = getDefault();
+    if (ucd != null && ucd.getLog() != null) {
+      ucd.getLog().log(status);
+    }
+    Log.status(status);
+  }
+
+  public static Status logToEclipseLog(String message, Throwable ex) {
+    Status status = new Status(IStatus.ERROR, ID, IStatus.ERROR, message, ex);
+    logToEclipseLog(status);
+    return status;
+  }
+
   /**
    * 
    * [ 3025571 ] Exception loading modes: Malformed  &#92;uxxxx encoding
@@ -382,10 +377,10 @@ public class UCDetectorPlugin extends AbstractUIPlugin implements IPropertyChang
     }
     catch (IOException ex) {
       String message = NLS.bind(Messages.ModesPanel_CantSetPreferences, modeFileName);
-      UCDetectorPlugin.logErrorAndStatus(message, ex);
+      logToEclipseLog(message, ex);
     }
     finally {
-      UCDetectorPlugin.closeSave(reader);
+      closeSave(reader);
     }
     return result;
   }

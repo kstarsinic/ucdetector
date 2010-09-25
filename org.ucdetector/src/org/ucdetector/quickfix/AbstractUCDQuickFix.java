@@ -125,7 +125,7 @@ abstract class AbstractUCDQuickFix extends WorkbenchMarkerResolution {
       }
     }
     catch (Exception e) {
-      UCDetectorPlugin.logErrorAndStatus("Quick Fix Problems", e);
+      UCDetectorPlugin.logToEclipseLog("Quick Fix Problems", e);
     }
     finally {
       try {
@@ -134,7 +134,7 @@ abstract class AbstractUCDQuickFix extends WorkbenchMarkerResolution {
         }
       }
       catch (CoreException e) {
-        UCDetectorPlugin.logErrorAndStatus("Quick Fix Problems", e);
+        UCDetectorPlugin.logToEclipseLog("Quick Fix Problems", e);
       }
     }
   }

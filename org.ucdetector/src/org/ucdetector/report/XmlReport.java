@@ -348,10 +348,10 @@ public class XmlReport implements IUCDetectorReport {
     String mes = NLS.bind(message, parms);
     Status status = new Status(iStatus, UCDetectorPlugin.ID, iStatus, mes, ex);
     if (iStatus == IStatus.ERROR) {
-      UCDetectorPlugin.logStatus(status); // Create status in Error Log View
+      UCDetectorPlugin.logToEclipseLog(status); // Create status in Error Log View
       return;
     }
-    Log.status(status);
+    UCDetectorPlugin.logToEclipseLog(status);
   }
 
   /**

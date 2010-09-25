@@ -64,11 +64,11 @@ public abstract class AbstractUCDetectorAction extends ActionDelegate { // NO_UC
           }
         }
         catch (CoreException e) {
-          UCDetectorPlugin.logStatus(e.getStatus());
+          UCDetectorPlugin.logToEclipseLog(e.getStatus());
           //          return e.getStatus();
         }
         catch (Throwable e) {
-          UCDetectorPlugin.logErrorAndStatus(Messages.AbstractUCDetectorAction_AnalyzeFailedText, e);
+          UCDetectorPlugin.logToEclipseLog(Messages.AbstractUCDetectorAction_AnalyzeFailedText, e);
         }
         IStatus status = null;
         try {
