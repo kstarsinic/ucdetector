@@ -66,48 +66,37 @@ public class Log {
   }
 
   // DEBUG --------------------------------------------------------------------
-  public static void debug(String message) {
-    log(LogLevel.DEBUG, message);
-  }
-
   public static void debug(String format, Object... args) {
-    debug(String.format(format, args));
+    log(LogLevel.DEBUG, args.length == 0 ? format : String.format(format, args));
   }
 
   // INFO ---------------------------------------------------------------------
-  public static void info(String message) {
-    log(LogLevel.INFO, message);
-  }
-
   public static void info(String format, Object... args) {
-    info(String.format(format, args));
-  }
-
-  public static void success(boolean success, String message) {
-    if (success) {
-      info("OK: " + message);
-    }
-    else {
-      warn("FAIL: " + message);
-    }
+    log(LogLevel.INFO, args.length == 0 ? format : String.format(format, args));
   }
 
   // WARN ---------------------------------------------------------------------
-  public static void warn(String message) {
-    log(LogLevel.WARN, message);
-  }
-
   public static void warn(String format, Object... args) {
-    warn(String.format(format, args));
+    log(LogLevel.WARN, args.length == 0 ? format : String.format(format, args));
   }
 
   // ERROR --------------------------------------------------------------------
   public static void error(String message) {
-    log(LogLevel.ERROR, message);
+    logImpl(LogLevel.ERROR, message, null);
   }
 
   public static void error(String message, Throwable ex) {
-    log(LogLevel.ERROR, message, ex);
+    logImpl(LogLevel.ERROR, message, ex);
+  }
+
+  // SUCCESS ------------------------------------------------------------------
+  public static void success(boolean success, String message) {
+    log(success ? LogLevel.INFO : LogLevel.WARN, success ? "OK: " : "FAIL: " + message);
+  }
+
+  // LOG ------------------------------------------------------------------------
+  public static void log(LogLevel level, String message) {
+    logImpl(level, message, null);
   }
 
   // STATUS -------------------------------------------------------------------
@@ -123,15 +112,11 @@ public class Log {
     }
   }
 
-  public static void log(LogLevel level, String message) {
-    log(level, message, null);
-  }
-
   // LOG IMPL -------------------------------------------------------------------
   /**
    * Very simple logging to System.out and System.err
    */
-  private static void log(LogLevel level, String message, Throwable ex) {
+  private static void logImpl(LogLevel level, String message, Throwable ex) {
     initLog();
     if (level.ordinal() < getActiveLogLevel().ordinal()) {
       return;
