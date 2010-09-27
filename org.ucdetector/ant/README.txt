@@ -14,7 +14,7 @@ Directory setup:
 - Create a new base directory          : ucdetector-headless
 - Put java projects in                 : ucdetector-headless/workspace
 - Unpack downloaded eclipse to         : ucdetector-headless/eclipse
-- Put org.ucdetector_x.y.z.jar in      : ucdetector-headless/eclipse/plugins    (dropins folder does not work!)
+- Put org.ucdetector_x.y.z.jar in      : ucdetector-headless/eclipse/dropins
 - unzip org.ucdetector_x.y.z.zip/ant to: ucdetector-headless/ant
 
 
