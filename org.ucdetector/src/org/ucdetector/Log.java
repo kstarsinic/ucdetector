@@ -66,20 +66,37 @@ public class Log {
   }
 
   // DEBUG --------------------------------------------------------------------
+  public static void debug(String message) {
+    log(LogLevel.DEBUG, message);
+  }
+
   public static void debug(String format, Object... args) {
     debug(String.format(format, args));
   }
 
   // INFO ---------------------------------------------------------------------
+  public static void info(String message) {
+    log(LogLevel.INFO, message);
+  }
+
   public static void info(String format, Object... args) {
     info(String.format(format, args));
   }
 
   public static void success(boolean success, String message) {
-    log(success ? LogLevel.INFO : LogLevel.WARN, (success ? "OK: " : "FAIL: ") + message);
+    if (success) {
+      info("OK: " + message);
+    }
+    else {
+      warn("FAIL: " + message);
+    }
   }
 
   // WARN ---------------------------------------------------------------------
+  public static void warn(String message) {
+    log(LogLevel.WARN, message);
+  }
+
   public static void warn(String format, Object... args) {
     warn(String.format(format, args));
   }
@@ -93,7 +110,7 @@ public class Log {
     log(LogLevel.ERROR, message, ex);
   }
 
-  // STATUS --------------------------------------------------------------------
+  // STATUS -------------------------------------------------------------------
   public static void status(IStatus status) {
     if (status.getSeverity() == IStatus.ERROR) {
       error(status.getMessage(), status.getException());
@@ -106,11 +123,11 @@ public class Log {
     }
   }
 
-  // LOG IMPL -------------------------------------------------------------------
   public static void log(LogLevel level, String message) {
     log(level, message, null);
   }
 
+  // LOG IMPL -------------------------------------------------------------------
   /**
    * Very simple logging to System.out and System.err
    */

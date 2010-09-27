@@ -14,7 +14,7 @@
     <echo>UCDetector version = ${Bundle-Version}</echo>
     <echo>output.dir         = ${output.dir}</echo>
     <tstamp>
-      <format property="NOW" pattern="yyyy-MM-dd HH:mm z" locale="en" />
+      <format property="NOW" pattern="yyyy-MM-dd HH:mm Z" locale="en" />
     </tstamp>
     <delete dir="${output.plugins.dir}" failonerror="false" />
     <mkdir dir="${output.plugins.dir}" />

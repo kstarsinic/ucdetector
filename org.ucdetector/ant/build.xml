@@ -69,8 +69,7 @@ report:
     <pathconvert property="LAUNCHER">
       <fileset dir="${ECLIPSE_HOME}/plugins" includes="org.eclipse.equinox.launcher_*.jar" />
     </pathconvert>
-    <echo>LAUNCHER = '${LAUNCHER}'
-when LAUNCHER is empty, create new property 'LAUNCHER'</echo>
+    <echo>LAUNCHER = '${LAUNCHER}'</echo>
 
     <java jar="${LAUNCHER}" fork="true" maxmemory="1024m">
       <!-- <arg line="-debug" />  -->
