@@ -36,6 +36,7 @@ import org.ucdetector.iterator.UCDetectorIterator;
 import org.ucdetector.preferences.PreferenceInitializer;
 import org.ucdetector.preferences.Prefs;
 import org.ucdetector.search.UCDProgressMonitor;
+import org.ucdetector.util.JavaElementUtil;
 import org.ucdetector.util.StopWatch;
 
 /**
@@ -85,7 +86,7 @@ public class UCDHeadless {
     try {
       Log.info("Starting UCDetector Headless");
       try {
-        Log.info("TRY TO START DS  - eclipse bug 314814");
+        // Log.info("TRY TO START DS  - eclipse bug 314814");
         Bundle fwAdminBundle = Platform.getBundle("org.eclipse.equinox.ds");
         fwAdminBundle.start();
       }
@@ -171,6 +172,12 @@ public class UCDHeadless {
         javaElementsToIterate.add(javaElement);
       }
     }
+    // Logging
+    Log.info("There are %s java elements to iterate", String.valueOf(javaElementsToIterate.size()));//$NON-NLS-1$
+    for (IJavaElement javaElement : javaElementsToIterate) {
+      Log.info("    " + JavaElementUtil.getElementName(javaElement));//$NON-NLS-1$
+    }
+    // Iterate
     if (Report.eachproject == report) {
       for (IJavaElement javaElement : javaElementsToIterate) {
         UCDetectorIterator iterator = new UCDetectorIterator();

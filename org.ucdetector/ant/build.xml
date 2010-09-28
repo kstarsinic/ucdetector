@@ -15,32 +15,30 @@
   <!-- =====================================================================
        UCDETECTOR
        ===================================================================== -->
-  <target name="run-ucdetector" description="export preferences to file">
-    <!--
-            ATTRIBUTES
+  <!-- Change code of this target, when needed:
 buildType:
     One of: AUTO_BUILD (default), FULL_BUILD (clean all and build all), CLEAN_BUILD, INCREMENTAL_BUILD 
     For details see: org.eclipse.core.resources.IncrementalProjectBuilder
     Example: buildType="AUTO_BUILD"
-
 optionsFile:
     - Edit options.properties file
     - Or set UCDetector preferences in eclipse IDE
       and use mode file from: WORKSPACE_IDE/.metadata/.plugins/org.ucdetector/modes/
       Example: optionsFile="options.properties"
-
 targetPlatformFile:
     Only needed, if you use a target platform different to ECLIPSE_HOME
     CHANGE file ucdetector.target, when using target platform!
     Examples:
-      targetPlatformFile="ucdetector.target"
-      targetPlatformFile="${WORKSPACE}/myProject/myTarget.target"
-
+      targetPlatformFile="ucdetector.target", targetPlatformFile="${WORKSPACE}/myProject/myTarget.target"
 report:
     eachproject (default), single
     Example: report="eachproject"
 -->
-    <ucdetector buildType="FULL_BUILD" optionsFile="options.properties" report="eachproject">
+  <target name="run-ucdetector" description="export preferences to file">
+    <ucdetector buildType="FULL_BUILD"
+                optionsFile="options.properties"
+                targetPlatformFile="ucdetector.target"
+                report="eachproject">
       <!-- Resources to build: Leave empty, to build ALL projects
       <iterate name="myProject" />
       <iterate name="myOtherProject/src/main" />
@@ -51,6 +49,7 @@ report:
   <!-- =====================================================================
        DETECT
        ===================================================================== -->
+  <!-- Usually there is no need to change code of this target                -->
   <target name="detect" description="Run UCDetector using java">
     <echo>
 # -----------------------------------------------------------------------------
@@ -59,7 +58,6 @@ report:
 # reports.dir  = ${reports.dir}
 # -----------------------------------------------------------------------------
 </echo>
-
     <available file="${ECLIPSE_HOME}" property="ECLIPSE_HOME.exists" />
     <fail unless="ECLIPSE_HOME.exists" message="Missing ${ECLIPSE_HOME}. Edit property ECLIPSE_HOME" />
     <available file="${WORKSPACE}" property="WORKSPACE.exists" />
@@ -72,11 +70,13 @@ report:
     <echo>LAUNCHER = '${LAUNCHER}'</echo>
 
     <java jar="${LAUNCHER}" fork="true" maxmemory="1024m">
-      <!-- <arg line="-debug" />  -->
+      <!-- <arg line="-debug" /> -->
       <arg line="-clean" />
       <arg line="-data ${WORKSPACE}" />
       <arg line="-application org.eclipse.ant.core.antRunner" />
+      <!-- The name of this file -->
       <arg line="-buildfile build.xml" />
+      <!-- The target in this this file -->
       <arg line="run-ucdetector" />
     </java>
   </target>

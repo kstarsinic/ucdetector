@@ -10,5 +10,5 @@ ECLIPSE_HOME=../eclipse
 WORKSPACE=../workspace
 LAUNCHER=$(find $ECLIPSE_HOME -name "org.eclipse.equinox.launcher_*.jar" | sort | tail -1);
 
-java -Xmx1024m -jar $LAUNCHER -clean -data $WORKSPACE -application org.eclipse.ant.core.antRunner -buildfile build.xml run-ucdetector $*
+java -Xmx1024m -jar $LAUNCHER -clean -data $WORKSPACE -application org.eclipse.ant.core.antRunner -buildfile build.xml run-ucdetector $@
 

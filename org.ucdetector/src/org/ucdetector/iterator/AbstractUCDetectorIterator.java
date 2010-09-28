@@ -97,18 +97,12 @@ public abstract class AbstractUCDetectorIterator {
    */
   public final void iterate(IJavaElement[] javaElements) throws CoreException {
     this.objectsToIterate = javaElements;
-    if (DEBUG) {
-      Log.debug("%s selections to iterate: %s", String.valueOf(javaElements.length), getSelectedString(javaElements)); //$NON-NLS-1$
-    }
     try {
       handleStartGlobal(javaElements);
       for (IJavaElement selection : javaElements) {
-        if (selection instanceof IPackageFragment) {
-          activePackage = (IPackageFragment) selection;
-        }
-        else {
-          activePackage = null;
-        }
+        Log.info("###############################################################");//$NON-NLS-1$
+        Log.info("Start iterating: " + JavaElementUtil.getElementName(selection));//$NON-NLS-1$
+        activePackage = (selection instanceof IPackageFragment ? (IPackageFragment) selection : null);
         handleStartSelectedElement(selection);
         if (doSelectedElement()) {
           iterate(selection);
