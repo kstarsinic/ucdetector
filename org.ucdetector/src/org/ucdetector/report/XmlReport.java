@@ -358,19 +358,9 @@ public class XmlReport implements IUCDetectorReport {
    * Append statistics like: date, searchDuration, searched elements
    */
   private void appendStatistics(boolean isEndReport) {
-    long now = System.currentTimeMillis();
-    long duration = (now - timeStart);
-    String durationString = StopWatch.timeAsString(duration);
-    abouts = appendChild(statistcs, "abouts", null);
-    // Nodes change after each flush
-    nodeCreated = appendAbout("reportCreated", "Created report", UCDetectorPlugin.getNow(), true, nodeCreated);
-    nodeCreatedTS = appendAbout("reportCreatedTS", "Created report", "" + now, false, nodeCreatedTS);
-    nodeDuration = appendAbout("searchDuration", "Search duration", durationString, true, nodeDuration);
-    nodeDurationTS = appendAbout("searchDurationTS", "Search duration", "" + duration, false, nodeDurationTS);
-    nodeFinished = appendAbout("detectionFinished", "Detection Finished", "" + isEndReport, false, nodeFinished);
-    //
     if (isFirstStatistic) {
       isFirstStatistic = false;
+      abouts = appendChild(statistcs, "abouts", null);
       appendAbout("operatingSystem", "Operating system", UCDetectorPlugin.getAboutOS(), true, null);
       appendAbout("javaVersion", "Java", UCDetectorPlugin.getAboutJavaVersion(), true, null);
       appendAbout("eclipseVersion", "Eclipse", UCDetectorPlugin.getAboutEclipseVersion(), true, null);
@@ -396,6 +386,15 @@ public class XmlReport implements IUCDetectorReport {
         preferenceNode.setAttribute("value", entry.getValue());
       }
     }
+    // Nodes change after each flush
+    long now = System.currentTimeMillis();
+    long duration = (now - timeStart);
+    String durationString = StopWatch.timeAsString(duration);
+    nodeCreated = appendAbout("reportCreated", "Created report", UCDetectorPlugin.getNow(), true, nodeCreated);
+    nodeCreatedTS = appendAbout("reportCreatedTS", "Created report", "" + now, false, nodeCreatedTS);
+    nodeDuration = appendAbout("searchDuration", "Search duration", durationString, true, nodeDuration);
+    nodeDurationTS = appendAbout("searchDurationTS", "Search duration", "" + duration, false, nodeDurationTS);
+    nodeFinished = appendAbout("detectionFinished", "Detection Finished", "" + isEndReport, false, nodeFinished);
   }
 
   /**
