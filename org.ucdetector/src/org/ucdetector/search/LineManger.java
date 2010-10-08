@@ -176,7 +176,7 @@ public class LineManger {
         }
       }
       // [ 2923567 ] Do not report markers for deprecated class members
-      // TODO: Ignore all children for a class
+      // All children for a class are ignored automatically. See SearchManager.noRefTypes
       if (Prefs.isFilterDeprecated()) {
         Javadoc javadoc = declaration.getJavadoc();
         if (javadoc != null && javadoc.tags() != null) {
