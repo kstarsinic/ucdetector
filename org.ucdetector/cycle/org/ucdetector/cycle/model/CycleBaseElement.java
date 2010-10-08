@@ -15,7 +15,6 @@ import org.eclipse.ui.PlatformUI;
 /**
  * Base class of all CycleTreeElements
  */
-// TODO 2009-02-20: UCD tells to use default visibility. But compile error
 public abstract class CycleBaseElement {
   //  private static final int LABLEL_FLAGS = JavaElementLabelProvider.SHOW_PARAMETERS;
   //
