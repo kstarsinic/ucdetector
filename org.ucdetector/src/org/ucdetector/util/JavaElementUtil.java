@@ -52,6 +52,7 @@ import org.ucdetector.search.CountSearchRequestor;
  * @author Joerg Spieler
  * @since 2008-02-29
  */
+@SuppressWarnings("nls")
 public class JavaElementUtil {
   private final static NullProgressMonitor NULL_MONITOR = new NullProgressMonitor();
 
@@ -169,13 +170,13 @@ public class JavaElementUtil {
     String methodName = method.getElementName();
     switch (method.getNumberOfParameters()) {
       case 0: {
-        return "hashCode".equals(methodName) // //$NON-NLS-1$
-            || "clone".equals(methodName) // //$NON-NLS-1$
-            || "toString".equals(methodName)// //$NON-NLS-1$
-            || "finalize".equals(methodName); //$NON-NLS-1$
+        return "hashCode".equals(methodName) // 
+            || "clone".equals(methodName) // 
+            || "toString".equals(methodName)// 
+            || "finalize".equals(methodName);
       }
       case 1: {
-        return "equals".equals(methodName);//$NON-NLS-1$
+        return "equals".equals(methodName);
       }
       default:
         return false;
@@ -198,7 +199,6 @@ public class JavaElementUtil {
    * @see "http://java.sun.com/javase/6/docs/platform/serialization/spec/output.html"
    * @see org.eclipse.jdt.internal.compiler.problem.ProblemReporter#unusedPrivateMethod
    */
-  @SuppressWarnings("nls")
   public static boolean isSerializationMethod(IMethod method) throws JavaModelException {
     if (Flags.isStatic(method.getFlags())) {
       return false;
@@ -233,8 +233,8 @@ public class JavaElementUtil {
    */
   public static boolean isSerializationField(IField field) throws JavaModelException {
     if (isConstant(field)) {
-      return "serialVersionUID".equals(field.getElementName()) //$NON-NLS-1$
-          || "serialPersistentFields".equals(field.getElementName()); //$NON-NLS-1$
+      return "serialVersionUID".equals(field.getElementName())
+          || "serialPersistentFields".equals(field.getElementName());
     }
     return false;
   }
@@ -250,7 +250,7 @@ public class JavaElementUtil {
    */
   public static String getElementName(IJavaElement element) {
     if (element == null) {
-      return "null"; //$NON-NLS-1$
+      return "null";
     }
     if (element instanceof IMethod) {
       return getMethodName((IMethod) element);
@@ -262,10 +262,10 @@ public class JavaElementUtil {
       return getTypeName(element);
     }
     if (element instanceof IPackageFragment && ((IPackageFragment) element).isDefaultPackage()) {
-      return "default package"; //$NON-NLS-1$
+      return "default package";
     }
     if (element instanceof IImportContainer) {
-      return "import declarations"; //$NON-NLS-1$
+      return "import declarations";
     }
     return element.getElementName();
   }
@@ -278,7 +278,7 @@ public class JavaElementUtil {
     if (element instanceof IType) {
       return ((IType) element).getTypeQualifiedName('.');
     }
-    return "class?"; //$NON-NLS-1$
+    return "class?";
   }
 
   /**
@@ -294,30 +294,30 @@ public class JavaElementUtil {
   }
 
   /**
-   * @return Method name as String, or for constructors  "<init>"
+   * @return Method name as String, or for constructors  "&lt;init>"
    */
   private static String getMethodName(IMethod method) {
     if (method == null) {
-      return "method?"; //$NON-NLS-1$
+      return "method?";
     }
-    return String.format("%s.%s(%s)", getTypeName(method.getParent()), //$NON-NLS-1$
-        getSimpleMethodName(method), parametersToString(method));
+    return String.format("%s.%s(%s)", getTypeName(method.getParent()), getSimpleMethodName(method),
+        parametersToString(method));
   }
 
   public static String getSimpleMethodName(IMethod method) {
-    String methodName = (method == null) ? "method?" : method.getElementName(); //$NON-NLS-1$
-    return ((methodName.length() == 0 ? "<init>" : methodName)); //$NON-NLS-1$
+    String methodName = (method == null) ? "method?" : method.getElementName();
+    return ((methodName.length() == 0 ? "<init>" : methodName));
   }
 
   public static String getSimpleFieldName(IField field) {
-    return (field == null) ? "field?" : field.getElementName(); //$NON-NLS-1$
+    return (field == null) ? "field?" : field.getElementName();
   }
 
   private static String getFieldName(IField field) {
     if (field == null) {
-      return "field?"; //$NON-NLS-1$
+      return "field?";
     }
-    return String.format("%s.%s", getTypeName(field.getParent()), field.getElementName()); //$NON-NLS-1$
+    return String.format("%s.%s", getTypeName(field.getParent()), field.getElementName());
   }
 
   /**
@@ -337,7 +337,7 @@ public class JavaElementUtil {
       }
       else {
         sb.append(',');
-        sb.append(sb.length() > 30 ? "*" : typeAsString); //$NON-NLS-1$
+        sb.append(sb.length() > 30 ? "*" : typeAsString);
       }
     }
     return sb.toString();
@@ -428,7 +428,7 @@ public class JavaElementUtil {
     catch (Throwable throwable) {
       isSearchException = true;
       // Java Search throws an NullPointerException in Eclipse 3.4M5
-      String mes = "Java search problems. UCDetecor will ignore this exception. Maybe a 'org.eclipse.jdt.core.search' bug!"; //$NON-NLS-1$
+      String mes = "Java search problems. UCDetecor will ignore this exception. Maybe a 'org.eclipse.jdt.core.search' bug!";
       Log.error(mes, throwable);
     }
     return isSearchException;
@@ -500,18 +500,15 @@ public class JavaElementUtil {
       return false;
     }
     String name = method.getElementName();
-    if (Signature.SIG_VOID.equals(method.getReturnType()) && name.startsWith("set") //$NON-NLS-1$
-        && name.length() > 3 //
+    if (Signature.SIG_VOID.equals(method.getReturnType()) && name.startsWith("set") && name.length() > 3
         && Character.isUpperCase(name.charAt(3)) && method.getNumberOfParameters() == 1) {
       return true;
     }
-    if (!Signature.SIG_VOID.equals(method.getReturnType()) && name.startsWith("get") //$NON-NLS-1$
-        && name.length() > 3 //
+    if (!Signature.SIG_VOID.equals(method.getReturnType()) && name.startsWith("get") && name.length() > 3
         && Character.isUpperCase(name.charAt(3)) && method.getNumberOfParameters() == 0) {
       return true;
     }
-    if (Signature.SIG_BOOLEAN.equals(method.getReturnType()) && name.startsWith("is") //$NON-NLS-1$
-        && name.length() > 2 //
+    if (Signature.SIG_BOOLEAN.equals(method.getReturnType()) && name.startsWith("is") && name.length() > 2
         && Character.isUpperCase(name.charAt(2)) && method.getNumberOfParameters() == 0) {
       return true;
     }
@@ -543,7 +540,7 @@ public class JavaElementUtil {
     IJavaElement[] allPackages = ((IPackageFragmentRoot) packageFragment.getParent()).getChildren();
     for (IJavaElement javaElement : allPackages) {
       IPackageFragment pakage = (IPackageFragment) javaElement;
-      String startPackagenName = packageFragment.getElementName() + "."; //$NON-NLS-1$
+      String startPackagenName = packageFragment.getElementName() + ".";
       if (packageFragment.isDefaultPackage() || pakage.getElementName().startsWith(startPackagenName)) {
         subPackages.add(pakage);
       }
@@ -551,7 +548,6 @@ public class JavaElementUtil {
     return subPackages;
   }
 
-  @SuppressWarnings("nls")
   public enum MemberInfo {
     // org.eclipse.jdt.ui/icons/full/obj16/field_public_obj.gif: 
     Annotation("Annotation", "annotation_obj.gif"), //
@@ -613,51 +609,56 @@ public class JavaElementUtil {
   * </ul>
   */
   public static String getMemberTypeString(IMember member) {
+    MemberInfo memberInfo = getMemberInfo(member);
+    return memberInfo == null ? "???" : memberInfo.toString();
+  }
+
+  public static MemberInfo getMemberInfo(IMember member) {
     try {
       if (member instanceof IType) {
         IType type = (IType) member;
         if (type.isAnnotation()) {
-          return MemberInfo.Annotation.toString();
+          return MemberInfo.Annotation;
         }
         if (type.isAnonymous()) {
-          return MemberInfo.ClassAnonymous.toString();
+          return MemberInfo.ClassAnonymous;
         }
         if (type.isEnum()) {
-          return MemberInfo.Enum.toString();
+          return MemberInfo.Enum;
         }
         if (type.isInterface()) {
-          return MemberInfo.Interface.toString();
+          return MemberInfo.Interface;
         }
         if (type.isLocal()) {
-          return MemberInfo.ClassLocal.toString();
+          return MemberInfo.ClassLocal;
         }
         if (type.isMember()) {
-          return MemberInfo.ClassMember.toString();
+          return MemberInfo.ClassMember;
         }
-        return MemberInfo.Class.toString();
+        return MemberInfo.Class;
       }
       if (member instanceof IMethod) {
         IMethod method = (IMethod) member;
         if (method.isConstructor()) {
-          return MemberInfo.Constructor.toString();
+          return MemberInfo.Constructor;
         }
-        return MemberInfo.Method.toString();
+        return MemberInfo.Method;
       }
       if (member instanceof IField) {
         IField field = (IField) member;
         if (field.isEnumConstant()) {
-          return MemberInfo.EnumConstant.toString();
+          return MemberInfo.EnumConstant;
         }
         if (JavaElementUtil.isConstant(field)) {
-          return MemberInfo.Constant.toString();
+          return MemberInfo.Constant;
         }
-        return MemberInfo.Field.toString();
+        return MemberInfo.Field;
       }
     }
     catch (JavaModelException ex) {
-      Log.error("Can't get memberTypeString for member: " + member, ex); //$NON-NLS-1$
+      Log.error("Can't get memberTypeString for member: " + member, ex);
     }
-    return "???"; //$NON-NLS-1$
+    return null;
   }
 
   /**
@@ -683,22 +684,22 @@ public class JavaElementUtil {
     if (member instanceof IInitializer) {
       return MemberInfo.Initializer.toString();
     }
-    return "???"; //$NON-NLS-1$
+    return "???";
   }
 
   public static String getElementNames(Collection<? extends IJavaElement> javaElements) { // NO_UCD
     StringBuilder sb = new StringBuilder();
     for (IJavaElement javaElement : javaElements) {
-      sb.append(getElementName(javaElement)).append("\n\t"); //$NON-NLS-1$
+      sb.append(getElementName(javaElement)).append("\n\t");
     }
     return sb.toString();
   }
 
   public static String getElementNameAndClassName(IJavaElement javaElement) { // NO_UCD
     if (javaElement == null) {
-      return "null"; //$NON-NLS-1$
+      return "null";
     }
-    return String.format("%s\t%s", getElementName(javaElement), getClassName(javaElement)); //$NON-NLS-1$
+    return String.format("%s\t%s", getElementName(javaElement), getClassName(javaElement));
   }
 
   /**
@@ -748,7 +749,7 @@ public class JavaElementUtil {
   public static boolean isTestCode(IJavaElement javaElement) {
     // Check type -------------------------------------------------------------
     IType type = getTypeFor(javaElement, true);
-    if (type != null && type.getElementName().endsWith("Test")) { //$NON-NLS-1$
+    if (type != null && type.getElementName().endsWith("Test")) {
       return true;
     }
     // Check packageFragmentRoot -----------------------------------------------
@@ -757,7 +758,7 @@ public class JavaElementUtil {
       String sourceFolder = getSourceFolderProjectRelativePath(pfr);
       if (sourceFolder != null) {
         sourceFolder = sourceFolder.toLowerCase();
-        if (sourceFolder.contains("test") || sourceFolder.contains("junit")) { //$NON-NLS-1$  //$NON-NLS-2$
+        if (sourceFolder.contains("test") || sourceFolder.contains("junit")) {
           return true;
         }
       }
@@ -769,19 +770,19 @@ public class JavaElementUtil {
         if (Signature.SIG_VOID.equals(method.getReturnType()) && Flags.isPublic(method.getFlags())
             && !Flags.isStatic(method.getFlags()) && method.getNumberOfParameters() == 0) {
           // JUnit 3
-          if (method.getElementName().startsWith("test")) { //$NON-NLS-1$
+          if (method.getElementName().startsWith("test")) {
             return true;
           }
           // NOT USED: JUnit 4 !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
           // if (false) {
           //   String annotation = getAnnotationFor(method);
-          //   return "Test".equals(annotation) //$NON-NLS-1$
-          //       || "org.junit.Test".equals(annotation); //$NON-NLS-1$
+          //   return "Test".equals(annotation) 
+          //       || "org.junit.Test".equals(annotation); 
           // }
         }
       }
       catch (JavaModelException e) {
-        Log.error("Can't run isTestCode() for method: " + method, e); //$NON-NLS-1$
+        Log.error("Can't run isTestCode() for method: " + method, e);
       }
     }
     return false;
@@ -875,9 +876,8 @@ public class JavaElementUtil {
   public static boolean isUsedBySpecialEnumMethods(IType enumType) throws CoreException {
     String[] stringPatterns = new String[] {
         // We need '.' as class name separator for search!
-        enumType.getFullyQualifiedName('.') + ".values()",//$NON-NLS-1$
-        enumType.getFullyQualifiedName('.') + ".valueOf(java.lang.String)", //$NON-NLS-1$
-    };
+        enumType.getFullyQualifiedName('.') + ".values()",
+        enumType.getFullyQualifiedName('.') + ".valueOf(java.lang.String)", };
     for (String stringPattern : stringPatterns) {
       SearchPattern pattern = SearchPattern.createPattern(stringPattern, IJavaSearchConstants.METHOD,
           IJavaSearchConstants.REFERENCES, SearchPattern.R_ERASURE_MATCH);
@@ -906,7 +906,7 @@ public class JavaElementUtil {
   }
 
   public static String getClassName(Object o) {
-    return String.format("[%s]", o == null ? "?" : o.getClass().getName()); //$NON-NLS-1$//$NON-NLS-2$
+    return String.format("[%s]", o == null ? "?" : o.getClass().getName());
   }
 
   /*
