@@ -44,6 +44,7 @@ import org.eclipse.core.runtime.FileLocator;
 import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Path;
+import org.eclipse.core.runtime.Platform;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.jdt.core.IField;
 import org.eclipse.jdt.core.IJavaElement;
@@ -60,6 +61,7 @@ import org.ucdetector.UCDetectorPlugin;
 import org.ucdetector.preferences.PreferenceInitializer;
 import org.ucdetector.preferences.Prefs;
 import org.ucdetector.util.JavaElementUtil;
+import org.ucdetector.util.JavaElementUtil.MemberInfo;
 import org.ucdetector.util.MarkerFactory;
 import org.ucdetector.util.StopWatch;
 import org.w3c.dom.Document;
@@ -229,6 +231,10 @@ public class XmlReport implements IUCDetectorReport {
       Element javaTypeElement = appendChild(marker, "javaType", null);
       javaTypeElement.setAttribute("simple", JavaElementUtil.getMemberTypeStringSimple(javaElement));
       javaTypeElement.setAttribute("long", JavaElementUtil.getMemberTypeString(javaElement));
+      MemberInfo memberInfo = JavaElementUtil.getMemberInfo(javaElement);
+      if (memberInfo != null) {
+        javaTypeElement.setAttribute("icon", memberInfo.getIcon());
+      }
 
       if (javaElement instanceof IMethod) {
         IMethod method = (IMethod) javaElement;
@@ -477,26 +483,29 @@ public class XmlReport implements IUCDetectorReport {
     }
   }
 
-  private static final String[] ICONS = new String[] { "FewReference.gif", "Reference.gif", "TestOnly.gif", "ucd.gif",
-      "ucdetector32.png", "VisibilityDefault.gif", "Final.gif", "VisibilityPrivate.gif", "VisibilityProtected.gif",
-      "ElementClass.gif", "ElementField.gif", "ElementMethod.gif" };
+  private static final String[] ICONS = new String[] { //
+  //  "ElementClass.gif", "ElementField.gif", "ElementMethod.gif",//
+      "FewReference.gif", "Final.gif", "Reference.gif", "TestOnly.gif",//
+      "ucd.gif", "ucdetector32.png", //
+      "VisibilityDefault.gif", "VisibilityPrivate.gif", "VisibilityProtected.gif", //
+  };
 
   private void copyIconFiles(File reportDir) {
-    File iconsOutDir = new File(reportDir, ".icons");
-    iconsOutDir.mkdirs();
     try {
+      File iconsOutDir = new File(reportDir, ".icons");
+      iconsOutDir.mkdirs();
       for (String iconName : ICONS) {
         Path iconPath = new Path("icons");
         File outFile = new File(iconsOutDir, iconName);
         Bundle bundle = UCDetectorPlugin.getDefault().getBundle();
         copyToIconDir(iconPath, iconName, outFile, bundle);
       }
-      //      for (JavaElementUtil.MemberInfo memberInfo : JavaElementUtil.MemberInfo.values()) {
-      //        Path iconPath = new Path("icons/full/obj16/");
-      //        File outFile = new File(iconsOutDir, memberInfo.getIcon());
-      //        Bundle bundle = Platform.getBundle("org.eclipse.jdt.ui");
-      //        copyToIconDir(iconPath, memberInfo.getIcon(), outFile, bundle);
-      //      }
+      for (JavaElementUtil.MemberInfo memberInfo : JavaElementUtil.MemberInfo.values()) {
+        Path iconPath = new Path("icons/full/obj16/");
+        File outFile = new File(iconsOutDir, memberInfo.getIcon());
+        Bundle bundle = Platform.getBundle("org.eclipse.jdt.ui");
+        copyToIconDir(iconPath, memberInfo.getIcon(), outFile, bundle);
+      }
     }
     catch (IOException ex) {
       Log.error("Problems copying icon files", ex);

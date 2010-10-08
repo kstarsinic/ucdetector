@@ -147,15 +147,18 @@ ECLIPSE_HOME/dropins/org.ucdetector_*.jar/org/ucdetector/report/html.xslt
 								<xsl:value-of select="@nr"/>
 							</td>
 							<!-- JAVA TYPE -->
-							<td>
-								<img src=".icons/Element{javaType/@simple}.gif" alt="{javaType/@long}" />
+							<td align="center">
+								<!--
+                                <img src=".icons/Element{javaType/@simple}.gif" alt="{javaType/@long}" />
+                                -->
+								<img src=".icons/{javaType/@icon}" alt="{javaType/@long}" />
 								<!--
 								<xsl:text> </xsl:text>
 								<xsl:value-of select="javaType/@long"/>
 								-->
 							</td>
 							<!-- MARKER TYPE -->
-							<td>
+							<td align="center">
 								<img src=".icons/{@markerType}.gif" alt="{@markerType}" />
 								<!--
 								<xsl:text> </xsl:text>
