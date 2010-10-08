@@ -157,10 +157,9 @@ class VisibilityHandler {
         // protected or private are forbidden for local classes
         return false;
       }
-      // TODO: Search all parent class methods and fields to resolve this bug?
+      // TODO: Bug 2539795: Wrong default visibility marker for classes
+      // Search all parent class methods and fields to resolve this bug?
       if (hasPublicChild((IType) startElement)) {
-        // The return line does not resolve
-        // Bug 2539795: Wrong default visibility marker for classes
         // return false;
       }
     }
