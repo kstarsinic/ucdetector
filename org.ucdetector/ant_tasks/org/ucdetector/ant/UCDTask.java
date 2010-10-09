@@ -109,7 +109,7 @@ public class UCDTask extends Task {
   public class Iterate {
     private String name;
 
-    public void setName(String name) {
+    public void setName(String name) { // NO_UCD: used by ant
       this.name = name;
     }
 

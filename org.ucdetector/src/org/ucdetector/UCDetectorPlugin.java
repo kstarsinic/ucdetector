@@ -173,10 +173,6 @@ public class UCDetectorPlugin extends AbstractUIPlugin implements IPropertyChang
     return result;
   }
 
-  public static void dumpList(String listString, String separator) {
-    Log.info(listString.replace("[", separator).replace(", ", separator).replace("]", ""));
-  }
-
   /**
    * This method is called when the plug-in is stopped
    */
