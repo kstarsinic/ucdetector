@@ -75,6 +75,7 @@ public class PreferenceInitializer extends AbstractPreferenceInitializer {
     store.setDefault(Prefs.REPORT_CREATE_TXT, false);
     store.setDefault(Prefs.LOG_LEVEL, LogLevel.INFO.toString());
     store.setDefault(Prefs.LOG_TO_ECLIPSE, false);
+    store.setDefault(Prefs.RUN_ON_SAVE, true);
     // KEYWORDS ----------------------------------------------------------------
     store.setDefault(Prefs.ANALYZE_FINAL_METHOD, IGNORE.name());
     store.setDefault(Prefs.ANALYZE_FINAL_FIELD, IGNORE.name());

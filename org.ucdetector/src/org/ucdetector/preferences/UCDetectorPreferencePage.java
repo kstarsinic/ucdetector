@@ -292,6 +292,7 @@ public class UCDetectorPreferencePage extends FieldEditorPreferencePage implemen
     ComboFieldEditor combo = new ComboFieldEditor(Prefs.LOG_LEVEL, Messages.PreferencePage_LogLevel, LOG_LEVELS, spacer);
     addField(combo);
     appendBool(Prefs.LOG_TO_ECLIPSE, Messages.PreferencePage_LogToEclipse, null, spacer, 2);
+    appendBool(Prefs.RUN_ON_SAVE, Messages.PreferencePage_RunOnSave, null, spacer, 2);
   }
 
   private Combo changeVisibiliyCombo;

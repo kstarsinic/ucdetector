@@ -87,6 +87,8 @@ public class UCDetectorPlugin extends AbstractUIPlugin implements IPropertyChang
   //private final DateFormat dateFormat = DateFormat.getDateTimeInstance(DateFormat.MEDIUM, DateFormat.MEDIUM, Locale.getDefault());
   private final DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
   private static final String SEPARATOR = "-----------------------------------------------------------------------------"; //$NON-NLS-1$
+  // INSTANCE
+  private RunOnSave runOnSave = null;
 
   public UCDetectorPlugin() {
     plugin = this;
@@ -124,6 +126,8 @@ public class UCDetectorPlugin extends AbstractUIPlugin implements IPropertyChang
   public void start(BundleContext context) throws Exception {
     super.start(context);
     dumpInformation();
+    runOnSave = new RunOnSave();
+    runOnSave.setActive(Prefs.isRunOnSave());
     getPreferenceStore().addPropertyChangeListener(this);
   }
 
@@ -322,6 +326,9 @@ public class UCDetectorPlugin extends AbstractUIPlugin implements IPropertyChang
     }
     if (property.equals(Prefs.LOG_TO_ECLIPSE)) {
       Log.setLogToEclipse(Boolean.parseBoolean(newValue));
+    }
+    if (property.equals(Prefs.RUN_ON_SAVE)) {
+      runOnSave.setActive(Boolean.parseBoolean(newValue));
     }
   }
 

@@ -91,6 +91,7 @@ public final class Prefs {
   //
   public static final String LOG_LEVEL = ID + ".log.level";
   public static final String LOG_TO_ECLIPSE = ID + ".log.toEclipse";
+  public static final String RUN_ON_SAVE = ID + ".runOnSave";
   //
   public static final String INTERNAL = ID + ".internal";
   static final String MODE_NAME = INTERNAL + ".mode.name";
@@ -460,6 +461,10 @@ public final class Prefs {
 
   public static boolean isLogToEclipse() {
     return getStore().getBoolean(LOG_TO_ECLIPSE);
+  }
+
+  public static boolean isRunOnSave() {
+    return getStore().getBoolean(RUN_ON_SAVE);
   }
 
   public static String getModeName() {

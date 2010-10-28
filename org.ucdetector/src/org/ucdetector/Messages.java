@@ -143,6 +143,7 @@ public final class Messages extends NLS {
   public static String PreferencePage_BrowseReportsDirToolTip; // NO_UCD
   public static String PreferencePage_LogLevel; // NO_UCD
   public static String PreferencePage_LogToEclipse; // NO_UCD
+  public static String PreferencePage_RunOnSave; // NO_UCD
 
   //
   public static String PreferencePage_GroupDetect; // NO_UCD
