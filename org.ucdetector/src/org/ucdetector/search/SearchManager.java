@@ -95,18 +95,11 @@ public class SearchManager {
           return;
         }
         pos++;
-        String message = String.format("Search %s of %s types. Markers %s. Exceptions %s. Class %s - %s", //$NON-NLS-1$
-            fill(pos, 4),//
-            fill(typeContainers.size(), 4),//
-            fill(markerCreated, 4), //
-            fill(searchProblems.size(), 2),//
-            JavaElementUtil.getTypeName(container.getType()), //
-            UCDetectorPlugin.getNow());
         if (Log.isDebug()) {
-          Log.debug(message);
+          Log.debug(getProgress(typeContainers, pos, container));
         }
         else if (pos == 1 || pos % 10 == 0 || pos == typeContainers.size()) {
-          Log.info(message);
+          Log.info(getProgress(typeContainers, pos, container));
         }
         if (container.getType() != null) {
           searchAndHandleException(container.getType());
@@ -131,6 +124,13 @@ public class SearchManager {
     }
   }
 
+  @SuppressWarnings("boxing")
+  private String getProgress(Set<TypeContainer> typeContainers, int pos, TypeContainer container) {
+    return String.format("Search %4s of %4s types. Markers %4s. Exceptions %2s. Class %s - %s", //$NON-NLS-1$
+        pos, typeContainers.size(), markerCreated, searchProblems.size(),//
+        JavaElementUtil.getTypeName(container.getType()), UCDetectorPlugin.getNow());
+  }
+
   private void logStart(Set<TypeContainer> typeContainers) {
     int methodsToDetect = 0;
     int fieldsToDetect = 0;
@@ -142,14 +142,6 @@ public class SearchManager {
     Log.info("    Classes to detect: " + typeContainers.size()); //$NON-NLS-1$
     Log.info("    Methods to detect: " + methodsToDetect); //$NON-NLS-1$
     Log.info("    Fields  to detect: " + fieldsToDetect); //$NON-NLS-1$
-  }
-
-  private String fill(int i, int length) {
-    String result = "" + i; //$NON-NLS-1$
-    while (result.length() < length) {
-      result = " " + result; //$NON-NLS-1$
-    }
-    return result;
   }
 
   /**
@@ -220,12 +212,12 @@ public class SearchManager {
     if (JavaElementUtil.isMethodOfJavaLangObject(method)) {
       return; // Ignore methods from java.lang.Object
     }
-
     if (JavaElementUtil.isSerializationMethod(method)) {
       return; // Ignore serialization methods
     }
     int line = lineManger.getLine(method);
     if (line == LineManger.LINE_NOT_FOUND) {
+      logIgnore("Ignore method " + method.getElementName()); //$NON-NLS-1$
       return;
     }
     String searchInfo = JavaElementUtil.getMemberTypeString(method);
@@ -257,6 +249,7 @@ public class SearchManager {
     monitor.worked(1);
     int line = lineManger.getLine(field);
     if (line == LineManger.LINE_NOT_FOUND) {
+      logIgnore("Ignore field " + field.getElementName()); //$NON-NLS-1$
       return;
     }
     String searchInfo = JavaElementUtil.getMemberTypeString(field);
@@ -292,6 +285,12 @@ public class SearchManager {
           new Object[] { JavaElementUtil.getElementName(field) });
       // found=0 needed here, to create reference marker!
       markerFactory.createReferenceMarker(field, message, line, 0);
+    }
+  }
+
+  private void logIgnore(String message) {
+    if (Log.isDebug()) {
+      Log.debug(message);
     }
   }
 

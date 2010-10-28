@@ -33,13 +33,17 @@ import org.ucdetector.search.UCDProgressMonitor;
  * @since 28.10.2010
  */
 // http://www.eclipse.org/articles/Article-Resource-deltas/resource-deltas.html
+// Tracking resource changes: 
+//     http://help.eclipse.org/helios/index.jsp?topic=/org.eclipse.platform.doc.isv/guide/resAdv_events.htm
+// Resource modification hooks:
+//     http://help.eclipse.org/helios/index.jsp?topic=/org.eclipse.platform.doc.isv/guide/resAdv_hooks.htm
 @SuppressWarnings("nls")
-final class RunOnSave implements IResourceChangeListener, IResourceDeltaVisitor {
+public class RunOnSave implements IResourceChangeListener, IResourceDeltaVisitor {
   private final List<IType> changedTypes = new ArrayList<IType>();
   private Job activeJob = null;
 
   public void resourceChanged(IResourceChangeEvent event) {
-    Log.info("IResourceChangeEvent" + event);
+    Log.info("IResourceChangeEvent: " + event);
     if (event.getType() != IResourceChangeEvent.POST_CHANGE) {
       return;
     }
@@ -58,7 +62,7 @@ final class RunOnSave implements IResourceChangeListener, IResourceDeltaVisitor 
   }
 
   public boolean visit(IResourceDelta delta) {
-    Log.info("IResourceDelta" + delta);
+    Log.info("IResourceDelta: " + delta);
     // Not added or removed deltas
     if (delta.getKind() != IResourceDelta.CHANGED) {
       return true;
