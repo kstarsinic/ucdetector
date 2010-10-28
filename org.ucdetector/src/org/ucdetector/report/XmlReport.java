@@ -318,7 +318,7 @@ public class XmlReport implements IUCDetectorReport {
 
   /**
    * @return File name, with does not exist, containing a number.
-   * eg: UCDetetorReport_001
+   * eg: UCDetectorReport_001
    */
   // Fix [2811049]  Html report is overridden each run
   private String getReportName() {

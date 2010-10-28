@@ -50,7 +50,7 @@ public class UCDetectorAction extends AbstractUCDetectorAction {
   }
 
   /**
-   * Open the element UCDetetor detects in the java editor
+   * Open the element UCDetector detects in the java editor
    */
   private final class OpenInEditorAction extends Action {
     @Override
