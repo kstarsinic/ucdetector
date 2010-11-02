@@ -3,7 +3,6 @@ package org.ucdetector;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IResource;
 import org.eclipse.core.resources.IResourceChangeEvent;
 import org.eclipse.core.resources.IResourceChangeListener;
@@ -16,15 +15,12 @@ import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.core.runtime.jobs.Job;
-import org.eclipse.jdt.core.ICompilationUnit;
-import org.eclipse.jdt.core.IJavaElement;
 import org.eclipse.jdt.core.IType;
-import org.eclipse.jdt.core.JavaCore;
-import org.eclipse.jdt.core.JavaModelException;
 import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.ui.progress.IProgressConstants;
 import org.ucdetector.iterator.UCDetectorIterator;
 import org.ucdetector.search.UCDProgressMonitor;
+import org.ucdetector.util.JavaElementUtil;
 
 /**
  * Feature request: Eclipse Save Action - ID: 2993738
@@ -72,27 +68,11 @@ public class RunOnSave implements IResourceChangeListener, IResourceDeltaVisitor
       return true;
     }
     IResource resource = delta.getResource();
-    // Log.info("resource" + resource);
-    if (resource.getType() != IResource.FILE || !"java".equalsIgnoreCase(resource.getFileExtension())) {
-      return true;
+    IType type = JavaElementUtil.getTypeFor(resource);
+    if (type != null) {
+      Log.info("######### typeChanged: " + type.getElementName());
+      changedTypes.add(type);
     }
-    IFile file = (IFile) resource;
-    IJavaElement javaElement = JavaCore.create(file);
-    //    Log.info("javaElement: " + resource);
-    if (!(javaElement instanceof ICompilationUnit)) {
-      return true;
-    }
-    ICompilationUnit unit = (ICompilationUnit) javaElement;
-    IType type;
-    try {
-      type = unit.getTypes()[0];
-    }
-    catch (JavaModelException ex) {
-      Log.error("Can't get type from compilation unit", ex);
-      return true;
-    }
-    Log.info("######### typeChanged: " + type.getElementName());
-    changedTypes.add(type);
     return true;
   }
 

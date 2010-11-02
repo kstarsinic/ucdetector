@@ -44,9 +44,9 @@ import org.eclipse.osgi.util.NLS;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.ui.ISharedImages;
-import org.eclipse.ui.IWorkbenchPage;
 import org.eclipse.ui.IWorkbenchWindow;
 import org.eclipse.ui.PlatformUI;
+import org.eclipse.ui.internal.WorkbenchPage;
 import org.eclipse.ui.internal.ide.IDEWorkbenchPlugin;
 import org.eclipse.ui.plugin.AbstractUIPlugin;
 import org.osgi.framework.Bundle;
@@ -244,8 +244,9 @@ public class UCDetectorPlugin extends AbstractUIPlugin implements IPropertyChang
 
   // -------------------------------------------------------------------------
 
-  public static IWorkbenchPage getActivePage() {
-    return getActiveWorkbenchWindow().getActivePage();
+  public static WorkbenchPage getActivePage() {
+    IWorkbenchWindow window = getActiveWorkbenchWindow();
+    return window == null ? null : (WorkbenchPage) window.getActivePage();
   }
 
   public static IWorkbenchWindow getActiveWorkbenchWindow() {

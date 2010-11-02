@@ -11,6 +11,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
+import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IResource;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.NullProgressMonitor;
@@ -27,6 +28,7 @@ import org.eclipse.jdt.core.IPackageFragment;
 import org.eclipse.jdt.core.IPackageFragmentRoot;
 import org.eclipse.jdt.core.IType;
 import org.eclipse.jdt.core.ITypeHierarchy;
+import org.eclipse.jdt.core.JavaCore;
 import org.eclipse.jdt.core.JavaModelException;
 import org.eclipse.jdt.core.Signature;
 import org.eclipse.jdt.core.search.IJavaSearchConstants;
@@ -909,6 +911,15 @@ public class JavaElementUtil {
     return String.format("[%s]", o == null ? "?" : o.getClass().getName());
   }
 
+  public static IType getTypeFor(IResource resource) {
+    if (!(resource instanceof IFile) || !"java".equalsIgnoreCase(resource.getFileExtension())) {
+      Log.warn("Resource %s is not a java file", resource);
+      return null;
+    }
+    IFile file = (IFile) resource;
+    IJavaElement javaElement = JavaCore.create(file);
+    return getTypeFor(javaElement, true);
+  }
   /*
    * @param clazz to find super classes for
    * @return all super classes of clazz. All interfaces implemented by this class
