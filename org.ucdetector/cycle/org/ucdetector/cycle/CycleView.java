@@ -410,7 +410,6 @@ public class CycleView extends ViewPart { //
   // LabelProvider
   // -------------------------------------------------------------------------
   private static class ViewLabelProvider extends LabelProvider {
-    // // org.eclipse.jdt.ui\icons\full\elcl16\refresh_nav.gif
     @Override
     public Image getImage(Object obj) {
       return ((CycleBaseElement) obj).getImage();
