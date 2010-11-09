@@ -39,6 +39,9 @@ public class RunOnSave implements IResourceChangeListener, IResourceDeltaVisitor
   private Job activeJob = null;
 
   public void resourceChanged(IResourceChangeEvent event) {
+    if (UCDetectorPlugin.isHeadlessMode()) {
+      return;
+    }
     Log.info("IResourceChangeEvent: " + event);
     if (event.getType() != IResourceChangeEvent.POST_CHANGE) {
       return;
@@ -113,9 +116,6 @@ public class RunOnSave implements IResourceChangeListener, IResourceDeltaVisitor
   }
 
   void setActive(boolean runOnSave) {
-    if (UCDetectorPlugin.isHeadlessMode()) {
-      return;
-    }
     Log.info("runOnSave: " + runOnSave);
     IWorkspace workspace = ResourcesPlugin.getWorkspace();
     if (runOnSave) {
