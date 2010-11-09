@@ -40,6 +40,9 @@ public class Startup implements IStartup {
 
   public void earlyStartup() {
     Log.info("Startup.earlyStartup()");
+    if (UCDetectorPlugin.isHeadlessMode()) {
+      return;
+    }
     Display.getDefault().asyncExec(new Runnable() {
       public void run() {
         IWorkbenchWindow activeWorkbenchWindow = UCDetectorPlugin.getActiveWorkbenchWindow();

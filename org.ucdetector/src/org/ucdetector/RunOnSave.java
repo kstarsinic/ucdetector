@@ -113,6 +113,9 @@ public class RunOnSave implements IResourceChangeListener, IResourceDeltaVisitor
   }
 
   void setActive(boolean runOnSave) {
+    if (UCDetectorPlugin.isHeadlessMode()) {
+      return;
+    }
     Log.info("runOnSave: " + runOnSave);
     IWorkspace workspace = ResourcesPlugin.getWorkspace();
     if (runOnSave) {
