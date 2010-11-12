@@ -913,7 +913,7 @@ public class JavaElementUtil {
 
   public static IType getTypeFor(IResource resource) {
     if (!(resource instanceof IFile) || !"java".equalsIgnoreCase(resource.getFileExtension())) {
-      Log.warn("Resource %s is not a java file", resource);
+      // Log.debug("Resource %s is not a java file", resource);
       return null;
     }
     IFile file = (IFile) resource;
