@@ -22,7 +22,6 @@ import org.eclipse.jdt.core.JavaCore;
 import org.eclipse.jdt.core.JavaModelException;
 import org.eclipse.jdt.core.dom.AST;
 import org.eclipse.jdt.core.dom.ASTParser;
-import org.eclipse.jdt.core.dom.AbstractTypeDeclaration;
 import org.eclipse.jdt.core.dom.BodyDeclaration;
 import org.eclipse.jdt.core.dom.ChildListPropertyDescriptor;
 import org.eclipse.jdt.core.dom.CompilationUnit;
@@ -91,9 +90,10 @@ abstract class AbstractUCDQuickFix extends WorkbenchMarkerResolution {
       doc = textFileBuffer.getDocument();
       CompilationUnit copyUnit = createCopy(originalUnit);
       rewrite = ASTRewrite.create(copyUnit.getAST());
-      AbstractTypeDeclaration firstType = (AbstractTypeDeclaration) copyUnit.types().get(0);
+      // Quick fix broken, when there a several types
+      // AbstractTypeDeclaration firstType = (AbstractTypeDeclaration) copyUnit.types().get(0);
       FindNodeToChangeVisitor visitor = new FindNodeToChangeVisitor(charStart);
-      firstType.accept(visitor);
+      copyUnit.accept(visitor);
       if (visitor.nodeToChange == null) {
         Log.warn("Node to change not found for marker: '%s'", dumpMarker(marker));
         return;
