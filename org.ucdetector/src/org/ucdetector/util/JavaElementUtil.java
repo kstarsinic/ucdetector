@@ -172,9 +172,9 @@ public class JavaElementUtil {
     String methodName = method.getElementName();
     switch (method.getNumberOfParameters()) {
       case 0: {
-        return "hashCode".equals(methodName) // 
-            || "clone".equals(methodName) // 
-            || "toString".equals(methodName)// 
+        return "hashCode".equals(methodName) //
+            || "clone".equals(methodName) //
+            || "toString".equals(methodName)//
             || "finalize".equals(methodName);
       }
       case 1: {
@@ -551,7 +551,7 @@ public class JavaElementUtil {
   }
 
   public enum MemberInfo {
-    // org.eclipse.jdt.ui/icons/full/obj16/field_public_obj.gif: 
+    // org.eclipse.jdt.ui/icons/full/obj16/field_public_obj.gif:
     Annotation("Annotation", "annotation_obj.gif"), //
     Class("Class", "class_obj.gif"), //
     ClassAnonymous("Anonymous class", "innerclass_public_obj.gif"), //
@@ -778,8 +778,8 @@ public class JavaElementUtil {
           // NOT USED: JUnit 4 !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
           // if (false) {
           //   String annotation = getAnnotationFor(method);
-          //   return "Test".equals(annotation) 
-          //       || "org.junit.Test".equals(annotation); 
+          //   return "Test".equals(annotation)
+          //       || "org.junit.Test".equals(annotation);
           // }
         }
       }
@@ -865,7 +865,7 @@ public class JavaElementUtil {
   /**
    * Check if a enum class is called by:
    * <ul>
-   *   <li><code>values()</code> or</li> 
+   *   <li><code>values()</code> or</li>
    *   <li><code>valueOf(java.lang.String)</code></li>
    * </ul>
    * See bug 2900561: enum detection, or don't create "unnecessary marker" for enum constants
@@ -911,12 +911,18 @@ public class JavaElementUtil {
     return String.format("[%s]", o == null ? "?" : o.getClass().getName());
   }
 
+  /**
+   * @param resource usually a java file, but maybe others
+   * @return type of the file, or null, if it is not a java file
+   */
   public static IType getTypeFor(IResource resource) {
     if (!(resource instanceof IFile) || !"java".equalsIgnoreCase(resource.getFileExtension())) {
       // Log.debug("Resource %s is not a java file", resource);
       return null;
     }
     IFile file = (IFile) resource;
+    // Another possibility:
+    // ICompilationUnit compilationUnit = JavaCore.createCompilationUnitFrom(file);
     IJavaElement javaElement = JavaCore.create(file);
     return getTypeFor(javaElement, true);
   }
