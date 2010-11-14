@@ -2,37 +2,40 @@ UCDetector 1.7.0 from 2010-??-??:
 New features:
  - [ 3049290 ] Set target platform in headless mode
  - Headless: Iterate over projects or resources. Use option file
+ - Better html report: Show icons, author, change report file name
+ - Smaller xml report
 
 Bugfixes:
+ - QuickFix was broken, when there are several classes in one java file
+ - UCDetector is fit for eclipse 3.7
 
 Todo:
- - bug     [ 3048617 ] Modifier wrong place
  - bug     [ 2926266 ] Method cannot be private if called on subclass
-  
+
 // -----------------------------------------------------------------------------
 UCDetector 1.6.0 from 2010-08-17:
 Bugfixes:
  - fixed missing QuickFix icons
  - [ 3025571 ] Exception loading modes: Malformed \uxxxx encoding
  - [ 3046637 ] Headless fails to recognize projects
- - Cancel broken in active mode, buttons: "Rename..." and "New..."  
+ - Cancel broken in active mode, buttons: "Rename..." and "New..."
 
 New features:
  - [ 2810803 ] Added again: Combobox to change all visibility combos
  - [ 3014516 ] Search class name in file: Full AND simple
  - New button: Rename mode
  - New option: Log to Eclipse Console View
- 
+
 // -----------------------------------------------------------------------------
 UCDetector 1.5.0 from 2010-06-10:
 Bugfixes:
- - [ 2922801 ] Quick fix exception on enum declaration 
+ - [ 2922801 ] Quick fix exception on enum declaration
  - [ 2968753 ] protected abstract method cannot be made private
  - [ 2986496 ] Marker don't disappear when deleting a complete line
  - [ 2996487 ] Applying quick fix scrolls page
  - [ 2996965 ] Property 'File name pattern to search': Trim whitespaces
  - [ 2996537 ] Eclipse Plug-in/Extension detection: Added to default file pattern: MANIFEST.MF
- 
+
 
 New features:
  - [ 2929828 ] Added filter to exclude classes extending/implementing
@@ -40,7 +43,7 @@ New features:
  - [ 2824564 ] Add detection setting profiles
  - Added cycle detection again, improved cycle view
  - Added new text report
- 
+
 // -----------------------------------------------------------------------------
 UCDetector 1.4.0 from 2010-01-03:
 Bugfixes:
@@ -167,4 +170,3 @@ Bugfixes:
 UCDetector 0.9.0 from 2008-03-01:
  - first version
 
- 
