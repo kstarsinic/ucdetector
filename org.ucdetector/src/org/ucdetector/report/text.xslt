@@ -15,7 +15,7 @@
     <!-- First line: about -->
 		<xsl:value-of select="concat('UCDetector Report', '&#x9;', /ucdetector/statistics/abouts/about[@name='reportCreated']/value, '&#xA;')"/>
     <!-- Second line: header -->
-		<xsl:value-of select="concat('Location', '&#x9;', 'Description', '&#x9;', 'Java type', '&#x9;', 'Marker type', '&#xA;')"/>
+		<xsl:value-of select="concat('Location', '&#x9;', 'Description', '&#x9;', 'Java', '&#x9;', 'Marker', '&#x9;', 'Author', '&#xA;')"/>
 		<xsl:for-each select="/ucdetector/markers/marker">
       <!--  org.eclipse.swt.SWT.error(SWT.java:3634) -->
       <!-- if not default package -->
@@ -37,7 +37,7 @@
 				<xsl:value-of select="field"/>
 			</xsl:if>
       <!-- Link in Eclipse Stack Trace Console View: (SWT.java:3634) -->
-			<xsl:value-of select="concat('(', class, '.java:', @line, ')', '&#x9;', description, '&#x9;', javaType/@long, '&#x9;', @markerType, '&#xA;')"/>
+			<xsl:value-of select="concat('(', class, '.java:', @line, ')', '&#x9;', description, '&#x9;', javaType/@long, '&#x9;', @markerType, '&#x9;', author, '&#xA;')"/>
 		</xsl:for-each>
 	</xsl:template>
 </xsl:stylesheet>
