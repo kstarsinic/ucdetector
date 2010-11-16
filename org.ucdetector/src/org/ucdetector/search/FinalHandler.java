@@ -74,7 +74,8 @@ class FinalHandler {
         || !Prefs.isCheckUseFinalField() //
         || Flags.isFinal(flags)//
         || Flags.isVolatile(flags)// 2008-10-12
-        || field.isEnumConstant()) {
+        || field.isEnumConstant()// No modifier allowed for enum constants!
+    ) {
       return false;
     }
     if (!canMakeFinal(field)) {
