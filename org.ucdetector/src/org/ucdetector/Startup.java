@@ -187,10 +187,12 @@ public class Startup implements IStartup {
       // Log.info("MethodInvocation: " + node.toString());
       IMethodBinding methodBinding = node.resolveMethodBinding();
       // Log.info("methodBinding: " + methodBinding);
-      IMethod methodFound = (IMethod) methodBinding.getJavaElement();
-      if (!methodFound.isBinary()) {
-        invokedMethods.add(methodFound);
-        Log.info("methodFound: " + methodFound.getElementName());
+      if (methodBinding != null) {
+        IMethod methodFound = (IMethod) methodBinding.getJavaElement();
+        if (methodFound != null && !methodFound.isBinary()) {
+          invokedMethods.add(methodFound);
+          Log.info("methodFound: " + methodFound.getElementName());
+        }
       }
       return true;
     }
