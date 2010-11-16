@@ -46,6 +46,7 @@ public class UCDTask extends Task {
     Log.info("    iterateList       : " + iterateList);
     List<String> resourcesToIterate = new ArrayList<String>();
     for (Iterate iterate : iterateList) {
+      Log.info("                        " + iterate);
       resourcesToIterate.add(iterate.getName());
     }
     try {
