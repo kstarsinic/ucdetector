@@ -115,11 +115,14 @@ public class XmlReport implements IUCDetectorReport {
   private final IJavaElement[] objectsToIterate;
   private final long timeStart;
   private final String reportNumberName;
+  // NODES --------------------
   private Element nodeCreated;
   private Element nodeCreatedTS;
   private Element nodeDuration;
   private Element nodeDurationTS;
   private Element nodeFinished;
+  private Element nodeWarnings;
+  //
   private boolean isFirstStatistic = true;
   private boolean endReportCalled;
   private final String javaProjectName;
@@ -244,8 +247,10 @@ public class XmlReport implements IUCDetectorReport {
         IField field = (IField) javaElement;
         appendChild(marker, "field", JavaElementUtil.getSimpleFieldName(field)); // NODE: field
       }
-      if (reportParam.getAuthor() != null) {
-        appendChild(marker, "author", reportParam.getAuthor());
+      String author = reportParam.getAuthor();
+      if (author != null) {
+        String trimmedAuthor = author.length() > 70 ? author.substring(0, 70) + "..." : author;
+        appendChild(marker, "author", trimmedAuthor);
       }
       appendChild(marker, "description", reportParam.getMessage());// NODE: Change visibility of MixedExample to default
 
@@ -373,7 +378,6 @@ public class XmlReport implements IUCDetectorReport {
       appendAbout("eclipseHome", "Eclipse home", UCDetectorPlugin.getAboutEclipseHome(), false, null);
       appendAbout("logfile", "Logfile", UCDetectorPlugin.getAboutLogfile(), false, null);
       appendAbout("workspace", "Workspace", UCDetectorPlugin.getAboutWorkspace(), false, null);
-      appendAbout("warnings", "Warnings", String.valueOf(markerCount), true, null);
       appendAbout("mode", "Mode", Prefs.getModeName(), true, null);
       appendAbout("host", "Host", UCDetectorPlugin.getHostName(), false, null);
       appendAbout("headless", "headless", "" + UCDetectorPlugin.isHeadlessMode(), false, null);
@@ -400,6 +404,7 @@ public class XmlReport implements IUCDetectorReport {
     nodeDuration = appendAbout("searchDuration", "Search duration", durationString, true, nodeDuration);
     nodeDurationTS = appendAbout("searchDurationTS", "Search duration", "" + duration, false, nodeDurationTS);
     nodeFinished = appendAbout("detectionFinished", "Detection Finished", "" + isEndReport, false, nodeFinished);
+    nodeWarnings = appendAbout("warnings", "Warnings", String.valueOf(markerCount), true, nodeWarnings);
   }
 
   /**
