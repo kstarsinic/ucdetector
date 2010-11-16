@@ -85,7 +85,7 @@ class VisibilityHandler {
    * @throws JavaModelException
    */
   void checkVisibility(IJavaElement foundElement, int found, int foundTest) {
-    if (!Prefs.isCheckReduceVisibilityProtected(startElement) && !Prefs.isCheckReduceVisibilityToPrivate(startElement)) {
+    if (!Prefs.isCheckReduceVisibility(startElement)) {
       return;
     }
     IType startRootType = JavaElementUtil.getRootTypeFor(startElement);
