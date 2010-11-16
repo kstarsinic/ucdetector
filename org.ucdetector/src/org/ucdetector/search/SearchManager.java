@@ -681,9 +681,16 @@ public class SearchManager {
       // continue searching, because all matches are matches in test code
       return;
     }
-    if (found > Prefs.getWarnLimit() && !Prefs.isCheckReduceVisibilityProtected(javaElement)
-        && !Prefs.isCheckReduceVisibilityToPrivate(javaElement)) {
-      throw new OperationCanceledException("Cancel Search: Warn limit reached");//$NON-NLS-1$
+    if (found > Prefs.getWarnLimit()) {
+      //
+      // TODO: Use searchStart here?
+      // TODO: Remove this method?
+      //
+      boolean checkVisibility = Prefs.isCheckReduceVisibilityProtected(javaElement)
+          || Prefs.isCheckReduceVisibilityToPrivate(javaElement);
+      if (!checkVisibility) {
+        throw new OperationCanceledException("Cancel Search: Warn limit reached");//$NON-NLS-1$
+      }
     }
   }
 
