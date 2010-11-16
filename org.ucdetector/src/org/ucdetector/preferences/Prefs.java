@@ -96,7 +96,7 @@ public final class Prefs {
   public static final String INTERNAL = ID + ".internal";
   static final String MODE_NAME = INTERNAL + ".mode.name";
   static final String PREFS_VERSION = INTERNAL + ".version";
-  // 
+  //
   private static final String[] EMPTY_ARRAY = new String[0];
   // CYCLE -------------------------------------------------------------------
   static final String CYCLE_DEPTH = ID + ".cycleDepth";
@@ -337,18 +337,18 @@ public final class Prefs {
   // KEYWORD GROUP -------------------------------------------------------------
   // VISIBILITY PROTECTED -----------------------
   /**
-   * @param member which should be checked for reduce visibility
-   * @return WarnLevel if we can use protected
+   * @param javaElement which should be checked for reduce visibility
+   * @return WarnLevel when it is possible to reduce visibility to protected
    */
-  public static WarnLevel getCheckReduceVisibilityProtected(IJavaElement member) {
-    if (member instanceof IType) {
+  public static WarnLevel getCheckReduceVisibilityProtected(IJavaElement javaElement) {
+    if (javaElement instanceof IType) {
       return WarnLevel.valueOf(getString(ANALYZE_VISIBILITY_PROTECTED_CLASSES));
     }
-    if (member instanceof IMethod) {
+    if (javaElement instanceof IMethod) {
       return WarnLevel.valueOf(getString(ANALYZE_VISIBILITY_PROTECTED_METHODS));
     }
-    if (member instanceof IField) {
-      IField field = (IField) member;
+    if (javaElement instanceof IField) {
+      IField field = (IField) javaElement;
       if (isConstant(field)) {
         return WarnLevel.valueOf(getString(ANALYZE_VISIBILITY_PROTECTED_CONSTANTS));
 
@@ -360,27 +360,27 @@ public final class Prefs {
   }
 
   /**
-   * @param member  which should be checked for reduce visibility
-   * @return <code>true</code> if we can use protected
+   * @param javaElement  which should be checked for reduce visibility
+   * @return <code>true</code> when we want to check to reduce visibility to protected
    */
-  public static boolean isCheckReduceVisibilityProtected(IJavaElement member) {
-    return WarnLevel.IGNORE != getCheckReduceVisibilityProtected(member);
+  public static boolean isCheckReduceVisibilityProtected(IJavaElement javaElement) {
+    return WarnLevel.IGNORE != getCheckReduceVisibilityProtected(javaElement);
   }
 
   // VISIBILITY PRIVATE -----------------------
   /**
-   * @param member  which should be checked for reduce visibility
-   * @return WarnLevel if we can use private
+   * @param javaElement  which should be checked for reduce visibility
+   * @return WarnLevel when it is possible to reduce visibility to private
    */
-  public static WarnLevel getCheckReduceVisibilityToPrivate(IJavaElement member) {
-    if (member instanceof IType) {
+  public static WarnLevel getCheckReduceVisibilityToPrivate(IJavaElement javaElement) {
+    if (javaElement instanceof IType) {
       return WarnLevel.valueOf(getString(ANALYZE_VISIBILITY_PRIVATE_CLASSES));
     }
-    if (member instanceof IMethod) {
+    if (javaElement instanceof IMethod) {
       return WarnLevel.valueOf(getString(ANALYZE_VISIBILITY_PRIVATE_METHODS));
     }
-    if (member instanceof IField) {
-      IField field = (IField) member;
+    if (javaElement instanceof IField) {
+      IField field = (IField) javaElement;
       if (isConstant(field)) {
         return WarnLevel.valueOf(getString(ANALYZE_VISIBILITY_PRIVATE_CONSTANTS));
 
@@ -393,10 +393,19 @@ public final class Prefs {
 
   /**
    * @param member  which should be checked for reduce visibility
-   * @return <code>true</code> if we can use private
+   * @return <code>true</code> when we want to check to reduce visibility to private
    */
   public static boolean isCheckReduceVisibilityToPrivate(IJavaElement member) {
     return WarnLevel.IGNORE != getCheckReduceVisibilityToPrivate(member);
+  }
+
+  // VISIBILITY BOTH -----------------------
+  /**
+   * @param javaElement  which should be checked for reduce visibility
+   * @return <code>true</code> when we want to check to reduce visibility
+   */
+  public static boolean isCheckReduceVisibility(IJavaElement javaElement) {
+    return isCheckReduceVisibilityProtected(javaElement) || isCheckReduceVisibilityToPrivate(javaElement);
   }
 
   private static boolean isConstant(IMember member) {
