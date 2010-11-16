@@ -126,14 +126,18 @@ class VisibilityHandler {
     if (!needVisibilityMarker(member, found)) {
       return false;
     }
+    //
+    // TODO: Review visibility
+    //
     if (startElement instanceof IField) {
       IField field = (IField) startElement;
       if (field.isEnumConstant()) {
-        // EnumConstant can not be private
+        // No modifier allowed for enum constants!
         return false;
       }
       if (JavaElementUtil.isInterfaceField(field)) {
         // fix bug [ 2269486 ] Constants in Interfaces Can't be Private
+        // only public, static & final are permitted for interface fields
         return false;
       }
     }
@@ -155,6 +159,11 @@ class VisibilityHandler {
       IType type = (IType) startElement;
       if (type.isLocal()) {
         // protected or private are forbidden for local classes
+        return false;
+      }
+      // TODO: Review visibility
+      if (JavaElementUtil.isPrimary(type) && visibilityMaxFound == VISIBILITY.PRIVATE) {
+        // "private" is forbidden for primary types
         return false;
       }
       // TODO: Bug 2539795: Wrong default visibility marker for classes
