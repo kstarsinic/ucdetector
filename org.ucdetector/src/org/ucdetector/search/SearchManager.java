@@ -190,11 +190,16 @@ public class SearchManager {
     int found = searchImpl(type, searchInfo, false);
     watch.end("    Calculate reference marker"); //$NON-NLS-1$
     if (found == 0) {
-      noRefTypes.add(type);
+      addNoRefTypes(type);
     }
     if (type.isEnum() && JavaElementUtil.isUsedBySpecialEnumMethods(type)) {
       usedByValueEnums.add(type);
     }
+  }
+
+  private void addNoRefTypes(IType type) {
+    Log.info("No references found for type: %s", JavaElementUtil.getElementName(type)); //$NON-NLS-1$
+    noRefTypes.add(type);
   }
 
   /**
@@ -412,12 +417,12 @@ public class SearchManager {
     if (Prefs.isUCDetectionInLiteralsFullClassName()) {
       String fullClassName = type.getFullyQualifiedName();
       searchStrings.add(fullClassName);
-      Log.debug("Text search of full classname '%s'", fullClassName);// //$NON-NLS-1$ 
+      Log.debug("Text search of full classname '%s'", fullClassName);// //$NON-NLS-1$
     }
     if (Prefs.isUCDetectionInLiteralsSimpleClassName()) {
       String simpleClassName = type.getElementName();
       searchStrings.add(simpleClassName);
-      Log.debug("Text search of simple classname '%s'", simpleClassName);// //$NON-NLS-1$ 
+      Log.debug("Text search of simple classname '%s'", simpleClassName);// //$NON-NLS-1$
     }
     int requestorFound = 0;
     for (String searchString : searchStrings) {
@@ -447,7 +452,7 @@ public class SearchManager {
         if (Log.isDebug()) {
           Log.debug("Matches found searching class name '%s' in text files", searchString); //$NON-NLS-1$
         }
-        noRefTypes.add(type);
+        addNoRefTypes(type);
       }
       requestorFound += requestor.found;
     }
@@ -477,7 +482,7 @@ public class SearchManager {
 
     @Override
     public String toString() {
-      return String.format("'%s' found=%s", searchString, Integer.valueOf(found)); //$NON-NLS-1$ 
+      return String.format("'%s' found=%s", searchString, Integer.valueOf(found)); //$NON-NLS-1$
     }
 
     UCDFileSearchRequestor(String searchString, VisibilityHandler visibilityHandler) {
@@ -654,12 +659,12 @@ public class SearchManager {
           return false;
         }
       }
-      // Ignore type matches referred by itself.
-      // See UnusedClassUsedByItself
+      // Ignore type matches referred by itself
+      // See UnusedClassUsedByItself, UsedByInnerClass
       if (searchStart instanceof IType) {
         IType searchStartType = (IType) searchStart;
-        IType typeFor = JavaElementUtil.getTypeFor(matchJavaElement, false);
-        if (typeFor.equals(searchStartType)) {
+        IType matchPrimaryType = JavaElementUtil.getTypeFor(matchJavaElement, false);
+        if (matchPrimaryType.equals(searchStartType)) {
           return true;
         }
       }
