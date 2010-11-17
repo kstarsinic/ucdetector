@@ -8,6 +8,7 @@ New features:
 Bugfixes:
  - QuickFix was broken, when there are several classes in one java file
  - UCDetector is fit for eclipse 3.7
+ - Visibility detection was broken for mode "classes only"
 
 Todo:
  - bug     [ 2926266 ] Method cannot be private if called on subclass

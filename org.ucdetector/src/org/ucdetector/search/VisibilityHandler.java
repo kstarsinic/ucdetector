@@ -8,7 +8,6 @@
 package org.ucdetector.search;
 
 import org.eclipse.core.runtime.CoreException;
-import org.eclipse.core.runtime.OperationCanceledException;
 import org.eclipse.jdt.core.Flags;
 import org.eclipse.jdt.core.IField;
 import org.eclipse.jdt.core.IJavaElement;
@@ -84,7 +83,7 @@ class VisibilityHandler {
    * <code>protected</code>.
    * @throws JavaModelException
    */
-  void checkVisibility(IJavaElement foundElement, int found, int foundTest) {
+  void checkVisibility(IJavaElement foundElement) {
     if (!Prefs.isCheckReduceVisibility(startElement)) {
       return;
     }
@@ -109,13 +108,6 @@ class VisibilityHandler {
       return;
     }
     setMaxVisibilityFound(VISIBILITY.PUBLIC);
-    if (Prefs.isDetectTestOnly() && (found == foundTest)) {
-      // continue searching, because all matches are matches in test code
-      return;
-    }
-    if (found > Prefs.getWarnLimit()) {
-      throw new OperationCanceledException("Cancel Search: public found"); //$NON-NLS-1$
-    }
   }
 
   /**

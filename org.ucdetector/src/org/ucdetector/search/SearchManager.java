@@ -430,7 +430,7 @@ public class SearchManager {
         continue;
       }
       Pattern searchPattern = Pattern.compile(Pattern.quote(searchString));
-      UCDFileSearchRequestor requestor = new UCDFileSearchRequestor(searchString, visibilityHandler);
+      UCDFileSearchRequestor requestor = new UCDFileSearchRequestor(type, searchString, visibilityHandler);
       try {
         // If we use monitor here, progressbar is very confusing!
         if (UCDetectorPlugin.isHeadlessMode()) {
@@ -479,13 +479,15 @@ public class SearchManager {
     int found = 0;
     final VisibilityHandler visibilityHandler;
     final String searchString;
+    private final IType startType;
 
     @Override
     public String toString() {
       return String.format("'%s' found=%s", searchString, Integer.valueOf(found)); //$NON-NLS-1$
     }
 
-    UCDFileSearchRequestor(String searchString, VisibilityHandler visibilityHandler) {
+    UCDFileSearchRequestor(IType startType, String searchString, VisibilityHandler visibilityHandler) {
+      this.startType = startType;
       this.searchString = searchString;
       this.visibilityHandler = visibilityHandler;
     }
@@ -512,9 +514,9 @@ public class SearchManager {
       if (isClassNamMatchOk) {
         this.found++;
       }
-      checkCancelSearch(null, found, -1);
       IJavaElement matchJavaElement = JavaCore.create(matchAccess.getFile());
-      visibilityHandler.checkVisibility(matchJavaElement, found, -1);
+      visibilityHandler.checkVisibility(matchJavaElement);
+      checkCancelSearch(startType, found, -1, visibilityHandler);
       return true;
     }
 
@@ -565,8 +567,8 @@ public class SearchManager {
       if (Prefs.isDetectTestOnly() && JavaElementUtil.isTestCode(matchJavaElement)) {
         foundTest++;
       }
-      checkCancelSearch(matchJavaElement, found, foundTest);
-      visibilityHandler.checkVisibility(matchJavaElement, found, foundTest);
+      visibilityHandler.checkVisibility(matchJavaElement);
+      checkCancelSearch(searchStart, found, foundTest, visibilityHandler);
       //      parseMatch(match, matchJavaElement);
     }
 
@@ -681,22 +683,21 @@ public class SearchManager {
    * cancel search by throwing a {@link OperationCanceledException}
    * when necessary
    */
-  private static void checkCancelSearch(IJavaElement javaElement, int found, int foundTest) {
+  private static void checkCancelSearch(IMember startElement, int found, int foundTest,
+      VisibilityHandler visibilityHandler) {
     if (Prefs.isDetectTestOnly() && (found == foundTest)) {
-      // continue searching, because all matches are matches in test code
-      return;
+      return; // Continue searching, because all matches are matches in test code
     }
-    if (found > Prefs.getWarnLimit()) {
-      //
-      // TODO: Use searchStart here?
-      // TODO: Remove this method?
-      //
-      boolean checkVisibility = Prefs.isCheckReduceVisibilityProtected(javaElement)
-          || Prefs.isCheckReduceVisibilityToPrivate(javaElement);
-      if (!checkVisibility) {
-        throw new OperationCanceledException("Cancel Search: Warn limit reached");//$NON-NLS-1$
-      }
+    if (found <= Prefs.getWarnLimit()) {
+      return; // Continue searching to reach warn limit
     }
+    if (Prefs.isCheckReduceVisibility(startElement) && !visibilityHandler.isMaxVisibilityFoundPublic()) {
+      return; // Continue searching to find a match in another package
+    }
+    //    if (Log.isDebug()) {
+    //      Log.debug("    Cancel search for: %s - Warn limit reached", JavaElementUtil.getElementName(startElement)); //$NON-NLS-1$
+    //    }
+    throw new OperationCanceledException("Cancel Search: Warn limit reached");//$NON-NLS-1$
   }
 
   /**
