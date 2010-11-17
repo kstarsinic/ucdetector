@@ -110,6 +110,9 @@ class VisibilityHandler {
     if (!needVisibilityMarker(member, found)) {
       return false;
     }
+    //
+    // TODO: Move this code to constructor?
+    //
     if (startElement instanceof IField) {
       IField field = (IField) startElement;
       if (field.isEnumConstant()) {
@@ -148,9 +151,9 @@ class VisibilityHandler {
         // return false;
       }
     }
-    if (!needVisibilityMarker(member, found)) {
-      return false;
-    }
+    //    if (!needVisibilityMarker(member, found)) {
+    //      return false;
+    //    }
     String markerType;
     switch (visibilityMaxFound) {
       case PRIVATE:
