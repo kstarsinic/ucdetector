@@ -148,6 +148,9 @@ class VisibilityHandler {
         // return false;
       }
     }
+    if (!needVisibilityMarker(member, found)) {
+      return false;
+    }
     String markerType;
     switch (visibilityMaxFound) {
       case PRIVATE:
