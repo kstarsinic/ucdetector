@@ -30,7 +30,7 @@ import org.ucdetector.util.MarkerFactory;
  */
 class VisibilityHandler {
   private enum VISIBILITY {
-    PRIVATE(0), PROTECTED(1), PUBLIC(2);
+    PRIVATE(0), DEFAULT(1), PROTECTED(2), PUBLIC(3);
     final int value;
 
     private VISIBILITY(int value) {
@@ -47,10 +47,10 @@ class VisibilityHandler {
   VisibilityHandler(MarkerFactory markerFactory, IMember startElement) throws JavaModelException {
     this.markerFactory = markerFactory;
     this.startElement = startElement;
-    VISIBILITY vParent = getVisibiliyParent(startElement);
+    VISIBILITY vRootType = getVisibiliyRootType(startElement);
     VISIBILITY vStart = getVisibility(startElement);
     // Bug 2864046: public methods of non-public classes
-    visibilityStart = vParent.value < vStart.value ? vParent : vStart;
+    visibilityStart = vRootType.value < vStart.value ? vRootType : vStart;
   }
 
   private VISIBILITY getVisibility(IMember element) throws JavaModelException {
@@ -64,17 +64,9 @@ class VisibilityHandler {
     return VISIBILITY.PRIVATE;
   }
 
-  private VISIBILITY getVisibiliyParent(IMember element) throws JavaModelException {
-    IJavaElement parent = element.getParent();
-    VISIBILITY result = VISIBILITY.PUBLIC;
-    while (true) {
-      if (!(parent instanceof IType)) {
-        return result;
-      }
-      VISIBILITY vParent = getVisibility((IType) parent);
-      result = vParent.value < result.value ? vParent : result;
-      parent = parent.getParent();
-    }
+  private VISIBILITY getVisibiliyRootType(IMember element) throws JavaModelException {
+    IType rootType = JavaElementUtil.getRootTypeFor(element);
+    return rootType == null ? VISIBILITY.PUBLIC : getVisibility(rootType);
   }
 
   /**
@@ -118,9 +110,6 @@ class VisibilityHandler {
     if (!needVisibilityMarker(member, found)) {
       return false;
     }
-    //
-    // TODO: Review visibility
-    //
     if (startElement instanceof IField) {
       IField field = (IField) startElement;
       if (field.isEnumConstant()) {
@@ -130,7 +119,7 @@ class VisibilityHandler {
       if (JavaElementUtil.isInterfaceField(field)) {
         // fix bug [ 2269486 ] Constants in Interfaces Can't be Private
         // only public, static & final are permitted for interface fields
-        return false;
+        return false; // default visibility means public!
       }
     }
     else if (startElement instanceof IMethod) {
@@ -140,7 +129,7 @@ class VisibilityHandler {
       }
       // Bug [ 2269486 ] Constants in Interfaces Can't be Private
       if (JavaElementUtil.isInterfaceMethod(method)) {
-        return false;
+        return false; // default visibility means public!
       }
       // Bug [ 2968753] protected abstract method cannot be made private
       if (Flags.isAbstract(method.getFlags())) {
@@ -149,14 +138,9 @@ class VisibilityHandler {
     }
     else if (startElement instanceof IType) {
       IType type = (IType) startElement;
-      if (type.isLocal()) {
-        // protected or private are forbidden for local classes
-        return false;
-      }
-      // TODO: Review visibility: enum...
-      if (JavaElementUtil.isPrimary(type) && visibilityMaxFound == VISIBILITY.PRIVATE) {
-        // "private" is forbidden for primary types
-        visibilityMaxFound = VISIBILITY.PROTECTED;
+      if (type.isLocal() || JavaElementUtil.isPrimary(type)) {
+        // "private" and "protected" are forbidden for primary types (classes, enums, annotations, interfaces)
+        avoidPrivateProtected();
       }
       // TODO: Bug 2539795: Wrong default visibility marker for classes
       // Search all parent class methods and fields to resolve this bug?
@@ -164,23 +148,32 @@ class VisibilityHandler {
         // return false;
       }
     }
-    String type;
+    String markerType;
     switch (visibilityMaxFound) {
       case PRIVATE:
-        type = MarkerFactory.UCD_MARKER_USE_PRIVATE;
+        markerType = MarkerFactory.UCD_MARKER_USE_PRIVATE;
+        break;
+      case DEFAULT:
+        markerType = MarkerFactory.UCD_MARKER_USE_DEFAULT;
         break;
       case PROTECTED:
         if (member instanceof IType) {
-          type = MarkerFactory.UCD_MARKER_USE_DEFAULT;
+          markerType = MarkerFactory.UCD_MARKER_USE_DEFAULT;
         }
         else {
-          type = MarkerFactory.UCD_MARKER_USE_PROTECTED;
+          markerType = MarkerFactory.UCD_MARKER_USE_PROTECTED;
         }
         break;
       default:
         return false;
     }
-    return markerFactory.createVisibilityMarker(member, type, line);
+    return markerFactory.createVisibilityMarker(member, markerType, line);
+  }
+
+  private void avoidPrivateProtected() {
+    if (visibilityMaxFound == VISIBILITY.PRIVATE || visibilityMaxFound == VISIBILITY.PROTECTED) {
+      visibilityMaxFound = VISIBILITY.DEFAULT;
+    }
   }
 
   private boolean hasPublicChild(IType type) throws JavaModelException {
