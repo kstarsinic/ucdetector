@@ -161,10 +161,10 @@ class VisibilityHandler {
         // protected or private are forbidden for local classes
         return false;
       }
-      // TODO: Review visibility
+      // TODO: Review visibility: enum...
       if (JavaElementUtil.isPrimary(type) && visibilityMaxFound == VISIBILITY.PRIVATE) {
         // "private" is forbidden for primary types
-        return false;
+        visibilityMaxFound = VISIBILITY.PROTECTED;
       }
       // TODO: Bug 2539795: Wrong default visibility marker for classes
       // Search all parent class methods and fields to resolve this bug?
