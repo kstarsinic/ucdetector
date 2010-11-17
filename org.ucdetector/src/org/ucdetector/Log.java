@@ -41,7 +41,7 @@ public class Log {
    * To activate debug traces add line
    * <pre>org.ucdetector/debug=true</pre>
    * to file ECLIPSE_INSTALL_DIR\.options
-   * 
+   *
    * @see "http://wiki.eclipse.org/FAQ_How_do_I_use_the_platform_debug_tracing_facility%3F"
    */
   private static LogLevel LOG_LEVEL_OPTIONS_FILE;
@@ -67,7 +67,14 @@ public class Log {
 
   // DEBUG --------------------------------------------------------------------
   public static void debug(String format, Object... args) {
-    log(LogLevel.DEBUG, args.length == 0 ? format : String.format(format, args));
+    if (isDebug()) {
+      if (args.length == 0) {
+        log(LogLevel.DEBUG, format);
+      }
+      else {
+        log(LogLevel.DEBUG, String.format(format, args));
+      }
+    }
   }
 
   // INFO ---------------------------------------------------------------------
