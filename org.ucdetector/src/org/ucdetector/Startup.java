@@ -151,17 +151,22 @@ public class Startup implements IStartup {
   }
 
   private static void parseTypes(List<IType> typesBeforeSave) {
-    for (IType type : typesBeforeSave) {
-      ICompilationUnit compilationUnit = type.getCompilationUnit();
-      ASTParser parser = ASTParser.newParser(AST.JLS3);
-      parser.setSource(compilationUnit); // compilationUnit needed for resolve bindings!
-      parser.setKind(ASTParser.K_COMPILATION_UNIT);
-      parser.setResolveBindings(true);
-      ASTNode ast = parser.createAST(null);
-      GetUsedCodeVisitor visitor = new GetUsedCodeVisitor();
-      ast.accept(visitor);
-      Log.info("invokedFields : %s", JavaElementUtil.getElementNames(visitor.invokedFields));
-      Log.info("invokedMethods: %s", JavaElementUtil.getElementNames(visitor.invokedMethods));
+    try {
+      for (IType type : typesBeforeSave) {
+        ICompilationUnit compilationUnit = type.getCompilationUnit();
+        ASTParser parser = ASTParser.newParser(AST.JLS3);
+        parser.setSource(compilationUnit); // compilationUnit needed for resolve bindings!
+        parser.setKind(ASTParser.K_COMPILATION_UNIT);
+        parser.setResolveBindings(true);
+        ASTNode ast = parser.createAST(null);
+        GetUsedCodeVisitor visitor = new GetUsedCodeVisitor();
+        ast.accept(visitor);
+        Log.info("invokedFields : %s", JavaElementUtil.getElementNames(visitor.invokedFields));
+        Log.info("invokedMethods: %s", JavaElementUtil.getElementNames(visitor.invokedMethods));
+      }
+    }
+    catch (Exception ex) {
+      Log.error("Can't parse types", ex);
     }
   }
 
@@ -201,11 +206,13 @@ public class Startup implements IStartup {
     public boolean visit(FieldAccess node) {
       // Log.info("FieldAccess: " + node.toString());
       IVariableBinding fieldBinding = node.resolveFieldBinding();
-      // Log.info("methodBinding: " + methodBinding);
-      IField field = (IField) fieldBinding.getJavaElement();
-      if (field.isBinary()) {
-        invokedFields.add(field);
-        Log.info("Field found: " + field.getElementName());
+      if (fieldBinding != null) {
+        // Log.info("methodBinding: " + methodBinding);
+        IField fieldFound = (IField) fieldBinding.getJavaElement();
+        if (fieldFound != null && !fieldFound.isBinary()) {
+          invokedFields.add(fieldFound);
+          Log.info("Field found: " + fieldFound.getElementName());
+        }
       }
       return true;
     }
