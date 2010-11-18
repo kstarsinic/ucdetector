@@ -73,7 +73,7 @@ class FinalHandler {
     if (line == LineManger.LINE_NOT_FOUND //
         || !Prefs.isCheckUseFinalField() //
         || Flags.isFinal(flags)//
-        || Flags.isVolatile(flags)// 2008-10-12
+        || Flags.isVolatile(flags)// A field can be either final or volatile, not both
         || field.isEnumConstant()// No modifier allowed for enum constants!
     ) {
       return false;
