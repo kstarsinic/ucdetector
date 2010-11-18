@@ -29,17 +29,17 @@ import org.ucdetector.util.MarkerFactory;
  * @since 2008-02-29
  */
 class VisibilityHandler {
-  private enum VISIBILITY {
+  private enum Visibility {
     PRIVATE(0), DEFAULT(1), PROTECTED(2), PUBLIC(3);
     final int value;
 
-    private VISIBILITY(int value) {
+    private Visibility(int value) {
       this.value = value;
     }
   }
 
-  private final VISIBILITY visibilityStart;
-  private VISIBILITY visibilityMaxFound = VISIBILITY.PRIVATE;
+  private final Visibility visibilityStart;
+  private Visibility visibilityMaxFound = Visibility.PRIVATE;
   //
   private final IMember startElement;
   private final MarkerFactory markerFactory;
@@ -47,26 +47,30 @@ class VisibilityHandler {
   VisibilityHandler(MarkerFactory markerFactory, IMember startElement) throws JavaModelException {
     this.markerFactory = markerFactory;
     this.startElement = startElement;
-    VISIBILITY vRootType = getVisibiliyRootType(startElement);
-    VISIBILITY vStart = getVisibility(startElement);
-    // Bug 2864046: public methods of non-public classes
-    visibilityStart = vRootType.value < vStart.value ? vRootType : vStart;
+    visibilityStart = calculateVisibilityStart(startElement);
   }
 
-  private VISIBILITY getVisibility(IMember element) throws JavaModelException {
+  private Visibility calculateVisibilityStart(IMember startElementInput) throws JavaModelException {
+    Visibility vRootType = getVisibiliyRootType(startElementInput);
+    Visibility vStart = getVisibility(startElementInput);
+    // Bug 2864046: public methods of non-public classes
+    return vRootType.value < vStart.value ? vRootType : vStart;
+  }
+
+  private Visibility getVisibility(IMember element) throws JavaModelException {
     int flags = element.getFlags();
     if (Flags.isPublic(flags)) {
-      return VISIBILITY.PUBLIC;
+      return Visibility.PUBLIC;
     }
     if (Flags.isProtected(flags) || Flags.isPackageDefault(flags)) {
-      return VISIBILITY.PROTECTED;
+      return Visibility.PROTECTED;
     }
-    return VISIBILITY.PRIVATE;
+    return Visibility.PRIVATE;
   }
 
-  private VISIBILITY getVisibiliyRootType(IMember element) throws JavaModelException {
+  private Visibility getVisibiliyRootType(IMember element) throws JavaModelException {
     IType rootType = JavaElementUtil.getRootTypeFor(element);
-    return rootType == null ? VISIBILITY.PUBLIC : getVisibility(rootType);
+    return rootType == null ? Visibility.PUBLIC : getVisibility(rootType);
   }
 
   /**
@@ -84,22 +88,22 @@ class VisibilityHandler {
     //
     if (startRootType == null || foundRootType == null) {
       // reference in xml file found!
-      setMaxVisibilityFound(VISIBILITY.PUBLIC);
+      setMaxVisibilityFound(Visibility.PUBLIC);
       return;
     }
     // [ 2743908 ] Methods only called from inner class could be private
     if (startRootType.equals(foundRootType)) {
       // [ 2804064 ] Access to enclosing type - make 2743908 configurable
-      setMaxVisibilityFound(Prefs.isIgnoreSyntheticAccessEmulationWarning() ? VISIBILITY.PRIVATE : VISIBILITY.PROTECTED);
+      setMaxVisibilityFound(Prefs.isIgnoreSyntheticAccessEmulationWarning() ? Visibility.PRIVATE : Visibility.PROTECTED);
       return;
     }
     IPackageFragment startPackage = JavaElementUtil.getPackageFor(startElement);
     IPackageFragment foundPackage = JavaElementUtil.getPackageFor(foundElement);
     if (startPackage.getElementName().equals(foundPackage.getElementName())) {
-      setMaxVisibilityFound(VISIBILITY.PROTECTED);
+      setMaxVisibilityFound(Visibility.PROTECTED);
       return;
     }
-    setMaxVisibilityFound(VISIBILITY.PUBLIC);
+    setMaxVisibilityFound(Visibility.PUBLIC);
   }
 
   /**
@@ -141,7 +145,11 @@ class VisibilityHandler {
     }
     else if (startElement instanceof IType) {
       IType type = (IType) startElement;
-      if (type.isLocal() || JavaElementUtil.isPrimary(type)) {
+      if (type.isLocal()) {
+        // No visibility modifier permitted for local classes
+        return false;
+      }
+      if (JavaElementUtil.isPrimary(type)) {
         // "private" and "protected" are forbidden for primary types (classes, enums, annotations, interfaces)
         avoidPrivateProtected();
       }
@@ -177,8 +185,8 @@ class VisibilityHandler {
   }
 
   private void avoidPrivateProtected() {
-    if (visibilityMaxFound == VISIBILITY.PRIVATE || visibilityMaxFound == VISIBILITY.PROTECTED) {
-      visibilityMaxFound = VISIBILITY.DEFAULT;
+    if (visibilityMaxFound == Visibility.PRIVATE || visibilityMaxFound == Visibility.PROTECTED) {
+      visibilityMaxFound = Visibility.DEFAULT;
     }
   }
 
@@ -201,7 +209,7 @@ class VisibilityHandler {
    * <li>VISIBILITY_PUBLIC = 2</li>
    * </ul>
    */
-  private void setMaxVisibilityFound(VISIBILITY visibility) {
+  private void setMaxVisibilityFound(Visibility visibility) {
     if (visibility.value > visibilityMaxFound.value) {
       visibilityMaxFound = visibility;
     }
@@ -214,11 +222,11 @@ class VisibilityHandler {
   private boolean needVisibilityMarker(IMember member, int found) {
     boolean decreaseVisibility = visibilityStart.value > visibilityMaxFound.value;
     return found > 0 && decreaseVisibility && (//
-        Prefs.isCheckReduceVisibilityProtected(member) && visibilityMaxFound == VISIBILITY.PROTECTED || //
-        Prefs.isCheckReduceVisibilityToPrivate(member) && visibilityMaxFound == VISIBILITY.PRIVATE);
+        Prefs.isCheckReduceVisibilityProtected(member) && visibilityMaxFound == Visibility.PROTECTED || //
+        Prefs.isCheckReduceVisibilityToPrivate(member) && visibilityMaxFound == Visibility.PRIVATE);
   }
 
   boolean isMaxVisibilityFoundPublic() {
-    return visibilityMaxFound == VISIBILITY.PUBLIC;
+    return visibilityMaxFound == Visibility.PUBLIC;
   }
 }
