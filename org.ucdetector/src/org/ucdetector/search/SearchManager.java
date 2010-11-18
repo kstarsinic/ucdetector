@@ -113,7 +113,7 @@ public class SearchManager {
       }
     }
     catch (OperationCanceledException e) {
-      Log.info("Search canceled: " + e.getMessage()); //$NON-NLS-1$
+      Log.info((e.getMessage() == null ? "Search canceled" : "Search canceled: " + e.getMessage())); //$NON-NLS-1$ //$NON-NLS-2$ 
     }
     Log.info("Search end: " + UCDetectorPlugin.getNow()); //$NON-NLS-1$
     if (searchProblems.size() > 0) {
