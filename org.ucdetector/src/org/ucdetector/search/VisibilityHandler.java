@@ -62,8 +62,11 @@ class VisibilityHandler {
     if (Flags.isPublic(flags)) {
       return Visibility.PUBLIC;
     }
-    if (Flags.isProtected(flags) || Flags.isPackageDefault(flags)) {
+    if (Flags.isProtected(flags)) {
       return Visibility.PROTECTED;
+    }
+    if (Flags.isPackageDefault(flags)) {
+      return Visibility.DEFAULT;
     }
     return Visibility.PRIVATE;
   }
@@ -114,9 +117,6 @@ class VisibilityHandler {
     if (!needVisibilityMarker(member, found)) {
       return false;
     }
-    //
-    // TODO: Move this code to constructor?
-    //
     if (startElement instanceof IField) {
       IField field = (IField) startElement;
       if (field.isEnumConstant()) {
@@ -145,13 +145,15 @@ class VisibilityHandler {
     }
     else if (startElement instanceof IType) {
       IType type = (IType) startElement;
-      if (type.isLocal()) {
-        // No visibility modifier permitted for local classes
+      if (type.isLocal() || type.isAnonymous()) {
+        // No visibility modifier permitted for local/anonymous classes
         return false;
       }
       if (JavaElementUtil.isPrimary(type)) {
         // "private" and "protected" are forbidden for primary types (classes, enums, annotations, interfaces)
-        avoidPrivateProtected();
+        if (visibilityMaxFound == Visibility.PRIVATE || visibilityMaxFound == Visibility.PROTECTED) {
+          visibilityMaxFound = Visibility.DEFAULT;
+        }
       }
       // TODO: Bug 2539795: Wrong default visibility marker for classes
       // Search all parent class methods and fields to resolve this bug?
@@ -182,12 +184,6 @@ class VisibilityHandler {
         return false;
     }
     return markerFactory.createVisibilityMarker(member, markerType, line);
-  }
-
-  private void avoidPrivateProtected() {
-    if (visibilityMaxFound == Visibility.PRIVATE || visibilityMaxFound == Visibility.PROTECTED) {
-      visibilityMaxFound = Visibility.DEFAULT;
-    }
   }
 
   private boolean hasPublicChild(IType type) throws JavaModelException {
