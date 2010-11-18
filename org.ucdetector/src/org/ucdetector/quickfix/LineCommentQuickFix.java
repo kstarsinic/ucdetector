@@ -51,7 +51,7 @@ class LineCommentQuickFix extends AbstractUCDQuickFix {
       String strLine = doc.get(offsetLine, lengthLine);
       StringBuilder replace = new StringBuilder();
       if (lineNr == lineStart) {
-        replace.append("// TODO UCdetector: Remove unused code: "); //$NON-NLS-1$;
+        replace.append("// TODO Remove unused code found by UCDetector"); //$NON-NLS-1$;
         replace.append(newLine);
       }
       replace.append("// ").append(strLine); //$NON-NLS-1$;
