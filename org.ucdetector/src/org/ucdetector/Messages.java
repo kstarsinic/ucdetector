@@ -197,7 +197,7 @@ public final class Messages extends NLS {
 
   public static String OutOfMemoryError_Hint; // NO_UCD
 
-  // CYLCE  ------------------------------------------------------------------
+  // CYCLE  ------------------------------------------------------------------
   public static String CycleAction_cant_open_editor; // NO_UCD
   public static String CycleIterator_JobName; // NO_UCD
   public static String CycleIterator_MONITOR_INFO; // NO_UCD

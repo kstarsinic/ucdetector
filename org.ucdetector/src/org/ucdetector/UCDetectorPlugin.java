@@ -212,10 +212,10 @@ public class UCDetectorPlugin extends AbstractUIPlugin implements IPropertyChang
   protected void initializeImageRegistry(ImageRegistry registry) {
     super.initializeImageRegistry(registry);
     registry.put(IMAGE_UCD, createImage(ID, "icons/ucd.gif"));
-    registry.put(IMAGE_FINAL, createImage(JavaUI.ID_PLUGIN, "icons/full/ovr16/final_co.gif"));
-    registry.put(IMAGE_COMMENT, createImage(JavaUI.ID_PLUGIN, "icons/full/etool16/comment_edit.gif"));
     // Since eclipse 3.7 icon was renamed from refresh_nav.gif to refresh.gif in platform:/plugin/
     registry.put(IMAGE_CYCLE, createImage(ID, "icons/cycle.gif"));
+    registry.put(IMAGE_FINAL, createImage(JavaUI.ID_PLUGIN, "icons/full/ovr16/final_co.gif"));
+    registry.put(IMAGE_COMMENT, createImage(JavaUI.ID_PLUGIN, "icons/full/etool16/comment_edit.gif"));
     registry.put(IMAGE_TODO, createImage(IDEWorkbenchPlugin.IDE_WORKBENCH, "icons/full/elcl16/showtsk_tsk.gif"));
   }
 

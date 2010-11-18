@@ -104,7 +104,7 @@ public class UCDetectorPreferencePage extends FieldEditorPreferencePage implemen
     composite = createTab(tabFolder, Messages.PreferencePage_TabDetect);
     createDetectGroup(composite);
     createFileSearchGroup(composite);
-    createCylceGroup(composite);
+    createCycleGroup(composite);
     // KEYWORD -----------------------------------------------------------------
     composite = createTab(tabFolder, Messages.PreferencePage_TabKeywords);
     createFinalGroup(composite);
@@ -212,7 +212,7 @@ public class UCDetectorPreferencePage extends FieldEditorPreferencePage implemen
     analyzeLiteralsCheck.setCheckFullClassName(checkFullClassName, checkSimpleClassName);
   }
 
-  private void createCylceGroup(Composite parentGroups) {
+  private void createCycleGroup(Composite parentGroups) {
     Composite spacer = createGroup(parentGroups, Messages.PreferencePage_GroupCycles);
     IntegerFieldEditor cycleDepth = new IntegerFieldEditor(Prefs.CYCLE_DEPTH, Messages.PreferencePage_MaxCycleSize,
         spacer, 1);
