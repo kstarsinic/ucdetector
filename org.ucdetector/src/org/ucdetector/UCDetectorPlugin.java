@@ -290,6 +290,8 @@ public class UCDetectorPlugin extends AbstractUIPlugin implements IPropertyChang
     return System.getProperty("osgi.framework.version");
   }
 
+  @SuppressWarnings("cast")
+  // Ignore warning since target platform 3.7
   public static String getAboutUCDVersion() {
     return (String) getDefault().getBundle().getHeaders().get("Bundle-Version");
   }
