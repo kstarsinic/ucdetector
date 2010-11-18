@@ -80,7 +80,7 @@ class VisibilityHandler {
    * @throws JavaModelException
    */
   void checkVisibility(IJavaElement foundElement) {
-    if (!Prefs.isCheckReduceVisibility(startElement)) {
+    if (!Prefs.isVisibilityCheck(startElement)) {
       return;
     }
     IType startRootType = JavaElementUtil.getRootTypeFor(startElement);
@@ -220,10 +220,23 @@ class VisibilityHandler {
    *         to private or protected
    */
   private boolean needVisibilityMarker(IMember member, int found) {
-    boolean decreaseVisibility = visibilityStart.value > visibilityMaxFound.value;
-    return found > 0 && decreaseVisibility && (//
-        Prefs.isCheckReduceVisibilityProtected(member) && visibilityMaxFound == Visibility.PROTECTED || //
-        Prefs.isCheckReduceVisibilityToPrivate(member) && visibilityMaxFound == Visibility.PRIVATE);
+    if (found == 0) {
+      return false;
+    }
+    if (visibilityMaxFound.value >= visibilityStart.value) {
+      return false;
+    }
+    switch (visibilityMaxFound) {
+      case PUBLIC:
+        return false;
+      case PROTECTED:
+      case DEFAULT:
+        return Prefs.isVisibilityProtectedCheck(member);
+      case PRIVATE:
+        return Prefs.isVisibilityPrivateCheck(member);
+      default:
+        return false;
+    }
   }
 
   boolean isMaxVisibilityFoundPublic() {

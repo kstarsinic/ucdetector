@@ -340,7 +340,7 @@ public final class Prefs {
    * @param javaElement which should be checked for reduce visibility
    * @return WarnLevel when it is possible to reduce visibility to protected
    */
-  public static WarnLevel getCheckReduceVisibilityProtected(IJavaElement javaElement) {
+  public static WarnLevel getVisibilityProtectedCheck(IJavaElement javaElement) {
     if (javaElement instanceof IType) {
       return WarnLevel.valueOf(getString(ANALYZE_VISIBILITY_PROTECTED_CLASSES));
     }
@@ -363,8 +363,8 @@ public final class Prefs {
    * @param javaElement  which should be checked for reduce visibility
    * @return <code>true</code> when we want to check to reduce visibility to protected
    */
-  public static boolean isCheckReduceVisibilityProtected(IJavaElement javaElement) {
-    return WarnLevel.IGNORE != getCheckReduceVisibilityProtected(javaElement);
+  public static boolean isVisibilityProtectedCheck(IJavaElement javaElement) {
+    return WarnLevel.IGNORE != getVisibilityProtectedCheck(javaElement);
   }
 
   // VISIBILITY PRIVATE -----------------------
@@ -372,7 +372,7 @@ public final class Prefs {
    * @param javaElement  which should be checked for reduce visibility
    * @return WarnLevel when it is possible to reduce visibility to private
    */
-  public static WarnLevel getCheckReduceVisibilityToPrivate(IJavaElement javaElement) {
+  public static WarnLevel getVisibilityPrivateCheck(IJavaElement javaElement) {
     if (javaElement instanceof IType) {
       return WarnLevel.valueOf(getString(ANALYZE_VISIBILITY_PRIVATE_CLASSES));
     }
@@ -395,8 +395,8 @@ public final class Prefs {
    * @param member  which should be checked for reduce visibility
    * @return <code>true</code> when we want to check to reduce visibility to private
    */
-  public static boolean isCheckReduceVisibilityToPrivate(IJavaElement member) {
-    return WarnLevel.IGNORE != getCheckReduceVisibilityToPrivate(member);
+  public static boolean isVisibilityPrivateCheck(IJavaElement member) {
+    return WarnLevel.IGNORE != getVisibilityPrivateCheck(member);
   }
 
   // VISIBILITY BOTH -----------------------
@@ -404,8 +404,8 @@ public final class Prefs {
    * @param javaElement  which should be checked for reduce visibility
    * @return <code>true</code> when we want to check to reduce visibility
    */
-  public static boolean isCheckReduceVisibility(IJavaElement javaElement) {
-    return isCheckReduceVisibilityProtected(javaElement) || isCheckReduceVisibilityToPrivate(javaElement);
+  public static boolean isVisibilityCheck(IJavaElement javaElement) {
+    return isVisibilityProtectedCheck(javaElement) || isVisibilityPrivateCheck(javaElement);
   }
 
   private static boolean isConstant(IMember member) {

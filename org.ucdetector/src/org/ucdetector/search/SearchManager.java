@@ -691,7 +691,7 @@ public class SearchManager {
     if (found <= Prefs.getWarnLimit()) {
       return; // Continue searching to reach warn limit
     }
-    if (Prefs.isCheckReduceVisibility(startElement) && !visibilityHandler.isMaxVisibilityFoundPublic()) {
+    if (Prefs.isVisibilityCheck(startElement) && !visibilityHandler.isMaxVisibilityFoundPublic()) {
       return; // Continue searching to find a match in another package
     }
     //    if (Log.isDebug()) {
