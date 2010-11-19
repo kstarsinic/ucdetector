@@ -8,8 +8,9 @@
 package org.ucdetector.quickfix;
 
 import org.eclipse.core.resources.IMarker;
+import org.eclipse.core.resources.IResource;
+import org.eclipse.core.runtime.CoreException;
 import org.eclipse.jdt.core.dom.BodyDeclaration;
-import org.eclipse.jdt.core.dom.LineComment;
 import org.eclipse.jface.text.BadLocationException;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.ui.ISharedImages;
@@ -17,37 +18,39 @@ import org.ucdetector.Messages;
 import org.ucdetector.UCDetectorPlugin;
 
 /**
- * Fixes code by deleting all affected lines
+ * Fixes code by deleting a file (= a java class)
  * <p>
  * @author Joerg Spieler
- * @since 2008-09-22
+ * @since 2010-11-19
  */
-class DeleteQuickFix extends AbstractUCDQuickFix {
-  protected DeleteQuickFix(IMarker marker) {
+class DeleteFileQuickFix extends AbstractUCDQuickFix {
+
+  protected DeleteFileQuickFix(IMarker marker) {
     super(marker);
   }
 
   @Override
-  public int runImpl(BodyDeclaration nodeToChange) throws BadLocationException {
-    // [ 2721955 ] On QuickFix the direct sibling marker gets deleted too
-    // rewrite.remove(nodeToChange, null); // This line did not work
-    // Hack: replace deleted note by a comment
-    LineComment lineComment = nodeToChange.getAST().newLineComment();
-    rewrite.replace(nodeToChange, lineComment, null);
-    //    commitChanges();
-    if (nodeToChange.getJavadoc() != null) {
-      return nodeToChange.getJavadoc().getStartPosition();
+  public void run(IMarker marker2) {
+    IResource resource = marker2.getResource();
+    try {
+      resource.delete(false, null);
     }
-    return nodeToChange.getStartPosition();
+    catch (CoreException ex) {
+      UCDetectorPlugin.logToEclipseLog("Can't delete file: " + resource, ex); //$NON-NLS-1$
+    }
   }
 
   public String getLabel() {
-    return Messages.DeleteCodeQuickFix_label;
+    return Messages.DeleteFileQuickFix_label;
   }
 
   public Image getImage() {
-    //    return JavaPluginImages.get(JavaPluginImages.IMG_CORRECTION_REMOVE);
     return UCDetectorPlugin.getSharedImage(ISharedImages.IMG_TOOL_DELETE);
+  }
+
+  @Override
+  public int runImpl(BodyDeclaration nodeToChange) throws BadLocationException {
+    throw new RuntimeException("Method should be called"); //$NON-NLS-1$
   }
 
   public String getDescription() {

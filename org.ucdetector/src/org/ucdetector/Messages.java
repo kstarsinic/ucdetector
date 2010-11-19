@@ -188,7 +188,8 @@ public final class Messages extends NLS {
   public static String XMLReport_WriteError; // NO_UCD
   // QuickFix ------------------------------------------------------------------
   public static String UseFinalQuickFix_label;// NO_UCD
-  public static String DeleteQuickFix_label;// NO_UCD
+  public static String DeleteCodeQuickFix_label;// NO_UCD
+  public static String DeleteFileQuickFix_label;// NO_UCD
   public static String LineCommentQuickFix_label;// NO_UCD
   public static String UseTag_NO_UCD_QuickFix_label; // NO_UCD
   public static String UseAnnotation_UCD_QuickFix_label; // NO_UCD

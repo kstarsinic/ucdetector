@@ -12,13 +12,10 @@ import java.util.HashMap;
 import java.util.List;
 
 import org.eclipse.core.filebuffers.ITextFileBuffer;
-import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IMarker;
 import org.eclipse.core.resources.IResource;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.jdt.core.ICompilationUnit;
-import org.eclipse.jdt.core.IJavaElement;
-import org.eclipse.jdt.core.JavaCore;
 import org.eclipse.jdt.core.JavaModelException;
 import org.eclipse.jdt.core.dom.AST;
 import org.eclipse.jdt.core.dom.ASTParser;
@@ -42,7 +39,9 @@ import org.eclipse.ui.texteditor.ITextEditor;
 import org.eclipse.ui.views.markers.WorkbenchMarkerResolution;
 import org.ucdetector.Log;
 import org.ucdetector.UCDetectorPlugin;
+import org.ucdetector.report.MarkerReport.ElementType;
 import org.ucdetector.util.ASTMemberVisitor;
+import org.ucdetector.util.JavaElementUtil;
 import org.ucdetector.util.MarkerFactory;
 
 /**
@@ -85,7 +84,11 @@ abstract class AbstractUCDQuickFix extends WorkbenchMarkerResolution {
         Log.warn("CHAR_START missing for marker: '%s'", dumpMarker(marker));
         return;
       }
-      originalUnit = getCompilationUnit();
+      originalUnit = JavaElementUtil.getCompilationUnitFor(marker.getResource());
+      if (originalUnit == null) {
+        Log.warn("Can't find CompilationUnit: " + marker.getType());
+        return;
+      }
       ITextFileBuffer textFileBuffer = RefactoringFileBuffers.acquire(originalUnit);
       doc = textFileBuffer.getDocument();
       CompilationUnit copyUnit = createCopy(originalUnit);
@@ -173,23 +176,6 @@ abstract class AbstractUCDQuickFix extends WorkbenchMarkerResolution {
   }
 
   /**
-   * @return top java element (CompilationUnit) of the marker
-   * @throws CoreException 
-   */
-  private ICompilationUnit getCompilationUnit() throws CoreException {
-    IResource resource = marker.getResource();
-    if (resource instanceof IFile && resource.isAccessible()) {
-      IFile file = (IFile) resource;
-      IJavaElement javaElement = JavaCore.create(file);
-      if (javaElement instanceof ICompilationUnit) {
-        return (ICompilationUnit) javaElement;
-      }
-    }
-    Log.warn("Can't find CompilationUnit: " + marker.getType());
-    return null;
-  }
-
-  /**
    * @return copy of CompilationUnit, which is used for manipulation
    */
   private CompilationUnit createCopy(ICompilationUnit unit) throws JavaModelException {
@@ -257,9 +243,11 @@ abstract class AbstractUCDQuickFix extends WorkbenchMarkerResolution {
       try {
         if (marker.getType().equals(marker2.getType())) {
           // Now we have a ucdetector marker!
-          String javaType1 = (String) marker.getAttribute(MarkerFactory.JAVA_TYPE);
-          String javaType2 = (String) marker2.getAttribute(MarkerFactory.JAVA_TYPE);
-          return javaType1 != null && javaType1.equals(javaType2);
+          String sJavaType1 = (String) marker.getAttribute(MarkerFactory.JAVA_TYPE);
+          String sJavaType2 = (String) marker2.getAttribute(MarkerFactory.JAVA_TYPE);
+          ElementType javaType1 = ElementType.valueOf(sJavaType1);
+          ElementType javaType2 = ElementType.valueOf(sJavaType2);
+          return javaType1 == javaType2;
         }
       }
       catch (Exception e) {

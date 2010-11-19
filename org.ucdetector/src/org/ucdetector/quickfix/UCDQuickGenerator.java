@@ -15,6 +15,7 @@ import org.eclipse.core.runtime.CoreException;
 import org.eclipse.ui.IMarkerResolution;
 import org.eclipse.ui.IMarkerResolutionGenerator2;
 import org.ucdetector.Log;
+import org.ucdetector.report.MarkerReport.ElementType;
 import org.ucdetector.util.MarkerFactory;
 
 /**
@@ -31,13 +32,16 @@ public class UCDQuickGenerator implements IMarkerResolutionGenerator2 {
   public IMarkerResolution[] getResolutions(IMarker marker) {
     try {
       String markerType = marker.getType();
+      String javaTypeString = (String) marker.getAttribute(MarkerFactory.JAVA_TYPE);
+
       if (Log.isDebug()) {
         Log.debug("UCDQuickFixer.getResolutions() for: " + markerType); //$NON-NLS-1$
       }
       List<IMarkerResolution> resolutions = new ArrayList<IMarkerResolution>();
       resolutions.add(new TodoQuickFix(marker));
       if (MarkerFactory.UCD_MARKER_UNUSED.equals(markerType)) {
-        resolutions.add(new DeleteQuickFix(marker));
+        boolean isPrimaryType = (ElementType.valueOfSave(javaTypeString) == ElementType.PRIMARY_TYPE);
+        resolutions.add(isPrimaryType ? new DeleteFileQuickFix(marker) : new DeleteQuickFix(marker));
         resolutions.add(new LineCommentQuickFix(marker));
       }
       else if (MarkerFactory.UCD_MARKER_USE_PRIVATE.equals(markerType)

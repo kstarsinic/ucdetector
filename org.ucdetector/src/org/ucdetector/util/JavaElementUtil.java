@@ -916,15 +916,26 @@ public class JavaElementUtil {
    * @return type of the file, or null, if it is not a java file
    */
   public static IType getTypeFor(IResource resource) {
-    if (!(resource instanceof IFile) || !"java".equalsIgnoreCase(resource.getFileExtension())) {
-      // Log.debug("Resource %s is not a java file", resource);
-      return null;
+    if (resource instanceof IFile && "java".equalsIgnoreCase(resource.getFileExtension()) && resource.isAccessible()) {
+      IJavaElement javaElement = JavaCore.create((IFile) resource);
+      return getTypeFor(javaElement, true);
     }
-    IFile file = (IFile) resource;
-    // Another possibility:
-    // ICompilationUnit compilationUnit = JavaCore.createCompilationUnitFrom(file);
-    IJavaElement javaElement = JavaCore.create(file);
-    return getTypeFor(javaElement, true);
+    // Log.debug("Resource %s is not a accessible java file", resource);
+    return null;
+  }
+
+  /**
+   * @param resource usually a java file, but maybe others
+   * @return top java element (CompilationUnit) of the marker
+   */
+  public static ICompilationUnit getCompilationUnitFor(IResource resource) {
+    if (resource instanceof IFile && "java".equalsIgnoreCase(resource.getFileExtension()) && resource.isAccessible()) {
+      IJavaElement javaElement = JavaCore.create((IFile) resource);
+      if (javaElement instanceof ICompilationUnit) {
+        return (ICompilationUnit) javaElement;
+      }
+    }
+    return null;
   }
   /*
    * @param clazz to find super classes for

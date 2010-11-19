@@ -14,7 +14,6 @@ import org.eclipse.core.resources.IMarker;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.jdt.core.IField;
-import org.eclipse.jdt.core.IJavaElement;
 import org.eclipse.jdt.core.IMember;
 import org.eclipse.jdt.core.IMethod;
 import org.eclipse.jdt.core.ISourceRange;
@@ -54,36 +53,67 @@ public class MarkerReport implements IUCDetectorReport {
     marker.setAttribute(IMarker.CHAR_START, range.getOffset());
     marker.setAttribute(IMarker.CHAR_END, range.getOffset() + range.getLength());
     marker.setAttribute(MarkerFactory.JAVA_NAME, javaElement.getElementName());
-    marker.setAttribute(MarkerFactory.JAVA_TYPE, String.valueOf(getElementType(javaElement)));
+    marker.setAttribute(MarkerFactory.JAVA_TYPE, getElementType(javaElement).toString());
   }
 
   /**
    * @return a ElementType based on javaElement
    */
-  private static ElementType getElementType(IJavaElement javaElement) throws JavaModelException {
+  private static ElementType getElementType(IMember javaElement) throws JavaModelException {
     if (javaElement instanceof IType) {
       IType type = (IType) javaElement;
-      return (type.isEnum() ? ElementType.ENUM : type.isAnnotation() ? ElementType.ANNOTATION : ElementType.TYPE);
+      // isPrimary first -> delete file has priority
+      if (JavaElementUtil.isPrimary(type)) {
+        return ElementType.PRIMARY_TYPE;
+      }
+      if (type.isEnum()) {
+        return ElementType.ENUM;
+      }
+      if (type.isAnnotation()) {
+        return ElementType.ANNOTATION;
+      }
+      if (type.isInterface()) {
+        return ElementType.INTERFACE;
+      }
+      return ElementType.TYPE;
     }
     else if (javaElement instanceof IMethod) {
       IType type = JavaElementUtil.getTypeFor(javaElement, false);
-      return (type.isAnnotation() ? ElementType.ANNOTATION_TYPE_MEMBER : ElementType.METHOD);
+      if (type.isAnnotation()) {
+        return ElementType.ANNOTATION_TYPE_MEMBER;
+      }
+      return ElementType.METHOD;
     }
     else if (javaElement instanceof IField) {
       IField field = (IField) javaElement;
-      return (field.isEnumConstant() ? ElementType.ENUM_CONSTANT : ElementType.FIELD);
+      if (field.isEnumConstant()) {
+        return ElementType.ENUM_CONSTANT;
+      }
+      return ElementType.FIELD;
     }
-    return null;
+    return ElementType.UNKNOWN;
   }
 
   /**
    * See also concrete classes of: org.eclipse.jdt.core.dom.BodyDeclaration<br>
    * See also org.ucdetector.quickfix.AbstractUCDQuickFix.getModifierListRewrite()<br>
    */
-  private static enum ElementType {
-    TYPE, ANNOTATION, ENUM, // types
+  public static enum ElementType {
+    TYPE, PRIMARY_TYPE, ANNOTATION, ENUM, INTERFACE, // types
     METHOD, ANNOTATION_TYPE_MEMBER, // methods
     FIELD, ENUM_CONSTANT, /*ANNOTATION_TYPE_MEMBER*/// fields
+    UNKNOWN//
+    ;
+
+    public static ElementType valueOfSave(String valueString) {
+      try {
+        return ElementType.valueOf(valueString);
+      }
+      catch (Exception ex) {
+        Log.error(String.format("Unknown ElementType: '%s'", valueString), ex); //$NON-NLS-1$
+        return null;
+      }
+    }
   }
 
   public boolean reportMarker(ReportParam reportParam) throws CoreException {
