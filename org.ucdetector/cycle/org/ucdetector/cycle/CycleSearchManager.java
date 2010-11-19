@@ -35,7 +35,7 @@ import org.ucdetector.util.JavaElementUtil;
 /**
  * Use eclipse search to find references of classes
  */
-public class CycleSearchManager {
+class CycleSearchManager {
   private final IProgressMonitor monitor;
   /**
    * We search cycles for each project, because there should be no

@@ -587,7 +587,7 @@ public class JavaElementUtil {
     private final String info;
     private final String icon;
 
-    MemberInfo(String info, String icon) {
+    private MemberInfo(String info, String icon) {
       this.info = info;
       this.icon = icon;
     }

@@ -10,8 +10,6 @@ package org.ucdetector.quickfix;
 import org.eclipse.core.resources.IMarker;
 import org.eclipse.core.resources.IResource;
 import org.eclipse.core.runtime.CoreException;
-import org.eclipse.jdt.core.dom.BodyDeclaration;
-import org.eclipse.jface.text.BadLocationException;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.ui.ISharedImages;
 import org.ucdetector.Messages;
@@ -46,11 +44,6 @@ class DeleteFileQuickFix extends AbstractUCDQuickFix {
 
   public Image getImage() {
     return UCDetectorPlugin.getSharedImage(ISharedImages.IMG_TOOL_DELETE);
-  }
-
-  @Override
-  public int runImpl(BodyDeclaration nodeToChange) throws BadLocationException {
-    throw new RuntimeException("Method should be called"); //$NON-NLS-1$
   }
 
   public String getDescription() {

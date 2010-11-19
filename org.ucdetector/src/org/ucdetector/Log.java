@@ -135,7 +135,7 @@ public class Log {
   }
 
   private static void logToEclipseConsole(boolean isWarn, String formattedMessage, Throwable ex) {
-    if (UCDetectorPlugin.isHeadlessMode() || !isLogToEclipse()) {
+    if (UCDetectorPlugin.isHeadlessMode() || !logToEclipse) {
       return;
     }
     if (console == null) {
@@ -199,7 +199,7 @@ public class Log {
 
   private static LogLevel activeLogLevel = LogLevel.INFO;
 
-  public static void setActiveLogLevel(LogLevel logLevel) {
+  protected static void setActiveLogLevel(LogLevel logLevel) {
     //    System.out.println("NEW LOG LEVEL: " + logLevel);
     Log.activeLogLevel = logLevel;
   }
@@ -208,7 +208,7 @@ public class Log {
     return LOG_LEVEL_OPTIONS_FILE == null ? activeLogLevel : LOG_LEVEL_OPTIONS_FILE;
   }
 
-  public static String getCanonicalPath(File file) {
+  protected static String getCanonicalPath(File file) {
     if (file == null) {
       return null;
     }
@@ -225,9 +225,5 @@ public class Log {
   static void setLogToEclipse(boolean log) {
     //    System.out.println("NEW LOG TO ECLIPSE: " + log);
     Log.logToEclipse = log;
-  }
-
-  static boolean isLogToEclipse() {
-    return logToEclipse;
   }
 }

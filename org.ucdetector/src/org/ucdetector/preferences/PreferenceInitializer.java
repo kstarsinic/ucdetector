@@ -112,7 +112,7 @@ public class PreferenceInitializer extends AbstractPreferenceInitializer {
     return reportDir.getAbsolutePath();
   }
 
-  static String getReportDirDefault() {
+  private static String getReportDirDefault() {
     String reportDir;
     try {
       File workspaceDir = Platform.getLocation().toFile();

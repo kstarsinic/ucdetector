@@ -34,7 +34,7 @@ import org.ucdetector.util.JavaElementUtil;
 // Resource modification hooks:
 //     http://help.eclipse.org/helios/index.jsp?topic=/org.eclipse.platform.doc.isv/guide/resAdv_hooks.htm
 @SuppressWarnings("nls")
-public class RunOnSave implements IResourceChangeListener, IResourceDeltaVisitor {
+class RunOnSave implements IResourceChangeListener, IResourceDeltaVisitor {
   private final List<IType> changedTypes = new ArrayList<IType>();
   private Job activeJob = null;
 
@@ -108,7 +108,7 @@ public class RunOnSave implements IResourceChangeListener, IResourceDeltaVisitor
     }
   }
 
-  protected void setJobProperty(Job job) {
+  private void setJobProperty(Job job) {
     job.setProperty(IProgressConstants.KEEP_PROPERTY, Boolean.TRUE);
     ImageDescriptor ucdIcon = UCDetectorPlugin.getImageDescriptor(UCDetectorPlugin.IMAGE_UCD);
     job.setProperty(IProgressConstants.ICON_PROPERTY, ucdIcon);

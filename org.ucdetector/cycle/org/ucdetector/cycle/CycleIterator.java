@@ -21,7 +21,7 @@ import org.ucdetector.preferences.Prefs;
 /**
  * search for class cycles
  */
-public class CycleIterator extends AbstractUCDetectorIterator {
+class CycleIterator extends AbstractUCDetectorIterator {
   private final List<IType> types = new ArrayList<IType>();
 
   @Override

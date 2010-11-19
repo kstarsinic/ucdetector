@@ -223,8 +223,14 @@ abstract class AbstractUCDQuickFix extends WorkbenchMarkerResolution {
   // ---------------------------------------------------------------------------
   // Override, implement
   // ---------------------------------------------------------------------------
-
-  public abstract int runImpl(BodyDeclaration nodeToChange) throws BadLocationException;
+  /**
+   * @param nodeToChange node which is changed
+   * @return  startPosition
+   * @throws BadLocationException when there are problems with postion
+   */
+  public int runImpl(BodyDeclaration nodeToChange) throws BadLocationException {
+    return -1;
+  }
 
   @Override
   public IMarker[] findOtherMarkers(IMarker[] markers) {
