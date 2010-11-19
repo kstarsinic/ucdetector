@@ -62,6 +62,27 @@ public class JavaElementUtil {
     //
   }
 
+  // -------------------------------------------------------------------------
+  // PACKAGE STUFF
+  // -------------------------------------------------------------------------
+
+  /**
+   * @param javaElement to find source folder for
+   * @return the PackageFragmentRoot for a javaElement.
+   * In Eclipse IDE this is called a source folder
+   *
+   */
+  public static IPackageFragmentRoot getPackageFragmentRootFor(IJavaElement javaElement) {
+    IJavaElement parent = javaElement.getParent();
+    while (true) {
+      // System.out.println("parent =\t" + dumpJavaElement(parent));
+      if (parent == null || parent instanceof IPackageFragmentRoot) {
+        return (IPackageFragmentRoot) parent;
+      }
+      parent = parent.getParent();
+    }
+  }
+
   /**
    * @param javaElement element to find package for
    * @return the package for an class, method, or field
@@ -77,6 +98,57 @@ public class JavaElementUtil {
   }
 
   /**
+   * Bug [ 2715348 ] Filter on Source folders does not work.
+   * Match project relative path, not only last path element
+   * @param root source folder
+   * @return "src/java/test" instead of only "test"
+   */
+  public static String getSourceFolderProjectRelativePath(IPackageFragmentRoot root) {
+    IResource resource = root.getResource();
+    if (resource != null && resource.getProjectRelativePath() != null) {
+      return resource.getProjectRelativePath().toOSString();
+    }
+    return null;
+  }
+
+  /**
+   * If we call <code>IPackageFragment.getChildren()</code>
+   * we do NOT get sub packages!<br>
+   * This is a workaround. We calculate sub packages by going to the
+   * parent of code>IPackageFragment</code>
+   * which is a <code>IPackageFragmentRoot</code> and call
+   * <code>IPackageFragmentRoot.getChildren()</code>
+   * When a name of a sub package starts with package name + "." it is a
+   * sub package
+   * @param packageFragment package to find sub packages
+   *
+   * @return a list of all sub packages for the input package. For example input
+   * <pre>org.ucdetector</pre>
+   * return a list with:
+   * <ul>
+   * <li><code>org.ucdetector.action</code></li>
+   * <li><code>org.ucdetector.iterator</code></li>
+   * </ul>
+   * @throws CoreException when there are problems finding sub packages
+   */
+  public static List<IPackageFragment> getSubPackages(IPackageFragment packageFragment) throws CoreException {
+    List<IPackageFragment> subPackages = new ArrayList<IPackageFragment>();
+    IJavaElement[] allPackages = ((IPackageFragmentRoot) packageFragment.getParent()).getChildren();
+    for (IJavaElement javaElement : allPackages) {
+      IPackageFragment pakage = (IPackageFragment) javaElement;
+      String startPackagenName = packageFragment.getElementName() + ".";
+      if (packageFragment.isDefaultPackage() || pakage.getElementName().startsWith(startPackagenName)) {
+        subPackages.add(pakage);
+      }
+    }
+    return subPackages;
+  }
+
+  // -------------------------------------------------------------------------
+  // TYPE STUFF
+  // -------------------------------------------------------------------------
+
+  /**
    * @param javaElement to find class for
    * @param isPrimary type with the same name as the compilation unit, or the type of a class file
    * @return the class for an class, method, or field,
@@ -85,10 +157,7 @@ public class JavaElementUtil {
    */
   public static IType getTypeFor(IJavaElement javaElement, boolean isPrimary) {
     IJavaElement parent = javaElement;
-    while (true) {
-      if (parent == null) {
-        return null;
-      }
+    while (parent != null) {
       if (parent instanceof IType) {
         IType type = (IType) parent;
         if (isPrimary && type.getCompilationUnit() != null) {
@@ -97,11 +166,24 @@ public class JavaElementUtil {
         return type;
       }
       if (parent instanceof ICompilationUnit) {
-        ICompilationUnit cu = (ICompilationUnit) parent;
-        return cu.findPrimaryType();
+        return ((ICompilationUnit) parent).findPrimaryType();
       }
       parent = parent.getParent();
     }
+    return null;
+  }
+
+  /**
+   * @param resource usually a java file, but maybe others
+   * @return type of the file, or null, if it is not a java file
+   */
+  public static IType getTypeFor(IResource resource) {
+    if (resource instanceof IFile && "java".equalsIgnoreCase(resource.getFileExtension()) && resource.isAccessible()) {
+      IJavaElement javaElement = JavaCore.create((IFile) resource);
+      return getTypeFor(javaElement, true);
+    }
+    // Log.debug("Resource %s is not a accessible java file", resource);
+    return null;
   }
 
   /**
@@ -111,10 +193,7 @@ public class JavaElementUtil {
   public static IType getRootTypeFor(IJavaElement javaElement) {
     IJavaElement parent = javaElement;
     IType lastType = null;
-    while (true) {
-      if (parent == null) {
-        return null;
-      }
+    while (parent != null) {
       if (parent instanceof IType) {
         lastType = (IType) parent;
       }
@@ -123,6 +202,7 @@ public class JavaElementUtil {
       }
       parent = parent.getParent();
     }
+    return lastType;
   }
 
   /**
@@ -155,6 +235,54 @@ public class JavaElementUtil {
     return type1.equals(type2);
   }
 
+  // -------------------------------------------------------------------------
+  // INTERFACE STUFF
+  // -------------------------------------------------------------------------
+
+  /**
+   * @param method method
+   * @return true, when parent of field is an interface
+   * @throws JavaModelException if a problem occurs
+   */
+  public static boolean isInterfaceMethod(IMethod method) throws JavaModelException {
+    return isParentInterface(method);
+  }
+
+  /**
+   * @param field field
+   * @return true, when parent of field is an interface
+   * @throws JavaModelException if a problem occurs
+   */
+  public static boolean isInterfaceField(IField field) throws JavaModelException {
+    return isParentInterface(field);
+  }
+
+  private static boolean isParentInterface(IJavaElement element) throws JavaModelException {
+    IJavaElement parent = element.getParent();
+    return (parent instanceof IType && ((IType) parent).isInterface());
+  }
+
+  // -------------------------------------------------------------------------
+  // CompilationUnit STUFF
+  // -------------------------------------------------------------------------
+
+  /**
+   * @param resource usually a java file, but maybe others
+   * @return top java element (CompilationUnit) of the marker
+   */
+  public static ICompilationUnit getCompilationUnitFor(IResource resource) {
+    if (resource instanceof IFile && "java".equalsIgnoreCase(resource.getFileExtension()) && resource.isAccessible()) {
+      IJavaElement javaElement = JavaCore.create((IFile) resource);
+      if (javaElement instanceof ICompilationUnit) {
+        return (ICompilationUnit) javaElement;
+      }
+    }
+    return null;
+  }
+
+  // -------------------------------------------------------------------------
+  // SPECIAL METHODS
+  // -------------------------------------------------------------------------
   /**
    * @param method method to check
    * @return <code>true</code>, if the method is one of Object methods:<br>
@@ -221,6 +349,72 @@ public class JavaElementUtil {
   }
 
   /**
+   * @param method to check for java bean conventions
+   * @return <code>true</code>, when a method matches the java bean conventions,
+   * for example:
+   *         <ul>
+   *         <li><code>public void setName(String name)</code></li>
+   *         <li><code>public String getName()</code></li>
+   *         <li><code>public boolean isValid()</code></li>
+   *         </ul>
+   * @throws JavaModelException if this element does not exist or if an
+  *      exception occurs while accessing its corresponding resource.
+   */
+  public static boolean isBeanMethod(IMethod method) throws JavaModelException {
+    if (!Flags.isPublic(method.getFlags()) || Flags.isStatic(method.getFlags())) {
+      return false;
+    }
+    String name = method.getElementName();
+    if (Signature.SIG_VOID.equals(method.getReturnType()) && name.startsWith("set") && name.length() > 3
+        && Character.isUpperCase(name.charAt(3)) && method.getNumberOfParameters() == 1) {
+      return true;
+    }
+    if (!Signature.SIG_VOID.equals(method.getReturnType()) && name.startsWith("get") && name.length() > 3
+        && Character.isUpperCase(name.charAt(3)) && method.getNumberOfParameters() == 0) {
+      return true;
+    }
+    if (Signature.SIG_BOOLEAN.equals(method.getReturnType()) && name.startsWith("is") && name.length() > 2
+        && Character.isUpperCase(name.charAt(2)) && method.getNumberOfParameters() == 0) {
+      return true;
+    }
+    return false;
+  }
+
+  /**
+   * Check if a enum class is called by:
+   * <ul>
+   *   <li><code>values()</code> or</li>
+   *   <li><code>valueOf(java.lang.String)</code></li>
+   * </ul>
+   * See bug 2900561: enum detection, or don't create "unnecessary marker" for enum constants
+   * See: JavaSearchPage.performNewSearch()
+   *  See: JavaSearchQuery.run()
+   * @param enumType enum to check usage
+   * @return <code>true</code>, when enum is used by values() or valueOf()
+   * @throws CoreException when there are search problems
+   */
+  public static boolean isUsedBySpecialEnumMethods(IType enumType) throws CoreException {
+    String[] stringPatterns = new String[] {
+        // We need '.' as class name separator for search!
+        enumType.getFullyQualifiedName('.') + ".values()",
+        enumType.getFullyQualifiedName('.') + ".valueOf(java.lang.String)", };
+    for (String stringPattern : stringPatterns) {
+      SearchPattern pattern = SearchPattern.createPattern(stringPattern, IJavaSearchConstants.METHOD,
+          IJavaSearchConstants.REFERENCES, SearchPattern.R_ERASURE_MATCH);
+      CountSearchRequestor requestor = new CountSearchRequestor();
+      runSearch(pattern, requestor);
+      if (requestor.isFound()) {
+        return true;
+      }
+    }
+    return false;
+  }
+
+  // -------------------------------------------------------------------------
+  // SPECIAL FIELDS
+  // -------------------------------------------------------------------------
+
+  /**
    * Ignore fields used for Object Serialization:
    * @param field to check
    * @return <code>true</code> if field is like
@@ -241,6 +435,34 @@ public class JavaElementUtil {
     return false;
   }
 
+  /**
+  *
+  * @param field to check if it is a constant
+  * @return <code>true</code>, when a field is static and final
+  * @throws JavaModelException if this element does not exist or if an
+  *      exception occurs while accessing its corresponding resource.
+  */
+  public static boolean isConstant(IField field) throws JavaModelException { // NO_UCD
+    return Flags.isStatic(field.getFlags()) && Flags.isFinal(field.getFlags());
+  }
+
+  public static IMethod getMainMethod(IType member) throws JavaModelException {
+    IMethod[] methods = member.getMethods();
+    for (IMethod method : methods) {
+      if (method.isMainMethod()) {
+        return method;
+      }
+    }
+    return null;
+  }
+
+  public static boolean hasMainMethod(IType member) throws JavaModelException {
+    return getMainMethod(member) != null;
+  }
+
+  // -------------------------------------------------------------------------
+  // TO STRING
+  // -------------------------------------------------------------------------
   /**
    * @param element to get name for
    * @return <ul>
@@ -343,211 +565,6 @@ public class JavaElementUtil {
       }
     }
     return sb.toString();
-  }
-
-  // -------------------------------------------------------------------------
-  // OVERRIDE
-  // -------------------------------------------------------------------------
-
-  /**
-   * @param method  to check if it is overridden
-   * @see org.eclipse.jdt.ui.actions.FindDeclarationsAction
-   * @see "http://help.eclipse.org/stable/index.jsp?topic=/org.eclipse.jdt.doc.isv/guide/jdt_api_search.htm"
-   * @return <code>true</code> if a method is overridden<br>
-   * it is very expensive to call this method!!!
-   * @throws CoreException when problems found during search
-   * @throws JavaModelException if this element does not exist or if an
-  *      exception occurs while accessing its corresponding resource.
-   */
-  public static boolean isOverriddenMethod(IMethod method) throws CoreException {
-    int flags = method.getFlags();
-    if (method.isConstructor() || Flags.isStatic(flags) || Flags.isPrivate(flags)) {
-      return false;
-    }
-    int limitTo = IJavaSearchConstants.DECLARATIONS | IJavaSearchConstants.IGNORE_DECLARING_TYPE
-        | IJavaSearchConstants.IGNORE_RETURN_TYPE;
-    SearchPattern pattern = SearchPattern.createPattern(method, limitTo);
-    CountSearchRequestor requestor = new CountSearchRequestor();
-    IType declaringType = method.getDeclaringType();
-    IJavaSearchScope scope = SearchEngine.createHierarchyScope(declaringType);
-    runSearch(pattern, requestor, scope);
-    // Ignore 1 match: Declaring type!
-    return requestor.getFoundCount() > 1;
-  }
-
-  /*
-   * @see OverrideIndicatorLabelDecorator, MethodOverrideTester
-   * @return <code>true</code>, when a method override or implements another method.
-  public static boolean isOverrideOrImplements(IMethod method)
-      throws JavaModelException {
-    int flags = method.getFlags();
-    if (method.isConstructor() || Flags.isStatic(flags)
-        || Flags.isPrivate(flags)) {
-      return false;
-    }
-    IType type = method.getDeclaringType();
-    MethodOverrideTester methodOverrideTester = SuperTypeHierarchyCache
-        .getMethodOverrideTester(type);
-    IMethod defining = methodOverrideTester.findOverriddenMethod(method, true);
-    //    if (JdtFlags.isAbstract(defining)) { return JavaElementImageDescriptor.IMPLEMENTS;
-    //    else {return JavaElementImageDescriptor.OVERRIDES;
-    return defining != null;
-  }
-   */
-
-  public static boolean runSearch(SearchPattern pattern, SearchRequestor requestor) throws CoreException {
-    JavaSearchScopeFactory factory = JavaSearchScopeFactory.getInstance();
-    IJavaSearchScope sourceScope = factory.createWorkspaceScope(IJavaSearchScope.SOURCES);
-    // [PerformanceBug] Next line made UCDetector 2 times slower before version 1.4.0!!!
-    // sourceScope = SearchEngine.createWorkspaceScope()
-    return runSearch(pattern, requestor, sourceScope);
-  }
-
-  /**
-   * Run a jdt (java development toolkit) search and handle Exceptions, <br>
-   * the Search result is found in SearchRequestor
-   * @param pattern search pattern
-   * @param requestor contains result after search
-   * @param scope scope to search
-   * @return true, when a {@link Exception} happend
-   * @throws CoreException when there is a OutOfMemoryError
-   */
-  private static boolean runSearch(SearchPattern pattern, SearchRequestor requestor, IJavaSearchScope scope)
-      throws CoreException {
-    boolean isSearchException = false;
-    SearchEngine searchEngine = new SearchEngine();
-    try {
-      SearchParticipant[] participant = new SearchParticipant[] { SearchEngine.getDefaultSearchParticipant() };
-      searchEngine.search(pattern, participant, scope, requestor, null);
-    }
-    catch (OperationCanceledException e) {
-      // ignore
-    }
-    catch (OutOfMemoryError e) {
-      isSearchException = true;
-      UCDetectorPlugin.handleOutOfMemoryError(e);
-    }
-    catch (Throwable throwable) {
-      isSearchException = true;
-      // Java Search throws an NullPointerException in Eclipse 3.4M5
-      String mes = "Java search problems. UCDetecor will ignore this exception. Maybe a 'org.eclipse.jdt.core.search' bug!";
-      Log.error(mes, throwable);
-    }
-    return isSearchException;
-  }
-
-  // -------------------------------------------------------------------------
-  // SUB, SUPER CLASSES
-  // -------------------------------------------------------------------------
-  /**
-   * @param type to check for subclasses
-   * @return <code>true</code>, when a type has sub classes
-   * @throws JavaModelException if this element does not exist or if an
-  *      exception occurs while accessing its corresponding resource.
-   */
-  public static boolean hasSubClasses(IType type) throws JavaModelException {
-    return hasXType(type, false);
-  }
-
-  /**
-   * @param type to check for super classes
-   * @return <code>true</code>, when a type has super classes
-   * @throws JavaModelException if this element does not exist or if an
-  *      exception occurs while accessing its corresponding resource.
-   */
-  public static boolean hasSuperClasses(IType type) throws JavaModelException { // NO_UCD
-    return hasXType(type, true);
-  }
-
-  /**
-   * org.eclipse.jdt.internal.corext.dom.Bindings.findOverriddenMethod
-   * org.eclipse.jdt.internal.ui.typehierarchy.SubTypeHierarchyViewer
-   */
-  private static boolean hasXType(IType type, boolean isSupertype) throws JavaModelException {
-    ITypeHierarchy hierarchy = type.newTypeHierarchy(NULL_MONITOR);
-    if (hierarchy != null) {
-      IType[] types = isSupertype ? hierarchy.getSupertypes(type) : hierarchy.getSubtypes(type);
-      if (types == null || types.length == 0) {
-        return false;
-      }
-    }
-    return true;
-  }
-
-  /**
-   *
-   * @param field to check if it is a constant
-   * @return <code>true</code>, when a field is static and final
-   * @throws JavaModelException if this element does not exist or if an
-  *      exception occurs while accessing its corresponding resource.
-   */
-  public static boolean isConstant(IField field) throws JavaModelException { // NO_UCD
-    return Flags.isStatic(field.getFlags()) && Flags.isFinal(field.getFlags());
-  }
-
-  /**
-   * @param method to check for java bean conventions
-   * @return <code>true</code>, when a method matches the java bean conventions,
-   * for example:
-   *         <ul>
-   *         <li><code>public void setName(String name)</code></li>
-   *         <li><code>public String getName()</code></li>
-   *         <li><code>public boolean isValid()</code></li>
-   *         </ul>
-   * @throws JavaModelException if this element does not exist or if an
-  *      exception occurs while accessing its corresponding resource.
-   */
-  public static boolean isBeanMethod(IMethod method) throws JavaModelException {
-    if (!Flags.isPublic(method.getFlags()) || Flags.isStatic(method.getFlags())) {
-      return false;
-    }
-    String name = method.getElementName();
-    if (Signature.SIG_VOID.equals(method.getReturnType()) && name.startsWith("set") && name.length() > 3
-        && Character.isUpperCase(name.charAt(3)) && method.getNumberOfParameters() == 1) {
-      return true;
-    }
-    if (!Signature.SIG_VOID.equals(method.getReturnType()) && name.startsWith("get") && name.length() > 3
-        && Character.isUpperCase(name.charAt(3)) && method.getNumberOfParameters() == 0) {
-      return true;
-    }
-    if (Signature.SIG_BOOLEAN.equals(method.getReturnType()) && name.startsWith("is") && name.length() > 2
-        && Character.isUpperCase(name.charAt(2)) && method.getNumberOfParameters() == 0) {
-      return true;
-    }
-    return false;
-  }
-
-  /**
-   * If we call <code>IPackageFragment.getChildren()</code>
-   * we do NOT get sub packages!<br>
-   * This is a workaround. We calculate sub packages by going to the
-   * parent of code>IPackageFragment</code>
-   * which is a <code>IPackageFragmentRoot</code> and call
-   * <code>IPackageFragmentRoot.getChildren()</code>
-   * When a name of a sub package starts with package name + "." it is a
-   * sub package
-   * @param packageFragment package to find sub packages
-   *
-   * @return a list of all sub packages for the input package. For example input
-   * <pre>org.ucdetector</pre>
-   * return a list with:
-   * <ul>
-   * <li><code>org.ucdetector.action</code></li>
-   * <li><code>org.ucdetector.iterator</code></li>
-   * </ul>
-   * @throws CoreException when there are problems finding sub packages
-   */
-  public static List<IPackageFragment> getSubPackages(IPackageFragment packageFragment) throws CoreException {
-    List<IPackageFragment> subPackages = new ArrayList<IPackageFragment>();
-    IJavaElement[] allPackages = ((IPackageFragmentRoot) packageFragment.getParent()).getChildren();
-    for (IJavaElement javaElement : allPackages) {
-      IPackageFragment pakage = (IPackageFragment) javaElement;
-      String startPackagenName = packageFragment.getElementName() + ".";
-      if (packageFragment.isDefaultPackage() || pakage.getElementName().startsWith(startPackagenName)) {
-        subPackages.add(pakage);
-      }
-    }
-    return subPackages;
   }
 
   public enum MemberInfo {
@@ -704,35 +721,136 @@ public class JavaElementUtil {
     return String.format("%s\t%s", getElementName(javaElement), getClassName(javaElement));
   }
 
+  // -------------------------------------------------------------------------
+  // INHERITANCE
+  // -------------------------------------------------------------------------
+
   /**
-   * @param javaElement to find source folder for
-   * @return the PackageFragmentRoot for a javaElement.
-   * In Eclipse IDE this is called a source folder
-   *
+   * @param method  to check if it is overridden
+   * @see org.eclipse.jdt.ui.actions.FindDeclarationsAction
+   * @see "http://help.eclipse.org/stable/index.jsp?topic=/org.eclipse.jdt.doc.isv/guide/jdt_api_search.htm"
+   * @return <code>true</code> if a method is overridden<br>
+   * it is very expensive to call this method!!!
+   * @throws CoreException when problems found during search
+   * @throws JavaModelException if this element does not exist or if an
+  *      exception occurs while accessing its corresponding resource.
    */
-  public static IPackageFragmentRoot getPackageFragmentRootFor(IJavaElement javaElement) {
-    IJavaElement parent = javaElement.getParent();
-    while (true) {
-      // System.out.println("parent =\t" + dumpJavaElement(parent));
-      if (parent == null || parent instanceof IPackageFragmentRoot) {
-        return (IPackageFragmentRoot) parent;
-      }
-      parent = parent.getParent();
+  public static boolean isOverriddenMethod(IMethod method) throws CoreException {
+    int flags = method.getFlags();
+    if (method.isConstructor() || Flags.isStatic(flags) || Flags.isPrivate(flags)) {
+      return false;
     }
+    int limitTo = IJavaSearchConstants.DECLARATIONS | IJavaSearchConstants.IGNORE_DECLARING_TYPE
+        | IJavaSearchConstants.IGNORE_RETURN_TYPE;
+    SearchPattern pattern = SearchPattern.createPattern(method, limitTo);
+    CountSearchRequestor requestor = new CountSearchRequestor();
+    IType declaringType = method.getDeclaringType();
+    IJavaSearchScope scope = SearchEngine.createHierarchyScope(declaringType);
+    runSearch(pattern, requestor, scope);
+    // Ignore 1 match: Declaring type!
+    return requestor.getFoundCount() > 1;
+  }
+
+  /*
+   * @see OverrideIndicatorLabelDecorator, MethodOverrideTester
+   * @return <code>true</code>, when a method override or implements another method.
+  public static boolean isOverrideOrImplements(IMethod method)
+      throws JavaModelException {
+    int flags = method.getFlags();
+    if (method.isConstructor() || Flags.isStatic(flags)
+        || Flags.isPrivate(flags)) {
+      return false;
+    }
+    IType type = method.getDeclaringType();
+    MethodOverrideTester methodOverrideTester = SuperTypeHierarchyCache
+        .getMethodOverrideTester(type);
+    IMethod defining = methodOverrideTester.findOverriddenMethod(method, true);
+    //    if (JdtFlags.isAbstract(defining)) { return JavaElementImageDescriptor.IMPLEMENTS;
+    //    else {return JavaElementImageDescriptor.OVERRIDES;
+    return defining != null;
+  }
+   */
+
+  // -------------------------------------------------------------------------
+  // SEARCH
+  // -------------------------------------------------------------------------
+  public static boolean runSearch(SearchPattern pattern, SearchRequestor requestor) throws CoreException {
+    JavaSearchScopeFactory factory = JavaSearchScopeFactory.getInstance();
+    IJavaSearchScope sourceScope = factory.createWorkspaceScope(IJavaSearchScope.SOURCES);
+    // [PerformanceBug] Next line made UCDetector 2 times slower before version 1.4.0!!!
+    // sourceScope = SearchEngine.createWorkspaceScope()
+    return runSearch(pattern, requestor, sourceScope);
   }
 
   /**
-   * Bug [ 2715348 ] Filter on Source folders does not work.
-   * Match project relative path, not only last path element
-   * @param root source folder
-   * @return "src/java/test" instead of only "test"
+   * Run a jdt (java development toolkit) search and handle Exceptions, <br>
+   * the Search result is found in SearchRequestor
+   * @param pattern search pattern
+   * @param requestor contains result after search
+   * @param scope scope to search
+   * @return true, when a {@link Exception} happend
+   * @throws CoreException when there is a OutOfMemoryError
    */
-  public static String getSourceFolderProjectRelativePath(IPackageFragmentRoot root) {
-    IResource resource = root.getResource();
-    if (resource != null && resource.getProjectRelativePath() != null) {
-      return resource.getProjectRelativePath().toOSString();
+  private static boolean runSearch(SearchPattern pattern, SearchRequestor requestor, IJavaSearchScope scope)
+      throws CoreException {
+    boolean isSearchException = false;
+    SearchEngine searchEngine = new SearchEngine();
+    try {
+      SearchParticipant[] participant = new SearchParticipant[] { SearchEngine.getDefaultSearchParticipant() };
+      searchEngine.search(pattern, participant, scope, requestor, null);
     }
-    return null;
+    catch (OperationCanceledException e) {
+      // ignore
+    }
+    catch (OutOfMemoryError e) {
+      isSearchException = true;
+      UCDetectorPlugin.handleOutOfMemoryError(e);
+    }
+    catch (Throwable throwable) {
+      isSearchException = true;
+      // Java Search throws an NullPointerException in Eclipse 3.4M5
+      String mes = "Java search problems. UCDetecor will ignore this exception. Maybe a 'org.eclipse.jdt.core.search' bug!";
+      Log.error(mes, throwable);
+    }
+    return isSearchException;
+  }
+
+  // -------------------------------------------------------------------------
+  // SUB, SUPER CLASSES
+  // -------------------------------------------------------------------------
+  /**
+   * @param type to check for subclasses
+   * @return <code>true</code>, when a type has sub classes
+   * @throws JavaModelException if this element does not exist or if an
+  *      exception occurs while accessing its corresponding resource.
+   */
+  public static boolean hasSubClasses(IType type) throws JavaModelException {
+    return hasXType(type, false);
+  }
+
+  /**
+   * @param type to check for super classes
+   * @return <code>true</code>, when a type has super classes
+   * @throws JavaModelException if this element does not exist or if an
+  *      exception occurs while accessing its corresponding resource.
+   */
+  public static boolean hasSuperClasses(IType type) throws JavaModelException { // NO_UCD
+    return hasXType(type, true);
+  }
+
+  /**
+   * org.eclipse.jdt.internal.corext.dom.Bindings.findOverriddenMethod
+   * org.eclipse.jdt.internal.ui.typehierarchy.SubTypeHierarchyViewer
+   */
+  private static boolean hasXType(IType type, boolean isSupertype) throws JavaModelException {
+    ITypeHierarchy hierarchy = type.newTypeHierarchy(NULL_MONITOR);
+    if (hierarchy != null) {
+      IType[] types = isSupertype ? hierarchy.getSupertypes(type) : hierarchy.getSubtypes(type);
+      if (types == null || types.length == 0) {
+        return false;
+      }
+    }
+    return true;
   }
 
   /**
@@ -825,73 +943,6 @@ public class JavaElementUtil {
   }
    */
 
-  public static IMethod getMainMethod(IType member) throws JavaModelException {
-    IMethod[] methods = member.getMethods();
-    for (IMethod method : methods) {
-      if (method.isMainMethod()) {
-        return method;
-      }
-    }
-    return null;
-  }
-
-  public static boolean hasMainMethod(IType member) throws JavaModelException {
-    return getMainMethod(member) != null;
-  }
-
-  /**
-   * @param method method
-   * @return true, when parent of field is an interface
-   * @throws JavaModelException if a problem occurs
-   */
-  public static boolean isInterfaceMethod(IMethod method) throws JavaModelException {
-    return isParentInterface(method);
-  }
-
-  /**
-   * @param field field
-   * @return true, when parent of field is an interface
-   * @throws JavaModelException if a problem occurs
-   */
-  public static boolean isInterfaceField(IField field) throws JavaModelException {
-    return isParentInterface(field);
-  }
-
-  private static boolean isParentInterface(IJavaElement element) throws JavaModelException {
-    IJavaElement parent = element.getParent();
-    return (parent instanceof IType && ((IType) parent).isInterface());
-  }
-
-  /**
-   * Check if a enum class is called by:
-   * <ul>
-   *   <li><code>values()</code> or</li>
-   *   <li><code>valueOf(java.lang.String)</code></li>
-   * </ul>
-   * See bug 2900561: enum detection, or don't create "unnecessary marker" for enum constants
-   * See: JavaSearchPage.performNewSearch()
-   *  See: JavaSearchQuery.run()
-   * @param enumType enum to check usage
-   * @return <code>true</code>, when enum is used by values() or valueOf()
-   * @throws CoreException when there are search problems
-   */
-  public static boolean isUsedBySpecialEnumMethods(IType enumType) throws CoreException {
-    String[] stringPatterns = new String[] {
-        // We need '.' as class name separator for search!
-        enumType.getFullyQualifiedName('.') + ".values()",
-        enumType.getFullyQualifiedName('.') + ".valueOf(java.lang.String)", };
-    for (String stringPattern : stringPatterns) {
-      SearchPattern pattern = SearchPattern.createPattern(stringPattern, IJavaSearchConstants.METHOD,
-          IJavaSearchConstants.REFERENCES, SearchPattern.R_ERASURE_MATCH);
-      CountSearchRequestor requestor = new CountSearchRequestor();
-      runSearch(pattern, requestor);
-      if (requestor.isFound()) {
-        return true;
-      }
-    }
-    return false;
-  }
-
   /**
    * org.eclipse.jdt.internal.corext.dom.Bindings.findOverriddenMethod
    * org.eclipse.jdt.internal.ui.typehierarchy.SubTypeHierarchyViewer
@@ -911,32 +962,6 @@ public class JavaElementUtil {
     return String.format("[%s]", o == null ? "?" : o.getClass().getName());
   }
 
-  /**
-   * @param resource usually a java file, but maybe others
-   * @return type of the file, or null, if it is not a java file
-   */
-  public static IType getTypeFor(IResource resource) {
-    if (resource instanceof IFile && "java".equalsIgnoreCase(resource.getFileExtension()) && resource.isAccessible()) {
-      IJavaElement javaElement = JavaCore.create((IFile) resource);
-      return getTypeFor(javaElement, true);
-    }
-    // Log.debug("Resource %s is not a accessible java file", resource);
-    return null;
-  }
-
-  /**
-   * @param resource usually a java file, but maybe others
-   * @return top java element (CompilationUnit) of the marker
-   */
-  public static ICompilationUnit getCompilationUnitFor(IResource resource) {
-    if (resource instanceof IFile && "java".equalsIgnoreCase(resource.getFileExtension()) && resource.isAccessible()) {
-      IJavaElement javaElement = JavaCore.create((IFile) resource);
-      if (javaElement instanceof ICompilationUnit) {
-        return (ICompilationUnit) javaElement;
-      }
-    }
-    return null;
-  }
   /*
    * @param clazz to find super classes for
    * @return all super classes of clazz. All interfaces implemented by this class
