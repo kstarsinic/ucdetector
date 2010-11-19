@@ -102,12 +102,12 @@ public class Log {
   }
 
   // LOG ------------------------------------------------------------------------
-  public static void log(LogLevel level, String message) {
+  public static void log(LogLevel level, String message) { // NO_UCD
     logImpl(level, message, null);
   }
 
   // STATUS -------------------------------------------------------------------
-  public static void status(IStatus status) {
+  public static void status(IStatus status) { // NO_UCD
     if (status.getSeverity() == IStatus.ERROR) {
       error(status.getMessage(), status.getException());
     }

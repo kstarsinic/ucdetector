@@ -358,7 +358,7 @@ public abstract class AbstractUCDetectorIterator {
 
   /**  @param javaElement to handle
    * @throws CoreException in classes overriding this method */
-  public void handleEndSelectedElement(IJavaElement javaElement) throws CoreException {
+  public void handleEndSelectedElement(IJavaElement javaElement) throws CoreException { // NO_UCD
     //
   }
 
@@ -369,7 +369,7 @@ public abstract class AbstractUCDetectorIterator {
    *
    * @param javaElement to handle
    * @throws CoreException in classes overriding this method */
-  public void handleStartElement(IJavaElement javaElement) throws CoreException {
+  public void handleStartElement(IJavaElement javaElement) throws CoreException { // NO_UCD
     // Dumping all javaElements
     // System.out.println(JavaElementUtil.getElementName(javaElement) + " - "
     //    + JavaElementUtil.getClassName(javaElement));
@@ -389,7 +389,7 @@ public abstract class AbstractUCDetectorIterator {
   /**
    * @param javaModel
    */
-  protected void handleJavaModel(IJavaModel javaModel) {
+  protected void handleJavaModel(IJavaModel javaModel) { // NO_UCD
     //
   }
 
@@ -404,7 +404,7 @@ public abstract class AbstractUCDetectorIterator {
   /**
    * @param packageFragmentRoot
    */
-  protected void handlePackageFragmentRoot(IPackageFragmentRoot packageFragmentRoot) {
+  protected void handlePackageFragmentRoot(IPackageFragmentRoot packageFragmentRoot) { // NO_UCD
     //
   }
 
@@ -418,7 +418,7 @@ public abstract class AbstractUCDetectorIterator {
   /** @param classFile
    * @throws CoreException in classes overriding this method */
   // CLASS ---------------------------------------------------------------------
-  protected void handleClassFile(IClassFile classFile) throws CoreException {
+  protected void handleClassFile(IClassFile classFile) throws CoreException { // NO_UCD
     //
 
   }
@@ -440,20 +440,20 @@ public abstract class AbstractUCDetectorIterator {
   // SUP CLASS -----------------------------------------------------------------
   /** @param packageDeclaration
    * @throws CoreException */
-  protected void handlePackageDeclaration(IPackageDeclaration packageDeclaration) throws CoreException {
+  protected void handlePackageDeclaration(IPackageDeclaration packageDeclaration) throws CoreException { // NO_UCD
     //
   }
 
   /** @param importContainer
    * @throws CoreException */
-  protected void handleImportContainer(IImportContainer importContainer)//
+  protected void handleImportContainer(IImportContainer importContainer)// // NO_UCD
       throws CoreException {
     //
   }
 
   /** @param importDeclaration
    * @throws CoreException */
-  protected void handleImportDeclaration(IImportDeclaration importDeclaration)//
+  protected void handleImportDeclaration(IImportDeclaration importDeclaration)// // NO_UCD
       throws CoreException {
     //
   }
@@ -466,7 +466,7 @@ public abstract class AbstractUCDetectorIterator {
 
   /** @param initializer
    * @throws CoreException */
-  protected void handleInitializer(IInitializer initializer)//
+  protected void handleInitializer(IInitializer initializer)// // NO_UCD
       throws CoreException {
     //
   }
@@ -488,19 +488,19 @@ public abstract class AbstractUCDetectorIterator {
 
   /** @param folder
    * @throws CoreException */
-  protected void handleResourceFolder(IFolder folder) throws CoreException {
+  protected void handleResourceFolder(IFolder folder) throws CoreException { // NO_UCD
     //
   }
 
   /** @param project
    * @throws CoreException */
-  protected void handleResourceProject(IProject project) throws CoreException {
+  protected void handleResourceProject(IProject project) throws CoreException { // NO_UCD
     //
   }
 
   /** @param workspaceRoot
    * @throws CoreException */
-  protected void handleResourceWorkspaceRoot(IWorkspaceRoot workspaceRoot) throws CoreException {
+  protected void handleResourceWorkspaceRoot(IWorkspaceRoot workspaceRoot) throws CoreException { // NO_UCD
     //
   }
 
@@ -536,7 +536,7 @@ public abstract class AbstractUCDetectorIterator {
    * Override and return <code>true</code>, if you don't want to iterate
    * children of packages, which are classes
    */
-  protected boolean doPackageChildren(IPackageFragment packageFragment) { //
+  protected boolean doPackageChildren(IPackageFragment packageFragment) { // // NO_UCD
     return !Prefs.isFilterPackage(packageFragment);
   }
 
@@ -545,7 +545,7 @@ public abstract class AbstractUCDetectorIterator {
    * children of importContainer, which are all imports.
    * @param importContainer
    */
-  protected boolean doImportContainerChildren(IImportContainer importContainer) {
+  protected boolean doImportContainerChildren(IImportContainer importContainer) { // NO_UCD
     return false;
   }
 

@@ -127,7 +127,7 @@ public class ReportParam {
     return referenceCount;
   }
 
-  public String getAuthor() {
+  public String getAuthor() { // NO_UCD
     return author;
   }
 }
