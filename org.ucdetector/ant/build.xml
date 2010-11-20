@@ -10,12 +10,12 @@
 
   <property name="WORKSPACE" location="../workspace" />
   <property name="ECLIPSE_HOME" location="../eclipse" />
+  <!-- Default report directory. But depends on options.properties -->
   <property name="reports.dir" location="${WORKSPACE}/ucdetector_reports" />
 
   <!-- =====================================================================
-       UCDETECTOR
-       ===================================================================== -->
-  <!-- Change code of this target, when needed:
+       OPTIONS
+       =====================================================================
 buildType:
     One of: AUTO_BUILD (default), FULL_BUILD (clean all and build all), CLEAN_BUILD, INCREMENTAL_BUILD 
     For details see: org.eclipse.core.resources.IncrementalProjectBuilder
@@ -34,7 +34,12 @@ report:
     eachproject (default), single
     Example: report="eachproject"
 -->
-  <target name="run-ucdetector" description="export preferences to file">
+
+  <!-- =====================================================================
+       RUN UCDETECTOR
+       ===================================================================== -->
+  <!-- Change code for custom target platform, report, project to detect...  -->
+  <target name="run-ucdetector" description="Run UCDetector">
     <ucdetector buildType="FULL_BUILD"
                 optionsFile="options.properties"
                 targetPlatformFile="ucdetector.target"
@@ -49,13 +54,16 @@ report:
   <!-- =====================================================================
        DETECT
        ===================================================================== -->
-  <!-- Usually there is no need to change code of this target                -->
+  <!-- Usually there is no need to change code here!                         -->
   <target name="detect" description="Run UCDetector using java">
+    <property name="ucd.target" value="run-ucdetector" />
     <echo>
 # -----------------------------------------------------------------------------
 # ECLIPSE_HOME = ${ECLIPSE_HOME}
 # WORKSPACE    = ${WORKSPACE}
 # reports.dir  = ${reports.dir}
+# ucd.target   = ${ucd.target}
+# debug        = ${debug}
 # -----------------------------------------------------------------------------
 </echo>
     <available file="${ECLIPSE_HOME}" property="ECLIPSE_HOME.exists" />
@@ -67,7 +75,8 @@ report:
     <pathconvert property="LAUNCHER">
       <fileset dir="${ECLIPSE_HOME}/plugins" includes="org.eclipse.equinox.launcher_*.jar" />
     </pathconvert>
-    <echo>LAUNCHER = '${LAUNCHER}'</echo>
+    <echo>LAUNCHER = '${LAUNCHER}'
+when LAUNCHER is empty, create new property 'LAUNCHER'</echo>
 
     <java jar="${LAUNCHER}" fork="true" maxmemory="1024m">
       <!-- <arg line="-debug" /> -->
@@ -77,7 +86,18 @@ report:
       <!-- The name of this file -->
       <arg line="-buildfile build.xml" />
       <!-- The target in this this file -->
-      <arg line="run-ucdetector" />
+      <arg line="${ucd.target}" />
     </java>
+  </target>
+
+  <!-- =====================================================================
+       EXAMPLE: Call UCDetector's build.xml from your main build.xml
+       ===================================================================== -->
+  <target name="call-ucdetector" description="Call UCDetector from another ant file">
+    <property name="ucd.ant.dir" location="my_local_ucdetector_ant_dir" />
+    <ant antfile="${ucd.ant.dir}/build.xml" target="detect" inheritall="false">
+      <!-- Usually there is no need to change target -->
+      <property name="ucd.target" value="run-ucdetector" />
+    </ant>
   </target>
 </project>
