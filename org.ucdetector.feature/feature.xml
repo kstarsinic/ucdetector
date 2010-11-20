@@ -41,7 +41,7 @@
          id="org.ucdetector"
          download-size="200"
          install-size="200"
-         version="1.6.3"
+         version="1.6.5"
          unpack="false"/>
 
 </feature>
