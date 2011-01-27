@@ -91,6 +91,7 @@ public final class Prefs {
   //
   public static final String LOG_LEVEL = ID + ".log.level";
   public static final String LOG_TO_ECLIPSE = ID + ".log.toEclipse";
+  // TODO 2011-01-16: Remove code
   public static final String RUN_ON_SAVE = ID + ".runOnSave";
   //
   public static final String INTERNAL = ID + ".internal";

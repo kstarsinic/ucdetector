@@ -399,12 +399,4 @@
             name="ucdetector">
       </antTask>
    </extension>
-   
-  <!-- =====================================================================
-       STARTUP
-       =====================================================================
-    -->
-   <extension point="org.eclipse.ui.startup">
-     <startup class="org.ucdetector.Startup"/>
-   </extension>
 </plugin>
