@@ -365,7 +365,7 @@ public class SearchManager {
     }
     // Fix for BUG 2808853: Don't create "0 references marker" for classes with main methods
     if (member instanceof IType) {
-      if (JavaElementUtil.hasMainMethod((IType) member)) {
+      if (!Prefs.isFilterClassWithMainMethod() && JavaElementUtil.hasMainMethod((IType) member)) {
         return found;
       }
     }

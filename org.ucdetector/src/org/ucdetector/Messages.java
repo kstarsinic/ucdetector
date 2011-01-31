@@ -107,6 +107,8 @@ public final class Messages extends NLS {
   public static String PreferencePage_IgnoreAnnotationsFilterToolTip; // NO_UCD
   public static String PreferencePage_IgnoreContainString; // NO_UCD
   public static String PreferencePage_IgnoreContainStringToolTip; // NO_UCD
+  public static String PreferencePage_FilterClassWithMainMethod; // NO_UCD
+  public static String PreferencePage_FilterClassWithMainMethodToolTip; // NO_UCD
   public static String PreferencePage_IgnoreBeanMethods; // NO_UCD
   public static String PreferencePage_IgnoreBeanMethodsToolTip;// NO_UCD
   public static String PreferencePage_IgnoreDeprecated; // NO_UCD

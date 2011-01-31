@@ -5,6 +5,7 @@ New features:
  - Better html report: Show icons, author, change report file name
  - Smaller xml report
  - Delete file QuickFix for unused classes
+ - New option "Filter classes with main method" default "false"
 
 Bugfixes:
  - QuickFix was broken, when there are several classes in one java file

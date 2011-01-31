@@ -48,6 +48,7 @@ public final class Prefs {
   static final String FILTER_ANNOATIONS = ID + ".annotationsFilter";
   static final String FILTER_IMPLEMENTS = ID + ".superClassFilter";
   static final String FILTER_CONTAIN_STRING = ID + ".containString";
+  static final String FILTER_CLASS_WITH_MAIN_METHOD = ID + ".classWithMainMethodFilter";
   static final String FILTER_BEAN_METHOD = ID + ".beanMethodFilter";
   static final String IGNORE_DEPRECATED = ID + ".ignoreDeprecated";
   static final String IGNORE_NO_UCD = ID + ".ignore.NO_UCD";
@@ -171,6 +172,13 @@ public final class Prefs {
    */
   public static boolean isDetectTestOnly() {
     return getStore().getBoolean(DETECT_TEST_ONLY);
+  }
+
+  /**
+   * @return <code>true</code>, when a class containing a main method should be filtered
+   */
+  public static boolean isFilterClassWithMainMethod() {
+    return getStore().getBoolean(FILTER_CLASS_WITH_MAIN_METHOD);
   }
 
   /**

@@ -52,6 +52,7 @@ public class PreferenceInitializer extends AbstractPreferenceInitializer {
     store.setDefault(Prefs.FILTER_ANNOATIONS, ANNOATIONS_FILTER);
     store.setDefault(Prefs.FILTER_IMPLEMENTS, "");
     store.setDefault(Prefs.FILTER_CONTAIN_STRING, "");
+    store.setDefault(Prefs.FILTER_CLASS_WITH_MAIN_METHOD, false);
     store.setDefault(Prefs.FILTER_BEAN_METHOD, true);
     store.setDefault(Prefs.IGNORE_DEPRECATED, false);
     store.setDefault(Prefs.IGNORE_NO_UCD, true);

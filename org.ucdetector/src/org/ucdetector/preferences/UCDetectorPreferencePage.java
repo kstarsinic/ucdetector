@@ -145,22 +145,24 @@ public class UCDetectorPreferencePage extends FieldEditorPreferencePage implemen
    */
   private void createFilterGroup(Composite parentGroups) {
     Composite spacer = createGroup(parentGroups, Messages.PreferencePage_GroupFilter);
-    appendText(Prefs.FILTER_SOURCE_FOLDER, Messages.PreferencePage_IgnoreSourceFolderFilter, spacer,
-        Messages.PreferencePage_IgnoreSourceFolderFilterToolTip);
-    appendText(Prefs.FILTER_PACKAGE, Messages.PreferencePage_IgnorePackageFilter, spacer,
-        Messages.PreferencePage_IgnorePackageFilterToolTip);
-    appendText(Prefs.FILTER_CLASS, Messages.PreferencePage_IgnoreClassFilter, spacer,
-        Messages.PreferencePage_IgnoreClassFilterToolTip);
-    appendText(Prefs.FILTER_METHOD, Messages.PreferencePage_IgnoreMethodFilter, spacer,
-        Messages.PreferencePage_IgnoreMethodFilterToolTip);
-    appendText(Prefs.FILTER_FIELD, Messages.PreferencePage_IgnoreFieldFilter, spacer,
-        Messages.PreferencePage_IgnoreFieldFilterToolTip);
-    appendText(Prefs.FILTER_ANNOATIONS, Messages.PreferencePage_IgnoreAnnotationsFilter, spacer,
-        Messages.PreferencePage_IgnoreAnnotationsFilterToolTip);
-    appendText(Prefs.FILTER_IMPLEMENTS, Messages.PreferencePage_IgnoreImplements, spacer,
-        Messages.PreferencePage_IgnoreImplementsToolTip);
-    appendText(Prefs.FILTER_CONTAIN_STRING, Messages.PreferencePage_IgnoreContainString, spacer,
-        Messages.PreferencePage_IgnoreContainStringToolTip);
+    appendText(Prefs.FILTER_SOURCE_FOLDER, Messages.PreferencePage_IgnoreSourceFolderFilter, Messages.PreferencePage_IgnoreSourceFolderFilterToolTip,
+        spacer);
+    appendText(Prefs.FILTER_PACKAGE, Messages.PreferencePage_IgnorePackageFilter, Messages.PreferencePage_IgnorePackageFilterToolTip,
+        spacer);
+    appendText(Prefs.FILTER_CLASS, Messages.PreferencePage_IgnoreClassFilter, Messages.PreferencePage_IgnoreClassFilterToolTip,
+        spacer);
+    appendText(Prefs.FILTER_METHOD, Messages.PreferencePage_IgnoreMethodFilter, Messages.PreferencePage_IgnoreMethodFilterToolTip,
+        spacer);
+    appendText(Prefs.FILTER_FIELD, Messages.PreferencePage_IgnoreFieldFilter, Messages.PreferencePage_IgnoreFieldFilterToolTip,
+        spacer);
+    appendText(Prefs.FILTER_ANNOATIONS, Messages.PreferencePage_IgnoreAnnotationsFilter, Messages.PreferencePage_IgnoreAnnotationsFilterToolTip,
+        spacer);
+    appendText(Prefs.FILTER_IMPLEMENTS, Messages.PreferencePage_IgnoreImplements, Messages.PreferencePage_IgnoreImplementsToolTip,
+        spacer);
+    appendText(Prefs.FILTER_CONTAIN_STRING, Messages.PreferencePage_IgnoreContainString, Messages.PreferencePage_IgnoreContainStringToolTip,
+        spacer);
+    appendBool(Prefs.FILTER_CLASS_WITH_MAIN_METHOD, Messages.PreferencePage_FilterClassWithMainMethod,
+        Messages.PreferencePage_FilterClassWithMainMethodToolTip, spacer, 2);
     appendBool(Prefs.FILTER_BEAN_METHOD, Messages.PreferencePage_IgnoreBeanMethods,
         Messages.PreferencePage_IgnoreBeanMethodsToolTip, spacer, 2);
     appendBool(Prefs.IGNORE_DEPRECATED, Messages.PreferencePage_IgnoreDeprecated,
@@ -206,8 +208,8 @@ public class UCDetectorPreferencePage extends FieldEditorPreferencePage implemen
     label.setToolTipText(Messages.PreferencePage_CheckSimpleClassNameToolTip);
     this.addField(checkSimpleClassName);
     //
-    StringFieldEditor analyzeLiterals = appendText(Prefs.ANALYZE_LITERALS, Messages.PreferencePage_Literals, spacer,
-        Messages.PreferencePage_LiteralsToolTip);
+    StringFieldEditor analyzeLiterals = appendText(Prefs.ANALYZE_LITERALS, Messages.PreferencePage_Literals, Messages.PreferencePage_LiteralsToolTip,
+        spacer);
     analyzeLiteralsCheck.setAnalyzeLiterals(analyzeLiterals);
     analyzeLiteralsCheck.setCheckFullClassName(checkFullClassName, checkSimpleClassName);
   }
@@ -263,8 +265,8 @@ public class UCDetectorPreferencePage extends FieldEditorPreferencePage implemen
     appendBool(Prefs.REPORT_CREATE_XML, Messages.PreferencePage_CreateXmlReport, null, spacer, 3);
     appendBool(Prefs.REPORT_CREATE_TXT, Messages.PreferencePage_CreateTextReport, null, spacer, 3);
     //
-    appendText(Prefs.REPORT_FILE, Messages.PreferencePage_ReportFile, spacer,
-        Messages.PreferencePage_ReportFileToolTip, 3);
+    appendText(Prefs.REPORT_FILE, Messages.PreferencePage_ReportFile, Messages.PreferencePage_ReportFileToolTip,
+        spacer, 3);
     //
     DirectoryFieldEditor path = new DirectoryFieldEditor(Prefs.REPORT_DIR, Messages.PreferencePage_ReportDir, spacer);
     path.getLabelControl(spacer).setToolTipText(Messages.PreferencePage_ReportDirToolTip);
@@ -422,11 +424,11 @@ public class UCDetectorPreferencePage extends FieldEditorPreferencePage implemen
     addField(combo);
   }
 
-  private StringFieldEditor appendText(String name, String label, Composite parent, String toolTip) {
-    return appendText(name, label, parent, toolTip, 2);
+  private StringFieldEditor appendText(String name, String label, String toolTip, Composite parent) {
+    return appendText(name, label, toolTip, parent, 2);
   }
 
-  private StringFieldEditor appendText(String name, String label, Composite parent, String toolTip, int columns) {
+  private StringFieldEditor appendText(String name, String label, String toolTip, Composite parent, int columns) {
     StringFieldEditor text = new StringFieldEditor(name, label, parent);
     text.fillIntoGrid(parent, columns);
     text.getLabelControl(parent).setToolTipText(toolTip);
