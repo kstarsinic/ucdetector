@@ -1,16 +1,17 @@
-UCDetector 1.7.0 from 2010-??-??:
+UCDetector 1.7.0 from 2011-02-??:
 New features:
  - [ 3049290 ] Set target platform in headless mode
  - Headless: Iterate over projects or resources. Use option file
- - Better html report: Show icons, author, change report file name
+ - Better html report: Show icons, javadoc author, configure report file name
  - Smaller xml report
- - Delete file QuickFix for unused classes
+ - New "Delete file QuickFix" for unused classes
  - New option "Filter classes with main method" default "false"
 
 Bugfixes:
  - QuickFix was broken, when there are several classes in one java file
  - UCDetector is fit for eclipse 3.7
  - Visibility detection was broken for mode "classes only"
+ - [ 3124968 ] No private marker for enum methods/fields
 
 Todo:
  - bug     [ 2926266 ] Method cannot be private if called on subclass

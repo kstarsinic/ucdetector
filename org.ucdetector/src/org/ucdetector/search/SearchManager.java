@@ -340,7 +340,7 @@ public class SearchManager {
     found += searchTextImpl(member, visibilityHandler, found);
     // Fix for BUG 1925549:  Exclude overridden methods from visibility detection
     if (!isOverriddenMethod) {
-      created = visibilityHandler.createMarker(member, line, found);
+      created = visibilityHandler.createMarker(line, found);
       if (created) {
         markerCreated++;
       }

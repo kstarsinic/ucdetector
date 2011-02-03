@@ -113,8 +113,8 @@ class VisibilityHandler {
    * Create a marker: "Change visibility of ClassName to private"
    * @return <code>true</code>, if a marker was created
    */
-  boolean createMarker(IMember member, int line, int found) throws CoreException {
-    if (!needVisibilityMarker(member, found)) {
+  boolean createMarker(int line, int found) throws CoreException {
+    if (!needVisibilityMarker(startElement, found)) {
       return false;
     }
     if (startElement instanceof IField) {
@@ -134,7 +134,7 @@ class VisibilityHandler {
       if (method.isMainMethod()) {
         return false;
       }
-      // Bug [ 2269486 ] Constants in Interfaces Can't be Private
+      // Bug [ 2269486 ] Constants in Interfaces can't be Private
       if (JavaElementUtil.isInterfaceMethod(method)) {
         return false; // default visibility means public!
       }
@@ -161,9 +161,15 @@ class VisibilityHandler {
         // return false;
       }
     }
-    //    if (!needVisibilityMarker(member, found)) {
-    //      return false;
-    //    }
+    if (startElement instanceof IField || startElement instanceof IMethod) {
+      if (visibilityMaxFound == Visibility.PRIVATE) {
+        IType type = JavaElementUtil.getTypeFor(startElement, false);
+        if (type != null && type.isEnum()) {
+          // BUG 3124968: No private marker for enum methods/fields
+          return false;
+        }
+      }
+    }
     String markerType;
     switch (visibilityMaxFound) {
       case PRIVATE:
@@ -173,7 +179,7 @@ class VisibilityHandler {
         markerType = MarkerFactory.UCD_MARKER_USE_DEFAULT;
         break;
       case PROTECTED:
-        if (member instanceof IType) {
+        if (startElement instanceof IType) {
           markerType = MarkerFactory.UCD_MARKER_USE_DEFAULT;
         }
         else {
@@ -183,7 +189,7 @@ class VisibilityHandler {
       default:
         return false;
     }
-    return markerFactory.createVisibilityMarker(member, markerType, line);
+    return markerFactory.createVisibilityMarker(startElement, markerType, line);
   }
 
   private boolean hasPublicChild(IType type) throws JavaModelException {
