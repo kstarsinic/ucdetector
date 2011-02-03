@@ -233,7 +233,7 @@ class ModesPanel {
     sb.append(String.format("### -------------------------------------------------------------------------%n"));
     sb.append(String.format("### Created by  : UCDetector %s%n", UCDetectorPlugin.getAboutUCDVersion()));
     sb.append(String.format("### Created date: %s%n", UCDetectorPlugin.getNow()));
-    sb.append(String.format("### This class can't be loaded by java.util.Properties.load()%n"));
+    sb.append(String.format("### java.util.Properties.load() may fail to load this file%n"));
     sb.append(String.format("### -------------------------------------------------------------------------%n"));
     Map<String, String> groupPrefs = new LinkedHashMap<String, String>();
     for (String extendedPreference : page.extendedPreferences) {
