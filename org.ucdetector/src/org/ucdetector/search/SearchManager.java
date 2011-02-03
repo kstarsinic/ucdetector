@@ -364,9 +364,9 @@ public class SearchManager {
       return found;
     }
     // Fix for BUG 2808853: Don't create "0 references marker" for classes with main methods
-    if (member instanceof IType) {
-      if (!Prefs.isFilterClassWithMainMethod() && JavaElementUtil.hasMainMethod((IType) member)) {
-        Log.info("Don't create marker, because class has main() method: %s", JavaElementUtil.getElementName(member)); //$NON-NLS-1$
+    if (member instanceof IType && JavaElementUtil.hasMainMethod((IType) member)) {
+      if (Prefs.isFilterClassWithMainMethod()) {
+        Log.info("No marker, because class has main() method: %s", JavaElementUtil.getElementName(member)); //$NON-NLS-1$
         return found;
       }
     }
@@ -413,7 +413,7 @@ public class SearchManager {
 
     updateMonitorMessage(type, Messages.SearchManager_SearchClassNameAsLiteral, searchInfo);
     FileTextSearchScope scope = FileTextSearchScope.newWorkspaceScope(Prefs.getFilePatternLiteralSearch(), /*exclude bin dir */
-    false);
+        false);
     List<String> searchStrings = new ArrayList<String>();
     if (Prefs.isUCDetectionInLiteralsFullClassName()) {
       String fullClassName = type.getFullyQualifiedName();
