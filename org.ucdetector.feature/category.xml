@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <site>
-   <feature url="features/org.ucdetector.feature_1.6.3.jar" id="org.ucdetector.feature" version="1.6.3">
+   <feature url="features/org.ucdetector.feature_1.7.0.jar" id="org.ucdetector.feature" version="1.7.0">
       <category name="org.ucdetector"/>
    </feature>
    <category-def name="org.ucdetector" label="org.ucdetector"/>

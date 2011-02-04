@@ -5,6 +5,7 @@ TODO:
  - Marker test only, but used in plugin.xml
  - Option: Ignore classes with main methods
  - Mode: Extreme
+ - javadoc @deprecated filter broken eclipse 3.7?
 
 //------------------------------------------------------------------------------
 Code examples:
