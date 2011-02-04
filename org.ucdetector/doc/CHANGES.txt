@@ -13,8 +13,6 @@ Bugfixes:
  - Visibility detection was broken for mode "classes only"
  - [ 3124968 ] No private marker for enum methods/fields
 
-Todo:
- - bug     [ 2926266 ] Method cannot be private if called on subclass
 
 // -----------------------------------------------------------------------------
 UCDetector 1.6.0 from 2010-08-17:
