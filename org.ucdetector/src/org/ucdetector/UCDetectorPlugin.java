@@ -144,7 +144,9 @@ public class UCDetectorPlugin extends AbstractUIPlugin implements IPropertyChang
 
   /** @return All preferences which are different from default preferences, without internal preferences  */
   public static Map<String, String> getDeltaPreferences() {
-    Map<String, String> allDeltas = getPreferencesImpl(new InstanceScope().getNode(ID));
+    // Eclipse 3.7: InstanceScope.INSTANCE.getNode(ID);
+    IEclipsePreferences node = new InstanceScope().getNode(ID);
+    Map<String, String> allDeltas = getPreferencesImpl(node);
     Set<String> keySetClone = new HashSet<String>(allDeltas.keySet());
     for (String key : keySetClone) {
       if (key.startsWith(Prefs.INTERNAL)) {
@@ -156,7 +158,9 @@ public class UCDetectorPlugin extends AbstractUIPlugin implements IPropertyChang
 
   /** @return All available preferences */
   public static Map<String, String> getAllPreferences() {
-    return getPreferencesImpl(new DefaultScope().getNode(ID));
+    // Eclipse 3.7: DefaultScope.INSTANCE.getNode(ID);
+    IEclipsePreferences node = new DefaultScope().getNode(ID);
+    return getPreferencesImpl(node);
   }
 
   private static Map<String, String> getPreferencesImpl(IEclipsePreferences ePrefs) {
@@ -288,8 +292,8 @@ public class UCDetectorPlugin extends AbstractUIPlugin implements IPropertyChang
     return System.getProperty("osgi.framework.version");
   }
 
-  @SuppressWarnings("cast")
   // Ignore warning since target platform 3.7
+  // @SuppressWarnings("cast")
   public static String getAboutUCDVersion() {
     return (String) getDefault().getBundle().getHeaders().get("Bundle-Version");
   }
