@@ -55,6 +55,8 @@ Steps to create new UCDetector version.
 * https://sourceforge.net/project/admin/?group_id=219599
 * Firefox! Files / Add folder / Add file
 ** upload jar, source.jar, changes.txt (only text of last version!)
+* Submit news "UCDetector 1.x.0 released": https://sourceforge.net/news/submit.php?group_id=219599 
+  Details. See changes: http://netcologne.dl.sourceforge.net/project/ucdetector/ucdetector/1.7.0/CHANGES.txt
 
 
 === update site (http://ucdetector.sourceforge.net/update):
@@ -69,6 +71,7 @@ Steps to create new UCDetector version.
 
 
 === SVN ===
+* see: ucdetector.txt
 * SVN commit
 * SVN tag
 * SVN branch
