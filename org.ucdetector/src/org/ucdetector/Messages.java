@@ -115,6 +115,8 @@ public final class Messages extends NLS {
   public static String PreferencePage_IgnoreDeprecatedToolTip; // NO_UCD
   public static String PreferencePage_IgnoreNoUcd; // NO_UCD
   public static String PreferencePage_IgnoreNoUcdToolTip; // NO_UCD
+  public static String PreferencePage_IgnoreDerived; // NO_UCD
+  public static String PreferencePage_IgnoreDerivedToolTip; // NO_UCD
   //
   public static String PreferencePage_Classes; // NO_UCD
   public static String PreferencePage_Methods; // NO_UCD

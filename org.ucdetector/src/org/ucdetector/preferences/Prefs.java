@@ -52,6 +52,7 @@ public final class Prefs {
   static final String FILTER_BEAN_METHOD = ID + ".beanMethodFilter";
   static final String IGNORE_DEPRECATED = ID + ".ignoreDeprecated";
   static final String IGNORE_NO_UCD = ID + ".ignore.NO_UCD";
+  static final String IGNORE_DERIVED = ID + ".ignoreDerived";
   static final String DETECT_TEST_ONLY = ID + ".detectTestOnly";
   // ANALYZE -------------------------------------------------------------------
   static final String ANALYZE_CLASSES = ID + ".classes";
@@ -155,6 +156,13 @@ public final class Prefs {
    */
   public static boolean isFilter_NO_UCD() {
     return getStore().getBoolean(IGNORE_NO_UCD);
+  }
+
+  /**
+   * @return <code>true</code>, when derived resources should be ignored
+   */
+  public static boolean isIgnoreDerived() {
+    return getStore().getBoolean(IGNORE_DERIVED);
   }
 
   /**

@@ -81,6 +81,12 @@ public class UCDetectorIterator extends AbstractUCDetectorIterator {
         return false;
       }
     }
+    if (Prefs.isIgnoreDerived()) {
+      if (type.getResource() != null && type.getResource().isDerived()) {
+        debugNotHandle(type, "isIgnoreDerived"); //$NON-NLS-1$
+        return false;
+      }
+    }
     // [ 2929828 ] Filter to exclude classes extending/implementing
     if (Prefs.isFilterImplements()) {
       IType[] superTypes = JavaElementUtil.getAllSupertypes(type);

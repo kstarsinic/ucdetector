@@ -167,8 +167,10 @@ public class UCDetectorPreferencePage extends FieldEditorPreferencePage implemen
         Messages.PreferencePage_IgnoreBeanMethodsToolTip, spacer, 2);
     appendBool(Prefs.IGNORE_DEPRECATED, Messages.PreferencePage_IgnoreDeprecated,
         Messages.PreferencePage_IgnoreDeprecatedToolTip, spacer, 2);
-    appendBool(Prefs.IGNORE_NO_UCD, Messages.PreferencePage_IgnoreNoUcd, Messages.PreferencePage_IgnoreNoUcdToolTip,
-        spacer, 2);
+    appendBool(Prefs.IGNORE_NO_UCD, Messages.PreferencePage_IgnoreNoUcd, //
+        Messages.PreferencePage_IgnoreNoUcdToolTip, spacer, 2);
+    appendBool(Prefs.IGNORE_DERIVED, Messages.PreferencePage_IgnoreDerived,
+        Messages.PreferencePage_IgnoreDerivedToolTip, spacer, 2);
   }
 
   /**
