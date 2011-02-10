@@ -93,84 +93,88 @@ public class UCDetectorPreferencePage extends FieldEditorPreferencePage implemen
     Composite parentGroups = createComposite(getFieldEditorParent(), 1, 1, GridData.FILL_BOTH);
     setTitle("UCDetector " + UCDetectorPlugin.getAboutUCDVersion()); //$NON-NLS-1$
     modesPanel = new ModesPanel(this, parentGroups);
-    // -----------------------------------------------
-    // org.eclipse.team.internal.ccvs.ui.CVSPreferencesPage.createGeneralTab()
-    TabFolder tabFolder = new TabFolder(parentGroups, SWT.NONE);
+    tabFolder = new TabFolder(parentGroups, SWT.NONE);
     tabFolder.setLayoutData(createGridData(500, SWT.DEFAULT, SWT.FILL, SWT.CENTER, true, false));
-    // FILTER -----------------------------------------------------------------
-    Composite composite = createTab(tabFolder, Messages.PreferencePage_TabFilter);
-    createFilterGroup(composite);
-    // MAIN -----------------------------------------------------------------
-    composite = createTab(tabFolder, Messages.PreferencePage_TabDetect);
-    createDetectGroup(composite);
-    createFileSearchGroup(composite);
-    createCycleGroup(composite);
-    // KEYWORD -----------------------------------------------------------------
-    composite = createTab(tabFolder, Messages.PreferencePage_TabKeywords);
-    createFinalGroup(composite);
-    createVisibilityGroup(composite);
-    // REPORT -----------------------------------------------------------------
-    composite = createTab(tabFolder, Messages.PreferencePage_TabReport);
-    createReportGroup(composite);
-    // OTHER ------------------------------------------------------------------
-    composite = createTab(tabFolder, Messages.PreferencePage_TabOther);
-    createOtherGroup(composite);
-    //
+    createTabIgnore();
+    createTabDetect();
+    createTabKeyworts();
+    createTabReport();
+    createTabOther();
     modesPanel.updateModeButtons();
     modesPanel.createMyMode();
   }
 
-  @Override
-  public boolean performOk() {
-    boolean result = super.performOk();
-    modesPanel.saveMode();
-    getPreferenceStore().setValue(Prefs.MODE_NAME, modesPanel.getCombo().getText());
-    if (Log.isDebug()) {
-      Log.debug("New preferences: " + UCDetectorPlugin.getPreferencesAsString()); //$NON-NLS-1$
-    }
-    return result;
+  private void createTabIgnore() {
+    Composite tab = createTab(Messages.PreferencePage_TabIgnore);
+    createIgnoreResourcesGroup(tab);
+    createIgnoreClassesGroup(tab);
+    createIgnoreMarkedCode(tab);
+    createIgnoreOthers(tab);
   }
 
-  @Override
-  protected void performDefaults() {
-    super.performDefaults();
-    modesPanel.getCombo().setText(Mode.Default.toStringLocalized());
-    modesPanel.updateModeButtons();
-    super.performOk();
+  private void createTabDetect() {
+    Composite composite = createTab(Messages.PreferencePage_TabDetect);
+    createDetectGroup(composite);
+    createFileSearchGroup(composite);
+    createCycleGroup(composite);
   }
 
-  /**
-   * Create a group of filter settings: Filter source folders,
-   * packages, classes, methods, fields
-   */
-  private void createFilterGroup(Composite parentGroups) {
-    Composite spacer = createGroup(parentGroups, Messages.PreferencePage_GroupFilter);
+  private void createTabKeyworts() {
+    Composite composite = createTab(Messages.PreferencePage_TabKeywords);
+    createFinalGroup(composite);
+    createVisibilityGroup(composite);
+  }
+
+  private void createTabReport() {
+    Composite composite = createTab(Messages.PreferencePage_TabReport);
+    createReportGroup(composite);
+  }
+
+  private void createTabOther() {
+    Composite composite = createTab(Messages.PreferencePage_TabOther);
+    createOtherGroup(composite);
+  }
+
+  private void createIgnoreResourcesGroup(Composite parentGroups) {
+    Composite spacer = createGroup(parentGroups, Messages.PreferencePage_IgnoreResourcesGroup);
     appendText(Prefs.FILTER_SOURCE_FOLDER, Messages.PreferencePage_IgnoreSourceFolderFilter,
         Messages.PreferencePage_IgnoreSourceFolderFilterToolTip, spacer);
     appendText(Prefs.FILTER_PACKAGE, Messages.PreferencePage_IgnorePackageFilter,
         Messages.PreferencePage_IgnorePackageFilterToolTip, spacer);
+  }
+
+  private void createIgnoreClassesGroup(Composite parentGroups) {
+    Composite spacer = createGroup(parentGroups, Messages.PreferencePage_IgnoreClassesGroup);
     appendText(Prefs.FILTER_CLASS, Messages.PreferencePage_IgnoreClassFilter,
         Messages.PreferencePage_IgnoreClassFilterToolTip, spacer);
-    appendText(Prefs.FILTER_METHOD, Messages.PreferencePage_IgnoreMethodFilter,
-        Messages.PreferencePage_IgnoreMethodFilterToolTip, spacer);
-    appendText(Prefs.FILTER_FIELD, Messages.PreferencePage_IgnoreFieldFilter,
-        Messages.PreferencePage_IgnoreFieldFilterToolTip, spacer);
-    appendText(Prefs.FILTER_ANNOATIONS, Messages.PreferencePage_IgnoreAnnotationsFilter,
-        Messages.PreferencePage_IgnoreAnnotationsFilterToolTip, spacer);
     appendText(Prefs.FILTER_IMPLEMENTS, Messages.PreferencePage_IgnoreImplements,
         Messages.PreferencePage_IgnoreImplementsToolTip, spacer);
     appendText(Prefs.FILTER_CONTAIN_STRING, Messages.PreferencePage_IgnoreContainString,
         Messages.PreferencePage_IgnoreContainStringToolTip, spacer);
     appendBool(Prefs.FILTER_CLASS_WITH_MAIN_METHOD, Messages.PreferencePage_FilterClassWithMainMethod,
         Messages.PreferencePage_FilterClassWithMainMethodToolTip, spacer, 2);
-    appendBool(Prefs.FILTER_BEAN_METHOD, Messages.PreferencePage_IgnoreBeanMethods,
-        Messages.PreferencePage_IgnoreBeanMethodsToolTip, spacer, 2);
+    appendBool(Prefs.IGNORE_DERIVED, Messages.PreferencePage_IgnoreDerived,
+        Messages.PreferencePage_IgnoreDerivedToolTip, spacer, 2);
+  }
+
+  private void createIgnoreMarkedCode(Composite parentGroups) {
+    Composite spacer = createGroup(parentGroups, Messages.PreferencePage_IgnoreMarkedCodeGroup);
+    appendText(Prefs.FILTER_ANNOATIONS, Messages.PreferencePage_IgnoreAnnotationsFilter,
+        Messages.PreferencePage_IgnoreAnnotationsFilterToolTip, spacer);
     appendBool(Prefs.IGNORE_DEPRECATED, Messages.PreferencePage_IgnoreDeprecated,
         Messages.PreferencePage_IgnoreDeprecatedToolTip, spacer, 2);
     appendBool(Prefs.IGNORE_NO_UCD, Messages.PreferencePage_IgnoreNoUcd, //
         Messages.PreferencePage_IgnoreNoUcdToolTip, spacer, 2);
-    appendBool(Prefs.IGNORE_DERIVED, Messages.PreferencePage_IgnoreDerived,
-        Messages.PreferencePage_IgnoreDerivedToolTip, spacer, 2);
+  }
+
+  private void createIgnoreOthers(Composite parentGroups) {
+    Composite spacer = createGroup(parentGroups, Messages.PreferencePage_IgnoreOthersGroup);
+    appendText(Prefs.FILTER_FIELD, Messages.PreferencePage_IgnoreFieldFilter,
+        Messages.PreferencePage_IgnoreFieldFilterToolTip, spacer);
+    appendText(Prefs.FILTER_METHOD, Messages.PreferencePage_IgnoreMethodFilter,
+        Messages.PreferencePage_IgnoreMethodFilterToolTip, spacer);
+    appendBool(Prefs.FILTER_BEAN_METHOD, Messages.PreferencePage_IgnoreBeanMethods,
+        Messages.PreferencePage_IgnoreBeanMethodsToolTip, spacer, 2);
   }
 
   /**
@@ -300,6 +304,7 @@ public class UCDetectorPreferencePage extends FieldEditorPreferencePage implemen
   }
 
   private Combo changeVisibiliyCombo;
+  private TabFolder tabFolder;
 
   // [2810803] Change visibility options more comfortable
   private void addChangeAllVisibiliyCombo(Composite parent) {
@@ -327,7 +332,7 @@ public class UCDetectorPreferencePage extends FieldEditorPreferencePage implemen
     });
   }
 
-  private Composite createTab(TabFolder tabFolder, String tabText) {
+  private Composite createTab(String tabText) {
     addTab(tabText);
     Composite composite = createComposite(tabFolder, 1, 1, GridData.FILL_HORIZONTAL);
     TabItem tabMain = new TabItem(tabFolder, SWT.NONE);
@@ -486,5 +491,28 @@ public class UCDetectorPreferencePage extends FieldEditorPreferencePage implemen
     gd.widthHint = width;
     gd.heightHint = height;
     return gd;
+  }
+
+  // -------------------------------------------------------------------------
+  // EVENTS
+  // -------------------------------------------------------------------------
+
+  @Override
+  public boolean performOk() {
+    boolean result = super.performOk();
+    modesPanel.saveMode();
+    getPreferenceStore().setValue(Prefs.MODE_NAME, modesPanel.getCombo().getText());
+    if (Log.isDebug()) {
+      Log.debug("New preferences: " + UCDetectorPlugin.getPreferencesAsString()); //$NON-NLS-1$
+    }
+    return result;
+  }
+
+  @Override
+  protected void performDefaults() {
+    super.performDefaults();
+    modesPanel.getCombo().setText(Mode.Default.toStringLocalized());
+    modesPanel.updateModeButtons();
+    super.performOk();
   }
 }

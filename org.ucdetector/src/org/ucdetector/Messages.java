@@ -91,6 +91,11 @@ public final class Messages extends NLS {
 
   public static String PreferencePage_ComboToolTip; // NO_UCD
 
+  public static String PreferencePage_IgnoreResourcesGroup; // NO_UCD
+  public static String PreferencePage_IgnoreClassesGroup; // NO_UCD
+  public static String PreferencePage_IgnoreMarkedCodeGroup; // NO_UCD
+  public static String PreferencePage_IgnoreOthersGroup; // NO_UCD
+
   public static String PreferencePage_IgnoreSourceFolderFilter; // NO_UCD
   public static String PreferencePage_IgnoreSourceFolderFilterToolTip; // NO_UCD
   public static String PreferencePage_IgnorePackageFilter; // NO_UCD
@@ -134,7 +139,7 @@ public final class Messages extends NLS {
   public static String PreferencePage_WarnLimit; // NO_UCD
   public static String PreferencePage_WarnLimitToolTip; // NO_UCD
   //
-  public static String PreferencePage_TabFilter; // NO_UCD
+  public static String PreferencePage_TabIgnore; // NO_UCD
   public static String PreferencePage_TabDetect; // NO_UCD
   public static String PreferencePage_TabKeywords; // NO_UCD
   public static String PreferencePage_TabReport; // NO_UCD
