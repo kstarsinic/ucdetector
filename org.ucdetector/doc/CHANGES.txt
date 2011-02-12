@@ -2,6 +2,7 @@ UCDetector 1.7.0 from 2011-??-??:
 New features:
  - [ 3176780 ] New option: ignore "derived" files
  - Improved layout for ignore preferences
+ - New build in detection mode "extreme" (no filter, all kind of warnings)
 
 Bugfixes:
 

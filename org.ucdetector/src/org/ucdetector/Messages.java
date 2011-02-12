@@ -258,4 +258,6 @@ public final class Messages extends NLS {
   public static String ModesPanel_mode_unused_only;// NO_UCD
   @UsedBy("reflection")
   public static String ModesPanel_mode_full;// NO_UCD
+  @UsedBy("reflection")
+  public static String ModesPanel_mode_extreme;// NO_UCD
 }

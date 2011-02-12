@@ -57,7 +57,7 @@ class ModesPanel {
 
   /** built-in preferences mode */
   enum Mode {
-    Default, classes_only, unused_only, full;
+    Default, classes_only, unused_only, full, extreme;
 
     String toStringLocalized() {
       // Reflection!
