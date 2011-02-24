@@ -8,7 +8,7 @@ Bugfixes:
 
 
 Todo:
-
+ - [3191417] Change to "protected" should be default
 
 // -----------------------------------------------------------------------------
 UCDetector 1.7.0 from 2011-02-04:
