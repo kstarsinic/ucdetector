@@ -5,6 +5,7 @@ New features:
  - New build in detection mode "extreme" (no filter, show all kinds of warnings)
 
 Bugfixes:
+ - Fixed broken filter '@SuppressWarnings("ucd") = false'
 
 
 Todo:

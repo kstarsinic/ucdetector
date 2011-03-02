@@ -213,7 +213,7 @@ public class LineManger {
       // See example in: SuppressWarningsProposal
       // The name we see in code. eg: Test, but maybe also be org.junit.Test
       String visibleName = annotation.getTypeName().getFullyQualifiedName();
-      if (isSuppressWarningsUCDetector(annotation, visibleName)) {
+      if (!Prefs.isFilter_NO_UCD() && isSuppressWarningsUCDetector(annotation, visibleName)) {
         return true;
       }
       if (isUsedByAnnotation(visibleName)) {
