@@ -1,8 +1,8 @@
-UCDetector 1.7.0 from 2011-??-??:
+UCDetector 1.8.0 from 2011-??-?? - eclipse 3.5, 3.6, 3.7:
 New features:
  - [ 3176780 ] New option: ignore "derived" files
  - Improved layout for ignore preferences
- - New build in detection mode "extreme" (no filter, all kind of warnings)
+ - New build in detection mode "extreme" (no filter, show all kinds of warnings)
 
 Bugfixes:
 
@@ -11,7 +11,7 @@ Todo:
  - [3191417] Change to "protected" should be default
 
 // -----------------------------------------------------------------------------
-UCDetector 1.7.0 from 2011-02-04:
+UCDetector 1.7.0 from 2011-02-04 - eclipse 3.5, 3.6, 3.7:
 New features:
  - [ 3049290 ] Set target platform in headless mode
  - Headless: Iterate over projects or resources. Use option file

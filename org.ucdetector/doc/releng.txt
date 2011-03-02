@@ -2,7 +2,7 @@
 Steps to create new UCDetector version.
 
 
-=== Clean up code ==
+=== Clean up code ===
 * run pde tools on MANIFEST.MF
 ** run source ... popup menus on UCDetector project
 * check TODO's in code
