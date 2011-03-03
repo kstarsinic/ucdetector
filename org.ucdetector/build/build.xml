@@ -38,7 +38,7 @@
        ===================================================================== -->
   <target name="source" depends="version-info" description="Export source.zip">
     <property name="source.zip" location="${output.plugins.dir}/org.ucdetector.source_${Bundle-Version}.zip" />
-    <zip destfile="${source.zip}" defaultexcludes="false">
+    <zip destfile="${source.zip}" >
       <fileset dir="..">
         <exclude name="bin/**" />
         <exclude name="bin_ant/**" />
