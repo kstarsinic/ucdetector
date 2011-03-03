@@ -38,9 +38,11 @@
        ===================================================================== -->
   <target name="source" depends="version-info" description="Export source.zip">
     <property name="source.zip" location="${output.plugins.dir}/org.ucdetector.source_${Bundle-Version}.zip" />
-    <zip destfile="${source.zip}">
+    <zip destfile="${source.zip}" defaultexcludes="false">
       <fileset dir="..">
         <exclude name="bin/**" />
+        <exclude name="bin_ant/**" />
+        <exclude name="lib/**" />
         <exclude name="doc/dictionary.dic" />
         <exclude name="build/output/**" />
       </fileset>
