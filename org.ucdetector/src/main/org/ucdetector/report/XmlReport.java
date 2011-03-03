@@ -76,7 +76,7 @@ import org.w3c.dom.Element;
  * </ul>
  * This class uses xslt transformation.<br>
  * This class tries not to throw Exceptions.
- * @see "src/org/ucdetector/report/html.xslt"
+ * @see "src/main/org/ucdetector/report/html.xslt"
  * <p>
  * @author Joerg Spieler
  * @since 2008-08-27

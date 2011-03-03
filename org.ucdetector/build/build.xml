@@ -73,7 +73,7 @@ Provided by       : Joerg Spieler
     <property name="annos.jar" location="../ucdetector-annotations.jar" />
     <jar destfile="${annos.jar}">
       <fileset dir="../bin" includes="org/ucdetector/util/UsedBy.class" />
-      <fileset dir="../src" includes="org/ucdetector/util/UsedBy.java" />
+      <fileset dir="../src/main" includes="org/ucdetector/util/UsedBy.java" />
     </jar>
     <echo>Created annotations.jar: ${annos.jar}</echo>
   </target>
