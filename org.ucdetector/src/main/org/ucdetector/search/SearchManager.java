@@ -413,7 +413,7 @@ public class SearchManager {
 
     updateMonitorMessage(type, Messages.SearchManager_SearchClassNameAsLiteral, searchInfo);
     FileTextSearchScope scope = FileTextSearchScope.newWorkspaceScope(Prefs.getFilePatternLiteralSearch(), /*exclude bin dir */
-        false);
+    false);
     List<String> searchStrings = new ArrayList<String>();
     if (Prefs.isUCDetectionInLiteralsFullClassName()) {
       String fullClassName = type.getFullyQualifiedName();
@@ -449,13 +449,13 @@ public class SearchManager {
         UCDetectorPlugin.handleOutOfMemoryError(e);
       }
       // bug fix [ 2373808 ]: Classes found by text search should have no markers
-      if (requestor.found > 0) {
+      if (requestor.matchedFiles.size() > 0) {
         if (Log.isDebug()) {
-          Log.debug("Matches found searching class name '%s' in text files", searchString); //$NON-NLS-1$
+          Log.debug("Matches found searching class name '%s' in text files: %s", searchString, requestor.matchedFiles); //$NON-NLS-1$
         }
         addNoRefTypes(type);
       }
-      requestorFound += requestor.found;
+      requestorFound += requestor.matchedFiles.size();
     }
     return requestorFound;
   }
@@ -477,14 +477,15 @@ public class SearchManager {
    * text search in files
    */
   private final static class UCDFileSearchRequestor extends TextSearchRequestor {
-    int found = 0;
+    // TODO: 3200043  Bad marker "test only" for classes used in xml file
+    final List<String> matchedFiles = new ArrayList<String>();
     final VisibilityHandler visibilityHandler;
     final String searchString;
     private final IType startType;
 
     @Override
     public String toString() {
-      return String.format("'%s' found=%s", searchString, Integer.valueOf(found)); //$NON-NLS-1$
+      return String.format("'%s' found=%s", searchString, Integer.valueOf(matchedFiles.size())); //$NON-NLS-1$
     }
 
     UCDFileSearchRequestor(IType startType, String searchString, VisibilityHandler visibilityHandler) {
@@ -513,11 +514,11 @@ public class SearchManager {
             beforeChar, match, afterChar, isClassNamMatchOk, matchAccess.getFile());
       }
       if (isClassNamMatchOk) {
-        this.found++;
+        matchedFiles.add(matchAccess.getFile().getName());
       }
       IJavaElement matchJavaElement = JavaCore.create(matchAccess.getFile());
       visibilityHandler.checkVisibility(matchJavaElement);
-      checkCancelSearch(startType, found, -1, visibilityHandler);
+      checkCancelSearch(startType, matchedFiles.size(), -1, visibilityHandler);
       return true;
     }
 
@@ -565,6 +566,7 @@ public class SearchManager {
       this.found++;
       IJavaElement matchJavaElement = (IJavaElement) match.getElement();
       //      checkUnusedBoolean(match, matchJavaElement);
+      // TODO: 3200043  Bad marker "test only" for classes used in xml file
       if (Prefs.isDetectTestOnly() && JavaElementUtil.isTestCode(matchJavaElement)) {
         foundTest++;
       }
