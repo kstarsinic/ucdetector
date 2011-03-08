@@ -48,7 +48,13 @@ Steps to create new UCDetector version.
 ** check html report
 ** Add version number to html report: <title> tag: version 1.0.0
 ** Commit html/xml report to: /org.ucdetector.example/reports/
-	 
+
+
+=== Run headless ===
+* Put jar in        : ~/ucdetector/ucdetector-headless/eclipse/dropins
+* Unzip ant files to: ~/ucdetector/ucdetector-headless/eclipse/ant
+* Run               : ~/ucdetector/ucdetector-headless/ant> ant
+
 
 === Sourceforge ===
 * Firefox
