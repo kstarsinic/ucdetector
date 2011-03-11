@@ -8,62 +8,37 @@
 <project name="Run UCDetector" default="detect" basedir=".">
   <description>Run UCDetector in headless mode</description>
 
+  <!-- =====================================================================
+       DIRECTORIES
+       ===================================================================== -->
   <property name="WORKSPACE" location="../workspace" />
   <property name="ECLIPSE_HOME" location="../eclipse" />
-  <!-- Default report directory. But depends on options.properties -->
-  <property name="reports.dir" location="${WORKSPACE}/ucdetector_reports" />
+
 
   <!-- =====================================================================
-       OPTIONS
-       =====================================================================
-buildType:
-    One of: AUTO_BUILD (default), FULL_BUILD (clean all and build all), CLEAN_BUILD, INCREMENTAL_BUILD 
-    For details see: org.eclipse.core.resources.IncrementalProjectBuilder
-    Example: buildType="AUTO_BUILD"
-optionsFile:
-    - Edit options.properties file
-    - Or set UCDetector preferences in eclipse IDE
-      and use mode file from: WORKSPACE_IDE/.metadata/.plugins/org.ucdetector/modes/
-      Example: optionsFile="options.properties"
-targetPlatformFile:
-    Only needed, if you use a target platform different to ECLIPSE_HOME
-    CHANGE file ucdetector.target, when using target platform!
-    Examples:
-      targetPlatformFile="ucdetector.target", targetPlatformFile="${WORKSPACE}/myProject/myTarget.target"
-report:
-    eachproject (default), single
-    Example: report="eachproject"
--->
-
-  <!-- =====================================================================
-       RUN UCDETECTOR
+       EXAMPLE: Call UCDetector's build.xml from your main build.xml
        ===================================================================== -->
-  <!-- Change code for custom target platform, report, project to detect...  -->
-  <target name="run-ucdetector" description="Run UCDetector">
-    <ucdetector buildType="FULL_BUILD"
-                optionsFile="options.properties"
-                targetPlatformFile="ucdetector.target"
-                report="eachproject">
-      <!-- Resources to build: Leave empty, to build ALL projects
-      <iterate name="myProject" />
-      <iterate name="myOtherProject/src/main" />
-      -->
-    </ucdetector>
+  <target name="call-ucdetector" description="Call UCDetector from another ant file">
+    <echo>UCDetector ANT: 0 - Custom build file (optional).</echo>
+    <property name="ucd.ant.dir" location="my_local_ucdetector_ant_dir" />
+    <ant antfile="${ucd.ant.dir}/build.xml" target="detect" inheritall="false">
+      <property name="ucd.target" value="run-ucdetector" />
+    </ant>
   </target>
+
 
   <!-- =====================================================================
        DETECT
        ===================================================================== -->
   <!-- Usually there is no need to change code here!                         -->
   <target name="detect" description="Run UCDetector using java">
+    <echo>UCDetector ANT: 1 - Start headless eclipse</echo>
     <property name="ucd.target" value="run-ucdetector" />
     <echo>
 # -----------------------------------------------------------------------------
 # ECLIPSE_HOME = ${ECLIPSE_HOME}
 # WORKSPACE    = ${WORKSPACE}
-# reports.dir  = ${reports.dir}
 # ucd.target   = ${ucd.target}
-# debug        = ${debug}
 # -----------------------------------------------------------------------------
 </echo>
     <available file="${ECLIPSE_HOME}" property="ECLIPSE_HOME.exists" />
@@ -83,21 +58,53 @@ when LAUNCHER is empty, create new property 'LAUNCHER'</echo>
       <arg line="-clean" />
       <arg line="-data ${WORKSPACE}" />
       <arg line="-application org.eclipse.ant.core.antRunner" />
-      <!-- The name of this file -->
-      <arg line="-buildfile build.xml" />
-      <!-- The target in this this file -->
-      <arg line="${ucd.target}" />
+      <!-- Name of ant file ant ant target called by eclipse headless build -->
+      <arg line="-buildfile build.xml ${ucd.target}" />
     </java>
   </target>
 
+
   <!-- =====================================================================
-       EXAMPLE: Call UCDetector's build.xml from your main build.xml
-       ===================================================================== -->
-  <target name="call-ucdetector" description="Call UCDetector from another ant file">
-    <property name="ucd.ant.dir" location="my_local_ucdetector_ant_dir" />
-    <ant antfile="${ucd.ant.dir}/build.xml" target="detect" inheritall="false">
-      <!-- Usually there is no need to change target -->
-      <property name="ucd.target" value="run-ucdetector" />
-    </ant>
+       RUN UCDETECTOR
+       =====================================================================
+buildType:
+    Example: buildType="AUTO_BUILD"
+    One of: AUTO_BUILD (default), FULL_BUILD (clean all and build all), CLEAN_BUILD, INCREMENTAL_BUILD 
+    For details see: org.eclipse.core.resources.IncrementalProjectBuilder
+
+optionsFile:
+      Example: optionsFile="options.properties"
+    - Edit options.properties file
+    - Or set UCDetector preferences in eclipse IDE
+      and use mode file from: WORKSPACE_IDE/.metadata/.plugins/org.ucdetector/modes/
+
+targetPlatformFile:
+    Example: targetPlatformFile="ucdetector.target"
+    Example: targetPlatformFile="${WORKSPACE}/myProject/myTarget.target"
+    Only needed, if you use a target platform different to ECLIPSE_HOME
+    CHANGE file ucdetector.target, when using target platform!
+
+report:
+    eachproject (default), single
+    Example: report="eachproject"
+-->
+  <target name="run-ucdetector" description="Run UCDetector">
+    <echo>UCDetector ANT: 2 - Start ant task '&lt;ucdetector&gt;' inside headless eclipse.
+----------------------------------------------------------------------
+# When build fails here with error message:
+# 'failed to create task or type ucdetector'
+#  - You must call target "detect" before this target!
+#  - Check if org.ucdetector_x.y.z.jar is in: ${ECLIPSE_HOME}/plugins
+----------------------------------------------------------------------
+    </echo>
+    <ucdetector buildType="AUTO_BUILD"
+                optionsFile="options.properties"
+                report="eachproject"
+                targetPlatformFile="ucdetector.target">
+      <!-- Resources to build: Leave empty, to build ALL projects
+			      <iterate name="org.ucdetector" />
+			      <iterate name="org.ucdetector.additional/src/main" />
+      -->
+    </ucdetector>
   </target>
 </project>

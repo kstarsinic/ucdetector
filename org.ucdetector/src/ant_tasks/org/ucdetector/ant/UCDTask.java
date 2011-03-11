@@ -34,6 +34,7 @@ public class UCDTask extends Task {
 
   @Override
   public void execute() throws BuildException {
+    Log.info("UCDetector ANT: 3 - Start java code of ant task '<ucdetector>' inside headless eclipse");
     Report report = parseReport(sReport);
     int buildType = parseBuildType(sBuildType);
     File targetPlatformFile = getFile(sTargetPlatformFile, "targetPlatformFile");
