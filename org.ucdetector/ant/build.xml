@@ -38,6 +38,7 @@
 # -----------------------------------------------------------------------------
 # ECLIPSE_HOME = ${ECLIPSE_HOME}
 # WORKSPACE    = ${WORKSPACE}
+# basedir      = ${basedir}
 # ucd.target   = ${ucd.target}
 # -----------------------------------------------------------------------------
 </echo>
@@ -87,24 +88,23 @@ targetPlatformFile:
 report:
     eachproject (default), single
     Example: report="eachproject"
+    
+Complete example:
+    <ucdetector buildType="AUTO_BUILD" optionsFile="options.properties" report="eachproject" targetPlatformFile="ucdetector.target">
+      <iterate name="org.ucdetector" />
+      <iterate name="org.ucdetector.additional/src/main" />
+    </ucdetector>
 -->
   <target name="run-ucdetector" description="Run UCDetector">
     <echo>UCDetector ANT: 2 - Start ant task '&lt;ucdetector&gt;' inside headless eclipse.
 ----------------------------------------------------------------------
 # When build fails here with error message:
 # 'failed to create task or type ucdetector'
-#  - You must call target "detect" before this target!
+#  - Call target "detect" before target "run-ucdetector" 
+#    (It's not possible to use ucdetector Ant task declaring it with taskdef in build.xml)
 #  - Check if org.ucdetector_x.y.z.jar is in: ${ECLIPSE_HOME}/plugins
 ----------------------------------------------------------------------
     </echo>
-    <ucdetector buildType="AUTO_BUILD"
-                optionsFile="options.properties"
-                report="eachproject"
-                targetPlatformFile="ucdetector.target">
-      <!-- Resources to build: Leave empty, to build ALL projects
-			      <iterate name="org.ucdetector" />
-			      <iterate name="org.ucdetector.additional/src/main" />
-      -->
-    </ucdetector>
+    <ucdetector buildType="AUTO_BUILD" optionsFile="options.properties" report="eachproject" />
   </target>
 </project>
