@@ -21,6 +21,9 @@ import org.ucdetector.UCDHeadless.Report;
 /**
  * UCDetector <a href="http://ant.apache.org/">ant<a> task. Needed to call UCDetector in headless mode from command line.
  * <p>
+ * @see http://help.eclipse.org/helios/index.jsp?topic=/org.eclipse.platform.doc.isv/guide/ant_contributing_task.htm
+ * <p>
+ * 
  * @author Joerg Spieler
  * @since 2008-05-08
  * 
