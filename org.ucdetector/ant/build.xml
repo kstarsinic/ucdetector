@@ -55,7 +55,7 @@
 when LAUNCHER is empty, create new property 'LAUNCHER'</echo>
 
     <java jar="${LAUNCHER}" fork="true" maxmemory="1024m">
-      <!-- <arg line="-debug" /> -->
+      <arg line="-debug" />
       <arg line="-clean" />
       <arg line="-data ${WORKSPACE}" />
       <arg line="-application org.eclipse.ant.core.antRunner" />
@@ -96,10 +96,10 @@ Complete example:
     </ucdetector>
 -->
   <target name="run-ucdetector" description="Run UCDetector">
-    <echo>UCDetector ANT: 2 - Start ant task '&lt;ucdetector&gt;' inside headless eclipse.
+    <echo>UCDetector ANT: 2 - Start ant task '&lt;ucdetector /&gt;' inside headless eclipse.
 ----------------------------------------------------------------------
 # When build fails here with error message:
-# 'failed to create task or type ucdetector'
+# 'Problem: failed to create task or type ucdetector'
 #  - Call target "detect" before target "run-ucdetector" 
 #    (It's not possible to use ucdetector Ant task declaring it with taskdef in build.xml)
 #  - Check if org.ucdetector_x.y.z.jar is in: ${ECLIPSE_HOME}/plugins
