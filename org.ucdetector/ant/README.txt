@@ -41,5 +41,9 @@ Please create NEW directories for eclipse and your workspace! Otherwise you may 
 * Eclipse log file: ucdetector-headless\workspace\.metadata\.log
 * Workarround to 'see' compile errors and warnings:
  - ucdetector-headless/workspace/.metadata/.plugins/org.eclipse.core.resources/.projects/myProject/.markers.snap
+* NOTE: The <ucdetector /> ant task need to be run inside an osgi environment and won't work in a normal ant run.
+  This setup is done by target "detect".
+** http://stackoverflow.com/questions/2327393/running-p2-ant-tasks-outside-eclipse
+** http://www-01.ibm.com/support/docview.wss?uid=swg21273017
 
 
