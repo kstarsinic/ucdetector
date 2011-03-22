@@ -379,14 +379,12 @@
 
   <!-- =====================================================================
        APPLICATIONS
-       =====================================================================
-  <extension id="ucd"
-        point="org.eclipse.core.runtime.applications">
-     <application>
-        <run class="org.ucdetector.UCDApplication" />
-     </application>
-  </extension>
-   -->
+       ===================================================================== -->
+    <extension point="org.eclipse.core.runtime.applications" id="detect">
+       <application visible="false">
+          <run class="org.ucdetector.UCDHeadless"></run>
+       </application>
+    </extension>
   
   <!-- =====================================================================
        ANT

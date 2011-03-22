@@ -18,11 +18,14 @@ import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.IResource;
 import org.eclipse.core.resources.IWorkspace;
 import org.eclipse.core.resources.IWorkspaceRoot;
+import org.eclipse.core.resources.IncrementalProjectBuilder;
 import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.Path;
 import org.eclipse.core.runtime.Platform;
+import org.eclipse.equinox.app.IApplication;
+import org.eclipse.equinox.app.IApplicationContext;
 import org.eclipse.jdt.core.IJavaElement;
 import org.eclipse.jdt.core.IJavaProject;
 import org.eclipse.jdt.core.JavaCore;
@@ -40,13 +43,13 @@ import org.ucdetector.util.JavaElementUtil;
 import org.ucdetector.util.StopWatch;
 
 /**
- * Run UCDetector in headless mode (no UI)
+ * Run UCDetector in headless mode (no UI). Entry point is an eclipse application.
  * <p>
  * @author Joerg Spieler
  * @since 2010-09-15
  */
 @SuppressWarnings("nls")
-public class UCDHeadless {
+public class UCDHeadless implements IApplication {
   private final UCDProgressMonitor ucdMonitor = new UCDProgressMonitor();
   private final int buildType;
   private final File targetPlatformFile;
@@ -57,16 +60,30 @@ public class UCDHeadless {
     single, eachproject
   }
 
+  public UCDHeadless() {
+    this(-1, null, null, null, null);
+  }
+
   public UCDHeadless(int buildType, File optionsFile, File targetPlatformFile, Report report,
       List<String> resourcesToIterate) {
     UCDetectorPlugin.setHeadlessMode(true);// MUST BE BEFORE LOGGING!
-    this.report = report;
-    this.buildType = buildType;
-    this.targetPlatformFile = targetPlatformFile;
-    this.resourcesToIterate = resourcesToIterate;
+    this.buildType = (buildType == -1) ? IncrementalProjectBuilder.AUTO_BUILD : buildType;
     if (optionsFile != null) {
       loadOptions(optionsFile);
     }
+    this.targetPlatformFile = targetPlatformFile;
+    this.report = report;
+    this.resourcesToIterate = resourcesToIterate;
+  }
+
+  public Object start(IApplicationContext context) throws Exception {
+    Log.info("Starting UCDHeadless as an application");
+    run();
+    return IApplication.EXIT_OK;
+  }
+
+  public void stop() {
+    Log.info("Stopping UCDHeadless (application mode)");
   }
 
   private void loadOptions(File optionFile) {
@@ -148,7 +165,7 @@ public class UCDHeadless {
 
   private void iterate(IWorkspaceRoot workspaceRoot, List<IJavaProject> allProjects) throws CoreException {
     List<IJavaElement> javaElementsToIterate = new ArrayList<IJavaElement>();
-    if (resourcesToIterate.isEmpty()) {
+    if (resourcesToIterate == null || resourcesToIterate.isEmpty()) {
       javaElementsToIterate.addAll(allProjects);
     }
     else {
@@ -178,7 +195,7 @@ public class UCDHeadless {
       Log.info("    " + JavaElementUtil.getElementName(javaElement));//$NON-NLS-1$
     }
     // Iterate
-    if (Report.eachproject == report) {
+    if (report == null || Report.eachproject == report) {
       for (IJavaElement javaElement : javaElementsToIterate) {
         UCDetectorIterator iterator = new UCDetectorIterator();
         iterator.setMonitor(ucdMonitor);
