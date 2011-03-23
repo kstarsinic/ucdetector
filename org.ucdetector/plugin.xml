@@ -373,7 +373,7 @@
            name="%theme.name.0"
            path="."
            previewImage="icons/ucd.gif">
-           <property name="launchbarOverviewIcon" value="icons/ucd.png"/>
+           <property name="launchbarOverviewIcon" value="icons/ucdetector32.png"/>
      </theme>
   </extension>
 
