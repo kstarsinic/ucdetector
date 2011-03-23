@@ -2,7 +2,7 @@
 <feature
       id="org.ucdetector.feature"
       label="UCDetector"
-      version="1.7.0"
+      version="1.7.3"
       provider-name="%providerName"
       plugin="org.ucdetector">
 
@@ -23,25 +23,29 @@
    </url>
 
    <requires>
-      <import plugin="org.eclipse.ui" version="3.5.0" match="greaterOrEqual"/>
-      <import plugin="org.eclipse.core.runtime" version="3.5.0" match="greaterOrEqual"/>
-      <import plugin="org.eclipse.core.resources" version="3.5.0" match="greaterOrEqual"/>
-      <import plugin="org.eclipse.jdt.core" version="3.5.0" match="greaterOrEqual"/>
+      <import plugin="org.eclipse.ui"/>
+      <import plugin="org.eclipse.core.runtime"/>
+      <import plugin="org.eclipse.core.resources"/>
+      <import plugin="org.eclipse.jdt.core"/>
       <import plugin="org.eclipse.jdt.ui" version="3.5.0" match="greaterOrEqual"/>
-      <import plugin="org.eclipse.search" version="3.5.0" match="greaterOrEqual"/>
-      <import plugin="org.eclipse.jface.text" version="3.5.0" match="greaterOrEqual"/>
-      <import plugin="org.eclipse.core.filebuffers" version="3.5.0" match="greaterOrEqual"/>
-      <import plugin="org.eclipse.ui.ide" version="3.5.0" match="greaterOrEqual"/>
+      <import plugin="org.eclipse.search"/>
       <import plugin="org.eclipse.jface" version="3.5.0" match="greaterOrEqual"/>
-      <import plugin="org.eclipse.ui.editors" version="3.5.0" match="greaterOrEqual"/>
-      <import plugin="org.eclipse.ui.console" version="3.5.0" match="greaterOrEqual"/>
+      <import plugin="org.eclipse.jface.text"/>
+      <import plugin="org.eclipse.core.filebuffers"/>
+      <import plugin="org.eclipse.ui.ide"/>
+      <import plugin="org.eclipse.ui.editors"/>
+      <import plugin="org.eclipse.ui.console" version="3.4.0" match="greaterOrEqual"/>
+      <import plugin="org.eclipse.help"/>
+      <import plugin="org.eclipse.pde.core" version="3.5.0" match="greaterOrEqual"/>
+      <import plugin="org.apache.ant"/>
+      <import plugin="org.eclipse.ant.core"/>
    </requires>
 
    <plugin
          id="org.ucdetector"
          download-size="200"
          install-size="200"
-         version="1.7.0"
+         version="1.7.3"
          unpack="false"/>
 
 </feature>

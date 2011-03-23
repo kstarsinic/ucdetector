@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project default="feature_export" name="build" basedir=".">
+  <target name="feature_export">
+    <property name="output.dir" location="../../org.ucdetector/build/output" />
+    <pde.exportFeatures destination="${output.dir}"
+                        exportSource="true"
+                        exportType="directory"
+                        features="org.ucdetector.feature"
+                        useJARFormat="false" />
+    <echo>Please wait. Feature will be exported to: ${output.dir}/features</echo>
+  </target>
+</project>
