@@ -9,6 +9,7 @@ package org.ucdetector;
 
 import java.io.BufferedReader;
 import java.io.Closeable;
+import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
@@ -106,8 +107,9 @@ public class UCDetectorPlugin extends AbstractUIPlugin implements IPropertyChang
     Log.info("Workspace       : " + getAboutWorkspace());
     Log.info("Logfile         : " + getAboutLogfile());
     Log.info("Log level       : " + Log.getActiveLogLevel().toString());
-    logMemoryInfo();
+    Log.info("Modes Dir       : " + getModesDir().getAbsolutePath()); //$NON-NLS-1$
     Log.info(getPreferencesAsString());
+    logMemoryInfo();
     Log.info(SEPARATOR);
   }
 
@@ -333,6 +335,13 @@ public class UCDetectorPlugin extends AbstractUIPlugin implements IPropertyChang
     if (property.equals(Prefs.LOG_TO_ECLIPSE)) {
       Log.setLogToEclipse(Boolean.parseBoolean(newValue));
     }
+  }
+
+  /** @return WORKSPACE/.metadata/.plugins/org.ucdetector/modes */
+  // Unused:   WORKSPACE/.metadata/.plugins/org.eclipse.core.runtime/.settings/org.ucdetector.prefs
+  public static File getModesDir() {
+    File ucdDir = getDefault().getStateLocation().toFile();
+    return new File(ucdDir, "modes"); //$NON-NLS-1$
   }
 
   // STATUS -------------------------------------------------------------------

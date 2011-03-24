@@ -101,15 +101,18 @@ public class PreferenceInitializer extends AbstractPreferenceInitializer {
 
   // REPORT --------------------------------------------------------------------
   /**
+   * @param create create directory (only use <code>true</code>, when directory is needed)
    * @return report directory
    */
-  public static String getReportDir() {
+  public static String getReportDir(boolean create) {
     String dir = Prefs.getString(Prefs.REPORT_DIR);
     if (dir.length() == 0) {
       dir = getReportDirDefault();
     }
     File reportDir = new File(dir);
-    reportDir.mkdirs();
+    if (create) {
+      reportDir.mkdirs();
+    }
     return reportDir.getAbsolutePath();
   }
 

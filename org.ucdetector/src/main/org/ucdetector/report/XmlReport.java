@@ -332,7 +332,7 @@ public class XmlReport implements IUCDetectorReport {
     reportFile = reportFile.replace("${date}", dateFormat.format(new Date()));
     reportFile = reportFile.replace("${time}", timeFormat.format(new Date()));
     //
-    File reportDir = new File(PreferenceInitializer.getReportDir());
+    File reportDir = new File(PreferenceInitializer.getReportDir(true));
     if (reportFile.contains(PreferenceInitializer.FILE_NAME_REPLACE_NUMBER)) {
       String[] files = reportDir.list();
       files = (files == null) ? new String[0] : files;
@@ -452,7 +452,7 @@ public class XmlReport implements IUCDetectorReport {
       return;
     }
     long start = System.currentTimeMillis();
-    File reportDir = new File(PreferenceInitializer.getReportDir());
+    File reportDir = new File(PreferenceInitializer.getReportDir(true));
     String reportPath = reportDir.getAbsolutePath();
     if (initXMLException != null) {
       logEndReportMessage(Messages.XMLReport_WriteError, IStatus.ERROR, initXMLException, reportPath);

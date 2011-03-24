@@ -36,7 +36,6 @@ import org.eclipse.pde.internal.core.target.provisional.ITargetPlatformService;
 import org.eclipse.pde.internal.core.target.provisional.LoadTargetDefinitionJob;
 import org.osgi.framework.Bundle;
 import org.ucdetector.iterator.UCDetectorIterator;
-import org.ucdetector.preferences.PreferenceInitializer;
 import org.ucdetector.preferences.Prefs;
 import org.ucdetector.search.UCDProgressMonitor;
 import org.ucdetector.util.JavaElementUtil;
@@ -94,7 +93,6 @@ public class UCDHeadless implements IApplication {
         Prefs.setValue(option.getKey(), option.getValue());
       }
       Log.info(UCDetectorPlugin.getPreferencesAsString().replace(", ", "\n\t"));
-      Log.info("Report directory is: " + PreferenceInitializer.getReportDir());
     }
   }
 

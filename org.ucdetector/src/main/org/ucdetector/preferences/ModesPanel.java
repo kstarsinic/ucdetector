@@ -77,8 +77,7 @@ class ModesPanel {
   ModesPanel(UCDetectorPreferencePage page, Composite parentGroups) {
     this.page = page;
     this.parent = parentGroups;
-    File ucdDir = UCDetectorPlugin.getDefault().getStateLocation().toFile();
-    modesDir = new File(ucdDir, "modes"); //$NON-NLS-1$
+    modesDir = UCDetectorPlugin.getModesDir();
     modesDir.mkdirs();
     Log.info("modesDir is '%s'", modesDir.getAbsolutePath()); //$NON-NLS-1$
     modesPanelComposite = UCDetectorPreferencePage.createComposite(parent, 5, 1, GridData.FILL_HORIZONTAL);
@@ -196,7 +195,7 @@ class ModesPanel {
     page.performOk();
     if (newModeName != null && newModeName.trim().length() > 0) {
       // set default, when report directory is missing
-      Prefs.getStore().setValue(Prefs.REPORT_DIR, PreferenceInitializer.getReportDir());
+      Prefs.getStore().setValue(Prefs.REPORT_DIR, PreferenceInitializer.getReportDir(false));
       saveMode(newModeName);
       Log.info("Added new mode: %s", newModeName); //$NON-NLS-1$
       getCombo().setItems(getModes());
