@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="UTF-8"?>
+<?xml version="1.0" encoding="ISO-8859-1"?>
 <!--
  Copyright (c) 2010 Joerg Spieler All rights reserved. This program and the
  accompanying materials are made available under the terms of the Eclipse
