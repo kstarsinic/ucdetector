@@ -110,9 +110,9 @@ public class PreferenceInitializer extends AbstractPreferenceInitializer {
       dir = getReportDirDefault();
     }
     File reportDir = new File(dir);
-    if (create) {
-      reportDir.mkdirs();
-    }
+    //    if (create) {
+    reportDir.mkdirs();
+    //    }
     return reportDir.getAbsolutePath();
   }
 
@@ -126,7 +126,7 @@ public class PreferenceInitializer extends AbstractPreferenceInitializer {
       reportDir = REPORT_DEFAULT_DIR;
       Log.error("Can't get report file name", e);
     }
-    // Needed to avoid message: Path does not exists
+    // Needed to avoid message: Value must be an existing directory
     new File(reportDir).mkdirs();
     return reportDir;
   }
