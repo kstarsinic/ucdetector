@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <?pde version="3.6"?>
-<target name="ucd">
+<target name="UCDetector headless">
 	<locations>
     <!-- =======================================================================
     Change next line or
