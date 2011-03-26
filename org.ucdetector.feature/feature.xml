@@ -10,7 +10,7 @@
       %description
    </description>
 
-   <copyright>
+   <copyright url="http://www.ucdetector.org/license.html">
       %copyright
    </copyright>
 
@@ -43,8 +43,8 @@
 
    <plugin
          id="org.ucdetector"
-         download-size="200"
-         install-size="200"
+         download-size="250"
+         install-size="250"
          version="1.7.3"
          unpack="false"/>
 
