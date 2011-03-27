@@ -9,7 +9,8 @@
    </feature>
    <category-def name="UCDetector" label="UCDetector">
       <description>
-         UCDetector (Unnecessary Code Detector)
+         UCDetector (Unnecessary Code Detector) finds unnecessary (dead) public java code. 
+Visit http://www.ucdetector.org/
       </description>
    </category-def>
 </site>
