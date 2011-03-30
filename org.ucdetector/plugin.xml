@@ -29,8 +29,6 @@
        POP UP - JAVA ELEMENTS
        ===================================================================== -->
   <extension point="org.eclipse.ui.popupMenus">
-  
-  <!-- ===================================================================== -->
     <objectContribution
         adaptable="true"
         objectClass="org.eclipse.jdt.core.IJavaElement"
@@ -39,63 +37,43 @@
           path="additions"
           id="ucdetectorGroup">
       </menu>
-    </objectContribution>
 
     <!-- COUNT ============================ -->
-    <objectContribution
-        adaptable="true"
-        id="org.ucdetector.popupMenus.project.Analyze"
-        objectClass="org.eclipse.jdt.core.IJavaElement">
-      <action class="org.ucdetector.action.CountAction"
-          enablesFor="+"
-          id="org.ucdetector.CountAction"
-          label="%CountAction.label"
-          tooltip="%CountAction.tooltip"
-          icon="platform:/plugin/org.eclipse.ui/icons/full/obj16/info_tsk.gif"
-          menubarPath="ucdetectorGroup/ucdetector"/>
-    </objectContribution>
+    <action class="org.ucdetector.action.CountAction"
+        enablesFor="+"
+        id="org.ucdetector.CountAction"
+        label="%CountAction.label"
+        tooltip="%CountAction.tooltip"
+        icon="platform:/plugin/org.eclipse.ui/icons/full/obj16/info_tsk.gif"
+        menubarPath="ucdetectorGroup/ucdetector"/>
     
     <!-- CLEAN MARKERS ============================ -->
-    <objectContribution
-        adaptable="true"
-        id="org.ucdetector.popupMenus.project.Analyze"
-        objectClass="org.eclipse.jdt.core.IJavaElement">
-      <action class="org.ucdetector.action.CleanMarkersAction"
-          enablesFor="+"
-          id="org.ucdetector.CleanMarkersAction"
-          label="%CleanMarkersAction.label"
-          tooltip="%CleanMarkersAction.tooltip"
-          icon="platform:/plugin/org.eclipse.ui/icons/full/obj16/delete_obj.gif"
-          menubarPath="ucdetectorGroup/ucdetector"/>
-    </objectContribution>
+    <action class="org.ucdetector.action.CleanMarkersAction"
+        enablesFor="+"
+        id="org.ucdetector.CleanMarkersAction"
+        label="%CleanMarkersAction.label"
+        tooltip="%CleanMarkersAction.tooltip"
+        icon="platform:/plugin/org.eclipse.ui/icons/full/obj16/delete_obj.gif"
+        menubarPath="ucdetectorGroup/ucdetector"/>
 
     <!-- DETECT UC ============================ -->
-    <objectContribution
-        adaptable="true"
-        id="org.ucdetector.popupMenus.project.Analyze"
-        objectClass="org.eclipse.jdt.core.IJavaElement">
-      <action class="org.ucdetector.action.UCDetectorAction"
-          enablesFor="+"
-          id="org.ucdetector.SearchAction"
-          label="%DetectAction.label"
-          tooltip="%DetectAction.tooltip"
-          icon="$nl$/icons/ucd.gif"
-          menubarPath="ucdetectorGroup/ucdetector"
-          definitionId="org.ucdetector.definitionId.ucd"/>
-    </objectContribution>
+    <action class="org.ucdetector.action.UCDetectorAction"
+        enablesFor="+"
+        id="org.ucdetector.SearchAction"
+        label="%DetectAction.label"
+        tooltip="%DetectAction.tooltip"
+        icon="$nl$/icons/ucd.gif"
+        menubarPath="ucdetectorGroup/ucdetector"
+        definitionId="org.ucdetector.definitionId.ucd"/>
 
     <!-- DETECT CYCLE ============================ -->
-    <objectContribution
-        adaptable="true"
-        id="org.ucdetector.popupMenus.project.Analyze"
-        objectClass="org.eclipse.jdt.core.IJavaElement">
-      <action class="org.ucdetector.cycle.CycleAction"
-          enablesFor="+"
-          id="org.ucdetector.cycle.CycleAction"
-          label="%CycleAction.label"
-          tooltip="%CycleAction.tooltip"
-          icon="icons/cycle.gif"
-          menubarPath="ucdetectorGroup/cycle"/>
+    <action class="org.ucdetector.cycle.CycleAction"
+        enablesFor="+"
+        id="org.ucdetector.cycle.CycleAction"
+        label="%CycleAction.label"
+        tooltip="%CycleAction.tooltip"
+        icon="icons/cycle.gif"
+        menubarPath="ucdetectorGroup/cycle"/>
     </objectContribution>
   </extension>
 
