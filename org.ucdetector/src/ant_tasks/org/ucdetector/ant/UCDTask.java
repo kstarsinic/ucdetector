@@ -12,10 +12,8 @@ import java.util.List;
 
 import org.apache.tools.ant.BuildException;
 import org.apache.tools.ant.Task;
-import org.eclipse.core.resources.IncrementalProjectBuilder;
 import org.ucdetector.Log;
 import org.ucdetector.UCDHeadless;
-import org.ucdetector.UCDHeadless.Report;
 
 @SuppressWarnings("nls")
 /**
@@ -38,27 +36,24 @@ public class UCDTask extends Task {
   @Override
   public void execute() throws BuildException {
     Log.info("UCDetector ANT: 3 - Start java code of ant task '<ucdetector>' inside headless eclipse");
-    Report report = parseReport(sReport);
-    int buildType = parseBuildType(sBuildType);
     File targetPlatformFile = getFile(sTargetPlatformFile, "targetPlatformFile");
     File optionsFile = getFile(sOptionsFile, "optionsFile");
-    Log.info("StartUCDetector Ant Task");
-    Log.info("    buildType         : " + sBuildType);// + " (" + buildType + ")");
-    Log.info("    optionsFile       : " + (optionsFile == null ? "" : optionsFile.getAbsolutePath()));
-    Log.info("    targetPlatformFile: " + (targetPlatformFile == null ? "" : targetPlatformFile.getAbsolutePath()));
-    Log.info("    report            : " + report);
-    Log.info("    iterateList       : " + iterateList);
-    List<String> resourcesToIterate = new ArrayList<String>();
-    for (Iterate iterate : iterateList) {
-      Log.info("                        " + iterate);
-      resourcesToIterate.add(iterate.getName());
-    }
+    List<String> resourcesToIterate = getResourcesToIterate();
     try {
-      new UCDHeadless(buildType, optionsFile, targetPlatformFile, report, resourcesToIterate).run();
+      new UCDHeadless(sBuildType, optionsFile, targetPlatformFile, sReport, resourcesToIterate).run();
     }
     catch (Exception e) {
       throw new BuildException(e);
     }
+  }
+
+  private List<String> getResourcesToIterate() {
+    List<String> result = new ArrayList<String>();
+    for (Iterate iterate : iterateList) {
+      Log.info("                        " + iterate);
+      result.add(iterate.getName());
+    }
+    return result;
   }
 
   private File getFile(String fileName, String about) {
@@ -70,35 +65,6 @@ public class UCDTask extends Task {
       }
     }
     return result;
-  }
-
-  private Report parseReport(String reportString) {
-    if (reportString == null || reportString.length() == 0) {
-      return Report.eachproject;
-    }
-    for (Report rep : Report.values()) {
-      if (rep.name().equals(reportString)) {
-        return rep;
-      }
-    }
-    throw new BuildException("Unknown report: '" + reportString + "'");
-  }
-
-  /** @see org.eclipse.core.resources.IncrementalProjectBuilder */
-  private int parseBuildType(String buildType) {
-    if (buildType == null || buildType.length() == 0 || "AUTO_BUILD".equals(buildType)) {
-      return IncrementalProjectBuilder.AUTO_BUILD;
-    }
-    if ("FULL_BUILD".equals(buildType)) {
-      return IncrementalProjectBuilder.FULL_BUILD;
-    }
-    if ("INCREMENTAL_BUILD".equals(buildType)) {
-      return IncrementalProjectBuilder.INCREMENTAL_BUILD;
-    }
-    if ("CLEAN_BUILD".equals(buildType)) {
-      return IncrementalProjectBuilder.CLEAN_BUILD;
-    }
-    throw new BuildException("Unknown buildType: '" + buildType + "'");
   }
 
   // --------------------------------------------------------------------------

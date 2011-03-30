@@ -9,6 +9,7 @@ package org.ucdetector;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
@@ -24,8 +25,6 @@ import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.Path;
 import org.eclipse.core.runtime.Platform;
-import org.eclipse.equinox.app.IApplication;
-import org.eclipse.equinox.app.IApplicationContext;
 import org.eclipse.jdt.core.IJavaElement;
 import org.eclipse.jdt.core.IJavaProject;
 import org.eclipse.jdt.core.JavaCore;
@@ -48,59 +47,45 @@ import org.ucdetector.util.StopWatch;
  * @since 2010-09-15
  */
 @SuppressWarnings("nls")
-public class UCDHeadless implements IApplication {
+public class UCDHeadless {
   private final UCDProgressMonitor ucdMonitor = new UCDProgressMonitor();
   private final int buildType;
-  private File targetPlatformFile;
+  private final File targetPlatformFile;
   private final Report report;
   private final List<String> resourcesToIterate;
-  private File optionsFile;
 
   public enum Report {
     single, eachproject
   }
 
-  public UCDHeadless() {
-    this(-1, null, null, null, null);
-  }
-
-  public UCDHeadless(int buildType, File optionsFile, File targetPlatformFile, Report report,
+  public UCDHeadless(String sBuildType, File optionsFile, File targetPlatformFile, String sReport,
       List<String> resourcesToIterate) {
     UCDetectorPlugin.setHeadlessMode(true);// MUST BE BEFORE LOGGING!
-    this.buildType = (buildType == -1) ? IncrementalProjectBuilder.AUTO_BUILD : buildType;
-    this.optionsFile = optionsFile;
-    loadOptions(optionsFile);
+    this.buildType = parseBuildType(sBuildType);
     this.targetPlatformFile = targetPlatformFile;
-    this.report = report;
+    this.report = parseReport(sReport);
     this.resourcesToIterate = resourcesToIterate;
+    loadOptions(optionsFile);
+    Log.info("    buildType         : " + sBuildType);
+    Log.info("    optionsFile       : " + (optionsFile == null ? "" : optionsFile.getAbsolutePath()));
+    Log.info("    targetPlatformFile: " + (targetPlatformFile == null ? "" : targetPlatformFile.getAbsolutePath()));
+    Log.info("    report            : " + report);
+    Log.info("    iterateList       : " + (resourcesToIterate == null ? "" : resourcesToIterate));
   }
 
-  public Object start(IApplicationContext context) throws Exception {
-    Log.info("Starting UCDHeadless as an application");
-    String userDir = System.getProperty("user.dir");
-    this.optionsFile = new File(userDir, "ucdetector.options");
-    this.targetPlatformFile = new File(userDir, "ucdetector.target");
-    Log.info("To change detection, use: " + optionsFile.getAbsolutePath());
-    Log.info("To change detection, use: " + targetPlatformFile.getAbsolutePath());
-    run();
-    return IApplication.EXIT_OK;
-  }
-
-  public void stop() {
-    Log.info("Stopping UCDHeadless (application mode)");
-  }
-
-  private void loadOptions(File optionFile) {
-    if (optionsFile != null) {
+  static Map<String, String> loadOptions(File optionFile) {
+    Map<String, String> ucdOptions = Collections.emptyMap();
+    if (optionFile != null) {
       Log.info("\toptionFile: %s exists: %s", Log.getCanonicalPath(optionFile), "" + optionFile.exists());
       if (optionFile.exists()) {
-        Map<String, String> ucdOptions = UCDetectorPlugin.loadModeFile(true, optionFile.getAbsolutePath());
+        ucdOptions = UCDetectorPlugin.loadModeFile(true, optionFile.getAbsolutePath());
         for (Entry<String, String> option : ucdOptions.entrySet()) {
           Prefs.setValue(option.getKey(), option.getValue());
         }
         Log.info(UCDetectorPlugin.getPreferencesAsString().replace(", ", "\n\t"));
       }
     }
+    return ucdOptions;
   }
 
   public void run() throws FileNotFoundException, CoreException {
@@ -246,12 +231,35 @@ public class UCDHeadless implements IApplication {
     }
     return projects;
   }
+
+  private static Report parseReport(String reportString) {
+    if (reportString == null || reportString.length() == 0) {
+      return Report.eachproject;
+    }
+    for (Report rep : Report.values()) {
+      if (rep.name().equals(reportString)) {
+        return rep;
+      }
+    }
+    Log.warn("Unknown report: '%s'. Using: %s", reportString, Report.eachproject);
+    return Report.eachproject;
+  }
+
+  /** @see org.eclipse.core.resources.IncrementalProjectBuilder */
+  private static int parseBuildType(String buildType) {
+    if (buildType == null || buildType.length() == 0 || "AUTO_BUILD".equals(buildType)) {
+      return IncrementalProjectBuilder.AUTO_BUILD;
+    }
+    if ("FULL_BUILD".equals(buildType)) {
+      return IncrementalProjectBuilder.FULL_BUILD;
+    }
+    if ("INCREMENTAL_BUILD".equals(buildType)) {
+      return IncrementalProjectBuilder.INCREMENTAL_BUILD;
+    }
+    if ("CLEAN_BUILD".equals(buildType)) {
+      return IncrementalProjectBuilder.CLEAN_BUILD;
+    }
+    Log.warn("Unknown buildType: '%s'. Using: %s", buildType, "AUTO_BUILD");
+    return IncrementalProjectBuilder.AUTO_BUILD;
+  }
 }
-//    [java] java.lang.NullPointerException
-//    [java]   at org.eclipse.pde.internal.core.target.AbstractBundleContainer.getVMArguments(AbstractBundleContainer.java:525)
-//    [java]   at org.eclipse.pde.internal.core.target.TargetPlatformService.newDefaultTargetDefinition(TargetPlatformService.java:525)
-//    [java]   at org.eclipse.pde.internal.core.PluginModelManager.initDefaultTargetPlatformDefinition(PluginModelManager.java:575)
-//    [java]   at org.eclipse.pde.internal.core.PluginModelManager.initializeTable(PluginModelManager.java:528)
-//    [java]   at org.eclipse.pde.internal.core.PluginModelManager.getExternalModelManager(PluginModelManager.java:1013)
-//    [java]   at org.eclipse.pde.internal.core.TargetPlatformResetJob.run(TargetPlatformResetJob.java:36)
-//    [java]   at org.eclipse.core.internal.jobs.Worker.run(Worker.java:54)

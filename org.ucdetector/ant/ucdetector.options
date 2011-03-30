@@ -88,3 +88,16 @@ org.ucdetector.report.dir         =
 # Group: Logging
 org.ucdetector.log.level     = INFO
 org.ucdetector.log.toEclipse = false
+
+
+
+
+
+
+
+
+############################## SETTINGS APPLICATION  ##############################
+org.ucdetector.internal.application.buildType=AUTO_BUILD
+org.ucdetector.internal.application.report=eachproject
+# separated by ,
+org.ucdetector.internal.application.resourcesToIterate=

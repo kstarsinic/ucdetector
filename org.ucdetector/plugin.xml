@@ -433,7 +433,7 @@
        ===================================================================== -->
     <extension point="org.eclipse.core.runtime.applications" id="detect">
        <application visible="false">
-          <run class="org.ucdetector.UCDHeadless"></run>
+          <run class="org.ucdetector.UCDApplication"></run>
        </application>
     </extension>
   
