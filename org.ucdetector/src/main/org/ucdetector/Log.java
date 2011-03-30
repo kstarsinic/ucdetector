@@ -68,18 +68,15 @@ public class Log {
   // DEBUG --------------------------------------------------------------------
   public static void debug(String format, Object... args) {
     if (isDebug()) {
-      if (args.length == 0) {
-        log(LogLevel.DEBUG, format);
-      }
-      else {
-        log(LogLevel.DEBUG, String.format(format, args));
-      }
+      log(LogLevel.DEBUG, args.length == 0 ? format : String.format(format, args));
     }
   }
 
   // INFO ---------------------------------------------------------------------
   public static void info(String format, Object... args) {
-    log(LogLevel.INFO, args.length == 0 ? format : String.format(format, args));
+    if (isInfo()) {
+      log(LogLevel.INFO, args.length == 0 ? format : String.format(format, args));
+    }
   }
 
   // WARN ---------------------------------------------------------------------
@@ -195,6 +192,10 @@ public class Log {
 
   public static boolean isDebug() {
     return (getActiveLogLevel() == LogLevel.DEBUG);
+  }
+
+  public static boolean isInfo() {
+    return getActiveLogLevel() == LogLevel.DEBUG || getActiveLogLevel() == LogLevel.INFO;
   }
 
   private static LogLevel activeLogLevel = LogLevel.INFO;
