@@ -493,7 +493,10 @@ public class CycleView extends ViewPart { //
     }
 
     private TreeItem[] getChildren(TreeItem item) {
-      viewer.setExpandedState(item.getData(), true);
+      Object data = item.getData();
+      if (data != null) {
+        viewer.setExpandedState(data, true); // fixed npe
+      }
       return item.getItems();
     }
   }
