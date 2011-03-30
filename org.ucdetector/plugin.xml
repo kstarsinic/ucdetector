@@ -26,12 +26,11 @@
   </extension>
   
   <!-- =====================================================================
-       POP UP
+       POP UP - JAVA ELEMENTS
        ===================================================================== -->
   <extension point="org.eclipse.ui.popupMenus">
   
-  <!-- =====================================================================
-    To show also for WorkingSet, use: objectClass=org.eclipse.core.resources.mapping.ResourceMapping -->
+  <!-- ===================================================================== -->
     <objectContribution
         adaptable="true"
         objectClass="org.eclipse.jdt.core.IJavaElement"
@@ -99,7 +98,60 @@
           menubarPath="ucdetectorGroup/cycle"/>
     </objectContribution>
   </extension>
-  
+
+
+  <!-- =====================================================================
+       POP UP - WORKING SETS
+       ===================================================================== -->
+  <extension point="org.eclipse.ui.popupMenus">
+    <objectContribution
+        adaptable="true"
+        objectClass="org.eclipse.ui.IWorkingSet"
+        id="org.ucdetector.popupMenus.projectWorkingSet">
+      <menu label="%popupMenus.root"
+          path="additions"
+          id="ucdetectorGroup">
+      </menu>
+
+    <!-- COUNT ============================ -->
+    <action class="org.ucdetector.action.CountAction"
+        enablesFor="+"
+        id="org.ucdetector.CountActionWorkingSet"
+        label="%CountAction.label"
+        tooltip="%CountAction.tooltip"
+        icon="platform:/plugin/org.eclipse.ui/icons/full/obj16/info_tsk.gif"
+        menubarPath="ucdetectorGroup/ucdetector"/>
+    
+    <!-- CLEAN MARKERS ============================ -->
+    <action class="org.ucdetector.action.CleanMarkersAction"
+        enablesFor="+"
+        id="org.ucdetector.CleanMarkersActionWorkingSet"
+        label="%CleanMarkersAction.label"
+        tooltip="%CleanMarkersAction.tooltip"
+        icon="platform:/plugin/org.eclipse.ui/icons/full/obj16/delete_obj.gif"
+        menubarPath="ucdetectorGroup/ucdetector"/>
+
+    <!-- DETECT UC ============================ -->
+    <action class="org.ucdetector.action.UCDetectorAction"
+        enablesFor="+"
+        id="org.ucdetector.SearchActionWorkingSet"
+        label="%DetectAction.label"
+        tooltip="%DetectAction.tooltip"
+        icon="$nl$/icons/ucd.gif"
+        menubarPath="ucdetectorGroup/ucdetector"
+        definitionId="org.ucdetector.definitionId.ucd"/>
+
+    <!-- DETECT CYCLE ============================ -->
+    <action class="org.ucdetector.cycle.CycleAction"
+        enablesFor="+"
+        id="org.ucdetector.cycle.CycleActionWorkingSet"
+        label="%CycleAction.label"
+        tooltip="%CycleAction.tooltip"
+        icon="icons/cycle.gif"
+        menubarPath="ucdetectorGroup/cycle"/>
+    </objectContribution>
+  </extension>
+    
   <!-- =====================================================================
        OMMAND+BINDINGS to declare shortcut  Alt+Shift+U
        ===================================================================== -->
