@@ -142,8 +142,14 @@ public abstract class AbstractUCDetectorAction extends ActionDelegate { // NO_UC
    *         Accessibility is necessary to create markers.
    */
   private final boolean allAccessible() { // 
+//    if (true) {
+//      return true;
+//    }
     for (IJavaElement javaElement : selections) {
       try {
+        if (!javaElement.exists()) {
+          return true;
+        }
         if (javaElement instanceof IMember) {
           return !((IMember) javaElement).isBinary();
         }
