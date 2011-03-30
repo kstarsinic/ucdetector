@@ -7,19 +7,19 @@
  */
 package org.ucdetector.action;
 
-import java.util.ArrayList;
+import java.util.Collection;
+import java.util.LinkedHashSet;
 import java.util.List;
+import java.util.Set;
 
-import org.eclipse.core.resources.IResource;
 import org.eclipse.core.runtime.CoreException;
+import org.eclipse.core.runtime.IAdaptable;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.core.runtime.jobs.Job;
 import org.eclipse.jdt.core.IJavaElement;
-import org.eclipse.jdt.core.IMember;
-import org.eclipse.jdt.core.IPackageFragmentRoot;
-import org.eclipse.jdt.core.JavaModelException;
+import org.eclipse.jdt.core.IJavaProject;
 import org.eclipse.jface.action.IAction;
 import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.jface.resource.ImageDescriptor;
@@ -27,6 +27,7 @@ import org.eclipse.jface.viewers.ISelection;
 import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Event;
+import org.eclipse.ui.IWorkingSet;
 import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.actions.ActionDelegate;
 import org.eclipse.ui.progress.IProgressConstants;
@@ -44,13 +45,10 @@ import org.ucdetector.search.UCDProgressMonitor;
  */
 // Don't change visibility to default!
 public abstract class AbstractUCDetectorAction extends ActionDelegate { // NO_UCD
-  protected IJavaElement[] selections;
+  private IJavaElement[] selections;
 
   @Override
   public void runWithEvent(IAction action, Event event) {
-    if (selections == null) {
-      return;
-    }
     final AbstractUCDetectorIterator iterator = createIterator();
     final Job job = new Job(iterator.getJobName()) {
       @Override
@@ -58,7 +56,7 @@ public abstract class AbstractUCDetectorAction extends ActionDelegate { // NO_UC
         UCDProgressMonitor ucdMonitor = new UCDProgressMonitor(monitor);
         iterator.setMonitor(ucdMonitor);
         try {
-          iterator.iterate(selections);
+          iterator.iterate(getSelections());
           if (iterator.getElelementsToDetectCount() == 0) {
             showNothingToDetectMessage();
           }
@@ -122,74 +120,87 @@ public abstract class AbstractUCDetectorAction extends ActionDelegate { // NO_UC
   @Override
   public void selectionChanged(IAction action, ISelection selection) {
     // System.out.println("action=" + action.getText());
-    if (action == null) {
-      return;
+    if (action != null) {
+      setSelections(getSelectedJavaElements(selection));
+      PlatformUI.getWorkbench().getHelpSystem().setHelp(action, UCDetectorPlugin.HELP_ID);
+      handleJavaElementSelections(action);
     }
-    PlatformUI.getWorkbench().getHelpSystem().setHelp(action, UCDetectorPlugin.HELP_ID);
-    action.setEnabled(true);
-    // Collect selections
-    collectJavaElementSelections(selection);
-
-    if (selections == null || selections.length == 0) {
-      action.setEnabled(false);
-      return;
-    }
-    handleJavaElementSelections(action);
   }
 
-  /**
-   * @return <code>true</code> when all javaElements are accessible.
-   *         Accessibility is necessary to create markers.
-   */
-  private final boolean allAccessible() { // 
-//    if (true) {
-//      return true;
-//    }
-    for (IJavaElement javaElement : selections) {
-      try {
-        if (!javaElement.exists()) {
-          return true;
-        }
-        if (javaElement instanceof IMember) {
-          return !((IMember) javaElement).isBinary();
-        }
-        if (javaElement instanceof IPackageFragmentRoot) {
-          IPackageFragmentRoot pfr = (IPackageFragmentRoot) javaElement;
-          return pfr.getKind() != IPackageFragmentRoot.K_BINARY;
-        }
-        IResource resource = javaElement.getCorrespondingResource();
-        if (resource == null || !resource.isAccessible()) {
-          return false;
-        }
-      }
-      catch (JavaModelException e) {
-        Log.error("Can't get allAccessible for javaElement: " + javaElement, e); //$NON-NLS-1$
-        return false;
-      }
-    }
-    return true;
-  }
+  //  /**
+  //   * @return <code>true</code> when all javaElements are accessible.
+  //   *         Accessibility is necessary to create markers.
+  //   */
+  //  private final boolean allAccessible() { // 
+  //    for (IJavaElement javaElement : selections) {
+  //      try {
+  //        if (!javaElement.exists()) {
+  //          return true;
+  //        }
+  //        if (javaElement instanceof IMember) {
+  //          return !((IMember) javaElement).isBinary();
+  //        }
+  //        if (javaElement instanceof IPackageFragmentRoot) {
+  //          IPackageFragmentRoot pfr = (IPackageFragmentRoot) javaElement;
+  //          return pfr.getKind() != IPackageFragmentRoot.K_BINARY;
+  //        }
+  //        IResource resource = javaElement.getCorrespondingResource();
+  //        if (resource == null || !resource.isAccessible()) {
+  //          return false;
+  //        }
+  //      }
+  //      catch (JavaModelException e) {
+  //        Log.error("Can't get allAccessible for javaElement: " + javaElement, e); //$NON-NLS-1$
+  //        return false;
+  //      }
+  //    }
+  //    return true;
+  //  }
 
   /**
-   * enable/disable action. Default Behavior: enabled for accessible java
-   * elements
+   * enable/disable action. Default Behavior: enabled for all java elements
    */
   protected void handleJavaElementSelections(IAction action) {// 
-    action.setEnabled(allAccessible());
+    action.setEnabled(true/*allAccessible()*/);
   }
 
-  private void collectJavaElementSelections(ISelection selection) {
-    selections = null;
-    if (selection instanceof IStructuredSelection) {
-      List<?> structered = ((IStructuredSelection) selection).toList();
-      List<IJavaElement> result = new ArrayList<IJavaElement>();
-      for (int i = 0; i < structered.size(); i++) {
-        Object object = structered.get(i);
-        if (object instanceof IJavaElement) {
-          result.add((IJavaElement) object);
+  private Set<IJavaElement> getSelectedJavaElements(ISelection selection) {
+    Set<IJavaElement> result = new LinkedHashSet<IJavaElement>();
+    if (!(selection instanceof IStructuredSelection)) {
+      Log.warn("Selection is no IStructuredSelection: " + selection); //$NON-NLS-1$
+      return result;
+    }
+    List<?> structered = ((IStructuredSelection) selection).toList();
+    for (Object selectedObject : structered) {
+      Log.debug("selectedObject: " + selectedObject.getClass().getName()); //$NON-NLS-1$
+      if (selectedObject instanceof IJavaElement) {
+        result.add((IJavaElement) selectedObject);
+      }
+      else if (selectedObject instanceof IWorkingSet) {
+        IAdaptable[] workingSetProjects = ((IWorkingSet) selectedObject).getElements();
+        for (IAdaptable workingSetProject : workingSetProjects) {
+          Log.debug("    workingSetProject: " + workingSetProject.getClass().getName()); //$NON-NLS-1$
+          if (workingSetProject instanceof IJavaProject) {
+            result.add((IJavaProject) workingSetProject);
+          }
+          else {
+            Log.debug("Ignore WorkingSet child: %s (no JavaProject, or closed)", workingSetProject); //$NON-NLS-1$
+          }
         }
       }
-      selections = result.toArray(new IJavaElement[result.size()]);
+      else {
+        Log.debug("Ignore selected object: %s (no IJavaElement, no IWorkingSet)", selectedObject); //$NON-NLS-1$
+      }
     }
+    return result;
+  }
+
+  private void setSelections(Collection<IJavaElement> selections) {
+    this.selections = selections.toArray(new IJavaElement[selections.size()]);
+  }
+
+  /** @return never <code>null</code> */
+  protected IJavaElement[] getSelections() {
+    return selections;
   }
 }

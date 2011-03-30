@@ -3,6 +3,7 @@ New features:
  - [ 3176780 ] New option: ignore "derived" files
  - Improved layout for ignore preferences
  - New build in detection mode "extreme" (no filter, show all kinds of warnings)
+ - UCDetector actions are now available for Working Sets
 
 Bugfixes:
  - Fixed broken filter '@SuppressWarnings("ucd") = false'
