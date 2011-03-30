@@ -31,7 +31,7 @@ Please create NEW directories for eclipse and your workspace! Otherwise you may 
 == Change settings ==
 * Change following files:
 ** build.xml
-** options.properties
+** ucdetector.options
 ** ucdetector.target
 
 

@@ -74,8 +74,8 @@ buildType:
     For details see: org.eclipse.core.resources.IncrementalProjectBuilder
 
 optionsFile:
-      Example: optionsFile="options.properties"
-    - Edit options.properties file
+      Example: optionsFile="ucdetector.options"
+    - Edit ucdetector.options file
     - Or set UCDetector preferences in eclipse IDE
       and use mode file from: WORKSPACE_IDE/.metadata/.plugins/org.ucdetector/modes/
 
@@ -90,7 +90,7 @@ report:
     Example: report="eachproject"
     
 Complete example:
-    <ucdetector buildType="AUTO_BUILD" optionsFile="options.properties" report="eachproject" targetPlatformFile="ucdetector.target">
+    <ucdetector buildType="AUTO_BUILD" optionsFile="ucdetector.options" report="eachproject" targetPlatformFile="ucdetector.target">
       <iterate name="org.ucdetector" />
       <iterate name="org.ucdetector.additional/src/main" />
     </ucdetector>
@@ -105,6 +105,6 @@ Complete example:
 #  - Check if org.ucdetector_x.y.z.jar is in: ${ECLIPSE_HOME}/plugins
 ----------------------------------------------------------------------
     </echo>
-    <ucdetector buildType="AUTO_BUILD" optionsFile="options.properties" report="eachproject" />
+    <ucdetector buildType="AUTO_BUILD" optionsFile="ucdetector.options" report="eachproject" />
   </target>
 </project>

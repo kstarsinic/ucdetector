@@ -51,9 +51,10 @@ import org.ucdetector.util.StopWatch;
 public class UCDHeadless implements IApplication {
   private final UCDProgressMonitor ucdMonitor = new UCDProgressMonitor();
   private final int buildType;
-  private final File targetPlatformFile;
+  private File targetPlatformFile;
   private final Report report;
   private final List<String> resourcesToIterate;
+  private File optionsFile;
 
   public enum Report {
     single, eachproject
@@ -67,9 +68,8 @@ public class UCDHeadless implements IApplication {
       List<String> resourcesToIterate) {
     UCDetectorPlugin.setHeadlessMode(true);// MUST BE BEFORE LOGGING!
     this.buildType = (buildType == -1) ? IncrementalProjectBuilder.AUTO_BUILD : buildType;
-    if (optionsFile != null) {
-      loadOptions(optionsFile);
-    }
+    this.optionsFile = optionsFile;
+    loadOptions(optionsFile);
     this.targetPlatformFile = targetPlatformFile;
     this.report = report;
     this.resourcesToIterate = resourcesToIterate;
@@ -77,6 +77,11 @@ public class UCDHeadless implements IApplication {
 
   public Object start(IApplicationContext context) throws Exception {
     Log.info("Starting UCDHeadless as an application");
+    String userDir = System.getProperty("user.dir");
+    this.optionsFile = new File(userDir, "ucdetector.options");
+    this.targetPlatformFile = new File(userDir, "ucdetector.target");
+    Log.info("To change detection, use: " + optionsFile.getAbsolutePath());
+    Log.info("To change detection, use: " + targetPlatformFile.getAbsolutePath());
     run();
     return IApplication.EXIT_OK;
   }
@@ -86,13 +91,15 @@ public class UCDHeadless implements IApplication {
   }
 
   private void loadOptions(File optionFile) {
-    Log.info("\toptionFile: %s exists: %s", Log.getCanonicalPath(optionFile), "" + optionFile.exists());
-    if (optionFile.exists()) {
-      Map<String, String> ucdOptions = UCDetectorPlugin.loadModeFile(true, optionFile.getAbsolutePath());
-      for (Entry<String, String> option : ucdOptions.entrySet()) {
-        Prefs.setValue(option.getKey(), option.getValue());
+    if (optionsFile != null) {
+      Log.info("\toptionFile: %s exists: %s", Log.getCanonicalPath(optionFile), "" + optionFile.exists());
+      if (optionFile.exists()) {
+        Map<String, String> ucdOptions = UCDetectorPlugin.loadModeFile(true, optionFile.getAbsolutePath());
+        for (Entry<String, String> option : ucdOptions.entrySet()) {
+          Prefs.setValue(option.getKey(), option.getValue());
+        }
+        Log.info(UCDetectorPlugin.getPreferencesAsString().replace(", ", "\n\t"));
       }
-      Log.info(UCDetectorPlugin.getPreferencesAsString().replace(", ", "\n\t"));
     }
   }
 
