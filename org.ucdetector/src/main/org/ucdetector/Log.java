@@ -9,18 +9,9 @@ package org.ucdetector;
 
 import java.io.File;
 import java.io.IOException;
-import java.io.PrintStream;
 
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Platform;
-import org.eclipse.swt.SWT;
-import org.eclipse.swt.widgets.Display;
-import org.eclipse.ui.PartInitException;
-import org.eclipse.ui.console.ConsolePlugin;
-import org.eclipse.ui.console.IConsole;
-import org.eclipse.ui.console.IConsoleConstants;
-import org.eclipse.ui.console.MessageConsole;
-import org.eclipse.ui.console.MessageConsoleStream;
 import org.ucdetector.preferences.Prefs;
 
 /**
@@ -45,9 +36,10 @@ public class Log {
    * @see "http://wiki.eclipse.org/FAQ_How_do_I_use_the_platform_debug_tracing_facility%3F"
    */
   private static LogLevel LOG_LEVEL_OPTIONS_FILE;
-  private static MessageConsole console;
-  private static PrintStream consoleStreamInfo;
-  private static PrintStream consoleStreamWarn;
+
+  //  private static MessageConsole console;
+  //  private static PrintStream consoleStreamInfo;
+  //  private static PrintStream consoleStreamWarn;
 
   private static void initLog() {
     if (isLogInited) {
@@ -127,48 +119,9 @@ public class Log {
     }
     boolean isWarn = level.ordinal() > LogLevel.INFO.ordinal();
     String formattedMessage = String.format("%-5s: %s", level, message);
-    logToStream(isWarn ? System.err : System.out, formattedMessage, ex);
-    logToEclipseConsole(isWarn, formattedMessage, ex);
-  }
-
-  private static void logToEclipseConsole(boolean isWarn, String formattedMessage, Throwable ex) {
-    if (UCDetectorPlugin.isHeadlessMode() || !logToEclipse) {
-      return;
+    if (!UCDetectorPlugin.isHeadlessMode() && logToEclipse) {
+      UCDetectorConsole.log(isWarn, formattedMessage, ex);
     }
-    if (console == null) {
-      initConsole();
-    }
-    logToStream(isWarn ? consoleStreamWarn : consoleStreamInfo, formattedMessage, ex);
-  }
-
-  private static void logToStream(PrintStream stream, String message, Throwable ex) {
-    if (stream != null) {
-      if (message != null) {
-        stream.println(message);
-      }
-      if (ex != null) {
-        ex.printStackTrace(stream);
-      }
-    }
-  }
-
-  private static void initConsole() {
-    Display.getDefault().asyncExec(new Runnable() {
-      public void run() {
-        console = new MessageConsole("UCDetector", null);
-        ConsolePlugin.getDefault().getConsoleManager().addConsoles(new IConsole[] { console });
-        consoleStreamInfo = new PrintStream(console.newMessageStream());
-        MessageConsoleStream messageStream = console.newMessageStream();
-        messageStream.setColor(Display.getDefault().getSystemColor(SWT.COLOR_RED));
-        consoleStreamWarn = new PrintStream(messageStream);
-        try {
-          UCDetectorPlugin.getActivePage().showView(IConsoleConstants.ID_CONSOLE_VIEW);
-        }
-        catch (PartInitException ex) {
-          error("Can't init console", ex);
-        }
-      }
-    });
   }
 
   /**
@@ -194,7 +147,7 @@ public class Log {
     return (getActiveLogLevel() == LogLevel.DEBUG);
   }
 
-  public static boolean isInfo() {
+  public static boolean isInfo() { // NO_UCD
     return getActiveLogLevel() == LogLevel.DEBUG || getActiveLogLevel() == LogLevel.INFO;
   }
 

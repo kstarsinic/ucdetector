@@ -408,6 +408,27 @@
   </extension>
 
   <!-- =====================================================================
+       CONSOLE
+       ===================================================================== -->
+    <extension point="org.eclipse.ui.console.consoleFactories">
+       <consoleFactory
+             class="org.ucdetector.UCDetectorConsole$UCDetectorConsoleFactory"
+             icon="icons/ucd.gif"
+             label="%consoleFactory.label">
+       </consoleFactory>
+    </extension>
+    <extension point="org.eclipse.ui.console.consolePageParticipants">
+       <consolePageParticipant
+             class="org.ucdetector.UCDetectorConsole$UCDetectorConsolePageParticipant"
+             id="org.ucdetector.consolePageParticipant">
+          <enablement>
+             <instanceof
+                   value="org.ucdetector.UCDetectorConsole">
+             </instanceof></enablement>
+       </consolePageParticipant>
+    </extension>
+
+  <!-- =====================================================================
        APPLICATIONS
        ===================================================================== -->
     <extension point="org.eclipse.core.runtime.applications" id="detect">
