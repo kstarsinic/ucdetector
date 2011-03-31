@@ -7,7 +7,6 @@
 package org.ucdetector;
 
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -88,7 +87,7 @@ public class UCDHeadless {
     return ucdOptions;
   }
 
-  public void run() throws FileNotFoundException, CoreException {
+  public void run() throws CoreException {
     long start = System.currentTimeMillis();
     try {
       Log.info("Starting UCDetector Headless");
@@ -133,16 +132,13 @@ public class UCDHeadless {
     }
   }
 
-  private void loadTargetPlatform() throws CoreException, FileNotFoundException {
-    if (targetPlatformFile == null) {
+  private void loadTargetPlatform() throws CoreException {
+    if (targetPlatformFile == null || !targetPlatformFile.exists()) {
       Log.info("Use eclipse as target platform");
       return;
     }
     StopWatch stopWatch = new StopWatch();
     Log.info("Use target platform declared in: " + targetPlatformFile.getAbsolutePath());
-    if (!targetPlatformFile.exists()) {
-      throw new FileNotFoundException("Can't find target platform file: " + targetPlatformFile);
-    }
     Log.info("START: loadTargetPlatform");
     ITargetPlatformService tps = (ITargetPlatformService) PDECore.getDefault().acquireService(
         ITargetPlatformService.class.getName());
