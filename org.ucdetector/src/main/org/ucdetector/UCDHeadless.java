@@ -65,11 +65,18 @@ public class UCDHeadless {
     this.report = parseReport(sReport);
     this.resourcesToIterate = resourcesToIterate;
     loadOptions(optionsFile);
-    Log.info("    buildType         : " + sBuildType);
+    Log.info("    buildType         : " + (sBuildType == null ? "AUTO_BUILD" : sBuildType));
     Log.info("    optionsFile       : " + (optionsFile == null ? "" : optionsFile.getAbsolutePath()));
     Log.info("    targetPlatformFile: " + (targetPlatformFile == null ? "" : targetPlatformFile.getAbsolutePath()));
     Log.info("    report            : " + report);
-    Log.info("    iterateList       : " + (resourcesToIterate == null ? "" : resourcesToIterate));
+    if (resourcesToIterate == null) {
+      Log.info("    iterateList           : ALL");
+    }
+    else {
+      for (String resources : resourcesToIterate) {
+        Log.info("    iterate           : " + resources);
+      }
+    }
   }
 
   static Map<String, String> loadOptions(File optionFile) {
@@ -171,6 +178,7 @@ public class UCDHeadless {
         if (!javaElement.exists()) {
           Log.warn("Ignore resource: '%s'. Possible reasons: It is not a java element, it does not exists",
               resourceToIterate);
+          continue;
         }
         javaElementsToIterate.add(javaElement);
       }

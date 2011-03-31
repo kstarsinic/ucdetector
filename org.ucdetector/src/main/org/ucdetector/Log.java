@@ -120,7 +120,7 @@ public class Log {
     }
     boolean isWarn = level.ordinal() > LogLevel.INFO.ordinal();
     String formattedMessage = String.format("%-5s: %s", level, message);
-    logImplStream(message, ex, isWarn);
+    logImplStream(formattedMessage, ex, isWarn);
     if (!UCDetectorPlugin.isHeadlessMode() && logToEclipse) {
       UCDetectorConsole.log(isWarn, formattedMessage, ex);
     }
