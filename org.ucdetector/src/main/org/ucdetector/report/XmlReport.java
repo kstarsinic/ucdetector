@@ -31,6 +31,7 @@ import javax.xml.transform.Result;
 import javax.xml.transform.Source;
 import javax.xml.transform.Templates;
 import javax.xml.transform.Transformer;
+import javax.xml.transform.TransformerException;
 import javax.xml.transform.TransformerFactory;
 import javax.xml.transform.dom.DOMResult;
 import javax.xml.transform.dom.DOMSource;
@@ -84,7 +85,7 @@ import org.w3c.dom.Element;
 @SuppressWarnings("nls")
 public class XmlReport implements IUCDetectorReport {
   private static final String COPY_RIGHT = "\n" //
-      + "    Copyright (c) 2010 Joerg Spieler All rights reserved. This program and the\n"
+      + "    Copyright (c) 2011 Joerg Spieler All rights reserved. This program and the\n"
       + "    accompanying materials are made available under the terms of the Eclipse\n"
       + "    Public License v1.0 which accompanies this distribution, and is available at\n"
       + "    http://www.eclipse.org/legal/epl-v10.html\n";
@@ -112,8 +113,6 @@ public class XmlReport implements IUCDetectorReport {
   private int detectionProblemCount;
   private Throwable initXMLException;
   private Element abouts;
-  private final long timeStart = System.currentTimeMillis();
-  private final String reportNumberName;
   // NODES --------------------
   private Element nodeCreated;
   private Element nodeCreatedTS;
@@ -128,10 +127,9 @@ public class XmlReport implements IUCDetectorReport {
   private final DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
   private final DateFormat timeFormat = new SimpleDateFormat("HHmmss");
   private IJavaElement[] objectsToIterate;
-  private long startTime;
+  private long startTime = System.currentTimeMillis();
 
   public XmlReport() {
-    this.reportNumberName = getReportName();
     initXML();
     if (UCDetectorPlugin.isHeadlessMode()) {
       Runtime.getRuntime().addShutdownHook(new Thread() {
@@ -187,9 +185,9 @@ public class XmlReport implements IUCDetectorReport {
     }
   }
 
-  public void startReport(IJavaElement[] objectsToIterateArray, long timeStart) throws CoreException {
+  public void startReport(IJavaElement[] objectsToIterateArray, long startTime) throws CoreException {
     this.objectsToIterate = objectsToIterateArray;
-    this.startTime = timeStart;
+    this.startTime = startTime;
   }
 
   /**
@@ -399,7 +397,7 @@ public class XmlReport implements IUCDetectorReport {
     }
     // Nodes change after each flush
     long now = System.currentTimeMillis();
-    long duration = (now - timeStart);
+    long duration = (now - startTime);
     String durationString = StopWatch.timeAsString(duration);
     nodeCreated = appendAbout("reportCreated", "Created report", UCDetectorPlugin.getNow(), true, nodeCreated);
     nodeCreatedTS = appendAbout("reportCreatedTS", "Created report", "" + now, false, nodeCreatedTS);
@@ -468,6 +466,7 @@ public class XmlReport implements IUCDetectorReport {
     appendStatistics(isEndReport);
     copyIconFiles(reportDir);
     try {
+      String reportNumberName = getReportName();
       if (Prefs.isCreateReportHTML()) {
         Document htmlDocument = transformToHTML(doc);
         File htmlFile = new File(reportDir, reportNumberName + ".html");
@@ -564,26 +563,24 @@ public class XmlReport implements IUCDetectorReport {
 
   /** Transform from xml to html using xslt transformation */
   private Document transformToHTML(Document xmlDoc) throws Exception {
-    InputStream xslIn = getClass().getClassLoader().getResourceAsStream(HTML_XSL_FILE);
-    Templates template = TransformerFactory.newInstance().newTemplates(new StreamSource(xslIn));
-    Transformer xformer = template.newTransformer();
-    Source source = new DOMSource(xmlDoc);
     Document transformedDoc = DocumentBuilderFactory.newInstance().newDocumentBuilder().newDocument();
-    Result result = new DOMResult(transformedDoc);
-    xformer.transform(source, result);
+    transform(xmlDoc, HTML_XSL_FILE, new DOMResult(transformedDoc));
     return transformedDoc;
   }
 
   /** Transform from xml to text using xslt transformation */
   private String transformToText(Document xmlDoc) throws Exception {
-    InputStream xslIn = getClass().getClassLoader().getResourceAsStream(TEXT_XSL_FILE);
-    Templates template = TransformerFactory.newInstance().newTemplates(new StreamSource(xslIn));
-    Transformer xformer = template.newTransformer();
-    Source source = new DOMSource(xmlDoc);
     StringWriter stringWriter = new StringWriter();
-    Result result = new StreamResult(stringWriter);
-    xformer.transform(source, result);
+    transform(xmlDoc, TEXT_XSL_FILE, new StreamResult(stringWriter));
     return stringWriter.toString();
+  }
+
+  private void transform(Document xmlDoc, String xslt, Result result) throws TransformerException {
+    InputStream xslIn = getClass().getClassLoader().getResourceAsStream(xslt);
+    Templates template = TransformerFactory.newInstance().newTemplates(new StreamSource(xslIn));
+    Transformer transformer = template.newTransformer();
+    Source source = new DOMSource(xmlDoc);
+    transformer.transform(source, result);
   }
 
   private static void copyStream(InputStream inStream, OutputStream outStream) throws IOException {
