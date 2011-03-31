@@ -18,7 +18,7 @@
       </annotation>
       <complexType>
          <sequence minOccurs="1" maxOccurs="unbounded">
-            <element ref="javaReport"/>
+            <element ref="report"/>
          </sequence>
          <attribute name="point" type="string" use="required">
             <annotation>
@@ -47,9 +47,26 @@
       </complexType>
    </element>
 
-   <element name="javaReport">
+   <element name="report">
       <complexType>
-         <attribute name="class" type="string" use="required">
+         <attribute name="resultFile" type="string" use="required">
+            <annotation>
+               <documentation>
+                  Example My${name}Report.txt
+               </documentation>
+            </annotation>
+         </attribute>
+         <attribute name="name" type="string" use="required">
+            <annotation>
+               <documentation>
+                  name of the report to be defined
+               </documentation>
+               <appinfo>
+                  <meta.attribute translatable="true"/>
+               </appinfo>
+            </annotation>
+         </attribute>
+         <attribute name="class" type="string">
             <annotation>
                <documentation>
                   the fully qualified name of a Java class implementing 
@@ -61,10 +78,10 @@ the UCDetector report.  This class must implement
                </appinfo>
             </annotation>
          </attribute>
-         <attribute name="name" type="string" use="required">
+         <attribute name="stylesheet" type="string">
             <annotation>
                <documentation>
-                  name of the report to be defined
+                  Name of a xslt resource used to create report
                </documentation>
             </annotation>
          </attribute>
@@ -85,7 +102,7 @@ the UCDetector report.  This class must implement
          <meta.section type="examples"/>
       </appinfo>
       <documentation>
-         The following is an example of an jav reports extension point: 
+         The following is an example of an java reports extension point: 
 &lt;p&gt;
 &lt;pre&gt;
    &lt;extension point=&quot;org.ucdetector.javaReports&quot;&gt;
@@ -102,7 +119,7 @@ the UCDetector report.  This class must implement
          <meta.section type="implementation"/>
       </appinfo>
       <documentation>
-         UCDetector uses the org.ucdetector.report.TextReport
+         UCDetector uses the class org.ucdetector.report.TextReport
       </documentation>
    </annotation>
 

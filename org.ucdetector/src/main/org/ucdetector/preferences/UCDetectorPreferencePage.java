@@ -40,6 +40,7 @@ import org.ucdetector.Log.LogLevel;
 import org.ucdetector.Messages;
 import org.ucdetector.UCDetectorPlugin;
 import org.ucdetector.preferences.ModesPanel.Mode;
+import org.ucdetector.report.ReportExtension;
 
 /**
  * Create the UCDetector preference page:<br>
@@ -270,6 +271,11 @@ public class UCDetectorPreferencePage extends FieldEditorPreferencePage implemen
     appendBool(Prefs.REPORT_CREATE_HTML, Messages.PreferencePage_CreateHtmlReport, null, spacer, 3);
     appendBool(Prefs.REPORT_CREATE_XML, Messages.PreferencePage_CreateXmlReport, null, spacer, 3);
     appendBool(Prefs.REPORT_CREATE_TXT, Messages.PreferencePage_CreateTextReport, null, spacer, 3);
+
+    for (@SuppressWarnings("unused")
+    String name : ReportExtension.getNames()) {
+      //      appendBool(Prefs.REPORT_CREATE_TXT + "_" + name, name, null, spacer, 3);
+    }
     //
     appendText(Prefs.REPORT_FILE, Messages.PreferencePage_ReportFile, Messages.PreferencePage_ReportFileToolTip,
         spacer, 3);

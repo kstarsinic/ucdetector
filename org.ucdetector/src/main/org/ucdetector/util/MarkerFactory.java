@@ -12,24 +12,20 @@ import java.util.List;
 
 import org.eclipse.core.resources.IResource;
 import org.eclipse.core.runtime.CoreException;
-import org.eclipse.core.runtime.IConfigurationElement;
-import org.eclipse.core.runtime.IExtension;
-import org.eclipse.core.runtime.IExtensionPoint;
 import org.eclipse.core.runtime.IStatus;
-import org.eclipse.core.runtime.Platform;
 import org.eclipse.jdt.core.IField;
 import org.eclipse.jdt.core.IJavaElement;
 import org.eclipse.jdt.core.IMember;
 import org.eclipse.jdt.core.IMethod;
 import org.eclipse.jdt.core.IType;
 import org.eclipse.osgi.util.NLS;
-import org.eclipse.ui.internal.WorkbenchPlugin;
 import org.ucdetector.Log;
 import org.ucdetector.Messages;
 import org.ucdetector.UCDetectorPlugin;
 import org.ucdetector.preferences.Prefs;
 import org.ucdetector.report.IUCDetectorReport;
 import org.ucdetector.report.MarkerReport;
+import org.ucdetector.report.ReportExtension;
 import org.ucdetector.report.ReportParam;
 import org.ucdetector.report.XmlReport;
 import org.ucdetector.search.LineManger;
@@ -56,8 +52,6 @@ public final class MarkerFactory implements IUCDetectorReport {
   public static final String UCD_MARKER_USE_FINAL = UCD_MARKER + "Final"; //$NON-NLS-1$
   public static final String UCD_MARKER_TEST_ONLY = UCD_MARKER + "TestOnly"; //$NON-NLS-1$ // NO_UCD
   // ADDING NEW MARKER? ADD ALSO TO plugin.xml!
-  /** Simple identifier constant (value <code>"reports"</code>) for the UCDetector reports extension point. */
-  public static final String EXTENSION_POINT_REPORTS = "javaReports"; //$NON-NLS-1$
 
   private final List<IUCDetectorReport> reports;
 
@@ -72,39 +66,17 @@ public final class MarkerFactory implements IUCDetectorReport {
     this.reports = reports;
   }
 
-  public static MarkerFactory createInstance() {
+  public static MarkerFactory createInstance() throws CoreException {
     ArrayList<IUCDetectorReport> reportsList = new ArrayList<IUCDetectorReport>();
     reportsList.add(new MarkerReport());
     if (Prefs.isWriteReportFile()) {
       reportsList.add(new XmlReport());
     }
-    List<IUCDetectorReport> reportsFromExtensions = loadReportExtensions();
-    reportsList.addAll(reportsFromExtensions);
+    ArrayList<ReportExtension> classExtensions = ReportExtension.getClassExtensions();
+    for (ReportExtension reportExtension : classExtensions) {
+      reportsList.add(reportExtension.getReport());
+    }
     return new MarkerFactory(reportsList);
-  }
-
-  // <extension id="myReport" point="org.eclipse.core.runtime.applications">
-  // // <report class="org.ucdetector.MyReport" />
-  // </extension>
-  // org.eclipse.ant.core.AntCorePlugin.extractExtensions(String)
-  private static List<IUCDetectorReport> loadReportExtensions() {
-    List<IUCDetectorReport> results = new ArrayList<IUCDetectorReport>();
-    try {
-      IExtensionPoint extPoint = Platform.getExtensionRegistry().getExtensionPoint(UCDetectorPlugin.ID,
-          EXTENSION_POINT_REPORTS);
-      IExtension[] extensions = extPoint.getExtensions();
-      for (IExtension extension : extensions) {
-        IConfigurationElement[] reports = extension.getConfigurationElements();
-        for (IConfigurationElement report : reports) {
-          IUCDetectorReport reportObject = (IUCDetectorReport) WorkbenchPlugin.createExtension(report, "class"); //$NON-NLS-1$
-          results.add(reportObject);
-        }
-      }
-    }
-    catch (CoreException ex) {
-      Log.error("Can't load UCDetector extensions", ex); //$NON-NLS-1$
-    }
-    return results;
   }
 
   public void startReport(IJavaElement[] objectsToIterate, long startTime) throws CoreException {
