@@ -112,8 +112,7 @@ public class XmlReport implements IUCDetectorReport {
   private int detectionProblemCount;
   private Throwable initXMLException;
   private Element abouts;
-  private final IJavaElement[] objectsToIterate;
-  private final long timeStart;
+  private final long timeStart = System.currentTimeMillis();
   private final String reportNumberName;
   // NODES --------------------
   private Element nodeCreated;
@@ -125,15 +124,13 @@ public class XmlReport implements IUCDetectorReport {
   //
   private boolean isFirstStatistic = true;
   private boolean endReportCalled;
-  private final String javaProjectName;
   //
   private final DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
   private final DateFormat timeFormat = new SimpleDateFormat("HHmmss");
+  private IJavaElement[] objectsToIterate;
+  private long startTime;
 
-  public XmlReport(IJavaElement[] objectsToIterate, long timeStart) {
-    this.objectsToIterate = objectsToIterate;
-    this.javaProjectName = getProjectName();
-    this.timeStart = timeStart;
+  public XmlReport() {
     this.reportNumberName = getReportName();
     initXML();
     if (UCDetectorPlugin.isHeadlessMode()) {
@@ -188,6 +185,11 @@ public class XmlReport implements IUCDetectorReport {
       Log.error("Can't create xml report: ", e);
       initXMLException = e;
     }
+  }
+
+  public void startReport(IJavaElement[] objectsToIterateArray, long timeStart) throws CoreException {
+    this.objectsToIterate = objectsToIterateArray;
+    this.startTime = timeStart;
   }
 
   /**
@@ -328,7 +330,7 @@ public class XmlReport implements IUCDetectorReport {
   // Fix [2811049]  Html report is overridden each run
   private String getReportName() {
     String reportFile = Prefs.getReportFile();
-    reportFile = reportFile.replace("${project}", javaProjectName);
+    reportFile = reportFile.replace("${project}", getProjectName());
     reportFile = reportFile.replace("${date}", dateFormat.format(new Date()));
     reportFile = reportFile.replace("${time}", timeFormat.format(new Date()));
     //

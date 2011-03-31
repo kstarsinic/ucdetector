@@ -16,22 +16,17 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.LinkedHashMap;
-import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Set;
 
 import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.CoreException;
-import org.eclipse.core.runtime.IConfigurationElement;
-import org.eclipse.core.runtime.IExtension;
-import org.eclipse.core.runtime.IExtensionPoint;
 import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Path;
@@ -53,7 +48,6 @@ import org.eclipse.ui.ISharedImages;
 import org.eclipse.ui.IWorkbenchWindow;
 import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.internal.WorkbenchPage;
-import org.eclipse.ui.internal.WorkbenchPlugin;
 import org.eclipse.ui.internal.ide.IDEWorkbenchPlugin;
 import org.eclipse.ui.plugin.AbstractUIPlugin;
 import org.osgi.framework.Bundle;
@@ -61,7 +55,6 @@ import org.osgi.framework.BundleContext;
 import org.osgi.service.prefs.BackingStoreException;
 import org.ucdetector.Log.LogLevel;
 import org.ucdetector.preferences.Prefs;
-import org.ucdetector.report.IUCDetectorReport;
 
 /**
  * Default Activator-class of this plug-ins
@@ -77,8 +70,6 @@ public class UCDetectorPlugin extends AbstractUIPlugin implements IPropertyChang
   public static final String IMAGE_COMMENT = "IMAGE_COMMENT";
   public static final String IMAGE_TODO = "IMAGE_TODO";
   public static final String IMAGE_CYCLE = "IMAGE_CYCLE";
-  /** Simple identifier constant (value <code>"reports"</code>) for the UCDetector reports extension point. */
-  public static final String EXTENSION_POINT_REPORTS = "antTasks"; //$NON-NLS-1$
   /**
    * See MANIFEST.MF: Bundle-SymbolicName, and .project
    */
@@ -138,30 +129,6 @@ public class UCDetectorPlugin extends AbstractUIPlugin implements IPropertyChang
     super.start(context);
     dumpInformation();
     getPreferenceStore().addPropertyChangeListener(this);
-    loadReportExtensions();
-  }
-
-  // <extension id="myReport" point="org.eclipse.core.runtime.applications">
-  // // <report class="org.ucdetector.MyReport" />
-  // </extension>
-  // org.eclipse.ant.core.AntCorePlugin.extractExtensions(String)
-  private List<IUCDetectorReport> loadReportExtensions() {
-    List<IUCDetectorReport> results = new ArrayList<IUCDetectorReport>();
-    try {
-      IExtensionPoint extPoint = Platform.getExtensionRegistry().getExtensionPoint(ID, EXTENSION_POINT_REPORTS);
-      IExtension[] extensions = extPoint.getExtensions();
-      for (IExtension extension : extensions) {
-        IConfigurationElement[] reports = extension.getConfigurationElements();
-        for (IConfigurationElement report : reports) {
-          IUCDetectorReport reportObject = (IUCDetectorReport) WorkbenchPlugin.createExtension(report, "class");
-          results.add(reportObject);
-        }
-      }
-    }
-    catch (CoreException ex) {
-      Log.error("Can't load UCDetector extensions", ex);
-    }
-    return results;
   }
 
   /** @return all available preferences and all and all preferences which are different from default preferences   */

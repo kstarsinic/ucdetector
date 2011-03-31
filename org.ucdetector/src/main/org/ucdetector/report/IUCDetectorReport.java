@@ -9,6 +9,7 @@ package org.ucdetector.report;
 
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IStatus;
+import org.eclipse.jdt.core.IJavaElement;
 
 /**
  * Interface for all kind of reports 
@@ -17,6 +18,8 @@ import org.eclipse.core.runtime.IStatus;
  * @since 2008-09-17
  */
 public interface IUCDetectorReport {
+  void startReport(IJavaElement[] objectsToIterate, long startTime) throws CoreException;
+
   boolean reportMarker(ReportParam reportParam) throws CoreException;
 
   void reportDetectionProblem(IStatus status);

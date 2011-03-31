@@ -1,7 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <?eclipse version="3.5"?>
 <plugin>
-   <extension-point id="reports" name="Reports" schema="schema/reports.exsd"/>
+  <!-- =====================================================================
+       EXTENSIONS 
+       ===================================================================== -->
+   <extension-point id="javaReports" name="Java Reports" schema="schema/javaReports.exsd"/>
+   <extension-point id="xsltReports" name="XSLT Reports" schema="schema/xsltReports.exsd"/>
+  
   <!-- =====================================================================
        PREFERENCE PAGE 
        ===================================================================== -->
@@ -449,4 +454,14 @@
             name="ucdetector">
       </antTask>
    </extension>
+
+  <!-- =====================================================================
+       JAVA REPORTS
+       ===================================================================== -->
+    <extension point="org.ucdetector.javaReports">
+       <javaReport
+             class="org.ucdetector.report.TextReport"
+             name="org.ucdetector.textReport">
+       </javaReport>
+    </extension>
 </plugin>

@@ -14,6 +14,7 @@ import org.eclipse.core.resources.IMarker;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.jdt.core.IField;
+import org.eclipse.jdt.core.IJavaElement;
 import org.eclipse.jdt.core.IMember;
 import org.eclipse.jdt.core.IMethod;
 import org.eclipse.jdt.core.ISourceRange;
@@ -114,6 +115,10 @@ public class MarkerReport implements IUCDetectorReport {
         return null;
       }
     }
+  }
+
+  public void startReport(IJavaElement[] objectsToIterate, long startTime) throws CoreException {
+    //
   }
 
   public boolean reportMarker(ReportParam reportParam) throws CoreException {
