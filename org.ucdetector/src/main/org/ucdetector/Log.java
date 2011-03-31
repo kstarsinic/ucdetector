@@ -9,6 +9,7 @@ package org.ucdetector;
 
 import java.io.File;
 import java.io.IOException;
+import java.io.PrintStream;
 
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Platform;
@@ -119,8 +120,19 @@ public class Log {
     }
     boolean isWarn = level.ordinal() > LogLevel.INFO.ordinal();
     String formattedMessage = String.format("%-5s: %s", level, message);
+    logImplStream(message, ex, isWarn);
     if (!UCDetectorPlugin.isHeadlessMode() && logToEclipse) {
       UCDetectorConsole.log(isWarn, formattedMessage, ex);
+    }
+  }
+
+  private static void logImplStream(String message, Throwable ex, boolean isWarn) {
+    PrintStream stream = isWarn ? System.err : System.out;
+    if (message != null) {
+      stream.println(message);
+    }
+    if (ex != null) {
+      ex.printStackTrace(stream);
     }
   }
 
