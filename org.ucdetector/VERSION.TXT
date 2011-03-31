@@ -1,8 +1,0 @@
-
-UCDetector version: 1.7.0
-Date created      : 2011-02-04 23:39 +0100
-Java version      : 1.5.0_17-b04 - Sun Microsystems Inc.
-Eclipse version   : 3.5.1.R35x_v20090827
-Operation system  : Linux
-Provided by       : Joerg Spieler    
-    

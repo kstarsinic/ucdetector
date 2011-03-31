@@ -45,6 +45,7 @@ public class UCDTask extends Task {
     catch (Exception e) {
       throw new BuildException(e);
     }
+    Log.info("UCDetector ANT: 4 - End java code of ant task '<ucdetector>' inside headless eclipse");
   }
 
   private List<String> getResourcesToIterate() {
