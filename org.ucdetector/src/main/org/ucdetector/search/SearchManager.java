@@ -514,7 +514,7 @@ public class SearchManager {
             beforeChar, match, afterChar, isClassNamMatchOk, matchAccess.getFile());
       }
       if (isClassNamMatchOk) {
-        matchedFiles.add(matchAccess.getFile().getName());
+        matchedFiles.add(matchAccess.getFile().getFullPath().toString());
       }
       IJavaElement matchJavaElement = JavaCore.create(matchAccess.getFile());
       visibilityHandler.checkVisibility(matchJavaElement);
