@@ -33,5 +33,5 @@ import java.lang.annotation.Target;
  * @since 2009-08-25
  */
 public @interface UsedBy {
-  String[] value(); // NO_UCD
+  String[] value();
 }
