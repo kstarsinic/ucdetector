@@ -84,7 +84,12 @@ public abstract class AbstractUCDetectorIterator {
         openProjects.add(project);
       }
     }
-    iterate(openProjects.toArray(new IJavaProject[openProjects.size()]));
+    iterate(openProjects);
+  }
+
+  public final void iterate(List<? extends IJavaElement> javaElements) throws CoreException {
+    IJavaElement[] array = javaElements.toArray(new IJavaElement[javaElements.size()]);
+    iterate(array);
   }
 
   /**

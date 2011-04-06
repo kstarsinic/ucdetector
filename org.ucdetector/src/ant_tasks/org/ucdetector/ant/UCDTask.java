@@ -78,14 +78,14 @@ public class UCDTask extends Task {
     return i;
   }
 
-  public class Iterate {// NO_UCD: used by ant
+  public class Iterate { // NO_UCD - used by ant
     private String name;
 
-    public void setName(String name) { // NO_UCD: used by ant
+    public void setName(String name) {
       this.name = name;
     }
 
-    public String getName() {// NO_UCD: used by ant
+    public String getName() {
       return name;
     }
 

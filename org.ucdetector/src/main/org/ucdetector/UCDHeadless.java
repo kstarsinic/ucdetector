@@ -199,7 +199,7 @@ public class UCDHeadless {
     else {
       UCDetectorIterator iterator = new UCDetectorIterator();
       iterator.setMonitor(ucdMonitor);
-      iterator.iterate(javaElementsToIterate.toArray(new IJavaElement[javaElementsToIterate.size()]));
+      iterator.iterate(javaElementsToIterate);
     }
   }
 
