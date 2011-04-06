@@ -48,216 +48,214 @@ public final class Messages extends NLS {
   }
 
   // ACTIONS -----------------------------------------------------------------
-  public static String AbstractUCDetectorAction_AnalyzeFailedText; // NO_UCD
-  public static String CountAction_ResultTitle; // NO_UCD
-  public static String UCDetectorAction_ResultMessage; // NO_UCD
-  public static String UCDetectorAction_ResultReport; // NO_UCD
+  public static String AbstractUCDetectorAction_AnalyzeFailedText;
+  public static String CountAction_ResultTitle;
+  public static String UCDetectorAction_ResultMessage;
+  public static String UCDetectorAction_ResultReport;
   // ITERATORS ---------------------------------------------------------------
-  public static String UCDetectorIterator_JobName; // NO_UCD
-  public static String CleanMarkersIterator_JobName; // NO_UCD
-  public static String UCDetectorIterator_MONITOR_INFO; // NO_UCD
-  //  public static String UCDetectorPreferencePageKeywords_ChangeAllCombos; // NO_UCD
-  public static String AbstractUCDetectorIterator_NothingToDetectTitle; // NO_UCD
-  public static String AbstractUCDetectorIterator_NothingToDetect; // NO_UCD
+  public static String UCDetectorIterator_JobName;
+  public static String CleanMarkersIterator_JobName;
+  public static String UCDetectorIterator_MONITOR_INFO;
+  //  public static String UCDetectorPreferencePageKeywords_ChangeAllCombos; 
+  public static String AbstractUCDetectorIterator_NothingToDetectTitle;
+  public static String AbstractUCDetectorIterator_NothingToDetect;
   // count
-  public static String CountIterator_JobName; // NO_UCD
-  public static String CountIterator_NotPrivate; // NO_UCD
-  public static String CountIterator_Classes; // NO_UCD
-  public static String CountIterator_Fields; // NO_UCD
-  public static String CountIterator_Methods; // NO_UCD
-  public static String CountIterator_Packages; // NO_UCD
-  public static String CountIterator_Projects; // NO_UCD
+  public static String CountIterator_JobName;
+  public static String CountIterator_NotPrivate;
+  public static String CountIterator_Classes;
+  public static String CountIterator_Fields;
+  public static String CountIterator_Methods;
+  public static String CountIterator_Packages;
+  public static String CountIterator_Projects;
 
   // PreferencePage ----------------------------------------------------------
-  public static String PreferencePage_ChangeVisibilityCombos;// NO_UCD
-  public static String PreferencePage_ReduceVisibiltyWarning;// NO_UCD
-  public static String PreferencePage_CheckProtectedClasses; // NO_UCD
-  public static String PreferencePage_CheckPrivateClasses; // NO_UCD
+  public static String PreferencePage_ChangeVisibilityCombos;
+  public static String PreferencePage_ReduceVisibiltyWarning;
+  public static String PreferencePage_CheckProtectedClasses;
+  public static String PreferencePage_CheckPrivateClasses;
   //
-  public static String PreferencePage_CheckProtectedMethods; // NO_UCD
-  public static String PreferencePage_CheckPrivateMethods; // NO_UCD
+  public static String PreferencePage_CheckProtectedMethods;
+  public static String PreferencePage_CheckPrivateMethods;
   //
-  public static String PreferencePage_CheckProtectedFields; // NO_UCD
-  public static String PreferencePage_CheckPrivateFields; // NO_UCD
-  public static String PreferencePage_ignoreSyntheticAccessEmulation; // NO_UCD
-  public static String PreferencePage_ignoreSyntheticAccessEmulationTooltip; // NO_UCD
+  public static String PreferencePage_CheckProtectedFields;
+  public static String PreferencePage_CheckPrivateFields;
+  public static String PreferencePage_ignoreSyntheticAccessEmulation;
+  public static String PreferencePage_ignoreSyntheticAccessEmulationTooltip;
   //
-  public static String PreferencePage_CheckProtectedConstants; // NO_UCD
-  public static String PreferencePage_CheckPrivateConstants; // NO_UCD
+  public static String PreferencePage_CheckProtectedConstants;
+  public static String PreferencePage_CheckPrivateConstants;
   // ------------------------------------------------------------------
 
-  public static String PreferencePage_CheckFinalMethod; // NO_UCD
-  public static String PreferencePage_CheckFinalField; // NO_UCD
+  public static String PreferencePage_CheckFinalMethod;
+  public static String PreferencePage_CheckFinalField;
 
-  public static String PreferencePage_ComboToolTip; // NO_UCD
+  public static String PreferencePage_ComboToolTip;
 
-  public static String PreferencePage_IgnoreResourcesGroup; // NO_UCD
-  public static String PreferencePage_IgnoreClassesGroup; // NO_UCD
-  public static String PreferencePage_IgnoreMarkedCodeGroup; // NO_UCD
-  public static String PreferencePage_IgnoreOthersGroup; // NO_UCD
+  public static String PreferencePage_IgnoreResourcesGroup;
+  public static String PreferencePage_IgnoreClassesGroup;
+  public static String PreferencePage_IgnoreMarkedCodeGroup;
+  public static String PreferencePage_IgnoreOthersGroup;
 
-  public static String PreferencePage_IgnoreSourceFolderFilter; // NO_UCD
-  public static String PreferencePage_IgnoreSourceFolderFilterToolTip; // NO_UCD
-  public static String PreferencePage_IgnorePackageFilter; // NO_UCD
-  public static String PreferencePage_IgnorePackageFilterToolTip; // NO_UCD
-  public static String PreferencePage_IgnoreClassFilter; // NO_UCD
-  public static String PreferencePage_IgnoreClassFilterToolTip; // NO_UCD
-  public static String PreferencePage_IgnoreMethodFilter; // NO_UCD
-  public static String PreferencePage_IgnoreMethodFilterToolTip; // NO_UCD
-  public static String PreferencePage_IgnoreFieldFilter; // NO_UCD
-  public static String PreferencePage_IgnoreFieldFilterToolTip; // NO_UCD
-  public static String PreferencePage_IgnoreAnnotationsFilter; // NO_UCD
-  public static String PreferencePage_IgnoreImplements; // NO_UCD
-  public static String PreferencePage_IgnoreImplementsToolTip; // NO_UCD
-  public static String PreferencePage_IgnoreAnnotationsFilterToolTip; // NO_UCD
-  public static String PreferencePage_IgnoreContainString; // NO_UCD
-  public static String PreferencePage_IgnoreContainStringToolTip; // NO_UCD
-  public static String PreferencePage_FilterClassWithMainMethod; // NO_UCD
-  public static String PreferencePage_FilterClassWithMainMethodToolTip; // NO_UCD
-  public static String PreferencePage_IgnoreBeanMethods; // NO_UCD
-  public static String PreferencePage_IgnoreBeanMethodsToolTip;// NO_UCD
-  public static String PreferencePage_IgnoreDeprecated; // NO_UCD
-  public static String PreferencePage_IgnoreDeprecatedToolTip; // NO_UCD
-  public static String PreferencePage_IgnoreNoUcd; // NO_UCD
-  public static String PreferencePage_IgnoreNoUcdToolTip; // NO_UCD
-  public static String PreferencePage_IgnoreDerived; // NO_UCD
-  public static String PreferencePage_IgnoreDerivedToolTip; // NO_UCD
+  public static String PreferencePage_IgnoreSourceFolderFilter;
+  public static String PreferencePage_IgnoreSourceFolderFilterToolTip;
+  public static String PreferencePage_IgnorePackageFilter;
+  public static String PreferencePage_IgnorePackageFilterToolTip;
+  public static String PreferencePage_IgnoreClassFilter;
+  public static String PreferencePage_IgnoreClassFilterToolTip;
+  public static String PreferencePage_IgnoreMethodFilter;
+  public static String PreferencePage_IgnoreMethodFilterToolTip;
+  public static String PreferencePage_IgnoreFieldFilter;
+  public static String PreferencePage_IgnoreFieldFilterToolTip;
+  public static String PreferencePage_IgnoreAnnotationsFilter;
+  public static String PreferencePage_IgnoreImplements;
+  public static String PreferencePage_IgnoreImplementsToolTip;
+  public static String PreferencePage_IgnoreAnnotationsFilterToolTip;
+  public static String PreferencePage_IgnoreContainString;
+  public static String PreferencePage_IgnoreContainStringToolTip;
+  public static String PreferencePage_FilterClassWithMainMethod;
+  public static String PreferencePage_FilterClassWithMainMethodToolTip;
+  public static String PreferencePage_IgnoreBeanMethods;
+  public static String PreferencePage_IgnoreBeanMethodsToolTip;
+  public static String PreferencePage_IgnoreDeprecated;
+  public static String PreferencePage_IgnoreDeprecatedToolTip;
+  public static String PreferencePage_IgnoreNoUcd;
+  public static String PreferencePage_IgnoreNoUcdToolTip;
+  public static String PreferencePage_IgnoreDerived;
+  public static String PreferencePage_IgnoreDerivedToolTip;
   //
-  public static String PreferencePage_Classes; // NO_UCD
-  public static String PreferencePage_Methods; // NO_UCD
-  public static String PreferencePage_Fields; // NO_UCD
-  public static String PreferencePage_DetectTestOnly; // NO_UCD
-  public static String PreferencePage_DetectTestOnlyToolTip; // NO_UCD
-  public static String PreferencePage_CheckFullClassName; // NO_UCD
-  public static String PreferencePage_CheckSimleClassName; // NO_UCD
-  public static String PreferencePage_CheckFullClassNameToolTip; // NO_UCD
-  public static String PreferencePage_CheckSimpleClassNameToolTip; // NO_UCD
-  public static String PreferencePage_LiteralsCheck; // NO_UCD
-  public static String PreferencePage_LiteralsCheckToolTip; // NO_UCD
-  public static String PreferencePage_Literals; // NO_UCD
-  public static String PreferencePage_LiteralsToolTip; // NO_UCD
-  public static String PreferencePage_WarnLimit; // NO_UCD
-  public static String PreferencePage_WarnLimitToolTip; // NO_UCD
+  public static String PreferencePage_Classes;
+  public static String PreferencePage_Methods;
+  public static String PreferencePage_Fields;
+  public static String PreferencePage_DetectTestOnly;
+  public static String PreferencePage_DetectTestOnlyToolTip;
+  public static String PreferencePage_CheckFullClassName;
+  public static String PreferencePage_CheckSimleClassName;
+  public static String PreferencePage_CheckFullClassNameToolTip;
+  public static String PreferencePage_CheckSimpleClassNameToolTip;
+  public static String PreferencePage_LiteralsCheck;
+  public static String PreferencePage_LiteralsCheckToolTip;
+  public static String PreferencePage_Literals;
+  public static String PreferencePage_LiteralsToolTip;
+  public static String PreferencePage_WarnLimit;
+  public static String PreferencePage_WarnLimitToolTip;
   //
-  public static String PreferencePage_TabIgnore; // NO_UCD
-  public static String PreferencePage_TabDetect; // NO_UCD
-  public static String PreferencePage_TabKeywords; // NO_UCD
-  public static String PreferencePage_TabReport; // NO_UCD
-  public static String PreferencePage_TabOther; // NO_UCD
+  public static String PreferencePage_TabIgnore;
+  public static String PreferencePage_TabDetect;
+  public static String PreferencePage_TabKeywords;
+  public static String PreferencePage_TabReport;
+  public static String PreferencePage_TabOther;
   //
-  public static String PreferencePage_CreateHtmlReport; // NO_UCD
-  public static String PreferencePage_CreateXmlReport; // NO_UCD
-  public static String PreferencePage_CreateTextReport; // NO_UCD
-  public static String PreferencePage_BrowseReportsDir; // NO_UCD
-  public static String PreferencePage_BrowseReportsDirToolTip; // NO_UCD
-  public static String PreferencePage_LogLevel; // NO_UCD
-  public static String PreferencePage_LogToEclipse; // NO_UCD
-  public static String PreferencePage_RunOnSave; // NO_UCD
+  public static String PreferencePage_CreateHtmlReport;
+  public static String PreferencePage_CreateXmlReport;
+  public static String PreferencePage_CreateTextReport;
+  public static String PreferencePage_BrowseReportsDir;
+  public static String PreferencePage_BrowseReportsDirToolTip;
+  public static String PreferencePage_LogLevel;
+  public static String PreferencePage_LogToEclipse;
+  //
+  public static String PreferencePage_GroupDetect;
+  public static String PreferencePage_GroupFileSearch;
+  public static String PreferencePage_GroupCycles;
+  public static String PreferencePage_GroupReports;
+  public static String PreferencePage_GroupLogging;
 
-  //
-  public static String PreferencePage_GroupDetect; // NO_UCD
-  public static String PreferencePage_GroupFileSearch; // NO_UCD
-  public static String PreferencePage_GroupCycles; // NO_UCD
-  public static String PreferencePage_GroupReports; // NO_UCD
-  public static String PreferencePage_GroupLogging; // NO_UCD
-  public static String PreferencePage_GroupFilter; // NO_UCD
-  public static String PreferencePage_GroupFinal; // NO_UCD
-  public static String PreferencePage_GroupVisibility; // NO_UCD
+  public static String PreferencePage_GroupFinal;
+  public static String PreferencePage_GroupVisibility;
   // -------------------------------------------------------------------------
-  public static String WarnLevel_Error; // NO_UCD
-  public static String WarnLevel_Warning; // NO_UCD
-  public static String WarnLevel_Ignore; // NO_UCD
+  public static String WarnLevel_Error;
+  public static String WarnLevel_Warning;
+  public static String WarnLevel_Ignore;
   // -------------------------------------------------------------------------
-  public static String PreferencePage_ReportDir; // NO_UCD
-  public static String PreferencePage_ReportDirToolTip; // NO_UCD
-  public static String PreferencePage_ReportFile; // NO_UCD
-  public static String PreferencePage_ReportFileToolTip; // NO_UCD
+  public static String PreferencePage_ReportDir;
+  public static String PreferencePage_ReportDirToolTip;
+  public static String PreferencePage_ReportFile;
+  public static String PreferencePage_ReportFileToolTip;
   // SearchManager -----------------------------------------------------------
-  //  public static String JavaElementUtil_Class; // NO_UCD
-  //  public static String JavaElementUtil_Constructor; // NO_UCD
-  //  public static String JavaElementUtil_Field; // NO_UCD
-  //  public static String JavaElementUtil_Constant; // NO_UCD
-  //  public static String JavaElementUtil_Method; // NO_UCD
-  //  public static String JavaElementUtil_Initializer; // NO_UCD
+  //  public static String JavaElementUtil_Class; 
+  //  public static String JavaElementUtil_Constructor; 
+  //  public static String JavaElementUtil_Field; 
+  //  public static String JavaElementUtil_Constant; 
+  //  public static String JavaElementUtil_Method; 
+  //  public static String JavaElementUtil_Initializer; 
   //
-  public static String MarkerFactory_MarkerVisibility; // NO_UCD
-  public static String MarkerFactory_VisibilityCompileErrorForClass; // NO_UCD
-  public static String MarkerFactory_MarkerFinalMethod; // NO_UCD
-  public static String MarkerFactory_MarkerFinalField; // NO_UCD
-  public static String MarkerFactory_MarkerReference; // NO_UCD
-  public static String MarkerFactory_MarkerReferenceFieldNeverRead; // NO_UCD
-  public static String MarkerFactory_MarkerTestOnly; // NO_UCD
+  public static String MarkerFactory_MarkerVisibility;
+  public static String MarkerFactory_VisibilityCompileErrorForClass;
+  public static String MarkerFactory_MarkerFinalMethod;
+  public static String MarkerFactory_MarkerFinalField;
+  public static String MarkerFactory_MarkerReference;
+  public static String MarkerFactory_MarkerReferenceFieldNeverRead;
+  public static String MarkerFactory_MarkerTestOnly;
   //
-  public static String SearchManager_Monitor; // NO_UCD
-  public static String SearchManager_SearchReferences; // NO_UCD
-  public static String SearchManager_SearchClassNameAsLiteral; // NO_UCD
+  public static String SearchManager_Monitor;
+  public static String SearchManager_SearchReferences;
+  public static String SearchManager_SearchClassNameAsLiteral;
   // XML -----------------------------------------------------------------------
-  public static String XMLReport_WriteOk; // NO_UCD
-  public static String XMLReport_WriteNoWarnings; // NO_UCD
-  public static String XMLReport_WriteError; // NO_UCD
+  public static String XMLReport_WriteOk;
+  public static String XMLReport_WriteNoWarnings;
+  public static String XMLReport_WriteError;
   // QuickFix ------------------------------------------------------------------
-  public static String UseFinalQuickFix_label;// NO_UCD
-  public static String DeleteCodeQuickFix_label;// NO_UCD
-  public static String DeleteFileQuickFix_label;// NO_UCD
-  public static String LineCommentQuickFix_label;// NO_UCD
-  public static String UseTag_NO_UCD_QuickFix_label; // NO_UCD
-  public static String UseAnnotation_UCD_QuickFix_label; // NO_UCD
-  public static String VisibilityQuickFix_label; // NO_UCD
-  public static String TodoQuickFix_label; // NO_UCD
+  public static String UseFinalQuickFix_label;
+  public static String DeleteCodeQuickFix_label;
+  public static String DeleteFileQuickFix_label;
+  public static String LineCommentQuickFix_label;
+  public static String UseTag_NO_UCD_QuickFix_label;
+  public static String UseAnnotation_UCD_QuickFix_label;
+  public static String VisibilityQuickFix_label;
+  public static String TodoQuickFix_label;
 
   public static String OutOfMemoryError_Hint; // NO_UCD
 
   // CYCLE  ------------------------------------------------------------------
-  public static String CycleAction_cant_open_editor; // NO_UCD
-  public static String CycleIterator_JobName; // NO_UCD
-  public static String CycleIterator_MONITOR_INFO; // NO_UCD
-  public static String PreferencePage_MaxCycleSize; // NO_UCD
-  public static String PreferencePage_MaxCycleSizeToolTip; // NO_UCD
-  public static String Cycle_Name; // NO_UCD
-  public static String CycleRegion_Line; // NO_UCD
-  public static String CycleType_matches; // NO_UCD
-  public static String CycleType_match; // NO_UCD
+  public static String CycleAction_cant_open_editor;
+  public static String CycleIterator_JobName;
+  public static String CycleIterator_MONITOR_INFO;
+  public static String PreferencePage_MaxCycleSize;
+  public static String PreferencePage_MaxCycleSizeToolTip;
+  public static String Cycle_Name;
+  public static String CycleRegion_Line;
+  public static String CycleType_matches;
+  public static String CycleType_match;
   // -------------------------------------------------------------------------
-  public static String CycleView_popup_copy_clipboard; // NO_UCD
-  public static String CycleView_popup_open; // NO_UCD
-  public static String CycleView_popup_refresh; // NO_UCD
-  public static String CycleView_popup_remove; // NO_UCD
-  public static String CycleView_popup_rotate; // NO_UCD
+  public static String CycleView_popup_copy_clipboard;
+  public static String CycleView_popup_open;
+  public static String CycleView_popup_refresh;
+  public static String CycleView_popup_remove;
+  public static String CycleView_popup_rotate;
   // -------------------------------------------------------------------------
-  public static String CycleSearchManager_Monitor; // NO_UCD
-  public static String CycleSearchManager_MonitorProject; // NO_UCD
-  public static String CycleSearchManager_Project_Info; // NO_UCD
+  public static String CycleSearchManager_Monitor;
+  public static String CycleSearchManager_MonitorProject;
+  public static String CycleSearchManager_Project_Info;
   // -------------------------------------------------------------------------
-  public static String CycleCalculator_Monitor; // NO_UCD
-  public static String CycleCalculator_removeDoubleCycles; // NO_UCD
-  public static String CycleView_run_ucd_for_results;// NO_UCD
+  public static String CycleCalculator_Monitor;
+  public static String CycleCalculator_removeDoubleCycles;
+  public static String CycleView_run_ucd_for_results;
   // REPORT --------------------------------------------------------------------
-  public static String SearchResultRoot_Name; // NO_UCD
-  public static String SearchResult_get_text; // NO_UCD
+  public static String SearchResultRoot_Name;
+  public static String SearchResult_get_text;
   // ModesPanel ---------------------------------------------------------------
-  public static String ModesPanel_invalid_mode_name; // NO_UCD
+  public static String ModesPanel_invalid_mode_name;
   //
-  public static String ModesPanel_ModeLabel; // NO_UCD
-  public static String ModesPanel_ModeNew; // NO_UCD
-  public static String ModesPanel_ModeRemove; // NO_UCD
-  public static String ModesPanel_ModeRename; // NO_UCD
-  public static String ModesPanel_ModeRemoveQuestion; // NO_UCD
-  public static String ModesPanel_ModePressNewHint; // NO_UCD
-  public static String ModesPanel_ModeAlreadyExists; // NO_UCD
+  public static String ModesPanel_ModeLabel;
+  public static String ModesPanel_ModeNew;
+  public static String ModesPanel_ModeRemove;
+  public static String ModesPanel_ModeRename;
+  public static String ModesPanel_ModeRemoveQuestion;
+  public static String ModesPanel_ModePressNewHint;
+  public static String ModesPanel_ModeAlreadyExists;
   //
-  public static String ModesPanel_NewMode; // NO_UCD
-  public static String ModesPanel_ModeName; // NO_UCD
+  public static String ModesPanel_NewMode;
+  public static String ModesPanel_ModeName;
   public static String ModesPanel_CantSetPreferences; // NO_UCD
-  public static String ModesPanel_ModeFileCantSave; // NO_UCD
+  public static String ModesPanel_ModeFileCantSave;
   // MODE STRINGS --------------------------------------------------------------
   @UsedBy("reflection")
-  public static String ModesPanel_mode_Default;// NO_UCD
+  public static String ModesPanel_mode_Default;
   @UsedBy("reflection")
-  public static String ModesPanel_mode_classes_only;// NO_UCD
+  public static String ModesPanel_mode_classes_only;
   @UsedBy("reflection")
-  public static String ModesPanel_mode_unused_only;// NO_UCD
+  public static String ModesPanel_mode_unused_only;
   @UsedBy("reflection")
-  public static String ModesPanel_mode_full;// NO_UCD
+  public static String ModesPanel_mode_full;
   @UsedBy("reflection")
-  public static String ModesPanel_mode_extreme;// NO_UCD
+  public static String ModesPanel_mode_extreme;
 }
