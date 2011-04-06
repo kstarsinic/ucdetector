@@ -4,6 +4,7 @@ New features:
  - Improved layout for ignore preferences
  - New build in detection mode "extreme" (no filter, show all kinds of warnings)
  - UCDetector actions are now available for Working Sets
+ - New extension point 'org.ucdetector.reports' to create custom report using xslt or java
 
 Bugfixes:
  - Fixed broken filter '@SuppressWarnings("ucd") = false'
