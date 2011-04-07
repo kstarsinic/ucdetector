@@ -3,6 +3,7 @@
    http://sourceforge.net/tracker/?func=detail&aid=2539795&group_id=219599&atid=1046865
 * Marker test only, but used in plugin.xml
 * javadoc @deprecated filter broken eclipse 3.7?
+* org.ucdetector.action.CountAction.iterator: suggest make private
 
 
 == Code examples ==

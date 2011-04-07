@@ -34,8 +34,8 @@ public class UCDApplication implements IApplication {
     String userDir = System.getProperty("user.dir");
     File optionsFile = new File(userDir, "ucdetector.options");
     File targetFile = new File(userDir, "ucdetector.target");
-    Log.info("To change detection, %s: %s", optionsFile.exists() ? "edit" : "create", optionsFile.getAbsolutePath());
-    Log.info("To change detection, %s: %s", targetFile.exists() ? "edit" : "create", targetFile.getAbsolutePath());
+    logExists(optionsFile);
+    logExists(targetFile);
 
     Map<String, String> options = UCDHeadless.loadOptions(optionsFile);
     String buildType = options.get(APPLICATION_KEY + "buildType");
@@ -45,6 +45,10 @@ public class UCDApplication implements IApplication {
     UCDHeadless headless = new UCDHeadless(buildType, optionsFile, targetFile, report, resourcesToIterate);
     headless.run();
     return IApplication.EXIT_OK;
+  }
+
+  private void logExists(File file) {
+    Log.info("To change detection, %s: %s", file.exists() ? "edit" : "create", file.getAbsolutePath());
   }
 
   public void stop() {

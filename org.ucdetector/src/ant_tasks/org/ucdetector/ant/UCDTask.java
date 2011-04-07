@@ -57,7 +57,7 @@ public class UCDTask extends Task {
     return result;
   }
 
-  private File getFile(String fileName, String about) {
+  private static File getFile(String fileName, String about) {
     File result = null;
     if (fileName != null) {
       result = new File(fileName);

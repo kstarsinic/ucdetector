@@ -172,7 +172,7 @@ public abstract class AbstractUCDetectorAction extends ActionDelegate { // NO_UC
     }
     List<?> structered = ((IStructuredSelection) selection).toList();
     for (Object selectedObject : structered) {
-      Log.debug("selectedObject: " + selectedObject.getClass().getName()); //$NON-NLS-1$
+      // Log.debug("selectedObject: " + selectedObject.getClass().getName()); //$NON-NLS-1$
       if (selectedObject instanceof IJavaElement) {
         result.add((IJavaElement) selectedObject);
       }

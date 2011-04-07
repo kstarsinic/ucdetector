@@ -24,6 +24,7 @@ public class TextReport implements IUCDetectorReport {
   }
 
   public boolean reportMarker(ReportParam reportParam) throws CoreException {
+    // TODO: implement code
     System.out.println("TextReport.reportMarker: " + reportParam);
     return false;
   }
