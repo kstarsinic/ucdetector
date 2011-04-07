@@ -156,4 +156,8 @@ public class MarkerReport implements IUCDetectorReport {
   public void reportDetectionProblem(IStatus status) {
     // 
   }
+
+  public void setExtension(ReportExtension reportExtension) {
+    //
+  }
 }

@@ -74,7 +74,9 @@ public final class MarkerFactory implements IUCDetectorReport {
     }
     ArrayList<ReportExtension> classExtensions = ReportExtension.getClassExtensions();
     for (ReportExtension reportExtension : classExtensions) {
-      reportsList.add(reportExtension.getReport());
+      IUCDetectorReport report = reportExtension.getReport();
+      report.setExtension(reportExtension);
+      reportsList.add(report);
     }
     return new MarkerFactory(reportsList);
   }
@@ -211,5 +213,9 @@ public final class MarkerFactory implements IUCDetectorReport {
     if (javaElement.getResource() != null) {
       javaElement.getResource().deleteMarkers(UCD_MARKER, true, IResource.DEPTH_INFINITE);
     }
+  }
+
+  public void setExtension(ReportExtension reportExtension) {
+    //
   }
 }

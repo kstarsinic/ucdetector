@@ -16,15 +16,9 @@ import java.io.OutputStream;
 import java.io.OutputStreamWriter;
 import java.io.PrintWriter;
 import java.io.StringWriter;
-import java.text.DateFormat;
-import java.text.DecimalFormat;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.Map.Entry;
 import java.util.Set;
-import java.util.SortedSet;
-import java.util.TreeSet;
 
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.transform.OutputKeys;
@@ -104,8 +98,6 @@ public class XmlReport implements IUCDetectorReport {
   private static final String HTML_XSL_FILE = "org/ucdetector/report/html.xslt";
   private static final String TEXT_XSL_FILE = "org/ucdetector/report/text.xslt";
 
-  private static final DecimalFormat FORMAT_REPORT_NUMBER = new DecimalFormat("000");
-
   private Document doc;
   private Element markers;
   private Element problems;
@@ -125,8 +117,6 @@ public class XmlReport implements IUCDetectorReport {
   private boolean isFirstStatistic = true;
   private boolean endReportCalled;
   //
-  private final DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
-  private final DateFormat timeFormat = new SimpleDateFormat("HHmmss");
   private IJavaElement[] objectsToIterate;
   private long startTime = System.currentTimeMillis();
 
@@ -144,16 +134,6 @@ public class XmlReport implements IUCDetectorReport {
         }
       });
     }
-  }
-
-  private String getProjectName() {
-    SortedSet<String> projects = new TreeSet<String>();
-    for (IJavaElement element : objectsToIterate) {
-      if (element.getJavaProject() != null) {
-        projects.add(element.getJavaProject().getElementName());
-      }
-    }
-    return projects.size() == 0 ? "unknown_project" : projects.size() == 1 ? projects.first() : "several_projects";
   }
 
   /**
@@ -186,6 +166,9 @@ public class XmlReport implements IUCDetectorReport {
     }
   }
 
+  /**
+   * @param startTime time, when report is started
+   */
   public void startReport(IJavaElement[] objectsToIterateArray, long startTime) throws CoreException {
     this.objectsToIterate = objectsToIterateArray;
     this.startTime = startTime;
@@ -322,38 +305,6 @@ public class XmlReport implements IUCDetectorReport {
     appendChild(problem, "exception", exString);
   }
 
-  /**
-   * @return File name, with does not exist, containing a number.
-   * eg: UCDetectorReport_001
-   */
-  // Fix [2811049]  Html report is overridden each run
-  private String getReportName() {
-    String reportFile = Prefs.getReportFile();
-    reportFile = reportFile.replace("${project}", getProjectName());
-    reportFile = reportFile.replace("${date}", dateFormat.format(new Date()));
-    reportFile = reportFile.replace("${time}", timeFormat.format(new Date()));
-    //
-    File reportDir = new File(PreferenceInitializer.getReportDir(true));
-    if (reportFile.contains(PreferenceInitializer.FILE_NAME_REPLACE_NUMBER)) {
-      String[] files = reportDir.list();
-      files = (files == null) ? new String[0] : files;
-      for (int i = 1; i < 1000; i++) {
-        String number = FORMAT_REPORT_NUMBER.format(i);
-        boolean numberExists = false;
-        for (String file : files) {
-          if (file.contains(number)) {
-            numberExists = true;
-            break;
-          }
-        }
-        if (!numberExists) {
-          return reportFile.replace(PreferenceInitializer.FILE_NAME_REPLACE_NUMBER, number);
-        }
-      }
-    }
-    return reportFile;
-  }
-
   /** Create a <code>Status</code> and log it to the Eclipse log */
   private static void logEndReportMessage(String message, int iStatus, Throwable ex, String... parms) {
     String mes = NLS.bind(message, parms);
@@ -467,7 +418,7 @@ public class XmlReport implements IUCDetectorReport {
     appendStatistics(isEndReport);
     copyIconFiles(reportDir);
     try {
-      String reportNumberName = getReportName();
+      String reportNumberName = PreferenceInitializer.getReportName(objectsToIterate);
       ArrayList<ReportExtension> xsltExtensions = ReportExtension.getXsltExtensions();
       for (ReportExtension xsltExtension : xsltExtensions) {
         String fileNameFromExtension = xsltExtension.getResultFile().replace("${name}", reportNumberName);
@@ -597,5 +548,9 @@ public class XmlReport implements IUCDetectorReport {
     while ((read = inStream.read(buffer)) != -1) {
       outStream.write(buffer, 0, read);
     }
+  }
+
+  public void setExtension(ReportExtension reportExtension) {
+    //
   }
 }

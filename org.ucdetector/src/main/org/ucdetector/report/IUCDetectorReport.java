@@ -25,4 +25,7 @@ public interface IUCDetectorReport {
   void reportDetectionProblem(IStatus status);
 
   void endReport() throws CoreException;
+
+  void setExtension(ReportExtension reportExtension);
+
 }
