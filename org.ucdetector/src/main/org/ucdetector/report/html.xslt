@@ -230,9 +230,13 @@ ECLIPSE_HOME/dropins/org.ucdetector_*.jar/org/ucdetector/report/html.xslt
 					<ul>
 						<xsl:for-each select="/ucdetector/problems/problem">
 							<li>
-								<xsl:value-of select="status"/>
+								<b>
+									<xsl:value-of select="status"/>
+								</b>
 								<pre>
-									<xsl:value-of select="exception"/>
+									<font color="red">
+										<xsl:value-of select="exception"/>
+									</font>
 								</pre>
 							</li>
 						</xsl:for-each>
