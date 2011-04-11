@@ -41,6 +41,7 @@ import org.ucdetector.Messages;
 import org.ucdetector.UCDetectorPlugin;
 import org.ucdetector.preferences.ModesPanel.Mode;
 import org.ucdetector.report.ReportExtension;
+import org.ucdetector.report.ReportNameManager;
 
 /**
  * Create the UCDetector preference page:<br>
@@ -268,13 +269,10 @@ public class UCDetectorPreferencePage extends FieldEditorPreferencePage implemen
 
   private void createReportGroup(Composite parentGroups) {
     Composite spacer = createGroup(parentGroups, Messages.PreferencePage_GroupReports);
-    appendBool(Prefs.REPORT_CREATE_HTML, Messages.PreferencePage_CreateHtmlReport, null, spacer, 3);
     appendBool(Prefs.REPORT_CREATE_XML, Messages.PreferencePage_CreateXmlReport, null, spacer, 3);
-    appendBool(Prefs.REPORT_CREATE_TXT, Messages.PreferencePage_CreateTextReport, null, spacer, 3);
-
-    for (@SuppressWarnings("unused")
-    String name : ReportExtension.getNames()) {
-      //      appendBool(Prefs.REPORT_CREATE_TXT + "_" + name, name, null, spacer, 3);
+    for (ReportExtension extension : ReportExtension.getAllExtensions()) {
+      String text = String.format("Create %s report", extension.getDescription()); //$NON-NLS-1$
+      appendBool(Prefs.getReportStoreKey(extension), text, null, spacer, 3);
     }
     //
     appendText(Prefs.REPORT_FILE, Messages.PreferencePage_ReportFile, Messages.PreferencePage_ReportFileToolTip,
@@ -295,7 +293,7 @@ public class UCDetectorPreferencePage extends FieldEditorPreferencePage implemen
         p = (p == null ? Program.findProgram("htm") : p); //$NON-NLS-1$
         if (p != null) {
           // java 6: Desktop.getInstance().open(file);
-          p.execute(PreferenceInitializer.getReportDir(true));
+          p.execute(ReportNameManager.getReportDir(true));
         }
       }
     });

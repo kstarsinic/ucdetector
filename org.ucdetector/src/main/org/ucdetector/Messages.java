@@ -145,9 +145,7 @@ public final class Messages extends NLS {
   public static String PreferencePage_TabReport;
   public static String PreferencePage_TabOther;
   //
-  public static String PreferencePage_CreateHtmlReport;
   public static String PreferencePage_CreateXmlReport;
-  public static String PreferencePage_CreateTextReport;
   public static String PreferencePage_BrowseReportsDir;
   public static String PreferencePage_BrowseReportsDirToolTip;
   public static String PreferencePage_LogLevel;

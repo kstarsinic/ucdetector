@@ -26,6 +26,7 @@ import org.ucdetector.preferences.Prefs;
 import org.ucdetector.report.IUCDetectorReport;
 import org.ucdetector.report.MarkerReport;
 import org.ucdetector.report.ReportExtension;
+import org.ucdetector.report.ReportNameManager;
 import org.ucdetector.report.ReportParam;
 import org.ucdetector.report.XmlReport;
 import org.ucdetector.search.LineManger;
@@ -66,7 +67,8 @@ public final class MarkerFactory implements IUCDetectorReport {
     this.reports = reports;
   }
 
-  public static MarkerFactory createInstance() throws CoreException {
+  public static MarkerFactory createInstance() {
+    ReportNameManager.setNextFreeFileNumberString();
     ArrayList<IUCDetectorReport> reportsList = new ArrayList<IUCDetectorReport>();
     reportsList.add(new MarkerReport());
     if (Prefs.isWriteReportFile()) {

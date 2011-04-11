@@ -7,7 +7,6 @@
 package org.ucdetector.report;
 
 import java.util.ArrayList;
-import java.util.List;
 
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IConfigurationElement;
@@ -18,62 +17,43 @@ import org.ucdetector.Log;
 import org.ucdetector.UCDetectorPlugin;
 
 /**
- * TODO: Describe class
+ * Provid access to the org.ucdetector.reports extension point
  * <p>
  * @author Joerg Spieler
- * @since 01.04.2011
+ * @since 2011-04.01
  */
 public class ReportExtension {
-  private static final String ATTRIBUTE_STYLESHEET = "stylesheet"; //$NON-NLS-1$
-  private static final String ATTRIBUTE_CLASS = "class";//$NON-NLS-1$
   /** Simple identifier constant (value <code>"reports"</code>) for the UCDetector reports extension point. */
   private static final String EXTENSION_POINT_ID = UCDetectorPlugin.ID + ".reports"; //$NON-NLS-1$
-  private static ArrayList<ReportExtension> xsltExtensions = null;
-  private static ArrayList<ReportExtension> classExtensions = null;
+  //
+  private static final String ATTRIBUTE_STYLESHEET = "stylesheet"; //$NON-NLS-1$
+  private static final String ATTRIBUTE_CLASS = "class";//$NON-NLS-1$
+  private static final String ATTRIBUTE_REPORT_ID = "id";//$NON-NLS-1$
+  private static boolean isInitialized = false;
+  private static ArrayList<ReportExtension> xsltExtensions;
+  private static ArrayList<ReportExtension> classExtensions;
+  private static ArrayList<ReportExtension> allExtensions;
+
   private final String resultFile;
-  private final String name;
+  private final String description;
   private final String xslt;
   private final IUCDetectorReport report;
+  private final String id;
 
-  public ReportExtension(String resultFile, String name, String xslt, IUCDetectorReport report) {
+  private ReportExtension(String resultFile, String description, String xslt, IUCDetectorReport report, String id) {
     this.resultFile = resultFile;
-    this.name = name;
+    this.description = description;
     this.xslt = xslt;
     this.report = report;
-  }
-
-  // org.eclipse.ant.core.AntCorePlugin.extractExtensions(String)
-  private static void loadExtensions() throws CoreException {
-    if (xsltExtensions == null) {
-      xsltExtensions = new ArrayList<ReportExtension>();
-      classExtensions = new ArrayList<ReportExtension>();
-      IExtensionRegistry reg = Platform.getExtensionRegistry();
-      IConfigurationElement[] reports = reg.getConfigurationElementsFor(EXTENSION_POINT_ID);
-      for (IConfigurationElement report : reports) {
-        String resultFile = report.getAttribute("resultFile"); //$NON-NLS-1$
-        String name = report.getAttribute("name");//$NON-NLS-1$
-        String xslt = report.getAttribute(ATTRIBUTE_STYLESHEET);
-        String clazz = report.getAttribute(ATTRIBUTE_CLASS);
-        if (xslt != null && clazz == null) {
-          xsltExtensions.add(new ReportExtension(resultFile, name, xslt, null));
-        }
-        else if (xslt == null && clazz != null) {
-          IUCDetectorReport reportObject = (IUCDetectorReport) WorkbenchPlugin.createExtension(report, ATTRIBUTE_CLASS);
-          classExtensions.add(new ReportExtension(resultFile, name, null, reportObject));
-        }
-        else {
-          Log.warn("One attribute needed: '%s' or '%s'", ATTRIBUTE_CLASS, ATTRIBUTE_STYLESHEET);//$NON-NLS-1$
-        }
-      }
-    }
+    this.id = id;
   }
 
   public String getResultFile() {
     return resultFile;
   }
 
-  public String getName() {
-    return name;
+  public String getDescription() {
+    return description;
   }
 
   public String getXslt() {
@@ -84,36 +64,66 @@ public class ReportExtension {
     return report;
   }
 
-  public static ArrayList<ReportExtension> getXsltExtensions() throws CoreException {
-    loadExtensions();
-    return xsltExtensions;
-  }
-
-  public static ArrayList<ReportExtension> getClassExtensions() throws CoreException {
-    loadExtensions();
-    return classExtensions;
-  }
-
-  public static List<String> getNames() {
-    List<String> result = new ArrayList<String>();
-    try {
-      loadExtensions();
-      for (ReportExtension reportExtension : getXsltExtensions()) {
-        result.add(reportExtension.getName());
-      }
-      for (ReportExtension reportExtension : getClassExtensions()) {
-        result.add(reportExtension.getName());
-      }
-    }
-    catch (CoreException e) {
-      e.printStackTrace();
-    }
-    return result;
+  public String getId() {
+    return id;
   }
 
   @Override
   public String toString() {
-    return String.format("ReportExtension [resultFile=%s, name=%s, xslt=%s, report=%s]", //$NON-NLS-1$
-        resultFile, name, xslt, report);
+    return String.format("ReportExtension [resultFile=%s, description=%s, xslt=%s, report=%s, id=%s]", //$NON-NLS-1$
+        resultFile, description, xslt, report, id);
+  }
+
+  // STATIC -------------------------------------------------------------------
+  // org.eclipse.ant.core.AntCorePlugin.extractExtensions(String)
+  private static void loadExtensions() {
+    if (!isInitialized) {
+      isInitialized = true;
+      xsltExtensions = new ArrayList<ReportExtension>();
+      classExtensions = new ArrayList<ReportExtension>();
+      allExtensions = new ArrayList<ReportExtension>();
+      IExtensionRegistry reg = Platform.getExtensionRegistry();
+      IConfigurationElement[] reports = reg.getConfigurationElementsFor(EXTENSION_POINT_ID);
+      for (IConfigurationElement report : reports) {
+        String resultFile = report.getAttribute("resultFile"); //$NON-NLS-1$
+        String name = report.getAttribute("description");//$NON-NLS-1$
+        String xslt = report.getAttribute(ATTRIBUTE_STYLESHEET);
+        String clazz = report.getAttribute(ATTRIBUTE_CLASS);
+        String id = report.getAttribute(ATTRIBUTE_REPORT_ID);
+        if (xslt != null && clazz == null) {
+          xsltExtensions.add(new ReportExtension(resultFile, name, xslt, null, id));
+        }
+        else if (xslt == null && clazz != null) {
+          try {
+            IUCDetectorReport reportObject = (IUCDetectorReport) WorkbenchPlugin.createExtension(report,
+                ATTRIBUTE_CLASS);
+            classExtensions.add(new ReportExtension(resultFile, name, null, reportObject, id));
+          }
+          catch (CoreException ex) {
+            UCDetectorPlugin.logToEclipseLog("Can't load ReportExtension", ex); //$NON-NLS-1$
+          }
+        }
+        else {
+          Log.warn("One attribute needed: '%s' or '%s'", ATTRIBUTE_CLASS, ATTRIBUTE_STYLESHEET);//$NON-NLS-1$
+        }
+      }
+      allExtensions.addAll(classExtensions);
+      allExtensions.addAll(xsltExtensions);
+    }
+  }
+
+  public static ArrayList<ReportExtension> getXsltExtensions() { // NO_UCD
+    loadExtensions();
+    return xsltExtensions;
+  }
+
+  public static ArrayList<ReportExtension> getClassExtensions() {
+    loadExtensions();
+    return classExtensions;
+  }
+
+  public static ArrayList<ReportExtension> getAllExtensions() {
+    loadExtensions();
+    return allExtensions;
   }
 }

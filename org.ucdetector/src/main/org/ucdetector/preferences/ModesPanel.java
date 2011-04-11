@@ -10,8 +10,9 @@ import static org.ucdetector.preferences.UCDetectorPreferencePage.GROUP_START;
 import static org.ucdetector.preferences.UCDetectorPreferencePage.TAB_START;
 
 import java.io.File;
-import java.io.FileWriter;
+import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.OutputStreamWriter;
 import java.text.MessageFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -45,6 +46,7 @@ import org.eclipse.swt.widgets.Label;
 import org.ucdetector.Log;
 import org.ucdetector.Messages;
 import org.ucdetector.UCDetectorPlugin;
+import org.ucdetector.report.ReportNameManager;
 
 /**
  * Create/rename/delete modes (UCDetector preferences)
@@ -195,7 +197,7 @@ class ModesPanel {
     page.performOk();
     if (newModeName != null && newModeName.trim().length() > 0) {
       // set default, when report directory is missing
-      Prefs.getStore().setValue(Prefs.REPORT_DIR, PreferenceInitializer.getReportDir(false));
+      Prefs.getStore().setValue(Prefs.REPORT_DIR, ReportNameManager.getReportDir(false));
       saveMode(newModeName);
       Log.info("Added new mode: %s", newModeName); //$NON-NLS-1$
       getCombo().setItems(getModes());
@@ -259,9 +261,9 @@ class ModesPanel {
       Log.debug("Unhandled preferences :" + allPreferences);
     }
     File modesFile = getModesFile(modeName);
-    FileWriter writer = null;
+    OutputStreamWriter writer = null;
     try {
-      writer = new FileWriter(modesFile);
+      writer = new OutputStreamWriter(new FileOutputStream(modesFile), UCDetectorPlugin.UTF_8);
       writer.write(fileText);
       Log.debug("Saved mode to: %s", modesFile.getAbsolutePath()); //$NON-NLS-1$
     }

@@ -9,7 +9,6 @@ package org.ucdetector.report;
 
 import java.io.File;
 import java.io.FileOutputStream;
-import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
@@ -28,7 +27,6 @@ import javax.xml.transform.Templates;
 import javax.xml.transform.Transformer;
 import javax.xml.transform.TransformerException;
 import javax.xml.transform.TransformerFactory;
-import javax.xml.transform.dom.DOMResult;
 import javax.xml.transform.dom.DOMSource;
 import javax.xml.transform.stream.StreamResult;
 import javax.xml.transform.stream.StreamSource;
@@ -54,7 +52,6 @@ import org.osgi.framework.Bundle;
 import org.ucdetector.Log;
 import org.ucdetector.Messages;
 import org.ucdetector.UCDetectorPlugin;
-import org.ucdetector.preferences.PreferenceInitializer;
 import org.ucdetector.preferences.Prefs;
 import org.ucdetector.util.JavaElementUtil;
 import org.ucdetector.util.JavaElementUtil.MemberInfo;
@@ -94,9 +91,6 @@ public class XmlReport implements IUCDetectorReport {
       + "   - EnumConstant, Constant, Field\n"//
       + " - markerType one of:\n"//
       + "   - Reference, FewReference, VisibilityPrivate, VisibilityProtected, VisibilityDefault, Final, TestOnly\n";
-  //
-  private static final String HTML_XSL_FILE = "org/ucdetector/report/html.xslt";
-  private static final String TEXT_XSL_FILE = "org/ucdetector/report/text.xslt";
 
   private Document doc;
   private Element markers;
@@ -167,11 +161,11 @@ public class XmlReport implements IUCDetectorReport {
   }
 
   /**
-   * @param startTime time, when report is started
+   * @param startTimeIn time, when report is started
    */
-  public void startReport(IJavaElement[] objectsToIterateArray, long startTime) throws CoreException {
+  public void startReport(IJavaElement[] objectsToIterateArray, long startTimeIn) throws CoreException {
     this.objectsToIterate = objectsToIterateArray;
-    this.startTime = startTime;
+    this.startTime = startTimeIn;
   }
 
   /**
@@ -240,10 +234,6 @@ public class XmlReport implements IUCDetectorReport {
 
       IResource resource = javaElement.getResource();
       if (resource != null) {
-        // F:/ws/ucd/org.ucdetector.example/src/main/org/ucdetector/example/Bbb.java
-        // if (resource.getRawLocation() != null) {
-        //   appendChild(marker, "resourceRawLocation", resource.getRawLocation().toString());
-        // }
         IProject project = resource.getProject();
         if (project != null && project.getLocation() != null) {
           IPath location = project.getLocation();
@@ -270,11 +260,6 @@ public class XmlReport implements IUCDetectorReport {
             appendChild(marker, "sourceFolder", path.toString()); // NODE:  src/main
           }
         }
-        // IContainer parent = resource.getParent();
-        //if (parent != null && parent.getProjectRelativePath() != null) {
-        //  appendChild(marker, "resourceLocation", packageName.replace('.', '/')); / NODE:  org/ucdetector/example
-        //}
-        // appendChild(marker, "resourceName", resource.getName()); // NODE: NoReferenceExample.java
       }
       if (UCDetectorPlugin.isHeadlessMode() && markerCount % 50 == 0) {
         Log.info("Flush reports!");
@@ -309,16 +294,10 @@ public class XmlReport implements IUCDetectorReport {
   private static void logEndReportMessage(String message, int iStatus, Throwable ex, String... parms) {
     String mes = NLS.bind(message, parms);
     Status status = new Status(iStatus, UCDetectorPlugin.ID, iStatus, mes, ex);
-    if (iStatus == IStatus.ERROR) {
-      UCDetectorPlugin.logToEclipseLog(status); // Create status in Error Log View
-      return;
-    }
-    UCDetectorPlugin.logToEclipseLog(status);
+    UCDetectorPlugin.logToEclipseLog(status); // Create status in Error Log View
   }
 
-  /**
-   * Append statistics like: date, searchDuration, searched elements
-   */
+  /** Append statistics like: date, searchDuration, searched elements   */
   private void appendStatistics(boolean isEndReport) {
     if (isFirstStatistic) {
       isFirstStatistic = false;
@@ -379,9 +358,7 @@ public class XmlReport implements IUCDetectorReport {
     return about;
   }
 
-  /**
-   * Append a child node and a text node
-   */
+  /** Append a child node and a text node  */
   private Element appendChild(Element parent, String tagName, String text) {
     Element childNode = doc.createElement(tagName);
     if (text != null) {
@@ -396,15 +373,13 @@ public class XmlReport implements IUCDetectorReport {
     writeReports(true);
   }
 
-  /**
-   * Write report to xml file, do xslt transformation to an html file or text file
-   */
+  /** Write report to xml file, do xslt transformation to an html file or text file   */
   private void writeReports(boolean isEndReport) {
     if (!Prefs.isWriteReportFile()) {
       return;
     }
     long start = System.currentTimeMillis();
-    File reportDir = new File(PreferenceInitializer.getReportDir(true));
+    File reportDir = new File(ReportNameManager.getReportDir(true));
     String reportPath = reportDir.getAbsolutePath();
     if (initXMLException != null) {
       logEndReportMessage(Messages.XMLReport_WriteError, IStatus.ERROR, initXMLException, reportPath);
@@ -418,26 +393,18 @@ public class XmlReport implements IUCDetectorReport {
     appendStatistics(isEndReport);
     copyIconFiles(reportDir);
     try {
-      String reportNumberName = PreferenceInitializer.getReportName(objectsToIterate);
       ArrayList<ReportExtension> xsltExtensions = ReportExtension.getXsltExtensions();
       for (ReportExtension xsltExtension : xsltExtensions) {
-        String fileNameFromExtension = xsltExtension.getResultFile().replace("${name}", reportNumberName);
-        File resultFile = new File(reportDir, fileNameFromExtension);
-        writeTextFile(resultFile, xsltExtension.getXslt());
+        if (Prefs.isCreateReport(xsltExtension)) {
+          String reportName = ReportNameManager.getReportFileName(xsltExtension.getResultFile(), objectsToIterate);
+          File resultFile = new File(reportDir, reportName);
+          writeTextFile(resultFile, xsltExtension.getXslt());
+        }
       }
-
-      if (Prefs.isCreateReportHTML()) {
-        Document htmlDocument = transformToHTML(doc);
-        File htmlFile = new File(reportDir, reportNumberName + ".html");
-        writeDocumentToFile(htmlDocument, htmlFile);
-      }
+      String reportName = ReportNameManager.getReportFileName(Prefs.getReportFile(), objectsToIterate);
       if (Prefs.isCreateReportXML()) {
-        File xmlFile = new File(reportDir, reportNumberName + ".xml");
+        File xmlFile = new File(reportDir, reportName + ".xml");
         writeDocumentToFile(doc, xmlFile);
-      }
-      if (Prefs.isCreateReportTXT()) {
-        File txtFile = new File(reportDir, reportNumberName + ".txt");
-        writeTextFile(txtFile, TEXT_XSL_FILE);
       }
       long duration = System.currentTimeMillis() - start;
       Log.info("Created reports in: %s", StopWatch.timeAsString(duration));
@@ -486,9 +453,9 @@ public class XmlReport implements IUCDetectorReport {
 
   private void writeTextFile(File file, String xslt) throws Exception, IOException {
     String text = transformToText(doc, xslt);
-    FileWriter fileWriter = null;
+    OutputStreamWriter fileWriter = null;
     try {
-      fileWriter = new FileWriter(file);
+      fileWriter = new OutputStreamWriter(new FileOutputStream(file), UCDetectorPlugin.UTF_8);
       fileWriter.write(text);
     }
     finally {
@@ -497,12 +464,9 @@ public class XmlReport implements IUCDetectorReport {
     Log.info("Wrote file= " + file.getCanonicalPath());
   }
 
-  /**
-   * writes an document do a file
-   */
   private static void writeDocumentToFile(Document docToWrite, File file) throws Exception {
     Source source = new DOMSource(docToWrite);
-    Result result = new StreamResult(new OutputStreamWriter(new FileOutputStream(file), "utf-8"));
+    Result result = new StreamResult(new OutputStreamWriter(new FileOutputStream(file), UCDetectorPlugin.UTF_8));
     TransformerFactory tf = TransformerFactory.newInstance();
     Transformer xformer = tf.newTransformer();
     try {
@@ -518,13 +482,6 @@ public class XmlReport implements IUCDetectorReport {
     }
     xformer.transform(source, result);
     Log.info("Wrote file= " + file.getCanonicalPath());
-  }
-
-  /** Transform from xml to html using xslt transformation */
-  private Document transformToHTML(Document xmlDoc) throws Exception {
-    Document transformedDoc = DocumentBuilderFactory.newInstance().newDocumentBuilder().newDocument();
-    transform(xmlDoc, HTML_XSL_FILE, new DOMResult(transformedDoc));
-    return transformedDoc;
   }
 
   /** Transform from xml to text using xslt transformation */

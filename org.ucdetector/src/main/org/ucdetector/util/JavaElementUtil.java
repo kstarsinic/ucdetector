@@ -962,6 +962,21 @@ public class JavaElementUtil {
     return String.format("[%s]", o == null ? "?" : o.getClass().getName());
   }
 
+  /**
+   * Create link to java element, which can be used in Eclipse "Java Stack Trace Console"
+   * 
+   * @param javaElement class/method/field to create link for
+   * @param lineNr line of javaElement 
+   * @return java link eg: org.eclipse.swt.SWT.error(SWT.java:3634)
+   */
+  public static String createJavaLink(IMember javaElement, int lineNr) {
+    IType type = getTypeFor(javaElement, true);
+    String typeNameFull = getTypeNameFull(type);
+    String member = (javaElement instanceof IType) ? "<init>" : javaElement.getElementName();
+    String typeName = getElementName(type);
+    return String.format("%s.%s(%s.java:%s)", typeNameFull, member, typeName, Integer.toString(lineNr));
+  }
+
   /*
    * @param clazz to find super classes for
    * @return all super classes of clazz. All interfaces implemented by this class

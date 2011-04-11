@@ -6,7 +6,7 @@
          <meta.schema plugin="org.ucdetector" id="javaReports" name="Java Reports"/>
       </appinfo>
       <documentation>
-         Create custom UCDetector reports using a java class.
+         Create custom UCDetector reports using a class or a xslt stylesheet
       </documentation>
    </annotation>
 
@@ -52,14 +52,15 @@
          <attribute name="resultFile" type="string" use="required">
             <annotation>
                <documentation>
-                  Example My${name}Report.txt
+                  Example: My${reportName}.html &lt;b&gt;Do not use existing file name pattern!&lt;/b&gt;
                </documentation>
             </annotation>
          </attribute>
-         <attribute name="name" type="string" use="required">
+         <attribute name="description" type="string" use="required">
             <annotation>
                <documentation>
-                  name of the report to be defined
+                  Description of the report.
+The description is shown UCDetector preferences dialog tab &quot;Report&quot;.
                </documentation>
                <appinfo>
                   <meta.attribute translatable="true"/>
@@ -70,7 +71,7 @@
             <annotation>
                <documentation>
                   the fully qualified name of a Java class implementing 
-the UCDetector report.  This class must implement
+the UCDetector report. This class must implement
 &lt;code&gt;org.ucdetector.report.IUCDetectorReport&lt;/code&gt;.
                </documentation>
                <appinfo>
@@ -81,7 +82,14 @@ the UCDetector report.  This class must implement
          <attribute name="stylesheet" type="string">
             <annotation>
                <documentation>
-                  Name of a xslt resource used to create report
+                  Name of a xslt resource used to create report. For example: org/ucdetector/report/html.xslt
+               </documentation>
+            </annotation>
+         </attribute>
+         <attribute name="id" type="string" use="required">
+            <annotation>
+               <documentation>
+                  an requiered identifier of the report instance
                </documentation>
             </annotation>
          </attribute>
@@ -105,14 +113,23 @@ the UCDetector report.  This class must implement
          The following is an example of an java reports extension point: 
 &lt;p&gt;
 &lt;pre&gt;
-   &lt;extension point=&quot;org.ucdetector.javaReports&quot;&gt;
-      &lt;antTask name=&quot;Text Report&quot; class=&quot;org.ucdetector.report.TextReport&quot;/&gt;
-   &lt;/extension&gt; 
+    &lt;extension point=&quot;org.ucdetector.reports&quot;&gt;
+       &lt;report resultFile=&quot;${reportName}.html&quot; description=&quot;html&quot; id=&quot;html.id&quot; stylesheet=&quot;org/ucdetector/report/html.xslt&quot;&gt;&lt;/report&gt;
+       &lt;report resultFile=&quot;${reportName}.txt&quot;  description=&quot;text&quot; id=&quot;text.id&quot; class=&quot;org.ucdetector.report.TextReport&quot;    &gt;&lt;/report&gt;
+    &lt;/extension&gt;
 &lt;/pre&gt;
 &lt;/p&gt;
       </documentation>
    </annotation>
 
+   <annotation>
+      <appinfo>
+         <meta.section type="apiinfo"/>
+      </appinfo>
+      <documentation>
+         Java Reports must implement the Interface &lt;code&gt;org.ucdetector.report.IUCDetectorReport&lt;/code&gt;
+      </documentation>
+   </annotation>
 
    <annotation>
       <appinfo>

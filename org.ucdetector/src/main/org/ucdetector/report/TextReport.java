@@ -7,17 +7,17 @@
 package org.ucdetector.report;
 
 import java.io.File;
-import java.io.FileWriter;
+import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.OutputStreamWriter;
 
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.jdt.core.IJavaElement;
 import org.eclipse.jdt.core.IMember;
-import org.eclipse.jdt.core.IType;
 import org.ucdetector.Log;
 import org.ucdetector.UCDetectorPlugin;
-import org.ucdetector.preferences.PreferenceInitializer;
+import org.ucdetector.preferences.Prefs;
 import org.ucdetector.util.JavaElementUtil;
 
 /**
@@ -31,12 +31,13 @@ public class TextReport implements IUCDetectorReport {
   private static final String NEW_LINE = System.getProperty("line.separator");
   private static final String TAB = "\t";
   //
-  private final StringBuilder report = new StringBuilder();
-  private ReportExtension reportExtension;
+  private StringBuilder report;
+  private ReportExtension extension;
   private IJavaElement[] objectsToIterate;
 
-  public void startReport(IJavaElement[] objectsToIterate, long startTime) throws CoreException {
-    this.objectsToIterate = objectsToIterate;
+  public void startReport(IJavaElement[] objectsToIterateIn, long startTime) throws CoreException {
+    this.objectsToIterate = objectsToIterateIn;
+    this.report = new StringBuilder();
     report.append("UCDetector Report").append(TAB).append(UCDetectorPlugin.getNow()).append(NEW_LINE);
     appendHeader();
   }
@@ -52,17 +53,7 @@ public class TextReport implements IUCDetectorReport {
 
   public boolean reportMarker(ReportParam reportParam) throws CoreException {
     IMember javaElement = reportParam.getJavaElement();
-    IType type = JavaElementUtil.getTypeFor(javaElement, true);
-    String typeNameFull = JavaElementUtil.getTypeNameFull(type);
-    String member;
-    if (javaElement instanceof IType) {
-      member = "<init>";
-    }
-    else {
-      member = javaElement.getElementName();
-    }
-    String typeName = JavaElementUtil.getElementName(type);
-    String location = String.format("%s.%s(%s.java:%s)", typeNameFull, member, typeName, "" + reportParam.getLine());
+    String location = JavaElementUtil.createJavaLink(javaElement, reportParam.getLine());
     report.append(location).append(TAB);// Location
     report.append(reportParam.getMessage()).append(TAB); // Description
     report.append(JavaElementUtil.getElementName(javaElement)).append(TAB);// Java
@@ -77,16 +68,20 @@ public class TextReport implements IUCDetectorReport {
   }
 
   public void endReport() throws CoreException {
-    // TODO: use report name from reportExtension, fix dir name
-    String reportName = PreferenceInitializer.getReportName(objectsToIterate);
+    writeReportFile();
+  }
 
-    String reportDir = PreferenceInitializer.getReportDir(true);
-    String reportFile = reportExtension.getResultFile();
-    File resultFile = new File(reportDir, reportFile);
-    FileWriter writer = null;
+  private void writeReportFile() {
+    if (!Prefs.isCreateReport(extension)) {
+      return;
+    }
+    String reportName = ReportNameManager.getReportFileName(extension.getResultFile(), objectsToIterate);
+    String reportDir = ReportNameManager.getReportDir(true);
+    File resultFile = new File(reportDir, reportName);
+    OutputStreamWriter writer = null;
     try {
-      writer = new FileWriter(resultFile);
-      writer.append(report);
+      writer = new OutputStreamWriter(new FileOutputStream(resultFile), UCDetectorPlugin.UTF_8);
+      writer.append(report.toString());
       Log.info("Created file: " + resultFile);
     }
     catch (IOException ex) {
@@ -96,6 +91,6 @@ public class TextReport implements IUCDetectorReport {
   }
 
   public void setExtension(ReportExtension reportExtension) {
-    this.reportExtension = reportExtension;
+    this.extension = reportExtension;
   }
 }

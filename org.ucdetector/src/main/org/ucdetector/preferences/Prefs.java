@@ -23,6 +23,7 @@ import org.eclipse.jface.preference.IPreferenceStore;
 import org.ucdetector.Log;
 import org.ucdetector.Log.LogLevel;
 import org.ucdetector.UCDetectorPlugin;
+import org.ucdetector.report.ReportExtension;
 import org.ucdetector.util.JavaElementUtil;
 
 /**
@@ -84,12 +85,11 @@ public final class Prefs {
   //
   static final String ANALYZE_FINAL_FIELD = ID + ".finalField";
   static final String ANALYZE_FINAL_METHOD = ID + ".finalMethod";
-  //
-  static final String REPORT_DIR = ID + ".report.dir";
+  // REPORTS ------------------------------------------------------------------
+  public static final String REPORT_DIR = ID + ".report.dir";
   static final String REPORT_FILE = ID + ".report.file";
-  static final String REPORT_CREATE_HTML = ID + ".report.create.html";
   static final String REPORT_CREATE_XML = ID + ".report.create.xml";
-  static final String REPORT_CREATE_TXT = ID + ".report.create.txt";
+  private static final String REPORT_CREATE_EXTENSION = ID + ".extension";
   //
   public static final String LOG_LEVEL = ID + ".log.level";
   public static final String LOG_TO_ECLIPSE = ID + ".log.toEclipse";
@@ -467,16 +467,8 @@ public final class Prefs {
     return getStore().getString(REPORT_FILE);
   }
 
-  public static boolean isCreateReportHTML() {
-    return getStore().getBoolean(REPORT_CREATE_HTML);
-  }
-
   public static boolean isCreateReportXML() {
     return getStore().getBoolean(REPORT_CREATE_XML);
-  }
-
-  public static boolean isCreateReportTXT() {
-    return getStore().getBoolean(REPORT_CREATE_TXT);
   }
 
   public static LogLevel getLogLevel() {
@@ -495,7 +487,12 @@ public final class Prefs {
    * @return <code>true</code> if we want to create a report file
    */
   public static boolean isWriteReportFile() {
-    return isCreateReportHTML() || isCreateReportXML() || isCreateReportTXT();
+    for (ReportExtension extension : ReportExtension.getAllExtensions()) {
+      if (isCreateReport(extension)) {
+        return true;
+      }
+    }
+    return isCreateReportXML();
   }
 
   // ---------------------------------------------------------------------------
@@ -507,9 +504,10 @@ public final class Prefs {
   }
 
   /**
+   * @param name name of the preference
    * @return never <code>null</code>. Returns "" instead!
    */
-  protected static String getString(String name) {
+  public static String getString(String name) {
     return getStore().getString(name);
   }
 
@@ -578,5 +576,13 @@ public final class Prefs {
   public static int getCycleDepth() {
     int cycleDepth = getStore().getInt(CYCLE_DEPTH);
     return cycleDepth < CYCLE_DEPTH_MIN ? CYCLE_DEPTH_MIN : cycleDepth > CYCLE_DEPTH_MAX ? CYCLE_DEPTH_MAX : cycleDepth;
+  }
+
+  public static String getReportStoreKey(ReportExtension extension) {
+    return REPORT_CREATE_EXTENSION + "." + extension.getId();
+  }
+
+  public static boolean isCreateReport(ReportExtension extension) {
+    return getStore().getBoolean(getReportStoreKey(extension));
   }
 }

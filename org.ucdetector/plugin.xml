@@ -4,7 +4,7 @@
   <!-- =====================================================================
        EXTENSIONS 
        ===================================================================== -->
-   <extension-point id="reports" name="Java Reports" schema="schema/reports.exsd"/>
+   <extension-point id="reports" name="%extension-point.name" schema="schema/reports.exsd"/>
   
   <!-- =====================================================================
        PREFERENCE PAGE 
@@ -454,11 +454,10 @@
    </extension>
 
   <!-- =====================================================================
-       REPORTS
+       UCDETECTOR REPORTS
        ===================================================================== -->
     <extension point="org.ucdetector.reports">
-       <report resultFile="Test_${name}_1.txt" name="Text test 1" class="org.ucdetector.report.TextReport" ></report>
-       <report resultFile="Test_${name}_2.html" name="Html" stylesheet="org/ucdetector/report/html.xslt"></report>
-       <report resultFile="Test_${name}_3.txt" name="Text test 2" stylesheet="org/ucdetector/report/text.xslt" ></report>
+       <report resultFile="${reportName}.html" description="%html.name" id="html.id" stylesheet="org/ucdetector/report/html.xslt"></report>
+       <report resultFile="${reportName}.txt" description="%text.name" id="text.id" class="org.ucdetector.report.TextReport" ></report>
     </extension>
 </plugin>

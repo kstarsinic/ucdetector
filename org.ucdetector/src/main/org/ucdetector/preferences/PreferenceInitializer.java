@@ -10,21 +10,12 @@ package org.ucdetector.preferences;
 import static org.ucdetector.preferences.WarnLevel.IGNORE;
 import static org.ucdetector.preferences.WarnLevel.WARNING;
 
-import java.io.File;
-import java.text.DateFormat;
-import java.text.DecimalFormat;
-import java.text.SimpleDateFormat;
-import java.util.Date;
-import java.util.SortedSet;
-import java.util.TreeSet;
-
-import org.eclipse.core.runtime.Platform;
 import org.eclipse.core.runtime.preferences.AbstractPreferenceInitializer;
-import org.eclipse.jdt.core.IJavaElement;
 import org.eclipse.jface.preference.IPreferenceStore;
-import org.ucdetector.Log;
 import org.ucdetector.Log.LogLevel;
 import org.ucdetector.UCDetectorPlugin;
+import org.ucdetector.report.ReportExtension;
+import org.ucdetector.report.ReportNameManager;
 
 /**
  * Class used to initialize default preference values.
@@ -44,8 +35,6 @@ public class PreferenceInitializer extends AbstractPreferenceInitializer {
   private static final String ANNOATIONS_FILTER = "";
   // feature 2996537: Eclipse Plug-in/Extension detection: added MANIFEST.MF
   private static final String FILE_PATTERN_LITERAL_SEARCH = "*.xml,MANIFEST.MF,";
-  private static final String REPORT_DEFAULT_DIR = "ucdetector_reports";
-  public static final String FILE_NAME_REPLACE_NUMBER = "${number}";
 
   @Override
   public void initializeDefaultPreferences() {
@@ -77,11 +66,14 @@ public class PreferenceInitializer extends AbstractPreferenceInitializer {
     store.setDefault(Prefs.ANALYZE_LITERALS, FILE_PATTERN_LITERAL_SEARCH);
     // CYCLE -------------------------------------------------------------------
     store.setDefault(Prefs.CYCLE_DEPTH, Prefs.CYCLE_DEPTH_DEFAULT);
-    store.setDefault(Prefs.REPORT_DIR, getReportDirDefault());
+    store.setDefault(Prefs.REPORT_DIR, ReportNameManager.getReportDirDefault());
     store.setDefault(Prefs.REPORT_FILE, "UCDetectorReport_${number}");
-    store.setDefault(Prefs.REPORT_CREATE_HTML, true);
+    // REPORT -------------------------------------------------------------------
     store.setDefault(Prefs.REPORT_CREATE_XML, false);
-    store.setDefault(Prefs.REPORT_CREATE_TXT, false);
+    for (ReportExtension extension : ReportExtension.getAllExtensions()) {
+      store.setDefault(Prefs.getReportStoreKey(extension), true);
+    }
+    // LOGGING -------------------------------------------------------------------
     store.setDefault(Prefs.LOG_LEVEL, LogLevel.INFO.toString());
     store.setDefault(Prefs.LOG_TO_ECLIPSE, false);
     // KEYWORDS ----------------------------------------------------------------
@@ -104,85 +96,5 @@ public class PreferenceInitializer extends AbstractPreferenceInitializer {
     store.setDefault(Prefs.ANALYZE_VISIBILITY_PRIVATE_CONSTANTS, WARN);
     //
     store.setDefault(Prefs.MODE_NAME, ModesPanel.Mode.Default.toStringLocalized());
-  }
-
-  // REPORT --------------------------------------------------------------------
-  /**
-   * @param create create directory (only use <code>true</code>, when directory is needed)
-   * @return report directory
-   */
-  public static String getReportDir(boolean create) {
-    String dir = Prefs.getString(Prefs.REPORT_DIR);
-    if (dir.length() == 0) {
-      dir = getReportDirDefault();
-    }
-    File reportDir = new File(dir);
-    //    if (create) {
-    reportDir.mkdirs();
-    //    }
-    return reportDir.getAbsolutePath();
-  }
-
-  private static String getReportDirDefault() {
-    String reportDir;
-    try {
-      File workspaceDir = Platform.getLocation().toFile();
-      reportDir = new File(workspaceDir, REPORT_DEFAULT_DIR).getCanonicalPath();
-    }
-    catch (Exception e) {
-      reportDir = REPORT_DEFAULT_DIR;
-      Log.error("Can't get report file name", e);
-    }
-    // Needed to avoid message: Value must be an existing directory
-    new File(reportDir).mkdirs();
-    return reportDir;
-  }
-
-  private static final DecimalFormat FORMAT_REPORT_NUMBER = new DecimalFormat("000");
-
-  /**
-   * @param objectsToIterate needed to get project name^
-   * @return File name, with does not exist, containing a number.
-   * eg: UCDetectorReport_001
-   */
-  // Fix [2811049]  Html report is overridden each run
-  public static String getReportName(IJavaElement[] objectsToIterate) {
-    String reportFile = Prefs.getReportFile();
-    DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
-    DateFormat timeFormat = new SimpleDateFormat("HHmmss");
-
-    reportFile = reportFile.replace("${project}", getProjectName(objectsToIterate));
-    reportFile = reportFile.replace("${date}", dateFormat.format(new Date()));
-    reportFile = reportFile.replace("${time}", timeFormat.format(new Date()));
-    //
-    File reportDir = new File(PreferenceInitializer.getReportDir(true));
-    if (reportFile.contains(PreferenceInitializer.FILE_NAME_REPLACE_NUMBER)) {
-      String[] files = reportDir.list();
-      files = (files == null) ? new String[0] : files;
-      for (int i = 1; i < 1000; i++) {
-        String number = FORMAT_REPORT_NUMBER.format(i);
-        boolean numberExists = false;
-        for (String file : files) {
-          if (file.contains(number)) {
-            numberExists = true;
-            break;
-          }
-        }
-        if (!numberExists) {
-          return reportFile.replace(PreferenceInitializer.FILE_NAME_REPLACE_NUMBER, number);
-        }
-      }
-    }
-    return reportFile;
-  }
-
-  private static String getProjectName(IJavaElement[] objectsToIterate) {
-    SortedSet<String> projects = new TreeSet<String>();
-    for (IJavaElement element : objectsToIterate) {
-      if (element.getJavaProject() != null) {
-        projects.add(element.getJavaProject().getElementName());
-      }
-    }
-    return projects.size() == 0 ? "unknown_project" : projects.size() == 1 ? projects.first() : "several_projects";
   }
 }
