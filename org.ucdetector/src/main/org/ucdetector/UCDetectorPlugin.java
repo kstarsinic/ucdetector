@@ -64,6 +64,8 @@ import org.ucdetector.preferences.Prefs;
  */
 @SuppressWarnings("nls")
 public class UCDetectorPlugin extends AbstractUIPlugin implements IPropertyChangeListener {
+  public static final String UTF_8 = "UTF-8";
+  //
   private static final int MEGA_BYTE = 1024 * 1024;
   public static final String IMAGE_FINAL = "IMAGE_FINAL";
   public static final String IMAGE_UCD = "IMAGE_UCD";
@@ -377,7 +379,7 @@ public class UCDetectorPlugin extends AbstractUIPlugin implements IPropertyChang
     try {
       InputStream in = isFile ? new FileInputStream(modeFileName) //
           : Prefs.class.getResourceAsStream("modes/" + modeFileName);
-      reader = new BufferedReader(new InputStreamReader(in));
+      reader = new BufferedReader(new InputStreamReader(in, UCDetectorPlugin.UTF_8));
       String line = null;
       while ((line = reader.readLine()) != null) {
         line = line.trim();
