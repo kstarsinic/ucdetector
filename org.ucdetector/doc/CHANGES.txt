@@ -11,6 +11,7 @@ Bugfixes:
 
 
 Todo:
+ - Fix broken text search for member classes (org.ucdetector.UCDetectorConsole.UCDetectorConsoleFactory)
  - [ 3200043 ] Bad marker "test only" for classes used in xml file
  - [ 3191417 ] Change to "protected" should be default
 
