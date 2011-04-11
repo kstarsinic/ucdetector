@@ -7,6 +7,7 @@
 package org.ucdetector;
 
 import java.io.PrintStream;
+import java.io.UnsupportedEncodingException;
 
 import org.eclipse.jface.action.Action;
 import org.eclipse.jface.resource.ImageDescriptor;
@@ -25,10 +26,10 @@ import org.eclipse.ui.console.MessageConsoleStream;
 import org.eclipse.ui.part.IPageBookViewPage;
 
 /**
- * TODO: Describe class
+ * Show ucdetector logging in eclipse console
  * <p>
  * @author Joerg Spieler
- * @since 30.03.2011
+ * @since 2011-03-11
  */
 public class UCDetectorConsole extends MessageConsole {
   private static UCDetectorConsole console;
@@ -51,6 +52,7 @@ public class UCDetectorConsole extends MessageConsole {
     }
   }
 
+  // TODO: Wrong marker here
   public static class UCDetectorConsoleFactory implements IConsoleFactory {
 
     public void openConsole() {
@@ -58,10 +60,17 @@ public class UCDetectorConsole extends MessageConsole {
       boolean exists = false;
       if (console == null) {
         console = new UCDetectorConsole("UCDetector Console", null, true); //$NON-NLS-1$
-        consoleStreamInfo = new PrintStream(console.newMessageStream());
-        MessageConsoleStream messageStream = console.newMessageStream();
-        messageStream.setColor(Display.getDefault().getSystemColor(SWT.COLOR_RED));
-        consoleStreamWarn = new PrintStream(messageStream);
+        MessageConsoleStream infoStream = console.newMessageStream();
+        infoStream.setColor(Display.getDefault().getSystemColor(SWT.COLOR_BLACK));
+        try {
+          consoleStreamInfo = new PrintStream(infoStream, true, UCDetectorPlugin.UTF_8);
+          MessageConsoleStream warnStream = infoStream;
+          warnStream.setColor(Display.getDefault().getSystemColor(SWT.COLOR_RED));
+          consoleStreamWarn = new PrintStream(warnStream, true, UCDetectorPlugin.UTF_8);
+        }
+        catch (UnsupportedEncodingException ex) {
+          UCDetectorPlugin.logToEclipseLog("Can't set encoding", ex); //$NON-NLS-1$
+        }
       }
       else {
         IConsole[] existingConsoles = consoleManager.getConsoles();
@@ -78,6 +87,7 @@ public class UCDetectorConsole extends MessageConsole {
     }
   }
 
+  // TODO: Wrong marker here
   public static class UCDetectorConsolePageParticipant implements IConsolePageParticipant {
 
     public void init(IPageBookViewPage page, IConsole unused) {
