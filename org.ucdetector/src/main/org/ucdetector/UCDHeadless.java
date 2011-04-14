@@ -47,6 +47,7 @@ import org.ucdetector.util.StopWatch;
  */
 @SuppressWarnings("nls")
 public class UCDHeadless {
+  private static final String AUTO_BUILD = "AUTO_BUILD";
   private final UCDProgressMonitor ucdMonitor = new UCDProgressMonitor();
   private final int buildType;
   private final File targetPlatformFile;
@@ -65,7 +66,7 @@ public class UCDHeadless {
     this.report = parseReport(sReport);
     this.resourcesToIterate = resourcesToIterate;
     loadOptions(optionsFile);
-    Log.info("    buildType         : " + (sBuildType == null ? "AUTO_BUILD" : sBuildType));
+    Log.info("    buildType         : " + (sBuildType == null ? AUTO_BUILD : sBuildType));
     Log.info("    optionsFile       : " + (optionsFile == null ? "" : optionsFile.getAbsolutePath()));
     Log.info("    targetPlatformFile: " + (targetPlatformFile == null ? "" : targetPlatformFile.getAbsolutePath()));
     Log.info("    report            : " + report);
@@ -251,7 +252,7 @@ public class UCDHeadless {
 
   /** @see org.eclipse.core.resources.IncrementalProjectBuilder */
   private static int parseBuildType(String buildType) {
-    if (buildType == null || buildType.length() == 0 || "AUTO_BUILD".equals(buildType)) {
+    if (buildType == null || buildType.length() == 0 || AUTO_BUILD.equals(buildType)) {
       return IncrementalProjectBuilder.AUTO_BUILD;
     }
     if ("FULL_BUILD".equals(buildType)) {
@@ -263,7 +264,7 @@ public class UCDHeadless {
     if ("CLEAN_BUILD".equals(buildType)) {
       return IncrementalProjectBuilder.CLEAN_BUILD;
     }
-    Log.warn("Unknown buildType: '%s'. Using: %s", buildType, "AUTO_BUILD");
+    Log.warn("Unknown buildType: '%s'. Using: %s", buildType, AUTO_BUILD);
     return IncrementalProjectBuilder.AUTO_BUILD;
   }
 }
