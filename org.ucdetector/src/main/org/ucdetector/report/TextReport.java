@@ -34,12 +34,20 @@ public class TextReport implements IUCDetectorReport {
   private StringBuilder report;
   private ReportExtension extension;
   private IJavaElement[] objectsToIterate;
+  private int markerCount = 0;
 
   public void startReport(IJavaElement[] objectsToIterateIn, long startTime) throws CoreException {
     this.objectsToIterate = objectsToIterateIn;
     this.report = new StringBuilder();
-    report.append("UCDetector Report").append(TAB).append(UCDetectorPlugin.getNow()).append(NEW_LINE);
+    appendTitle();
     appendHeader();
+  }
+
+  private void appendTitle() {
+    report.append("Created with UCDetector ").append(UCDetectorPlugin.getAboutUCDVersion()).append(TAB);
+    report.append(UCDetectorPlugin.getNow()).append(TAB);
+    report.append("http://www.ucdetector.org/").append(TAB);
+    report.append(NEW_LINE);
   }
 
   private void appendHeader() {
@@ -52,13 +60,14 @@ public class TextReport implements IUCDetectorReport {
   }
 
   public boolean reportMarker(ReportParam reportParam) throws CoreException {
+    markerCount++;
     IMember javaElement = reportParam.getJavaElement();
     String location = JavaElementUtil.createJavaLink(javaElement, reportParam.getLine());
     report.append(location).append(TAB);// Location
     report.append(reportParam.getMessage()).append(TAB); // Description
     report.append(JavaElementUtil.getElementName(javaElement)).append(TAB);// Java
     report.append(reportParam.getMarkerType()).append(TAB);// Marker
-    report.append(reportParam.getAuthor());// Author
+    report.append(reportParam.getAuthorTrimmed());// Author
     report.append(NEW_LINE);
     return true;
   }
@@ -72,7 +81,7 @@ public class TextReport implements IUCDetectorReport {
   }
 
   private void writeReportFile() {
-    if (!Prefs.isCreateReport(extension)) {
+    if (markerCount == 0 || !Prefs.isCreateReport(extension)) {
       return;
     }
     String reportName = ReportNameManager.getReportFileName(extension.getResultFile(), objectsToIterate);

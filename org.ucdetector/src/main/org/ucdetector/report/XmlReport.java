@@ -225,10 +225,8 @@ public class XmlReport implements IUCDetectorReport {
         IField field = (IField) javaElement;
         appendChild(marker, "field", JavaElementUtil.getSimpleFieldName(field)); // NODE: field
       }
-      String author = reportParam.getAuthor();
-      if (author != null) {
-        String trimmedAuthor = author.length() > 70 ? author.substring(0, 70) + "..." : author;
-        appendChild(marker, "author", trimmedAuthor);
+      if (reportParam.getAuthor() != null) {
+        appendChild(marker, "author", reportParam.getAuthorTrimmed());
       }
       appendChild(marker, "description", reportParam.getMessage());// NODE: Change visibility of MixedExample to default
 
