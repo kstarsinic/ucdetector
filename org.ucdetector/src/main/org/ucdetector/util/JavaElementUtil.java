@@ -56,6 +56,10 @@ import org.ucdetector.search.CountSearchRequestor;
  */
 @SuppressWarnings("nls")
 public class JavaElementUtil {
+  /**
+   * 
+   */
+  private static final String UNKNOWN_FIELD = "field?";
   private final static NullProgressMonitor NULL_MONITOR = new NullProgressMonitor();
 
   private JavaElementUtil() {
@@ -534,12 +538,12 @@ public class JavaElementUtil {
   }
 
   public static String getSimpleFieldName(IField field) {
-    return (field == null) ? "field?" : field.getElementName();
+    return (field == null) ? UNKNOWN_FIELD : field.getElementName();
   }
 
   private static String getFieldName(IField field) {
     if (field == null) {
-      return "field?";
+      return UNKNOWN_FIELD;
     }
     return String.format("%s.%s", getTypeName(field.getParent()), field.getElementName());
   }
@@ -715,9 +719,6 @@ public class JavaElementUtil {
   }
 
   public static String getElementNameAndClassName(IJavaElement javaElement) { // NO_UCD
-    if (javaElement == null) {
-      return "null";
-    }
     return String.format("%s\t%s", getElementName(javaElement), getClassName(javaElement));
   }
 
