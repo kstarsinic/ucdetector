@@ -63,6 +63,7 @@ import org.ucdetector.util.MarkerFactory;
  */
 @SuppressWarnings("nls")
 abstract class AbstractUCDQuickFix extends WorkbenchMarkerResolution {
+  private static final String QUICK_FIX_PROBLEMS = "Quick Fix Problems";
   IMarker marker;
   ASTRewrite rewrite;
   IDocument doc;
@@ -128,7 +129,7 @@ abstract class AbstractUCDQuickFix extends WorkbenchMarkerResolution {
       }
     }
     catch (Exception e) {
-      UCDetectorPlugin.logToEclipseLog("Quick Fix Problems", e);
+      UCDetectorPlugin.logToEclipseLog(QUICK_FIX_PROBLEMS, e);
     }
     finally {
       try {
@@ -137,7 +138,7 @@ abstract class AbstractUCDQuickFix extends WorkbenchMarkerResolution {
         }
       }
       catch (CoreException e) {
-        UCDetectorPlugin.logToEclipseLog("Quick Fix Problems", e);
+        UCDetectorPlugin.logToEclipseLog(QUICK_FIX_PROBLEMS, e);
       }
     }
   }
