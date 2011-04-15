@@ -16,16 +16,18 @@
     <!-- When problem here 'Could not load a dependent class (com/jcraft/jsch/Logger) for type scp'
          Fix ant home: ANT_HOME/lib/jsch-0.1.42.jar needed from: http://sourceforge.net/projects/jsch/files/jsch/ 
      -->
-    <scp todir="${todir}" trust="true" verbose="true" >
+    <scp todir="${todir}" trust="true" verbose="true">
       <fileset dir="${basedir}">
-        <!-- IN -->
-        <include name="**" />
-        <!-- EX -->
-        <exclude name=".settings/**" />
-        <exclude name=".project" />
-        <exclude name="build.xml" />
-        <exclude name="*.launch" />
-        <exclude name="_old_releases/**" />
+        <include name="features/*" />
+        <include name="plugins/*" />
+        <include name="web/*" />
+        <include name="web/*" />
+        <include name="artifacts.jar" />
+        <include name="content.jar" />
+        <include name="digest.zip" />
+        <include name="index.html" />
+        <include name="site.xml" />
+        <include name="ucdetector.ico" />
       </fileset>
     </scp>
     <echo>Finished sending udpate site.</echo>
