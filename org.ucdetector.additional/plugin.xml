@@ -91,4 +91,11 @@
 		      includeOnPreferencePage="true"
 		      label="%check.ucd.specification.label"/>
 	</extension>
+ 
+   <!-- =====================================================================
+       UCDETECTOR HEADLESS
+       ===================================================================== -->
+    <extension point="org.ucdetector.headless">
+       <iterator class="org.ucdetector.iterator.CheckUcdMarkerIterator" id="org.ucdetector.additional.check_marker" ordinal="10"></iterator>
+    </extension>
 </plugin>

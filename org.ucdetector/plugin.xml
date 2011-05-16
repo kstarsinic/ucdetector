@@ -5,6 +5,7 @@
        EXTENSIONS 
        ===================================================================== -->
    <extension-point id="reports" name="%extension-point.name" schema="schema/reports.exsd"/>
+   <extension-point id="headless" name="%extension-point.headless.name" schema="schema/headless.exsd"/>
   
   <!-- =====================================================================
        PREFERENCE PAGE 
@@ -459,5 +460,12 @@
     <extension point="org.ucdetector.reports">
        <report resultFile="${reportName}.html" description="%html.name" id="html.id" stylesheet="org/ucdetector/report/html.xslt"></report>
        <report resultFile="${reportName}.txt" description="%text.name" id="text.id" class="org.ucdetector.report.TextReport" ></report>
+    </extension>
+
+  <!-- =====================================================================
+       UCDETECTOR HEADLESS
+       ===================================================================== -->
+    <extension point="org.ucdetector.headless">
+       <iterator class="org.ucdetector.iterator.UCDetectorIterator" id="org.ucdetector.create_marker" ordinal="1"></iterator>
     </extension>
 </plugin>

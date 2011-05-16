@@ -190,7 +190,9 @@ public class UCDHeadless {
     for (IJavaElement javaElement : javaElementsToIterate) {
       Log.info("    " + JavaElementUtil.getElementName(javaElement));//$NON-NLS-1$
     }
-    // Iterate
+    // TODO: Use IteratorExtension
+    // ArrayList<IteratorExtension> iterators = IteratorExtension.getIterators();
+
     if (report == null || Report.eachproject == report) {
       for (IJavaElement javaElement : javaElementsToIterate) {
         AbstractUCDetectorIterator iterator = new UCDetectorIterator();
