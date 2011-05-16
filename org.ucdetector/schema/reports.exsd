@@ -3,7 +3,7 @@
 <schema targetNamespace="org.ucdetector" xmlns="http://www.w3.org/2001/XMLSchema">
 <annotation>
       <appinfo>
-         <meta.schema plugin="org.ucdetector" id="javaReports" name="Java Reports"/>
+         <meta.schema plugin="org.ucdetector" id="reports" name="UCDetector Reports"/>
       </appinfo>
       <documentation>
          Create custom UCDetector reports using a class or a xslt stylesheet
@@ -52,7 +52,8 @@
          <attribute name="resultFile" type="string" use="required">
             <annotation>
                <documentation>
-                  Example: My${reportName}.html &lt;b&gt;Do not use existing file name pattern!&lt;/b&gt;
+                  Example: My${reportName}.html &lt;b&gt;Do not use file name pattern already declared in
+ extension point=&quot;org.ucdetector.reports&quot;&lt;/b&gt;
                </documentation>
             </annotation>
          </attribute>

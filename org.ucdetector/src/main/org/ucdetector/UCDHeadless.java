@@ -33,6 +33,7 @@ import org.eclipse.pde.internal.core.target.provisional.ITargetHandle;
 import org.eclipse.pde.internal.core.target.provisional.ITargetPlatformService;
 import org.eclipse.pde.internal.core.target.provisional.LoadTargetDefinitionJob;
 import org.osgi.framework.Bundle;
+import org.ucdetector.iterator.AbstractUCDetectorIterator;
 import org.ucdetector.iterator.UCDetectorIterator;
 import org.ucdetector.preferences.Prefs;
 import org.ucdetector.search.UCDProgressMonitor;
@@ -192,13 +193,13 @@ public class UCDHeadless {
     // Iterate
     if (report == null || Report.eachproject == report) {
       for (IJavaElement javaElement : javaElementsToIterate) {
-        UCDetectorIterator iterator = new UCDetectorIterator();
+        AbstractUCDetectorIterator iterator = new UCDetectorIterator();
         iterator.setMonitor(ucdMonitor);
         iterator.iterate(new IJavaElement[] { javaElement });
       }
     }
     else {
-      UCDetectorIterator iterator = new UCDetectorIterator();
+      AbstractUCDetectorIterator iterator = new UCDetectorIterator();
       iterator.setMonitor(ucdMonitor);
       iterator.iterate(javaElementsToIterate);
     }
