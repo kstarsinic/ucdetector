@@ -96,7 +96,6 @@ public abstract class AbstractUCDetectorAction extends ActionDelegate { // NO_UC
    * Override, to set custom job properties!
    */
   protected void setJobProperty(Job job) {
-    job.setProperty(IProgressConstants.KEEP_PROPERTY, Boolean.TRUE);
     ImageDescriptor ucdIcon = UCDetectorPlugin.getImageDescriptor(UCDetectorPlugin.IMAGE_UCD);
     job.setProperty(IProgressConstants.ICON_PROPERTY, ucdIcon);
     job.setProperty(IProgressConstants.KEEP_PROPERTY, Boolean.TRUE);
