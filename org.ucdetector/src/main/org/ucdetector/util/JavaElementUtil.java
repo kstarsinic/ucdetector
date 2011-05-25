@@ -159,6 +159,7 @@ public class JavaElementUtil {
    * or return <code>null</code> if there is no type, for example a package
    * has no type.
    */
+  // TODO: Fix NPE's, when this methods returns null!
   public static IType getTypeFor(IJavaElement javaElement, boolean isPrimary) {
     IJavaElement parent = javaElement;
     while (parent != null) {
