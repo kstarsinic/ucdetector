@@ -405,8 +405,9 @@ public class SearchManager {
       return 0;
     }
     IType type = (IType) member;
-    // increase performance: only search public classes and primary classes
-    if (!JavaElementUtil.isPrimary(type) || !Flags.isPublic(type.getFlags())) {
+    // Classes declared in plugin.xml for example must be public!
+    // Search class names in text file now works also for nested classes: com.example.Foo$NestedClass
+    if (type.isAnonymous() || type.isLocal() || !Flags.isPublic(type.getFlags())) {
       return 0;
     }
     String searchInfo = JavaElementUtil.getMemberTypeString(member);

@@ -8,6 +8,8 @@ New features:
 
 Bugfixes:
  - Fixed broken filter '@SuppressWarnings("ucd") = false'
+ - Fixed NPE, when a compilation unit has no primary type
+ - Search class names in text file now works also for nested classes: com.example.Foo$NestedClass
 
 
 Todo:
