@@ -244,4 +244,10 @@ class VisibilityHandler {
   boolean isMaxVisibilityFoundPublic() {
     return visibilityMaxFound == Visibility.PUBLIC;
   }
+
+  @Override
+  public String toString() {
+    return String.format("%s [visibilityStart=%s, visibilityMaxFound=%s]", getClass().getSimpleName(), visibilityStart, //$NON-NLS-1$
+        visibilityMaxFound);
+  }
 }

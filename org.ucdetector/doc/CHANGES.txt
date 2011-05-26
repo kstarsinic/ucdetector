@@ -10,12 +10,13 @@ Bugfixes:
  - Fixed broken filter '@SuppressWarnings("ucd") = false'
  - Fixed NPE, when a compilation unit has no primary type
  - Search class names in text file now works also for nested classes: com.example.Foo$NestedClass
+ - [ 3200043 ] Bad marker "test only" for classes used in xml file
 
 
 Todo:
  - Fix broken text search for member classes (org.ucdetector.UCDetectorConsole.UCDetectorConsoleFactory)
- - [ 3200043 ] Bad marker "test only" for classes used in xml file
  - [ 3191417 ] Change to "protected" should be default
+ - Clean markers broken for Working Set
 
 // -----------------------------------------------------------------------------
 UCDetector 1.7.0 from 2011-02-04 - eclipse 3.5, 3.6, 3.7:

@@ -329,15 +329,20 @@ public class SearchManager {
     VisibilityHandler visibilityHandler = new VisibilityHandler(markerFactory, member);
     UCDSearchRequestor foundResult = searchJavaImpl(member, visibilityHandler);
     int found = foundResult.found;
+    int foundInTextFiles = 0;
+    boolean isTestOnlyMatches = found > 0 && (found == foundResult.foundTest);
+    if (found == 0 || isTestOnlyMatches) {
+      foundInTextFiles = searchTextImpl(member, visibilityHandler);
+    }
     // System.out.println("found: " + found + " - " + foundResult.foundTest);
     boolean created = false;
-    if (found > 0 && (found == foundResult.foundTest)) {
+    if (isTestOnlyMatches && foundInTextFiles == 0) {
       created = markerFactory.createReferenceMarkerTestOnly(member, line);
       if (created) {
         markerCreated++;
       }
     }
-    found += searchTextImpl(member, visibilityHandler, found);
+    found += foundInTextFiles;
     // Fix for BUG 1925549:  Exclude overridden methods from visibility detection
     if (!isOverriddenMethod) {
       created = visibilityHandler.createMarker(line, found);
@@ -395,13 +400,13 @@ public class SearchManager {
   /**
    * Search in text files
    */
-  private int searchTextImpl(IMember member, VisibilityHandler visibilityHandler, int found) throws CoreException {
+  private int searchTextImpl(IMember member, VisibilityHandler visibilityHandler) throws CoreException {
     checkForCancel();
     if (!Prefs.isUCDetectionInLiterals() || !(member instanceof IType)) {
       return 0;
     }
-    // Only search if nothing is found and visibility is public
-    if (found > 0 && visibilityHandler.isMaxVisibilityFoundPublic()) {
+    // Only search if visibility is public
+    if (!Flags.isPublic(member.getFlags())) {
       return 0;
     }
     IType type = (IType) member;
@@ -478,7 +483,6 @@ public class SearchManager {
    * text search in files
    */
   private final static class UCDFileSearchRequestor extends TextSearchRequestor {
-    // TODO: 3200043  Bad marker "test only" for classes used in xml file
     final List<String> matchedFiles = new ArrayList<String>();
     final VisibilityHandler visibilityHandler;
     final String searchString;
@@ -567,7 +571,6 @@ public class SearchManager {
       this.found++;
       IJavaElement matchJavaElement = (IJavaElement) match.getElement();
       //      checkUnusedBoolean(match, matchJavaElement);
-      // TODO: 3200043  Bad marker "test only" for classes used in xml file
       if (Prefs.isDetectTestOnly() && JavaElementUtil.isTestCode(matchJavaElement)) {
         foundTest++;
       }
