@@ -116,6 +116,9 @@ public final class MarkerFactory implements IUCDetectorReport {
   }
 
   public void endReport() throws CoreException {
+    if (!Prefs.isWriteReportFile()) {
+      Log.info("Do not write reports, because no write report option is selected"); //$NON-NLS-1$
+    }
     for (IUCDetectorReport report : reports) {
       report.endReport();
     }
