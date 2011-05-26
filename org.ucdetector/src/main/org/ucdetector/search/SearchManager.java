@@ -162,13 +162,13 @@ public class SearchManager {
         searchSpecific((IField) member);
       }
     }
+    catch (OperationCanceledException ex) {
+      throw ex;
+    }
     //  Fix [ 2810802 ] UCDetector crashes with an Exception
     catch (Exception ex) {
-      if (ex instanceof OperationCanceledException) {
-        throw (OperationCanceledException) ex;
-      }
-      String message = String.format("Problems searching %s %s", // //$NON-NLS-1$
-          JavaElementUtil.getMemberTypeString(member), JavaElementUtil.getElementName(member));
+      String message = String.format("An exception occurred searching %s %s: %s", // //$NON-NLS-1$
+          JavaElementUtil.getMemberTypeString(member), JavaElementUtil.getElementName(member), ex);
       Log.error(message, ex);
       Status status = new Status(IStatus.ERROR, UCDetectorPlugin.ID, IStatus.ERROR, message, ex);
       markerFactory.reportDetectionProblem(status);
