@@ -52,7 +52,6 @@ public class UCDetectorConsole extends MessageConsole {
     }
   }
 
-  // TODO: Wrong marker here
   public static class UCDetectorConsoleFactory implements IConsoleFactory {
 
     public void openConsole() {
@@ -87,7 +86,6 @@ public class UCDetectorConsole extends MessageConsole {
     }
   }
 
-  // TODO: Wrong marker here
   public static class UCDetectorConsolePageParticipant implements IConsolePageParticipant {
 
     public void init(IPageBookViewPage page, IConsole unused) {
