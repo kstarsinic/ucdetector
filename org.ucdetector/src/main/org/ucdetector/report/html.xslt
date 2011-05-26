@@ -225,7 +225,8 @@ ECLIPSE_HOME/dropins/org.ucdetector_*.jar/org/ucdetector/report/html.xslt
 				     =============================================================== -->
 				<xsl:if test="count(/ucdetector/problems/problem) &gt; 0">
 					<h3>
-						<font color="red">Problems during Detection</font>
+						<font color="red">
+							<xsl:value-of select="count(/ucdetector/problems/problem)"/> Exceptions found during detection</font>
 					</h3>
 					<ul>
 						<xsl:for-each select="/ucdetector/problems/problem">
