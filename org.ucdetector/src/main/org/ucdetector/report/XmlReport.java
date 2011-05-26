@@ -13,7 +13,6 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.io.OutputStreamWriter;
-import java.io.PrintWriter;
 import java.io.StringWriter;
 import java.util.ArrayList;
 import java.util.Map.Entry;
@@ -278,14 +277,7 @@ public class XmlReport implements IUCDetectorReport {
     Element problem = doc.createElement("problem");
     problems.appendChild(problem);
     appendChild(problem, "status", status.toString());
-    Throwable ex = status.getException();
-    String exString = "";
-    if (ex != null) {
-      StringWriter writer = new StringWriter();
-      ex.printStackTrace(new PrintWriter(writer));
-      exString = writer.toString().replace("\r\n", "\n");
-    }
-    appendChild(problem, "exception", exString);
+    appendChild(problem, "exception", UCDetectorPlugin.exceptionToString(status.getException()));
   }
 
   /** Create a <code>Status</code> and log it to the Eclipse log */
