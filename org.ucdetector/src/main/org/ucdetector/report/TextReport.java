@@ -10,6 +10,8 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStreamWriter;
+import java.util.ArrayList;
+import java.util.List;
 
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IStatus;
@@ -35,12 +37,19 @@ public class TextReport implements IUCDetectorReport {
   private ReportExtension extension;
   private IJavaElement[] objectsToIterate;
   private int markerCount = 0;
+  private final List<IStatus> detectionProblems = new ArrayList<IStatus>();
 
   public void startReport(IJavaElement[] objectsToIterateIn, long startTime) throws CoreException {
     this.objectsToIterate = objectsToIterateIn;
-    this.report = new StringBuilder();
+    reset();
     appendTitle();
     appendHeader();
+  }
+
+  private void reset() {
+    this.report = new StringBuilder();
+    this.detectionProblems.clear();
+    this.markerCount = 0;
   }
 
   private void appendTitle() {
@@ -73,10 +82,17 @@ public class TextReport implements IUCDetectorReport {
   }
 
   public void reportDetectionProblem(IStatus status) {
-    //
+    detectionProblems.add(status);
   }
 
   public void endReport() throws CoreException {
+    if (!detectionProblems.isEmpty()) {
+      report.append(NEW_LINE).append(detectionProblems.size()).append(" Exceptions found during detection");
+    }
+    for (IStatus status : detectionProblems) {
+      report.append(NEW_LINE);
+      report.append(UCDetectorPlugin.exceptionToString(status.getException()));
+    }
     writeReportFile();
   }
 
