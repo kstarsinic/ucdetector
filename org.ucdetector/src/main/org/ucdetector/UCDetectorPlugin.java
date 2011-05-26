@@ -14,6 +14,8 @@ import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.io.PrintWriter;
+import java.io.StringWriter;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Arrays;
@@ -337,6 +339,16 @@ public class UCDetectorPlugin extends AbstractUIPlugin implements IPropertyChang
     if (property.equals(Prefs.LOG_TO_ECLIPSE)) {
       Log.setLogToEclipse(Boolean.parseBoolean(newValue));
     }
+  }
+
+  public static String exceptionToString(Throwable ex) {
+    if (ex == null) {
+      return null;
+    }
+    StringWriter writer = new StringWriter();
+    ex.printStackTrace(new PrintWriter(writer));
+    // Needed??? writer.toString().replace("\r\n", "\n");
+    return writer.toString();
   }
 
   /** @return WORKSPACE/.metadata/.plugins/org.ucdetector/modes */
