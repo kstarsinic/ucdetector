@@ -161,21 +161,28 @@ public class JavaElementUtil {
    */
   // TODO: Fix NPE's, when this methods returns null!
   public static IType getTypeFor(IJavaElement javaElement, boolean isPrimary) {
+    IType result = null;
     IJavaElement parent = javaElement;
     while (parent != null) {
       if (parent instanceof IType) {
-        IType type = (IType) parent;
-        if (isPrimary && type.getCompilationUnit() != null) {
-          return type.getCompilationUnit().findPrimaryType();
-        }
-        return type;
+        result = (IType) parent;
+        break;
       }
       if (parent instanceof ICompilationUnit) {
-        return ((ICompilationUnit) parent).findPrimaryType();
+        result = ((ICompilationUnit) parent).findPrimaryType();
+        break;
       }
       parent = parent.getParent();
     }
-    return null;
+    if (isPrimary && result != null && result.getCompilationUnit() != null) {
+      IType primaryType = result.getCompilationUnit().findPrimaryType();
+      if (primaryType != null) {
+        // Avoid return null for missing primary type.
+        // Eg: Foo.java contains only class Bar
+        result = primaryType;
+      }
+    }
+    return result;
   }
 
   /**
