@@ -7,11 +7,10 @@
  */
 package org.ucdetector.action;
 
-import java.util.Collection;
-import java.util.LinkedHashSet;
+import java.util.ArrayList;
 import java.util.List;
-import java.util.Set;
 
+import org.eclipse.core.resources.IProject;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IAdaptable;
 import org.eclipse.core.runtime.IProgressMonitor;
@@ -20,6 +19,7 @@ import org.eclipse.core.runtime.Status;
 import org.eclipse.core.runtime.jobs.Job;
 import org.eclipse.jdt.core.IJavaElement;
 import org.eclipse.jdt.core.IJavaProject;
+import org.eclipse.jdt.core.JavaCore;
 import org.eclipse.jface.action.IAction;
 import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.jface.resource.ImageDescriptor;
@@ -31,7 +31,6 @@ import org.eclipse.ui.IWorkingSet;
 import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.actions.ActionDelegate;
 import org.eclipse.ui.progress.IProgressConstants;
-import org.ucdetector.Log;
 import org.ucdetector.Messages;
 import org.ucdetector.UCDetectorPlugin;
 import org.ucdetector.iterator.AbstractUCDetectorIterator;
@@ -45,7 +44,7 @@ import org.ucdetector.search.UCDProgressMonitor;
  */
 // Don't change visibility to default!
 public abstract class AbstractUCDetectorAction extends ActionDelegate { // NO_UCD
-  private IJavaElement[] selections;
+  private final List<Object> selections = new ArrayList<Object>();
 
   @Override
   public void runWithEvent(IAction action, Event event) {
@@ -92,114 +91,103 @@ public abstract class AbstractUCDetectorAction extends ActionDelegate { // NO_UC
     job.schedule();
   }
 
-  /**
-   * Override, to set custom job properties!
-   */
+  /** Override, to set custom job properties!   */
   protected void setJobProperty(Job job) {
     ImageDescriptor ucdIcon = UCDetectorPlugin.getImageDescriptor(UCDetectorPlugin.IMAGE_UCD);
     job.setProperty(IProgressConstants.ICON_PROPERTY, ucdIcon);
     job.setProperty(IProgressConstants.KEEP_PROPERTY, Boolean.TRUE);
   }
 
-  /**
-   * get iterator for the action
-   */
+  /** Get iterator for the action   */
   protected abstract AbstractUCDetectorIterator createIterator();
 
-  /**
-   * override to do something after iteration, for example show a dialog
-   */
+  /** Override to do something after iteration, for example show a dialog */
   protected IStatus postIteration() {
     return null;
   }
 
-  /**
-   * Disable / enable action
-   */
+  /** Disable / enable action */
   @Override
   public void selectionChanged(IAction action, ISelection selection) {
     // System.out.println("action=" + action.getText());
     if (action != null) {
-      setSelections(getSelectedJavaElements(selection));
+      getSelectedJavaElements(selection);
       PlatformUI.getWorkbench().getHelpSystem().setHelp(action, UCDetectorPlugin.HELP_ID);
       handleJavaElementSelections(action);
     }
   }
 
-  //  /**
-  //   * @return <code>true</code> when all javaElements are accessible.
-  //   *         Accessibility is necessary to create markers.
-  //   */
-  //  private final boolean allAccessible() { // 
-  //    for (IJavaElement javaElement : selections) {
-  //      try {
-  //        if (!javaElement.exists()) {
-  //          return true;
-  //        }
-  //        if (javaElement instanceof IMember) {
-  //          return !((IMember) javaElement).isBinary();
-  //        }
-  //        if (javaElement instanceof IPackageFragmentRoot) {
-  //          IPackageFragmentRoot pfr = (IPackageFragmentRoot) javaElement;
-  //          return pfr.getKind() != IPackageFragmentRoot.K_BINARY;
-  //        }
-  //        IResource resource = javaElement.getCorrespondingResource();
-  //        if (resource == null || !resource.isAccessible()) {
-  //          return false;
-  //        }
-  //      }
-  //      catch (JavaModelException e) {
-  //        Log.error("Can't get allAccessible for javaElement: " + javaElement, e); //$NON-NLS-1$
-  //        return false;
-  //      }
-  //    }
-  //    return true;
-  //  }
+  private void getSelectedJavaElements(ISelection selection) {
+    selections.clear();
+    if (selection instanceof IStructuredSelection) {
+      List<?> structered = ((IStructuredSelection) selection).toList();
+      for (Object selectedObject : structered) {
+        // Log.debug("selectedObject: " + selectedObject.getClass().getName()); //$NON-NLS-1$
+        if (selectedObject instanceof IJavaElement) {
+          selections.add(selectedObject);
+        }
+        else if (selectedObject instanceof IWorkingSet) {
+          IAdaptable[] workingSetProjects = ((IWorkingSet) selectedObject).getElements();
+          for (IAdaptable workingSetProject : workingSetProjects) {
+            if (workingSetProject instanceof IProject) {
+              selections.add(workingSetProject);
+            }
+          }
+        }
+      }
+    }
+  }
 
-  /**
-   * enable/disable action. Default Behavior: enabled for all java elements
-   */
+  /** Enable/disable action. Default Behavior: enabled for all java elements   */
   protected void handleJavaElementSelections(IAction action) {// 
     action.setEnabled(true/*allAccessible()*/);
   }
 
-  private Set<IJavaElement> getSelectedJavaElements(ISelection selection) {
-    Set<IJavaElement> result = new LinkedHashSet<IJavaElement>();
-    if (!(selection instanceof IStructuredSelection)) {
-      Log.warn("Selection is no IStructuredSelection: " + selection); //$NON-NLS-1$
-      return result;
-    }
-    List<?> structered = ((IStructuredSelection) selection).toList();
-    for (Object selectedObject : structered) {
-      // Log.debug("selectedObject: " + selectedObject.getClass().getName()); //$NON-NLS-1$
-      if (selectedObject instanceof IJavaElement) {
-        result.add((IJavaElement) selectedObject);
+  /** @return never <code>null</code> */
+  // Create javaProject lazy, because selectionChanged() is called frequently
+  protected IJavaElement[] getSelections() {
+    List<IJavaElement> result = new ArrayList<IJavaElement>();
+    for (Object selection : selections) {
+      if (selection instanceof IJavaElement) {
+        result.add((IJavaElement) selection);
       }
-      else if (selectedObject instanceof IWorkingSet) {
-        IAdaptable[] workingSetProjects = ((IWorkingSet) selectedObject).getElements();
-        for (IAdaptable workingSetProject : workingSetProjects) {
-          Log.debug("    workingSetProject: " + workingSetProject.getClass().getName()); //$NON-NLS-1$
-          if (workingSetProject instanceof IJavaProject) {
-            result.add((IJavaProject) workingSetProject);
-          }
-          else {
-            Log.debug("Ignore WorkingSet child: %s (no JavaProject, or closed)", workingSetProject); //$NON-NLS-1$
-          }
+      else if (selection instanceof IProject) {
+        IProject project = (IProject) selection;
+        IJavaProject javaProject = JavaCore.create(project);
+        if (javaProject.exists()) {
+          result.add(javaProject);
         }
       }
-      else {
-        Log.debug("Ignore selected object: %s (no IJavaElement, no IWorkingSet)", selectedObject); //$NON-NLS-1$
-      }
     }
-    return result;
-  }
-
-  private void setSelections(Collection<IJavaElement> selections) {
-    this.selections = selections.toArray(new IJavaElement[selections.size()]);
-  }
-
-  /** @return never <code>null</code> */
-  protected IJavaElement[] getSelections() {
-    return selections;
+    return result.toArray(new IJavaElement[result.size()]);
   }
 }
+//  /**
+//   * @return <code>true</code> when all javaElements are accessible.
+//   *         Accessibility is necessary to create markers.
+//   */
+//  private final boolean allAccessible() { // 
+//    for (IJavaElement javaElement : selections) {
+//      try {
+//        if (!javaElement.exists()) {
+//          return true;
+//        }
+//        if (javaElement instanceof IMember) {
+//          return !((IMember) javaElement).isBinary();
+//        }
+//        if (javaElement instanceof IPackageFragmentRoot) {
+//          IPackageFragmentRoot pfr = (IPackageFragmentRoot) javaElement;
+//          return pfr.getKind() != IPackageFragmentRoot.K_BINARY;
+//        }
+//        IResource resource = javaElement.getCorrespondingResource();
+//        if (resource == null || !resource.isAccessible()) {
+//          return false;
+//        }
+//      }
+//      catch (JavaModelException e) {
+//        Log.error("Can't get allAccessible for javaElement: " + javaElement, e); //$NON-NLS-1$
+//        return false;
+//      }
+//    }
+//    return true;
+//  }
