@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="ISO-8859-1"?>
 <!--
- Copyright (c) 2010 Joerg Spieler All rights reserved. This program and the
+ Copyright (c) 2011 Joerg Spieler All rights reserved. This program and the
  accompanying materials are made available under the terms of the Eclipse
  Public License v1.0 which accompanies this distribution, and is available at
  http://www.eclipse.org/legal/epl-v10.html
@@ -10,7 +10,7 @@
 	<xsl:output encoding="UTF-8" indent="yes" method="html" doctype-public="-//W3C//DTD HTML 4.01 Transitional//EN" doctype-system="http://www.w3.org/TR/html4/transitional.dtd" />
 	<xsl:template match="/">
 		<xsl:comment>
- Copyright (c) 2010 Joerg Spieler All rights reserved. This program and the
+ Copyright (c) 2011 Joerg Spieler All rights reserved. This program and the
  accompanying materials are made available under the terms of the Eclipse
  Public License v1.0 which accompanies this distribution, and is available at
  http://www.eclipse.org/legal/epl-v10.html
@@ -28,7 +28,11 @@ ECLIPSE_HOME/dropins/org.ucdetector_*.jar/org/ucdetector/report/html.xslt
 			</head>
 			<body bgcolor="#FFFFE0">
 				<h2 align="center">
-					<img src=".icons/ucdetector32.png" alt="UCDetector"/>UCDetector Report</h2>
+					<a href="http://www.ucdetector.org/">
+						<img src=".icons/ucdetector32.png" alt="UCDetector homepage" border="0"/>
+					</a>
+					<xsl:text>UCDetector Report</xsl:text>
+				</h2>
 				
 				<table border="0"><!-- top table containing columns for about, preferences, searched in -->
 					<tr>
