@@ -398,7 +398,9 @@ public class XmlReport implements IUCDetectorReport {
       }
       long duration = System.currentTimeMillis() - start;
       Log.info("Created reports in: %s", StopWatch.timeAsString(duration));
-      logEndReportMessage(Messages.XMLReport_WriteOk, IStatus.INFO, null, String.valueOf(markerCount), reportPath);
+      if (isEndReport) {
+        logEndReportMessage(Messages.XMLReport_WriteOk, IStatus.INFO, null, String.valueOf(markerCount), reportPath);
+      }
     }
     catch (Exception e) {
       logEndReportMessage(Messages.XMLReport_WriteError, IStatus.ERROR, e, reportPath);
