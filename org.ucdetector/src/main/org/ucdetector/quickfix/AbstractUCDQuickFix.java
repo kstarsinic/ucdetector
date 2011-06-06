@@ -179,7 +179,7 @@ abstract class AbstractUCDQuickFix extends WorkbenchMarkerResolution {
   /**
    * @return copy of CompilationUnit, which is used for manipulation
    */
-  private CompilationUnit createCopy(ICompilationUnit unit) throws JavaModelException {
+  private static CompilationUnit createCopy(ICompilationUnit unit) throws JavaModelException {
     unit.becomeWorkingCopy(null);
     ASTParser parser = ASTParser.newParser(AST.JLS3);
     parser.setSource(unit);

@@ -50,14 +50,14 @@ class VisibilityHandler {
     visibilityStart = calculateVisibilityStart(startElement);
   }
 
-  private Visibility calculateVisibilityStart(IMember startElementInput) throws JavaModelException {
+  private static Visibility calculateVisibilityStart(IMember startElementInput) throws JavaModelException {
     Visibility vRootType = getVisibiliyRootType(startElementInput);
     Visibility vStart = getVisibility(startElementInput);
     // Bug 2864046: public methods of non-public classes
     return vRootType.value < vStart.value ? vRootType : vStart;
   }
 
-  private Visibility getVisibility(IMember element) throws JavaModelException {
+  private static Visibility getVisibility(IMember element) throws JavaModelException {
     int flags = element.getFlags();
     if (Flags.isPublic(flags)) {
       return Visibility.PUBLIC;
@@ -71,7 +71,7 @@ class VisibilityHandler {
     return Visibility.PRIVATE;
   }
 
-  private Visibility getVisibiliyRootType(IMember element) throws JavaModelException {
+  private static Visibility getVisibiliyRootType(IMember element) throws JavaModelException {
     IType rootType = JavaElementUtil.getRootTypeFor(element);
     return rootType == null ? Visibility.PUBLIC : getVisibility(rootType);
   }
@@ -192,7 +192,7 @@ class VisibilityHandler {
     return markerFactory.createVisibilityMarker(startElement, markerType, line);
   }
 
-  private boolean hasPublicChild(IType type) throws JavaModelException {
+  private static boolean hasPublicChild(IType type) throws JavaModelException {
     for (IJavaElement element : type.getChildren()) {
       if (element instanceof IMember) {
         if (Flags.isPublic(((IMember) element).getFlags())) {

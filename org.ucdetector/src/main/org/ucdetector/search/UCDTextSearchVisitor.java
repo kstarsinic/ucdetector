@@ -178,7 +178,7 @@ class UCDTextSearchVisitor {
     return true;
   }
 
-  private boolean hasBinaryContent(CharSequence seq, IFile file) throws CoreException {
+  private static boolean hasBinaryContent(CharSequence seq, IFile file) throws CoreException {
     IContentDescription desc = file.getContentDescription();
     if (desc != null) {
       IContentType contentType = desc.getContentType();

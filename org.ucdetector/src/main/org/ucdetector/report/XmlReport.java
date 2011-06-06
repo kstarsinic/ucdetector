@@ -414,7 +414,7 @@ public class XmlReport implements IUCDetectorReport {
       "VisibilityDefault.gif", "VisibilityPrivate.gif", "VisibilityProtected.gif", //
   };
 
-  private void copyIconFiles(File reportDir) {
+  private static void copyIconFiles(File reportDir) {
     try {
       File iconsOutDir = new File(reportDir, ".icons");
       iconsOutDir.mkdirs();
@@ -436,7 +436,7 @@ public class XmlReport implements IUCDetectorReport {
     }
   }
 
-  private void copyToIconDir(Path iconPath, String iconName, File outFile, Bundle bundle) throws IOException {
+  private static void copyToIconDir(Path iconPath, String iconName, File outFile, Bundle bundle) throws IOException {
     if (!outFile.exists()) {
       InputStream inStream = FileLocator.openStream(bundle, iconPath.append(iconName), false);
       copyStream(inStream, new FileOutputStream(outFile));

@@ -131,7 +131,7 @@ public class SearchManager {
         JavaElementUtil.getTypeName(container.getType()), UCDetectorPlugin.getNow());
   }
 
-  private void logStart(Set<TypeContainer> typeContainers) {
+  private static void logStart(Set<TypeContainer> typeContainers) {
     int methodsToDetect = 0;
     int fieldsToDetect = 0;
     for (TypeContainer container : typeContainers) {
@@ -293,7 +293,7 @@ public class SearchManager {
     }
   }
 
-  private void logIgnore(String message) {
+  private static void logIgnore(String message) {
     if (Log.isDebug()) {
       Log.debug(message);
     }
@@ -527,12 +527,12 @@ public class SearchManager {
       return true;
     }
 
-    private char getCharBefore(TextSearchMatchAccess match) {
+    private static char getCharBefore(TextSearchMatchAccess match) {
       int offset = match.getMatchOffset();
       return (offset == 0) ? '\n' : match.getFileContentChar(offset - 1);
     }
 
-    private char getCharAfter(TextSearchMatchAccess match) {
+    private static char getCharAfter(TextSearchMatchAccess match) {
       int offset = match.getMatchOffset();
       int length = match.getMatchLength();
       boolean fileEnd = (offset + length) >= match.getFileContentLength();

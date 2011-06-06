@@ -141,7 +141,7 @@ public class CheckUcdMarkerIterator extends AbstractUCDetectorIterator {
   /**
    * Parse the java code
    */
-  private Set<LineNrComments> getLineNumbersMarkersExpected(ICompilationUnit unit) throws CoreException,
+  private static Set<LineNrComments> getLineNumbersMarkersExpected(ICompilationUnit unit) throws CoreException,
       InvalidInputException {
     IScanner scanner = ToolFactory.createScanner(true, false, false, true);
     scanner.setSource(unit.getBuffer().getCharacters());

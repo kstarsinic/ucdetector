@@ -277,7 +277,7 @@ class ModesPanel {
   }
 
   /** Nice key value formatting only */
-  private void flushGroupPrefs(Map<String, String> groupPrefs, StringBuilder sb) {
+  private static void flushGroupPrefs(Map<String, String> groupPrefs, StringBuilder sb) {
     int maxKeyLength = 0;
     for (String key : groupPrefs.keySet()) {
       maxKeyLength = Math.max(maxKeyLength, key.length());
@@ -360,7 +360,7 @@ class ModesPanel {
     }
   }
 
-  private void addAll(PreferenceStore tempReplaceStore, Map<String, String> allPreferences) {
+  private static void addAll(PreferenceStore tempReplaceStore, Map<String, String> allPreferences) {
     Set<Entry<String, String>> entrySet = allPreferences.entrySet();
     for (Entry<String, String> entry : entrySet) {
       tempReplaceStore.putValue(entry.getKey(), entry.getValue());

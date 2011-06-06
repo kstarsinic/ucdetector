@@ -127,7 +127,7 @@ public class CountIterator extends AbstractUCDetectorIterator {
     return sb.toString();
   }
 
-  private void appendLine(StringBuilder sb, String info, int count) {
+  private static void appendLine(StringBuilder sb, String info, int count) {
     sb.append(String.format("%n\t%s\t=\t%s", info, Integer.valueOf(count))); //$NON-NLS-1$
   }
 

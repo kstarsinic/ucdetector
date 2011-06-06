@@ -37,7 +37,7 @@ public class MarkerReport implements IUCDetectorReport {
   private final List<ReportParam> markersToFlash = new ArrayList<ReportParam>();
   private int totalMarkerCount = 0;
 
-  private void createMarker(ReportParam reportParam) throws CoreException {
+  private static void createMarker(ReportParam reportParam) throws CoreException {
     WarnLevel level = reportParam.getLevel();
     if (level == WarnLevel.IGNORE) {
       return;
