@@ -27,7 +27,6 @@ Bundle-ActivationPolicy: lazy
 Bundle-ClassPath: .
 Export-Package: org.ucdetector,
  org.ucdetector.action,
- org.ucdetector.ant,
  org.ucdetector.cycle,
  org.ucdetector.cycle.model,
  org.ucdetector.iterator,

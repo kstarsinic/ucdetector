@@ -419,7 +419,7 @@ public class SearchManager {
 
     updateMonitorMessage(type, Messages.SearchManager_SearchClassNameAsLiteral, searchInfo);
     FileTextSearchScope scope = FileTextSearchScope.newWorkspaceScope(Prefs.getFilePatternLiteralSearch(), /*exclude bin dir */
-    false);
+        false);
     List<String> searchStrings = new ArrayList<String>();
     if (Prefs.isUCDetectionInLiteralsFullClassName()) {
       String fullClassName = type.getFullyQualifiedName();
