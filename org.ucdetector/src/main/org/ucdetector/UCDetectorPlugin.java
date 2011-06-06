@@ -99,7 +99,7 @@ public class UCDetectorPlugin extends AbstractUIPlugin implements IPropertyChang
     plugin = this;
   }
 
-  private void dumpInformation() {
+  private static void dumpInformation() {
     Log.info(SEPARATOR);
     Log.info("Starting UCDetector Plug-In version " + getAboutUCDVersion());
     Log.info(SEPARATOR);

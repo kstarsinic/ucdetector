@@ -47,7 +47,7 @@ public class UCDApplication implements IApplication {
     return IApplication.EXIT_OK;
   }
 
-  private void logExists(File file) {
+  private static void logExists(File file) {
     Log.info("To change detection, %s: %s", file.exists() ? "edit" : "create", file.getAbsolutePath());
   }
 

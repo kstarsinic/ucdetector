@@ -207,7 +207,7 @@ public class UCDHeadless {
     }
   }
 
-  private List<IJavaProject> createProjects(IProgressMonitor monitor, IWorkspaceRoot workspaceRoot)
+  private static List<IJavaProject> createProjects(IProgressMonitor monitor, IWorkspaceRoot workspaceRoot)
       throws CoreException {
     List<IJavaProject> projects = new ArrayList<IJavaProject>();
     File rootDir = workspaceRoot.getLocation().toFile();

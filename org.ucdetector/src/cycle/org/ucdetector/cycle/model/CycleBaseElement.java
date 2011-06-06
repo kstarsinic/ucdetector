@@ -21,7 +21,7 @@ public abstract class CycleBaseElement {
   //  private static final ILabelProvider LABEL_PROVIDER_DELEGAT //
   //  = new JavaElementLabelProvider(LABLEL_FLAGS); // OR
   //
-  protected final Image getImage(String id) {
+  protected final static Image getImage(String id) {
     return PlatformUI.getWorkbench().getSharedImages().getImage(id);
   }
 
