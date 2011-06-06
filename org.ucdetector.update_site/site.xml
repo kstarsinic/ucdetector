@@ -4,7 +4,7 @@
    <description name="UCDetector update site" url="http://ucdetector.sourceforge.net/update">
       UCDetector update site
    </description>
-   <feature url="features/org.ucdetector.feature_1.7.0.jar" id="org.ucdetector.feature" version="1.7.0">
+   <feature url="features/org.ucdetector.feature_1.8.0.jar" id="org.ucdetector.feature" version="1.8.0">
       <category name="UCDetector"/>
    </feature>
    <category-def name="UCDetector" label="UCDetector">
