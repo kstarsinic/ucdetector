@@ -56,6 +56,7 @@ import org.ucdetector.util.JavaElementUtil;
 import org.ucdetector.util.JavaElementUtil.MemberInfo;
 import org.ucdetector.util.MarkerFactory;
 import org.ucdetector.util.StopWatch;
+import org.w3c.dom.Comment;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
@@ -138,12 +139,12 @@ public class XmlReport implements IUCDetectorReport {
     }
     try {
       doc = DocumentBuilderFactory.newInstance().newDocumentBuilder().newDocument();
-      // Add <?xml-stylesheet type="text/xsl" href="html.xslt" ?>
-      // ProcessingInstruction instruction = doc.createProcessingInstruction("xml-stylesheet", "type=\"text/xsl\" HREF=\"html.xslt\"");
-      // doc.insertBefore(instruction, doc.getDocumentElement());
+      // doc.insertBefore(doc.createProcessingInstruction("xml-stylesheet", "type=\"text/xsl\" HREF=\"html.xslt\""), doc.getDocumentElement());
       Element root = doc.createElement("ucdetector");
-      root.appendChild(doc.createComment(COPY_RIGHT));
+      Comment styleComment = doc.createComment("\n<?xml-stylesheet type=\"text/xsl\" href=\"html.xslt\" ?>\n");
+      doc.appendChild(styleComment);
       doc.appendChild(root);
+      root.appendChild(doc.createComment(COPY_RIGHT));
       //
       statistcs = doc.createElement("statistics");
       root.appendChild(statistcs);

@@ -91,7 +91,13 @@ public class ReportExtension {
         String clazz = report.getAttribute(ATTRIBUTE_CLASS);
         String id = report.getAttribute(ATTRIBUTE_REPORT_ID);
         if (xslt != null && clazz == null) {
-          xsltExtensions.add(new ReportExtension(resultFile, name, xslt, null, id));
+          boolean xsltFound = ReportExtension.class.getClassLoader().getResourceAsStream(xslt) != null;
+          if (xsltFound) {
+            xsltExtensions.add(new ReportExtension(resultFile, name, xslt, null, id));
+          }
+          else if (xslt.endsWith("custom.xslt")) { //$NON-NLS-1$
+            Log.info("Tip: To create custom reports rename file to custom.xslt: org.ucdetector_x.y.z.jar/org/ucdetector/report/__custom.xslt"); //$NON-NLS-1$
+          }
         }
         else if (xslt == null && clazz != null) {
           try {

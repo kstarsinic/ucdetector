@@ -136,6 +136,8 @@ ECLIPSE_HOME/dropins/org.ucdetector_*.jar/org/ucdetector/report/html.xslt
 							<th>References**</th>
 							<th>Author</th>
 							<th>Location*</th>
+							<th>Java type</th>
+							<th>Marker type</th>
 						</tr>
 					</thead>
 					<xsl:for-each select="/ucdetector/markers/marker">
@@ -211,6 +213,14 @@ ECLIPSE_HOME/dropins/org.ucdetector_*.jar/org/ucdetector/report/html.xslt
 
 								<!-- Link in Eclipse Stack Trace Console View: (SWT.java:3634) -->
 								<xsl:value-of select="concat('(', class, '.java:', @line, ')')"/>
+							<!-- Java type -->
+							<td align="right">
+								<xsl:value-of select="javaType/@long"/>
+							</td>
+							<!-- Marker type -->
+							<td align="right">
+								<xsl:value-of select="@markerType"/>
+							</td>
 							</td>
 						</tr>
 					</xsl:for-each>
