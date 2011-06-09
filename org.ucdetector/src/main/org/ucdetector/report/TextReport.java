@@ -72,11 +72,11 @@ public class TextReport implements IUCDetectorReport {
     markerCount++;
     IMember javaElement = reportParam.getJavaElement();
     String location = JavaElementUtil.createJavaLink(javaElement, reportParam.getLine());
-    report.append(location).append(TAB);// Location
-    report.append(reportParam.getMessage()).append(TAB); // Description
-    report.append(JavaElementUtil.getElementName(javaElement)).append(TAB);// Java
-    report.append(reportParam.getMarkerType()).append(TAB);// Marker
-    report.append(reportParam.getAuthorTrimmed());// Author
+    report.append(location).append(TAB);/*                                   */// Location
+    report.append(reportParam.getMessage()).append(TAB); /*                  */// Description
+    report.append(JavaElementUtil.getElementName(javaElement)).append(TAB);/**/// Java
+    report.append(reportParam.getMarkerType()).append(TAB);/*                */// Marker
+    report.append(reportParam.getAuthorTrimmed());/*                         */// Author
     report.append(NEW_LINE);
     return true;
   }
