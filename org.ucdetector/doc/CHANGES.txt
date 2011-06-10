@@ -12,10 +12,10 @@ Bugfixes:
  - Fixed NPE, when a compilation unit has no primary type
  - Search class names in text file now works also for nested classes: com.example.Foo$NestedClass
  - [ 3200043 ] Bad marker "test only" for classes used in xml file
+ - [ 3191417 ] Change to "protected" should be default
 
 
 Todo:
- - [ 3191417 ] Change to "protected" should be default
 
 // -----------------------------------------------------------------------------
 UCDetector 1.7.0 from 2011-02-04 - eclipse 3.5, 3.6, 3.7:

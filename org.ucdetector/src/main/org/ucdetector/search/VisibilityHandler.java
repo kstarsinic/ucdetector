@@ -179,12 +179,8 @@ class VisibilityHandler {
         markerType = MarkerFactory.UCD_MARKER_USE_DEFAULT;
         break;
       case PROTECTED:
-        if (startElement instanceof IType) {
-          markerType = MarkerFactory.UCD_MARKER_USE_DEFAULT;
-        }
-        else {
-          markerType = MarkerFactory.UCD_MARKER_USE_PROTECTED;
-        }
+        // [ 3191417 ] Change to "protected" should be default
+        markerType = MarkerFactory.UCD_MARKER_USE_DEFAULT;
         break;
       default:
         return false;

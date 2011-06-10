@@ -48,6 +48,7 @@ public final class MarkerFactory implements IUCDetectorReport {
   public static final String UCD_MARKER_UNUSED = UCD_MARKER + "Reference"; //$NON-NLS-1$
   public static final String UCD_MARKER_USED_FEW = UCD_MARKER + "FewReference"; //$NON-NLS-1$
   public static final String UCD_MARKER_USE_PRIVATE = UCD_MARKER + "VisibilityPrivate"; //$NON-NLS-1$
+  // TODO remove? [ 3191417 ] Change to "protected" should be default
   public static final String UCD_MARKER_USE_PROTECTED = UCD_MARKER + "VisibilityProtected"; //$NON-NLS-1$
   public static final String UCD_MARKER_USE_DEFAULT = UCD_MARKER + "VisibilityDefault"; //$NON-NLS-1$
   public static final String UCD_MARKER_USE_FINAL = UCD_MARKER + "Final"; //$NON-NLS-1$
