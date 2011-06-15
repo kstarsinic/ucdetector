@@ -1,4 +1,4 @@
-UCDetector 1.8.0 from 2011-??-?? - eclipse 3.5, 3.6, 3.7:
+UCDetector 1.8.0 from 2011-06-15 - eclipse 3.5, 3.6, 3.7:
 New features:
  - [ 3176780 ] New option: ignore "derived" files
  - Improved layout for ignore preferences
