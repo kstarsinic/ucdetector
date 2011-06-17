@@ -38,7 +38,6 @@ public class UCDQuickGenerator implements IMarkerResolutionGenerator2 {
         Log.debug("UCDQuickFixer.getResolutions() for: " + markerType); //$NON-NLS-1$
       }
       List<IMarkerResolution> resolutions = new ArrayList<IMarkerResolution>();
-      resolutions.add(new TodoQuickFix(marker));
       if (MarkerFactory.UCD_MARKER_UNUSED.equals(markerType)) {
         boolean isPrimaryType = (ElementType.valueOfSave(javaTypeString) == ElementType.PRIMARY_TYPE);
         resolutions.add(isPrimaryType ? new DeleteFileQuickFix(marker) : new DeleteQuickFix(marker));
@@ -54,6 +53,7 @@ public class UCDQuickGenerator implements IMarkerResolutionGenerator2 {
       }
       resolutions.add(new NoUcdTagQuickFix(marker));
       resolutions.add(new UseSuppressWarningsQuickFix(marker));
+      resolutions.add(new TodoQuickFix(marker));
       return resolutions.toArray(new IMarkerResolution[resolutions.size()]);
     }
     catch (CoreException e) {
