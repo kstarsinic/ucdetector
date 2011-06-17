@@ -67,7 +67,6 @@ public final class Prefs {
   static final String WARN_LIMIT = ID + ".warnLimit";
   // KEYWORD -------------------------------------------------------------------
 
-  //  protected static final String CHANGE_ALL_VISIBILIY_COMBO = ID + ".changeAllVisibiliyCombo";
   /*  Feature Requests ID: 2490344: */
   static final String ANALYZE_VISIBILITY_PREFIX = ID + ".visibility";
   static final String ANALYZE_VISIBILITY_PROTECTED_CLASSES = ANALYZE_VISIBILITY_PREFIX + ".protected.classes";
