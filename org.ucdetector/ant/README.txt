@@ -31,8 +31,8 @@ Please create NEW directories for eclipse and your workspace! Otherwise you may 
 **  $ detect.bat
 **  $ ./detect.sh
 * Run as an application (experimental)
-** $ ECLIPSE_HOME/eclipse -application org.ucdetector.detect
-
+** $ ECLIPSE_HOME/eclipse -data WORKSPACE     -noSplash -application org.ucdetector.detect
+** $ ./../eclipse/eclipse -data ../workspace/ -noSplash -application org.ucdetector.detect 
 
 == Change settings ==
 * Change following files:

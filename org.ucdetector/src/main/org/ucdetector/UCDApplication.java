@@ -17,7 +17,7 @@ import org.ucdetector.preferences.Prefs;
 /**
  * 
  * Run UCDetector from command line as an application in headless mode (experimental):
- * <pre>$ eclipse -application org.ucdetector.detect</pre>
+ * <pre>$ ECLIPSE_HOME/eclipse -data WORKSPACE -application org.ucdetector.detect -noSplash</pre>
  * <p>
  * This class searches for options files in user dir.
  * <p>
