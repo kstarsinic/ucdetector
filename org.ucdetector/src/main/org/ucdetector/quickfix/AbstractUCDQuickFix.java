@@ -8,7 +8,6 @@
 package org.ucdetector.quickfix;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 
 import org.eclipse.core.filebuffers.ITextFileBuffer;
@@ -62,6 +61,7 @@ import org.ucdetector.util.MarkerFactory;
  * @since 2008-09-22
  */
 @SuppressWarnings("nls")
+public
 abstract class AbstractUCDQuickFix extends WorkbenchMarkerResolution {
   private static final String QUICK_FIX_PROBLEMS = "Quick Fix Problems";
   IMarker marker;
@@ -78,11 +78,11 @@ abstract class AbstractUCDQuickFix extends WorkbenchMarkerResolution {
     ICompilationUnit originalUnit = null;
     try {
       if (Log.isDebug()) {
-        Log.debug("%s.run(). Marker=%s", getClass().getSimpleName(), dumpMarker(marker));
+        Log.debug("%s.run(). Marker=%s", getClass().getSimpleName(), MarkerFactory.dumpMarker(marker));
       }
       int charStart = marker.getAttribute(IMarker.CHAR_START, -1);
       if (charStart == -1) {
-        Log.warn("CHAR_START missing for marker: '%s'", dumpMarker(marker));
+        Log.warn("CHAR_START missing for marker: '%s'", MarkerFactory.dumpMarker(marker));
         return;
       }
       originalUnit = JavaElementUtil.getCompilationUnitFor(marker.getResource());
@@ -99,7 +99,7 @@ abstract class AbstractUCDQuickFix extends WorkbenchMarkerResolution {
       FindNodeToChangeVisitor visitor = new FindNodeToChangeVisitor(charStart);
       copyUnit.accept(visitor);
       if (visitor.nodeToChange == null) {
-        Log.warn("Node to change not found for marker: '%s'", dumpMarker(marker));
+        Log.warn("Node to change not found for marker: '%s'", MarkerFactory.dumpMarker(marker));
         return;
       }
       int startPosition = runImpl(visitor.nodeToChange);
@@ -290,16 +290,6 @@ abstract class AbstractUCDQuickFix extends WorkbenchMarkerResolution {
     }
     catch (CoreException e) {
       return null;
-    }
-  }
-
-  @SuppressWarnings({ "unchecked", "rawtypes" })
-  private static String dumpMarker(IMarker m) {
-    try {
-      return new HashMap(m.getAttributes()).toString();
-    }
-    catch (CoreException e) {
-      return e.getMessage();
     }
   }
 }

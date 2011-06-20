@@ -8,8 +8,10 @@
 package org.ucdetector.util;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
+import org.eclipse.core.resources.IMarker;
 import org.eclipse.core.resources.IResource;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IStatus;
@@ -223,5 +225,15 @@ public final class MarkerFactory implements IUCDetectorReport {
 
   public void setExtension(ReportExtension reportExtension) {
     //
+  }
+
+  @SuppressWarnings({ "unchecked", "rawtypes" })
+  public static String dumpMarker(IMarker m) {
+    try {
+      return new HashMap(m.getAttributes()).toString();
+    }
+    catch (CoreException e) {
+      return e.getMessage();
+    }
   }
 }
