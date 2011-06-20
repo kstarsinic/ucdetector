@@ -22,7 +22,9 @@ import org.eclipse.jdt.core.compiler.ITerminalSymbols;
 import org.eclipse.jdt.core.compiler.InvalidInputException;
 import org.eclipse.jdt.internal.corext.refactoring.util.RefactoringFileBuffers;
 import org.eclipse.jface.text.IDocument;
+import org.ucdetector.Log;
 import org.ucdetector.UCDetectorPlugin;
+import org.ucdetector.util.JavaElementUtil;
 import org.ucdetector.util.MarkerFactory;
 
 /**
@@ -64,7 +66,9 @@ public class CheckUcdMarkerIterator extends AbstractUCDetectorIterator {
       IResource resource = unit.getCorrespondingResource();
       IMarker[] markers = resource.findMarkers(MarkerFactory.UCD_MARKER, true, IResource.DEPTH_ZERO);
       markersCount += markers.length;
-
+      if (markers.length > 0 && Log.isDebug()) {
+        Log.debug("%2s markers found for %s", "" + markers.length, JavaElementUtil.getElementName(unit));
+      }
       Set<LineNrComments> lineNumbersMarkersExpected = getLineNumbersMarkersExpected(unit);
       Set<Integer> makerLinesFound = new LinkedHashSet<Integer>();
       // Check, if each marker has a marker comment
@@ -82,21 +86,21 @@ public class CheckUcdMarkerIterator extends AbstractUCDetectorIterator {
           }
         }
         if (commentForLine == null) {
-          createMarker(resource, "Bad marker", markerLineFound);
+          createMarker(marker, resource, "Bad marker", markerLineFound);
         }
         else {
           String problemMarker = markerMap.get(marker.getType());
           List<String> problemsExpected = commentForLine.commentList;
           if (!problemsExpected.contains(problemMarker)) {
             String mes = String.format("Wrong marker. Expected: '%s'. Found: '%s'", problemsExpected, problemMarker);
-            createMarker(resource, mes, markerLineFound);
+            createMarker(marker, resource, mes, markerLineFound);
           }
         }
       }
       // Check, if each marker comment has a marker
       for (LineNrComments lineNrComments : lineNumbersMarkersExpected) {
         if (!makerLinesFound.contains(lineNrComments.lineNr)) {
-          createMarker(resource, "Missing marker", lineNrComments.lineNr);
+          createMarker(null, resource, "Missing marker", lineNrComments.lineNr);
         }
       }
     }
@@ -116,6 +120,11 @@ public class CheckUcdMarkerIterator extends AbstractUCDetectorIterator {
     }
   }
 
+  @Override
+  public void handleEndGlobal(IJavaElement[] javaElements) throws CoreException {
+    Log.info("End CheckUcdMarkerIterator: " + toString());
+  }
+
   /**
    * Create a "report"
    */
@@ -129,12 +138,21 @@ public class CheckUcdMarkerIterator extends AbstractUCDetectorIterator {
     return badMarkerCount;
   }
 
-  private void createMarker(IResource resource, String message, Integer line) throws CoreException {
+  private void createMarker(IMarker markerFound, IResource resource, String message, Integer line) throws CoreException {
     IMarker marker = resource.createMarker(CHECK_UCD_MARKERS);
     marker.setAttribute(IMarker.MESSAGE, message);
     marker.setAttribute(IMarker.PRIORITY, IMarker.PRIORITY_HIGH);
     marker.setAttribute(IMarker.SEVERITY, IMarker.SEVERITY_WARNING);
     marker.setAttribute(IMarker.LINE_NUMBER, line.intValue());
+    marker.setAttribute(IMarker.LOCATION, resource.getFullPath().toString());
+    if (markerFound != null) {
+      // Copy attributes
+      marker.setAttribute(MarkerFactory.JAVA_NAME, markerFound.getAttribute(MarkerFactory.JAVA_NAME));
+      //      marker.setAttribute(IMarker.CHAR_START, markerFound.getAttribute(IMarker.CHAR_START));
+      //      marker.setAttribute(IMarker.CHAR_END, markerFound.getAttribute(IMarker.CHAR_END));
+      //      marker.setAttribute(MarkerFactory.JAVA_TYPE, markerFound.getAttribute(MarkerFactory.JAVA_TYPE));
+    }
+    Log.warn("#### BAD MARKER CREATED:%n%s%n", MarkerFactory.dumpMarker(marker));
     badMarkerCount++;
   }
 
