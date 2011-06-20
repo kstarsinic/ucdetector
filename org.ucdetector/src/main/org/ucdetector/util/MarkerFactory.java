@@ -10,6 +10,7 @@ package org.ucdetector.util;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.eclipse.core.resources.IMarker;
 import org.eclipse.core.resources.IResource;
@@ -27,6 +28,7 @@ import org.ucdetector.UCDetectorPlugin;
 import org.ucdetector.preferences.Prefs;
 import org.ucdetector.report.IUCDetectorReport;
 import org.ucdetector.report.MarkerReport;
+import org.ucdetector.report.MarkerReport.ElementType;
 import org.ucdetector.report.ReportExtension;
 import org.ucdetector.report.ReportNameManager;
 import org.ucdetector.report.ReportParam;
@@ -62,7 +64,8 @@ public final class MarkerFactory implements IUCDetectorReport {
   /** Helper attribute to transfer java element name (e.g. method name) from a marker to QuickFix  **/
   public static final String JAVA_NAME = "JAVA_NAME";//$NON-NLS-1$
   /**
-   * Helper attribute to transfer java type information (e.g. ElementType.TYPE.toString()) from a marker to QuickFix
+   * Helper attribute to transfer java type information from a marker to QuickFix
+   * See: {@link ElementType}
    */
   public static final String JAVA_TYPE = "JAVA_TYPE";//$NON-NLS-1$
 
@@ -227,13 +230,21 @@ public final class MarkerFactory implements IUCDetectorReport {
     //
   }
 
-  @SuppressWarnings({ "unchecked", "rawtypes" })
   public static String dumpMarker(IMarker m) {
+    return markerAsMap(m).toString();
+  }
+
+  public static Map<String, Object> markerAsMap(IMarker m) {
+    Map<String, Object> result = new HashMap<String, Object>();
     try {
-      return new HashMap(m.getAttributes()).toString();
+      Map<?, ?> attributes = m.getAttributes();
+      for (Object key : attributes.keySet()) {
+        result.put(String.valueOf(key), attributes.get(key));
+      }
     }
     catch (CoreException e) {
-      return e.getMessage();
+      result.put("_ERROR_", e.getMessage()); //$NON-NLS-1$
     }
+    return result;
   }
 }

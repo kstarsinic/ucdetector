@@ -7,6 +7,7 @@ import java.util.HashSet;
 import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Map.Entry;
 import java.util.Set;
 
 import org.eclipse.core.resources.IMarker;
@@ -86,7 +87,7 @@ public class CheckUcdMarkerIterator extends AbstractUCDetectorIterator {
           }
         }
         if (commentForLine == null) {
-          createMarker(marker, resource, "Bad marker", markerLineFound);
+          createMarker(marker, resource, "Additional marker", markerLineFound);
         }
         else {
           String problemMarker = markerMap.get(marker.getType());
@@ -148,11 +149,15 @@ public class CheckUcdMarkerIterator extends AbstractUCDetectorIterator {
     if (markerFound != null) {
       // Copy attributes
       marker.setAttribute(MarkerFactory.JAVA_NAME, markerFound.getAttribute(MarkerFactory.JAVA_NAME));
+      marker.setAttribute(MarkerFactory.JAVA_TYPE, markerFound.getAttribute(MarkerFactory.JAVA_TYPE));
       //      marker.setAttribute(IMarker.CHAR_START, markerFound.getAttribute(IMarker.CHAR_START));
       //      marker.setAttribute(IMarker.CHAR_END, markerFound.getAttribute(IMarker.CHAR_END));
-      //      marker.setAttribute(MarkerFactory.JAVA_TYPE, markerFound.getAttribute(MarkerFactory.JAVA_TYPE));
     }
-    Log.warn("#### BAD MARKER CREATED:%n%s%n", MarkerFactory.dumpMarker(marker));
+    Log.warn("############ BAD MARKER #################", MarkerFactory.dumpMarker(marker));
+    for (Entry<String, Object> entry : MarkerFactory.markerAsMap(marker).entrySet()) {
+      Log.warn("# %10s = %s", entry.getKey(), entry.getValue());
+    }
+    Log.warn("##########################################", MarkerFactory.dumpMarker(marker));
     badMarkerCount++;
   }
 
