@@ -20,12 +20,18 @@ Please create NEW directories for eclipse and your workspace! Otherwise you may 
 
 
 == Run UCDetector ==
- > cd ucdetector-headless/ant
- > ant
-* Or call shell scripts (windows/linux):
- > detect.bat
- > ./detect.sh 
+* $ cd ucdetector-headless/ant
+* $ ant
 * Check reports eg: ucdetector-headless/workspace/ucdetector_reports
+
+
+== Run UCDetector (alternatives) ==
+* Run shell scripts (windows/linux):
+**  $ cd ucdetector-headless/ant
+**  $ detect.bat
+**  $ ./detect.sh
+* Run as an application (experimental)
+** $ ECLIPSE_HOME/eclipse -application org.ucdetector.detect
 
 
 == Change settings ==
