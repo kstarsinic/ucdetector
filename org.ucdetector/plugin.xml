@@ -462,11 +462,4 @@
        <report resultFile="${reportName}.html" description="%report.html.name" id="html.id" stylesheet="org/ucdetector/report/html.xslt"></report>
        <report resultFile="${reportName}.txt" description="%report.text.name" id="text.id" class="org.ucdetector.report.TextReport" ></report>
     </extension>
-
-  <!-- =====================================================================
-       UCDETECTOR HEADLESS
-       ===================================================================== -->
-    <extension point="org.ucdetector.headless">
-       <iterator class="org.ucdetector.iterator.UCDetectorIterator" id="org.ucdetector.create_marker" ordinal="1"></iterator>
-    </extension>
 </plugin>
