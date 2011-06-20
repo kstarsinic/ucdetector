@@ -8,6 +8,7 @@ package org.ucdetector;
 
 import java.io.File;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
@@ -34,6 +35,7 @@ import org.eclipse.pde.internal.core.target.provisional.ITargetPlatformService;
 import org.eclipse.pde.internal.core.target.provisional.LoadTargetDefinitionJob;
 import org.osgi.framework.Bundle;
 import org.ucdetector.iterator.AbstractUCDetectorIterator;
+import org.ucdetector.iterator.HeadlessExtension;
 import org.ucdetector.iterator.UCDetectorIterator;
 import org.ucdetector.preferences.Prefs;
 import org.ucdetector.search.UCDProgressMonitor;
@@ -65,8 +67,16 @@ public class UCDHeadless {
     this.buildType = parseBuildType(sBuildType);
     this.targetPlatformFile = targetPlatformFile;
     this.report = parseReport(sReport);
-    this.resourcesToIterate = resourcesToIterate;
-    loadOptions(optionsFile);
+    Map<String, String> options = loadOptions(optionsFile);
+    if (resourcesToIterate == null || resourcesToIterate.isEmpty()) {
+      this.resourcesToIterate = UCDHeadless.getResourcesToIterate(options);
+      if (this.resourcesToIterate != null) {
+        Log.warn("Resources to iterate: '%s' from %s", this.resourcesToIterate, optionsFile.getPath());
+      }
+    }
+    else {
+      this.resourcesToIterate = resourcesToIterate;
+    }
     Log.info("    buildType         : " + (sBuildType == null ? AUTO_BUILD : sBuildType));
     Log.info("    optionsFile       : " + (optionsFile == null ? "" : optionsFile.getAbsolutePath()));
     Log.info("    targetPlatformFile: " + (targetPlatformFile == null ? "" : targetPlatformFile.getAbsolutePath()));
@@ -115,26 +125,13 @@ public class UCDHeadless {
       //loadTargetPlatform();
       IWorkspace workspace = ResourcesPlugin.getWorkspace();
       IWorkspaceRoot workspaceRoot = workspace.getRoot();
-      //
       StopWatch stopWatch = new StopWatch();
       List<IJavaProject> allProjects = createProjects(ucdMonitor, workspaceRoot);
-      Log.info(stopWatch.end("createProjects", false));
+      prepareWorkspace(workspace, stopWatch);
       //
-      IProject[] projects = workspaceRoot.getProjects();
-      Log.info("\tprojects found in workspace: " + projects.length);
-      Log.info("\tWorkspace: " + workspaceRoot.getLocation());
-      Log.info("Refresh workspace... Please wait...!");
-      workspaceRoot.refreshLocal(IResource.DEPTH_INFINITE, ucdMonitor);
-      Log.info(stopWatch.end("Refresh workspace", false));
-      //
-      Log.info("Build workspace... Please wait...!");
-      workspace.build(buildType, ucdMonitor);
-      Log.info(stopWatch.end("Build workspace", false));
-      //
-      if (projects.length == 0) {
-        Log.warn("NO PROJECTS FOUND - NOTHING TODO");
-      }
-      iterate(workspaceRoot, allProjects);
+      List<IJavaElement> javaElementsToIterate = getJavaElementsToIterate(workspaceRoot, allProjects);
+      iterateImpl(javaElementsToIterate);
+      postIterate(javaElementsToIterate);
     }
     finally {
       Log.info("Time to run UCDetector Headless: " + StopWatch.timeAsString(System.currentTimeMillis() - start));
@@ -158,7 +155,52 @@ public class UCDHeadless {
     Log.info(stopWatch.end("END: loadTargetPlatform", false));
   }
 
-  private void iterate(IWorkspaceRoot workspaceRoot, List<IJavaProject> allProjects) throws CoreException {
+  private void prepareWorkspace(IWorkspace workspace, StopWatch stopWatch) throws CoreException {
+    IWorkspaceRoot workspaceRoot = workspace.getRoot();
+    Log.info(stopWatch.end("createProjects", false));
+    IProject[] projects = workspaceRoot.getProjects();
+    Log.info("\tprojects found in workspace: " + projects.length);
+    Log.info("\tWorkspace: " + workspaceRoot.getLocation());
+    Log.info("Refresh workspace... Please wait...!");
+    workspaceRoot.refreshLocal(IResource.DEPTH_INFINITE, ucdMonitor);
+    Log.info(stopWatch.end("Refresh workspace", false));
+    //
+    Log.info("Build workspace... Please wait...!");
+    workspace.build(buildType, ucdMonitor);
+    Log.info(stopWatch.end("Build workspace", false));
+    //
+    if (projects.length == 0) {
+      Log.warn("NO PROJECTS FOUND - NOTHING TODO");
+    }
+  }
+
+  private void iterateImpl(List<IJavaElement> javaElementsToIterate) throws CoreException {
+    if (report == null || Report.eachproject == report) {
+      for (IJavaElement javaElement : javaElementsToIterate) {
+        AbstractUCDetectorIterator iterator = new UCDetectorIterator();
+        iterator.setMonitor(ucdMonitor);
+        iterator.iterate(new IJavaElement[] { javaElement });
+      }
+    }
+    else {
+      AbstractUCDetectorIterator iterator = new UCDetectorIterator();
+      iterator.setMonitor(ucdMonitor);
+      iterator.iterate(javaElementsToIterate);
+    }
+  }
+
+  private void postIterate(List<IJavaElement> javaElementsToIterate) throws CoreException {
+    Log.info("UCDHeadless.postIterate");
+    ArrayList<AbstractUCDetectorIterator> postIterators = HeadlessExtension.getPostIterators();
+    for (AbstractUCDetectorIterator postIterator : postIterators) {
+      Log.info("Run Post iterator: %s, for: %s",//
+          postIterator.getJobName(), JavaElementUtil.getElementNames(javaElementsToIterate));
+      postIterator.setMonitor(ucdMonitor);
+      postIterator.iterate(javaElementsToIterate);
+    }
+  }
+
+  private List<IJavaElement> getJavaElementsToIterate(IWorkspaceRoot workspaceRoot, List<IJavaProject> allProjects) {
     List<IJavaElement> javaElementsToIterate = new ArrayList<IJavaElement>();
     if (resourcesToIterate == null || resourcesToIterate.isEmpty()) {
       javaElementsToIterate.addAll(allProjects);
@@ -190,21 +232,13 @@ public class UCDHeadless {
     for (IJavaElement javaElement : javaElementsToIterate) {
       Log.info("    " + JavaElementUtil.getElementName(javaElement));//$NON-NLS-1$
     }
-    // TODO: Use IteratorExtension
-    // ArrayList<IteratorExtension> iterators = IteratorExtension.getIterators();
+    return javaElementsToIterate;
+  }
 
-    if (report == null || Report.eachproject == report) {
-      for (IJavaElement javaElement : javaElementsToIterate) {
-        AbstractUCDetectorIterator iterator = new UCDetectorIterator();
-        iterator.setMonitor(ucdMonitor);
-        iterator.iterate(new IJavaElement[] { javaElement });
-      }
-    }
-    else {
-      AbstractUCDetectorIterator iterator = new UCDetectorIterator();
-      iterator.setMonitor(ucdMonitor);
-      iterator.iterate(javaElementsToIterate);
-    }
+  static List<String> getResourcesToIterate(Map<String, String> options) {
+    String resources = options.get(UCDApplication.APPLICATION_KEY + "resourcesToIterate");
+    List<String> resourcesToIterate = resources == null ? null : Arrays.asList(resources.split(","));
+    return resourcesToIterate;
   }
 
   private static List<IJavaProject> createProjects(IProgressMonitor monitor, IWorkspaceRoot workspaceRoot)
