@@ -7,7 +7,6 @@
 package org.ucdetector;
 
 import java.io.File;
-import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 
@@ -20,14 +19,14 @@ import org.ucdetector.preferences.Prefs;
  * Run UCDetector from command line as an application in headless mode (experimental):
  * <pre>$ eclipse -application org.ucdetector.detect</pre>
  * <p>
- * This class seaches for options files in user dir.
+ * This class searches for options files in user dir.
  * <p>
  * @author Joerg Spieler
  * @since 31.03.2011
  */
 @SuppressWarnings("nls")
 public class UCDApplication implements IApplication {
-  private static final String APPLICATION_KEY = Prefs.INTERNAL + ".application.";
+  static final String APPLICATION_KEY = Prefs.INTERNAL + ".application.";
 
   public Object start(IApplicationContext context) throws Exception {
     Log.info("Starting UCDHeadless as an application");
@@ -40,8 +39,7 @@ public class UCDApplication implements IApplication {
     Map<String, String> options = UCDHeadless.loadOptions(optionsFile);
     String buildType = options.get(APPLICATION_KEY + "buildType");
     String report = options.get(APPLICATION_KEY + "report");
-    String resources = options.get(APPLICATION_KEY + "resourcesToIterate");
-    List<String> resourcesToIterate = resources == null ? null : Arrays.asList(resources.split(","));
+    List<String> resourcesToIterate = UCDHeadless.getResourcesToIterate(options);
     UCDHeadless headless = new UCDHeadless(buildType, optionsFile, targetFile, report, resourcesToIterate);
     headless.run();
     return IApplication.EXIT_OK;
