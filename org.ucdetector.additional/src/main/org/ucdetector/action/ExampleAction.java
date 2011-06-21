@@ -10,25 +10,47 @@ package org.ucdetector.action;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.jface.dialogs.MessageDialog;
+import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.widgets.Display;
+import org.ucdetector.Log;
 import org.ucdetector.UCDetectorPlugin;
 import org.ucdetector.iterator.AbstractUCDetectorIterator;
 import org.ucdetector.iterator.AdditionalIterator;
+import org.ucdetector.iterator.CheckNameConventionIterator;
+import org.ucdetector.iterator.CommentIterator;
+import org.ucdetector.iterator.DetectDoubleClassNameIterator;
+import org.ucdetector.iterator.DetectNoJavaFileIterator;
 
 /**
  * Run Example Action
  */
 public class ExampleAction extends AbstractUCDetectorAction {// NO_UCD
+  private static final AdditionalIterator ITERATORS[] = {//
+  /**/new CheckNameConventionIterator(), //
+      new CommentIterator(), //
+      new DetectDoubleClassNameIterator(), //
+      new DetectNoJavaFileIterator(), //
+  };
+
   private AdditionalIterator iterator;
 
   @Override
   protected AbstractUCDetectorIterator createIterator() {
-    iterator = new org.ucdetector.iterator.CheckNameConventionIterator();
-    // iterator = new org.ucdetector.iterator.MethodParseIteratorOld();
-    // iterator = new org.ucdetector.iterator.CheckNameConventionIterator();
-    // iterator = new org.ucdetector.iterator.DetectDoubleClassNameIterator();
-    // iterator = new org.ucdetector.iterator.DetectNoJavaFileIterator();
-    // iterator = new org.ucdetector.iterator.CommentIterator();
+    String[] options = new String[ITERATORS.length];
+    for (int i = 0; i < ITERATORS.length; i++) {
+      String className = ITERATORS[i].getClass().getSimpleName();
+      int index = className.indexOf("Iterator");
+      options[i] = (index == -1) ? className : className.substring(0, index);
+    }
+    Image image = UCDetectorPlugin.getImage(UCDetectorPlugin.IMAGE_UCD);
+    MessageDialog msg = new MessageDialog(UCDetectorPlugin.getShell(), "Select iterator", image,
+        "Select an iterator to run", MessageDialog.QUESTION, options, 0);
+    int open = msg.open();
+    if (open == -1) {
+      return null;
+    }
+    iterator = ITERATORS[open];
+    Log.info("Selected iterator: " + iterator);
     return iterator;
   }
 

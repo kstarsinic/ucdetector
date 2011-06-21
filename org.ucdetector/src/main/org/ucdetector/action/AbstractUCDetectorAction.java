@@ -49,6 +49,9 @@ public abstract class AbstractUCDetectorAction extends ActionDelegate { // NO_UC
   @Override
   public void runWithEvent(IAction action, Event event) {
     final AbstractUCDetectorIterator iterator = createIterator();
+    if (iterator == null) {
+      return;
+    }
     final Job job = new Job(iterator.getJobName()) {
       @Override
       public IStatus run(IProgressMonitor monitor) {
