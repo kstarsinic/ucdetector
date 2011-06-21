@@ -32,6 +32,10 @@ public class ReportParam {
   /**  2803618  Add number of references to report */
   private final int referenceCount;
   private final String author;
+  //
+  public static LineManger lineManager = null; // Hack :-(
+  private final int lineEnd;
+  private final int lineStart;
 
   @Override
   public String toString() {
@@ -69,6 +73,8 @@ public class ReportParam {
     this.level = warnLevel == null ? calculateWarnLevel() : warnLevel;
     this.referenceCount = referenceCount;
     this.author = LineManger.getAuthor(javaElement);
+    this.lineStart = lineManager == null ? LineManger.LINE_NOT_FOUND : lineManager.getLineStart(javaElement);
+    this.lineEnd = lineManager == null ? LineManger.LINE_NOT_FOUND : lineManager.getLineEnd(javaElement);
   }
 
   private WarnLevel calculateWarnLevel() {
@@ -138,5 +144,13 @@ public class ReportParam {
   /** @return never <code>null</code>, trimms the author name */
   public String getAuthorTrimmed() {
     return author == null ? "" : author.length() > 70 ? author.substring(0, 70) + "..." : author; //$NON-NLS-1$//$NON-NLS-2$
+  }
+
+  public int getLineStart() {
+    return lineStart;
+  }
+
+  public int getLineEnd() {
+    return lineEnd;
   }
 }

@@ -199,6 +199,9 @@ public class XmlReport implements IUCDetectorReport {
       marker.setAttribute("nr", String.valueOf(markerCount));
       marker.setAttribute("level", String.valueOf(reportParam.getLevel()));// "Error", "Warning"
       marker.setAttribute("line", String.valueOf(reportParam.getLine()));
+      // [ 3323078 ] Add line number start/end to markers
+      marker.setAttribute("lineStart", String.valueOf(reportParam.getLineStart()));
+      marker.setAttribute("lineEnd", String.valueOf(reportParam.getLineEnd()));
       marker.setAttribute("markerType", markerType);
       int iRefCount = reportParam.getReferenceCount();
       String sReferenceCount = (iRefCount == -1) ? "-" : "" + iRefCount;

@@ -40,6 +40,7 @@ import org.ucdetector.Messages;
 import org.ucdetector.UCDetectorPlugin;
 import org.ucdetector.iterator.TypeContainer;
 import org.ucdetector.preferences.Prefs;
+import org.ucdetector.report.ReportParam;
 import org.ucdetector.util.JavaElementUtil;
 import org.ucdetector.util.MarkerFactory;
 import org.ucdetector.util.StopWatch;
@@ -79,7 +80,8 @@ public class SearchManager {
     this.monitor = monitor;
     this.searchTotal = searchTotal;
     this.markerFactory = markerFactory;
-    finalHandler = new FinalHandler(markerFactory);
+    this.finalHandler = new FinalHandler(markerFactory);
+    ReportParam.lineManager = lineManger;// Hack :-(
   }
 
   /**

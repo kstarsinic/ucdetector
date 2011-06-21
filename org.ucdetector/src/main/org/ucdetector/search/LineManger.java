@@ -109,6 +109,36 @@ public class LineManger {
     return lineNbr;
   }
 
+  public int getLineEnd(IMember element) {
+    try {
+      ISourceRange sourceRange = element.getSourceRange();
+      int offsetEnd = sourceRange.getOffset() + sourceRange.getLength();
+      IScanner scanner = createScanner(element);
+      if (scanner != null) {
+        return scanner.getLineNumber(offsetEnd);
+      }
+    }
+    catch (CoreException e) {
+      Log.warn("Can't get LineEnd: %s", e); //$NON-NLS-1$
+    }
+    return LINE_NOT_FOUND;
+  }
+
+  public int getLineStart(IMember element) {
+    try {
+      ISourceRange javaDocRange = element.getJavadocRange();
+      int offset = javaDocRange != null ? javaDocRange.getOffset() : element.getSourceRange().getOffset();
+      IScanner scanner = createScanner(element);
+      if (scanner != null) {
+        return scanner.getLineNumber(offset);
+      }
+    }
+    catch (CoreException e) {
+      Log.warn("Can't get LineEnd: %s", e); //$NON-NLS-1$
+    }
+    return LINE_NOT_FOUND;
+  }
+
   public static String getAuthor(IJavaElement javaElement) {
     return authorMap.get(JavaElementUtil.getTypeFor(javaElement, true));
   }
