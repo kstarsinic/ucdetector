@@ -98,4 +98,15 @@
     <extension point="org.ucdetector.headless">
        <iterator class="org.ucdetector.iterator.CheckUcdMarkerIterator" id="org.ucdetector.additional.check_marker" ordinal="10"></iterator>
     </extension>
+
+  <!-- =====================================================================
+       UCDETECTOR REPORTS
+       ===================================================================== -->
+    <extension point="org.ucdetector.reports">
+       <report resultFile="${reportName}_add.txt"
+               description="%report.additional.name"
+               id="additional.id" 
+               class="org.ucdetector.report.AdditionalReport" >
+       </report>
+    </extension>
 </plugin>

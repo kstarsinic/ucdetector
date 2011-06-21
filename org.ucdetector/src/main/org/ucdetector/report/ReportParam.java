@@ -113,7 +113,7 @@ public class ReportParam {
     return javaElement;
   }
 
-  protected String getMessage() {
+  public String getMessage() { // NO_UCD - Needed in other plugin
     return message;
   }
 
@@ -121,15 +121,15 @@ public class ReportParam {
     return line;
   }
 
-  protected String getMarkerType() {
+  public String getMarkerType() {// NO_UCD - Needed in other plugin
     return markerType;
   }
 
-  protected WarnLevel getLevel() {
+  public WarnLevel getLevel() {// NO_UCD - Needed in other plugin
     return level;
   }
 
-  protected int getReferenceCount() {
+  public int getReferenceCount() {// NO_UCD - Needed in other plugin
     return referenceCount;
   }
 

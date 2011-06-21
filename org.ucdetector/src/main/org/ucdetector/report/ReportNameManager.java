@@ -63,12 +63,13 @@ public class ReportNameManager {
   }
 
   /**
-   * @param objectsToIterate needed to get project name^
+   * @param fileName file name to replace date, time...
+   * @param objectsToIterate needed to get project name
    * @return File name, with does not exist, containing a number.
    * eg: UCDetectorReport_001
    */
   // Fix [2811049]  Html report is overridden each run
-  static String getReportFileName(String fileName, IJavaElement[] objectsToIterate) {
+  public static String getReportFileName(String fileName, IJavaElement[] objectsToIterate) {// NO_UCD - Needed in other plugin
     DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
     DateFormat timeFormat = new SimpleDateFormat("HHmmss");
     String result = fileName;
