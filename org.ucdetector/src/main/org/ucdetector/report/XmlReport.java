@@ -30,7 +30,6 @@ import javax.xml.transform.dom.DOMSource;
 import javax.xml.transform.stream.StreamResult;
 import javax.xml.transform.stream.StreamSource;
 
-import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.IResource;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.FileLocator;
@@ -41,6 +40,7 @@ import org.eclipse.core.runtime.Platform;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.jdt.core.IField;
 import org.eclipse.jdt.core.IJavaElement;
+import org.eclipse.jdt.core.IJavaProject;
 import org.eclipse.jdt.core.IMember;
 import org.eclipse.jdt.core.IMethod;
 import org.eclipse.jdt.core.IPackageFragment;
@@ -193,6 +193,7 @@ public class XmlReport implements IUCDetectorReport {
         markerType = markerType.substring(MarkerFactory.UCD_MARKER.length());
       }
       IMember javaElement = reportParam.getJavaElement();
+      IResource resource = javaElement.getResource();
 
       // ===== Attributes =====
       marker.setAttribute("nr", String.valueOf(markerCount));
@@ -204,6 +205,29 @@ public class XmlReport implements IUCDetectorReport {
       marker.setAttribute("referenceCount", sReferenceCount);
 
       // ===== Nodes =====
+      appendChild(marker, "description", reportParam.getMessage());// NODE: Change visibility of MixedExample to default
+      if (resource != null && resource.getRawLocation() != null) {
+        // F:/ws/ucd/org.ucdetector.example/src/main/org/ucdetector/example/Bbb.java
+        appendChild(marker, "file", resource.getRawLocation().toOSString());
+      }
+      if (javaElement.getJavaProject() != null) {
+        IJavaProject project = javaElement.getJavaProject();
+        Element projectElement = appendChild(marker, "project", null);
+        projectElement.setAttribute("name", project.getElementName());// NODE:  org.ucdetector.example
+        // [ 2762967 ] XmlReport: Problems running UCDetector NODE:  org.ucdetector.example - maybe different projectDir!
+        IPath location = project.getProject().getLocation();
+        String parentDir = location.removeLastSegments(1).toString();
+        projectElement.setAttribute("parentDir", parentDir);// NODE:  F:/ws/ucd
+        String projectDir = location.lastSegment();
+        projectElement.setAttribute("dir", projectDir);
+      }
+      IPackageFragmentRoot sourceFolder = JavaElementUtil.getPackageFragmentRootFor(javaElement);
+      if (sourceFolder != null && sourceFolder.getResource() != null) {
+        IPath path = sourceFolder.getResource().getProjectRelativePath();
+        if (path != null) {
+          appendChild(marker, "sourceFolder", path.toString()); // NODE:  src/main
+        }
+      }
       IPackageFragment pack = JavaElementUtil.getPackageFor(javaElement);
       appendChild(marker, "package", pack.getElementName());
       IType type = JavaElementUtil.getTypeFor(javaElement, true);// NODE: UCDetectorPlugin
@@ -227,37 +251,6 @@ public class XmlReport implements IUCDetectorReport {
       }
       if (reportParam.getAuthor() != null) {
         appendChild(marker, "author", reportParam.getAuthorTrimmed());
-      }
-      appendChild(marker, "description", reportParam.getMessage());// NODE: Change visibility of MixedExample to default
-
-      IResource resource = javaElement.getResource();
-      if (resource != null) {
-        IProject project = resource.getProject();
-        if (project != null && project.getLocation() != null) {
-          IPath location = project.getLocation();
-          Element projectElement = appendChild(marker, "project", null);
-          // [ 2762967 ] XmlReport: Problems running UCDetector
-          // NODE:  org.ucdetector.example - maybe different projectDir!
-          String projectName = project.getName();
-          projectElement.setAttribute("name", projectName);
-          // NODE:  org.ucdetector.example - maybe different projectName!
-          String projectDir = location.lastSegment();
-          if (!projectName.equals(projectDir)) {
-            projectElement.setAttribute("dir", projectDir);
-          }
-          String workspaceDir = UCDetectorPlugin.getAboutWorkspace();
-          String parentDir = location.removeLastSegments(1).toString();
-          if (!workspaceDir.equals(parentDir)) {
-            projectElement.setAttribute("parentDir", parentDir);// NODE:  F:/ws/ucd
-          }
-        }
-        IPackageFragmentRoot sourceFolder = JavaElementUtil.getPackageFragmentRootFor(javaElement);
-        if (sourceFolder != null && sourceFolder.getResource() != null) {
-          IPath path = sourceFolder.getResource().getProjectRelativePath();
-          if (path != null) {
-            appendChild(marker, "sourceFolder", path.toString()); // NODE:  src/main
-          }
-        }
       }
       if (UCDetectorPlugin.isHeadlessMode() && markerCount % 50 == 0) {
         Log.info("Flush reports!");
