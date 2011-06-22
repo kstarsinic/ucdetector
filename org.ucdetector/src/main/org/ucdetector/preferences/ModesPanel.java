@@ -6,18 +6,10 @@
  */
 package org.ucdetector.preferences;
 
-import static org.ucdetector.preferences.UCDetectorPreferencePage.GROUP_START;
-import static org.ucdetector.preferences.UCDetectorPreferencePage.TAB_START;
-
 import java.io.File;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.OutputStreamWriter;
-import java.text.MessageFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
-import java.util.LinkedHashMap;
 import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Map;
@@ -55,8 +47,6 @@ import org.ucdetector.report.ReportNameManager;
  * @since 2010-03-09
  */
 class ModesPanel {
-  private static final String MODES_FILE_TYPE = ".properties"; //$NON-NLS-1$
-
   /** built-in preferences mode */
   enum Mode {
     Default, classes_only, unused_only, full, extreme;
@@ -67,28 +57,30 @@ class ModesPanel {
     }
   }
 
+  private static final File modesDir = UCDetectorPlugin.getModesDir();
+
   private final Button newButton;
   private final Button removeButton;
   private final Button renameButton;
   private final Combo modesCombo;
-  private final File modesDir;
   private final Composite parent;
   private final Composite modesPanelComposite;
   private final UCDetectorPreferencePage page;
+  private final ModesWriter modesWriter;
 
   ModesPanel(UCDetectorPreferencePage page, Composite parentGroups) {
     this.page = page;
     this.parent = parentGroups;
-    modesDir = UCDetectorPlugin.getModesDir();
+    this.modesWriter = new ModesWriter(page.extendedPreferences);
     modesDir.mkdirs();
     Log.info("modesDir is '%s'", modesDir.getAbsolutePath()); //$NON-NLS-1$
-    modesPanelComposite = UCDetectorPreferencePage.createComposite(parent, 5, 1, GridData.FILL_HORIZONTAL);
+    this.modesPanelComposite = UCDetectorPreferencePage.createComposite(parent, 5, 1, GridData.FILL_HORIZONTAL);
     Label label = new Label(modesPanelComposite, SWT.LEFT);
     label.setText(Messages.ModesPanel_ModeLabel);
-    modesCombo = new Combo(modesPanelComposite, SWT.READ_ONLY);
-    newButton = new Button(modesPanelComposite, SWT.PUSH);
-    removeButton = new Button(modesPanelComposite, SWT.PUSH);
-    renameButton = new Button(modesPanelComposite, SWT.PUSH);
+    this.modesCombo = new Combo(modesPanelComposite, SWT.READ_ONLY);
+    this.newButton = new Button(modesPanelComposite, SWT.PUSH);
+    this.removeButton = new Button(modesPanelComposite, SWT.PUSH);
+    this.renameButton = new Button(modesPanelComposite, SWT.PUSH);
     createButtonsDetails();
     createModeComboDetails();
   }
@@ -139,7 +131,7 @@ class ModesPanel {
         else if (index < Mode.values().length) {
           // built-in
           Mode builtInMode = Mode.values()[index];
-          String modesFileName = builtInMode + MODES_FILE_TYPE;
+          String modesFileName = builtInMode + ModesWriter.MODES_FILE_TYPE;
           setPreferences(false, modesFileName);
         }
         else {
@@ -152,13 +144,13 @@ class ModesPanel {
 
   private String setCustomPreferences() {
     String customMode = getCombo().getText();
-    String modesFileName = getModesFile(customMode).getAbsolutePath();
+    String modesFileName = ModesWriter.getModesFile(customMode).getAbsolutePath();
     setPreferences(true, modesFileName);
     return modesFileName;
   }
 
   /** Get built in modes and user specific modes */
-  private String[] getModes() {
+  private static String[] getModes() {
     Set<String> result = new LinkedHashSet<String>();
     for (Mode mode : Mode.values()) {
       result.add(mode.toStringLocalized());
@@ -166,8 +158,8 @@ class ModesPanel {
     List<String> modesFiles = new ArrayList<String>(Arrays.asList(modesDir.list()));
     Collections.sort(modesFiles, String.CASE_INSENSITIVE_ORDER);
     for (String modesFile : modesFiles) {
-      if (modesFile.endsWith(MODES_FILE_TYPE)) {
-        result.add(modesFile.substring(0, modesFile.length() - MODES_FILE_TYPE.length()));
+      if (modesFile.endsWith(ModesWriter.MODES_FILE_TYPE)) {
+        result.add(modesFile.substring(0, modesFile.length() - ModesWriter.MODES_FILE_TYPE.length()));
       }
     }
     if (Log.isDebug()) {
@@ -198,7 +190,7 @@ class ModesPanel {
     if (newModeName != null && newModeName.trim().length() > 0) {
       // set default, when report directory is missing
       Prefs.getStore().setValue(Prefs.REPORT_DIR, ReportNameManager.getReportDir(false));
-      saveMode(newModeName);
+      modesWriter.saveMode(newModeName);
       Log.info("Added new mode: %s", newModeName); //$NON-NLS-1$
       getCombo().setItems(getModes());
       getCombo().setText(newModeName);
@@ -219,78 +211,8 @@ class ModesPanel {
 
   void saveMode() {
     if (getCombo().getSelectionIndex() >= Mode.values().length) {
-      saveMode(getCombo().getText()); // custom
+      modesWriter.saveMode(getCombo().getText()); // custom
     }
-  }
-
-  /** Save it to a file in WORKSPACE/.metadata/.plugins/org.ucdetector/modes  */
-  @SuppressWarnings("nls")
-  private void saveMode(String modeName) {
-    Map<String, String> allPreferences = UCDetectorPlugin.getAllPreferences();
-    allPreferences.putAll(UCDetectorPlugin.getDeltaPreferences());
-    StringBuilder sb = new StringBuilder();
-    sb.append(String.format("### -------------------------------------------------------------------------%n"));
-    sb.append(String.format("###               UCDetector preference file for mode: '%s'%n", modeName));
-    sb.append(String.format("### -------------------------------------------------------------------------%n"));
-    sb.append(String.format("### Created by  : UCDetector %s%n", UCDetectorPlugin.getAboutUCDVersion()));
-    sb.append(String.format("### Created date: %s%n", UCDetectorPlugin.getNow()));
-    sb.append(String.format("### java.util.Properties.load() may fail to load this file%n"));
-    sb.append(String.format("### -------------------------------------------------------------------------%n"));
-    Map<String, String> groupPrefs = new LinkedHashMap<String, String>();
-    for (String extendedPreference : page.extendedPreferences) {
-      if (extendedPreference.startsWith(TAB_START)) {
-        flushGroupPrefs(groupPrefs, sb);
-        String tab = extendedPreference.substring(TAB_START.length());
-        sb.append(String.format("%n## --------------------------------------------------------------------------%n"));
-        sb.append(String.format("## Tab: %s%n", tab.startsWith("&") ? tab.substring(1) : tab));
-        sb.append(String.format("## --------------------------------------------------------------------------%n"));
-      }
-      else if (extendedPreference.startsWith(GROUP_START)) {
-        flushGroupPrefs(groupPrefs, sb);
-        sb.append(String.format("%n# Group: %s%n", extendedPreference.substring(GROUP_START.length())));
-      }
-      else {
-        groupPrefs.put(extendedPreference, allPreferences.get(extendedPreference));
-        allPreferences.remove(extendedPreference);
-      }
-    }
-    flushGroupPrefs(groupPrefs, sb);
-    String fileText = sb.toString();
-    if (Log.isDebug()) {
-      Log.debug(fileText);
-      Log.debug("Unhandled preferences :" + allPreferences);
-    }
-    File modesFile = getModesFile(modeName);
-    OutputStreamWriter writer = null;
-    try {
-      writer = new OutputStreamWriter(new FileOutputStream(modesFile), UCDetectorPlugin.UTF_8);
-      writer.write(fileText);
-      Log.debug("Saved mode to: %s", modesFile.getAbsolutePath()); //$NON-NLS-1$
-    }
-    catch (IOException ex) {
-      String message = NLS.bind(Messages.ModesPanel_ModeFileCantSave, modesFile.getAbsolutePath());
-      UCDetectorPlugin.logToEclipseLog(message, ex);
-    }
-    finally {
-      UCDetectorPlugin.closeSave(writer);
-    }
-  }
-
-  /** Nice key value formatting only */
-  private static void flushGroupPrefs(Map<String, String> groupPrefs, StringBuilder sb) {
-    int maxKeyLength = 0;
-    for (String key : groupPrefs.keySet()) {
-      maxKeyLength = Math.max(maxKeyLength, key.length());
-    }
-    String format = MessageFormat.format("%-{0}s = %s%n", String.valueOf(maxKeyLength)); //$NON-NLS-1$
-    for (Entry<String, String> entry : groupPrefs.entrySet()) {
-      sb.append(String.format(format, entry.getKey(), entry.getValue()));
-    }
-    groupPrefs.clear();
-  }
-
-  private File getModesFile(String modeName) {
-    return new File(modesDir, modeName + MODES_FILE_TYPE);
   }
 
   private void removeMode() {
@@ -300,7 +222,7 @@ class ModesPanel {
     if (!doRemove) {
       return;
     }
-    File file = getModesFile(modeToRemove);
+    File file = ModesWriter.getModesFile(modeToRemove);
     boolean deleteOk = file.delete();
     Log.success(deleteOk, String.format("Delete mode '%s' - file is %s", modeToRemove, file.getAbsolutePath()));//$NON-NLS-1$
     getCombo().setItems(getModes());
@@ -317,8 +239,8 @@ class ModesPanel {
       return;
     }
     String newName = input.getValue();
-    File oldModesFile = getModesFile(oldName);
-    File newModesFile = getModesFile(newName);
+    File oldModesFile = ModesWriter.getModesFile(oldName);
+    File newModesFile = ModesWriter.getModesFile(newName);
     boolean renameOK = oldModesFile.renameTo(newModesFile);
     Log.success(renameOK,
         String.format("Rename mode '%s' to '%s' - new file: %s", oldName, newName, newModesFile.getAbsolutePath()));//$NON-NLS-1$
@@ -371,7 +293,7 @@ class ModesPanel {
     return modesCombo;
   }
 
-  private final class ValidFileNameValidator implements IInputValidator {
+  private static final class ValidFileNameValidator implements IInputValidator {
     public String isValid(String fileName) {
       String[] modes = getModes();
       for (String mode : modes) {
