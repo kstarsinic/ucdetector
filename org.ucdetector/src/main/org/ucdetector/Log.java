@@ -86,6 +86,10 @@ public class Log {
     logImpl(LogLevel.ERROR, message, ex);
   }
 
+  public static void error(Throwable ex, String format, Object... args) {
+    logImpl(LogLevel.ERROR, args.length == 0 ? format : String.format(format, args), ex);
+  }
+
   // SUCCESS ------------------------------------------------------------------
   public static void success(boolean success, String message) {
     log(success ? LogLevel.INFO : LogLevel.WARN, success ? "OK: " : "FAIL: " + message);
