@@ -37,6 +37,7 @@ import org.osgi.framework.Bundle;
 import org.ucdetector.iterator.AbstractUCDetectorIterator;
 import org.ucdetector.iterator.HeadlessExtension;
 import org.ucdetector.iterator.UCDetectorIterator;
+import org.ucdetector.preferences.ModesReader;
 import org.ucdetector.preferences.Prefs;
 import org.ucdetector.search.UCDProgressMonitor;
 import org.ucdetector.util.JavaElementUtil;
@@ -50,6 +51,9 @@ import org.ucdetector.util.StopWatch;
  */
 @SuppressWarnings("nls")
 public class UCDHeadless {
+  /**  "org.ucdetector.internal.headless." */
+  private static final String HEADLESS_KEY = Prefs.INTERNAL + ".headless.";
+
   private static final String AUTO_BUILD = "AUTO_BUILD";
   private final UCDProgressMonitor ucdMonitor = new UCDProgressMonitor();
   private final int buildType;
@@ -61,47 +65,49 @@ public class UCDHeadless {
     single, eachproject
   }
 
-  public UCDHeadless(String sBuildType, File optionsFile, File targetPlatformFile, String sReport,
-      List<String> resourcesToIterate) {
-    UCDetectorPlugin.setHeadlessMode(true);// MUST BE BEFORE LOGGING!
-    this.buildType = parseBuildType(sBuildType);
-    this.targetPlatformFile = targetPlatformFile;
-    this.report = parseReport(sReport);
+  {
+    UCDetectorPlugin.setHeadlessMode(true);// CALL BEFORE LOGGING!
+  }
+
+  public UCDHeadless(String optionsFileName) {
+    //
+    File optionsFile = new File(optionsFileName == null ? "ucdetector.options" : optionsFileName);
     Map<String, String> options = loadOptions(optionsFile);
-    if (resourcesToIterate == null || resourcesToIterate.isEmpty()) {
-      this.resourcesToIterate = UCDHeadless.getResourcesToIterate(options);
-      if (this.resourcesToIterate != null) {
-        Log.warn("Resources to iterate: '%s' from %s", this.resourcesToIterate, optionsFile.getPath());
-      }
-    }
-    else {
-      this.resourcesToIterate = resourcesToIterate;
-    }
+    //
+    String sTargetPlatformFile = options.get(HEADLESS_KEY + "targetPlatformFile");
+    this.targetPlatformFile = new File(sTargetPlatformFile == null ? "ucdetector.target" : sTargetPlatformFile);
+    //
+    String resources = options.get(HEADLESS_KEY + "resourcesToIterate");
+    resourcesToIterate = resources == null ? null : Arrays.asList(resources.split(","));
+    //
+    String sBuildType = options.get(HEADLESS_KEY + "buildType");
+    this.buildType = parseBuildType(sBuildType);
+    //
+    String sReport = options.get(HEADLESS_KEY + "report");
+    this.report = parseReport(sReport);
+    //
+    Log.info("----------------------------------------------------------------------");
+    logExists(optionsFile);
+    logExists(targetPlatformFile);
+    Log.info("    iterate           : " + (resourcesToIterate == null ? "ALL" : resourcesToIterate.toString()));
     Log.info("    buildType         : " + (sBuildType == null ? AUTO_BUILD : sBuildType));
-    Log.info("    optionsFile       : " + (optionsFile == null ? "" : optionsFile.getAbsolutePath()));
-    Log.info("    targetPlatformFile: " + (targetPlatformFile == null ? "" : targetPlatformFile.getAbsolutePath()));
     Log.info("    report            : " + report);
-    if (resourcesToIterate == null) {
-      Log.info("    iterateList           : ALL");
-    }
-    else {
-      for (String resources : resourcesToIterate) {
-        Log.info("    iterate           : " + resources);
-      }
-    }
+    Log.info("----------------------------------------------------------------------");
+  }
+
+  private static void logExists(File file) {
+    Log.info("To change detection   : %-6s %s", file.exists() ? "edit" : "create", file.getAbsolutePath());
   }
 
   static Map<String, String> loadOptions(File optionFile) {
     Map<String, String> ucdOptions = Collections.emptyMap();
-    if (optionFile != null) {
-      Log.info("\toptionFile: %s exists: %s", Log.getCanonicalPath(optionFile), "" + optionFile.exists());
-      if (optionFile.exists()) {
-        ucdOptions = UCDetectorPlugin.loadModeFile(true, optionFile.getAbsolutePath());
-        for (Entry<String, String> option : ucdOptions.entrySet()) {
-          Prefs.setValue(option.getKey(), option.getValue());
-        }
-        Log.info(UCDetectorPlugin.getPreferencesAsString().replace(", ", "\n\t"));
+    Log.info("   optionFile: %s exists: %s", Log.getCanonicalPath(optionFile), "" + optionFile.exists());
+    if (optionFile.exists()) {
+      ucdOptions = ModesReader.loadModeFile(true, optionFile.getAbsolutePath());
+      for (Entry<String, String> option : ucdOptions.entrySet()) {
+        Prefs.setValue(option.getKey(), option.getValue());
       }
+      Log.info(UCDetectorPlugin.getPreferencesAsString().replace(", ", "\n\t"));
     }
     return ucdOptions;
   }
@@ -110,14 +116,7 @@ public class UCDHeadless {
     long start = System.currentTimeMillis();
     try {
       Log.info("Starting UCDetector Headless");
-      try {
-        // Log.info("TRY TO START DS  - eclipse bug 314814");
-        Bundle fwAdminBundle = Platform.getBundle("org.eclipse.equinox.ds");
-        fwAdminBundle.start();
-      }
-      catch (Exception e) {
-        Log.error("PROBLEMS STARTING DS", e);
-      }
+      tryToStartDsPlugin();
       loadTargetPlatform();
       // Run it twice because of Exception, when running it with a complete workspace: See end of file
       // https://bugs.eclipse.org/bugs/show_bug.cgi?id=314814
@@ -138,9 +137,20 @@ public class UCDHeadless {
     }
   }
 
+  /** See eclipse bug 314814 */
+  private static void tryToStartDsPlugin() {
+    try {
+      Bundle fwAdminBundle = Platform.getBundle("org.eclipse.equinox.ds");
+      fwAdminBundle.start();
+    }
+    catch (Exception e) {
+      Log.error("PROBLEMS STARTING DS", e);
+    }
+  }
+
   private void loadTargetPlatform() throws CoreException {
     if (targetPlatformFile == null || !targetPlatformFile.exists()) {
-      Log.info("Use eclipse as target platform");
+      Log.info("Target platform file missing: Use eclipse as target platform");
       return;
     }
     StopWatch stopWatch = new StopWatch();
@@ -190,7 +200,6 @@ public class UCDHeadless {
   }
 
   private void postIterate(List<IJavaElement> javaElementsToIterate) throws CoreException {
-    Log.info("UCDHeadless.postIterate");
     ArrayList<AbstractUCDetectorIterator> postIterators = HeadlessExtension.getPostIterators();
     for (AbstractUCDetectorIterator postIterator : postIterators) {
       Log.info("Run Post iterator: %s, for: %s",//
@@ -217,9 +226,10 @@ public class UCDHeadless {
         else {
           IFolder folder = workspaceRoot.getFolder(path);
           javaElement = JavaCore.create(folder);
-          Log.info("resource=%s, folder=%s, javaElement=%s", resourceToIterate, folder, javaElement.getElementName());
+          Log.info("resource=%s, folder=%s, javaElement=%s", resourceToIterate, folder,
+              JavaElementUtil.getElementName(javaElement));
         }
-        if (!javaElement.exists()) {
+        if (javaElement == null || !javaElement.exists()) {
           Log.warn("Ignore resource: '%s'. Possible reasons: It is not a java element, it does not exists",
               resourceToIterate);
           continue;
@@ -233,12 +243,6 @@ public class UCDHeadless {
       Log.info("    " + JavaElementUtil.getElementName(javaElement));//$NON-NLS-1$
     }
     return javaElementsToIterate;
-  }
-
-  static List<String> getResourcesToIterate(Map<String, String> options) {
-    String resources = options.get(UCDApplication.APPLICATION_KEY + "resourcesToIterate");
-    List<String> resourcesToIterate = resources == null ? null : Arrays.asList(resources.split(","));
-    return resourcesToIterate;
   }
 
   private static List<IJavaProject> createProjects(IProgressMonitor monitor, IWorkspaceRoot workspaceRoot)

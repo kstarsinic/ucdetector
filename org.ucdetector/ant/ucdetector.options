@@ -1,8 +1,8 @@
 ### -------------------------------------------------------------------------
-###               UCDetector preference file for mode: 'Default'
+###               UCDetector preference file for mode: 'CopyOf_Default'
 ### -------------------------------------------------------------------------
-### Created by  : UCDetector 1.7.2
-### Created date: 2011-03-09 23:42:29
+### Created by  : UCDetector 1.8.1
+### Created date: 2011-06-23 01:17:23
 ### java.util.Properties.load() may fail to load this file
 ### -------------------------------------------------------------------------
 
@@ -75,11 +75,12 @@ org.ucdetector.visibility.private.constants      = WARNING
 ## --------------------------------------------------------------------------
 
 # Group: Reports
-org.ucdetector.report.create.xml  = true
-org.ucdetector.extension.html.id  = true
-org.ucdetector.extension.text.id  = true
-org.ucdetector.report.file        = UCDetectorReport_${project}
-org.ucdetector.report.dir         = 
+org.ucdetector.report.create.xml       = false
+org.ucdetector.extension.text.id       = true
+org.ucdetector.extension.additional.id = true
+org.ucdetector.extension.html.id       = true
+org.ucdetector.report.file             = UCDetectorReport_${number}
+org.ucdetector.report.dir              = 
 
 ## --------------------------------------------------------------------------
 ## Tab: Other
@@ -94,10 +95,46 @@ org.ucdetector.log.toEclipse = false
 
 
 
+#############################################################################
+#                  UCDetector headless preferences                          #
+#############################################################################
 
+# == buildType ==
+# * One of
+# ** AUTO_BUILD [default]
+# ** FULL_BUILD (clean all, build all)
+# ** CLEAN_BUILD
+# ** INCREMENTAL_BUILD 
+# * For details see: org.eclipse.core.resources.IncrementalProjectBuilder
+#org.ucdetector.internal.headless.buildType = AUTO_BUILD
 
-############################## SETTINGS APPLICATION  ##############################
-org.ucdetector.internal.application.buildType=AUTO_BUILD
-org.ucdetector.internal.application.report=eachproject
-# separated by ,
-org.ucdetector.internal.application.resourcesToIterate=
+# == targetPlatformFile ==
+# * If ECLIPSE_HOME is not your target platform
+# ** Change file ucdetector.target
+# ** Uncomment next line
+# org.ucdetector.internal.headless.targetPlatformFile = ucdetector.target
+
+# == report  ==
+# * One of
+# ** eachproject [default] (create a report for each project)
+# ** single (create a single report)
+#org.ucdetector.internal.headless.report = eachproject
+
+# == resourcesToIterate ==
+# * Leave empty to iterate all projects in workspace [default]
+# * Separate several resources by ','
+# * Usage of new lines see example below
+#org.ucdetector.internal.headless.resourcesToIterate =
+
+##---------------------------#
+## Complete headless example #
+##---------------------------#
+org.ucdetector.internal.headless.buildType          = FULL_BUILD
+org.ucdetector.internal.headless.targetPlatformFile = eclipse-3.6-gef.target
+org.ucdetector.internal.headless.report             = single
+org.ucdetector.internal.headless.resourcesToIterate = \
+ org.ucdetector/src/main,\
+ org.ucdetector/src/cycle/org/ucdetector/cycle,\
+ org.ucdetector.example
+ 
+hallo 2

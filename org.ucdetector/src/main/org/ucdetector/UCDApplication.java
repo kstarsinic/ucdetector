@@ -6,13 +6,8 @@
  */
 package org.ucdetector;
 
-import java.io.File;
-import java.util.List;
-import java.util.Map;
-
 import org.eclipse.equinox.app.IApplication;
 import org.eclipse.equinox.app.IApplicationContext;
-import org.ucdetector.preferences.Prefs;
 
 /**
  * 
@@ -26,27 +21,11 @@ import org.ucdetector.preferences.Prefs;
  */
 @SuppressWarnings("nls")
 public class UCDApplication implements IApplication {
-  static final String APPLICATION_KEY = Prefs.INTERNAL + ".application.";
 
   public Object start(IApplicationContext context) throws Exception {
-    Log.info("Starting UCDHeadless as an application");
-    String userDir = System.getProperty("user.dir");
-    File optionsFile = new File(userDir, "ucdetector.options");
-    File targetFile = new File(userDir, "ucdetector.target");
-    logExists(optionsFile);
-    logExists(targetFile);
-
-    Map<String, String> options = UCDHeadless.loadOptions(optionsFile);
-    String buildType = options.get(APPLICATION_KEY + "buildType");
-    String report = options.get(APPLICATION_KEY + "report");
-    List<String> resourcesToIterate = UCDHeadless.getResourcesToIterate(options);
-    UCDHeadless headless = new UCDHeadless(buildType, optionsFile, targetFile, report, resourcesToIterate);
-    headless.run();
+    Log.info("Starting UCDHeadless  (application mode)");
+    new UCDHeadless(null).run();
     return IApplication.EXIT_OK;
-  }
-
-  private static void logExists(File file) {
-    Log.info("To change detection, %s: %s", file.exists() ? "edit" : "create", file.getAbsolutePath());
   }
 
   public void stop() {
