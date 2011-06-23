@@ -12,6 +12,8 @@ import static org.ucdetector.preferences.UCDetectorPreferencePage.TAB_START;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
 import java.text.MessageFormat;
 import java.util.LinkedHashMap;
@@ -19,6 +21,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 
+import org.apache.tools.ant.util.FileUtils;
 import org.eclipse.osgi.util.NLS;
 import org.ucdetector.Log;
 import org.ucdetector.Messages;
@@ -30,8 +33,11 @@ import org.ucdetector.UCDetectorPlugin;
  * @author Joerg Spieler
  * @since 22.06.2011
  */
+@SuppressWarnings("nls")
 public class ModesWriter {
-  static final String MODES_FILE_TYPE = ".properties"; //$NON-NLS-1$
+  private static final String HEADLESS_PROPERTIES = "headless.properties";
+  static final String MODES_FILE_TYPE = ".properties";
+  private static String headlessPropertiesContent;
   private final List<String> extendedPreferences;
 
   public ModesWriter(List<String> extendedPreferences) {
@@ -39,38 +45,38 @@ public class ModesWriter {
   }
 
   /** Save it to a file in WORKSPACE/.metadata/.plugins/org.ucdetector/modes  */
-  @SuppressWarnings("nls")
   void saveMode(String modeName) {
     Map<String, String> allPreferences = UCDetectorPlugin.getAllPreferences();
     allPreferences.putAll(UCDetectorPlugin.getDeltaPreferences());
-    StringBuilder sb = new StringBuilder();
-    sb.append(String.format("### -------------------------------------------------------------------------%n"));
-    sb.append(String.format("###               UCDetector preference file for mode: '%s'%n", modeName));
-    sb.append(String.format("### -------------------------------------------------------------------------%n"));
-    sb.append(String.format("### Created by  : UCDetector %s%n", UCDetectorPlugin.getAboutUCDVersion()));
-    sb.append(String.format("### Created date: %s%n", UCDetectorPlugin.getNow()));
-    sb.append(String.format("### java.util.Properties.load() may fail to load this file%n"));
-    sb.append(String.format("### -------------------------------------------------------------------------%n"));
+    StringBuilder text = new StringBuilder();
+    text.append(String.format("### -------------------------------------------------------------------------%n"));
+    text.append(String.format("###               UCDetector preference file for mode: '%s'%n", modeName));
+    text.append(String.format("### -------------------------------------------------------------------------%n"));
+    text.append(String.format("### Created by  : UCDetector %s%n", UCDetectorPlugin.getAboutUCDVersion()));
+    text.append(String.format("### Created date: %s%n", UCDetectorPlugin.getNow()));
+    text.append(String.format("### java.util.Properties.load() may fail to load this file%n"));
+    text.append(String.format("### -------------------------------------------------------------------------%n"));
     Map<String, String> groupPrefs = new LinkedHashMap<String, String>();
     for (String extendedPreference : extendedPreferences) {
       if (extendedPreference.startsWith(TAB_START)) {
-        flushGroupPrefs(groupPrefs, sb);
+        flushGroupPrefs(groupPrefs, text);
         String tab = extendedPreference.substring(TAB_START.length());
-        sb.append(String.format("%n## --------------------------------------------------------------------------%n"));
-        sb.append(String.format("## Tab: %s%n", tab.startsWith("&") ? tab.substring(1) : tab));
-        sb.append(String.format("## --------------------------------------------------------------------------%n"));
+        text.append(String.format("%n## --------------------------------------------------------------------------%n"));
+        text.append(String.format("## Tab: %s%n", tab.startsWith("&") ? tab.substring(1) : tab));
+        text.append(String.format("## --------------------------------------------------------------------------%n"));
       }
       else if (extendedPreference.startsWith(GROUP_START)) {
-        flushGroupPrefs(groupPrefs, sb);
-        sb.append(String.format("%n# Group: %s%n", extendedPreference.substring(GROUP_START.length())));
+        flushGroupPrefs(groupPrefs, text);
+        text.append(String.format("%n# Group: %s%n", extendedPreference.substring(GROUP_START.length())));
       }
       else {
         groupPrefs.put(extendedPreference, allPreferences.get(extendedPreference));
         allPreferences.remove(extendedPreference);
       }
     }
-    flushGroupPrefs(groupPrefs, sb);
-    String fileText = sb.toString();
+    flushGroupPrefs(groupPrefs, text);
+    appendHeadlessProperties(text);
+    String fileText = text.toString();
     if (Log.isDebug()) {
       Log.debug(fileText);
       Log.debug("Unhandled preferences :" + allPreferences);
@@ -80,7 +86,7 @@ public class ModesWriter {
     try {
       writer = new OutputStreamWriter(new FileOutputStream(modesFile), UCDetectorPlugin.UTF_8);
       writer.write(fileText);
-      Log.debug("Saved mode to: %s", modesFile.getAbsolutePath()); //$NON-NLS-1$
+      Log.debug("Saved mode to: %s", modesFile.getAbsolutePath());
     }
     catch (IOException ex) {
       String message = NLS.bind(Messages.ModesPanel_ModeFileCantSave, modesFile.getAbsolutePath());
@@ -91,13 +97,27 @@ public class ModesWriter {
     }
   }
 
+  private static void appendHeadlessProperties(StringBuilder sb) {
+    try {
+      if (headlessPropertiesContent == null) {
+        InputStream in = ModesWriter.class.getResourceAsStream(HEADLESS_PROPERTIES);
+        headlessPropertiesContent = FileUtils.readFully(new InputStreamReader(in, UCDetectorPlugin.UTF_8));
+      }
+    }
+    catch (IOException ex) {
+      headlessPropertiesContent = "";
+      Log.error(ex, "Can't read %s", HEADLESS_PROPERTIES);
+    }
+    sb.append(headlessPropertiesContent);
+  }
+
   /** Nice key value formatting only */
   private static void flushGroupPrefs(Map<String, String> groupPrefs, StringBuilder sb) {
     int maxKeyLength = 0;
     for (String key : groupPrefs.keySet()) {
       maxKeyLength = Math.max(maxKeyLength, key.length());
     }
-    String format = MessageFormat.format("%-{0}s = %s%n", String.valueOf(maxKeyLength)); //$NON-NLS-1$
+    String format = MessageFormat.format("%-{0}s = %s%n", String.valueOf(maxKeyLength));
     for (Entry<String, String> entry : groupPrefs.entrySet()) {
       sb.append(String.format(format, entry.getKey(), entry.getValue()));
     }

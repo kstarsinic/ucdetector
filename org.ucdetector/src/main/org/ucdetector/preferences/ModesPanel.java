@@ -272,7 +272,7 @@ class ModesPanel {
     // Put default values
     Map<String, String> allPreferences = UCDetectorPlugin.getAllPreferences();
     addAll(tempReplaceStore, allPreferences);
-    Map<String, String> savedMode = UCDetectorPlugin.loadModeFile(isFile, modesFilename);
+    Map<String, String> savedMode = ModesReader.loadModeFile(isFile, modesFilename);
     addAll(tempReplaceStore, savedMode);
     for (FieldEditor field : page.fields) {
       IPreferenceStore originalStore = field.getPreferenceStore();
