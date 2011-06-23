@@ -7,20 +7,14 @@
  */
 package org.ucdetector;
 
-import java.io.BufferedReader;
 import java.io.Closeable;
 import java.io.File;
-import java.io.FileInputStream;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.io.StringWriter;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Arrays;
 import java.util.Date;
-import java.util.HashMap;
 import java.util.HashSet;
 import java.util.LinkedHashMap;
 import java.util.Map;
@@ -43,7 +37,6 @@ import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.jface.resource.ImageRegistry;
 import org.eclipse.jface.util.IPropertyChangeListener;
 import org.eclipse.jface.util.PropertyChangeEvent;
-import org.eclipse.osgi.util.NLS;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.ui.ISharedImages;
@@ -373,53 +366,4 @@ public class UCDetectorPlugin extends AbstractUIPlugin implements IPropertyChang
     logToEclipseLog(status);
     return status;
   }
-
-  /**
-   * 
-   * [ 3025571 ] Exception loading modes: Malformed  &#92;uxxxx encoding
-   * <p>
-   * java.util.Properties.load() fails, because of file names containing Strings (file names)
-   *  which are similar to unicode signs
-   * <p>
-   * @param isFile <code>true</code>, when it is a file, <code>false</code>, when it is a resource in classpath
-   * @param modeFileName name of mode file or mode resource
-   * @return Map containing key value pairs loaded from modeFileName
-   */
-  public static Map<String, String> loadModeFile(boolean isFile, String modeFileName) {
-    Map<String, String> result = new HashMap<String, String>();
-    BufferedReader reader = null;
-    try {
-      InputStream in = isFile ? new FileInputStream(modeFileName) //
-          : Prefs.class.getResourceAsStream("modes/" + modeFileName);
-      reader = new BufferedReader(new InputStreamReader(in, UCDetectorPlugin.UTF_8));
-      String line = null;
-      while ((line = reader.readLine()) != null) {
-        line = line.trim();
-        int indexEquals = line.indexOf('=');
-        if (line.startsWith("#") || indexEquals == -1) { //$NON-NLS-1$
-          continue;// comment or no '='
-        }
-        String key = line.substring(0, indexEquals).trim();
-        String value = line.substring(indexEquals + 1).trim();
-        result.put(key, value);
-      }
-    }
-    catch (IOException ex) {
-      String message = NLS.bind(Messages.ModesPanel_CantSetPreferences, modeFileName);
-      logToEclipseLog(message, ex);
-    }
-    finally {
-      closeSave(reader);
-    }
-    return result;
-  }
-  //  private static boolean isValidFileChar(char c) {
-  //    if (c < 32 || c > 127) {
-  //      return false;
-  //    }
-  //    if ((c >= '0' && c <= '9') || (c >= 'A' && c <= 'Z') || (c >= 'a' && c <= 'z')) {
-  //      return true;
-  //    }
-  //    return " !#$%&'()+,-.=?@[]^_".indexOf(c) > -1;
-  //  }
 }
