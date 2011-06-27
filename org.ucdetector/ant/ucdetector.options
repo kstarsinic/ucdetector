@@ -106,7 +106,7 @@ org.ucdetector.log.toEclipse = false
 # ** CLEAN_BUILD
 # ** INCREMENTAL_BUILD 
 # * For details see: org.eclipse.core.resources.IncrementalProjectBuilder
-#org.ucdetector.internal.headless.buildType = AUTO_BUILD
+org.ucdetector.internal.headless.buildType = AUTO_BUILD
 
 # == targetPlatformFile ==
 # * If ECLIPSE_HOME is not your target platform
@@ -114,27 +114,25 @@ org.ucdetector.log.toEclipse = false
 # ** Uncomment next line
 # org.ucdetector.internal.headless.targetPlatformFile = ucdetector.target
 
-# == report  ==
+# == report ==
 # * One of
 # ** eachproject [default] (create a report for each project)
 # ** single (create a single report)
-#org.ucdetector.internal.headless.report = eachproject
+org.ucdetector.internal.headless.report = eachproject
 
 # == resourcesToIterate ==
 # * Leave empty to iterate all projects in workspace [default]
 # * Separate several resources by ','
 # * Usage of new lines see example below
-#org.ucdetector.internal.headless.resourcesToIterate =
+org.ucdetector.internal.headless.resourcesToIterate =
 
 ##---------------------------#
 ## Complete headless example #
 ##---------------------------#
-org.ucdetector.internal.headless.buildType          = FULL_BUILD
-org.ucdetector.internal.headless.targetPlatformFile = eclipse-3.6-gef.target
-org.ucdetector.internal.headless.report             = single
-org.ucdetector.internal.headless.resourcesToIterate = \
- org.ucdetector/src/main,\
- org.ucdetector/src/cycle/org/ucdetector/cycle,\
- org.ucdetector.example
+#org.ucdetector.internal.headless.buildType          = FULL_BUILD
+#org.ucdetector.internal.headless.targetPlatformFile = eclipse-3.6-gef.target
+#org.ucdetector.internal.headless.report             = single
+#org.ucdetector.internal.headless.resourcesToIterate = \
+# org.ucdetector/src/main,\
+# org.ucdetector/src/cycle/org/ucdetector/cycle
  
-hallo 2
