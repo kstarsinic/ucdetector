@@ -1,3 +1,16 @@
+// -----------------------------------------------------------------------------
+UCDetector 1.9.0 from 2011-xx-xx - eclipse 3.5, 3.6, 3.7:
+New features:
+ - [ 3323078 ] Added: startLine, endLine, fileName to xml report
+ - All preferences for headless mode are in ucdetector.options
+
+Bugfixes:
+ -
+
+Todo:
+
+
+// -----------------------------------------------------------------------------
 UCDetector 1.8.0 from 2011-06-15 - eclipse 3.5, 3.6, 3.7:
 New features:
  - [ 3176780 ] New option: ignore "derived" files
@@ -13,9 +26,6 @@ Bugfixes:
  - Search class names in text file now works also for nested classes: com.example.Foo$NestedClass
  - [ 3200043 ] Bad marker "test only" for classes used in xml file
  - [ 3191417 ] Change to "protected" should be default
-
-
-Todo:
 
 // -----------------------------------------------------------------------------
 UCDetector 1.7.0 from 2011-02-04 - eclipse 3.5, 3.6, 3.7:
