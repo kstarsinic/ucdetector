@@ -1,7 +1,6 @@
 == TODO ==
 * check comment 3, Wrong default visibility marker for classes* ID: 2539795,
    http://sourceforge.net/tracker/?func=detail&aid=2539795&group_id=219599&atid=1046865
-* Marker test only, but used in plugin.xml
 * javadoc @deprecated filter broken eclipse 3.7?
 * org.ucdetector.action.CountAction.iterator: suggest make private
 
@@ -12,12 +11,6 @@
 * org.eclipse.pde.internal.core.util.PatternConstructor
 * org.eclipse.pde.internal.core.util.PDEJavaHelper.getSearchScope(IJavaProject)
 * org.eclipse.releng.tools.AdvancedFixCopyrightAction.run(IAction)
-
-
-== Docu delete code ==
-* Do not delete utility classes and members
-* Delete unused interfaces
-* Be carefull with factories
 
 
 == svn to git ==
@@ -32,3 +25,4 @@ Detection time: 38.85 seconds
 
 == Overall Rank ==
 * 2010-08-20	95
+* 2011-06-21	92
