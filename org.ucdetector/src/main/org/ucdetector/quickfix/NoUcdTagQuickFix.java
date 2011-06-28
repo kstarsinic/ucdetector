@@ -32,7 +32,6 @@ class NoUcdTagQuickFix extends AbstractUCDQuickFix {
 
   @Override
   public int runImpl(BodyDeclaration nodeToChange) throws BadLocationException {
-    int charStart = marker.getAttribute(IMarker.CHAR_START, -1);
     return appendNoUcd(doc, charStart);
   }
 

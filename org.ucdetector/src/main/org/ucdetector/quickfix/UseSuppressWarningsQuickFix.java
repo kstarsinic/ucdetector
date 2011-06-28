@@ -38,7 +38,6 @@ class UseSuppressWarningsQuickFix extends AbstractUCDQuickFix {
    */
   @Override
   public int runImpl(BodyDeclaration nodeToChange) throws BadLocationException {
-    int charStart = marker.getAttribute(IMarker.CHAR_START, -1);
     IRegion region = doc.getLineInformationOfOffset(charStart);
     String indent = guessIndent(region);
     String declarationLine = doc.get(region.getOffset(), 0);

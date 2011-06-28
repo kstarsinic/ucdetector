@@ -61,15 +61,16 @@ import org.ucdetector.util.MarkerFactory;
  * @since 2008-09-22
  */
 @SuppressWarnings("nls")
-public
-abstract class AbstractUCDQuickFix extends WorkbenchMarkerResolution {
+public abstract class AbstractUCDQuickFix extends WorkbenchMarkerResolution {
   private static final String QUICK_FIX_PROBLEMS = "Quick Fix Problems";
+  final int charStart;
   IMarker marker;
   ASTRewrite rewrite;
   IDocument doc;
 
   protected AbstractUCDQuickFix(IMarker marker) {
     this.marker = marker;
+    charStart = marker.getAttribute(IMarker.CHAR_START, -1);
   }
 
   public void run(IMarker marker2) {
@@ -80,7 +81,6 @@ abstract class AbstractUCDQuickFix extends WorkbenchMarkerResolution {
       if (Log.isDebug()) {
         Log.debug("%s.run(). Marker=%s", getClass().getSimpleName(), MarkerFactory.dumpMarker(marker));
       }
-      int charStart = marker.getAttribute(IMarker.CHAR_START, -1);
       if (charStart == -1) {
         Log.warn("CHAR_START missing for marker: '%s'", MarkerFactory.dumpMarker(marker));
         return;
