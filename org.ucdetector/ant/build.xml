@@ -53,7 +53,9 @@
       when LAUNCHER is empty, create new property 'LAUNCHER'</echo>
 
     <java jar="${LAUNCHER}" fork="true" maxmemory="1024m">
+      <!--
       <arg line="-debug" />
+      -->
       <arg line="-clean" />
       <arg line="-data ${WORKSPACE}" />
       <arg line="-application org.eclipse.ant.core.antRunner" />
