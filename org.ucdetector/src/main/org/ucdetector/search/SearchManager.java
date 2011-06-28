@@ -479,7 +479,7 @@ public class SearchManager {
   /**
    * text search in files
    */
-  private final static class UCDFileSearchRequestor extends TextSearchRequestor {
+  private static final class UCDFileSearchRequestor extends TextSearchRequestor {
     final List<String> matchedFiles = new ArrayList<String>();
     final VisibilityHandler visibilityHandler;
     final String searchString;

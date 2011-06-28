@@ -55,12 +55,12 @@ import org.ucdetector.search.CountSearchRequestor;
  * @since 2008-02-29
  */
 @SuppressWarnings("nls")
-public class JavaElementUtil {
+public final class JavaElementUtil {
   /**
    * 
    */
   private static final String UNKNOWN_FIELD = "field?";
-  private final static NullProgressMonitor NULL_MONITOR = new NullProgressMonitor();
+  private static final NullProgressMonitor NULL_MONITOR = new NullProgressMonitor();
 
   private JavaElementUtil() {
     //
@@ -189,12 +189,16 @@ public class JavaElementUtil {
    * @return type of the file, or null, if it is not a java file
    */
   public static IType getTypeFor(IResource resource) {
-    if (resource instanceof IFile && "java".equalsIgnoreCase(resource.getFileExtension()) && resource.isAccessible()) {
+    if (isJavaFile(resource)) {
       IJavaElement javaElement = JavaCore.create((IFile) resource);
       return getTypeFor(javaElement, true);
     }
     // Log.debug("Resource %s is not a accessible java file", resource);
     return null;
+  }
+
+  private static boolean isJavaFile(IResource resource) {
+    return resource instanceof IFile && "java".equalsIgnoreCase(resource.getFileExtension()) && resource.isAccessible();
   }
 
   /**
@@ -282,7 +286,7 @@ public class JavaElementUtil {
    * @return top java element (CompilationUnit) of the marker
    */
   public static ICompilationUnit getCompilationUnitFor(IResource resource) {
-    if (resource instanceof IFile && "java".equalsIgnoreCase(resource.getFileExtension()) && resource.isAccessible()) {
+    if (isJavaFile(resource)) {
       IJavaElement javaElement = JavaCore.create((IFile) resource);
       if (javaElement instanceof ICompilationUnit) {
         return (ICompilationUnit) javaElement;
@@ -341,17 +345,14 @@ public class JavaElementUtil {
    * @see org.eclipse.jdt.internal.compiler.problem.ProblemReporter#unusedPrivateMethod
    */
   public static boolean isSerializationMethod(IMethod method) throws JavaModelException {
-    if (Flags.isStatic(method.getFlags())) {
-      return false;
-    }
-    String methodName = method.getElementName();
-    switch (method.getNumberOfParameters()) {
-      case 0: {
+    if (!Flags.isStatic(method.getFlags())) {
+      String methodName = method.getElementName();
+      if (method.getNumberOfParameters() == 0) {
         return "writeReplace".equals(methodName) // ANY-ACCESS-MODIFIER
             || "readResolve".equals(methodName) // ANY-ACCESS-MODIFIER
             || "readObjectNoData".equals(methodName);// private
       }
-      case 1: {
+      else if (method.getNumberOfParameters() == 1) {
         return "writeObject".equals(methodName)// private
             || "readObject".equals(methodName);// private
       }

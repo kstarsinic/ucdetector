@@ -22,7 +22,7 @@ import org.ucdetector.UCDetectorPlugin;
  * @author Joerg Spieler
  * @since 2011-04.01
  */
-public class ReportExtension {
+public final class ReportExtension {
   /** Simple identifier constant (value <code>"reports"</code>) for the UCDetector reports extension point. */
   private static final String EXTENSION_POINT_ID = UCDetectorPlugin.ID + ".reports"; //$NON-NLS-1$
   //

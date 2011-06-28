@@ -137,10 +137,6 @@ public class ReportParam {
     return author;
   }
 
-  public String Author() {
-    return author;
-  }
-
   /** @return never <code>null</code>, trimms the author name */
   public String getAuthorTrimmed() {
     return author == null ? "" : author.length() > 70 ? author.substring(0, 70) + "..." : author; //$NON-NLS-1$//$NON-NLS-2$

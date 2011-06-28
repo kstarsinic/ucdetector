@@ -90,7 +90,7 @@ public class LineManger {
   private final Map<ICompilationUnit, char[]> contentsMap = new HashMap<ICompilationUnit, char[]>();
 
   /** Contains author from javadoc */
-  private static final Map<IType, String> authorMap = new HashMap<IType, String>();
+  private static Map<IType, String> authorMap = new HashMap<IType, String>();
 
   public LineManger() {
     authorMap.clear();
