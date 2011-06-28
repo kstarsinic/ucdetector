@@ -441,14 +441,9 @@ public class SearchManager {
       Pattern searchPattern = Pattern.compile(Pattern.quote(searchString));
       UCDFileSearchRequestor requestor = new UCDFileSearchRequestor(type, searchString, visibilityHandler);
       try {
-        // If we use monitor here, progressbar is very confusing!
-        if (UCDetectorPlugin.isHeadlessMode()) {
-          // special search without UI stuff, which fails in headless mode
-          new UCDTextSearchVisitor(requestor, searchPattern).search(scope, null);
-        }
-        else {
-          TextSearchEngine.create().search(scope, requestor, searchPattern, null);
-        }
+        // 2011-06-28: When next line fails in headless mode,
+        // restore class from svn: org.ucdetector.search.UCDTextSearchVisitor
+        TextSearchEngine.create().search(scope, requestor, searchPattern, null);
       }
       catch (OperationCanceledException e) {
         // ignore
