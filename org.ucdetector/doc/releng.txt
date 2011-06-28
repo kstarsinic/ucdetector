@@ -3,15 +3,15 @@ Steps to create new UCDetector version.
 
 
 === Clean up code ===
-* run pde tools on MANIFEST.MF
-** run source ... popup menus on UCDetector project
+* run PDE tools on MANIFEST.MF
+* run source ... popup menus on UCDetector project
 * check TODO's in code
 * check build.properties
 * check MANIFEST.MF
 * update version number in: /org.ucdetector/META-INF/MANIFEST.MF
 * search old version number "1.0.0" in files
 * spell check
-* check UCDetector Code with: PMD, CPD, finbugs, Energy
+* check UCDetector Code with: PMD, CPD, findbugs, http://www.enerjy.com
 * Update CHANGES.txt from bug/feature list from sourceforge
 
 
