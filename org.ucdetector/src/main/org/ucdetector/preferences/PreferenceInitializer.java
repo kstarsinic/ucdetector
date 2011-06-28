@@ -26,7 +26,6 @@ import org.ucdetector.report.ReportNameManager;
  */
 @SuppressWarnings("nls")
 public class PreferenceInitializer extends AbstractPreferenceInitializer {
-  private static final String WARN = WARNING.name();
   private static final String SOURCE_FOLDER_FILTER = "*test*,generated,";
   private static final String PACKAGE_FILTER = "*test*,";
   private static final String CLASS_FILTER = "Test*,*Test";
@@ -55,9 +54,9 @@ public class PreferenceInitializer extends AbstractPreferenceInitializer {
     store.setDefault(Prefs.IGNORE_DERIVED, true);
     // WHAT TO DETECT ----------------------------------------------------------
     store.setDefault(Prefs.WARN_LIMIT, 0);
-    store.setDefault(Prefs.ANALYZE_CLASSES, WARN);
-    store.setDefault(Prefs.ANALYZE_MEHTODS, WARN);
-    store.setDefault(Prefs.ANALYZE_FIELDS, WARN);
+    store.setDefault(Prefs.ANALYZE_CLASSES, WARNING.name());
+    store.setDefault(Prefs.ANALYZE_MEHTODS, WARNING.name());
+    store.setDefault(Prefs.ANALYZE_FIELDS, WARNING.name());
     store.setDefault(Prefs.DETECT_TEST_ONLY, true);
     // CLASS NAMES IN FILES ----------------------------------------------------
     store.setDefault(Prefs.ANALYZE_LITERALS_CHECK, true);
@@ -81,18 +80,18 @@ public class PreferenceInitializer extends AbstractPreferenceInitializer {
     store.setDefault(Prefs.ANALYZE_FINAL_FIELD, IGNORE.name());
     // VISIBILITY --------------------------------------------------------------
     // methods
-    store.setDefault(Prefs.ANALYZE_VISIBILITY_PROTECTED_CLASSES, WARN);
-    store.setDefault(Prefs.ANALYZE_VISIBILITY_PRIVATE_CLASSES, WARN);
+    store.setDefault(Prefs.ANALYZE_VISIBILITY_PROTECTED_CLASSES, WARNING.name());
+    store.setDefault(Prefs.ANALYZE_VISIBILITY_PRIVATE_CLASSES, WARNING.name());
     // classes
-    store.setDefault(Prefs.ANALYZE_VISIBILITY_PROTECTED_METHODS, WARN);
-    store.setDefault(Prefs.ANALYZE_VISIBILITY_PRIVATE_METHODS, WARN);
+    store.setDefault(Prefs.ANALYZE_VISIBILITY_PROTECTED_METHODS, WARNING.name());
+    store.setDefault(Prefs.ANALYZE_VISIBILITY_PRIVATE_METHODS, WARNING.name());
     // fields
-    store.setDefault(Prefs.ANALYZE_VISIBILITY_PROTECTED_FIELDS, WARN);
-    store.setDefault(Prefs.ANALYZE_VISIBILITY_PRIVATE_FIELDS, WARN);
+    store.setDefault(Prefs.ANALYZE_VISIBILITY_PROTECTED_FIELDS, WARNING.name());
+    store.setDefault(Prefs.ANALYZE_VISIBILITY_PRIVATE_FIELDS, WARNING.name());
     store.setDefault(Prefs.IGNORE_SYNTHETIC_ACCESS_EMULATION, true);
     // constants
-    store.setDefault(Prefs.ANALYZE_VISIBILITY_PROTECTED_CONSTANTS, WARN);
-    store.setDefault(Prefs.ANALYZE_VISIBILITY_PRIVATE_CONSTANTS, WARN);
+    store.setDefault(Prefs.ANALYZE_VISIBILITY_PROTECTED_CONSTANTS, WARNING.name());
+    store.setDefault(Prefs.ANALYZE_VISIBILITY_PRIVATE_CONSTANTS, WARNING.name());
     //
     store.setDefault(Prefs.MODE_NAME, ModesPanel.Mode.Default.toStringLocalized());
   }
