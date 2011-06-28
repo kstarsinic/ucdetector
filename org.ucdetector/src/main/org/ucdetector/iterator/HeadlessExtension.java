@@ -18,7 +18,7 @@ import org.ucdetector.Log;
 import org.ucdetector.UCDetectorPlugin;
 
 /**
- * Provid access to the org.ucdetector.headless extension point
+ * Provide access to the org.ucdetector.headless extension point
  * <p>
  * @author Joerg Spieler
  * @since 2011-05-17
