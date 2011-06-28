@@ -36,7 +36,7 @@ public class Log {
    *
    * @see "http://wiki.eclipse.org/FAQ_How_do_I_use_the_platform_debug_tracing_facility%3F"
    */
-  private static LogLevel LOG_LEVEL_OPTIONS_FILE;
+  private static LogLevel logLevelOptionsFile;
 
   //  private static MessageConsole console;
   //  private static PrintStream consoleStreamInfo;
@@ -49,12 +49,12 @@ public class Log {
     isLogInited = true;
     setActiveLogLevel(Prefs.getLogLevel());
     setLogToEclipse(Prefs.isLogToEclipse());
-    LOG_LEVEL_OPTIONS_FILE = getLogLevelOption("org.ucdetector/logLevel");
+    logLevelOptionsFile = getLogLevelOption("org.ucdetector/logLevel");
     if (getActiveLogLevel().ordinal() > LogLevel.INFO.ordinal()) {
       System.out.println("UCDetector Log level: " + getActiveLogLevel()); // we need to log to System.out
     }
-    if (LOG_LEVEL_OPTIONS_FILE != null) {
-      warn("Eclipse .options file overrides preferences log level. Log level is: " + LOG_LEVEL_OPTIONS_FILE);
+    if (logLevelOptionsFile != null) {
+      warn("Eclipse .options file overrides preferences log level. Log level is: " + logLevelOptionsFile);
     }
   }
 
@@ -175,7 +175,7 @@ public class Log {
   }
 
   protected static LogLevel getActiveLogLevel() {
-    return LOG_LEVEL_OPTIONS_FILE == null ? activeLogLevel : LOG_LEVEL_OPTIONS_FILE;
+    return logLevelOptionsFile == null ? activeLogLevel : logLevelOptionsFile;
   }
 
   protected static String getCanonicalPath(File file) {

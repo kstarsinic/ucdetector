@@ -291,7 +291,7 @@ public abstract class AbstractUCDetectorIterator {
   /**
    * @return creates a String for all selected javaElements
    */
-  protected final static String getSelectedString(IJavaElement[] javaElements) {
+  protected static final String getSelectedString(IJavaElement[] javaElements) {
     StringBuilder selectedAsString = new StringBuilder();
     for (IJavaElement javaElement : javaElements) {
       if (selectedAsString.length() > 0) {
@@ -313,7 +313,7 @@ public abstract class AbstractUCDetectorIterator {
   /**
    * Debug, that a member will be handled!
    */
-  protected final static void debugHandle(IMember member) {
+  protected static final void debugHandle(IMember member) {
     if (DEBUG) {
       Log.debug("    Handle %s '%s'", // //$NON-NLS-1$
           JavaElementUtil.getMemberTypeString(member), JavaElementUtil.getElementName(member));
@@ -324,7 +324,7 @@ public abstract class AbstractUCDetectorIterator {
    * Debug, that a member will not be handled, because it is
    * filtered, private...
    */
-  protected final static void debugNotHandle(IMember member, String reason) {
+  protected static final void debugNotHandle(IMember member, String reason) {
     if (DEBUG) {
       Log.debug("    Ignore %s '%s' because: %s",// //$NON-NLS-1$
           JavaElementUtil.getMemberTypeString(member), JavaElementUtil.getElementName(member), reason);

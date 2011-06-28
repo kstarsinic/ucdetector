@@ -365,7 +365,6 @@ public final class Prefs {
       IField field = (IField) javaElement;
       if (isConstant(field)) {
         return WarnLevel.valueOf(getString(ANALYZE_VISIBILITY_PROTECTED_CONSTANTS));
-
       }
       return WarnLevel.valueOf(getString(ANALYZE_VISIBILITY_PROTECTED_FIELDS));
     }
@@ -397,7 +396,6 @@ public final class Prefs {
       IField field = (IField) javaElement;
       if (isConstant(field)) {
         return WarnLevel.valueOf(getString(ANALYZE_VISIBILITY_PRIVATE_CONSTANTS));
-
       }
       return WarnLevel.valueOf(getString(ANALYZE_VISIBILITY_PRIVATE_FIELDS));
     }

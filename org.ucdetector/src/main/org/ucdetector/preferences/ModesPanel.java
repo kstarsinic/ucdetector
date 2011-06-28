@@ -57,7 +57,7 @@ class ModesPanel {
     }
   }
 
-  private static final File modesDir = UCDetectorPlugin.getModesDir();
+  private static final File MODES_DIR = UCDetectorPlugin.getModesDir();
 
   private final Button newButton;
   private final Button removeButton;
@@ -72,8 +72,8 @@ class ModesPanel {
     this.page = page;
     this.parent = parentGroups;
     this.modesWriter = new ModesWriter(page.extendedPreferences);
-    modesDir.mkdirs();
-    Log.info("modesDir is '%s'", modesDir.getAbsolutePath()); //$NON-NLS-1$
+    MODES_DIR.mkdirs();
+    Log.info("modesDir is '%s'", MODES_DIR.getAbsolutePath()); //$NON-NLS-1$
     this.modesPanelComposite = UCDetectorPreferencePage.createComposite(parent, 5, 1, GridData.FILL_HORIZONTAL);
     Label label = new Label(modesPanelComposite, SWT.LEFT);
     label.setText(Messages.ModesPanel_ModeLabel);
@@ -114,7 +114,7 @@ class ModesPanel {
     // Default first
     getCombo().setText(Mode.Default.toStringLocalized());
     getCombo().setText(Prefs.getModeName());
-    getCombo().setToolTipText(modesDir.getAbsolutePath());
+    getCombo().setToolTipText(MODES_DIR.getAbsolutePath());
 
     getCombo().addSelectionListener(new SelectionAdapter() {
       @Override
@@ -155,7 +155,7 @@ class ModesPanel {
     for (Mode mode : Mode.values()) {
       result.add(mode.toStringLocalized());
     }
-    List<String> modesFiles = new ArrayList<String>(Arrays.asList(modesDir.list()));
+    List<String> modesFiles = new ArrayList<String>(Arrays.asList(MODES_DIR.list()));
     Collections.sort(modesFiles, String.CASE_INSENSITIVE_ORDER);
     for (String modesFile : modesFiles) {
       if (modesFile.endsWith(ModesWriter.MODES_FILE_TYPE)) {
