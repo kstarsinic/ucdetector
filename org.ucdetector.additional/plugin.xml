@@ -105,7 +105,7 @@
     <extension point="org.ucdetector.reports">
        <report resultFile="${reportName}_add.txt"
                description="%report.additional.name"
-               id="additional.id" 
+               id="additional" 
                class="org.ucdetector.report.AdditionalReport" >
        </report>
     </extension>

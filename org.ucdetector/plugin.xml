@@ -458,8 +458,8 @@
        UCDETECTOR REPORTS
        ===================================================================== -->
     <extension point="org.ucdetector.reports">
-       <report resultFile="${reportName}_custom.txt" description="%report.custom.name" id="custom.id" stylesheet="org/ucdetector/report/custom.xslt"></report>
-       <report resultFile="${reportName}.html" description="%report.html.name" id="html.id" stylesheet="org/ucdetector/report/html.xslt"></report>
-       <report resultFile="${reportName}.txt" description="%report.text.name" id="text.id" class="org.ucdetector.report.TextReport" ></report>
+       <report resultFile="${reportName}_custom.txt" description="%report.custom.name" id="custom" stylesheet="org/ucdetector/report/custom.xslt"></report>
+       <report resultFile="${reportName}.html" description="%report.html.name" id="html" stylesheet="org/ucdetector/report/html.xslt"></report>
+       <report resultFile="${reportName}.txt" description="%report.text.name" id="text" class="org.ucdetector.report.TextReport" ></report>
     </extension>
 </plugin>
