@@ -87,8 +87,9 @@ public final class Prefs {
   // REPORTS ------------------------------------------------------------------
   public static final String REPORT_DIR = ID + ".report.dir";
   static final String REPORT_FILE = ID + ".report.file";
-  static final String REPORT_CREATE_XML = ID + ".report.create.xml";
-  private static final String REPORT_CREATE_EXTENSION = ID + ".extension";
+  static final String REPORT_CREATE = ID + ".report.create";
+  static final String REPORT_CREATE_XML = REPORT_CREATE + ".xml";
+  //  private static final String REPORT_CREATE_EXTENSION = ID + ".extension";
   //
   public static final String LOG_LEVEL = ID + ".log.level";
   public static final String LOG_TO_ECLIPSE = ID + ".log.toEclipse";
@@ -576,7 +577,7 @@ public final class Prefs {
   }
 
   public static String getReportStoreKey(ReportExtension extension) {
-    return REPORT_CREATE_EXTENSION + "." + extension.getId();
+    return REPORT_CREATE + "." + extension.getId();
   }
 
   public static boolean isCreateReport(ReportExtension extension) {
