@@ -88,7 +88,7 @@ public class UCDHeadless {
     String sReport = options.get(HEADLESS_KEY + "report");
     this.report = parseReport(sReport);
     //
-    String iterateInfo = resourcesToIterate == null ? "ALL" : //
+    String iterateInfo = (resourcesToIterate == null || resourcesToIterate.isEmpty()) ? "ALL" : //
         resourcesToIterate.size() + " elements: " + resourcesToIterate.toString();
     Log.info("----------------------------------------------------------------------");
     logExists(optionsFile);
@@ -221,25 +221,31 @@ public class UCDHeadless {
     }
     else {
       for (String resourceToIterate : resourcesToIterate) {
-        Path path = new Path(resourceToIterate);
-        IJavaElement javaElement;
-        if (path.segmentCount() == 1) {
-          IProject project = workspaceRoot.getProject(resourceToIterate);
-          javaElement = JavaCore.create(project);
-          Log.info("resource=%s, javaProject=%s", resourceToIterate, javaElement.getElementName());
+        Log.info("resourceToIterate: " + resourceToIterate);
+        try {
+          Path path = new Path(resourceToIterate);
+          IJavaElement javaElement;
+          if (path.segmentCount() == 1) {
+            IProject project = workspaceRoot.getProject(resourceToIterate);
+            javaElement = JavaCore.create(project);
+            Log.info("resource=%s, javaProject=%s", resourceToIterate, javaElement.getElementName());
+          }
+          else {
+            IFolder folder = workspaceRoot.getFolder(path);
+            javaElement = JavaCore.create(folder);
+            Log.info("resource=%s, folder=%s, javaElement=%s", resourceToIterate, folder,
+                JavaElementUtil.getElementName(javaElement));
+          }
+          if (javaElement == null || !javaElement.exists()) {
+            Log.warn("Ignore resource: '%s'. Possible reasons: It is not a java element, it does not exists",
+                resourceToIterate);
+            continue;
+          }
+          javaElementsToIterate.add(javaElement);
         }
-        else {
-          IFolder folder = workspaceRoot.getFolder(path);
-          javaElement = JavaCore.create(folder);
-          Log.info("resource=%s, folder=%s, javaElement=%s", resourceToIterate, folder,
-              JavaElementUtil.getElementName(javaElement));
+        catch (Exception ex) {
+          Log.warn("Ignore resource: '%s': %s", resourceToIterate, ex);
         }
-        if (javaElement == null || !javaElement.exists()) {
-          Log.warn("Ignore resource: '%s'. Possible reasons: It is not a java element, it does not exists",
-              resourceToIterate);
-          continue;
-        }
-        javaElementsToIterate.add(javaElement);
       }
     }
     // Logging

@@ -26,7 +26,7 @@ ECLIPSE_HOME/dropins/org.ucdetector_*.jar/org/ucdetector/report/html.xslt
 				<title>UCDetector Report</title>
 				<link rel="icon" href=".icons/ucd.gif" type="image/gif"/>
 			</head>
-			<body bgcolor="#FFFFE0">
+			<body>
 				<h2 align="center">
 					<a href="http://www.ucdetector.org/">
 						<img src=".icons/ucdetector32.png" alt="UCDetector homepage" border="0"/>
