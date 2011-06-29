@@ -9,6 +9,7 @@ package org.ucdetector;
 
 import java.io.Closeable;
 import java.io.File;
+import java.io.IOException;
 import java.io.PrintWriter;
 import java.io.StringWriter;
 import java.text.DateFormat;
@@ -331,6 +332,18 @@ public class UCDetectorPlugin extends AbstractUIPlugin implements IPropertyChang
     }
     if (property.equals(Prefs.LOG_TO_ECLIPSE)) {
       Log.setLogToEclipse(Boolean.parseBoolean(newValue));
+    }
+  }
+
+  public static String getCanonicalPath(File file) {
+    if (file == null) {
+      return null;
+    }
+    try {
+      return file.getCanonicalPath();
+    }
+    catch (IOException e) {
+      return file.getAbsolutePath();
     }
   }
 

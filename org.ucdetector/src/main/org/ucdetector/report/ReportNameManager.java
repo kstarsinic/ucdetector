@@ -17,6 +17,7 @@ import java.util.Set;
 import org.eclipse.core.runtime.Platform;
 import org.eclipse.jdt.core.IJavaElement;
 import org.ucdetector.Log;
+import org.ucdetector.UCDetectorPlugin;
 import org.ucdetector.preferences.Prefs;
 
 /**
@@ -51,7 +52,7 @@ public class ReportNameManager {
     String reportDir;
     try {
       File workspaceDir = Platform.getLocation().toFile();
-      reportDir = new File(workspaceDir, REPORT_DEFAULT_DIR).getCanonicalPath();
+      reportDir = UCDetectorPlugin.getCanonicalPath(new File(workspaceDir, REPORT_DEFAULT_DIR));
     }
     catch (Exception e) {
       reportDir = REPORT_DEFAULT_DIR;

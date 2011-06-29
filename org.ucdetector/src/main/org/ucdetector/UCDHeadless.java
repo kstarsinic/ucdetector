@@ -71,6 +71,8 @@ public class UCDHeadless {
 
   public UCDHeadless(String optionsFileName) {
     //
+    // TODO: replace ${ECLIPSE_HOME}, ${WORKSPACE} in optionsFileName
+    //
     File optionsFile = new File(optionsFileName == null ? "ucdetector.options" : optionsFileName);
     Map<String, String> options = loadOptions(optionsFile);
     //
@@ -86,22 +88,25 @@ public class UCDHeadless {
     String sReport = options.get(HEADLESS_KEY + "report");
     this.report = parseReport(sReport);
     //
+    String iterateInfo = resourcesToIterate == null ? "ALL" : //
+        resourcesToIterate.size() + " elements: " + resourcesToIterate.toString();
     Log.info("----------------------------------------------------------------------");
     logExists(optionsFile);
     logExists(targetPlatformFile);
-    Log.info("    iterate           : " + (resourcesToIterate == null ? "ALL" : resourcesToIterate.toString()));
+    Log.info("    iterate           : " + iterateInfo);
     Log.info("    buildType         : " + (sBuildType == null ? AUTO_BUILD : sBuildType));
     Log.info("    report            : " + report);
     Log.info("----------------------------------------------------------------------");
   }
 
   private static void logExists(File file) {
-    Log.info("To change detection   : %-6s %s", file.exists() ? "edit" : "create", file.getAbsolutePath());
+    Log.info("To change detection   : %-6s %s", file.exists() ? "edit" : "create",
+        UCDetectorPlugin.getCanonicalPath(file));
   }
 
   static Map<String, String> loadOptions(File optionFile) {
     Map<String, String> ucdOptions = Collections.emptyMap();
-    Log.info("   optionFile: %s exists: %s", Log.getCanonicalPath(optionFile), "" + optionFile.exists());
+    Log.info("   optionFile: %s exists: %s", UCDetectorPlugin.getCanonicalPath(optionFile), "" + optionFile.exists());
     if (optionFile.exists()) {
       ucdOptions = ModesReader.loadModeFile(true, optionFile.getAbsolutePath());
       for (Entry<String, String> option : ucdOptions.entrySet()) {

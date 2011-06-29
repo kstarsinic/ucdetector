@@ -450,7 +450,7 @@ public class XmlReport implements IUCDetectorReport {
     finally {
       UCDetectorPlugin.closeSave(fileWriter);
     }
-    Log.info("Wrote file= " + file.getCanonicalPath());
+    Log.info("Wrote file= " + UCDetectorPlugin.getCanonicalPath(file));
   }
 
   private static void writeDocumentToFile(Document docToWrite, File file) throws Exception {
@@ -470,7 +470,7 @@ public class XmlReport implements IUCDetectorReport {
       Log.warn("Can't change output format: " + ignore);
     }
     xformer.transform(source, result);
-    Log.info("Wrote file= " + file.getCanonicalPath());
+    Log.info("Wrote file= " + UCDetectorPlugin.getCanonicalPath(file));
   }
 
   /** Transform from xml to text using xslt transformation */
