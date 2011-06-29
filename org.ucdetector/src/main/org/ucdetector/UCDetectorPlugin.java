@@ -343,8 +343,13 @@ public class UCDetectorPlugin extends AbstractUIPlugin implements IPropertyChang
       return file.getCanonicalPath();
     }
     catch (IOException e) {
+      System.err.println(e);
       return file.getAbsolutePath();
     }
+  }
+
+  public static String getCanonicalPath(String fileName) {
+    return (fileName == null) ? null : getCanonicalPath(new File(fileName));
   }
 
   public static String exceptionToString(Throwable ex) {

@@ -69,38 +69,15 @@ public class UCDHeadless {
   }
 
   public UCDHeadless(String optionsFileName) {
-    //
-    // TODO: replace ${ECLIPSE_HOME}, ${WORKSPACE} in optionsFileName
-    //
-    File optionsFile = new File(optionsFileName == null ? "ucdetector.options" : optionsFileName);
+    File optionsFile = getFile(optionsFileName, "ucdetector.options");
     Map<String, String> options = loadOptions(optionsFile);
-    //
-    String sTargetPlatformFile = options.get(HEADLESS_KEY + "targetPlatformFile");
-    this.targetPlatformFile = new File(sTargetPlatformFile == null ? "ucdetector.target" : sTargetPlatformFile);
-    //
-    String resources = options.get(HEADLESS_KEY + "resourcesToIterate");
-    if (resources == null || resources.length() == 0) {
-      resourcesToIterate = null;
-    }
-    else {
-      resourcesToIterate = new ArrayList<String>();
-      String[] resourcesList = resources.split(",");
-      for (String resourceName : resourcesList) {
-        resourceName = resourceName.trim();
-        if (resourceName.length() > 0) {
-          resourcesToIterate.add(resourceName);
-        }
-      }
-    }
-    //
+    this.targetPlatformFile = getFile(options.get(HEADLESS_KEY + "targetPlatformFile"), "ucdetector.target");
     String sBuildType = options.get(HEADLESS_KEY + "buildType");
     this.buildType = parseBuildType(sBuildType);
-    //
-    String sReport = options.get(HEADLESS_KEY + "report");
-    this.report = parseReport(sReport);
-    //
-    String iterateInfo = (resourcesToIterate == null || resourcesToIterate.isEmpty()) ? "ALL" : //
-        resourcesToIterate.size() + " elements: " + resourcesToIterate.toString();
+    this.report = parseReport(options.get(HEADLESS_KEY + "report"));
+    this.resourcesToIterate = getResourcesToIterate(options);
+    String iterateInfo = resourcesToIterate.isEmpty() ? "ALL" : //
+        resourcesToIterate.size() + " elements: " + resourcesToIterate;
     Log.info("----------------------------------------------------------------------");
     logExists(optionsFile);
     logExists(targetPlatformFile);
@@ -108,6 +85,31 @@ public class UCDHeadless {
     Log.info("    buildType         : " + (sBuildType == null ? AUTO_BUILD : sBuildType));
     Log.info("    report            : " + report);
     Log.info("----------------------------------------------------------------------");
+  }
+
+  private static File getFile(String fileName, String defaultFileName) {
+    if (fileName == null) {
+      return new File(defaultFileName);
+    }
+    String result = fileName;
+    result = result.replace("${WORKSPACE}", UCDetectorPlugin.getAboutWorkspace());
+    result = result.replace("${ECLIPSE_HOME}", UCDetectorPlugin.getAboutEclipseHome());
+    return new File(UCDetectorPlugin.getCanonicalPath(result));
+  }
+
+  private List<String> getResourcesToIterate(Map<String, String> options) {
+    List<String> result = new ArrayList<String>();
+    String resourcesToIterateString = options.get(HEADLESS_KEY + "resourcesToIterate");
+    if (resourcesToIterateString != null) {
+      String[] resourcesList = resourcesToIterateString.split(",");
+      for (String resourceName : resourcesList) {
+        resourceName = resourceName.trim();
+        if (resourceName.length() > 0) {
+          resourcesToIterate.add(resourceName);
+        }
+      }
+    }
+    return result;
   }
 
   private static void logExists(File file) {
@@ -255,7 +257,7 @@ public class UCDHeadless {
           javaElementsToIterate.add(javaElement);
         }
         catch (Exception ex) {
-          Log.warn("Ignore resource: '%s': %s", resourceToIterate, ex);
+          Log.warn("Ignore resource: '%s' because %s", resourceToIterate, ex);
         }
       }
     }
