@@ -8,7 +8,6 @@ package org.ucdetector;
 
 import java.io.File;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
@@ -80,7 +79,19 @@ public class UCDHeadless {
     this.targetPlatformFile = new File(sTargetPlatformFile == null ? "ucdetector.target" : sTargetPlatformFile);
     //
     String resources = options.get(HEADLESS_KEY + "resourcesToIterate");
-    resourcesToIterate = resources == null ? null : Arrays.asList(resources.split(","));
+    if (resources == null || resources.length() == 0) {
+      resourcesToIterate = null;
+    }
+    else {
+      resourcesToIterate = new ArrayList<String>();
+      String[] resourcesList = resources.split(",");
+      for (String resourceName : resourcesList) {
+        resourceName = resourceName.trim();
+        if (resourceName.length() > 0) {
+          resourcesToIterate.add(resourceName);
+        }
+      }
+    }
     //
     String sBuildType = options.get(HEADLESS_KEY + "buildType");
     this.buildType = parseBuildType(sBuildType);
