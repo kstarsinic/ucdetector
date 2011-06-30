@@ -56,7 +56,6 @@ import org.ucdetector.util.JavaElementUtil;
 import org.ucdetector.util.JavaElementUtil.MemberInfo;
 import org.ucdetector.util.MarkerFactory;
 import org.ucdetector.util.StopWatch;
-import org.w3c.dom.Comment;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
@@ -76,12 +75,15 @@ import org.w3c.dom.Element;
  */
 @SuppressWarnings("nls")
 public class XmlReport implements IUCDetectorReport {
-  private static final String COPY_RIGHT = "\n" //
-      + "    Copyright (c) 2011 Joerg Spieler All rights reserved. This program and the\n"
-      + "    accompanying materials are made available under the terms of the Eclipse\n"
-      + "    Public License v1.0 which accompanies this distribution, and is available at\n"
-      + "    http://www.eclipse.org/legal/epl-v10.html\n";
-  //
+  private static final String ICONS_DIR = ".icons";
+  private static final String HTML_XSLT = "html.xslt";
+  private static final String COPY_RIGHT = //
+  /*<!-- */" ===========================================================================\n"
+      + "     Copyright (c) 2011 Joerg Spieler All rights reserved. This program and the\n"
+      + "     accompanying materials are made available under the terms of the Eclipse\n"
+      + "     Public License v1.0 which accompanies this distribution, and is available at\n"
+      + "     http://www.eclipse.org/legal/epl-v10.html\n"
+      + "     ======================================================================== ";
   private static final String XML_INFO = "\n" //
       + " - javaTypeSimple one of:\n"//
       + "   - Class, Method, Field, Initializer\n"//
@@ -139,13 +141,11 @@ public class XmlReport implements IUCDetectorReport {
     }
     try {
       doc = DocumentBuilderFactory.newInstance().newDocumentBuilder().newDocument();
-      // doc.insertBefore(doc.createProcessingInstruction("xml-stylesheet", "type=\"text/xsl\" HREF=\"html.xslt\""), doc.getDocumentElement());
+      String stylesheet = String.format("type=\"text/xsl\" href=\"%s/%s\"", ICONS_DIR, HTML_XSLT);
+      doc.insertBefore(doc.createProcessingInstruction("xml-stylesheet", stylesheet), doc.getDocumentElement());
+      doc.insertBefore(doc.createComment(COPY_RIGHT), doc.getDocumentElement());
       Element root = doc.createElement("ucdetector");
-      Comment styleComment = doc.createComment("\n<?xml-stylesheet type=\"text/xsl\" href=\"html.xslt\" ?>\n");
-      doc.appendChild(styleComment);
       doc.appendChild(root);
-      root.appendChild(doc.createComment(COPY_RIGHT));
-      //
       statistcs = doc.createElement("statistics");
       root.appendChild(statistcs);
       markers = doc.createElement("markers");
@@ -378,7 +378,7 @@ public class XmlReport implements IUCDetectorReport {
       return;
     }
     appendStatistics(isEndReport);
-    copyIconFiles(reportDir);
+    copyFilesToDotIconDir(reportDir);
     try {
       ArrayList<ReportExtension> xsltExtensions = ReportExtension.getXsltExtensions();
       for (ReportExtension xsltExtension : xsltExtensions) {
@@ -404,6 +404,23 @@ public class XmlReport implements IUCDetectorReport {
     }
   }
 
+  private void copyFilesToDotIconDir(File reportDir) {
+    File iconsOutDir = new File(reportDir, ICONS_DIR);
+    iconsOutDir.mkdirs();
+    try {
+      copyStylesheet(iconsOutDir);
+      copyIconFiles(iconsOutDir);
+    }
+    catch (IOException ex) {
+      Log.error("Problems copying files to: " + ICONS_DIR, ex);
+    }
+  }
+
+  private void copyStylesheet(File iconsOutDir) throws IOException {
+    InputStream inStream = getClass().getResourceAsStream(HTML_XSLT);
+    copyStream(inStream, new FileOutputStream(new File(iconsOutDir, HTML_XSLT)));
+  }
+
   private static final String[] ICONS = new String[] { //
   //  "ElementClass.gif", "ElementField.gif", "ElementMethod.gif",//
       "FewReference.gif", "Final.gif", "Reference.gif", "TestOnly.gif",//
@@ -411,25 +428,18 @@ public class XmlReport implements IUCDetectorReport {
       "VisibilityDefault.gif", "VisibilityPrivate.gif", "VisibilityProtected.gif", //
   };
 
-  private static void copyIconFiles(File reportDir) {
-    try {
-      File iconsOutDir = new File(reportDir, ".icons");
-      iconsOutDir.mkdirs();
-      for (String iconName : ICONS) {
-        Path iconPath = new Path("icons");
-        File outFile = new File(iconsOutDir, iconName);
-        Bundle bundle = UCDetectorPlugin.getDefault().getBundle();
-        copyToIconDir(iconPath, iconName, outFile, bundle);
-      }
-      for (JavaElementUtil.MemberInfo memberInfo : JavaElementUtil.MemberInfo.values()) {
-        Path iconPath = new Path("icons/full/obj16/");
-        File outFile = new File(iconsOutDir, memberInfo.getIcon());
-        Bundle bundle = Platform.getBundle("org.eclipse.jdt.ui");
-        copyToIconDir(iconPath, memberInfo.getIcon(), outFile, bundle);
-      }
+  private static void copyIconFiles(File iconsOutDir) throws IOException {
+    for (String iconName : ICONS) {
+      Path iconPath = new Path("icons");
+      File outFile = new File(iconsOutDir, iconName);
+      Bundle bundle = UCDetectorPlugin.getDefault().getBundle();
+      copyToIconDir(iconPath, iconName, outFile, bundle);
     }
-    catch (IOException ex) {
-      Log.error("Problems copying icon files", ex);
+    for (JavaElementUtil.MemberInfo memberInfo : JavaElementUtil.MemberInfo.values()) {
+      Path iconPath = new Path("icons/full/obj16/");
+      File outFile = new File(iconsOutDir, memberInfo.getIcon());
+      Bundle bundle = Platform.getBundle("org.eclipse.jdt.ui");
+      copyToIconDir(iconPath, memberInfo.getIcon(), outFile, bundle);
     }
   }
 
