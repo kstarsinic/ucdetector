@@ -6,6 +6,7 @@
  */
 package org.ucdetector;
 
+import org.eclipse.core.runtime.Platform;
 import org.eclipse.equinox.app.IApplication;
 import org.eclipse.equinox.app.IApplicationContext;
 
@@ -24,8 +25,18 @@ public class UCDApplication implements IApplication {
 
   public Object start(IApplicationContext context) throws Exception {
     Log.info("Starting UCDHeadless  (application mode)");
-    new UCDHeadless(null).run();
+    new UCDHeadless(getOptionsFileName()).run();
     return IApplication.EXIT_OK;
+  }
+
+  private static String getOptionsFileName() {
+    String[] args = Platform.getCommandLineArgs();
+    for (int i = 0; i < args.length; i++) {
+      if ("-ucd.options.file".equals(args[i]) && i < args.length - 1) {
+        return args[i + 1];
+      }
+    }
+    return null;
   }
 
   public void stop() {
