@@ -23,13 +23,14 @@ import org.ucdetector.UCDHeadless;
  * 
  */
 public class UCDTask extends Task {
-  private String optionsFile;
+  //  private String optionsFile;
 
   @Override
   public void execute() throws BuildException {
     Log.info("UCDetector ANT: 3 - Start java code of ant task '<ucdetector>' inside headless eclipse");
     try {
-      new UCDHeadless(optionsFile).run();
+      String optionsFileName = System.getProperty("ucd.options.file");
+      new UCDHeadless(optionsFileName).run();
     }
     catch (Exception e) {
       throw new BuildException(e);
@@ -38,7 +39,7 @@ public class UCDTask extends Task {
   }
 
   // ANT Attributes
-  public void setOptionsFile(String optionsFile) {
-    this.optionsFile = optionsFile;
-  }
+  //  public void setOptionsFile(String optionsFile) {
+  //    this.optionsFile = optionsFile;
+  //  }
 }
