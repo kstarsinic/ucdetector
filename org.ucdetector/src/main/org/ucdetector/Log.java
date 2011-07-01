@@ -48,9 +48,6 @@ public class Log {
     setActiveLogLevel(Prefs.getLogLevel());
     setLogToEclipse(Prefs.isLogToEclipse());
     logLevelOptionsFile = getLogLevelOption("org.ucdetector/logLevel");
-    if (getActiveLogLevel().ordinal() > LogLevel.INFO.ordinal()) {
-      System.out.println("UCDetector Log level: " + getActiveLogLevel()); // we need to log to System.out
-    }
     if (logLevelOptionsFile != null) {
       warn("Eclipse .options file overrides preferences log level. Log level is: " + logLevelOptionsFile);
     }
