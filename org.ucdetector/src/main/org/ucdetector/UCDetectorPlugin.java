@@ -326,9 +326,16 @@ public class UCDetectorPlugin extends AbstractUIPlugin implements IPropertyChang
     String property = event.getProperty();
     String newValue = event.getNewValue().toString();
     if (property.equals(Prefs.LOG_LEVEL)) {
-      Log.setActiveLogLevel(LogLevel.valueOf(newValue));
+      LogLevel newLogLevel = LogLevel.valueOf(newValue);
+      Log.setActiveLogLevel(newLogLevel);
+      if (newLogLevel.ordinal() > LogLevel.INFO.ordinal()) {
+        System.out.println("UCDetector Log level: " + newLogLevel); // we need to log to System.out
+      }
+      else {
+        Log.info("UCDetector Log level: " + newLogLevel);
+      }
     }
-    if (property.equals(Prefs.LOG_TO_ECLIPSE)) {
+    else if (property.equals(Prefs.LOG_TO_ECLIPSE)) {
       Log.setLogToEclipse(Boolean.parseBoolean(newValue));
     }
   }
