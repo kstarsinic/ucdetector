@@ -101,7 +101,6 @@ org.ucdetector.log.toEclipse = false
 
 # == buildType ==
 # * One of
-# * One of
 # ** FULL_BUILD        [default]
 # ** INCREMENTAL_BUILD 
 # * For details see: org.eclipse.core.resources.IncrementalProjectBuilder
