@@ -6,6 +6,8 @@
  */
 package org.ucdetector.ant;
 
+import java.io.IOException;
+
 import org.apache.tools.ant.BuildException;
 import org.apache.tools.ant.Task;
 import org.ucdetector.Log;
@@ -23,7 +25,6 @@ import org.ucdetector.UCDHeadless;
  * 
  */
 public class UCDTask extends Task {
-  //  private String optionsFile;
 
   @Override
   public void execute() throws BuildException {
@@ -38,6 +39,14 @@ public class UCDTask extends Task {
     Log.info("UCDetector ANT: 4 - End java code of ant task '<ucdetector>' inside headless eclipse");
   }
 
+  //  @Override
+  //  protected int handleInput(byte[] buffer, int offset, int length) throws IOException {
+  //    System.out.printf("########## JOSP handleInput:  buffer.length: %s, offset: %s, length: %s : '%s'%n",
+  //        buffer.length, offset, length, new String(buffer, offset, length));
+  //    return super.handleInput(buffer, offset, length);
+  //  }
+
+  //  private String optionsFile;
   // ANT Attributes
   //  public void setOptionsFile(String optionsFile) {
   //    this.optionsFile = optionsFile;
