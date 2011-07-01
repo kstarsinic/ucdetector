@@ -6,7 +6,10 @@
  */
 package org.ucdetector;
 
+import java.io.BufferedReader;
 import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -53,12 +56,13 @@ public class UCDHeadless {
   /**  "org.ucdetector.internal.headless." */
   private static final String HEADLESS_KEY = Prefs.INTERNAL + ".headless.";
 
-  private static final String AUTO_BUILD = "AUTO_BUILD";
+  private static final String INCREMENTAL_BUILD = "INCREMENTAL_BUILD";
   private final UCDProgressMonitor ucdMonitor = new UCDProgressMonitor();
   private final int buildType;
   private final File targetPlatformFile;
   private final Report report;
   private final List<String> resourcesToIterate;
+  private final IWorkspace workspace;
 
   public enum Report {
     single, eachproject
@@ -68,7 +72,9 @@ public class UCDHeadless {
     UCDetectorPlugin.setHeadlessMode(true);// CALL BEFORE LOGGING!
   }
 
-  public UCDHeadless(String optionsFileName) {
+  public UCDHeadless(String optionsFileName) throws FileNotFoundException {
+    Log.info("Options file name: %s", optionsFileName);
+    this.workspace = ResourcesPlugin.getWorkspace();
     File optionsFile = getFile(optionsFileName, "ucdetector.options");
     Map<String, String> options = loadOptions(optionsFile);
     this.targetPlatformFile = getFile(options.get(HEADLESS_KEY + "targetPlatformFile"), "ucdetector.target");
@@ -82,19 +88,81 @@ public class UCDHeadless {
     logExists(optionsFile);
     logExists(targetPlatformFile);
     Log.info("    iterate           : " + iterateInfo);
-    Log.info("    buildType         : " + (sBuildType == null ? AUTO_BUILD : sBuildType));
+    Log.info("    buildType         : " + (sBuildType == null ? INCREMENTAL_BUILD : sBuildType));
     Log.info("    report            : " + report);
     Log.info("----------------------------------------------------------------------");
+    new SystemInReader().run();
   }
 
-  private static File getFile(String fileName, String defaultFileName) {
-    if (fileName == null) {
+  private final class SystemInReader extends Thread {
+    @Override
+    public void run() {
+      Log.info("SystemInReader: Start");
+      BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
+      String line;
+      try {
+        while ((line = reader.readLine()) != null) {
+          Log.info("SystemInReader LINE: " + line);
+          if ("exit".equals(line)) {
+            Log.info("SystemInReader: exit called!");
+            ucdMonitor.setCanceled(true);
+            // closeWorkspace();
+          }
+          if (isInterrupted()) {
+            Log.info("SystemInReader: Interrupted");
+            break;
+          }
+        }
+        Log.info("SystemInReader: End");
+      }
+      catch (Exception ex) {
+        Log.error("SystemInReader: Error", ex);
+      }
+    }
+  }
+
+  public static void main(String[] args) {
+    new SystemInReader2().run();
+  }
+
+  private static final class SystemInReader2 extends Thread {
+    @Override
+    public void run() {
+      System.out.println("SystemInReader: Start");
+      InputStreamReader inStream = new InputStreamReader(System.in);
+      try {
+        while (true) {
+          int read = inStream.read();
+          System.out.println("SystemInReader read: " + read);
+          if (isInterrupted()) {
+            System.out.println("SystemInReader: Interrupted");
+            break;
+          }
+          if (read == -1) {
+            System.out.println("SystemInReader: read == -1");
+            break;
+          }
+        }
+        System.out.println("SystemInReader: End");
+      }
+      catch (Exception ex) {
+        ex.printStackTrace();
+      }
+    }
+  }
+
+  private static File getFile(String fileName, String defaultFileName) throws FileNotFoundException {
+    if (fileName == null || fileName.trim().length() == 0) {
       return new File(defaultFileName);
     }
-    String result = fileName;
-    result = result.replace("${WORKSPACE}", UCDetectorPlugin.getAboutWorkspace());
-    result = result.replace("${ECLIPSE_HOME}", UCDetectorPlugin.getAboutEclipseHome());
-    return new File(UCDetectorPlugin.getCanonicalPath(result));
+    String resultName = fileName;
+    resultName = resultName.replace("${WORKSPACE}", UCDetectorPlugin.getAboutWorkspace());
+    resultName = resultName.replace("${ECLIPSE_HOME}", UCDetectorPlugin.getAboutEclipseHome());
+    File resultFile = new File(UCDetectorPlugin.getCanonicalPath(resultName));
+    if (!resultFile.exists()) {
+      throw new FileNotFoundException("Missing file: " + resultFile.getAbsolutePath());
+    }
+    return resultFile;
   }
 
   private List<String> getResourcesToIterate(Map<String, String> options) {
@@ -105,7 +173,7 @@ public class UCDHeadless {
       for (String resourceName : resourcesList) {
         resourceName = resourceName.trim();
         if (resourceName.length() > 0) {
-          resourcesToIterate.add(resourceName);
+          result.add(resourceName);
         }
       }
     }
@@ -140,19 +208,33 @@ public class UCDHeadless {
       // https://bugs.eclipse.org/bugs/show_bug.cgi?id=314814
       // Log.logInfo("Load target platform again, because of Exception - eclipse bug 314814");
       //loadTargetPlatform();
-      IWorkspace workspace = ResourcesPlugin.getWorkspace();
       IWorkspaceRoot workspaceRoot = workspace.getRoot();
-      StopWatch stopWatch = new StopWatch();
       List<IJavaProject> allProjects = createProjects(ucdMonitor, workspaceRoot);
-      prepareWorkspace(workspace, stopWatch);
+      prepareWorkspace();
       //
       List<IJavaElement> javaElementsToIterate = getJavaElementsToIterate(workspaceRoot, allProjects);
       iterateImpl(javaElementsToIterate);
       postIterate(javaElementsToIterate);
     }
     finally {
+      closeWorkspace();
       Log.info("Time to run UCDetector Headless: " + StopWatch.timeAsString(System.currentTimeMillis() - start));
     }
+  }
+
+  private void closeWorkspace() {
+    StopWatch stopWatch = new StopWatch();
+    try {
+      workspace.save(true, ucdMonitor);
+      // causes npe: at org.eclipse.core.internal.resources.Workspace.removeResourceChangeListener(Workspace.java:2302)
+      // if (workspace instanceof Workspace) {
+      //   ((Workspace) workspace).close(ucdMonitor);
+      // }
+    }
+    catch (Exception ex) {
+      Log.error("Can't close workspace", ex);
+    }
+    Log.info(stopWatch.end("Time to close workspace")); //$NON-NLS-1$
   }
 
   /** See eclipse bug 314814 */
@@ -183,7 +265,8 @@ public class UCDHeadless {
     Log.info(stopWatch.end("END: loadTargetPlatform", false));
   }
 
-  private void prepareWorkspace(IWorkspace workspace, StopWatch stopWatch) throws CoreException {
+  private void prepareWorkspace() throws CoreException {
+    StopWatch stopWatch = new StopWatch();
     IWorkspaceRoot workspaceRoot = workspace.getRoot();
     Log.info(stopWatch.end("createProjects", false));
     IProject[] projects = workspaceRoot.getProjects();
@@ -317,19 +400,7 @@ public class UCDHeadless {
 
   /** @see org.eclipse.core.resources.IncrementalProjectBuilder */
   private static int parseBuildType(String buildType) {
-    if (buildType == null || buildType.length() == 0 || AUTO_BUILD.equals(buildType)) {
-      return IncrementalProjectBuilder.AUTO_BUILD;
-    }
-    if ("FULL_BUILD".equals(buildType)) {
-      return IncrementalProjectBuilder.FULL_BUILD;
-    }
-    if ("INCREMENTAL_BUILD".equals(buildType)) {
-      return IncrementalProjectBuilder.INCREMENTAL_BUILD;
-    }
-    if ("CLEAN_BUILD".equals(buildType)) {
-      return IncrementalProjectBuilder.CLEAN_BUILD;
-    }
-    Log.warn("Unknown buildType: '%s'. Using: %s", buildType, AUTO_BUILD);
-    return IncrementalProjectBuilder.AUTO_BUILD;
+    return "FULL_BUILD".equals(buildType) ? IncrementalProjectBuilder.FULL_BUILD
+        : IncrementalProjectBuilder.INCREMENTAL_BUILD;
   }
 }
