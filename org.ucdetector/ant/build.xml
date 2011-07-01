@@ -18,10 +18,7 @@
   <target name="call-ucdetector" description="Call UCDetector from another ant file">
     <echo>UCDetector ANT: 0 - Custom build file (optional).</echo>
     <ant antfile="my_local_ucdetector_ant_dir/build.xml" target="detect" inheritall="false">
-      <property name="ucd.target" value="run-ucdetector" />
-      <!-- 
-  OR: <property name="ucd.target" value="run-ucdetector-custom" /> 
-      -->
+      <!-- <property name="ucd.options.file" value="ucdetector_custom.options" /> -->
     </ant>
   </target>
 
@@ -31,13 +28,13 @@
        ===================================================================== -->
   <!-- Usually there is no need to change this!                              -->
   <target name="detect" description="Start headless eclipse">
-    <property name="ucd.target" value="run-ucdetector" />
+    <property name="ucd.options.file" value="ucdetector.options" />
     <echo>UCDetector ANT: 1 - Start headless eclipse</echo>
     <echo>
 # -----------------------------------------------------------------------------
-# ECLIPSE_HOME = ${ECLIPSE_HOME}
-# WORKSPACE    = ${WORKSPACE}
-# ucd.target   = ${ucd.target}
+# ECLIPSE_HOME     = ${ECLIPSE_HOME}
+# WORKSPACE        = ${WORKSPACE}
+# ucd.options.file = ${ucd.options.file}
 # -----------------------------------------------------------------------------
 </echo>
     <available file="${ECLIPSE_HOME}" property="ECLIPSE_HOME.exists" />
@@ -60,7 +57,8 @@
       <arg line="-data ${WORKSPACE}" />
       <arg line="-application org.eclipse.ant.core.antRunner" />
       <!-- Headless eclipse calls ant target inside ant file -->
-      <arg line="-buildfile build.xml ${ucd.target}" />
+      <arg line="-buildfile build.xml run-ucdetector" />
+      <jvmarg line="-Ducd.options.file=${ucd.options.file}" />
     </java>
   </target>
 
@@ -70,16 +68,7 @@
        ===================================================================== -->
   <target name="run-ucdetector" description="Run UCDetector inside headless eclipse">
     <ant target="log-fail-info" />
-    <ucdetector optionsFile="ucdetector.options" />
-  </target>
-
-
-  <!-- =====================================================================
-       RUN UCDETECTOR CUSTOM
-       ===================================================================== -->
-  <target name="run-ucdetector-custom" description="Run UCDetector inside headless eclipse">
-    <ant target="log-fail-info" />
-    <ucdetector optionsFile="my-custom.options" />
+    <ucdetector />
   </target>
 
 
@@ -97,5 +86,15 @@
 # * Check if org.ucdetector_x.y.z.jar is in: ${ECLIPSE_HOME}/plugins
 ----------------------------------------------------------------------
     </echo>
+  </target>
+
+
+  <!-- =====================================================================
+       HELP
+       ===================================================================== -->
+  <target name="help" description="Print usage">
+    <echo>Usage</echo>
+    <echo>ant</echo>
+    <echo>ant -Ducd.options.file=ucdetector.options</echo>
   </target>
 </project>

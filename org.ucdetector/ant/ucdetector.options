@@ -101,12 +101,11 @@ org.ucdetector.log.toEclipse = false
 
 # == buildType ==
 # * One of
-# ** AUTO_BUILD [default]
-# ** FULL_BUILD (clean all, build all)
-# ** CLEAN_BUILD
+# * One of
+# ** FULL_BUILD        [default]
 # ** INCREMENTAL_BUILD 
 # * For details see: org.eclipse.core.resources.IncrementalProjectBuilder
-org.ucdetector.internal.headless.buildType = AUTO_BUILD
+org.ucdetector.internal.headless.buildType = FULL_BUILD
 
 # == targetPlatformFile ==
 # * If ECLIPSE_HOME is not your target platform
@@ -130,7 +129,7 @@ org.ucdetector.internal.headless.resourcesToIterate =
 ## Complete headless example #
 ##---------------------------#
 #org.ucdetector.internal.headless.buildType          = FULL_BUILD
-#org.ucdetector.internal.headless.targetPlatformFile = eclipse-3.6-gef.target
+#org.ucdetector.internal.headless.targetPlatformFile = ${WORKSPACE}/myProject/eclipse-3.6-gef.target
 #org.ucdetector.internal.headless.report             = single
 #org.ucdetector.internal.headless.resourcesToIterate = \
 # org.ucdetector/src/main,\
