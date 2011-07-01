@@ -32,7 +32,7 @@ Please create NEW directories for eclipse and your workspace! Otherwise you may 
 **  $ ./detect.sh
 * Run as an application (experimental)
 ** $ ECLIPSE_HOME/eclipse -data WORKSPACE     -noSplash -application org.ucdetector.detect
-** $ ./../eclipse/eclipse -data ../workspace/ -noSplash -application org.ucdetector.detect 
+** $ ./../eclipse/eclipse -data ../workspace/ -noSplash -application org.ucdetector.detect -ucd.options.file ucdetector_custom.options
 
 == Change settings ==
 * Change following files:
