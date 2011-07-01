@@ -6,10 +6,8 @@
  */
 package org.ucdetector;
 
-import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileNotFoundException;
-import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -91,65 +89,65 @@ public class UCDHeadless {
     Log.info("    buildType         : " + (sBuildType == null ? INCREMENTAL_BUILD : sBuildType));
     Log.info("    report            : " + report);
     Log.info("----------------------------------------------------------------------");
-    new SystemInReader().run();
+    //    new SystemInReader().run();
   }
 
-  private final class SystemInReader extends Thread {
-    @Override
-    public void run() {
-      Log.info("SystemInReader: Start");
-      BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
-      String line;
-      try {
-        while ((line = reader.readLine()) != null) {
-          Log.info("SystemInReader LINE: " + line);
-          if ("exit".equals(line)) {
-            Log.info("SystemInReader: exit called!");
-            ucdMonitor.setCanceled(true);
-            // closeWorkspace();
-          }
-          if (isInterrupted()) {
-            Log.info("SystemInReader: Interrupted");
-            break;
-          }
-        }
-        Log.info("SystemInReader: End");
-      }
-      catch (Exception ex) {
-        Log.error("SystemInReader: Error", ex);
-      }
-    }
-  }
+  //  private final class SystemInReader extends Thread {
+  //    @Override
+  //    public void run() {
+  //      Log.info("SystemInReader: Start");
+  //      BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
+  //      String line;
+  //      try {
+  //        while ((line = reader.readLine()) != null) {
+  //          Log.info("SystemInReader LINE: " + line);
+  //          if ("exit".equals(line)) {
+  //            Log.info("SystemInReader: exit called!");
+  //            ucdMonitor.setCanceled(true);
+  //            // closeWorkspace();
+  //          }
+  //          if (isInterrupted()) {
+  //            Log.info("SystemInReader: Interrupted");
+  //            break;
+  //          }
+  //        }
+  //        Log.info("SystemInReader: End");
+  //      }
+  //      catch (Exception ex) {
+  //        Log.error("SystemInReader: Error", ex);
+  //      }
+  //    }
+  //  }
 
-  public static void main(String[] args) {
-    new SystemInReader2().run();
-  }
-
-  private static final class SystemInReader2 extends Thread {
-    @Override
-    public void run() {
-      System.out.println("SystemInReader: Start");
-      InputStreamReader inStream = new InputStreamReader(System.in);
-      try {
-        while (true) {
-          int read = inStream.read();
-          System.out.println("SystemInReader read: " + read);
-          if (isInterrupted()) {
-            System.out.println("SystemInReader: Interrupted");
-            break;
-          }
-          if (read == -1) {
-            System.out.println("SystemInReader: read == -1");
-            break;
-          }
-        }
-        System.out.println("SystemInReader: End");
-      }
-      catch (Exception ex) {
-        ex.printStackTrace();
-      }
-    }
-  }
+  //  public static void main(String[] args) {
+  //    new SystemInReader2().run();
+  //  }
+  //
+  //  private static final class SystemInReader2 extends Thread {
+  //    @Override
+  //    public void run() {
+  //      System.out.println("SystemInReader: Start");
+  //      InputStreamReader inStream = new InputStreamReader(System.in);
+  //      try {
+  //        while (true) {
+  //          int read = inStream.read();
+  //          System.out.println("SystemInReader read: " + read);
+  //          if (isInterrupted()) {
+  //            System.out.println("SystemInReader: Interrupted");
+  //            break;
+  //          }
+  //          if (read == -1) {
+  //            System.out.println("SystemInReader: read == -1");
+  //            break;
+  //          }
+  //        }
+  //        System.out.println("SystemInReader: End");
+  //      }
+  //      catch (Exception ex) {
+  //        ex.printStackTrace();
+  //      }
+  //    }
+  //  }
 
   private static File getFile(String fileName, String defaultFileName) throws FileNotFoundException {
     if (fileName == null || fileName.trim().length() == 0) {
@@ -165,7 +163,7 @@ public class UCDHeadless {
     return resultFile;
   }
 
-  private List<String> getResourcesToIterate(Map<String, String> options) {
+  private static List<String> getResourcesToIterate(Map<String, String> options) {
     List<String> result = new ArrayList<String>();
     String resourcesToIterateString = options.get(HEADLESS_KEY + "resourcesToIterate");
     if (resourcesToIterateString != null) {
