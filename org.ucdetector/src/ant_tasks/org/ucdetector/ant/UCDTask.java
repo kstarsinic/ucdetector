@@ -6,8 +6,6 @@
  */
 package org.ucdetector.ant;
 
-import java.io.IOException;
-
 import org.apache.tools.ant.BuildException;
 import org.apache.tools.ant.Task;
 import org.ucdetector.Log;
@@ -28,22 +26,23 @@ public class UCDTask extends Task {
 
   @Override
   public void execute() throws BuildException {
-    Log.info("UCDetector ANT: 3 - Start java code of ant task '<ucdetector>' inside headless eclipse");
+    Log.info("UCDetector ANT: 3 - Start java code of ant task org.ucdetector.ant.UCDTask inside headless eclipse");
     try {
       String optionsFileName = System.getProperty("ucd.options.file");
-      new UCDHeadless(optionsFileName).run();
+      new UCDHeadless(optionsFileName).iterate();
     }
     catch (Exception e) {
       throw new BuildException(e);
     }
-    Log.info("UCDetector ANT: 4 - End java code of ant task '<ucdetector>' inside headless eclipse");
+    Log.info("UCDetector ANT: 4 - End java code of ant task org.ucdetector.ant.UCDTask inside headless eclipse");
   }
 
-  //  @Override
-  //  protected int handleInput(byte[] buffer, int offset, int length) throws IOException {
-  //    System.out.printf("########## JOSP handleInput:  buffer.length: %s, offset: %s, length: %s : '%s'%n",
-  //        buffer.length, offset, length, new String(buffer, offset, length));
-  //    return super.handleInput(buffer, offset, length);
+  //  private void handleInput() {
+  //    InputHandler inputHandler = getProject().getInputHandler();
+  //    InputRequest request = new InputRequest("InputRequest");
+  //    inputHandler.handleInput(request);
+  //    String line = request.getInput();
+  //    System.out.println("line:" + line);
   //  }
 
   //  private String optionsFile;

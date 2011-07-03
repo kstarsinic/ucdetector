@@ -23,6 +23,7 @@ import org.eclipse.core.resources.IncrementalProjectBuilder;
 import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IProgressMonitor;
+import org.eclipse.core.runtime.OperationCanceledException;
 import org.eclipse.core.runtime.Path;
 import org.eclipse.core.runtime.Platform;
 import org.eclipse.jdt.core.IJavaElement;
@@ -55,7 +56,7 @@ public class UCDHeadless {
   private static final String HEADLESS_KEY = Prefs.INTERNAL + ".headless.";
 
   private static final String INCREMENTAL_BUILD = "INCREMENTAL_BUILD";
-  private final UCDProgressMonitor ucdMonitor = new UCDProgressMonitor();
+  final UCDProgressMonitor ucdMonitor = new UCDProgressMonitor();
   private final int buildType;
   private final File targetPlatformFile;
   private final Report report;
@@ -89,65 +90,30 @@ public class UCDHeadless {
     Log.info("    buildType         : " + (sBuildType == null ? INCREMENTAL_BUILD : sBuildType));
     Log.info("    report            : " + report);
     Log.info("----------------------------------------------------------------------");
-    //    new SystemInReader().run();
   }
 
-  //  private final class SystemInReader extends Thread {
-  //    @Override
-  //    public void run() {
-  //      Log.info("SystemInReader: Start");
-  //      BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
-  //      String line;
-  //      try {
-  //        while ((line = reader.readLine()) != null) {
-  //          Log.info("SystemInReader LINE: " + line);
-  //          if ("exit".equals(line)) {
-  //            Log.info("SystemInReader: exit called!");
-  //            ucdMonitor.setCanceled(true);
-  //            // closeWorkspace();
-  //          }
-  //          if (isInterrupted()) {
-  //            Log.info("SystemInReader: Interrupted");
-  //            break;
-  //          }
-  //        }
-  //        Log.info("SystemInReader: End");
-  //      }
-  //      catch (Exception ex) {
-  //        Log.error("SystemInReader: Error", ex);
-  //      }
-  //    }
-  //  }
-
-  //  public static void main(String[] args) {
-  //    new SystemInReader2().run();
-  //  }
-  //
-  //  private static final class SystemInReader2 extends Thread {
-  //    @Override
-  //    public void run() {
-  //      System.out.println("SystemInReader: Start");
-  //      InputStreamReader inStream = new InputStreamReader(System.in);
-  //      try {
-  //        while (true) {
-  //          int read = inStream.read();
-  //          System.out.println("SystemInReader read: " + read);
-  //          if (isInterrupted()) {
-  //            System.out.println("SystemInReader: Interrupted");
-  //            break;
-  //          }
-  //          if (read == -1) {
-  //            System.out.println("SystemInReader: read == -1");
-  //            break;
-  //          }
-  //        }
-  //        System.out.println("SystemInReader: End");
-  //      }
-  //      catch (Exception ex) {
-  //        ex.printStackTrace();
-  //      }
-  //    }
-  //  }
+  public void iterate() throws CoreException {
+    long start = System.currentTimeMillis();
+    try {
+      Log.info("Starting UCDetector Headless");
+      tryToStartDsPlugin();
+      loadTargetPlatform();
+      IWorkspaceRoot workspaceRoot = workspace.getRoot();
+      List<IJavaProject> allProjects = createProjects(ucdMonitor, workspaceRoot);
+      prepareWorkspace();
+      //
+      List<IJavaElement> javaElementsToIterate = getJavaElementsToIterate(workspaceRoot, allProjects);
+      iterateImpl(javaElementsToIterate);
+      postIterate(javaElementsToIterate);
+    }
+    catch (OperationCanceledException e) {
+      Log.info("UCDetector Headless canceled: " + e);
+    }
+    finally {
+      closeWorkspace();
+      Log.info("Time to run UCDetector Headless: " + StopWatch.timeAsString(System.currentTimeMillis() - start));
+    }
+  }
 
   private static File getFile(String fileName, String defaultFileName) throws FileNotFoundException {
     if (fileName == null || fileName.trim().length() == 0) {
@@ -196,34 +162,10 @@ public class UCDHeadless {
     return ucdOptions;
   }
 
-  public void run() throws CoreException {
-    long start = System.currentTimeMillis();
-    try {
-      Log.info("Starting UCDetector Headless");
-      tryToStartDsPlugin();
-      loadTargetPlatform();
-      // Run it twice because of Exception, when running it with a complete workspace: See end of file
-      // https://bugs.eclipse.org/bugs/show_bug.cgi?id=314814
-      // Log.logInfo("Load target platform again, because of Exception - eclipse bug 314814");
-      //loadTargetPlatform();
-      IWorkspaceRoot workspaceRoot = workspace.getRoot();
-      List<IJavaProject> allProjects = createProjects(ucdMonitor, workspaceRoot);
-      prepareWorkspace();
-      //
-      List<IJavaElement> javaElementsToIterate = getJavaElementsToIterate(workspaceRoot, allProjects);
-      iterateImpl(javaElementsToIterate);
-      postIterate(javaElementsToIterate);
-    }
-    finally {
-      closeWorkspace();
-      Log.info("Time to run UCDetector Headless: " + StopWatch.timeAsString(System.currentTimeMillis() - start));
-    }
-  }
-
   private void closeWorkspace() {
     StopWatch stopWatch = new StopWatch();
     try {
-      workspace.save(true, ucdMonitor);
+      workspace.save(true, new UCDProgressMonitor());// ucdMonitor throws an OperationCanceledException, when ProgressMonitor is canceled
       // causes npe: at org.eclipse.core.internal.resources.Workspace.removeResourceChangeListener(Workspace.java:2302)
       // if (workspace instanceof Workspace) {
       //   ((Workspace) workspace).close(ucdMonitor);
@@ -261,6 +203,10 @@ public class UCDHeadless {
     new LoadTargetDefinitionJob(targetDefinition).run(ucdMonitor);
     //    LoadTargetDefinitionJob.load(targetDefinition);
     Log.info(stopWatch.end("END: loadTargetPlatform", false));
+    // Run it twice because of Exception, when running it with a complete workspace: See end of file
+    // https://bugs.eclipse.org/bugs/show_bug.cgi?id=314814
+    // Log.logInfo("Load target platform again, because of Exception - eclipse bug 314814");
+    //loadTargetPlatform();
   }
 
   private void prepareWorkspace() throws CoreException {

@@ -75,7 +75,7 @@ public class UCDProgressMonitor implements IProgressMonitor {
   }
 
   public void setCanceled(boolean value) {
-    Log.info("Task.setCanceled: " + value); //$NON-NLS-1$
+    Log.warn("Task.setCanceled: " + value); //$NON-NLS-1$
     delegate.setCanceled(value);
   }
 
