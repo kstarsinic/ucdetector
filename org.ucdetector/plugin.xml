@@ -441,18 +441,6 @@
           <run class="org.ucdetector.UCDApplication"></run>
        </application>
     </extension>
-  
-  <!-- =====================================================================
-       ANT
-       ===================================================================== -->
-    <extension point="org.eclipse.ant.core.antTasks">
-      <antTask class="org.ucdetector.ant.UCDTask"
-            eclipseRuntime="true"
-            headless="true"
-            library="lib/ucdetector-ant.jar"
-            name="ucdetector">
-      </antTask>
-   </extension>
 
   <!-- =====================================================================
        UCDETECTOR REPORTS

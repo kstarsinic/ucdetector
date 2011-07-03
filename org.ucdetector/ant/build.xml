@@ -1,14 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!-- ====================================================================
-  Copyright (c) 2010 Joerg Spieler All rights reserved. This program and the
+  Copyright (c) 2011 Joerg Spieler All rights reserved. This program and the
   accompanying materials are made available under the terms of the Eclipse
   Public License v1.0 which accompanies this distribution, and is available at
   http://www.eclipse.org/legal/epl-v10.html
   ========================================================================= -->
 <project name="Run UCDetector" default="detect" basedir=".">
-  <!-- =====================================================================
-       DIRECTORIES
-       ===================================================================== -->
   <property name="WORKSPACE" location="../workspace" />
   <property name="ECLIPSE_HOME" location="../eclipse" />
 
@@ -16,9 +13,8 @@
        EXAMPLE: Call UCDetector's build.xml from your main build.xml
        ===================================================================== -->
   <target name="call-ucdetector" description="Call UCDetector from another ant file">
-    <echo>UCDetector ANT: 0 - Custom build file (optional).</echo>
     <ant antfile="my_local_ucdetector_ant_dir/build.xml" target="detect" inheritall="false">
-      <!-- <property name="ucd.options.file" value="ucdetector_custom.options" /> -->
+      <!-- <property name="ucd.options" value="ucdetector_custom.options" /> -->
     </ant>
   </target>
 
@@ -28,13 +24,12 @@
        ===================================================================== -->
   <!-- Usually there is no need to change this!                              -->
   <target name="detect" description="Run UCDetector headless">
-    <property name="ucd.options.file" value="ucdetector.options" />
-    <echo>UCDetector ANT: 1 - Start headless eclipse</echo>
+    <property name="ucd.options" value="ucdetector.options" />
     <echo>
 # -----------------------------------------------------------------------------
-# ECLIPSE_HOME     = ${ECLIPSE_HOME}
-# WORKSPACE        = ${WORKSPACE}
-# ucd.options.file = ${ucd.options.file}
+# ECLIPSE_HOME = ${ECLIPSE_HOME}
+# WORKSPACE    = ${WORKSPACE}
+# Options file = ${ucd.options}
 # -----------------------------------------------------------------------------
 </echo>
     <available file="${ECLIPSE_HOME}" property="ECLIPSE_HOME.exists" />
@@ -46,56 +41,17 @@
     <pathconvert property="LAUNCHER">
       <fileset dir="${ECLIPSE_HOME}/plugins" includes="org.eclipse.equinox.launcher_*.jar" />
     </pathconvert>
-    <echo>LAUNCHER = '${LAUNCHER}'
-      when LAUNCHER is empty, create new property 'LAUNCHER'</echo>
+    <echo>LAUNCHER = '${LAUNCHER}'  when LAUNCHER is empty, create new property 'LAUNCHER'</echo>
 
     <java jar="${LAUNCHER}" fork="true" maxmemory="1024m">
-      <!--
-      <arg line="-debug" />
-      -->
       <arg line="-clean" />
       <arg line="-data ${WORKSPACE}" />
-      <arg line="-application org.eclipse.ant.core.antRunner" />
-      <!-- Headless eclipse calls ant target inside ant file -->
-      <arg line="-buildfile build.xml run-ucdetector" />
-      <jvmarg line="-Ducd.options.file=${ucd.options.file}" />
+      <arg line="-application org.ucdetector.detect" />
+      <arg line="-ucd.options ${ucd.options}" />
+      <!--
+       <arg line="-debug" />
+       <arg line="-noSplash" /> 
+      -->
     </java>
-  </target>
-
-
-  <!-- =====================================================================
-       RUN UCDETECTOR
-       ===================================================================== -->
-  <target name="run-ucdetector" description="Run UCDetector internal. Do not call this target">
-    <echo>UCDetector ANT: 2 - Start ant task '&lt;ucdetector /&gt;' inside headless eclipse.</echo>
-    <ant target="log-fail-info" />
-    <ucdetector />
-  </target>
-
-
-  <!-- =====================================================================
-       LOG FAIL INFO
-       ===================================================================== -->
-  <target name="log-fail-info" description="Log usefull information">
-    <echo>
-----------------------------------------------------------------------
-# When build fails here with error message:
-# 'Problem: failed to create task or type ucdetector'
-# Then:
-# * Call target "detect" before target "run-ucdetector" 
-#   (It's not possible to use ucdetector Ant task declaring it with taskdef in build.xml)
-# * Check if org.ucdetector_x.y.z.jar is in: ${ECLIPSE_HOME}/plugins
-----------------------------------------------------------------------
-    </echo>
-  </target>
-
-
-  <!-- =====================================================================
-       HELP
-       ===================================================================== -->
-  <target name="help" description="Print usage">
-    <echo>Usage</echo>
-    <echo>ant</echo>
-    <echo>ant -Ducd.options.file=ucdetector.options</echo>
   </target>
 </project>

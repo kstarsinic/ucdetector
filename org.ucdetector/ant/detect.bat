@@ -14,5 +14,5 @@ echo ECLIPSE_HOME: %ECLIPSE_HOME%
 echo WORKSPACE   : %WORKSPACE%
 echo LAUNCHER    : %LAUNCHER%
 
-java -Xmx1024m -jar "%LAUNCHER%" -debug -clean -data "%WORKSPACE%" -application org.eclipse.ant.core.antRunner -buildfile build.xml run-ucdetector %*
+java -Xmx1024m -jar "%LAUNCHER%" -clean -data "%WORKSPACE%" -application org.ucdetector.detect -ucd.options ucdetector.options %*
 

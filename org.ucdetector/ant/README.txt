@@ -30,9 +30,7 @@ Please create NEW directories for eclipse and your workspace! Otherwise you may 
 **  $ cd ucdetector-headless/ant
 **  $ detect.bat
 **  $ ./detect.sh
-* Run as an application (experimental)
-** $ ECLIPSE_HOME/eclipse -data WORKSPACE     -noSplash -application org.ucdetector.detect
-** $ ./../eclipse/eclipse -data ../workspace/ -noSplash -application org.ucdetector.detect -ucd.options.file ucdetector_custom.options
+
 
 == Change settings ==
 * Change following files:
@@ -44,11 +42,14 @@ Please create NEW directories for eclipse and your workspace! Otherwise you may 
 
 == Troubleshooting ==
 * Last version of this file: http://ucdetector.svn.sourceforge.net/svnroot/ucdetector/trunk/org.ucdetector/ant/README.txt
-* Eclipse log file: ucdetector-headless\workspace\.metadata\.log
+* Eclipse log files:
+** ECLIPSE_HOME/configuration/*.log
+** ucdetector-headless/workspace/.metadata/.log
+* When build crashes and ${ECLIPSE_HOME}/configuration/*.log contains error message:
+  Application "org.ucdetector.detect" could not be found in the registry
+  Then: Check if org.ucdetector_x.y.z.jar is in: ${ECLIPSE_HOME}/plugins
 * Workarround to 'see' compile errors and warnings:
  - ucdetector-headless/workspace/.metadata/.plugins/org.eclipse.core.resources/.projects/myProject/.markers.snap
-* NOTE: The <ucdetector /> ant task need to be run inside an osgi environment and won't work in a normal ant run.
-  This setup is done by target "detect".
 ** http://stackoverflow.com/questions/2327393/running-p2-ant-tasks-outside-eclipse
 ** http://www-01.ibm.com/support/docview.wss?uid=swg21273017
 

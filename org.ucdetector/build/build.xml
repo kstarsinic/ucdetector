@@ -41,8 +41,6 @@
     <zip destfile="${source.zip}" >
       <fileset dir="..">
         <exclude name="bin/**" />
-        <exclude name="bin_ant/**" />
-        <exclude name="lib/**" />
         <exclude name="doc/dictionary.dic" />
         <exclude name="build/output/**" />
       </fileset>

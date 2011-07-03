@@ -27,7 +27,7 @@ import org.eclipse.equinox.app.IApplicationContext;
 public class UCDApplication implements IApplication {
 
   public Object start(IApplicationContext context) throws Exception {
-    Log.info("Starting UCDHeadless  (application mode)");
+    Log.info("Starting UCDHeadless as an application");
     UCDHeadless ucdHeadless = new UCDHeadless(getOptionsFileName());
     new SystemInReader(ucdHeadless).start();
     ucdHeadless.iterate();
@@ -72,7 +72,7 @@ public class UCDApplication implements IApplication {
   private static String getOptionsFileName() {
     String[] args = Platform.getCommandLineArgs();
     for (int i = 0; i < args.length; i++) {
-      if ("-ucd.options.file".equals(args[i]) && i < args.length - 1) {
+      if ("-ucd.options".equals(args[i]) && i < args.length - 1) {
         return args[i + 1];
       }
     }
@@ -80,6 +80,6 @@ public class UCDApplication implements IApplication {
   }
 
   public void stop() {
-    Log.info("Stopping UCDHeadless (application mode)");
+    Log.info("Stopping UCDHeadless as an application");
   }
 }
