@@ -20,13 +20,15 @@ import org.ucdetector.iterator.CheckNameConventionIterator;
 import org.ucdetector.iterator.CommentIterator;
 import org.ucdetector.iterator.DetectDoubleClassNameIterator;
 import org.ucdetector.iterator.DetectNoJavaFileIterator;
+import org.ucdetector.iterator.MakeMethodsStaticIterator;
 
 /**
  * Run Example Action
  */
 public class ExampleAction extends AbstractUCDetectorAction {// NO_UCD
   private static final AdditionalIterator ITERATORS[] = {//
-  /**/new CheckNameConventionIterator(), //
+  /**/new MakeMethodsStaticIterator(), //
+      new CheckNameConventionIterator(), //
       new CommentIterator(), //
       new DetectDoubleClassNameIterator(), //
       new DetectNoJavaFileIterator(), //
