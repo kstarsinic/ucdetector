@@ -7,12 +7,21 @@
  */
 package org.ucdetector.iterator;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.eclipse.core.resources.IMarker;
 import org.eclipse.core.resources.IResource;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.jdt.core.ICompilationUnit;
+import org.eclipse.jdt.core.IJavaElement;
 import org.eclipse.jdt.core.IJavaModelMarker;
 import org.eclipse.jdt.core.compiler.IProblem;
+import org.eclipse.jface.dialogs.MessageDialog;
+import org.eclipse.swt.widgets.Display;
+import org.ucdetector.UCDetectorPlugin;
+import org.ucdetector.quickfix.MakeStaticQuickFix;
+import org.ucdetector.search.UCDProgressMonitor;
 import org.ucdetector.util.MarkerFactory;
 
 /**
@@ -28,18 +37,50 @@ import org.ucdetector.util.MarkerFactory;
 public class MakeMethodsStaticIterator extends AdditionalIterator {
   /** {@link org.eclipse.jdt.core.compiler.IProblem} */
   private static final String PROBLEM_ID = "id";
-  private int fixedMarkerCount = 0;
+  private final List<IMarker> markersToFix = new ArrayList<IMarker>();
 
   @Override
   protected void handleCompilationUnit(ICompilationUnit unit) throws CoreException {
     IResource resource = unit.getCorrespondingResource();
     IMarker[] markers = resource.findMarkers(IJavaModelMarker.JAVA_MODEL_PROBLEM_MARKER, false, IResource.DEPTH_ZERO);
     for (IMarker marker : markers) {
+      System.out.println("   Maker:  " + MarkerFactory.dumpMarker(marker));
       int problemId = marker.getAttribute(PROBLEM_ID, -1);
       if (problemId == IProblem.MethodCanBeStatic) {
-        fixedMarkerCount++;
-        System.out.println("   Fix Maker:  " + MarkerFactory.dumpMarker(marker));
-        // new MakeStaticQuickFix(marker).run(marker);
+        markersToFix.add(marker);
+      }
+    }
+  }
+
+  private boolean doContinue = false;
+
+  @Override
+  public void handleEndGlobal(IJavaElement[] objects) throws CoreException {
+    Display.getDefault().syncExec(new Runnable() {
+      public void run() {
+        String message = "Do your really want to fix " + markersToFix.size() + " static warnings?";
+        doContinue = MessageDialog.openQuestion(UCDetectorPlugin.getShell(), "Multi QuickFix", message);
+      }
+    });
+    if (!doContinue) {
+      markersToFix.clear();
+      return;
+    }
+    Display.getDefault().asyncExec(new Runnable() {
+      public void run() {
+        doQuickFix();
+      }
+    });
+  }
+
+  private void doQuickFix() {
+    UCDProgressMonitor monitor = getMonitor();
+    monitor.beginTask("Apply static QuickFix", markersToFix.size());
+    for (IMarker marker : markersToFix) {
+      monitor.internalWorked(1);
+      new MakeStaticQuickFix(marker).run(marker);
+      if (monitor.isCanceled()) {
+        return;
       }
     }
   }
@@ -51,6 +92,6 @@ public class MakeMethodsStaticIterator extends AdditionalIterator {
 
   @Override
   public String getMessage() {
-    return "Fixed warnings: " + fixedMarkerCount;
+    return doContinue ? "Fixed warnings: " + markersToFix.size() : null;
   }
 }

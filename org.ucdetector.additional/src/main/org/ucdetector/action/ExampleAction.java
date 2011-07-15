@@ -52,6 +52,16 @@ public class ExampleAction extends AbstractUCDetectorAction {// NO_UCD
       return null;
     }
     iterator = ITERATORS[open];
+    try {
+      iterator = iterator.getClass().newInstance();
+    }
+    catch (InstantiationException e) {
+      e.printStackTrace();
+    }
+    catch (IllegalAccessException e) {
+      // TODO Auto-generated catch block
+      e.printStackTrace();
+    }
     Log.info("Selected iterator: " + iterator);
     return iterator;
   }
@@ -60,13 +70,16 @@ public class ExampleAction extends AbstractUCDetectorAction {// NO_UCD
 
   @Override
   protected IStatus postIteration() {
-    // show message dialog
-    Display.getDefault().asyncExec(new Runnable() {
-      public void run() {
-        status = new Status(IStatus.INFO, UCDetectorPlugin.ID, IStatus.INFO, iterator.getMessage(), null);
-        MessageDialog.openInformation(UCDetectorPlugin.getShell(), iterator.getJobName(), iterator.getMessage());
-      }
-    });
+    final String message = iterator.getMessage();
+    if (message != null) {
+      // show message dialog
+      Display.getDefault().asyncExec(new Runnable() {
+        public void run() {
+          status = new Status(IStatus.INFO, UCDetectorPlugin.ID, IStatus.INFO, message, null);
+          MessageDialog.openInformation(UCDetectorPlugin.getShell(), iterator.getJobName(), message);
+        }
+      });
+    }
     return status;
   }
 }
