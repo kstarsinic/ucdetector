@@ -19,6 +19,7 @@ import org.eclipse.jdt.core.IJavaModelMarker;
 import org.eclipse.jdt.core.compiler.IProblem;
 import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.swt.widgets.Display;
+import org.ucdetector.Compatibility;
 import org.ucdetector.UCDetectorPlugin;
 import org.ucdetector.quickfix.MakeStaticQuickFix;
 import org.ucdetector.search.UCDProgressMonitor;
@@ -46,7 +47,7 @@ public class MakeMethodsStaticIterator extends AdditionalIterator {
     for (IMarker marker : markers) {
       System.out.println("   Maker:  " + MarkerFactory.dumpMarker(marker));
       int problemId = marker.getAttribute(PROBLEM_ID, -1);
-      if (problemId == IProblem.MethodCanBeStatic) {
+      if (problemId == Compatibility.IPROBLEM_METHOD_CAN_BE_STATIC) {
         markersToFix.add(marker);
       }
     }
