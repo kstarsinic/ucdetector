@@ -8,7 +8,8 @@ Bugfixes:
  -
 
 Todo:
-
+ - [ 3396900 ] Abstract classes' constructors can always be protected
+ - [ 3396856 ] Fields in interfaces are already final
 
 // -----------------------------------------------------------------------------
 UCDetector 1.8.0 from 2011-06-15 - eclipse 3.5, 3.6, 3.7:
