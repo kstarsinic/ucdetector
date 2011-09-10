@@ -5,11 +5,11 @@ New features:
  - All preferences for headless mode are in ucdetector.options
 
 Bugfixes:
- -
+ - [ 3396856 ] Fields in interfaces are already final
 
 Todo:
  - [ 3396900 ] Abstract classes' constructors can always be protected
- - [ 3396856 ] Fields in interfaces are already final
+ - [ 3400167 ] Removed warnings: Restrict method/field visibility to class visibility
 
 // -----------------------------------------------------------------------------
 UCDetector 1.8.0 from 2011-06-15 - eclipse 3.5, 3.6, 3.7:

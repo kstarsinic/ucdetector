@@ -75,6 +75,7 @@ class FinalHandler {
         || Flags.isFinal(flags)//
         || Flags.isVolatile(flags)// A field can be either final or volatile, not both
         || field.isEnumConstant()// No modifier allowed for enum constants!
+        || JavaElementUtil.isInterfaceField(field) // [ 3396856 ] Fields in interfaces are already final
     ) {
       return false;
     }
