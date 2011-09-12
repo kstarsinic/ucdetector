@@ -11,16 +11,13 @@ Require-Bundle: org.eclipse.ui,
  org.eclipse.core.runtime,
  org.eclipse.core.resources,
  org.eclipse.jdt.core,
- org.eclipse.jdt.ui;bundle-version="3.5.0",
+ org.eclipse.jdt.ui,
  org.eclipse.search,
- org.eclipse.jface;bundle-version="3.5.0",
  org.eclipse.jface.text,
- org.eclipse.core.filebuffers,
  org.eclipse.ui.ide,
  org.eclipse.ui.editors,
- org.eclipse.ui.console;bundle-version="3.4.0",
- org.eclipse.help,
- org.eclipse.pde.core;bundle-version="3.5.0";resolution:=optional
+ org.eclipse.ui.console,
+ org.eclipse.pde.core;resolution:=optional
 Bundle-ActivationPolicy: lazy
 Bundle-ClassPath: .
 Export-Package: org.ucdetector,
