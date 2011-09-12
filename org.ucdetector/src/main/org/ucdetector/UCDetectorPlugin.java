@@ -11,6 +11,7 @@ import java.io.Closeable;
 import java.io.File;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.io.Reader;
 import java.io.StringWriter;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
@@ -351,6 +352,19 @@ public class UCDetectorPlugin extends AbstractUIPlugin implements IPropertyChang
       System.err.println(e);
       return file.getAbsolutePath();
     }
+  }
+
+  public static String readAll(Reader reader) throws IOException {
+    final char[] buf = new char[2048];
+    StringBuffer sb = new StringBuffer();
+    int size = 0;
+    while (size != -1) {
+      size = reader.read(buf);
+      if (size > 0) {
+        sb.append(new String(buf, 0, size));
+      }
+    }
+    return sb.toString();
   }
 
   public static String getCanonicalPath(String fileName) {

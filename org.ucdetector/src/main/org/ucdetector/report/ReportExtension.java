@@ -75,7 +75,7 @@ public final class ReportExtension {
   }
 
   // STATIC -------------------------------------------------------------------
-  // org.eclipse.ant.core.AntCorePlugin.extractExtensions(String)
+  // Similar to: org.eclipse.ant.core.AntCorePlugin.extractExtensions(String)
   private static void loadExtensions() {
     if (!isInitialized) {
       isInitialized = true;

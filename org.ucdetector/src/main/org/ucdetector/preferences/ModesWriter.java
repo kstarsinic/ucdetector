@@ -21,7 +21,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 
-import org.apache.tools.ant.util.FileUtils;
 import org.eclipse.osgi.util.NLS;
 import org.ucdetector.Log;
 import org.ucdetector.Messages;
@@ -101,7 +100,7 @@ public class ModesWriter {
     try {
       if (headlessPropertiesContent == null) {
         InputStream in = ModesWriter.class.getResourceAsStream(HEADLESS_PROPERTIES);
-        headlessPropertiesContent = FileUtils.readFully(new InputStreamReader(in, UCDetectorPlugin.UTF_8));
+        headlessPropertiesContent = UCDetectorPlugin.readAll(new InputStreamReader(in, UCDetectorPlugin.UTF_8));
       }
     }
     catch (IOException ex) {
