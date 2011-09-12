@@ -6,6 +6,7 @@ New features:
 
 Bugfixes:
  - [ 3396856 ] Fields in interfaces are already final
+ - Change dependency org.eclipse.pde.core optional to make UCDetector work with "Eclipse IDE for Java Developers"
 
 Todo:
  - [ 3396900 ] Abstract classes' constructors can always be protected
