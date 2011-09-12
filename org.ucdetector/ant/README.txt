@@ -4,8 +4,8 @@ Build manager may need to run UCDetector without starting the Eclipse IDE
 
 
 == Requirements ==
-* java    >= 5.0
-* Eclipse >= 3.5
+* java            >= 5.0
+* Eclipse Classic >= 3.5
 * org.ucdetector_x.y.z.jar
 * Optional: ant (http://ant.apache.org)
 
