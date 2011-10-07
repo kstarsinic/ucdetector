@@ -406,17 +406,21 @@ public final class JavaElementUtil {
    * @throws CoreException when there are search problems
    */
   public static boolean isUsedBySpecialEnumMethods(IType enumType) throws CoreException {
-    String[] stringPatterns = new String[] {
-        // We need '.' as class name separator for search!
-        enumType.getFullyQualifiedName('.') + ".values()",
-        enumType.getFullyQualifiedName('.') + ".valueOf(java.lang.String)", };
-    for (String stringPattern : stringPatterns) {
-      SearchPattern pattern = SearchPattern.createPattern(stringPattern, IJavaSearchConstants.METHOD,
-          IJavaSearchConstants.REFERENCES, SearchPattern.R_ERASURE_MATCH);
-      CountSearchRequestor requestor = new CountSearchRequestor();
-      runSearch(pattern, requestor);
-      if (requestor.isFound()) {
-        return true;
+    if (enumType.isEnum()) {
+      String[] stringPatterns = new String[] {
+          // We need '.' as class name separator for search!
+          enumType.getFullyQualifiedName('.') + ".values()",//
+          enumType.getFullyQualifiedName('.') + ".valueOf(java.lang.String)"//
+      };
+      for (String stringPattern : stringPatterns) {
+        SearchPattern pattern = SearchPattern.createPattern(stringPattern, IJavaSearchConstants.METHOD,
+            IJavaSearchConstants.REFERENCES, SearchPattern.R_ERASURE_MATCH);
+        CountSearchRequestor requestor = new CountSearchRequestor();
+        //profile:6000
+        runSearch(pattern, requestor);
+        if (requestor.isFound()) {
+          return true;
+        }
       }
     }
     return false;
@@ -755,6 +759,7 @@ public final class JavaElementUtil {
     CountSearchRequestor requestor = new CountSearchRequestor();
     IType declaringType = method.getDeclaringType();
     IJavaSearchScope scope = SearchEngine.createHierarchyScope(declaringType);
+    //profile:10500
     runSearch(pattern, requestor, scope);
     // Ignore 1 match: Declaring type!
     return requestor.getFoundCount() > 1;
@@ -852,6 +857,7 @@ public final class JavaElementUtil {
    * org.eclipse.jdt.internal.ui.typehierarchy.SubTypeHierarchyViewer
    */
   private static boolean hasXType(IType type, boolean isSupertype) throws JavaModelException {
+    //profile:3900
     ITypeHierarchy hierarchy = type.newTypeHierarchy(NULL_MONITOR);
     if (hierarchy != null) {
       IType[] types = isSupertype ? hierarchy.getSupertypes(type) : hierarchy.getSubtypes(type);
@@ -960,6 +966,7 @@ public final class JavaElementUtil {
    * @throws JavaModelException when there are problems creating hierarchy
    */
   public static IType[] getAllSupertypes(IType type) throws JavaModelException {
+    //profile:5900
     ITypeHierarchy hierarchy = type.newTypeHierarchy(NULL_MONITOR);
     if (hierarchy != null) {
       return hierarchy.getAllSupertypes(type);
