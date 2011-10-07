@@ -68,7 +68,7 @@ public class SearchManager {
   /** shortcut to skip methods and fields of classes which have no references */
   private final List<IType> noRefTypes = new ArrayList<IType>();
   /** Skip search for enum constants, because they are used by value() or valueOf() */
-  private final List<IType> usedByValueEnums = new ArrayList<IType>();
+  private final UsedByValueEnumsCache usedByValueEnumsCache = new UsedByValueEnumsCache();
   /** contains all exceptions happened during search */
   private final List<IStatus> searchProblems = new ArrayList<IStatus>();
   /** Factory to create markers */
@@ -194,9 +194,6 @@ public class SearchManager {
     if (found == 0) {
       addNoRefTypes(type);
     }
-    if (type.isEnum() && JavaElementUtil.isUsedBySpecialEnumMethods(type)) {
-      usedByValueEnums.add(type);
-    }
   }
 
   private void addNoRefTypes(IType type) {
@@ -281,7 +278,7 @@ public class SearchManager {
     if (type.isAnonymous()) {
       return; // Ignore anonymous classes
     }
-    if (usedByValueEnums.contains(type)) {
+    if (usedByValueEnumsCache.contains(type)) {
       return;// See bug 2900561: enum detection, or don't create "unnecessary marker" for enum constants
     }
     updateMonitorMessage(field, Messages.SearchManager_SearchReferences, searchInfo);
@@ -292,6 +289,22 @@ public class SearchManager {
           new Object[] { JavaElementUtil.getElementName(field) });
       // found=0 needed here, to create reference marker!
       markerFactory.createReferenceMarker(field, message, line, 0);
+    }
+  }
+
+  /** Search lazy to avoid time consuming: JavaElementUtil.isUsedBySpecialEnumMethods() */
+  private static final class UsedByValueEnumsCache {
+    private final List<IType> alreadySearched = new ArrayList<IType>();
+    private final List<IType> usedByValueEnums = new ArrayList<IType>();
+
+    boolean contains(IType enumType) throws CoreException {
+      if (enumType.isEnum() && !alreadySearched.contains(enumType)) {
+        alreadySearched.add(enumType);
+        if (JavaElementUtil.isUsedBySpecialEnumMethods(enumType)) {
+          usedByValueEnums.add(enumType);
+        }
+      }
+      return usedByValueEnums.contains(enumType);
     }
   }
 
