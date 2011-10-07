@@ -8,7 +8,9 @@
 package org.ucdetector.report;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.eclipse.core.resources.IMarker;
 import org.eclipse.core.runtime.CoreException;
@@ -37,6 +39,7 @@ public class MarkerReport implements IUCDetectorReport {
   private final List<ReportParam> markersToFlash = new ArrayList<ReportParam>();
   private int totalMarkerCount = 0;
 
+  @SuppressWarnings("boxing")
   private static void createMarker(ReportParam reportParam) throws CoreException {
     WarnLevel level = reportParam.getLevel();
     if (level == WarnLevel.IGNORE) {
@@ -46,15 +49,18 @@ public class MarkerReport implements IUCDetectorReport {
     IMember javaElement = reportParam.getJavaElement();
     ISourceRange range = javaElement.getNameRange();
     IMarker marker = javaElement.getResource().createMarker(reportParam.getMarkerType());
-    marker.setAttribute(IMarker.SEVERITY, severity);
-    marker.setAttribute(IMarker.MESSAGE, reportParam.getMessage());
-    marker.setAttribute(IMarker.PRIORITY, IMarker.PRIORITY_HIGH);
+    // Increase speed, use map:
+    Map<String, Object> attributes = new HashMap<String, Object>();
+    attributes.put(IMarker.SEVERITY, severity);
+    attributes.put(IMarker.MESSAGE, reportParam.getMessage());
+    attributes.put(IMarker.PRIORITY, IMarker.PRIORITY_HIGH);
     // LINE_NUMBER Still needed for MultiQuickFix dialog
-    marker.setAttribute(IMarker.LINE_NUMBER, reportParam.getLine());
-    marker.setAttribute(IMarker.CHAR_START, range.getOffset());
-    marker.setAttribute(IMarker.CHAR_END, range.getOffset() + range.getLength());
-    marker.setAttribute(MarkerFactory.JAVA_NAME, javaElement.getElementName());
-    marker.setAttribute(MarkerFactory.JAVA_TYPE, getElementType(javaElement).toString());
+    attributes.put(IMarker.LINE_NUMBER, reportParam.getLine());
+    attributes.put(IMarker.CHAR_START, range.getOffset());
+    attributes.put(IMarker.CHAR_END, range.getOffset() + range.getLength());
+    attributes.put(MarkerFactory.JAVA_NAME, javaElement.getElementName());
+    attributes.put(MarkerFactory.JAVA_TYPE, getElementType(javaElement).toString());
+    marker.setAttributes(attributes);
   }
 
   /**
