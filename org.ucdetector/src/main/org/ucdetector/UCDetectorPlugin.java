@@ -60,7 +60,7 @@ import org.ucdetector.preferences.Prefs;
  * @since 2008-02-29
  */
 @SuppressWarnings("nls")
-public class UCDetectorPlugin extends AbstractUIPlugin implements IPropertyChangeListener {
+public class UCDetectorPlugin extends AbstractUIPlugin {
   public static final String UTF_8 = "UTF-8";
   //
   private static final int MEGA_BYTE = 1024 * 1024;
@@ -127,7 +127,29 @@ public class UCDetectorPlugin extends AbstractUIPlugin implements IPropertyChang
   public void start(BundleContext context) throws Exception {
     super.start(context);
     dumpInformation();
-    getPreferenceStore().addPropertyChangeListener(this);
+    addPropertyChangeListener();
+  }
+
+  private void addPropertyChangeListener() {
+    getPreferenceStore().addPropertyChangeListener(new IPropertyChangeListener() {
+      public void propertyChange(PropertyChangeEvent event) {
+        String property = event.getProperty();
+        String newValue = event.getNewValue().toString();
+        if (property.equals(Prefs.LOG_LEVEL)) {
+          LogLevel newLogLevel = LogLevel.valueOf(newValue);
+          Log.setActiveLogLevel(newLogLevel);
+          if (newLogLevel.ordinal() > LogLevel.INFO.ordinal()) {
+            System.out.println("UCDetector Log level: " + newLogLevel); // we need to log to System.out
+          }
+          else {
+            Log.info("UCDetector Log level: " + newLogLevel);
+          }
+        }
+        else if (property.equals(Prefs.LOG_TO_ECLIPSE)) {
+          Log.setLogToEclipse(Boolean.parseBoolean(newValue));
+        }
+      }
+    });
   }
 
   /** @return all available preferences and all and all preferences which are different from default preferences   */
@@ -320,24 +342,6 @@ public class UCDetectorPlugin extends AbstractUIPlugin implements IPropertyChang
     }
     catch (Exception e) {
       return "?";
-    }
-  }
-
-  public void propertyChange(PropertyChangeEvent event) {
-    String property = event.getProperty();
-    String newValue = event.getNewValue().toString();
-    if (property.equals(Prefs.LOG_LEVEL)) {
-      LogLevel newLogLevel = LogLevel.valueOf(newValue);
-      Log.setActiveLogLevel(newLogLevel);
-      if (newLogLevel.ordinal() > LogLevel.INFO.ordinal()) {
-        System.out.println("UCDetector Log level: " + newLogLevel); // we need to log to System.out
-      }
-      else {
-        Log.info("UCDetector Log level: " + newLogLevel);
-      }
-    }
-    else if (property.equals(Prefs.LOG_TO_ECLIPSE)) {
-      Log.setLogToEclipse(Boolean.parseBoolean(newValue));
     }
   }
 
