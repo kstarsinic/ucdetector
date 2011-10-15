@@ -105,8 +105,7 @@ public class LineManger {
   public int getLine(IMember element) throws CoreException {
     ISourceRange sourceRange = element.getNameRange();
     int offset = sourceRange.getOffset();
-    int lineNbr = getLine(element, offset);
-    return lineNbr;
+    return getLine(element, offset);
   }
 
   public int getLineEnd(IMember element) {

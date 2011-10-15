@@ -245,7 +245,7 @@ public class UCDHeadless {
   }
 
   private void postIterate(List<IJavaElement> javaElementsToIterate) throws CoreException {
-    ArrayList<AbstractUCDetectorIterator> postIterators = HeadlessExtension.getPostIterators();
+    List<AbstractUCDetectorIterator> postIterators = HeadlessExtension.getPostIterators();
     for (AbstractUCDetectorIterator postIterator : postIterators) {
       Log.info("Run Post iterator: %s, for: %s",//
           postIterator.getJobName(), JavaElementUtil.getElementNames(javaElementsToIterate));

@@ -14,7 +14,7 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.io.OutputStreamWriter;
 import java.io.StringWriter;
-import java.util.ArrayList;
+import java.util.List;
 import java.util.Map.Entry;
 import java.util.Set;
 
@@ -380,7 +380,7 @@ public class XmlReport implements IUCDetectorReport {
     appendStatistics(isEndReport);
     copyFilesToDotIconDir(reportDir);
     try {
-      ArrayList<ReportExtension> xsltExtensions = ReportExtension.getXsltExtensions();
+      List<ReportExtension> xsltExtensions = ReportExtension.getXsltExtensions();
       for (ReportExtension xsltExtension : xsltExtensions) {
         if (Prefs.isCreateReport(xsltExtension)) {
           String reportName = ReportNameManager.getReportFileName(xsltExtension.getResultFile(), objectsToIterate);
@@ -450,7 +450,7 @@ public class XmlReport implements IUCDetectorReport {
     }
   }
 
-  private void writeTextFile(File file, String xslt) throws Exception, IOException {
+  private void writeTextFile(File file, String xslt) throws IOException, TransformerException {
     String text = transformToText(doc, xslt);
     OutputStreamWriter fileWriter = null;
     try {
@@ -463,7 +463,7 @@ public class XmlReport implements IUCDetectorReport {
     Log.info("Wrote file= " + UCDetectorPlugin.getCanonicalPath(file));
   }
 
-  private static void writeDocumentToFile(Document docToWrite, File file) throws Exception {
+  private static void writeDocumentToFile(Document docToWrite, File file) throws IOException, TransformerException {
     Source source = new DOMSource(docToWrite);
     Result result = new StreamResult(new OutputStreamWriter(new FileOutputStream(file), UCDetectorPlugin.UTF_8));
     TransformerFactory tf = TransformerFactory.newInstance();
@@ -483,8 +483,9 @@ public class XmlReport implements IUCDetectorReport {
     Log.info("Wrote file= " + UCDetectorPlugin.getCanonicalPath(file));
   }
 
-  /** Transform from xml to text using xslt transformation */
-  private String transformToText(Document xmlDoc, String xslt) throws Exception {
+  /** Transform from xml to text using xslt transformation 
+   * @throws TransformerException */
+  private String transformToText(Document xmlDoc, String xslt) throws TransformerException {
     StringWriter stringWriter = new StringWriter();
     transform(xmlDoc, xslt, new StreamResult(stringWriter));
     return stringWriter.toString();

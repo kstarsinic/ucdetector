@@ -7,6 +7,7 @@
 package org.ucdetector.report;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IConfigurationElement;
@@ -30,9 +31,9 @@ public final class ReportExtension {
   private static final String ATTRIBUTE_CLASS = "class";//$NON-NLS-1$
   private static final String ATTRIBUTE_REPORT_ID = "id";//$NON-NLS-1$
   private static boolean isInitialized = false;
-  private static ArrayList<ReportExtension> xsltExtensions;
-  private static ArrayList<ReportExtension> classExtensions;
-  private static ArrayList<ReportExtension> allExtensions;
+  private static List<ReportExtension> xsltExtensions;
+  private static List<ReportExtension> classExtensions;
+  private static List<ReportExtension> allExtensions;
 
   private final String resultFile;
   private final String description;
@@ -118,17 +119,17 @@ public final class ReportExtension {
     }
   }
 
-  public static ArrayList<ReportExtension> getXsltExtensions() { // NO_UCD
+  public static List<ReportExtension> getXsltExtensions() { // NO_UCD
     loadExtensions();
     return xsltExtensions;
   }
 
-  public static ArrayList<ReportExtension> getClassExtensions() {
+  public static List<ReportExtension> getClassExtensions() {
     loadExtensions();
     return classExtensions;
   }
 
-  public static ArrayList<ReportExtension> getAllExtensions() {
+  public static List<ReportExtension> getAllExtensions() {
     loadExtensions();
     return allExtensions;
   }

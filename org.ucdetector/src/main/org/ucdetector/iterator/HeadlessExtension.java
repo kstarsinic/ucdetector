@@ -9,6 +9,7 @@ package org.ucdetector.iterator;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
+import java.util.List;
 
 import org.eclipse.core.runtime.IConfigurationElement;
 import org.eclipse.core.runtime.IExtensionRegistry;
@@ -23,7 +24,7 @@ import org.ucdetector.UCDetectorPlugin;
  * @author Joerg Spieler
  * @since 2011-05-17
  */
-public class HeadlessExtension {
+public final class HeadlessExtension {
   /** Simple identifier constant (value <code>"headless"</code>) for the UCDetector headless extension point. */
   private static final String EXTENSION_POINT_ID = UCDetectorPlugin.ID + ".headless"; //$NON-NLS-1$
   //
@@ -31,7 +32,7 @@ public class HeadlessExtension {
   private static final String ATTRIBUTE_ID = "id";//$NON-NLS-1$
   private static final String ATTRIBUTE_ORDINAL = "ordinal";//$NON-NLS-1$
   private static boolean isInitialized = false;
-  private static ArrayList<HeadlessExtension> headlessExtensionList;
+  private static List<HeadlessExtension> headlessExtensionList;
 
   private final AbstractUCDetectorIterator iterator;
 
@@ -73,7 +74,7 @@ public class HeadlessExtension {
     }
   }
 
-  public static ArrayList<AbstractUCDetectorIterator> getPostIterators() {
+  public static List<AbstractUCDetectorIterator> getPostIterators() {
     loadExtensions();
     ArrayList<AbstractUCDetectorIterator> result = new ArrayList<AbstractUCDetectorIterator>();
     Collections.sort(headlessExtensionList, new IteratorExtensionSorter());

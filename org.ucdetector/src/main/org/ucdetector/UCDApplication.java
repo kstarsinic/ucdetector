@@ -63,7 +63,7 @@ public class UCDApplication implements IApplication {
         }
       }
       catch (Exception ex) {
-        ex.printStackTrace();
+        Log.error("Exception reading System.in", ex);
       }
       // System.out.println("SystemInReader: End");
     }

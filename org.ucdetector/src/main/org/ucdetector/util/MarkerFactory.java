@@ -80,7 +80,7 @@ public final class MarkerFactory implements IUCDetectorReport {
     if (Prefs.isWriteReportFile()) {
       reportsList.add(new XmlReport());
     }
-    ArrayList<ReportExtension> classExtensions = ReportExtension.getClassExtensions();
+    List<ReportExtension> classExtensions = ReportExtension.getClassExtensions();
     for (ReportExtension reportExtension : classExtensions) {
       IUCDetectorReport report = reportExtension.getReport();
       report.setExtension(reportExtension);

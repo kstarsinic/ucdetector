@@ -670,8 +670,7 @@ public class SearchManager {
         IImportDeclaration importDecl = (IImportDeclaration) matchJavaElement;
         try {
           // Bug fix: Static imports are not recognized - ID: 2783734
-          boolean isStatic = Flags.isStatic(importDecl.getFlags());
-          return !isStatic;
+          return !Flags.isStatic(importDecl.getFlags());
         }
         catch (JavaModelException ex) {
           Log.error("Can't get flags of: " + importDecl.getElementName(), ex); //$NON-NLS-1$
