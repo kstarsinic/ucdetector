@@ -28,7 +28,6 @@ import org.ucdetector.UCDetectorPlugin;
 import org.ucdetector.preferences.Prefs;
 import org.ucdetector.report.IUCDetectorReport;
 import org.ucdetector.report.MarkerReport;
-import org.ucdetector.report.MarkerReport.ElementType;
 import org.ucdetector.report.ReportExtension;
 import org.ucdetector.report.ReportNameManager;
 import org.ucdetector.report.ReportParam;
@@ -65,7 +64,7 @@ public final class MarkerFactory implements IUCDetectorReport {
   public static final String JAVA_NAME = "JAVA_NAME";//$NON-NLS-1$
   /**
    * Helper attribute to transfer java type information from a marker to QuickFix
-   * See: {@link ElementType}
+   * See: {@link org.ucdetector.report.MarkerReport.ElementType}
    */
   public static final String JAVA_TYPE = "JAVA_TYPE";//$NON-NLS-1$
 

@@ -64,7 +64,6 @@ class ModesPanel {
   private final Button renameButton;
   private final Combo modesCombo;
   private final Composite parent;
-  private final Composite modesPanelComposite;
   private final UCDetectorPreferencePage page;
   private final ModesWriter modesWriter;
 
@@ -74,7 +73,7 @@ class ModesPanel {
     this.modesWriter = new ModesWriter(page.extendedPreferences);
     MODES_DIR.mkdirs();
     Log.info("modesDir is '%s'", MODES_DIR.getAbsolutePath()); //$NON-NLS-1$
-    this.modesPanelComposite = UCDetectorPreferencePage.createComposite(parent, 5, 1, GridData.FILL_HORIZONTAL);
+    Composite modesPanelComposite = UCDetectorPreferencePage.createComposite(parent, 5, 1, GridData.FILL_HORIZONTAL);
     Label label = new Label(modesPanelComposite, SWT.LEFT);
     label.setText(Messages.ModesPanel_ModeLabel);
     this.modesCombo = new Combo(modesPanelComposite, SWT.READ_ONLY);

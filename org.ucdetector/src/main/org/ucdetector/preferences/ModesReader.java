@@ -8,6 +8,7 @@ package org.ucdetector.preferences;
 
 import java.io.BufferedReader;
 import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
@@ -43,13 +44,7 @@ public class ModesReader {
     Map<String, String> result = new HashMap<String, String>();
     BufferedReader reader = null;
     try {
-      InputStream inStream;
-      if (isFile) {
-        inStream = new FileInputStream(modeFileName);
-      }
-      else {
-        inStream = ModesReader.class.getResourceAsStream("modes/" + modeFileName);
-      }
+      InputStream inStream = getInputStream(isFile, modeFileName);
       reader = new BufferedReader(new InputStreamReader(inStream, UCDetectorPlugin.UTF_8));
       String line = null;
       boolean isInsideMultiLine = false;
@@ -59,7 +54,7 @@ public class ModesReader {
         line = line.trim();
         int indexEquals = line.indexOf('=');
         boolean isCommentLine = line.startsWith("#");
-        if (isCommentLine || line.length() == 0) { //$NON-NLS-1$
+        if (isCommentLine || line.length() == 0) {
           continue;
         }
         boolean isMultiLine = line.endsWith(MULTILINE_END);
@@ -90,6 +85,13 @@ public class ModesReader {
       UCDetectorPlugin.closeSave(reader);
     }
     return result;
+  }
+
+  private static InputStream getInputStream(boolean isFile, String modeFileName) throws FileNotFoundException {
+    if (isFile) {
+      return new FileInputStream(modeFileName);
+    }
+    return ModesReader.class.getResourceAsStream("modes/" + modeFileName);
   }
 
   //  public static void main(String[] args) throws FileNotFoundException, IOException {

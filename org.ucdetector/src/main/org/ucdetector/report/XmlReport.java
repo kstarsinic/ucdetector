@@ -188,42 +188,17 @@ public class XmlReport implements IUCDetectorReport {
       //markers.appendChild(doc.createComment(" === Marker number " + markerCount));
       marker = doc.createElement("marker");
       markers.appendChild(marker);
-      String markerType = reportParam.getMarkerType();
-      if (markerType.startsWith(MarkerFactory.UCD_MARKER)) {
-        markerType = markerType.substring(MarkerFactory.UCD_MARKER.length());
-      }
+      setMarkerAttributes(reportParam, marker);
+
       IMember javaElement = reportParam.getJavaElement();
       IResource resource = javaElement.getResource();
-
-      // ===== Attributes =====
-      marker.setAttribute("nr", String.valueOf(markerCount));
-      marker.setAttribute("level", String.valueOf(reportParam.getLevel()));// "Error", "Warning"
-      marker.setAttribute("line", String.valueOf(reportParam.getLine()));
-      // [ 3323078 ] Add line number start/end to markers
-      marker.setAttribute("lineStart", String.valueOf(reportParam.getLineStart()));
-      marker.setAttribute("lineEnd", String.valueOf(reportParam.getLineEnd()));
-      marker.setAttribute("markerType", markerType);
-      int iRefCount = reportParam.getReferenceCount();
-      String sReferenceCount = (iRefCount == -1) ? "-" : "" + iRefCount;
-      marker.setAttribute("referenceCount", sReferenceCount);
-
       // ===== Nodes =====
       appendChild(marker, "description", reportParam.getMessage());// NODE: Change visibility of MixedExample to default
       if (resource != null && resource.getRawLocation() != null) {
         // F:/ws/ucd/org.ucdetector.example/src/main/org/ucdetector/example/Bbb.java
         appendChild(marker, "file", resource.getRawLocation().toOSString());
       }
-      if (javaElement.getJavaProject() != null) {
-        IJavaProject project = javaElement.getJavaProject();
-        Element projectElement = appendChild(marker, "project", null);
-        projectElement.setAttribute("name", project.getElementName());// NODE:  org.ucdetector.example
-        // [ 2762967 ] XmlReport: Problems running UCDetector NODE:  org.ucdetector.example - maybe different projectDir!
-        IPath location = project.getProject().getLocation();
-        String parentDir = location.removeLastSegments(1).toString();
-        projectElement.setAttribute("parentDir", parentDir);// NODE:  F:/ws/ucd
-        String projectDir = location.lastSegment();
-        projectElement.setAttribute("dir", projectDir);
-      }
+      appendProject(marker, javaElement);
       IPackageFragmentRoot sourceFolder = JavaElementUtil.getPackageFragmentRootFor(javaElement);
       if (sourceFolder != null && sourceFolder.getResource() != null) {
         IPath path = sourceFolder.getResource().getProjectRelativePath();
@@ -267,6 +242,37 @@ public class XmlReport implements IUCDetectorReport {
       }
     }
     return true;
+  }
+
+  private void setMarkerAttributes(ReportParam reportParam, Element marker) {
+    String markerType = reportParam.getMarkerType();
+    if (markerType.startsWith(MarkerFactory.UCD_MARKER)) {
+      markerType = markerType.substring(MarkerFactory.UCD_MARKER.length());
+    }
+    marker.setAttribute("nr", String.valueOf(markerCount));
+    marker.setAttribute("level", String.valueOf(reportParam.getLevel()));// "Error", "Warning"
+    marker.setAttribute("line", String.valueOf(reportParam.getLine()));
+    // [ 3323078 ] Add line number start/end to markers
+    marker.setAttribute("lineStart", String.valueOf(reportParam.getLineStart()));
+    marker.setAttribute("lineEnd", String.valueOf(reportParam.getLineEnd()));
+    marker.setAttribute("markerType", markerType);
+    int iRefCount = reportParam.getReferenceCount();
+    String sReferenceCount = (iRefCount == -1) ? "-" : "" + iRefCount;
+    marker.setAttribute("referenceCount", sReferenceCount);
+  }
+
+  private void appendProject(Element marker, IMember javaElement) {
+    if (javaElement.getJavaProject() != null) {
+      IJavaProject project = javaElement.getJavaProject();
+      Element projectElement = appendChild(marker, "project", null);
+      projectElement.setAttribute("name", project.getElementName());// NODE:  org.ucdetector.example
+      // [ 2762967 ] XmlReport: Problems running UCDetector NODE:  org.ucdetector.example - maybe different projectDir!
+      IPath location = project.getProject().getLocation();
+      String parentDir = location.removeLastSegments(1).toString();
+      projectElement.setAttribute("parentDir", parentDir);// NODE:  F:/ws/ucd
+      String projectDir = location.lastSegment();
+      projectElement.setAttribute("dir", projectDir);
+    }
   }
 
   public void reportDetectionProblem(IStatus status) {
