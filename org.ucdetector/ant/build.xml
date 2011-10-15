@@ -14,15 +14,16 @@
        ===================================================================== -->
   <target name="call-ucdetector" description="Call UCDetector from another ant file">
     <ant antfile="my_local_ucdetector_ant_dir/build.xml" target="detect" inheritall="false">
-      <!-- <property name="ucd.options" value="ucdetector_custom.options" /> -->
+      <!-- 
+      <property name="ucd.options" value="ucdetector_custom.options" /> 
+      -->
     </ant>
   </target>
-
 
   <!-- =====================================================================
        DETECT
        ===================================================================== -->
-  <!-- Usually there is no need to change this!                              -->
+  <!-- Usually there is no need to change this target!                       -->
   <target name="detect" description="Run UCDetector headless">
     <property name="ucd.options" value="ucdetector.options" />
     <echo>
@@ -49,8 +50,8 @@
       <arg line="-application org.ucdetector.detect" />
       <arg line="-ucd.options ${ucd.options}" />
       <!--
-       <arg line="-debug" />
-       <arg line="-noSplash" /> 
+      <arg line="-debug" />
+      <arg line="-noSplash" /> 
       -->
     </java>
   </target>
