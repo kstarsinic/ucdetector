@@ -10,7 +10,7 @@
   <target name="optimize" description="Site Optimizer">
     <!-- CUSTOM -->
     <property name="ECLIPSE_HOME" location="/opt/eclipse-3.6" />
-    <property name="jar.name" value="org.ucdetector_1.8.0.jar" />
+    <property name="jar.name" value="org.ucdetector_1.9.0.jar" />
 
     <!-- LAUNCHER -->
     <pathconvert property="LAUNCHER">

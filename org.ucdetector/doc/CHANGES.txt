@@ -1,17 +1,24 @@
 // -----------------------------------------------------------------------------
-UCDetector 1.9.0 from 2011-xx-xx - eclipse 3.5, 3.6, 3.7:
+UCDetector 1.10.0 from 2012-xx-xx - eclipse 3.4 - 3.7:
+New features:
+
+Bugfixes:
+
+Todo:
+ - [ 3396900 ] Abstract classes' constructors can always be protected
+ - [ 3400167 ] Removed warnings: Restrict method/field visibility to class visibility
+ - Log eclipse type (classic...) 
+
+// -----------------------------------------------------------------------------
+UCDetector 1.9.0 from 2011-10-26 - eclipse 3.4-3.7:
 New features:
  - [ 3323078 ] Added: startLine, endLine, fileName to xml report
  - All preferences for headless mode are in ucdetector.options
 
 Bugfixes:
- - [ 3396856 ] Fields in interfaces are already final
  - UCDetector works now with "Eclipse IDE for Java Developers" (changed dependency org.eclipse.pde.core to "optional")
  - Improved backwards compatibility: UCDetector works with eclipse 3.4 (3.3)
-
-Todo:
- - [ 3396900 ] Abstract classes' constructors can always be protected
- - [ 3400167 ] Removed warnings: Restrict method/field visibility to class visibility
+ - [ 3396856 ] Fields in interfaces are already final
 
 // -----------------------------------------------------------------------------
 UCDetector 1.8.0 from 2011-06-15 - eclipse 3.5, 3.6, 3.7:
