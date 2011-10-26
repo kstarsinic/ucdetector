@@ -426,6 +426,7 @@ public class XmlReport implements IUCDetectorReport {
   private void copyStylesheet(File iconsOutDir) throws IOException {
     InputStream inStream = getClass().getResourceAsStream(HTML_XSLT);
     copyStream(inStream, new FileOutputStream(new File(iconsOutDir, HTML_XSLT)));
+    inStream.close();
   }
 
   private static final String[] ICONS = new String[] { //
