@@ -298,8 +298,9 @@ public class XmlReport implements IUCDetectorReport {
       appendAbout("operatingSystem", "Operating system", UCDetectorPlugin.getAboutOS(), true, null);
       appendAbout("javaVersion", "Java", UCDetectorPlugin.getAboutJavaVersion(), true, null);
       appendAbout("eclipseVersion", "Eclipse", UCDetectorPlugin.getAboutEclipseVersion(), true, null);
-      appendAbout("ucdetectorVersion", "UCDetector", UCDetectorPlugin.getAboutUCDVersion(), true, null);
       appendAbout("eclipseHome", "Eclipse home", UCDetectorPlugin.getAboutEclipseHome(), false, null);
+      appendAbout("eclipseProduct", "Eclipse product", UCDetectorPlugin.getAboutEclipseProduct(), true, null);
+      appendAbout("ucdetectorVersion", "UCDetector", UCDetectorPlugin.getAboutUCDVersion(), true, null);
       appendAbout("logfile", "Logfile", UCDetectorPlugin.getAboutLogfile(), false, null);
       appendAbout("workspace", "Workspace", UCDetectorPlugin.getAboutWorkspace(), false, null);
       appendAbout("mode", "Mode", Prefs.getModeName(), true, null);

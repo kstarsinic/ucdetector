@@ -44,6 +44,7 @@ import org.eclipse.swt.widgets.Shell;
 import org.eclipse.ui.ISharedImages;
 import org.eclipse.ui.IWorkbenchWindow;
 import org.eclipse.ui.PlatformUI;
+import org.eclipse.ui.internal.WorkbenchMessages;
 import org.eclipse.ui.internal.WorkbenchPage;
 import org.eclipse.ui.internal.ide.IDEWorkbenchPlugin;
 import org.eclipse.ui.plugin.AbstractUIPlugin;
@@ -103,6 +104,7 @@ public class UCDetectorPlugin extends AbstractUIPlugin {
     Log.info("Java            : " + getAboutJavaVersion());
     Log.info("Eclipse version : " + getAboutEclipseVersion());
     Log.info("Eclipse home    : " + getAboutEclipseHome());
+    Log.info("Eclipse product : " + getAboutEclipseProduct());
     Log.info("Workspace       : " + getAboutWorkspace());
     Log.info("Logfile         : " + getAboutLogfile());
     Log.info("Log level       : " + Log.getActiveLogLevel().toString());
@@ -325,6 +327,14 @@ public class UCDetectorPlugin extends AbstractUIPlugin {
       return eclipseHome.substring("file:".length());
     }
     return eclipseHome;
+  }
+
+  // see: org.eclipse.ui.internal.dialogs.AboutDialog.productName
+  public static String getAboutEclipseProduct() {
+    if (Platform.getProduct() != null && Platform.getProduct().getName() != null) {
+      return Platform.getProduct().getName();
+    }
+    return WorkbenchMessages.AboutDialog_defaultProductName;
   }
 
   public static String getAboutLogfile() {
