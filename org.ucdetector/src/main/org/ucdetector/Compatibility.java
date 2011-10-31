@@ -29,7 +29,7 @@ public class Compatibility {
    **/
   public static final long IPROBLEM_METHOD_CAN_BE_STATIC = 603979897;
 
-  public static boolean isEclipse37OrNewer() {
+  public static boolean isEclipse37OrNewer() { // NO_UCD
     return ECLIPSE_USED.compareTo(ECLIPSE_3_7) >= 0;
   }
 }
