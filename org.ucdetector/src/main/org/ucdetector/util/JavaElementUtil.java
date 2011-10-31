@@ -10,6 +10,7 @@ package org.ucdetector.util;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
+import java.util.Locale;
 
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IResource;
@@ -892,7 +893,7 @@ public final class JavaElementUtil {
     if (pfr != null) {
       String sourceFolder = getSourceFolderProjectRelativePath(pfr);
       if (sourceFolder != null) {
-        sourceFolder = sourceFolder.toLowerCase();
+        sourceFolder = sourceFolder.toLowerCase(Locale.ENGLISH);
         if (sourceFolder.contains("test") || sourceFolder.contains("junit")) {
           return true;
         }
