@@ -74,6 +74,13 @@ public class UCDHeadless {
   public UCDHeadless(String optionsFileName) throws FileNotFoundException {
     Log.info("Options file name: %s", optionsFileName);
     this.workspace = ResourcesPlugin.getWorkspace();
+    //
+    // TODO: If ucdetector.target is not declared, ignore it
+    //    java.lang.NoClassDefFoundError: org/eclipse/pde/internal/core/PDECore
+    //    at org.ucdetector.UCDHeadless.loadTargetPlatform(UCDHeadless.java:199)
+    //    at org.ucdetector.UCDHeadless.iterate(UCDHeadless.java:100)
+    //    at org.ucdetector.UCDApplication.start(UCDApplication.java:33)
+    //
     File optionsFile = getFile(optionsFileName, "ucdetector.options");
     Map<String, String> options = loadOptions(optionsFile);
     this.targetPlatformFile = getFile(options.get(HEADLESS_KEY + "targetPlatformFile"), "ucdetector.target");
