@@ -15,58 +15,27 @@ import org.eclipse.equinox.app.IApplicationContext;
 
 /**
  * 
- * Run UCDetector from command line as an application in headless mode (experimental):
- * <pre>$ ECLIPSE_HOME/eclipse -data WORKSPACE -application org.ucdetector.detect -noSplash</pre>
+ * Run UCDetector from command line as an application in headless mode.
  * <p>
- * This class searches for options files in user dir.
+ * See files:
+ * <pre>/org.ucdetector/ant/detect.sh</pre>
+ * <pre>/org.ucdetector/ant/detect.bat</pre>
+ * <pre>/org.ucdetector/ant/build.xml</pre>
  * <p>
  * @author Joerg Spieler
  * @since 31.03.2011
  */
 @SuppressWarnings("nls")
 public class UCDApplication implements IApplication {
+  private SystemInReader systemInReader = null;
 
   public Object start(IApplicationContext context) throws Exception {
     Log.info("Starting UCDHeadless as an application");
     UCDHeadless ucdHeadless = new UCDHeadless(getOptionsFileName());
-    new SystemInReader(ucdHeadless).start();
+    systemInReader = new SystemInReader(ucdHeadless);
+    systemInReader.start();
     ucdHeadless.iterate();
     return IApplication.EXIT_OK;
-  }
-
-  private final class SystemInReader extends Thread {
-    private final UCDHeadless ucdHeadless;
-
-    public SystemInReader(UCDHeadless ucdHeadless) {
-      this.ucdHeadless = ucdHeadless;
-    }
-
-    @Override
-    public void run() {
-      // System.out.println("SystemInReader: Start");
-      BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
-      String line;
-      try {
-        while ((line = reader.readLine()) != null) {
-          // System.out.println("SystemInReader LINE: " + line);
-          if ("exit".equals(line)) {
-            // System.out.println("SystemInReader: exit called!");
-            if (ucdHeadless.ucdMonitor != null) {
-              ucdHeadless.ucdMonitor.setCanceled(true);
-            }
-            break;
-          }
-          if (isInterrupted()) {
-            // System.out.println("SystemInReader: Interrupted");
-            break;
-          }
-        }
-      }
-      catch (Exception ex) {
-        Log.error("Exception reading System.in", ex);
-      }
-      // System.out.println("SystemInReader: End");
-    }
   }
 
   private static String getOptionsFileName() {
@@ -81,5 +50,48 @@ public class UCDApplication implements IApplication {
 
   public void stop() {
     Log.info("Stopping UCDHeadless as an application");
+    if (systemInReader != null) {
+      systemInReader.interrupt();
+    }
+  }
+
+  // SystemInReader -----------------------------------------------------------
+
+  private final class SystemInReader extends Thread {
+    private final UCDHeadless ucdHeadless;
+
+    public SystemInReader(UCDHeadless ucdHeadless) {
+      this.ucdHeadless = ucdHeadless;
+    }
+
+    @Override
+    public void run() {
+      System.out.println("SystemInReader: Start");
+      Log.info("------------------------------------");
+      Log.info("Type 'exit' to to cancel UCDHeadless");
+      Log.info("------------------------------------");
+      BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
+      String line;
+      try {
+        while ((line = reader.readLine()) != null) {
+          Log.debug("SystemInReader LINE: " + line);
+          if ("exit".equals(line)) {
+            Log.debug("SystemInReader: exit called!");
+            if (ucdHeadless.ucdMonitor != null) {
+              ucdHeadless.ucdMonitor.setCanceled(true);
+            }
+            break;
+          }
+          if (isInterrupted()) {
+            Log.debug("SystemInReader: Interrupted");
+            break;
+          }
+        }
+      }
+      catch (Exception ex) {
+        Log.error("Exception reading System.in", ex);
+      }
+      Log.debug("SystemInReader: End");
+    }
   }
 }
