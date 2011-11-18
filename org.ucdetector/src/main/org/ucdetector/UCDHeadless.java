@@ -29,11 +29,6 @@ import org.eclipse.core.runtime.Platform;
 import org.eclipse.jdt.core.IJavaElement;
 import org.eclipse.jdt.core.IJavaProject;
 import org.eclipse.jdt.core.JavaCore;
-import org.eclipse.pde.internal.core.PDECore;
-import org.eclipse.pde.internal.core.target.provisional.ITargetDefinition;
-import org.eclipse.pde.internal.core.target.provisional.ITargetHandle;
-import org.eclipse.pde.internal.core.target.provisional.ITargetPlatformService;
-import org.eclipse.pde.internal.core.target.provisional.LoadTargetDefinitionJob;
 import org.osgi.framework.Bundle;
 import org.ucdetector.iterator.AbstractUCDetectorIterator;
 import org.ucdetector.iterator.HeadlessExtension;
@@ -43,6 +38,7 @@ import org.ucdetector.preferences.Prefs;
 import org.ucdetector.search.UCDProgressMonitor;
 import org.ucdetector.util.JavaElementUtil;
 import org.ucdetector.util.StopWatch;
+import org.ucdetector.util.TargetPlatformLoader;
 
 /**
  * Run UCDetector in headless mode (no UI). Entry point is an eclipse application.
@@ -52,8 +48,10 @@ import org.ucdetector.util.StopWatch;
  */
 @SuppressWarnings("nls")
 public class UCDHeadless {
+  public static final String UCDETECTOR_OPTIONS = "ucdetector.options";
   /**  "org.ucdetector.internal.headless." */
   private static final String HEADLESS_KEY = Prefs.INTERNAL + ".headless.";
+  public static final String HEADLESS_KEY_TARGET = HEADLESS_KEY + "targetPlatformFile";
 
   private static final String INCREMENTAL_BUILD = "INCREMENTAL_BUILD";
   final UCDProgressMonitor ucdMonitor = new UCDProgressMonitor();
@@ -74,16 +72,9 @@ public class UCDHeadless {
   public UCDHeadless(String optionsFileName) throws FileNotFoundException {
     Log.info("Options file name: %s", optionsFileName);
     this.workspace = ResourcesPlugin.getWorkspace();
-    //
-    // TODO: If ucdetector.target is not declared, ignore it
-    //    java.lang.NoClassDefFoundError: org/eclipse/pde/internal/core/PDECore
-    //    at org.ucdetector.UCDHeadless.loadTargetPlatform(UCDHeadless.java:199)
-    //    at org.ucdetector.UCDHeadless.iterate(UCDHeadless.java:100)
-    //    at org.ucdetector.UCDApplication.start(UCDApplication.java:33)
-    //
-    File optionsFile = getFile(optionsFileName, "ucdetector.options");
+    File optionsFile = getFile(optionsFileName, UCDETECTOR_OPTIONS);
     Map<String, String> options = loadOptions(optionsFile);
-    this.targetPlatformFile = getFile(options.get(HEADLESS_KEY + "targetPlatformFile"), "ucdetector.target");
+    this.targetPlatformFile = getFile(options.get(HEADLESS_KEY_TARGET), null);
     String sBuildType = options.get(HEADLESS_KEY + "buildType");
     this.buildType = parseBuildType(sBuildType);
     this.report = parseReport(options.get(HEADLESS_KEY + "report"));
@@ -99,12 +90,26 @@ public class UCDHeadless {
     Log.info("----------------------------------------------------------------------");
   }
 
+  private static File getFile(String fileName, String defaultFileName) throws FileNotFoundException {
+    if (fileName == null || fileName.trim().length() == 0) {
+      return defaultFileName == null ? null : new File(defaultFileName);
+    }
+    String resultName = fileName;
+    resultName = resultName.replace("${WORKSPACE}", UCDetectorPlugin.getAboutWorkspace());
+    resultName = resultName.replace("${ECLIPSE_HOME}", UCDetectorPlugin.getAboutEclipseHome());
+    File resultFile = new File(UCDetectorPlugin.getCanonicalPath(resultName));
+    if (!resultFile.exists()) {
+      throw new FileNotFoundException("Missing file: " + resultFile.getAbsolutePath());
+    }
+    return resultFile;
+  }
+
   public void iterate() throws CoreException {
     long start = System.currentTimeMillis();
     try {
       Log.info("Starting UCDetector Headless");
       tryToStartDsPlugin();
-      loadTargetPlatform();
+      new TargetPlatformLoader().loadTargetPlatform(ucdMonitor, targetPlatformFile);
       IWorkspaceRoot workspaceRoot = workspace.getRoot();
       List<IJavaProject> allProjects = createProjects(ucdMonitor, workspaceRoot);
       prepareWorkspace();
@@ -120,20 +125,6 @@ public class UCDHeadless {
       closeWorkspace();
       Log.info("Time to run UCDetector Headless: " + StopWatch.timeAsString(System.currentTimeMillis() - start));
     }
-  }
-
-  private static File getFile(String fileName, String defaultFileName) throws FileNotFoundException {
-    if (fileName == null || fileName.trim().length() == 0) {
-      return new File(defaultFileName);
-    }
-    String resultName = fileName;
-    resultName = resultName.replace("${WORKSPACE}", UCDetectorPlugin.getAboutWorkspace());
-    resultName = resultName.replace("${ECLIPSE_HOME}", UCDetectorPlugin.getAboutEclipseHome());
-    File resultFile = new File(UCDetectorPlugin.getCanonicalPath(resultName));
-    if (!resultFile.exists()) {
-      throw new FileNotFoundException("Missing file: " + resultFile.getAbsolutePath());
-    }
-    return resultFile;
   }
 
   private static List<String> getResourcesToIterate(Map<String, String> options) {
@@ -152,8 +143,10 @@ public class UCDHeadless {
   }
 
   private static void logExists(File file) {
-    Log.info("To change detection   : %-6s %s", file.exists() ? "edit" : "create",
-        UCDetectorPlugin.getCanonicalPath(file));
+    if (file != null) {
+      Log.info("To change detection   : %-6s %s", file.exists() ? "edit" : "create",
+          UCDetectorPlugin.getCanonicalPath(file));
+    }
   }
 
   static Map<String, String> loadOptions(File optionFile) {
@@ -193,27 +186,6 @@ public class UCDHeadless {
     catch (Exception e) {
       Log.error("PROBLEMS STARTING DS", e);
     }
-  }
-
-  private void loadTargetPlatform() throws CoreException {
-    if (targetPlatformFile == null || !targetPlatformFile.exists()) {
-      Log.info("Target platform file missing: Use eclipse as target platform");
-      return;
-    }
-    StopWatch stopWatch = new StopWatch();
-    Log.info("Use target platform declared in: " + targetPlatformFile.getAbsolutePath());
-    Log.info("START: loadTargetPlatform");
-    ITargetPlatformService tps = (ITargetPlatformService) PDECore.getDefault().acquireService(
-        ITargetPlatformService.class.getName());
-    ITargetHandle targetHandle = tps.getTarget(targetPlatformFile.toURI());
-    ITargetDefinition targetDefinition = targetHandle.getTargetDefinition();
-    new LoadTargetDefinitionJob(targetDefinition).run(ucdMonitor);
-    //    LoadTargetDefinitionJob.load(targetDefinition);
-    Log.info(stopWatch.end("END: loadTargetPlatform", false));
-    // Run it twice because of Exception, when running it with a complete workspace: See end of file
-    // https://bugs.eclipse.org/bugs/show_bug.cgi?id=314814
-    // Log.logInfo("Load target platform again, because of Exception - eclipse bug 314814");
-    //loadTargetPlatform();
   }
 
   private void prepareWorkspace() throws CoreException {
