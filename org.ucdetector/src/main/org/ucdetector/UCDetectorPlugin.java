@@ -26,6 +26,7 @@ import java.util.Set;
 import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IPath;
+import org.eclipse.core.runtime.IProduct;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Path;
 import org.eclipse.core.runtime.Platform;
@@ -44,6 +45,7 @@ import org.eclipse.swt.widgets.Shell;
 import org.eclipse.ui.ISharedImages;
 import org.eclipse.ui.IWorkbenchWindow;
 import org.eclipse.ui.PlatformUI;
+import org.eclipse.ui.internal.ProductProperties;
 import org.eclipse.ui.internal.WorkbenchMessages;
 import org.eclipse.ui.internal.WorkbenchPage;
 import org.eclipse.ui.internal.ide.IDEWorkbenchPlugin;
@@ -329,12 +331,32 @@ public class UCDetectorPlugin extends AbstractUIPlugin {
     return eclipseHome;
   }
 
-  // see: org.eclipse.ui.internal.dialogs.AboutDialog.productName
   public static String getAboutEclipseProduct() {
-    if (Platform.getProduct() != null && Platform.getProduct().getName() != null) {
-      return Platform.getProduct().getName();
+    IProduct product = Platform.getProduct();
+    if (product == null) {
+      // see: org.eclipse.ui.internal.dialogs.AboutDialog.productName
+      return WorkbenchMessages.AboutDialog_defaultProductName;
     }
-    return WorkbenchMessages.AboutDialog_defaultProductName;
+    if (ProductProperties.getAboutText(product) != null) {
+      // Eg: org.eclipse.epp.package.java_1.4.0.20110609-1120/plugin.xml
+      // Eg: org.eclipse.sdk_3.7.1.v201109091335/plugin.properties
+      String aboutText = ProductProperties.getAboutText(product);
+      String[] aboutLines = aboutText.split("\r\n|\r|\n");
+      StringBuffer result = new StringBuffer();
+      int foundLines = 0;
+      for (String aboutLine : aboutLines) {
+        aboutLine = aboutLine.trim();
+        if (aboutLine.length() > 0) {
+          foundLines++;
+          result.append(aboutLine);
+          if (foundLines >= 3) {
+            return result.toString();// Usually the first 3 line contain useful information
+          }
+          result.append(", ");
+        }
+      }
+    }
+    return product.getName();
   }
 
   public static String getAboutLogfile() {
