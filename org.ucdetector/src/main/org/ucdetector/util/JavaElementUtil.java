@@ -815,7 +815,7 @@ public final class JavaElementUtil {
       searchEngine.search(pattern, participant, scope, requestor, null);
     }
     catch (OperationCanceledException e) {
-      // ignore
+      Log.info("Search canceled: " + e); //$NON-NLS-1$
     }
     catch (OutOfMemoryError e) {
       isSearchException = true;

@@ -459,7 +459,7 @@ public class SearchManager {
         TextSearchEngine.create().search(scope, requestor, searchPattern, null);
       }
       catch (OperationCanceledException e) {
-        // ignore
+        Log.info("Text search canceled"); //$NON-NLS-1$
       }
       catch (OutOfMemoryError e) {
         UCDetectorPlugin.handleOutOfMemoryError(e);

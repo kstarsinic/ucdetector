@@ -65,7 +65,7 @@ public class StopWatch {
   private String createLogMessage(String info, long duration) {
     StringBuilder sb = new StringBuilder();
     if (info != null) {
-      sb.append("Duration: ").append(info).append(" "); //$NON-NLS-1$ //$NON-NLS-2$
+      sb.append("Duration: ").append(info).append(' '); //$NON-NLS-1$ 
     }
     if (message != null) {
       sb.append(message);

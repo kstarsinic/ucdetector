@@ -301,7 +301,7 @@ public class UCDetectorPlugin extends AbstractUIPlugin {
         closable.close();
       }
       catch (Exception e) {
-        // ignore
+        Log.warn("Can't close %s: %s", closable, e); //$NON-NLS-1$
       }
     }
   }
@@ -320,7 +320,8 @@ public class UCDetectorPlugin extends AbstractUIPlugin {
   }
 
   public static String getAboutUCDVersion() {
-    return String.valueOf(getDefault().getBundle().getHeaders().get("Bundle-Version"));
+    Bundle bundle = getDefault().getBundle();
+    return String.valueOf(bundle.getHeaders().get("Bundle-Version"));
   }
 
   public static String getAboutEclipseHome() {

@@ -224,7 +224,8 @@ public final class Prefs {
   }
 
   public static boolean isFilterImplements() {
-    return getStore().getString(FILTER_IMPLEMENTS).trim().length() > 0;
+    String filter = getStore().getString(FILTER_IMPLEMENTS);
+    return filter.trim().length() > 0;
   }
 
   /**

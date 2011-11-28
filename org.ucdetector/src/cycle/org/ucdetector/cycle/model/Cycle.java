@@ -71,6 +71,9 @@ public class Cycle extends CycleBaseElement {
    */
   @Override
   public boolean equals(Object obj) {
+    if (this == obj) {
+      return true;
+    }
     if (!(obj instanceof Cycle)) {
       return false;
     }

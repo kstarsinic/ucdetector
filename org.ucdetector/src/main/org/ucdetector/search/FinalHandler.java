@@ -20,6 +20,7 @@ import org.eclipse.jdt.core.search.IJavaSearchConstants;
 import org.eclipse.jdt.core.search.SearchMatch;
 import org.eclipse.jdt.core.search.SearchPattern;
 import org.eclipse.jdt.core.search.SearchRequestor;
+import org.ucdetector.Log;
 import org.ucdetector.preferences.Prefs;
 import org.ucdetector.util.JavaElementUtil;
 import org.ucdetector.util.MarkerFactory;
@@ -149,7 +150,7 @@ class FinalHandler {
         }
       }
       catch (JavaModelException e) {
-        // 
+        Log.info("Problem for search match %s: %s", match, e); //$NON-NLS-1$
       }
       this.fieldHasWriteAccessFromMethod = true;
       throw new OperationCanceledException("Cancel Search: Field is not final");//$NON-NLS-1$

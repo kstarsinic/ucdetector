@@ -39,7 +39,6 @@ import org.ucdetector.Log;
 import org.ucdetector.Log.LogLevel;
 import org.ucdetector.Messages;
 import org.ucdetector.UCDetectorPlugin;
-import org.ucdetector.preferences.ModesPanel.Mode;
 import org.ucdetector.report.ReportExtension;
 import org.ucdetector.report.ReportNameManager;
 
@@ -514,7 +513,7 @@ public class UCDetectorPreferencePage extends FieldEditorPreferencePage implemen
   @Override
   protected void performDefaults() {
     super.performDefaults();
-    modesPanel.getCombo().setText(Mode.Default.toStringLocalized());
+    modesPanel.getCombo().setText(ModesPanel.Mode.Default.toStringLocalized());
     modesPanel.updateModeButtons();
     super.performOk();
   }
