@@ -1,12 +1,9 @@
 package org.ucdetector.iterator;
 
 import java.util.ArrayList;
-import java.util.Collections;
-import java.util.HashMap;
 import java.util.HashSet;
 import java.util.LinkedHashSet;
 import java.util.List;
-import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Set;
 
@@ -42,30 +39,16 @@ import org.ucdetector.util.MarkerFactory;
  * </pre>
  */
 public class CheckUcdMarkerIterator extends AbstractUCDetectorIterator {
-  /** human readable String to use for marker tags  */
-  private static final Map<String, String> markerMap;
-  private static final String CHECK_UCD_MARKERS = MarkerFactory.UCD_MARKER + "CheckUcdMarkers";
+  private static final String CHECK_UCD_MARKERS = MarkerFactory.UCD_MARKER_TYPE_PREFIX + "CheckUcdMarkers";
   private int markersCount;
   private int badMarkerCount;
-
-  static {
-    Map<String, String> map = new HashMap<String, String>();
-    map.put(MarkerFactory.UCD_MARKER_UNUSED, "unused code");
-    map.put(MarkerFactory.UCD_MARKER_USED_FEW, "few used code");
-    map.put(MarkerFactory.UCD_MARKER_USE_PRIVATE, "use private");
-    map.put(MarkerFactory.UCD_MARKER_USE_PROTECTED, "use protected");
-    map.put(MarkerFactory.UCD_MARKER_USE_DEFAULT, "use default");
-    map.put(MarkerFactory.UCD_MARKER_USE_FINAL, "use final");
-    map.put(MarkerFactory.UCD_MARKER_TEST_ONLY, "test only");
-    markerMap = Collections.unmodifiableMap(map);
-  }
 
   @Override
   protected void handleCompilationUnit(ICompilationUnit unit) throws CoreException {
     try {
       IDocument doc = RefactoringFileBuffers.acquire(unit).getDocument();
       IResource resource = unit.getCorrespondingResource();
-      IMarker[] markers = resource.findMarkers(MarkerFactory.UCD_MARKER, true, IResource.DEPTH_ZERO);
+      IMarker[] markers = resource.findMarkers(MarkerFactory.UCD_MARKER_TYPE_PREFIX, true, IResource.DEPTH_ZERO);
       markersCount += markers.length;
       if (markers.length > 0 && Log.isDebug()) {
         Log.debug("%2s markers found for %s", "" + markers.length, JavaElementUtil.getElementName(unit));
@@ -90,7 +73,7 @@ public class CheckUcdMarkerIterator extends AbstractUCDetectorIterator {
           createMarker(marker, resource, "Additional marker", markerLineFound);
         }
         else {
-          String problemMarker = markerMap.get(marker.getType());
+          String problemMarker = MarkerFactory.ucdMarkerTypeToNiceString(marker);
           List<String> problemsExpected = commentForLine.commentList;
           if (!problemsExpected.contains(problemMarker)) {
             String mes = String.format("Wrong marker. Expected: '%s'. Found: '%s'", problemsExpected, problemMarker);
