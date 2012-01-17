@@ -67,7 +67,7 @@ Steps to create new UCDetector version.
 ** README.TXT                       - Only text of last version!
 * Submit news "UCDetector 1.x.0 released": https://sourceforge.net/news/submit.php?group_id=219599 
   Details. See changes: http://netcologne.dl.sourceforge.net/project/ucdetector/ucdetector/1.7.0/CHANGES.txt
-
+* Add artifacts to: org.ucdetector.releases
 
 === update site (http://ucdetector.sourceforge.net/update):
 * /org.ucdetector.update_site/site.xml click: synchronize, build all
