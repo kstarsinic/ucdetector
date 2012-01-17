@@ -63,19 +63,21 @@ import org.ucdetector.util.MarkerFactory;
 @SuppressWarnings("nls")
 public abstract class AbstractUCDQuickFix extends WorkbenchMarkerResolution {
   private static final String QUICK_FIX_PROBLEMS = "Quick Fix Problems";
-  final int charStart;
+  int charStart = -1;
   IMarker marker;
   ASTRewrite rewrite;
   IDocument doc;
 
   protected AbstractUCDQuickFix(IMarker marker) {
     this.marker = marker;
-    charStart = marker.getAttribute(IMarker.CHAR_START, -1);
+    // From Bug [ 3474851 ]: Do not use field 'marker' here, because it changes in run() to 'marker2'!!!
   }
 
   public void run(IMarker marker2) {
-    // Hack: For run(markers[]), marker2 != marker from constructor
-    this.marker = marker2;
+    this.marker = marker2; //  marker2 != marker in case of multi-selection
+    // [ 3474851 ] Bad handling of quickfixes on multi-selection
+    // Solution: Set field charStart here using marker2 not marker
+    charStart = marker2.getAttribute(IMarker.CHAR_START, -1);
     ICompilationUnit originalUnit = null;
     try {
       if (Log.isDebug()) {
