@@ -16,6 +16,7 @@ import java.io.StringWriter;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Arrays;
+import java.util.Collection;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.LinkedHashMap;
@@ -416,6 +417,40 @@ public class UCDetectorPlugin extends AbstractUIPlugin {
     ex.printStackTrace(new PrintWriter(writer));
     // Needed??? writer.toString().replace("\r\n", "\n");
     return writer.toString();
+  }
+
+  /**
+   * @param map map to create a string
+   * @param format string used to format key value pairs, see {@link String#format(String, Object...)}
+   * @return a map as a string
+   */
+  public static String toString(Map<? extends Object, ? extends Object> map, String format) {
+    if (map == null) {
+      return String.valueOf(map);
+    }
+    String formatUsed = (format == null ? "\t%s = %s%n" : format);
+    StringBuilder result = new StringBuilder();
+    for (Object key : map.keySet()) {
+      result.append(String.format(formatUsed, key, map.get(key)));
+    }
+    return result.toString();
+  }
+
+  /** 
+   * @param collection collection to create a string
+   * @param separator string to separate items
+   * @return a collection as a string 
+   * */
+  public static String toString(Collection<? extends Object> collection, String separator) {
+    if (collection == null) {
+      return String.valueOf(collection);
+    }
+    StringBuilder result = new StringBuilder();
+    String separatorUsed = (separator == null ? "\n" : separator);
+    for (Object object : collection) {
+      result.append(result.length() == 0 ? "" : separatorUsed).append(object);
+    }
+    return result.toString();
   }
 
   /** @return WORKSPACE/.metadata/.plugins/org.ucdetector/modes */
