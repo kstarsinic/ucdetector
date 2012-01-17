@@ -26,11 +26,11 @@ public class CheckNameConventionIterator extends AdditionalIterator {
   protected boolean handleType(IType type) throws CoreException {
     String className = type.getElementName();
     if (!type.isAnonymous() && !startsWithUpper(className)) {
-      createMarker(type, "Class name should start with upper case", ANALYZE_MARKER_EXAMPLE);
+      createMarker(type, "Class name should start with upper case", ADDITIONAL_MARKER_TYPE);
     }
     if (typeCount == 0) {
       System.out.println("classname ='" + className + "'");
-      createMarker(type, "Example marker! For class '" + className + "'", ANALYZE_MARKER_EXAMPLE);
+      createMarker(type, "Example marker! For class '" + className + "'", ADDITIONAL_MARKER_TYPE);
     }
     typeCount++;
     return true;
@@ -42,16 +42,16 @@ public class CheckNameConventionIterator extends AdditionalIterator {
     int flags = field.getFlags();
     if (Flags.isStatic(flags) && Flags.isFinal(flags)) {
       if (!isConstantName(fieldName)) {
-        createMarker(field, "Constant '" + fieldName + "' should use upper case or '_'", ANALYZE_MARKER_EXAMPLE);
+        createMarker(field, "Constant '" + fieldName + "' should use upper case or '_'", ADDITIONAL_MARKER_TYPE);
       }
     }
     else if (field.isEnumConstant()) {
       if (!isConstantName(fieldName)) {
-        createMarker(field, "Enum Constant '" + fieldName + "' should use upper case or '_'", ANALYZE_MARKER_EXAMPLE);
+        createMarker(field, "Enum Constant '" + fieldName + "' should use upper case or '_'", ADDITIONAL_MARKER_TYPE);
       }
     }
     else if (!Flags.isFinal(flags) && !Flags.isStatic(flags) && startsWithUpper(fieldName)) {
-      createMarker(field, "Field '" + fieldName + "' should start with lower case", ANALYZE_MARKER_EXAMPLE);
+      createMarker(field, "Field '" + fieldName + "' should start with lower case", ADDITIONAL_MARKER_TYPE);
     }
   }
 
@@ -62,7 +62,7 @@ public class CheckNameConventionIterator extends AdditionalIterator {
     }
     else if (startsWithUpper(method.getElementName())) {
       createMarker(method, "Method '" + method.getElementName() + "' should start with lower case",
-          ANALYZE_MARKER_EXAMPLE);
+          ADDITIONAL_MARKER_TYPE);
     }
   }
 
