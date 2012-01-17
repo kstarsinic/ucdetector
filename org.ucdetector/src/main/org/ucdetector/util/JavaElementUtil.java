@@ -18,6 +18,7 @@ import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.NullProgressMonitor;
 import org.eclipse.core.runtime.OperationCanceledException;
 import org.eclipse.jdt.core.Flags;
+import org.eclipse.jdt.core.IAnnotation;
 import org.eclipse.jdt.core.ICompilationUnit;
 import org.eclipse.jdt.core.IField;
 import org.eclipse.jdt.core.IImportContainer;
@@ -743,16 +744,18 @@ public final class JavaElementUtil {
    * @param method  to check if it is overridden
    * @see org.eclipse.jdt.ui.actions.FindDeclarationsAction
    * @see "http://help.eclipse.org/stable/index.jsp?topic=/org.eclipse.jdt.doc.isv/guide/jdt_api_search.htm"
-   * @return <code>true</code> if a method is overridden<br>
+   * @return <code>true</code> if a method is overridden<br> or if it has a @Override annotation
    * it is very expensive to call this method!!!
-   * @throws CoreException when problems found during search
-   * @throws JavaModelException if this element does not exist or if an
-  *      exception occurs while accessing its corresponding resource.
+   * @throws CoreException if this element does not exist or if an exception occurs while accessing its corresponding resource.
    */
   public static boolean isOverriddenMethod(IMethod method) throws CoreException {
     int flags = method.getFlags();
     if (method.isConstructor() || Flags.isStatic(flags) || Flags.isPrivate(flags)) {
       return false;
+    }
+    if (hasOverrideAnnotation(method)) {
+      // Log.info("Ignore method %s, because it has a @Override annotation", method.getElementName());
+      return true;//[ 3438795 ] Ignore @Override methods
     }
     int limitTo = IJavaSearchConstants.DECLARATIONS | IJavaSearchConstants.IGNORE_DECLARING_TYPE
         | IJavaSearchConstants.IGNORE_RETURN_TYPE;
@@ -764,6 +767,21 @@ public final class JavaElementUtil {
     runSearch(pattern, requestor, scope);
     // Ignore 1 match: Declaring type!
     return requestor.getFoundCount() > 1;
+  }
+
+  /**
+   * @param method method to check
+   * @return <code>true</code> if method has a Override annotation
+   * @throws JavaModelException if an error occurs
+   */
+  public static boolean hasOverrideAnnotation(IMethod method) throws JavaModelException {
+    for (IAnnotation annotation : method.getAnnotations()) {
+      String annotationName = annotation.getElementName();
+      if ("Override".equals(annotationName) || "java.lang.Override".equals(annotationName)) {
+        return true;
+      }
+    }
+    return false;
   }
 
   /*
@@ -789,6 +807,14 @@ public final class JavaElementUtil {
   // -------------------------------------------------------------------------
   // SEARCH
   // -------------------------------------------------------------------------
+  /**
+   * Run a jdt (java development toolkit) search and handle Exceptions, <br>
+   * the Search result is found in SearchRequestor
+   * @param pattern search pattern
+   * @param requestor contains result after search
+   * @return true, when a {@link Exception} happened
+   * @throws CoreException when there is a OutOfMemoryError
+   */
   public static boolean runSearch(SearchPattern pattern, SearchRequestor requestor) throws CoreException {
     JavaSearchScopeFactory factory = JavaSearchScopeFactory.getInstance();
     IJavaSearchScope sourceScope = factory.createWorkspaceScope(IJavaSearchScope.SOURCES);
@@ -803,7 +829,7 @@ public final class JavaElementUtil {
    * @param pattern search pattern
    * @param requestor contains result after search
    * @param scope scope to search
-   * @return true, when a {@link Exception} happend
+   * @return true, when a {@link Exception} happened
    * @throws CoreException when there is a OutOfMemoryError
    */
   private static boolean runSearch(SearchPattern pattern, SearchRequestor requestor, IJavaSearchScope scope)

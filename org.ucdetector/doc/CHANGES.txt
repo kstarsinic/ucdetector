@@ -5,6 +5,7 @@ New features:
 
 Bugfixes:
  - [ 3474851 ] Bad handling of quickfixes on multi-selection
+ - [ 3438795 ] Ignore @Override methods
 
 Todo:
  - [ 3396900 ] Abstract classes' constructors can always be protected
