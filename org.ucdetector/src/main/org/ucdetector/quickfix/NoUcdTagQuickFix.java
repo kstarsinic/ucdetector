@@ -16,6 +16,7 @@ import org.eclipse.jface.text.IDocument;
 import org.eclipse.jface.text.IRegion;
 import org.eclipse.swt.graphics.Image;
 import org.ucdetector.Messages;
+import org.ucdetector.util.MarkerFactory;
 
 /**
  * 'Fixes' code by adding line comment at end of line: "// NO_UCD"
@@ -32,18 +33,25 @@ class NoUcdTagQuickFix extends AbstractUCDQuickFix {
 
   @Override
   public int runImpl(BodyDeclaration nodeToChange) throws BadLocationException {
-    return appendNoUcd(doc, charStart);
+    return appendNoUcd(doc, charStart, marker);
   }
 
   /**
    * Add " // NO_UCD" to line end of class/method/field declaration
+   * @param marker 
    */
-  static int appendNoUcd(IDocument document, int charStart) throws BadLocationException {
+  static int appendNoUcd(IDocument document, int charStart, IMarker marker) throws BadLocationException {
     IRegion line = document.getLineInformationOfOffset(charStart);
     int offset = line.getOffset();
     int length = line.getLength();
-    String newLine = document.get(offset, length) + NO_UCD_COMMENT;
-    document.replace(offset, length, newLine);
+    StringBuilder newLine = new StringBuilder();
+    newLine.append(document.get(offset, length)).append(NO_UCD_COMMENT);
+    String markerType = MarkerFactory.ucdMarkerTypeToNiceString(marker);
+    if (markerType != null) {
+      // [ 3474895 ] Improved "// NO_UCD" quickfix
+      newLine.append(" (").append(markerType).append(")"); //$NON-NLS-1$ //$NON-NLS-2$
+    }
+    document.replace(offset, length, newLine.toString());
     return offset + length + 1;
   }
 

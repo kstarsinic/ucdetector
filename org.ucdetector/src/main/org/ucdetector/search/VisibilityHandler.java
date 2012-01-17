@@ -173,14 +173,14 @@ class VisibilityHandler {
     String markerType;
     switch (visibilityMaxFound) {
       case PRIVATE:
-        markerType = MarkerFactory.UCD_MARKER_USE_PRIVATE;
+        markerType = MarkerFactory.UCD_MARKER_TYPE_USE_PRIVATE;
         break;
       case DEFAULT:
-        markerType = MarkerFactory.UCD_MARKER_USE_DEFAULT;
+        markerType = MarkerFactory.UCD_MARKER_TYPE_USE_DEFAULT;
         break;
       case PROTECTED:
         // [ 3191417 ] Change to "protected" should be default
-        markerType = MarkerFactory.UCD_MARKER_USE_DEFAULT;
+        markerType = MarkerFactory.UCD_MARKER_TYPE_USE_DEFAULT;
         break;
       default:
         return false;

@@ -79,8 +79,8 @@ public class ReportParam {
 
   private WarnLevel calculateWarnLevel() {
     WarnLevel warnLevel = null;
-    if (MarkerFactory.UCD_MARKER_UNUSED.equals(getMarkerType())
-        || MarkerFactory.UCD_MARKER_USED_FEW.equals(getMarkerType())) {
+    if (MarkerFactory.UCD_MARKER_TYPE_UNUSED.equals(getMarkerType())
+        || MarkerFactory.UCD_MARKER_TYPE_USED_FEW.equals(getMarkerType())) {
       if (getJavaElement() instanceof IType) {
         warnLevel = Prefs.getUCDetectionInClasses();
       }
@@ -91,14 +91,14 @@ public class ReportParam {
         warnLevel = Prefs.getUCDetectionInFields();
       }
     }
-    else if (MarkerFactory.UCD_MARKER_USE_PROTECTED.equals(getMarkerType())
-        || MarkerFactory.UCD_MARKER_USE_DEFAULT.equals(getMarkerType())) {
+    else if (MarkerFactory.UCD_MARKER_TYPE_USE_PROTECTED.equals(getMarkerType())
+        || MarkerFactory.UCD_MARKER_TYPE_USE_DEFAULT.equals(getMarkerType())) {
       warnLevel = Prefs.getVisibilityProtectedCheck(getJavaElement());
     }
-    else if (MarkerFactory.UCD_MARKER_USE_PRIVATE.equals(getMarkerType())) {
+    else if (MarkerFactory.UCD_MARKER_TYPE_USE_PRIVATE.equals(getMarkerType())) {
       warnLevel = Prefs.getVisibilityPrivateCheck(getJavaElement());
     }
-    else if (MarkerFactory.UCD_MARKER_USE_FINAL.equals(getMarkerType())) {
+    else if (MarkerFactory.UCD_MARKER_TYPE_USE_FINAL.equals(getMarkerType())) {
       if (getJavaElement() instanceof IMethod) {
         warnLevel = Prefs.getCheckUseFinalMethod();
       }

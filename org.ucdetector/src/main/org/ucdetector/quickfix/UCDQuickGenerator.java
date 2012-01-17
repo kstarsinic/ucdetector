@@ -38,17 +38,17 @@ public class UCDQuickGenerator implements IMarkerResolutionGenerator2 {
         Log.debug("UCDQuickFixer.getResolutions() for: " + markerType); //$NON-NLS-1$
       }
       List<IMarkerResolution> resolutions = new ArrayList<IMarkerResolution>();
-      if (MarkerFactory.UCD_MARKER_UNUSED.equals(markerType)) {
+      if (MarkerFactory.UCD_MARKER_TYPE_UNUSED.equals(markerType)) {
         boolean isPrimaryType = (ElementType.valueOfSave(javaTypeString) == ElementType.PRIMARY_TYPE);
         resolutions.add(isPrimaryType ? new DeleteFileQuickFix(marker) : new DeleteQuickFix(marker));
         resolutions.add(new LineCommentQuickFix(marker));
       }
-      else if (MarkerFactory.UCD_MARKER_USE_PRIVATE.equals(markerType)
-          || MarkerFactory.UCD_MARKER_USE_PROTECTED.equals(markerType)
-          || MarkerFactory.UCD_MARKER_USE_DEFAULT.equals(markerType)) {
+      else if (MarkerFactory.UCD_MARKER_TYPE_USE_PRIVATE.equals(markerType)
+          || MarkerFactory.UCD_MARKER_TYPE_USE_PROTECTED.equals(markerType)
+          || MarkerFactory.UCD_MARKER_TYPE_USE_DEFAULT.equals(markerType)) {
         resolutions.add(new VisibilityQuickFix(marker));
       }
-      else if (MarkerFactory.UCD_MARKER_USE_FINAL.equals(markerType)) {
+      else if (MarkerFactory.UCD_MARKER_TYPE_USE_FINAL.equals(markerType)) {
         resolutions.add(new UseFinalQuickFix(marker));
       }
       resolutions.add(new NoUcdTagQuickFix(marker));
@@ -64,7 +64,7 @@ public class UCDQuickGenerator implements IMarkerResolutionGenerator2 {
 
   public boolean hasResolutions(IMarker marker) {
     try {
-      return !MarkerFactory.UCD_MARKER_USED_FEW.equals(marker.getType());
+      return !MarkerFactory.UCD_MARKER_TYPE_USED_FEW.equals(marker.getType());
     }
     catch (CoreException e) {
       Log.error("Can't get UCD resolutions for marker: " + marker, e); //$NON-NLS-1$

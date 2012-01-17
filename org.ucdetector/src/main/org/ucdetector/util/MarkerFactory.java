@@ -8,6 +8,7 @@
 package org.ucdetector.util;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -42,21 +43,53 @@ import org.ucdetector.search.LineManger;
  * @author Joerg Spieler
  * @since 2008-02-29
  */
+@SuppressWarnings("nls")
 public final class MarkerFactory implements IUCDetectorReport {
   /**
    * Marker prefix for all UCDetector markers
    * See extension point="org.eclipse.core.resources.markers" in plugin.xml
    */
-  public static final String UCD_MARKER = UCDetectorPlugin.ID + ".analyzeMarker"; //$NON-NLS-1$
-  public static final String UCD_MARKER_UNUSED = UCD_MARKER + "Reference"; //$NON-NLS-1$
-  public static final String UCD_MARKER_USED_FEW = UCD_MARKER + "FewReference"; //$NON-NLS-1$
-  public static final String UCD_MARKER_USE_PRIVATE = UCD_MARKER + "VisibilityPrivate"; //$NON-NLS-1$
+  public static final String UCD_MARKER_TYPE_PREFIX/*         */= UCDetectorPlugin.ID + ".analyzeMarker";
+  public static final String UCD_MARKER_TYPE_UNUSED /*        */= UCD_MARKER_TYPE_PREFIX + "Reference";
+  public static final String UCD_MARKER_TYPE_USED_FEW /*      */= UCD_MARKER_TYPE_PREFIX + "FewReference";
+  public static final String UCD_MARKER_TYPE_USE_PRIVATE/*    */= UCD_MARKER_TYPE_PREFIX + "VisibilityPrivate";
   // TODO remove? [ 3191417 ] Change to "protected" should be default
-  public static final String UCD_MARKER_USE_PROTECTED = UCD_MARKER + "VisibilityProtected"; //$NON-NLS-1$
-  public static final String UCD_MARKER_USE_DEFAULT = UCD_MARKER + "VisibilityDefault"; //$NON-NLS-1$
-  public static final String UCD_MARKER_USE_FINAL = UCD_MARKER + "Final"; //$NON-NLS-1$
-  public static final String UCD_MARKER_TEST_ONLY = UCD_MARKER + "TestOnly"; //$NON-NLS-1$ // NO_UCD
-  // ADDING NEW MARKER? ADD ALSO TO plugin.xml!
+  public static final String UCD_MARKER_TYPE_USE_PROTECTED /* */= UCD_MARKER_TYPE_PREFIX + "VisibilityProtected";
+  public static final String UCD_MARKER_TYPE_USE_DEFAULT/*    */= UCD_MARKER_TYPE_PREFIX + "VisibilityDefault";
+  public static final String UCD_MARKER_TYPE_USE_FINAL /*     */= UCD_MARKER_TYPE_PREFIX + "Final";
+  public static final String UCD_MARKER_TYPE_TEST_ONLY /*     */= UCD_MARKER_TYPE_PREFIX + "TestOnly";
+  // ######## When adding new marker here, also add it to plugin.xml #####################################
+
+  /** human readable String to use for marker tags  */
+  private static final Map<String, String> markerMap;
+  static {
+    Map<String, String> map = new HashMap<String, String>();
+    map.put(MarkerFactory.UCD_MARKER_TYPE_UNUSED, "unused code");
+    map.put(MarkerFactory.UCD_MARKER_TYPE_USED_FEW, "few used code");
+    map.put(MarkerFactory.UCD_MARKER_TYPE_USE_PRIVATE, "use private");
+    map.put(MarkerFactory.UCD_MARKER_TYPE_USE_PROTECTED, "use protected");
+    map.put(MarkerFactory.UCD_MARKER_TYPE_USE_DEFAULT, "use default");
+    map.put(MarkerFactory.UCD_MARKER_TYPE_USE_FINAL, "use final");
+    map.put(MarkerFactory.UCD_MARKER_TYPE_TEST_ONLY, "test only");
+    markerMap = Collections.unmodifiableMap(map);
+  }
+
+  /**
+   * @param marker UCDetector marker (see {@link MarkerFactory#UCD_MARKER_TYPE_PREFIX})
+   * @return human readable string like "unused code" or "use final" or <code>null</code>, if it is not a UCDetector marker
+   */
+  // [ 3474895 ] Improved "// NO_UCD" quickfix
+  public static String ucdMarkerTypeToNiceString(IMarker marker) {
+    try {
+      if (marker != null) {
+        return markerMap.get(marker.getType());
+      }
+    }
+    catch (CoreException e) {
+      Log.warn("Can't get marker type: " + e);
+    }
+    return null;
+  }
 
   private final List<IUCDetectorReport> reports;
 
@@ -101,11 +134,11 @@ public final class MarkerFactory implements IUCDetectorReport {
   public boolean reportMarker(ReportParam reportParam) throws CoreException {
     if (reportParam.getLine() == LineManger.LINE_NOT_FOUND) {
       String elementName = JavaElementUtil.getElementName(reportParam.getJavaElement());
-      Log.error("reportMarker: Line not found for: " + elementName); //$NON-NLS-1$
+      Log.error("reportMarker: Line not found for: " + elementName);
       return false;
     }
     if (reportParam.getJavaElement().getResource() == null) {
-      Log.error("reportMarker: Resource is null"); //$NON-NLS-1$
+      Log.error("reportMarker: Resource is null");
       return false;
     }
     for (IUCDetectorReport report : reports) {
@@ -122,7 +155,7 @@ public final class MarkerFactory implements IUCDetectorReport {
 
   public void endReport() throws CoreException {
     if (!Prefs.isWriteReportFile()) {
-      Log.info("Do not write reports, because no write report option is selected"); //$NON-NLS-1$
+      Log.info("Do not write reports, because no write report option is selected");
     }
     for (IUCDetectorReport report : reports) {
       report.endReport();
@@ -140,7 +173,7 @@ public final class MarkerFactory implements IUCDetectorReport {
     String searchInfo = JavaElementUtil.getMemberTypeString(method);
     String elementName = JavaElementUtil.getElementName(method);
     String message = NLS.bind(Messages.MarkerFactory_MarkerFinalMethod, new Object[] { searchInfo, elementName });
-    return reportMarker(new ReportParam(method, message, line, UCD_MARKER_USE_FINAL));
+    return reportMarker(new ReportParam(method, message, line, UCD_MARKER_TYPE_USE_FINAL));
   }
 
   /**
@@ -154,7 +187,7 @@ public final class MarkerFactory implements IUCDetectorReport {
     String searchInfo = JavaElementUtil.getMemberTypeString(field);
     String elementName = JavaElementUtil.getElementName(field);
     String message = NLS.bind(Messages.MarkerFactory_MarkerFinalField, new Object[] { searchInfo, elementName });
-    return reportMarker(new ReportParam(field, message, line, UCD_MARKER_USE_FINAL));
+    return reportMarker(new ReportParam(field, message, line, UCD_MARKER_TYPE_USE_FINAL));
   }
 
   /**
@@ -167,7 +200,7 @@ public final class MarkerFactory implements IUCDetectorReport {
    * @throws CoreException when there are problem creating marker
    */
   public boolean createReferenceMarker(IMember javaElement, String message, int line, int found) throws CoreException {
-    String type = found == 0 ? UCD_MARKER_UNUSED : UCD_MARKER_USED_FEW;
+    String type = found == 0 ? UCD_MARKER_TYPE_UNUSED : UCD_MARKER_TYPE_USED_FEW;
     return reportMarker(new ReportParam(javaElement, message, line, type, found));
   }
 
@@ -182,7 +215,7 @@ public final class MarkerFactory implements IUCDetectorReport {
     String searchInfo = JavaElementUtil.getMemberTypeString(member);
     String elementName = JavaElementUtil.getElementName(member);
     String message = NLS.bind(Messages.MarkerFactory_MarkerTestOnly, new Object[] { searchInfo, elementName });
-    return reportMarker(new ReportParam(member, message, line, UCD_MARKER_TEST_ONLY));
+    return reportMarker(new ReportParam(member, message, line, UCD_MARKER_TYPE_TEST_ONLY));
   }
 
   /**
@@ -195,14 +228,14 @@ public final class MarkerFactory implements IUCDetectorReport {
    */
   public boolean createVisibilityMarker(IMember member, String type, int line) throws CoreException {
     String visibilityString = null;
-    if (UCD_MARKER_USE_PRIVATE.equals(type)) {
-      visibilityString = "private"; //$NON-NLS-1$
+    if (UCD_MARKER_TYPE_USE_PRIVATE.equals(type)) {
+      visibilityString = "private";
     }
-    else if (UCD_MARKER_USE_PROTECTED.equals(type)) {
-      visibilityString = "protected"; //$NON-NLS-1$
+    else if (UCD_MARKER_TYPE_USE_PROTECTED.equals(type)) {
+      visibilityString = "protected";
     }
-    else if (UCD_MARKER_USE_DEFAULT.equals(type)) {
-      visibilityString = "default"; //$NON-NLS-1$
+    else if (UCD_MARKER_TYPE_USE_DEFAULT.equals(type)) {
+      visibilityString = "default";
     }
     String searchInfo = JavaElementUtil.getMemberTypeString(member);
     if (member instanceof IType) {
@@ -221,7 +254,7 @@ public final class MarkerFactory implements IUCDetectorReport {
    */
   public static void deleteMarkers(IJavaElement javaElement) throws CoreException {
     if (javaElement.getResource() != null) {
-      javaElement.getResource().deleteMarkers(UCD_MARKER, true, IResource.DEPTH_INFINITE);
+      javaElement.getResource().deleteMarkers(UCD_MARKER_TYPE_PREFIX, true, IResource.DEPTH_INFINITE);
     }
   }
 
@@ -242,7 +275,7 @@ public final class MarkerFactory implements IUCDetectorReport {
       }
     }
     catch (CoreException e) {
-      result.put("_ERROR_", e.getMessage()); //$NON-NLS-1$
+      result.put("_ERROR_", e.getMessage());
     }
     return result;
   }

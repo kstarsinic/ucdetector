@@ -246,8 +246,8 @@ public class XmlReport implements IUCDetectorReport {
 
   private void setMarkerAttributes(ReportParam reportParam, Element marker) {
     String markerType = reportParam.getMarkerType();
-    if (markerType.startsWith(MarkerFactory.UCD_MARKER)) {
-      markerType = markerType.substring(MarkerFactory.UCD_MARKER.length());
+    if (markerType.startsWith(MarkerFactory.UCD_MARKER_TYPE_PREFIX)) {
+      markerType = markerType.substring(MarkerFactory.UCD_MARKER_TYPE_PREFIX.length());
     }
     marker.setAttribute("nr", String.valueOf(markerCount));
     marker.setAttribute("level", String.valueOf(reportParam.getLevel()));// "Error", "Warning"

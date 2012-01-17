@@ -61,10 +61,10 @@ class VisibilityQuickFix extends AbstractUCDQuickFix {
 
   private Modifier getModifierNew(BodyDeclaration nodeToChange) {
     String markerType = getMarkerType();
-    if (MarkerFactory.UCD_MARKER_USE_PRIVATE.equals(markerType)) {
+    if (MarkerFactory.UCD_MARKER_TYPE_USE_PRIVATE.equals(markerType)) {
       return nodeToChange.getAST().newModifier(Modifier.ModifierKeyword.PRIVATE_KEYWORD);
     }
-    else if (MarkerFactory.UCD_MARKER_USE_PROTECTED.equals(markerType)) {
+    else if (MarkerFactory.UCD_MARKER_TYPE_USE_PROTECTED.equals(markerType)) {
       return nodeToChange.getAST().newModifier(Modifier.ModifierKeyword.PROTECTED_KEYWORD);
     }
     return null;
@@ -73,13 +73,13 @@ class VisibilityQuickFix extends AbstractUCDQuickFix {
   public String getLabel() {
     String markerType = getMarkerType();
     String keyword = null;
-    if (MarkerFactory.UCD_MARKER_USE_PROTECTED.equals(markerType)) {
+    if (MarkerFactory.UCD_MARKER_TYPE_USE_PROTECTED.equals(markerType)) {
       keyword = "protected"; //$NON-NLS-1$
     }
-    else if (MarkerFactory.UCD_MARKER_USE_DEFAULT.equals(markerType)) {
+    else if (MarkerFactory.UCD_MARKER_TYPE_USE_DEFAULT.equals(markerType)) {
       keyword = "default"; //$NON-NLS-1$
     }
-    else if (MarkerFactory.UCD_MARKER_USE_PRIVATE.equals(markerType)) {
+    else if (MarkerFactory.UCD_MARKER_TYPE_USE_PRIVATE.equals(markerType)) {
       keyword = "private"; //$NON-NLS-1$
     }
     return NLS.bind(Messages.VisibilityQuickFix_label, keyword);
@@ -87,13 +87,13 @@ class VisibilityQuickFix extends AbstractUCDQuickFix {
 
   public Image getImage() {
     String markerType = getMarkerType();
-    if (MarkerFactory.UCD_MARKER_USE_PROTECTED.equals(markerType)) {
+    if (MarkerFactory.UCD_MARKER_TYPE_USE_PROTECTED.equals(markerType)) {
       return JavaUI.getSharedImages().getImage(JavaPluginImages.IMG_MISC_PROTECTED);
     }
-    else if (MarkerFactory.UCD_MARKER_USE_DEFAULT.equals(markerType)) {
+    else if (MarkerFactory.UCD_MARKER_TYPE_USE_DEFAULT.equals(markerType)) {
       return JavaUI.getSharedImages().getImage(JavaPluginImages.IMG_MISC_DEFAULT);
     }
-    else if (MarkerFactory.UCD_MARKER_USE_PRIVATE.equals(markerType)) {
+    else if (MarkerFactory.UCD_MARKER_TYPE_USE_PRIVATE.equals(markerType)) {
       return JavaUI.getSharedImages().getImage(JavaPluginImages.IMG_MISC_PRIVATE);
     }
     return null;
