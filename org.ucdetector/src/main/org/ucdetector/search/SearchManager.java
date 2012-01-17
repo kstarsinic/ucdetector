@@ -115,7 +115,7 @@ public class SearchManager {
       }
     }
     catch (OperationCanceledException e) {
-      Log.info((e.getMessage() == null ? "Search canceled" : "Search canceled: " + e.getMessage())); //$NON-NLS-1$ //$NON-NLS-2$ 
+      // ignore, do not log
     }
     Log.info("Search end: " + UCDetectorPlugin.getNow()); //$NON-NLS-1$
     if (searchProblems.size() > 0) {
