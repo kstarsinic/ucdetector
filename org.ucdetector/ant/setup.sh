@@ -46,23 +46,24 @@ downloadFile http://netcologne.dl.sourceforge.net/project/ucdetector/ucdetector/
 downloadFile http://netcologne.dl.sourceforge.net/project/ucdetector/ucdetector/$UCDETECTOR_VERSION/ $UCDETECTOR_SOURCE
 
 echo "== Install files =="
-echo "* Unpack eclipse"
-tar -xf downloads/$ECLIPSE
+echo "* Unzip sources in workspace"
+mkdir -p workspace/org.ucdetector
+# ---------------------------------------------------------------------
+# Adapt next lines: Put your eclipse projects in workspace folders
+# ---------------------------------------------------------------------
+unzip -q downloads/$UCDETECTOR_SOURCE -d workspace/org.ucdetector
+# ---------------------------------------------------------------------
+
+if [ ! -e eclipse ] ; then
+    echo "* Unpack eclipse"
+    tar -xf downloads/$ECLIPSE
+fi
 
 echo "* Install UCDetector in eclipse"
 cp -v downloads/$UCDETECTOR eclipse/plugins/
 
 echo "* Install UCDetector headless scripts"
 cp -r workspace/org.ucdetector/ant .
-
-echo "* Unzip sources in workspace"
-# ---------------------------------------------------------------------
-# Adapt next lines: Put your eclipse projects in workspace folders
-# ---------------------------------------------------------------------
-mkdir -p workspace/org.ucdetector
-unzip -q downloads/$UCDETECTOR_SOURCE -d workspace/org.ucdetector
-# ---------------------------------------------------------------------
-
 
 echo "== Run UCDetector for projects in workspace folder =="
 cd ant

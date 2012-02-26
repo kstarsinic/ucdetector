@@ -2,10 +2,12 @@
 UCDetector 1.10.0 from 2012-xx-xx - eclipse 3.4 - 3.7:
 New features:
  - [ 3474895 ] Improved "// NO_UCD" quickfix
+ - Added UCDetector headless installer script for linux
 
 Bugfixes:
  - [ 3474851 ] Bad handling of quickfixes on multi-selection
  - [ 3438795 ] Ignore @Override methods
+ - Fixed UCDetector headless
 
 Todo:
  - [ 3396900 ] Abstract classes' constructors can always be protected

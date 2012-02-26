@@ -32,6 +32,7 @@ public class UCDApplication implements IApplication {
   private SystemInReader systemInReader = null;
 
   public Object start(IApplicationContext context) throws Exception {
+    Log.info("Starting UCDHeadless as an application");
     try {
       startImpl();
     }
@@ -39,11 +40,13 @@ public class UCDApplication implements IApplication {
       // Catch all to avoid no log output, when UCDApplication crashes
       Log.error("Error running UCDApplication: " + ex, ex);
     }
+    finally {
+      Log.info("Finished UCDHeadless as an application");
+    }
     return IApplication.EXIT_OK;
   }
 
   private void startImpl() throws FileNotFoundException, CoreException {
-    Log.info("Starting UCDHeadless as an application");
     UCDHeadless ucdHeadless = new UCDHeadless(getOptionsFileName());
     systemInReader = new SystemInReader(ucdHeadless);
     systemInReader.start();

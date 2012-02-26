@@ -12,7 +12,6 @@ import java.util.List;
 import org.eclipse.core.runtime.IConfigurationElement;
 import org.eclipse.core.runtime.IExtensionRegistry;
 import org.eclipse.core.runtime.Platform;
-import org.eclipse.ui.internal.WorkbenchPlugin;
 import org.ucdetector.Log;
 import org.ucdetector.UCDetectorPlugin;
 
@@ -101,8 +100,8 @@ public final class ReportExtension {
         }
         else if (xslt == null && clazz != null) {
           try {
-            IUCDetectorReport reportObject = (IUCDetectorReport) WorkbenchPlugin.createExtension(report,
-                ATTRIBUTE_CLASS);
+            //IUCDetectorReport reportObject = (IUCDetectorReport) WorkbenchPlugin.createExtension(report, ATTRIBUTE_CLASS);
+            IUCDetectorReport reportObject = (IUCDetectorReport) report.createExecutableExtension(ATTRIBUTE_CLASS);// This line fixes headless exception
             classExtensions.add(new ReportExtension(resultFile, name, null, reportObject, id));
           }
           // Catch Throwable here because of headless problem here: java.lang.UnsatisfiedLinkError: Could not load SWT library. R
