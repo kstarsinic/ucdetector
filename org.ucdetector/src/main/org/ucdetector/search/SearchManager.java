@@ -456,7 +456,9 @@ public class SearchManager {
       try {
         // 2011-06-28: When next line fails in headless mode,
         // restore class from svn: org.ucdetector.search.UCDTextSearchVisitor
-        TextSearchEngine.create().search(scope, requestor, searchPattern, null);
+        // TextSearchEngine.create().search(scope, requestor, searchPattern, null);
+        // 2012-02-26: Used "createDefault()" to avoid Exception in headless mode
+        TextSearchEngine.createDefault().search(scope, requestor, searchPattern, null);
       }
       catch (OperationCanceledException e) {
         Log.info("Text search canceled"); //$NON-NLS-1$

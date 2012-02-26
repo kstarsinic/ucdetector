@@ -14,6 +14,7 @@ import java.util.Locale;
 
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IResource;
+import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.NullProgressMonitor;
 import org.eclipse.core.runtime.OperationCanceledException;
@@ -24,6 +25,7 @@ import org.eclipse.jdt.core.IField;
 import org.eclipse.jdt.core.IImportContainer;
 import org.eclipse.jdt.core.IInitializer;
 import org.eclipse.jdt.core.IJavaElement;
+import org.eclipse.jdt.core.IJavaProject;
 import org.eclipse.jdt.core.IMember;
 import org.eclipse.jdt.core.IMethod;
 import org.eclipse.jdt.core.IPackageFragment;
@@ -39,7 +41,6 @@ import org.eclipse.jdt.core.search.SearchEngine;
 import org.eclipse.jdt.core.search.SearchParticipant;
 import org.eclipse.jdt.core.search.SearchPattern;
 import org.eclipse.jdt.core.search.SearchRequestor;
-import org.eclipse.jdt.internal.ui.search.JavaSearchScopeFactory;
 import org.ucdetector.Log;
 import org.ucdetector.UCDetectorPlugin;
 import org.ucdetector.search.CountSearchRequestor;
@@ -816,11 +817,23 @@ public final class JavaElementUtil {
    * @throws CoreException when there is a OutOfMemoryError
    */
   public static boolean runSearch(SearchPattern pattern, SearchRequestor requestor) throws CoreException {
-    JavaSearchScopeFactory factory = JavaSearchScopeFactory.getInstance();
-    IJavaSearchScope sourceScope = factory.createWorkspaceScope(IJavaSearchScope.SOURCES);
+    IJavaSearchScope sourceScope = createWorkspaceScope(IJavaSearchScope.SOURCES);
     // [PerformanceBug] Next line made UCDetector 2 times slower before version 1.4.0!!!
     // sourceScope = SearchEngine.createWorkspaceScope()
     return runSearch(pattern, requestor, sourceScope);
+  }
+
+  // Inlined code from org.eclipse.jdt.core.source_3.7.1.v_B76_R37x.jar
+  // JavaSearchScopeFactory.createWorkspaceScope()  to avoid ui dependency, which causes headless to crash
+  private static IJavaSearchScope createWorkspaceScope(int includeMask) {
+    try {
+      IJavaProject[] projects = JavaCore.create(ResourcesPlugin.getWorkspace().getRoot()).getJavaProjects();
+      return SearchEngine.createJavaSearchScope(projects, includeMask);
+    }
+    catch (JavaModelException e) {
+      // ignore, use workspace scope instead
+    }
+    return SearchEngine.createWorkspaceScope();
   }
 
   /**

@@ -7,8 +7,10 @@
 package org.ucdetector;
 
 import java.io.BufferedReader;
+import java.io.FileNotFoundException;
 import java.io.InputStreamReader;
 
+import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.Platform;
 import org.eclipse.equinox.app.IApplication;
 import org.eclipse.equinox.app.IApplicationContext;
@@ -30,12 +32,22 @@ public class UCDApplication implements IApplication {
   private SystemInReader systemInReader = null;
 
   public Object start(IApplicationContext context) throws Exception {
+    try {
+      startImpl();
+    }
+    catch (Throwable ex) {
+      // Catch all to avoid no log output, when UCDApplication crashes
+      Log.error("Error running UCDApplication: " + ex, ex);
+    }
+    return IApplication.EXIT_OK;
+  }
+
+  private void startImpl() throws FileNotFoundException, CoreException {
     Log.info("Starting UCDHeadless as an application");
     UCDHeadless ucdHeadless = new UCDHeadless(getOptionsFileName());
     systemInReader = new SystemInReader(ucdHeadless);
     systemInReader.start();
     ucdHeadless.iterate();
-    return IApplication.EXIT_OK;
   }
 
   private static String getOptionsFileName() {

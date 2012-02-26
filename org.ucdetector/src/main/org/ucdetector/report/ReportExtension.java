@@ -9,7 +9,6 @@ package org.ucdetector.report;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IConfigurationElement;
 import org.eclipse.core.runtime.IExtensionRegistry;
 import org.eclipse.core.runtime.Platform;
@@ -106,7 +105,8 @@ public final class ReportExtension {
                 ATTRIBUTE_CLASS);
             classExtensions.add(new ReportExtension(resultFile, name, null, reportObject, id));
           }
-          catch (CoreException ex) {
+          // Catch Throwable here because of headless problem here: java.lang.UnsatisfiedLinkError: Could not load SWT library. R
+          catch (Throwable ex) {
             UCDetectorPlugin.logToEclipseLog("Can't load ReportExtension", ex); //$NON-NLS-1$
           }
         }
