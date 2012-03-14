@@ -13,10 +13,13 @@ Build manager may need to run UCDetector without starting the Eclipse IDE
 == Directory setup ==
 * Please create NEW directories for eclipse and your workspace:
 * Create a new base directory          : ucdetector-headless
-* Put java projects in directory       : ucdetector-headless/workspace
-* Put eclipse in                       : ucdetector-headless/eclipse
-* Put org.ucdetector_x.y.z.jar in      : ucdetector-headless/eclipse/plugins (dropins may not work)
-* Unzip org.ucdetector_x.y.z.zip/ant to: ucdetector-headless/ant
+* Install files automatically on linux:
+** Put setup.sh in ucdetector-headless; $ cd ucdetector-headless; $ ./setup.sh
+* Install files manually:
+** Put java projects in directory       : ucdetector-headless/workspace
+** Put eclipse in                       : ucdetector-headless/eclipse
+** Put org.ucdetector_x.y.z.jar in      : ucdetector-headless/eclipse/plugins (dropins may not work)
+** Unzip org.ucdetector_x.y.z.zip/ant to: ucdetector-headless/ant
 
 
 == Run UCDetector ==

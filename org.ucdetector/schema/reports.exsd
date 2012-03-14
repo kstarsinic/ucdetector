@@ -102,7 +102,7 @@ the UCDetector report. This class must implement
          <meta.section type="since"/>
       </appinfo>
       <documentation>
-         UCDetector 1.9.0
+         UCDetector 1.10.0
       </documentation>
    </annotation>
 
