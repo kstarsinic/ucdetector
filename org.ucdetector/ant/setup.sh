@@ -7,10 +7,11 @@
 #   ------------------------------------------------------------------------------
 
 # == Installer script for UCDetector headless ==
-# * Download eclipse and unzip it
-# * Download UCDetector and install it in eclipse
-# * Download UCDetectors source code
-# * Run UCDetectors headless checking UCDetectors source code
+# This script:
+# * Downloads eclipse and unzip it
+# * Downloads UCDetector and install it in eclipse
+# * Downloads UCDetectors source code and unzip it
+# * Runs UCDetectors headless checking UCDetectors source code
 
 DOWNLOADS_DIR=downloads
 UCDETECTOR_VERSION=1.10.0
@@ -51,7 +52,8 @@ mkdir -p workspace/org.ucdetector
 # ---------------------------------------------------------------------
 # Adapt next lines: Put your eclipse projects in workspace folders
 # ---------------------------------------------------------------------
-unzip -q downloads/$UCDETECTOR_SOURCE -d workspace/org.ucdetector
+# override, quiet
+unzip -o -q downloads/$UCDETECTOR_SOURCE -d workspace/org.ucdetector
 # ---------------------------------------------------------------------
 
 if [ ! -e eclipse ] ; then

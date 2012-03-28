@@ -1,10 +1,11 @@
 ### -------------------------------------------------------------------------
 ###               UCDetector preference file for mode: 'CopyOf_Default'
 ### -------------------------------------------------------------------------
-### Created by  : UCDetector 1.8.1
-### Created date: 2011-06-23 01:17:23
+### Created by  : UCDetector 1.10.0
+### Created date: 2012-03-27 20:00:00
 ### java.util.Properties.load() may fail to load this file
 ### -------------------------------------------------------------------------
+### :mode=properties:
 
 ## --------------------------------------------------------------------------
 ## Tab: Ignore
@@ -75,10 +76,9 @@ org.ucdetector.visibility.private.constants      = WARNING
 ## --------------------------------------------------------------------------
 
 # Group: Reports
-org.ucdetector.report.create.xml       = false
-org.ucdetector.extension.text.id       = true
-org.ucdetector.extension.additional.id = true
-org.ucdetector.extension.html.id       = true
+org.ucdetector.report.create.xml  = false
+org.ucdetector.report.create.text = true
+org.ucdetector.report.create.html = true
 org.ucdetector.report.file             = UCDetectorReport_${number}
 org.ucdetector.report.dir              = 
 
@@ -104,7 +104,7 @@ org.ucdetector.log.toEclipse = false
 # ** FULL_BUILD        [default]
 # ** INCREMENTAL_BUILD 
 # * For details see: org.eclipse.core.resources.IncrementalProjectBuilder
-org.ucdetector.internal.headless.buildType = FULL_BUILD
+#org.ucdetector.internal.headless.buildType = FULL_BUILD
 
 # == targetPlatformFile ==
 # * If ECLIPSE_HOME is not your target platform
@@ -116,21 +116,25 @@ org.ucdetector.internal.headless.buildType = FULL_BUILD
 # * One of
 # ** eachproject [default] (create a report for each project)
 # ** single (create a single report)
-org.ucdetector.internal.headless.report = eachproject
+#org.ucdetector.internal.headless.report = eachproject
 
 # == resourcesToIterate ==
 # * Leave empty to iterate all projects in workspace [default]
 # * Separate several resources by ','
 # * Usage of new lines see example below
-org.ucdetector.internal.headless.resourcesToIterate =
+#org.ucdetector.internal.headless.resourcesToIterate =
 
 ##---------------------------#
 ## Complete headless example #
 ##---------------------------#
+
 #org.ucdetector.internal.headless.buildType          = FULL_BUILD
-#org.ucdetector.internal.headless.targetPlatformFile = ${WORKSPACE}/myProject/eclipse-3.6-gef.target
+
+# The following strings are replaced: ${WORKSPACE}, ${ECLIPSE_HOME}
+#org.ucdetector.internal.headless.targetPlatformFile = ${WORKSPACE}/myProject/eclipse-3.7-gef.target
+
 #org.ucdetector.internal.headless.report             = single
 #org.ucdetector.internal.headless.resourcesToIterate = \
 # org.ucdetector/src/main,\
-# org.ucdetector/src/cycle/org/ucdetector/cycle
- 
+# org.ucdetector/src/cycle/org/ucdetector/cycle,\
+# org.ucdetector.example 

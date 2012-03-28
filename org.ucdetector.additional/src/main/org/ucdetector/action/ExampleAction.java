@@ -59,7 +59,6 @@ public class ExampleAction extends AbstractUCDetectorAction {// NO_UCD
       e.printStackTrace();
     }
     catch (IllegalAccessException e) {
-      // TODO Auto-generated catch block
       e.printStackTrace();
     }
     Log.info("Selected iterator: " + iterator);
