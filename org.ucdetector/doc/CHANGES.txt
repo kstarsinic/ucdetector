@@ -1,17 +1,21 @@
-UCDetector 1.10.0 from 2012-xx-xx - eclipse 3.4 - 3.7:
+// -----------------------------------------------------------------------------
+UCDetector 1.11.0 from 2012-xx-xx - eclipse 3.4 - 3.8:
+
 New features:
+ - 
  - 
  
 Bugfixes:
+ - 
  - 
  
 Todo:
  - [ 3396900 ] Abstract classes' constructors can always be protected
  - [ 3400167 ] Removed warnings: Restrict method/field visibility to class visibility
-
+ - Unused marker for code marked with javadoc @deprecated
 
 // -----------------------------------------------------------------------------
-UCDetector 1.10.0 from 2012-03-xx - eclipse 3.4 - 3.7:
+UCDetector 1.10.0 from 2012-04-05 - eclipse 3.4 - 3.8:
 New features:
  - [ 3474895 ] Improved "// NO_UCD" quickfix
  - Added UCDetector headless installer script for linux
