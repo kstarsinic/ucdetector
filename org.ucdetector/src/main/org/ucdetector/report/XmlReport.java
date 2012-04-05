@@ -79,7 +79,7 @@ public class XmlReport implements IUCDetectorReport {
   private static final String HTML_XSLT = "html.xslt";
   private static final String COPY_RIGHT = //
   /*<!-- */" ===========================================================================\n"
-      + "     Copyright (c) 2011 Joerg Spieler All rights reserved. This program and the\n"
+      + "     Copyright (c) 2012 Joerg Spieler All rights reserved. This program and the\n"
       + "     accompanying materials are made available under the terms of the Eclipse\n"
       + "     Public License v1.0 which accompanies this distribution, and is available at\n"
       + "     http://www.eclipse.org/legal/epl-v10.html\n"
