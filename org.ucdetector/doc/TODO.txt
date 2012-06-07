@@ -24,6 +24,3 @@ Detection time: 56.20 seconds
 Detection time: 41.49 seconds
 Detection time: 38.85 seconds
 
-== Overall Rank ==
-* 2010-08-20	95
-* 2011-06-21	92

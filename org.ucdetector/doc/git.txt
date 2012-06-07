@@ -1,0 +1,31 @@
+== svn to git ==
+* git svn clone --no-metadata -A authors.txt -t tags -b branches -T trunk https://ucdetector.svn.sourceforge.net/svnroot/ucdetector
+* git svn clone --find-copies-harder --no-metadata -A authors.txt -t tags -b branches -T trunk file://localhost/~/svn2git/svn > convert.log 2>warn.log
+* rsync -av ucdetector.svn.sourceforge.net::svn/ucdetector/* .
+
+== Info ==
+* http://www.pocock.com.au/migrating-a-sourceforge-project-from-subversion-to-git
+* http://www.zeitoun.net/articles/migrate-from-sourceforge-to-github/start
+
+git-svn clone --authors-file=authors.txt \
+    https://ucdetector.svn.sourceforge.net/svnroot/ucdetector ucdetector.git
+
+git clone http://github.com/nothingmuch/git-svn-abandon.git
+cd phpfreechat
+../git-svn-abandon/git-svn-abandon-fix-refs
+git remote add origin git@github.com:kerphi/phpfreechat.git
+git push --all
+git push --tags
+
+
+#authors.txt
+spj = Joerg Spieler <spieler@ucdetector.org>
+
+
+
+[user]
+	name = Joerg Spieler
+	email = spieler@ucdetector.org
+[github]
+	user = JSpieler
+	token = ...
