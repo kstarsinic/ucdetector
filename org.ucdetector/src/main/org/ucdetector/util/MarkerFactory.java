@@ -58,7 +58,11 @@ public final class MarkerFactory implements IUCDetectorReport {
   public static final String UCD_MARKER_TYPE_USE_DEFAULT/*    */= UCD_MARKER_TYPE_PREFIX + "VisibilityDefault";
   public static final String UCD_MARKER_TYPE_USE_FINAL /*     */= UCD_MARKER_TYPE_PREFIX + "Final";
   public static final String UCD_MARKER_TYPE_TEST_ONLY /*     */= UCD_MARKER_TYPE_PREFIX + "TestOnly";
-  // ######## When adding new marker here, also add it to plugin.xml #####################################
+  //##############################################
+  // When adding new marker here, also add it to:
+  // * plugin.xml 
+  // * ucdetector.dtd
+  //##############################################
 
   /** human readable String to use for marker tags  */
   private static final Map<String, String> markerMap;
