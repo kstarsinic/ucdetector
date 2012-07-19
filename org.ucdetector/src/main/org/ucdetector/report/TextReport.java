@@ -112,7 +112,9 @@ public class TextReport implements IUCDetectorReport {
     catch (IOException ex) {
       UCDetectorPlugin.logToEclipseLog("Can't write report", ex);
     }
-    UCDetectorPlugin.closeSave(writer);
+    finally {
+      UCDetectorPlugin.closeSave(writer);
+    }
   }
 
   public void setExtension(ReportExtension reportExtension) {

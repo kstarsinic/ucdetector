@@ -42,10 +42,10 @@ public class ModesReader {
    */
   public static Map<String, String> loadModeFile(boolean isFile, String modeFileName) {
     Map<String, String> result = new HashMap<String, String>();
-    BufferedReader reader = null;
+    InputStream inStream = null;
     try {
-      InputStream inStream = getInputStream(isFile, modeFileName);
-      reader = new BufferedReader(new InputStreamReader(inStream, UCDetectorPlugin.UTF_8));
+      inStream = getInputStream(isFile, modeFileName);
+      BufferedReader reader = new BufferedReader(new InputStreamReader(inStream, UCDetectorPlugin.UTF_8));
       String line = null;
       boolean isInsideMultiLine = false;
       String key = null;
@@ -82,7 +82,7 @@ public class ModesReader {
       UCDetectorPlugin.logToEclipseLog(message, ex);
     }
     finally {
-      UCDetectorPlugin.closeSave(reader);
+      UCDetectorPlugin.closeSave(inStream);
     }
     return result;
   }

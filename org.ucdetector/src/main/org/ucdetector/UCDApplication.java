@@ -85,7 +85,8 @@ public class UCDApplication implements IApplication {
       Log.info("------------------------------------");
       Log.info("Type 'exit' to to cancel UCDHeadless");
       Log.info("------------------------------------");
-      BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
+      InputStreamReader inStream = new InputStreamReader(System.in);
+      BufferedReader reader = new BufferedReader(inStream);
       String line;
       try {
         while ((line = reader.readLine()) != null) {
@@ -105,6 +106,14 @@ public class UCDApplication implements IApplication {
       }
       catch (Exception ex) {
         Log.error("Exception reading System.in", ex);
+      }
+      finally {
+        try {
+          inStream.close();
+        }
+        catch (Exception e) {
+          // ignore
+        }
       }
       Log.debug("SystemInReader: End");
     }

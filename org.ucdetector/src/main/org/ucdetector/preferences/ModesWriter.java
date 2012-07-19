@@ -97,15 +97,19 @@ public class ModesWriter {
   }
 
   private static void appendHeadlessProperties(StringBuilder sb) {
+    InputStream inStream = null;
     try {
       if (headlessPropertiesContent == null) {
-        InputStream in = ModesWriter.class.getResourceAsStream(HEADLESS_PROPERTIES);
-        headlessPropertiesContent = UCDetectorPlugin.readAll(new InputStreamReader(in, UCDetectorPlugin.UTF_8));
+        inStream = ModesWriter.class.getResourceAsStream(HEADLESS_PROPERTIES);
+        headlessPropertiesContent = UCDetectorPlugin.readAll(new InputStreamReader(inStream, UCDetectorPlugin.UTF_8));
       }
     }
     catch (IOException ex) {
       headlessPropertiesContent = "";
       Log.error(ex, "Can't read %s", HEADLESS_PROPERTIES);
+    }
+    finally {
+      UCDetectorPlugin.closeSave(inStream);
     }
     sb.append(headlessPropertiesContent);
   }
