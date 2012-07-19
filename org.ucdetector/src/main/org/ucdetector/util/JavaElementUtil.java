@@ -588,32 +588,25 @@ public final class JavaElementUtil {
 
   public enum MemberInfo {
     // org.eclipse.jdt.ui/icons/full/obj16/field_public_obj.gif:
-    Annotation("Annotation", "annotation_obj.gif"), //
-    Class("Class", "class_obj.gif"), //
-    ClassAnonymous("Anonymous class", "innerclass_public_obj.gif"), //
-    ClassLocal("Local class", "innerclass_public_obj.gif"), //
-    ClassMember("Member class", "innerclass_public_obj.gif"), //
-    Constant("Constant", "field_public_obj.gif"), //
-    Constructor("Constructor", "methpub_obj.gif"), //
-    Enum("Enum", "enum_obj.gif"), //
-    EnumConstant("EnumConstant", "field_public_obj.gif"), //
-    Field("Field", "field_public_obj.gif"), //
-    Initializer("Initializer", "methpub_obj.gif"), //
-    Interface("Interface", "int_obj.gif"), //
-    Method("Method", "methpub_obj.gif"), //
+    Annotation("annotation_obj.gif"), //
+    Class("class_obj.gif"), //
+    ClassAnonymous("innerclass_public_obj.gif"), //
+    ClassLocal("innerclass_public_obj.gif"), //
+    ClassMember("innerclass_public_obj.gif"), //
+    Constant("field_public_obj.gif"), //
+    Constructor("methpub_obj.gif"), //
+    Enum("enum_obj.gif"), //
+    EnumConstant("field_public_obj.gif"), //
+    Field("field_public_obj.gif"), //
+    Initializer("methpub_obj.gif"), //
+    Interface("int_obj.gif"), //
+    Method("methpub_obj.gif"), //
     ;
 
-    private final String info;
     private final String icon;
 
-    private MemberInfo(String info, String icon) {
-      this.info = info;
+    private MemberInfo(String icon) {
       this.icon = icon;
-    }
-
-    @Override
-    public String toString() {
-      return info;
     }
 
     public String getIcon() {
