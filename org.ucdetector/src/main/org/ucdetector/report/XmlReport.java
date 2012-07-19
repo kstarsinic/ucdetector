@@ -390,7 +390,7 @@ public class XmlReport implements IUCDetectorReport {
         if (Prefs.isCreateReport(xsltExtension)) {
           String reportName = ReportNameManager.getReportFileName(xsltExtension.getResultFile(), objectsToIterate);
           File resultFile = new File(reportDir, reportName);
-          writeTextFile(resultFile, xsltExtension.getXslt());
+          writeTextFile(doc, resultFile, xsltExtension.getXslt());
         }
       }
       String reportName = ReportNameManager.getReportFileName(Prefs.getReportFile(), objectsToIterate);
@@ -409,7 +409,7 @@ public class XmlReport implements IUCDetectorReport {
     }
   }
 
-  private void copyFilesToDotIconDir(File reportDir) {
+  private static void copyFilesToDotIconDir(File reportDir) {
     File iconsOutDir = new File(reportDir, ICONS_DIR);
     iconsOutDir.mkdirs();
     try {
@@ -422,8 +422,8 @@ public class XmlReport implements IUCDetectorReport {
     }
   }
 
-  private void copyResource(String resouce, File iconsOutDir) throws IOException {
-    InputStream inStream = getClass().getResourceAsStream(resouce);
+  private static void copyResource(String resouce, File iconsOutDir) throws IOException {
+    InputStream inStream = XmlReport.class.getResourceAsStream(resouce);
     copyStream(inStream, new FileOutputStream(new File(iconsOutDir, resouce)));
   }
 
@@ -456,7 +456,7 @@ public class XmlReport implements IUCDetectorReport {
     }
   }
 
-  private void writeTextFile(File file, String xslt) throws IOException, TransformerException {
+  private static void writeTextFile(Document doc, File file, String xslt) throws IOException, TransformerException {
     String text = transformToText(doc, xslt);
     OutputStreamWriter fileWriter = null;
     try {
@@ -501,14 +501,14 @@ public class XmlReport implements IUCDetectorReport {
 
   /** Transform from xml to text using xslt transformation 
    * @throws TransformerException */
-  private String transformToText(Document xmlDoc, String xslt) throws TransformerException {
+  private static String transformToText(Document xmlDoc, String xslt) throws TransformerException {
     StringWriter stringWriter = new StringWriter();
     transform(xmlDoc, xslt, new StreamResult(stringWriter));
     return stringWriter.toString();
   }
 
-  private void transform(Document xmlDoc, String xslt, Result result) throws TransformerException {
-    InputStream xslIn = getClass().getClassLoader().getResourceAsStream(xslt);
+  private static void transform(Document xmlDoc, String xslt, Result result) throws TransformerException {
+    InputStream xslIn = XmlReport.class.getClassLoader().getResourceAsStream(xslt);
     Templates template = TransformerFactory.newInstance().newTemplates(new StreamSource(xslIn));
     Transformer transformer = template.newTransformer();
     Source source = new DOMSource(xmlDoc);
