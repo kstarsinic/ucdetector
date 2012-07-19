@@ -1,0 +1,78 @@
+<!--
+ Copyright (c) 2012 Joerg Spieler All rights reserved. This program and the
+ accompanying materials are made available under the terms of the Eclipse
+ Public License v1.0 which accompanies this distribution, and is available at
+ http://www.eclipse.org/legal/epl-v10.html
+-->
+<!ELEMENT ucdetector   (statistics+, markers+, problems+)+>
+<!ELEMENT statistics   (abouts+, searched+, preferences+)+>
+
+<!ELEMENT abouts       (about)+>
+<!ELEMENT about        (key, value)*>
+<!ATTLIST about 
+    name               CDATA          #REQUIRED
+    show               (true | false) #REQUIRED
+>
+<!ELEMENT key          (#PCDATA)>
+<!ELEMENT value        (#PCDATA)>
+
+<!ELEMENT searched     (search+)+>
+<!ELEMENT search       (#PCDATA)>
+<!ATTLIST search 
+    class              CDATA          #REQUIRED
+>
+
+<!ELEMENT preferences  (preference+)+>
+<!ELEMENT preference   (#PCDATA)>
+<!ATTLIST preference 
+    key                CDATA          #REQUIRED
+    value              CDATA          #REQUIRED
+>
+
+<!ELEMENT markers      (marker+)+>
+<!ELEMENT marker       (description+, file+, project+, sourceFolder+, package+, class+, javaType+, method*, field*)+>
+
+<!ATTLIST marker 
+    level              (ERROR | WARNING) 
+                                      #REQUIRED
+    line               CDATA          #REQUIRED
+    lineEnd            CDATA          #REQUIRED
+    lineStart          CDATA          #REQUIRED
+    markerType         (Reference | FewReference | VisibilityPrivate | VisibilityProtected | VisibilityDefault | Final| TestOnly)   
+                                      #REQUIRED
+    nr                 CDATA          #REQUIRED
+    referenceCount     CDATA          #REQUIRED
+>
+
+<!ELEMENT description  (#PCDATA)>
+<!ELEMENT file         (#PCDATA)>
+
+<!ELEMENT project      (#PCDATA)>
+<!ATTLIST project 
+    dir                CDATA          #REQUIRED
+    name               CDATA          #REQUIRED
+    parentDir          CDATA          #REQUIRED
+>
+
+<!ELEMENT sourceFolder (#PCDATA)>
+<!ELEMENT package      (#PCDATA)>
+<!ELEMENT class        (#PCDATA)>
+
+<!ELEMENT javaType     (#PCDATA)>
+<!ATTLIST javaType 
+    icon               CDATA          #REQUIRED
+    long               (Annotation | Class | ClassAnonymous | ClassLocal | ClassMember | Constant | Constructor | Enum | EnumConstant | Field | Initializer | Interface | Method )
+                                      #REQUIRED
+    simple             (Class | Method | Field | Initializer)  #REQUIRED
+>
+
+<!ELEMENT method       (#PCDATA)>
+<!ELEMENT field        (#PCDATA)>
+
+<!ELEMENT problems     (problem*)+>
+<!ELEMENT problem      (status+, exception+)+>
+
+<!ELEMENT status       (#PCDATA)>
+<!ELEMENT exception    (#PCDATA)>
+
+

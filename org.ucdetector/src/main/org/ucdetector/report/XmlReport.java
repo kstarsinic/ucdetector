@@ -18,6 +18,7 @@ import java.util.List;
 import java.util.Map.Entry;
 import java.util.Set;
 
+import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.transform.OutputKeys;
 import javax.xml.transform.Result;
@@ -56,7 +57,9 @@ import org.ucdetector.util.JavaElementUtil;
 import org.ucdetector.util.JavaElementUtil.MemberInfo;
 import org.ucdetector.util.MarkerFactory;
 import org.ucdetector.util.StopWatch;
+import org.w3c.dom.DOMImplementation;
 import org.w3c.dom.Document;
+import org.w3c.dom.DocumentType;
 import org.w3c.dom.Element;
 
 /**
@@ -77,22 +80,14 @@ import org.w3c.dom.Element;
 public class XmlReport implements IUCDetectorReport {
   private static final String ICONS_DIR = ".icons";
   private static final String HTML_XSLT = "html.xslt";
+  private static final String DTD_FILE = "ucdetector.dtd";
   private static final String COPY_RIGHT = //
   /*<!-- */" ===========================================================================\n"
       + "     Copyright (c) 2012 Joerg Spieler All rights reserved. This program and the\n"
       + "     accompanying materials are made available under the terms of the Eclipse\n"
       + "     Public License v1.0 which accompanies this distribution, and is available at\n"
       + "     http://www.eclipse.org/legal/epl-v10.html\n"
-      + "     ======================================================================== ";
-  private static final String XML_INFO = "\n" //
-      + " - javaTypeSimple one of:\n"//
-      + "   - Class, Method, Field, Initializer\n"//
-      + " - javaType one of:\n"//
-      + "   - Annotation, Anonymous class, Enumeration, Interface, Local class, Member class, Class\n"//
-      + "   - Constructor, Method\n" //
-      + "   - EnumConstant, Constant, Field\n"//
-      + " - markerType one of:\n"//
-      + "   - Reference, FewReference, VisibilityPrivate, VisibilityProtected, VisibilityDefault, Final, TestOnly\n";
+      + "     ========================================================================\n";
 
   private Document doc;
   private Element markers;
@@ -140,19 +135,22 @@ public class XmlReport implements IUCDetectorReport {
       return;
     }
     try {
-      doc = DocumentBuilderFactory.newInstance().newDocumentBuilder().newDocument();
+      DocumentBuilder builder = DocumentBuilderFactory.newInstance().newDocumentBuilder();
+      DOMImplementation domImpl = builder.getDOMImplementation();
+      DocumentType docType = null;// domImpl.createDocumentType("ucdetector", null, dtdFile);
+      doc = domImpl.createDocument(null, "ucdetector", docType);
+      Element root = doc.getDocumentElement();
+
       String stylesheet = String.format("type=\"text/xsl\" href=\"%s/%s\"", ICONS_DIR, HTML_XSLT);
-      doc.insertBefore(doc.createProcessingInstruction("xml-stylesheet", stylesheet), doc.getDocumentElement());
-      doc.insertBefore(doc.createComment(COPY_RIGHT), doc.getDocumentElement());
-      Element root = doc.createElement("ucdetector");
-      doc.appendChild(root);
+      doc.insertBefore(doc.createProcessingInstruction("xml-stylesheet", stylesheet), root);
+      doc.insertBefore(doc.createComment(COPY_RIGHT), root);
+      doc.insertBefore(doc.createComment("\n"), root);
       statistcs = doc.createElement("statistics");
       root.appendChild(statistcs);
       markers = doc.createElement("markers");
       root.appendChild(markers);
       problems = doc.createElement("problems");
       root.appendChild(problems);
-      markers.appendChild(doc.createComment(XML_INFO));
     }
     catch (Throwable e) {
       Log.error("Can't create xml report: ", e);
@@ -415,7 +413,8 @@ public class XmlReport implements IUCDetectorReport {
     File iconsOutDir = new File(reportDir, ICONS_DIR);
     iconsOutDir.mkdirs();
     try {
-      copyStylesheet(iconsOutDir);
+      copyResource(HTML_XSLT, iconsOutDir);
+      copyResource(DTD_FILE, iconsOutDir);
       copyIconFiles(iconsOutDir);
     }
     catch (IOException ex) {
@@ -423,10 +422,9 @@ public class XmlReport implements IUCDetectorReport {
     }
   }
 
-  private void copyStylesheet(File iconsOutDir) throws IOException {
-    InputStream inStream = getClass().getResourceAsStream(HTML_XSLT);
-    copyStream(inStream, new FileOutputStream(new File(iconsOutDir, HTML_XSLT)));
-    inStream.close();
+  private void copyResource(String resouce, File iconsOutDir) throws IOException {
+    InputStream inStream = getClass().getResourceAsStream(resouce);
+    copyStream(inStream, new FileOutputStream(new File(iconsOutDir, resouce)));
   }
 
   private static final String[] ICONS = new String[] { //
@@ -473,21 +471,31 @@ public class XmlReport implements IUCDetectorReport {
 
   private static void writeDocumentToFile(Document docToWrite, File file) throws IOException, TransformerException {
     Source source = new DOMSource(docToWrite);
-    Result result = new StreamResult(new OutputStreamWriter(new FileOutputStream(file), UCDetectorPlugin.UTF_8));
     TransformerFactory tf = TransformerFactory.newInstance();
     Transformer xformer = tf.newTransformer();
     try {
+      String dtdFile = String.format("%s/%s", ICONS_DIR, DTD_FILE);
       xformer.setOutputProperty(OutputKeys.METHOD, "xml");
       xformer.setOutputProperty(OutputKeys.INDENT, "yes");
+      xformer.setOutputProperty(OutputKeys.DOCTYPE_SYSTEM, dtdFile);
+      xformer.setOutputProperty(OutputKeys.ENCODING, "UTF-8");
       xformer.setOutputProperty("{http://xml.apache.org/xslt}indent-amount", "2");
       xformer.setOutputProperty("{http://xml.apache.org/xalan}indent-amount", "2");
       // http://bugs.sun.com/bugdatabase/view_bug.do?bug_id=6296446
-      tf.setAttribute("indent-number", Integer.valueOf(2));
+      tf.setAttribute("indent-number", Integer.valueOf(2));// Broken for java 1.5
     }
     catch (IllegalArgumentException ignore) {
       Log.warn("Can't change output format: " + ignore);
     }
-    xformer.transform(source, result);
+    OutputStreamWriter writer = null;
+    try {
+      writer = new OutputStreamWriter(new FileOutputStream(file), UCDetectorPlugin.UTF_8);
+      Result result = new StreamResult(writer);
+      xformer.transform(source, result);
+    }
+    finally {
+      UCDetectorPlugin.closeSave(writer);
+    }
     Log.info("Wrote file= " + UCDetectorPlugin.getCanonicalPath(file));
   }
 
@@ -508,10 +516,16 @@ public class XmlReport implements IUCDetectorReport {
   }
 
   private static void copyStream(InputStream inStream, OutputStream outStream) throws IOException {
-    byte[] buffer = new byte[1024];
-    int read;
-    while ((read = inStream.read(buffer)) != -1) {
-      outStream.write(buffer, 0, read);
+    try {
+      byte[] buffer = new byte[1024];
+      int read;
+      while ((read = inStream.read(buffer)) != -1) {
+        outStream.write(buffer, 0, read);
+      }
+    }
+    finally {
+      UCDetectorPlugin.closeSave(inStream);
+      UCDetectorPlugin.closeSave(outStream);
     }
   }
 
