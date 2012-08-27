@@ -148,8 +148,12 @@ public final class Messages extends NLS {
   public static String PreferencePage_CreateXmlReport;
   public static String PreferencePage_BrowseReportsDir;
   public static String PreferencePage_BrowseReportsDirToolTip;
+  //
   public static String PreferencePage_LogLevel;
+  public static String PreferencePage_LogLevelToolTip;
+  //
   public static String PreferencePage_LogToEclipse;
+  public static String PreferencePage_LogToEclipseToolTip;
   //
   public static String PreferencePage_GroupDetect;
   public static String PreferencePage_GroupFileSearch;
@@ -234,10 +238,20 @@ public final class Messages extends NLS {
   public static String ModesPanel_invalid_mode_name;
   //
   public static String ModesPanel_ModeLabel;
+  public static String ModesPanel_ModeLabelToolTip;
+  //
+  public static String ModesPanel_ComboToolTipStart;
+  //
   public static String ModesPanel_ModeNew;
+  public static String ModesPanel_ModeNewToolTip;
+
   public static String ModesPanel_ModeRemove;
-  public static String ModesPanel_ModeRename;
+  public static String ModesPanel_ModeRemoveToolTip;
   public static String ModesPanel_ModeRemoveQuestion;
+  //
+  public static String ModesPanel_ModeRename;
+  public static String ModesPanel_ModeRenameToolTip;
+  //
   public static String ModesPanel_ModePressNewHint;
   public static String ModesPanel_ModeAlreadyExists;
   //

@@ -76,6 +76,7 @@ class ModesPanel {
     Composite modesPanelComposite = UCDetectorPreferencePage.createComposite(parent, 5, 1, GridData.FILL_HORIZONTAL);
     Label label = new Label(modesPanelComposite, SWT.LEFT);
     label.setText(Messages.ModesPanel_ModeLabel);
+    label.setToolTipText(Messages.ModesPanel_ModeLabelToolTip);
     this.modesCombo = new Combo(modesPanelComposite, SWT.READ_ONLY);
     this.newButton = new Button(modesPanelComposite, SWT.PUSH);
     this.removeButton = new Button(modesPanelComposite, SWT.PUSH);
@@ -86,8 +87,14 @@ class ModesPanel {
 
   private void createButtonsDetails() {
     newButton.setText(Messages.ModesPanel_ModeNew);
+    newButton.setToolTipText(Messages.ModesPanel_ModeNewToolTip);
+    //
     removeButton.setText(Messages.ModesPanel_ModeRemove);
+    removeButton.setToolTipText(Messages.ModesPanel_ModeRemoveToolTip);
+    //
     renameButton.setText(Messages.ModesPanel_ModeRename);
+    renameButton.setToolTipText(Messages.ModesPanel_ModeRenameToolTip);
+    //
     SelectionListener selectionListener = new SelectionAdapter() {
       @Override
       public void widgetSelected(SelectionEvent event) {
@@ -113,8 +120,7 @@ class ModesPanel {
     // Default first
     getCombo().setText(Mode.Default.toStringLocalized());
     getCombo().setText(Prefs.getModeName());
-    getCombo().setToolTipText(MODES_DIR.getAbsolutePath());
-
+    getCombo().setToolTipText(Messages.ModesPanel_ComboToolTipStart + MODES_DIR.getAbsolutePath());
     getCombo().addSelectionListener(new SelectionAdapter() {
       @Override
       public void widgetSelected(SelectionEvent evt) {

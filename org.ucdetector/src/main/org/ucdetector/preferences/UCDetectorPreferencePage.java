@@ -302,7 +302,10 @@ public class UCDetectorPreferencePage extends FieldEditorPreferencePage implemen
     Composite spacer = createGroup(parentGroups, Messages.PreferencePage_GroupLogging);
     ComboFieldEditor combo = new ComboFieldEditor(Prefs.LOG_LEVEL, Messages.PreferencePage_LogLevel, LOG_LEVELS, spacer);
     addField(combo);
-    appendBool(Prefs.LOG_TO_ECLIPSE, Messages.PreferencePage_LogToEclipse, null, spacer, 2);
+    combo.getLabelControl(spacer).setToolTipText(Messages.PreferencePage_LogLevelToolTip);
+    appendBool(Prefs.LOG_TO_ECLIPSE, Messages.PreferencePage_LogToEclipse,//
+        Messages.PreferencePage_LogToEclipseToolTip, spacer, 2);
+
   }
 
   private Combo changeVisibiliyCombo;
