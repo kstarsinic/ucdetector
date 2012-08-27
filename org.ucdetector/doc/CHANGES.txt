@@ -3,7 +3,8 @@ UCDetector 1.11.0 from 2012-xx-xx - eclipse 3.4 - 3.8:
 
 New features:
  - Added dtd for xml reports
- - 
+ - Better debug log output for ignored elements
+ - Improved tooltips for UCDetector preferences
  
 Bugfixes:
  - 
