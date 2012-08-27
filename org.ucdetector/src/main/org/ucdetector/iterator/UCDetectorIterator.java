@@ -67,7 +67,7 @@ public class UCDetectorIterator extends AbstractUCDetectorIterator {
       return false;
     }
     if (!Prefs.isUCDetectionInClasses()) {
-      debugNotHandle(type, "!isUCDetectionInClasses"); //$NON-NLS-1$
+      debugNotHandle(type, "not isUCDetectionInClasses"); //$NON-NLS-1$
       return false;
     }
     if (Prefs.isFilterType(type)) {
@@ -122,7 +122,7 @@ public class UCDetectorIterator extends AbstractUCDetectorIterator {
       return;
     }
     if (!Prefs.isUCDetectionInMethods()) {
-      debugNotHandle(method, "!isUCDetectionInMethods"); //$NON-NLS-1$
+      debugNotHandle(method, "not isUCDetectionInMethods"); //$NON-NLS-1$
       return;
     }
     if (Prefs.isFilterMethod(method)) {
@@ -131,7 +131,7 @@ public class UCDetectorIterator extends AbstractUCDetectorIterator {
     }
     // ignore default constructors
     if (method.isConstructor() && method.getNumberOfParameters() == 0) {
-      debugNotHandle(method, "default constructor"); //$NON-NLS-1$
+      debugNotHandle(method, "is default constructor"); //$NON-NLS-1$
       return;
     }
     if (Prefs.isFilterBeanMethod() && JavaElementUtil.isBeanMethod(method)) {
@@ -148,7 +148,7 @@ public class UCDetectorIterator extends AbstractUCDetectorIterator {
       debugNotHandle(field, "isFilterField"); //$NON-NLS-1$
     }
     else if (!Prefs.isUCDetectionInFields()) {
-      debugNotHandle(field, "!isUCDetectionInFields"); //$NON-NLS-1$
+      debugNotHandle(field, "not isUCDetectionInFields"); //$NON-NLS-1$
     }
     else if (Prefs.isCheckUseFinalField()) {
       // we need even private fields here!
@@ -160,7 +160,7 @@ public class UCDetectorIterator extends AbstractUCDetectorIterator {
       getIteratedTypeContainer().getFields().add(field);
     }
     else {
-      debugNotHandle(field, "!isCheckUseFinalField || isUCDetectionInFields"); //$NON-NLS-1$
+      debugNotHandle(field, "not isCheckUseFinalField or isUCDetectionInFields"); //$NON-NLS-1$
     }
   }
 

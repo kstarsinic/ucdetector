@@ -29,7 +29,7 @@ class CycleIterator extends AbstractUCDetectorIterator {
     // Fix [ 2103655 ] Detect cycles does not show anything
     // Don't use "isUCDetectionInClasses()" here!
     if (isPrivate(type) || type.isLocal() || type.isAnonymous()) {
-      debugNotHandle(type, "isPrivate || isLocal || isAnonymous"); //$NON-NLS-1$ 
+      debugNotHandle(type, "isPrivate or isLocal or isAnonymous"); //$NON-NLS-1$ 
       return false;
     }
     if (Prefs.isFilterType(type)) {
@@ -39,7 +39,7 @@ class CycleIterator extends AbstractUCDetectorIterator {
     ICompilationUnit compilationUnit = type.getCompilationUnit();
     IType primaryType = compilationUnit.findPrimaryType();
     if (!primaryType.equals(type)) {
-      debugNotHandle(type, "!primary type"); //$NON-NLS-1$ 
+      debugNotHandle(type, "not is primary type"); //$NON-NLS-1$ 
       return false;
     }
     debugHandle(type);

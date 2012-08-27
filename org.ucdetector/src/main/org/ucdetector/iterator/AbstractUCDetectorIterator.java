@@ -325,9 +325,11 @@ public abstract class AbstractUCDetectorIterator {
    * filtered, private...
    */
   protected static final void debugNotHandle(IMember member, String reason) {
-    if (DEBUG) {
-      Log.debug("    Ignore %s '%s' because: %s",// //$NON-NLS-1$
-          JavaElementUtil.getMemberTypeString(member), JavaElementUtil.getElementName(member), reason);
+    if (Log.isDebug()) {
+      Log.debug("IGNORE %-15s '%s' -> %s",// //$NON-NLS-1$
+          JavaElementUtil.getMemberTypeString(member),//
+          JavaElementUtil.getElementName(member), //
+          reason);
     }
   }
 
