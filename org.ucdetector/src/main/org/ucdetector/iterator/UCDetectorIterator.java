@@ -160,7 +160,8 @@ public class UCDetectorIterator extends AbstractUCDetectorIterator {
       getIteratedTypeContainer().getFields().add(field);
     }
     else {
-      debugNotHandle(field, "not isCheckUseFinalField or isUCDetectionInFields"); //$NON-NLS-1$
+      // ???
+      debugNotHandle(field, "not isCheckUseFinalField or isPrivate"); //$NON-NLS-1$
     }
   }
 
