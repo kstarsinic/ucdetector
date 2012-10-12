@@ -31,6 +31,7 @@ import org.eclipse.ui.IWorkingSet;
 import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.actions.ActionDelegate;
 import org.eclipse.ui.progress.IProgressConstants;
+import org.ucdetector.Log;
 import org.ucdetector.Messages;
 import org.ucdetector.UCDetectorPlugin;
 import org.ucdetector.iterator.AbstractUCDetectorIterator;
@@ -83,6 +84,7 @@ public abstract class AbstractUCDetectorAction extends ActionDelegate { // NO_UC
       private void showNothingToDetectMessage() {
         Display.getDefault().asyncExec(new Runnable() {
           public void run() {
+            Log.warn(Messages.AbstractUCDetectorIterator_NothingToDetect);
             MessageDialog.openWarning(UCDetectorPlugin.getShell(),
                 Messages.AbstractUCDetectorIterator_NothingToDetectTitle,
                 Messages.AbstractUCDetectorIterator_NothingToDetect);

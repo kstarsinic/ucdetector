@@ -12,6 +12,7 @@ import org.eclipse.core.runtime.Status;
 import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Shell;
+import org.ucdetector.Log;
 import org.ucdetector.Messages;
 import org.ucdetector.UCDetectorPlugin;
 import org.ucdetector.iterator.AbstractUCDetectorIterator;
@@ -35,12 +36,14 @@ public class CountAction extends AbstractUCDetectorAction {
   @Override
   protected IStatus postIteration() {
     // show message for count dialog, create status
-    final IStatus status = new Status(IStatus.INFO, UCDetectorPlugin.ID, IStatus.INFO, iterator.toString(), null);
+    final String message = iterator.toString();
+    final IStatus status = new Status(IStatus.INFO, UCDetectorPlugin.ID, IStatus.INFO, message, null);
     UCDetectorPlugin.logToEclipseLog(status);
     Display.getDefault().asyncExec(new Runnable() {
       public void run() {
         Shell shell = UCDetectorPlugin.getShell();
-        MessageDialog.openInformation(shell, Messages.CountAction_ResultTitle, iterator.toString());
+        Log.info(message);
+        MessageDialog.openInformation(shell, Messages.CountAction_ResultTitle, message);
       }
     });
     return status;
