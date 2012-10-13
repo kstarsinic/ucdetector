@@ -72,7 +72,7 @@ public class UCDApplication implements IApplication {
 
   // SystemInReader -----------------------------------------------------------
 
-  private final class SystemInReader extends Thread {
+  private static final class SystemInReader extends Thread {
     private final UCDHeadless ucdHeadless;
 
     public SystemInReader(UCDHeadless ucdHeadless) {
@@ -108,12 +108,7 @@ public class UCDApplication implements IApplication {
         Log.error("Exception reading System.in", ex);
       }
       finally {
-        try {
-          inStream.close();
-        }
-        catch (Exception e) {
-          // ignore
-        }
+        UCDetectorPlugin.closeSave(inStream);
       }
       Log.debug("SystemInReader: End");
     }

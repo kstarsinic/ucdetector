@@ -70,7 +70,7 @@ public class UCDProgressMonitor implements IProgressMonitor {
 
   protected void throwIfIsCanceled() {
     if (isCanceled()) {
-      throw new OperationCanceledException();
+      throw new OperationCanceledException("Cancel requested by user"); //$NON-NLS-1$
     }
   }
 

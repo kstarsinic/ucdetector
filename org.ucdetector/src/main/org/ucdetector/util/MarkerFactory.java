@@ -65,7 +65,7 @@ public final class MarkerFactory implements IUCDetectorReport {
   //##############################################
 
   /** human readable String to use for marker tags  */
-  private static final Map<String, String> markerMap;
+  private static final Map<String, String> MARKER_MAP;
   static {
     Map<String, String> map = new HashMap<String, String>();
     map.put(MarkerFactory.UCD_MARKER_TYPE_UNUSED, "unused code");
@@ -75,7 +75,7 @@ public final class MarkerFactory implements IUCDetectorReport {
     map.put(MarkerFactory.UCD_MARKER_TYPE_USE_DEFAULT, "use default");
     map.put(MarkerFactory.UCD_MARKER_TYPE_USE_FINAL, "use final");
     map.put(MarkerFactory.UCD_MARKER_TYPE_TEST_ONLY, "test only");
-    markerMap = Collections.unmodifiableMap(map);
+    MARKER_MAP = Collections.unmodifiableMap(map);
   }
 
   /**
@@ -86,7 +86,7 @@ public final class MarkerFactory implements IUCDetectorReport {
   public static String ucdMarkerTypeToNiceString(IMarker marker) {
     try {
       if (marker != null) {
-        return markerMap.get(marker.getType());
+        return MARKER_MAP.get(marker.getType());
       }
     }
     catch (CoreException e) {
