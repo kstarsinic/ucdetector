@@ -182,6 +182,7 @@ class VisibilityHandler {
         // [ 3191417 ] Change to "protected" should be default
         markerType = MarkerFactory.UCD_MARKER_TYPE_USE_DEFAULT;
         break;
+      case PUBLIC:
       default:
         return false;
     }

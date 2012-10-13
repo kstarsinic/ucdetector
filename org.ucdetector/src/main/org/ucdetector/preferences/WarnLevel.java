@@ -41,6 +41,7 @@ public enum WarnLevel {
         return Messages.WarnLevel_Error;
       case WARNING:
         return Messages.WarnLevel_Warning;
+      case IGNORE:
       default:
         return Messages.WarnLevel_Ignore;
     }

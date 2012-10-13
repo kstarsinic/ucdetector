@@ -508,11 +508,17 @@ public class XmlReport implements IUCDetectorReport {
   }
 
   private static void transform(Document xmlDoc, String xslt, Result result) throws TransformerException {
-    InputStream xslIn = XmlReport.class.getClassLoader().getResourceAsStream(xslt);
-    Templates template = TransformerFactory.newInstance().newTemplates(new StreamSource(xslIn));
-    Transformer transformer = template.newTransformer();
-    Source source = new DOMSource(xmlDoc);
-    transformer.transform(source, result);
+    InputStream inStream = null;
+    try {
+      inStream = XmlReport.class.getClassLoader().getResourceAsStream(xslt);
+      Templates template = TransformerFactory.newInstance().newTemplates(new StreamSource(inStream));
+      Transformer transformer = template.newTransformer();
+      Source source = new DOMSource(xmlDoc);
+      transformer.transform(source, result);
+    }
+    finally {
+      UCDetectorPlugin.closeSave(inStream);
+    }
   }
 
   private static void copyStream(InputStream inStream, OutputStream outStream) throws IOException {
