@@ -68,13 +68,13 @@ public final class MarkerFactory implements IUCDetectorReport {
   private static final Map<String, String> MARKER_MAP;
   static {
     Map<String, String> map = new HashMap<String, String>();
-    map.put(MarkerFactory.UCD_MARKER_TYPE_UNUSED, "unused code");
-    map.put(MarkerFactory.UCD_MARKER_TYPE_USED_FEW, "few used code");
-    map.put(MarkerFactory.UCD_MARKER_TYPE_USE_PRIVATE, "use private");
-    map.put(MarkerFactory.UCD_MARKER_TYPE_USE_PROTECTED, "use protected");
-    map.put(MarkerFactory.UCD_MARKER_TYPE_USE_DEFAULT, "use default");
-    map.put(MarkerFactory.UCD_MARKER_TYPE_USE_FINAL, "use final");
-    map.put(MarkerFactory.UCD_MARKER_TYPE_TEST_ONLY, "test only");
+    map.put(UCD_MARKER_TYPE_UNUSED, "unused code");
+    map.put(UCD_MARKER_TYPE_USED_FEW, "few used code");
+    map.put(UCD_MARKER_TYPE_USE_PRIVATE, "use private");
+    map.put(UCD_MARKER_TYPE_USE_PROTECTED, "use protected");
+    map.put(UCD_MARKER_TYPE_USE_DEFAULT, "use default");
+    map.put(UCD_MARKER_TYPE_USE_FINAL, "use final");
+    map.put(UCD_MARKER_TYPE_TEST_ONLY, "test only");
     MARKER_MAP = Collections.unmodifiableMap(map);
   }
 
@@ -98,12 +98,12 @@ public final class MarkerFactory implements IUCDetectorReport {
   private final List<IUCDetectorReport> reports;
 
   /** Helper attribute to transfer java element name (e.g. method name) from a marker to QuickFix  **/
-  public static final String JAVA_NAME = "JAVA_NAME";//$NON-NLS-1$
+  public static final String JAVA_NAME = "JAVA_NAME";
   /**
    * Helper attribute to transfer java type information from a marker to QuickFix
    * See: {@link org.ucdetector.report.MarkerReport.ElementType}
    */
-  public static final String JAVA_TYPE = "JAVA_TYPE";//$NON-NLS-1$
+  public static final String JAVA_TYPE = "JAVA_TYPE";
 
   private MarkerFactory(List<IUCDetectorReport> reports) {
     this.reports = reports;
@@ -225,30 +225,32 @@ public final class MarkerFactory implements IUCDetectorReport {
   /**
    * Create an eclipse marker: "Change visibility to protected"
    * @param member  to create marker for
-   * @param type  to create marker for
+   * @param markerType  to create marker for
    * @param line  to create marker for
    * @return <code>true</code>, if a marker was created
    * @throws CoreException when there are problem creating marker
    */
-  public boolean createVisibilityMarker(IMember member, String type, int line) throws CoreException {
-    String visibilityString = null;
-    if (UCD_MARKER_TYPE_USE_PRIVATE.equals(type)) {
-      visibilityString = "private";
-    }
-    else if (UCD_MARKER_TYPE_USE_PROTECTED.equals(type)) {
-      visibilityString = "protected";
-    }
-    else if (UCD_MARKER_TYPE_USE_DEFAULT.equals(type)) {
-      visibilityString = "default";
-    }
+  public boolean createVisibilityMarker(IMember member, String markerType, int line) throws CoreException {
+    String visibility = getVisibilityForMarkerType(markerType);
     String searchInfo = JavaElementUtil.getMemberTypeString(member);
     if (member instanceof IType) {
       // [2539795] Visibility marker for classes causes compilation error
-      visibilityString += Messages.MarkerFactory_VisibilityCompileErrorForClass;
+      visibility += Messages.MarkerFactory_VisibilityCompileErrorForClass;
     }
-    Object[] bindings = new Object[] { searchInfo, JavaElementUtil.getElementName(member), visibilityString };
+    Object[] bindings = new Object[] { searchInfo, JavaElementUtil.getElementName(member), visibility };
     String message = NLS.bind(Messages.MarkerFactory_MarkerVisibility, bindings);
-    return reportMarker(new ReportParam(member, message, line, type));
+    return reportMarker(new ReportParam(member, message, line, markerType));
+  }
+
+  public static String getVisibilityForMarkerType(String markerType) {
+    if (UCD_MARKER_TYPE_USE_PRIVATE.equals(markerType)) {
+      return "private";
+    }
+    else if (UCD_MARKER_TYPE_USE_DEFAULT.equals(markerType)) {
+      return "default";
+    }
+    //else if (UCD_MARKER_TYPE_USE_PROTECTED.equals(markerType)) {
+    return "protected";
   }
 
   /**
