@@ -1,6 +1,6 @@
 #!/bin/bash
 #   ------------------------------------------------------------------------------
-#   Copyright (c) 2012 Joerg Spieler All rights reserved. This program and the
+#   Copyright (c) 2013 Joerg Spieler All rights reserved. This program and the
 #   accompanying materials are made available under the terms of the Eclipse
 #   Public License v1.0 which accompanies this distribution, and is available at
 #   http://www.eclipse.org/legal/epl-v10.html
@@ -8,9 +8,9 @@
 
 # == Installer script for UCDetector headless ==
 # This script:
-# * Downloads eclipse and unzip it
-# * Downloads UCDetector and install it in eclipse
-# * Downloads UCDetectors source code and unzip it
+# * Downloads and unzips eclipse
+# * Downloads UCDetector and installs it in downloaded eclipse
+# * Downloads and unzips UCDetectors source code
 # * Runs UCDetectors headless checking UCDetectors source code
 
 DOWNLOADS_DIR=downloads
@@ -35,14 +35,14 @@ downloadFile(){
 # eclipse
 arch=`uname -m`
 if [ "$arch" == 'x86_64' ] ; then
-    ECLIPSE=eclipse-SDK-3.7.2-linux-gtk-x86_64.tar.gz
+    ECLIPSE=eclipse-SDK-3.8.1-linux-gtk-x86_64.tar.gz
 else
-    ECLIPSE=eclipse-SDK-3.7.2-linux-gtk.tar.gz
+    ECLIPSE=eclipse-SDK-3.8.1-linux-gtk.tar.gz
 fi
 
 echo "== Download files =="
 mkdir -p $DOWNLOADS_DIR
-downloadFile http://ftp.halifax.rwth-aachen.de/eclipse/eclipse/downloads/drops/R-3.7.2-201202080800/ $ECLIPSE
+downloadFile http://ftp.halifax.rwth-aachen.de/eclipse/eclipse/downloads/drops/R-3.8.1-201209141540/ $ECLIPSE
 downloadFile http://netcologne.dl.sourceforge.net/project/ucdetector/ucdetector/$UCDETECTOR_VERSION/ $UCDETECTOR
 downloadFile http://netcologne.dl.sourceforge.net/project/ucdetector/ucdetector/$UCDETECTOR_VERSION/ $UCDETECTOR_SOURCE
 

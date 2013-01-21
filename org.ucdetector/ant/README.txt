@@ -5,16 +5,20 @@ Build manager may need to run UCDetector without starting the Eclipse IDE
 
 == Requirements ==
 * java            >= 5.0
-* Eclipse Classic >= 3.5
+* Eclipse CLASSIC >= 3.5
 * org.ucdetector_x.y.z.jar
 * Optional: ant (http://ant.apache.org)
 
 
 == Directory setup ==
 * Please create NEW directories for eclipse and your workspace:
-* Create a new base directory          : ucdetector-headless
-* Install files automatically on linux:
-** Put setup.sh in ucdetector-headless; $ cd ucdetector-headless; $ ./setup.sh
+** Create a new base directory          : ucdetector-headless
+
+* Install files automatically (linux) and run UCDetector on UCDetectors source code:
+** Copy setup.sh to ucdetector-headless
+** $ cd ucdetector-headless
+** $ ./setup.sh
+
 * Install files manually:
 ** Put java projects in directory       : ucdetector-headless/workspace
 ** Put eclipse in                       : ucdetector-headless/eclipse
@@ -24,7 +28,7 @@ Build manager may need to run UCDetector without starting the Eclipse IDE
 
 == Run UCDetector ==
 * $ cd ucdetector-headless/ant
-* Run one of:
+* Run ONE of:
 ** $ ant
 ** $ detect.bat
 ** $ ./detect.sh
@@ -33,10 +37,10 @@ Build manager may need to run UCDetector without starting the Eclipse IDE
 
 
 == Troubleshooting ==
-* Last version of this file: http://ucdetector.svn.sourceforge.net/svnroot/ucdetector/trunk/org.ucdetector/ant/README.txt
-* Check: ECLIPSE_HOME/configuration/*.log
-* Check: ucdetector-headless/workspace/.metadata/.log
+* Check
+** Last version of this file: http://ucdetector.svn.sourceforge.net/svnroot/ucdetector/trunk/org.ucdetector/ant/README.txt
+** ECLIPSE_HOME/configuration/*.log
+** ucdetector-headless/workspace/.metadata/.log
 * UCDetector must be installed in: ${ECLIPSE_HOME}/plugins/org.ucdetector_x.y.z.jar
-* Workarround to 'see' compile errors, warnings, markers:
-  ucdetector-headless/workspace/.metadata/.plugins/org.eclipse.core.resources/.projects/myProject/.markers.snap
-
+* Workarround to 'see' compile errors, warnings, markers (binary file!):
+** Check file: ucdetector-headless/workspace/.metadata/.plugins/org.eclipse.core.resources/.projects/myProject/.markers.snap
