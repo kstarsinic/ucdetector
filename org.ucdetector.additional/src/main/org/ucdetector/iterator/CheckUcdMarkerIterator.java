@@ -136,11 +136,11 @@ public class CheckUcdMarkerIterator extends AbstractUCDetectorIterator {
       //      marker.setAttribute(IMarker.CHAR_START, markerFound.getAttribute(IMarker.CHAR_START));
       //      marker.setAttribute(IMarker.CHAR_END, markerFound.getAttribute(IMarker.CHAR_END));
     }
-    Log.warn("############ BAD MARKER #################", MarkerFactory.dumpMarker(marker));
+    Log.warn("############ BAD MARKER #################");
     for (Entry<String, Object> entry : MarkerFactory.markerAsMap(marker).entrySet()) {
       Log.warn("# %10s = %s", entry.getKey(), entry.getValue());
     }
-    Log.warn("##########################################", MarkerFactory.dumpMarker(marker));
+    Log.warn("##########################################");
     badMarkerCount++;
   }
 
