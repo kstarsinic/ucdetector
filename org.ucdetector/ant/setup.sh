@@ -35,14 +35,18 @@ downloadFile(){
 # eclipse
 arch=`uname -m`
 if [ "$arch" == 'x86_64' ] ; then
-    ECLIPSE=eclipse-SDK-3.8.1-linux-gtk-x86_64.tar.gz
+  # ECLIPSE=eclipse-SDK-3.8.1-linux-gtk-x86_64.tar.gz
+    ECLIPSE=eclipse-SDK-4.2.1-linux-gtk-x86_64.tar.gz
 else
-    ECLIPSE=eclipse-SDK-3.8.1-linux-gtk.tar.gz
+  # ECLIPSE=eclipse-SDK-3.8.1-linux-gtk.tar.gz
+    ECLIPSE=eclipse-SDK-4.2.1-linux-gtk.tar.gz
 fi
 
 echo "== Download files =="
 mkdir -p $DOWNLOADS_DIR
-downloadFile http://ftp.halifax.rwth-aachen.de/eclipse/eclipse/downloads/drops/R-3.8.1-201209141540/ $ECLIPSE
+# downloadFile http://ftp.halifax.rwth-aachen.de/eclipse/eclipse/downloads/drops/R-3.8.1-201209141540/ $ECLIPSE
+downloadFile http://ftp.halifax.rwth-aachen.de/eclipse/eclipse/downloads/drops4/R-4.2.1-201209141800/ $ECLIPSE
+
 downloadFile http://netcologne.dl.sourceforge.net/project/ucdetector/ucdetector/$UCDETECTOR_VERSION/ $UCDETECTOR
 downloadFile http://netcologne.dl.sourceforge.net/project/ucdetector/ucdetector/$UCDETECTOR_VERSION/ $UCDETECTOR_SOURCE
 
