@@ -10,7 +10,7 @@
 <!ELEMENT abouts       (about)+>
 <!ELEMENT about        (key, value)*>
 <!ATTLIST about 
-    name               CDATA          #REQUIRED
+    name               NMTOKEN        #REQUIRED
     show               (true | false) #REQUIRED
 >
 <!ELEMENT key          (#PCDATA)>
@@ -19,29 +19,29 @@
 <!ELEMENT searched     (search+)+>
 <!ELEMENT search       (#PCDATA)>
 <!ATTLIST search 
-    class              CDATA          #REQUIRED
+    class              NMTOKEN        #REQUIRED
 >
 
 <!ELEMENT preferences  (preference+)+>
 <!ELEMENT preference   (#PCDATA)>
 <!ATTLIST preference 
-    key                CDATA          #REQUIRED
+    key                NMTOKEN        #REQUIRED
     value              CDATA          #REQUIRED
 >
 
 <!ELEMENT markers      (marker+)+>
-<!ELEMENT marker       (description+, file+, project+, sourceFolder+, package+, class+, javaType+, method*, field*)+>
+<!ELEMENT marker       (description+, file+, project+, sourceFolder+, package+, class+, javaType+, method*, field*, author*)+>
 
 <!ATTLIST marker 
     level              (ERROR | WARNING) 
                                       #REQUIRED
-    line               CDATA          #REQUIRED
-    lineEnd            CDATA          #REQUIRED
-    lineStart          CDATA          #REQUIRED
+    line               NMTOKEN        #REQUIRED
+    lineEnd            NMTOKEN        #REQUIRED
+    lineStart          NMTOKEN        #REQUIRED
     markerType         (Reference | FewReference | VisibilityPrivate | VisibilityProtected | VisibilityDefault | Final| TestOnly)   
                                       #REQUIRED
-    nr                 CDATA          #REQUIRED
-    referenceCount     CDATA          #REQUIRED
+    nr                 NMTOKEN        #REQUIRED
+    referenceCount     NMTOKEN        #REQUIRED
 >
 
 <!ELEMENT description  (#PCDATA)>
@@ -49,8 +49,8 @@
 
 <!ELEMENT project      (#PCDATA)>
 <!ATTLIST project 
-    dir                CDATA          #REQUIRED
-    name               CDATA          #REQUIRED
+    dir                NMTOKEN        #REQUIRED
+    name               NMTOKEN        #REQUIRED
     parentDir          CDATA          #REQUIRED
 >
 
@@ -60,13 +60,14 @@
 
 <!ELEMENT javaType     (#PCDATA)>
 <!ATTLIST javaType 
-    icon               CDATA          #REQUIRED
+    icon               NMTOKEN        #REQUIRED
     long               (Annotation | Class | ClassAnonymous | ClassLocal | ClassMember | Constant | Constructor | Enum | EnumConstant | Field | Initializer | Interface | Method )
                                       #REQUIRED
     simple             (Class | Method | Field | Initializer)  #REQUIRED
 >
 
 <!ELEMENT method       (#PCDATA)>
+<!ELEMENT author       (#PCDATA)>
 <!ELEMENT field        (#PCDATA)>
 
 <!ELEMENT problems     (problem*)+>
