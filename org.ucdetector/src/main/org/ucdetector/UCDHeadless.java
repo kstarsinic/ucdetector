@@ -97,7 +97,7 @@ public class UCDHeadless {
     String resultName = fileName;
     resultName = resultName.replace("${WORKSPACE}", UCDetectorPlugin.getAboutWorkspace());
     resultName = resultName.replace("${ECLIPSE_HOME}", UCDetectorPlugin.getAboutEclipseHome());
-    File resultFile = new File(UCDetectorPlugin.getCanonicalPath(resultName));
+    File resultFile = new File(UCDetectorPlugin.getCanonicalPath(new File(resultName)));
     if (!resultFile.exists()) {
       throw new FileNotFoundException("Missing file: " + resultFile.getAbsolutePath());
     }

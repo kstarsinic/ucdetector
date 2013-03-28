@@ -87,7 +87,7 @@ public final class Prefs {
   // REPORTS ------------------------------------------------------------------
   public static final String REPORT_DIR = ID + ".report.dir";
   static final String REPORT_FILE = ID + ".report.file";
-  static final String REPORT_CREATE = ID + ".report.create";
+  private static final String REPORT_CREATE = ID + ".report.create";
   static final String REPORT_CREATE_XML = REPORT_CREATE + ".xml";
   //  private static final String REPORT_CREATE_EXTENSION = ID + ".extension";
   //

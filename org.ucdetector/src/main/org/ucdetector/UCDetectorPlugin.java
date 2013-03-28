@@ -405,10 +405,6 @@ public class UCDetectorPlugin extends AbstractUIPlugin {
     return sb.toString();
   }
 
-  public static String getCanonicalPath(String fileName) {
-    return (fileName == null) ? null : getCanonicalPath(new File(fileName));
-  }
-
   public static String exceptionToString(Throwable ex) {
     if (ex == null) {
       return null;
