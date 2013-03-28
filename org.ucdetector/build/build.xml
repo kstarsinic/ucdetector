@@ -53,14 +53,12 @@
        ===================================================================== -->
   <target name="version-info" depends="prepare" description="Create version info file">
     <property name="version.file" location="../VERSION.TXT" />
-    <echo file="${version.file}">
-UCDetector version: ${Bundle-Version}
+    <echo file="${version.file}">UCDetector version: ${Bundle-Version}
 Date created      : ${NOW}
 Java version      : ${java.runtime.version} - ${java.specification.vendor}
 Eclipse version   : ${osgi.framework.version}
 Operation system  : ${os.name}
-Provided by       : Joerg Spieler    
-    </echo>
+Provided by       : Joerg Spieler</echo>
     <echo>Created version info file: ${version.file}</echo>
   </target>
 

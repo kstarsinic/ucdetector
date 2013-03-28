@@ -12,7 +12,6 @@ LAUNCHER=$(find $ECLIPSE_HOME/plugins -name "org.eclipse.equinox.launcher_*.jar"
 
 echo "ECLIPSE_HOME: '$ECLIPSE_HOME'"
 echo "WORKSPACE   : '$WORKSPACE'"
-echo "LAUNCHER    : '$LAUNCHER'  - when launcher is empty, set it!"
+echo "LAUNCHER    : '$LAUNCHER'"
 
 java -Xmx1024m -jar $LAUNCHER -clean -data $WORKSPACE -application org.ucdetector.detect -ucd.options ucdetector.options $@
-
