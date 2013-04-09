@@ -316,12 +316,17 @@ public class UCDetectorPlugin extends AbstractUIPlugin {
     return System.getProperty("java.runtime.version");
   }
 
+  /** @return the version of the platform plugin (= version of Eclipse about dialog or splash screen) */
   public static String getAboutEclipseVersion() {
-    return System.getProperty("osgi.framework.version");
+    //System.getProperty("osgi.framework.version");// values is 3.8.0 for eclipse 4.2.0
+    return getBundelVersion(Platform.getBundle("org.eclipse.platform"));
   }
 
   public static String getAboutUCDVersion() {
-    Bundle bundle = getDefault().getBundle();
+    return getBundelVersion(getDefault().getBundle());
+  }
+
+  private static String getBundelVersion(Bundle bundle) {
     return String.valueOf(bundle.getHeaders().get("Bundle-Version"));
   }
 
