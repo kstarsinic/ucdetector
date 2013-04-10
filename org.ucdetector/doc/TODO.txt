@@ -5,6 +5,10 @@
 * @SuppressWarnings("ucd") filter broken eclipse 3.7?
 * org.ucdetector.action.CountAction.iterator: suggest make private
 
+* Cheat sheet?
+** http://www.oracle.com/technetwork/articles/entarch/eclipse-cheat-sheets3-095110.html
+** http://www.ibm.com/developerworks/opensource/library/os-ecl-cheatsheets/
+** http://blog.architexa.com/2010/12/eclipse-cheat-sheets-a-hands-on-tutorial/
 
 == Code examples ==
 * org.eclipse.jdt.internal.corext.util.JavaModelUtil
@@ -23,4 +27,9 @@
 Detection time: 56.20 seconds
 Detection time: 41.49 seconds
 Detection time: 38.85 seconds
+
+== Changed repository ==
+* Since commit r1837
+** OLD root: https://ucdetector.svn.sourceforge.net/svnroot/ucdetector
+** NEW root: https://svn.code.sf.net/p/ucdetector/code
 
