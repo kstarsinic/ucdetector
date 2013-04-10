@@ -19,7 +19,7 @@
 
 
 == svn to git ==
-* git svn clone --no-metadata -A authors.txt -t tags -b branches -T trunk https://ucdetector.svn.sourceforge.net/svnroot/ucdetector
+* git svn clone --no-metadata -A authors.txt -t tags -b branches -T trunk http://svn.code.sf.net/p/ucdetector/code
 * git svn clone --find-copies-harder --no-metadata -A authors.txt -t tags -b branches -T trunk file://localhost/~/svn2git/svn > convert.log 2>warn.log
 * rsync -av ucdetector.svn.sourceforge.net::svn/ucdetector/* .
 
@@ -31,5 +31,5 @@ Detection time: 38.85 seconds
 == Changed repository ==
 * Since commit r1837
 ** OLD root: https://ucdetector.svn.sourceforge.net/svnroot/ucdetector
-** NEW root: https://svn.code.sf.net/p/ucdetector/code
+** NEW root: http://svn.code.sf.net/p/ucdetector/code
 

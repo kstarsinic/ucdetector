@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!--
-Browse this file: https://ucdetector.svn.sourceforge.net/svnroot/ucdetector/trunk/org.ucdetector/doc/UCDetector.psf
+Browse this file: http://svn.code.sf.net/p/ucdetector/code/trunk/org.ucdetector/doc/UCDetector.psf
 Get all sources: Import this file using File/Import.../Team/Team Project Set
 -->
 <psf version="2.0">
 	<provider id="org.tigris.subversion.subclipse.core.svnnature">
-		<project reference="0.9.3,https://ucdetector.svn.sourceforge.net/svnroot/ucdetector/trunk/org.ucdetector,org.ucdetector"/>
-		<project reference="0.9.3,https://ucdetector.svn.sourceforge.net/svnroot/ucdetector/trunk/org.ucdetector.additional,org.ucdetector.additional"/>
-		<project reference="0.9.3,https://ucdetector.svn.sourceforge.net/svnroot/ucdetector/trunk/org.ucdetector.feature,org.ucdetector.feature"/>
-		<project reference="0.9.3,https://ucdetector.svn.sourceforge.net/svnroot/ucdetector/trunk/org.ucdetector.update_site,org.ucdetector.update_site"/>
+		<project reference="0.9.3,http://svn.code.sf.net/p/ucdetector/code/trunk/org.ucdetector,org.ucdetector"/>
+		<project reference="0.9.3,http://svn.code.sf.net/p/ucdetector/code/trunk/org.ucdetector.additional,org.ucdetector.additional"/>
+		<project reference="0.9.3,http://svn.code.sf.net/p/ucdetector/code/trunk/org.ucdetector.feature,org.ucdetector.feature"/>
+		<project reference="0.9.3,http://svn.code.sf.net/p/ucdetector/code/trunk/org.ucdetector.update_site,org.ucdetector.update_site"/>
 	</provider>
 </psf>

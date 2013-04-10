@@ -38,7 +38,7 @@ Build manager may need to run UCDetector without starting the Eclipse IDE
 
 == Troubleshooting ==
 * Check
-** Last version of this file: http://ucdetector.svn.sourceforge.net/svnroot/ucdetector/trunk/org.ucdetector/ant/README.txt
+** Last version of this file: http://svn.code.sf.net/p/ucdetector/code/trunk/org.ucdetector/ant/README.txt
 ** ECLIPSE_HOME/configuration/*.log
 ** ucdetector-headless/workspace/.metadata/.log
 * UCDetector must be installed in: ${ECLIPSE_HOME}/plugins/org.ucdetector_x.y.z.jar
