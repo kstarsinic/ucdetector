@@ -117,7 +117,7 @@ public class SearchManager {
     catch (OperationCanceledException e) {
       // ignore, do not log
     }
-    Log.info("Search end: " + UCDetectorPlugin.getNow()); //$NON-NLS-1$
+    Log.info("Search end: " + UCDetectorPlugin.getNow(true)); //$NON-NLS-1$
     if (searchProblems.size() > 0) {
       IStatus[] stati = searchProblems.toArray(new IStatus[searchProblems.size()]);
       MultiStatus status = new MultiStatus(UCDetectorPlugin.ID, IStatus.ERROR, stati, stati.length
@@ -128,9 +128,9 @@ public class SearchManager {
 
   @SuppressWarnings("boxing")
   private String getProgress(Set<TypeContainer> typeContainers, int pos, TypeContainer container) {
-    return String.format("Search %4s of %4s types. Markers %4s. Exceptions %2s. Class %s - %s", //$NON-NLS-1$
-        pos, typeContainers.size(), markerCreated, searchProblems.size(),//
-        JavaElementUtil.getTypeName(container.getType()), UCDetectorPlugin.getNow());
+    return String.format("%s Search %4s of %4s types. Markers %4s. Exceptions %2s. Class %s", //$NON-NLS-1$
+        UCDetectorPlugin.getNow(true), pos, typeContainers.size(), markerCreated, searchProblems.size(),//
+        JavaElementUtil.getTypeName(container.getType()));
   }
 
   private static void logStart(Set<TypeContainer> typeContainers) {
@@ -140,7 +140,7 @@ public class SearchManager {
       methodsToDetect += container.getMethods().size();
       fieldsToDetect += container.getFields().size();
     }
-    Log.info("Detection start      : " + UCDetectorPlugin.getNow()); //$NON-NLS-1$
+    Log.info("Detection start      : " + UCDetectorPlugin.getNow(true)); //$NON-NLS-1$
     Log.info("    Classes to detect: " + typeContainers.size()); //$NON-NLS-1$
     Log.info("    Methods to detect: " + methodsToDetect); //$NON-NLS-1$
     Log.info("    Fields  to detect: " + fieldsToDetect); //$NON-NLS-1$

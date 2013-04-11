@@ -16,7 +16,6 @@ import java.io.StringWriter;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Arrays;
-import java.util.Collection;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.LinkedHashMap;
@@ -90,6 +89,7 @@ public class UCDetectorPlugin extends AbstractUIPlugin {
   public static final String HELP_ID_PREFERENCES = ID + ".ucd_context_id_preferences";
   //private final DateFormat dateFormat = DateFormat.getDateTimeInstance(DateFormat.MEDIUM, DateFormat.MEDIUM, Locale.getDefault());
   private final DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+  private final DateFormat dateFormatMillis = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSS");
   private static final String SEPARATOR = "-----------------------------------------------------------------------------"; //$NON-NLS-1$
 
   // INSTANCE
@@ -102,7 +102,7 @@ public class UCDetectorPlugin extends AbstractUIPlugin {
     Log.info(SEPARATOR);
     Log.info("Starting UCDetector Plug-In version " + getAboutUCDVersion());
     Log.info(SEPARATOR);
-    Log.info("Time            : " + getNow());
+    Log.info("Time            : " + getNow(false));
     Log.info("OS              : " + getAboutOS());
     Log.info("Java            : " + getAboutJavaVersion());
     Log.info("Eclipse version : " + getAboutEclipseVersion());
@@ -212,7 +212,7 @@ public class UCDetectorPlugin extends AbstractUIPlugin {
    */
   @Override
   public void stop(BundleContext context) throws Exception {
-    Log.info("Stopping UCDetector Plug-In at " + getNow());
+    Log.info("Stopping UCDetector Plug-In at " + getNow(true));
     super.stop(context);
     plugin = null;
   }
@@ -269,8 +269,9 @@ public class UCDetectorPlugin extends AbstractUIPlugin {
     return getDefault().getImageRegistry().getDescriptor(key);
   }
 
-  public static String getNow() {
-    return getDefault().dateFormat.format(new Date());
+  public static String getNow(boolean showMillis) {
+    DateFormat format = showMillis ? getDefault().dateFormatMillis : getDefault().dateFormat;
+    return format.format(new Date());
   }
 
   // -------------------------------------------------------------------------
@@ -420,40 +421,6 @@ public class UCDetectorPlugin extends AbstractUIPlugin {
     return writer.toString();
   }
 
-  /**
-   * @param map map to create a string
-   * @param format string used to format key value pairs, see {@link String#format(String, Object...)}
-   * @return a map as a string
-   */
-  public static String toString(Map<? extends Object, ? extends Object> map, String format) {
-    if (map == null) {
-      return String.valueOf(map);
-    }
-    String formatUsed = (format == null ? "\t%s = %s%n" : format);
-    StringBuilder result = new StringBuilder();
-    for (Object key : map.keySet()) {
-      result.append(String.format(formatUsed, key, map.get(key)));
-    }
-    return result.toString();
-  }
-
-  /** 
-   * @param collection collection to create a string
-   * @param separator string to separate items
-   * @return a collection as a string 
-   * */
-  public static String toString(Collection<? extends Object> collection, String separator) {
-    if (collection == null) {
-      return String.valueOf(collection);
-    }
-    StringBuilder result = new StringBuilder();
-    String separatorUsed = (separator == null ? "\n" : separator);
-    for (Object object : collection) {
-      result.append(result.length() == 0 ? "" : separatorUsed).append(object);
-    }
-    return result.toString();
-  }
-
   /** @return WORKSPACE/.metadata/.plugins/org.ucdetector/modes */
   // Unused:   WORKSPACE/.metadata/.plugins/org.eclipse.core.runtime/.settings/org.ucdetector.prefs
   public static File getModesDir() {
@@ -476,4 +443,38 @@ public class UCDetectorPlugin extends AbstractUIPlugin {
     logToEclipseLog(status);
     return status;
   }
+
+  ///**
+  //* @param map map to create a string
+  //* @param format string used to format key value pairs, see {@link String#format(String, Object...)}
+  //* @return a map as a string
+  //*/
+  //public static String toString(Map<? extends Object, ? extends Object> map, String format) {
+  // if (map == null) {
+  //   return String.valueOf(map);
+  // }
+  // String formatUsed = (format == null ? "\t%s = %s%n" : format);
+  // StringBuilder result = new StringBuilder();
+  // for (Object key : map.keySet()) {
+  //   result.append(String.format(formatUsed, key, map.get(key)));
+  // }
+  // return result.toString();
+  //}
+  //
+  ///** 
+  //* @param collection collection to create a string
+  //* @param separator string to separate items
+  //* @return a collection as a string 
+  //* */
+  //public static String toString(Collection<? extends Object> collection, String separator) {
+  // if (collection == null) {
+  //   return String.valueOf(collection);
+  // }
+  // StringBuilder result = new StringBuilder();
+  // String separatorUsed = (separator == null ? "\n" : separator);
+  // for (Object object : collection) {
+  //   result.append(result.length() == 0 ? "" : separatorUsed).append(object);
+  // }
+  // return result.toString();
+  //}
 }

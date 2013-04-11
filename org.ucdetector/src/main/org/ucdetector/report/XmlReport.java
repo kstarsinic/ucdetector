@@ -322,7 +322,7 @@ public class XmlReport implements IUCDetectorReport {
     long now = System.currentTimeMillis();
     long duration = (now - startTime);
     String durationString = StopWatch.timeAsString(duration);
-    nodeCreated = appendAbout("reportCreated", "Created report", UCDetectorPlugin.getNow(), true, nodeCreated);
+    nodeCreated = appendAbout("reportCreated", "Created report", UCDetectorPlugin.getNow(false), true, nodeCreated);
     nodeCreatedTS = appendAbout("reportCreatedTS", "Created report", "" + now, false, nodeCreatedTS);
     nodeDuration = appendAbout("searchDuration", "Search duration", durationString, true, nodeDuration);
     nodeDurationTS = appendAbout("searchDurationTS", "Search duration", "" + duration, false, nodeDurationTS);

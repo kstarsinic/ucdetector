@@ -52,7 +52,7 @@ public class ModesWriter {
     text.append(String.format("###               UCDetector preference file for mode: '%s'%n", modeName));
     text.append(String.format("### -------------------------------------------------------------------------%n"));
     text.append(String.format("### Created by  : UCDetector %s%n", UCDetectorPlugin.getAboutUCDVersion()));
-    text.append(String.format("### Created date: %s%n", UCDetectorPlugin.getNow()));
+    text.append(String.format("### Created date: %s%n", UCDetectorPlugin.getNow(false)));
     text.append(String.format("### java.util.Properties.load() may fail to load this file%n"));
     text.append(String.format("### -------------------------------------------------------------------------%n"));
     Map<String, String> groupPrefs = new LinkedHashMap<String, String>();
