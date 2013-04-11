@@ -14,6 +14,7 @@ import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.Platform;
 import org.eclipse.equinox.app.IApplication;
 import org.eclipse.equinox.app.IApplicationContext;
+import org.ucdetector.search.UCDProgressMonitor;
 
 /**
  * 
@@ -48,7 +49,7 @@ public class UCDApplication implements IApplication {
 
   private void startImpl() throws FileNotFoundException, CoreException {
     UCDHeadless ucdHeadless = new UCDHeadless(getOptionsFileName());
-    systemInReader = new SystemInReader(ucdHeadless);
+    systemInReader = new SystemInReader(ucdHeadless.ucdMonitor);
     systemInReader.start();
     ucdHeadless.iterate();
   }
@@ -71,36 +72,55 @@ public class UCDApplication implements IApplication {
   }
 
   // SystemInReader -----------------------------------------------------------
-
+  /**
+   * Exit, stop, continue UCDetector by typing commands to System.in.
+   * <p>
+   * @author Joerg Spieler
+   * @since 11.04.2013
+   */
   private static final class SystemInReader extends Thread {
-    private final UCDHeadless ucdHeadless;
+    private final UCDProgressMonitor ucdMonitor;
 
-    public SystemInReader(UCDHeadless ucdHeadless) {
-      this.ucdHeadless = ucdHeadless;
+    public SystemInReader(UCDProgressMonitor ucdMonitor) {
+      this.ucdMonitor = ucdMonitor;
     }
 
     @Override
     public void run() {
-      System.out.println("SystemInReader: Start");
-      Log.info("------------------------------------");
-      Log.info("Type 'exit' to to cancel UCDHeadless");
-      Log.info("------------------------------------");
+      Log.info("SystemInReader: Start");
+      dumpHelp();
       InputStreamReader inStream = new InputStreamReader(System.in);
       BufferedReader reader = new BufferedReader(inStream);
       String line;
       try {
         while ((line = reader.readLine()) != null) {
-          Log.debug("SystemInReader LINE: " + line);
-          if ("exit".equals(line)) {
-            Log.debug("SystemInReader: exit called!");
-            if (ucdHeadless.ucdMonitor != null) {
-              ucdHeadless.ucdMonitor.setCanceled(true);
+          Log.info("SystemInReader LINE: '" + line + "'");
+          // break ------------------------------------------------------------
+          if (isInterrupted()) {
+            Log.warn("SystemInReader: Interrupted");
+            break;
+          }
+          if (line.startsWith("e")) {
+            Log.warn("SystemInReader: exit called!");
+            if (ucdMonitor != null) {
+              setSleep(false);
+              ucdMonitor.setCanceled(true);
             }
             break;
           }
-          if (isInterrupted()) {
-            Log.debug("SystemInReader: Interrupted");
-            break;
+          // continue ---------------------------------------------------------
+          if (line.length() == 0) {
+            Log.info("Type 'h' for help");
+            continue;
+          }
+          if (line.startsWith("h") || line.startsWith("?")) {
+            setSleep(true);
+            dumpHelp();
+            continue;
+          }
+          if (line.startsWith("s")) {
+            setSleep(!ucdMonitor.isSleep());// Toggle
+            continue;
           }
         }
       }
@@ -110,7 +130,20 @@ public class UCDApplication implements IApplication {
       finally {
         UCDetectorPlugin.closeSave(inStream);
       }
-      Log.debug("SystemInReader: End");
+      Log.info("SystemInReader: End");
+    }
+
+    void setSleep(boolean sleep) {
+      ucdMonitor.setSleep(sleep);
+      Log.info("SystemInReader sleep: " + sleep);
+    }
+
+    private static void dumpHelp() {
+      Log.info("====================================");
+      Log.info("= USAGE: Type 'h' to get help      =");
+      Log.info("= USAGE: Type 'e' to exit          =");
+      Log.info("= USAGE: Type 's' to stop/continue =");
+      Log.info("====================================");
     }
   }
 }
