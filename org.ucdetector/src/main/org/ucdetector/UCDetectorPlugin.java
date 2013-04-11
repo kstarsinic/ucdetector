@@ -13,10 +13,7 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.io.Reader;
 import java.io.StringWriter;
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
 import java.util.Arrays;
-import java.util.Date;
 import java.util.HashSet;
 import java.util.LinkedHashMap;
 import java.util.Map;
@@ -82,12 +79,7 @@ public class UCDetectorPlugin extends AbstractUIPlugin {
    */
   public static final String HELP_ID = ID + ".ucd_context_id";
   public static final String HELP_ID_PREFERENCES = ID + ".ucd_context_id_preferences";
-  //private final DateFormat dateFormat = DateFormat.getDateTimeInstance(DateFormat.MEDIUM, DateFormat.MEDIUM, Locale.getDefault());
-  private final DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-  private final DateFormat dateFormatMillis = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSS");
   private static final String SEPARATOR = "-----------------------------------------------------------------------------"; //$NON-NLS-1$
-
-  // INSTANCE
 
   public UCDetectorPlugin() {
     plugin = this;
@@ -97,7 +89,7 @@ public class UCDetectorPlugin extends AbstractUIPlugin {
     Log.info(SEPARATOR);
     Log.info("Starting UCDetector Plug-In version " + UCDInfo.getUCDVersion());
     Log.info(SEPARATOR);
-    Log.info("Time            : " + getNow(false));
+    Log.info("Time            : " + UCDInfo.getNow(false));
     Log.info("OS              : " + UCDInfo.getOS());
     Log.info("Java            : " + UCDInfo.getJavaVersion());
     Log.info("Eclipse version : " + UCDInfo.getEclipseVersion());
@@ -145,10 +137,9 @@ public class UCDetectorPlugin extends AbstractUIPlugin {
   public static String getPreferencesAsString() {
     StringBuilder sb = new StringBuilder();
     Map<String, String> deltaPreferences = getDeltaPreferences();
-    sb.append(String.format("%s UCDetector preferences are different from default preferences:", //
+    sb.append(String.format("%s UCDetector preferences are different from default preferences:",
         "" + deltaPreferences.size()));
-    Set<Entry<String, String>> entrySet = deltaPreferences.entrySet();
-    for (Entry<String, String> entry : entrySet) {
+    for (Entry<String, String> entry : deltaPreferences.entrySet()) {
       sb.append(String.format("%n       %s=%s", entry.getKey(), entry.getValue()));
     }
     return sb.toString();
@@ -196,7 +187,7 @@ public class UCDetectorPlugin extends AbstractUIPlugin {
    */
   @Override
   public void stop(BundleContext context) throws Exception {
-    Log.info("Stopping UCDetector Plug-In at " + getNow(true));
+    Log.info("Stopping UCDetector Plug-In at " + UCDInfo.getNow(true));
     super.stop(context);
     plugin = null;
   }
@@ -251,11 +242,6 @@ public class UCDetectorPlugin extends AbstractUIPlugin {
 
   public static ImageDescriptor getImageDescriptor(String key) {
     return getDefault().getImageRegistry().getDescriptor(key);
-  }
-
-  public static String getNow(boolean showMillis) {
-    DateFormat format = showMillis ? getDefault().dateFormatMillis : getDefault().dateFormat;
-    return format.format(new Date());
   }
 
   // -------------------------------------------------------------------------

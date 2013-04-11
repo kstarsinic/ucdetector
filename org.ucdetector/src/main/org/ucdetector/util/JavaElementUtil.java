@@ -59,9 +59,6 @@ import org.ucdetector.search.CountSearchRequestor;
  */
 @SuppressWarnings("nls")
 public final class JavaElementUtil {
-  /**
-   * 
-   */
   private static final String UNKNOWN_FIELD = "field?";
   private static final NullProgressMonitor NULL_MONITOR = new NullProgressMonitor();
 
@@ -314,6 +311,7 @@ public final class JavaElementUtil {
    *         Searching for this methods is very slow and in some cases it does
    *         make no sense to search for this methods
    */
+  // Other methods from Object are final: getClass(), notify(), notifyAll(), wait()
   public static boolean isMethodOfJavaLangObject(IMethod method) {
     String methodName = method.getElementName();
     switch (method.getNumberOfParameters()) {
@@ -778,26 +776,6 @@ public final class JavaElementUtil {
     return false;
   }
 
-  /*
-   * @see OverrideIndicatorLabelDecorator, MethodOverrideTester
-   * @return <code>true</code>, when a method override or implements another method.
-  public static boolean isOverrideOrImplements(IMethod method)
-      throws JavaModelException {
-    int flags = method.getFlags();
-    if (method.isConstructor() || Flags.isStatic(flags)
-        || Flags.isPrivate(flags)) {
-      return false;
-    }
-    IType type = method.getDeclaringType();
-    MethodOverrideTester methodOverrideTester = SuperTypeHierarchyCache
-        .getMethodOverrideTester(type);
-    IMethod defining = methodOverrideTester.findOverriddenMethod(method, true);
-    //    if (JdtFlags.isAbstract(defining)) { return JavaElementImageDescriptor.IMPLEMENTS;
-    //    else {return JavaElementImageDescriptor.OVERRIDES;
-    return defining != null;
-  }
-   */
-
   // -------------------------------------------------------------------------
   // SEARCH
   // -------------------------------------------------------------------------
@@ -956,41 +934,6 @@ public final class JavaElementUtil {
     return false;
   }
 
-  /*
-   * @return the annotation for a method like @org.junit.Test
-   * This method seems to be slow, because it needs to parse
-   * the code of the method!
-  private static String getAnnotationFor(IMethod method)
-      throws JavaModelException {
-    ASTParser parser = ASTParser.newParser(AST.JLS3);
-    parser.setSource(method.getSource().toCharArray());
-    parser.setKind(ASTParser.K_CLASS_BODY_DECLARATIONS);
-    parser.setResolveBindings(true);
-    ASTNode createAST = parser.createAST(null);
-    FindAnnotationVisitor visitor = new FindAnnotationVisitor();
-    createAST.accept(visitor);
-    //    System.out.println(" annotation for " + method.getElementName() + "->"
-    //        + visitor.annotation.getFullyQualifiedName());
-    return visitor.annotation.getFullyQualifiedName();
-  }
-
-  private static class FindAnnotationVisitor extends ASTVisitor {
-    private Name annotation;
-
-    @Override
-    public boolean visit(MethodDeclaration node) {
-      for (Object modifier : node.modifiers()) {
-        // System.out.println("modifier=" + modifier + Log.getClassName(modifier));
-        if (modifier instanceof Annotation) {
-          Annotation ma = (Annotation) modifier;
-          annotation = ma.getTypeName();
-        }
-      }
-      return false;
-    }
-  }
-   */
-
   /**
    * org.eclipse.jdt.internal.corext.dom.Bindings.findOverriddenMethod
    * org.eclipse.jdt.internal.ui.typehierarchy.SubTypeHierarchyViewer
@@ -1025,6 +968,61 @@ public final class JavaElementUtil {
     String typeName = getElementName(type);
     return String.format("%s.%s(%s.java:%s)", typeNameFull, member, typeName, Integer.toString(lineNr));
   }
+
+  /*
+   * @return the annotation for a method like @org.junit.Test
+   * This method seems to be slow, because it needs to parse
+   * the code of the method!
+  private static String getAnnotationFor(IMethod method)
+      throws JavaModelException {
+    ASTParser parser = ASTParser.newParser(AST.JLS3);
+    parser.setSource(method.getSource().toCharArray());
+    parser.setKind(ASTParser.K_CLASS_BODY_DECLARATIONS);
+    parser.setResolveBindings(true);
+    ASTNode createAST = parser.createAST(null);
+    FindAnnotationVisitor visitor = new FindAnnotationVisitor();
+    createAST.accept(visitor);
+    //    System.out.println(" annotation for " + method.getElementName() + "->"
+    //        + visitor.annotation.getFullyQualifiedName());
+    return visitor.annotation.getFullyQualifiedName();
+  }
+
+  private static class FindAnnotationVisitor extends ASTVisitor {
+    private Name annotation;
+
+    @Override
+    public boolean visit(MethodDeclaration node) {
+      for (Object modifier : node.modifiers()) {
+        // System.out.println("modifier=" + modifier + Log.getClassName(modifier));
+        if (modifier instanceof Annotation) {
+          Annotation ma = (Annotation) modifier;
+          annotation = ma.getTypeName();
+        }
+      }
+      return false;
+    }
+  }
+
+   */
+  /*
+   * @see OverrideIndicatorLabelDecorator, MethodOverrideTester
+   * @return <code>true</code>, when a method override or implements another method.
+  public static boolean isOverrideOrImplements(IMethod method)
+      throws JavaModelException {
+    int flags = method.getFlags();
+    if (method.isConstructor() || Flags.isStatic(flags)
+        || Flags.isPrivate(flags)) {
+      return false;
+    }
+    IType type = method.getDeclaringType();
+    MethodOverrideTester methodOverrideTester = SuperTypeHierarchyCache
+        .getMethodOverrideTester(type);
+    IMethod defining = methodOverrideTester.findOverriddenMethod(method, true);
+    //    if (JdtFlags.isAbstract(defining)) { return JavaElementImageDescriptor.IMPLEMENTS;
+    //    else {return JavaElementImageDescriptor.OVERRIDES;
+    return defining != null;
+  }
+   */
 
   /*
    * @param clazz to find super classes for

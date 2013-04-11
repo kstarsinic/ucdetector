@@ -55,7 +55,7 @@ public class TextReport implements IUCDetectorReport {
 
   private void appendTitle() {
     report.append("Created with UCDetector ").append(UCDInfo.getUCDVersion()).append(TAB);
-    report.append(UCDetectorPlugin.getNow(false)).append(TAB);
+    report.append(UCDInfo.getNow(false)).append(TAB);
     report.append("http://www.ucdetector.org/").append(TAB);
     report.append("Created by class: " + getClass().getName()).append(TAB);
     report.append(NEW_LINE);

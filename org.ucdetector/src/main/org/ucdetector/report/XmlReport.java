@@ -49,9 +49,9 @@ import org.eclipse.jdt.core.IPackageFragmentRoot;
 import org.eclipse.jdt.core.IType;
 import org.eclipse.osgi.util.NLS;
 import org.osgi.framework.Bundle;
-import org.ucdetector.UCDInfo;
 import org.ucdetector.Log;
 import org.ucdetector.Messages;
+import org.ucdetector.UCDInfo;
 import org.ucdetector.UCDetectorPlugin;
 import org.ucdetector.preferences.Prefs;
 import org.ucdetector.util.JavaElementUtil;
@@ -290,21 +290,23 @@ public class XmlReport implements IUCDetectorReport {
   }
 
   /** Append statistics like: date, searchDuration, searched elements   */
+  @SuppressWarnings("boxing")
   private void appendStatistics(boolean isEndReport) {
     if (isFirstStatistic) {
       isFirstStatistic = false;
       abouts = appendChild(statistcs, "abouts", null);
-      appendAbout("operatingSystem"/*   */, "Operating system"/* */, UCDInfo.getOS(), true);
-      appendAbout("javaVersion"/*       */, "Java"/*             */, UCDInfo.getJavaVersion(), true);
-      appendAbout("eclipseVersion"/*    */, "Eclipse"/*          */, UCDInfo.getEclipseVersion(), true);
-      appendAbout("eclipseHome"/*       */, "Eclipse home"/*     */, UCDInfo.getEclipseHome(), false);
-      appendAbout("eclipseProduct"/*    */, "Eclipse product"/*  */, UCDInfo.getEclipseProduct(), true);
-      appendAbout("ucdetectorVersion"/* */, "UCDetector"/*       */, UCDInfo.getUCDVersion(), true);
-      appendAbout("logfile"/*           */, "Logfile"/*          */, UCDInfo.getLogfile(), false);
-      appendAbout("workspace"/*         */, "Workspace"/*        */, UCDInfo.getWorkspace(), false);
-      appendAbout("mode"/*              */, "Mode"/*             */, Prefs.getModeName(), true);
-      appendAbout("host"/*              */, "Host"/*             */, UCDInfo.getHostName(), false);
-      appendAbout("headless"/*          */, "Headless"/*         */, "" + UCDetectorPlugin.isHeadlessMode(), false);
+      appendAbout("operatingSystem"/*   */, "Operating system"/* */, UCDInfo.getOS()/*              */, true, null);
+      appendAbout("javaVersion"/*       */, "Java"/*             */, UCDInfo.getJavaVersion()/*     */, true, null);
+      appendAbout("eclipseVersion"/*    */, "Eclipse"/*          */, UCDInfo.getEclipseVersion()/*  */, true, null);
+      appendAbout("eclipseHome"/*       */, "Eclipse home"/*     */, UCDInfo.getEclipseHome()/*     */, false, null);
+      appendAbout("eclipseProduct"/*    */, "Eclipse product"/*  */, UCDInfo.getEclipseProduct()/*  */, true, null);
+      appendAbout("ucdetectorVersion"/* */, "UCDetector"/*       */, UCDInfo.getUCDVersion()/*      */, true, null);
+      appendAbout("logfile"/*           */, "Logfile"/*          */, UCDInfo.getLogfile()/*         */, false, null);
+      appendAbout("workspace"/*         */, "Workspace"/*        */, UCDInfo.getWorkspace()/*       */, false, null);
+      appendAbout("mode"/*              */, "Mode"/*             */, Prefs.getModeName()/*          */, true, null);
+      appendAbout("host"/*              */, "Host"/*             */, UCDInfo.getHostName()/*        */, false, null);
+      appendAbout("createdBy"/*         */, "Created by"/*       */, getClass().getName()/*         */, false, null);
+      appendAbout("headless"/*          */, "Headless"/*         */, UCDetectorPlugin.isHeadlessMode(), false, null);
       //
       Element searched = appendChild(statistcs, "searched", null);
       for (IJavaElement javaElement : objectsToIterate) {
@@ -323,16 +325,12 @@ public class XmlReport implements IUCDetectorReport {
     long now = System.currentTimeMillis();
     long duration = (now - startTime);
     String durationString = StopWatch.timeAsString(duration);
-    nodeCreated = appendAbout("reportCreated", "Created report", UCDetectorPlugin.getNow(false), true, nodeCreated);
+    nodeCreated = appendAbout("reportCreated", "Created report", UCDInfo.getNow(false), true, nodeCreated);
     nodeCreatedTS = appendAbout("reportCreatedTS", "Created report", "" + now, false, nodeCreatedTS);
     nodeDuration = appendAbout("searchDuration", "Search duration", durationString, true, nodeDuration);
     nodeDurationTS = appendAbout("searchDurationTS", "Search duration", "" + duration, false, nodeDurationTS);
     nodeFinished = appendAbout("detectionFinished", "Detection Finished", "" + isEndReport, false, nodeFinished);
-    nodeWarnings = appendAbout("warnings", "Warnings", String.valueOf(markerCount), true, nodeWarnings);
-  }
-
-  private Element appendAbout(String nodeName, String nodeNiceName, String value, boolean show) {
-    return appendAbout(nodeName, nodeNiceName, value, show, null);
+    nodeWarnings = appendAbout("warnings", "Warnings", markerCount, true, nodeWarnings);
   }
 
   /**
@@ -343,7 +341,7 @@ public class XmlReport implements IUCDetectorReport {
    *  &lt;/about>
    * </pre>
    */
-  private Element appendAbout(String nodeName, String nodeNiceName, String value, boolean show, Element alreadyCreated) {
+  private Element appendAbout(String nodeName, String nodeNiceName, Object value, boolean show, Element alreadyCreated) {
     if (alreadyCreated != null) {
       alreadyCreated.getParentNode().removeChild(alreadyCreated);
     }
@@ -351,7 +349,7 @@ public class XmlReport implements IUCDetectorReport {
     about.setAttribute("name", nodeName);
     about.setAttribute("show", Boolean.toString(show));
     appendChild(about, "key", nodeNiceName);
-    appendChild(about, "value", value);
+    appendChild(about, "value", String.valueOf(value));
     return about;
   }
 

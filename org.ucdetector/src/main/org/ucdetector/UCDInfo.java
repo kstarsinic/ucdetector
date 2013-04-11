@@ -6,6 +6,10 @@
  */
 package org.ucdetector;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+
 import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.IProduct;
@@ -24,6 +28,10 @@ import org.ucdetector.Log.LogLevel;
 @SuppressWarnings("nls")
 public class UCDInfo {
   private static final int MEGA_BYTE = 1024 * 1024;
+
+  // private final DateFormat dateFormat = DateFormat.getDateTimeInstance(DateFormat.MEDIUM, DateFormat.MEDIUM, Locale.getDefault());
+  private static final DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+  private static final DateFormat dateFormatMillis = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSS");
 
   public static String getJavaVersion() {
     return System.getProperty("java.runtime.version");
@@ -110,5 +118,9 @@ public class UCDInfo {
         String.valueOf(used),//
         String.valueOf(percentUsed));
     Log.log(percentUsed > 80 ? LogLevel.WARN : LogLevel.INFO, message);
+  }
+
+  public static String getNow(boolean showMillis) {
+    return (showMillis ? dateFormatMillis : dateFormat).format(new Date());
   }
 }
