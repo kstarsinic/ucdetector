@@ -35,6 +35,7 @@ import org.eclipse.swt.widgets.TabItem;
 import org.eclipse.ui.IWorkbench;
 import org.eclipse.ui.IWorkbenchPreferencePage;
 import org.eclipse.ui.PlatformUI;
+import org.ucdetector.UCDInfo;
 import org.ucdetector.Log;
 import org.ucdetector.Log.LogLevel;
 import org.ucdetector.Messages;
@@ -92,7 +93,7 @@ public class UCDetectorPreferencePage extends FieldEditorPreferencePage implemen
   @Override
   public void createFieldEditors() {
     Composite parentGroups = createComposite(getFieldEditorParent(), 1, 1, GridData.FILL_BOTH);
-    setTitle("UCDetector " + UCDetectorPlugin.getAboutUCDVersion()); //$NON-NLS-1$
+    setTitle("UCDetector " + UCDInfo.getUCDVersion()); //$NON-NLS-1$
     modesPanel = new ModesPanel(this, parentGroups);
     tabFolder = new TabFolder(parentGroups, SWT.NONE);
     tabFolder.setLayoutData(createGridData(500, SWT.DEFAULT, SWT.FILL, SWT.CENTER, true, false));

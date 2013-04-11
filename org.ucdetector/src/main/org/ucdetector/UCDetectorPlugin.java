@@ -23,10 +23,8 @@ import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Set;
 
-import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IPath;
-import org.eclipse.core.runtime.IProduct;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Path;
 import org.eclipse.core.runtime.Platform;
@@ -45,8 +43,6 @@ import org.eclipse.swt.widgets.Shell;
 import org.eclipse.ui.ISharedImages;
 import org.eclipse.ui.IWorkbenchWindow;
 import org.eclipse.ui.PlatformUI;
-import org.eclipse.ui.internal.ProductProperties;
-import org.eclipse.ui.internal.WorkbenchMessages;
 import org.eclipse.ui.internal.WorkbenchPage;
 import org.eclipse.ui.internal.ide.IDEWorkbenchPlugin;
 import org.eclipse.ui.plugin.AbstractUIPlugin;
@@ -66,7 +62,6 @@ import org.ucdetector.preferences.Prefs;
 public class UCDetectorPlugin extends AbstractUIPlugin {
   public static final String UTF_8 = "UTF-8";
   //
-  private static final int MEGA_BYTE = 1024 * 1024;
   public static final String IMAGE_FINAL = "IMAGE_FINAL";
   public static final String IMAGE_UCD = "IMAGE_UCD";
   public static final String IMAGE_COMMENT = "IMAGE_COMMENT";
@@ -100,32 +95,21 @@ public class UCDetectorPlugin extends AbstractUIPlugin {
 
   private static void dumpInformation() {
     Log.info(SEPARATOR);
-    Log.info("Starting UCDetector Plug-In version " + getAboutUCDVersion());
+    Log.info("Starting UCDetector Plug-In version " + UCDInfo.getUCDVersion());
     Log.info(SEPARATOR);
     Log.info("Time            : " + getNow(false));
-    Log.info("OS              : " + getAboutOS());
-    Log.info("Java            : " + getAboutJavaVersion());
-    Log.info("Eclipse version : " + getAboutEclipseVersion());
-    Log.info("Eclipse home    : " + getAboutEclipseHome());
-    Log.info("Eclipse product : " + getAboutEclipseProduct());
-    Log.info("Workspace       : " + getAboutWorkspace());
-    Log.info("Logfile         : " + getAboutLogfile());
+    Log.info("OS              : " + UCDInfo.getOS());
+    Log.info("Java            : " + UCDInfo.getJavaVersion());
+    Log.info("Eclipse version : " + UCDInfo.getEclipseVersion());
+    Log.info("Eclipse home    : " + UCDInfo.getEclipseHome());
+    Log.info("Eclipse product : " + UCDInfo.getEclipseProduct());
+    Log.info("Workspace       : " + UCDInfo.getWorkspace());
+    Log.info("Logfile         : " + UCDInfo.getLogfile());
     Log.info("Log level       : " + Log.getActiveLogLevel().toString());
     Log.info("Modes Dir       : " + getModesDir().getAbsolutePath()); //$NON-NLS-1$
     Log.info(getPreferencesAsString());
-    logMemoryInfo();
+    UCDInfo.logMemoryInfo();
     Log.info(SEPARATOR);
-  }
-
-  public static void logMemoryInfo() {
-    long used = (Runtime.getRuntime().totalMemory() - Runtime.getRuntime().freeMemory()) / MEGA_BYTE;
-    long max = Runtime.getRuntime().maxMemory() / MEGA_BYTE;
-    long percentUsed = (100 * used) / max;
-    String message = String.format("Memory: %s MB max, %s MB used (%s %%)", //
-        String.valueOf(max),//
-        String.valueOf(used),//
-        String.valueOf(percentUsed));
-    Log.log(percentUsed > 80 ? LogLevel.WARN : LogLevel.INFO, message);
   }
 
   @Override
@@ -305,83 +289,6 @@ public class UCDetectorPlugin extends AbstractUIPlugin {
       catch (Exception e) {
         Log.warn("Can't close %s: %s", closable, e); //$NON-NLS-1$
       }
-    }
-  }
-
-  // -------------------------------------------------------------------------
-  public static String getAboutOS() {
-    return System.getProperty("os.name") + " - " + System.getProperty("os.version");
-  }
-
-  public static String getAboutJavaVersion() {
-    return System.getProperty("java.runtime.version");
-  }
-
-  /** @return the version of the platform plugin (= version of Eclipse about dialog or splash screen) */
-  public static String getAboutEclipseVersion() {
-    //System.getProperty("osgi.framework.version");// values is 3.8.0 for eclipse 4.2.0
-    return getBundelVersion(Platform.getBundle("org.eclipse.platform"));
-  }
-
-  public static String getAboutUCDVersion() {
-    return getBundelVersion(getDefault().getBundle());
-  }
-
-  private static String getBundelVersion(Bundle bundle) {
-    return String.valueOf(bundle.getHeaders().get("Bundle-Version"));
-  }
-
-  public static String getAboutEclipseHome() {
-    String eclipseHome = System.getProperty("osgi.install.area");
-    if (eclipseHome != null && eclipseHome.startsWith("file:")) {
-      return eclipseHome.substring("file:".length());
-    }
-    return eclipseHome;
-  }
-
-  public static String getAboutEclipseProduct() {
-    IProduct product = Platform.getProduct();
-    if (product == null) {
-      // see: org.eclipse.ui.internal.dialogs.AboutDialog.productName
-      return WorkbenchMessages.AboutDialog_defaultProductName;
-    }
-    if (ProductProperties.getAboutText(product) != null) {
-      // Eg: org.eclipse.epp.package.java_1.4.0.20110609-1120/plugin.xml
-      // Eg: org.eclipse.sdk_3.7.1.v201109091335/plugin.properties
-      String aboutText = ProductProperties.getAboutText(product);
-      String[] aboutLines = aboutText.split("\r\n|\r|\n");
-      StringBuffer result = new StringBuffer();
-      int foundLines = 0;
-      for (String aboutLine : aboutLines) {
-        aboutLine = aboutLine.trim();
-        if (aboutLine.length() > 0) {
-          foundLines++;
-          result.append(aboutLine);
-          if (foundLines >= 3) {
-            return result.toString();// Usually the first 3 line contain useful information
-          }
-          result.append(", ");
-        }
-      }
-    }
-    return product.getName();
-  }
-
-  public static String getAboutLogfile() {
-    return System.getProperty("osgi.logfile");
-  }
-
-  public static String getAboutWorkspace() {
-    IPath location = ResourcesPlugin.getWorkspace().getRoot().getLocation();
-    return location == null ? System.getProperty("osgi.instance.area") : location.toOSString();
-  }
-
-  public static String getHostName() {
-    try {
-      return java.net.InetAddress.getLocalHost().getHostName();
-    }
-    catch (Exception e) {
-      return "?";
     }
   }
 

@@ -35,6 +35,7 @@ import org.eclipse.swt.widgets.Combo;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Label;
+import org.ucdetector.UCDInfo;
 import org.ucdetector.Log;
 import org.ucdetector.Messages;
 import org.ucdetector.UCDetectorPlugin;
@@ -210,7 +211,7 @@ class ModesPanel {
     if (version.length() == 0) {
       Log.info("Adding mode: MyMode"); //$NON-NLS-1$
       addMode("MyMode"); //$NON-NLS-1$
-      Prefs.getStore().setValue(Prefs.PREFS_VERSION, UCDetectorPlugin.getAboutUCDVersion());
+      Prefs.getStore().setValue(Prefs.PREFS_VERSION, UCDInfo.getUCDVersion());
     }
   }
 

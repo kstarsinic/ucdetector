@@ -49,6 +49,7 @@ import org.eclipse.jdt.core.IPackageFragmentRoot;
 import org.eclipse.jdt.core.IType;
 import org.eclipse.osgi.util.NLS;
 import org.osgi.framework.Bundle;
+import org.ucdetector.UCDInfo;
 import org.ucdetector.Log;
 import org.ucdetector.Messages;
 import org.ucdetector.UCDetectorPlugin;
@@ -293,17 +294,17 @@ public class XmlReport implements IUCDetectorReport {
     if (isFirstStatistic) {
       isFirstStatistic = false;
       abouts = appendChild(statistcs, "abouts", null);
-      appendAbout("operatingSystem", "Operating system", UCDetectorPlugin.getAboutOS(), true, null);
-      appendAbout("javaVersion", "Java", UCDetectorPlugin.getAboutJavaVersion(), true, null);
-      appendAbout("eclipseVersion", "Eclipse", UCDetectorPlugin.getAboutEclipseVersion(), true, null);
-      appendAbout("eclipseHome", "Eclipse home", UCDetectorPlugin.getAboutEclipseHome(), false, null);
-      appendAbout("eclipseProduct", "Eclipse product", UCDetectorPlugin.getAboutEclipseProduct(), true, null);
-      appendAbout("ucdetectorVersion", "UCDetector", UCDetectorPlugin.getAboutUCDVersion(), true, null);
-      appendAbout("logfile", "Logfile", UCDetectorPlugin.getAboutLogfile(), false, null);
-      appendAbout("workspace", "Workspace", UCDetectorPlugin.getAboutWorkspace(), false, null);
-      appendAbout("mode", "Mode", Prefs.getModeName(), true, null);
-      appendAbout("host", "Host", UCDetectorPlugin.getHostName(), false, null);
-      appendAbout("headless", "headless", "" + UCDetectorPlugin.isHeadlessMode(), false, null);
+      appendAbout("operatingSystem"/*   */, "Operating system"/* */, UCDInfo.getOS(), true);
+      appendAbout("javaVersion"/*       */, "Java"/*             */, UCDInfo.getJavaVersion(), true);
+      appendAbout("eclipseVersion"/*    */, "Eclipse"/*          */, UCDInfo.getEclipseVersion(), true);
+      appendAbout("eclipseHome"/*       */, "Eclipse home"/*     */, UCDInfo.getEclipseHome(), false);
+      appendAbout("eclipseProduct"/*    */, "Eclipse product"/*  */, UCDInfo.getEclipseProduct(), true);
+      appendAbout("ucdetectorVersion"/* */, "UCDetector"/*       */, UCDInfo.getUCDVersion(), true);
+      appendAbout("logfile"/*           */, "Logfile"/*          */, UCDInfo.getLogfile(), false);
+      appendAbout("workspace"/*         */, "Workspace"/*        */, UCDInfo.getWorkspace(), false);
+      appendAbout("mode"/*              */, "Mode"/*             */, Prefs.getModeName(), true);
+      appendAbout("host"/*              */, "Host"/*             */, UCDInfo.getHostName(), false);
+      appendAbout("headless"/*          */, "Headless"/*         */, "" + UCDetectorPlugin.isHeadlessMode(), false);
       //
       Element searched = appendChild(statistcs, "searched", null);
       for (IJavaElement javaElement : objectsToIterate) {
@@ -328,6 +329,10 @@ public class XmlReport implements IUCDetectorReport {
     nodeDurationTS = appendAbout("searchDurationTS", "Search duration", "" + duration, false, nodeDurationTS);
     nodeFinished = appendAbout("detectionFinished", "Detection Finished", "" + isEndReport, false, nodeFinished);
     nodeWarnings = appendAbout("warnings", "Warnings", String.valueOf(markerCount), true, nodeWarnings);
+  }
+
+  private Element appendAbout(String nodeName, String nodeNiceName, String value, boolean show) {
+    return appendAbout(nodeName, nodeNiceName, value, show, null);
   }
 
   /**
