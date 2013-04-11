@@ -126,11 +126,28 @@ public class SearchManager {
     }
   }
 
+  /**
+   * Message shown in the progress dialog like:<br>
+   *        <code>Search   50 of   75 types. Markers   25. Exceptions  0. Class FinalHandler - 2013-04-11 23:48:04.420</code>
+   */
   @SuppressWarnings("boxing")
   private String getProgress(Set<TypeContainer> typeContainers, int pos, TypeContainer container) {
-    return String.format("%s Search %4s of %4s types. Markers %4s. Exceptions %2s. Class %s", //$NON-NLS-1$
-        UCDetectorPlugin.getNow(true), pos, typeContainers.size(), markerCreated, searchProblems.size(),//
-        JavaElementUtil.getTypeName(container.getType()));
+    return String.format("Search %4s of %4s types. Markers %4s. Exceptions %2s. Class %s - %s", //$NON-NLS-1$
+        pos, typeContainers.size(), markerCreated, searchProblems.size(),//
+        JavaElementUtil.getTypeName(container.getType()), UCDetectorPlugin.getNow(true));
+  }
+
+  /**
+   * Message shown in the progress dialog like:<br>
+   *        <code>Found 2. Done 7/764. Detecting: Method Classname.methodName() - check override/implements</code>
+   */
+  private void updateMonitorMessage(IJavaElement element, String details, String searchInfo) {
+    checkForCancel();
+    String javaElement = JavaElementUtil.getElementName(element);
+    Object[] bindings = new Object[] { Integer.valueOf(markerCreated), Integer.valueOf(search),
+        Integer.valueOf(searchTotal), searchInfo, javaElement, details };
+    String message = NLS.bind(Messages.SearchManager_Monitor, bindings);
+    monitor.subTask(message);
   }
 
   private static void logStart(Set<TypeContainer> typeContainers) {
@@ -476,19 +493,6 @@ public class SearchManager {
       requestorFound += requestor.matchedFiles.size();
     }
     return requestorFound;
-  }
-
-  /**
-   * Message shown in the progress dialog like:<br>
-   *        <code>Found 2! Done 7/58. Detecting class Classname.methodName()</code>
-   */
-  private void updateMonitorMessage(IJavaElement element, String details, String searchInfo) {
-    checkForCancel();
-    String javaElement = JavaElementUtil.getElementName(element);
-    Object[] bindings = new Object[] { Integer.valueOf(markerCreated), Integer.valueOf(search),
-        Integer.valueOf(searchTotal), searchInfo, javaElement, details };
-    String message = NLS.bind(Messages.SearchManager_Monitor, bindings);
-    monitor.subTask(message);
   }
 
   /**
