@@ -30,6 +30,8 @@ public class UCDProgressMonitor implements IProgressMonitor {
   private static final DecimalFormat FORMAT_DOUBLE = new DecimalFormat("0.0000"); //$NON-NLS-1$
   private IMember activeSearchElement = null;
   private boolean isFinished = false;
+  private boolean isSleep = false;
+  private final Object lock = new Object();
 
   public boolean isFinished() {
     return isFinished;
@@ -68,9 +70,32 @@ public class UCDProgressMonitor implements IProgressMonitor {
     return delegate.isCanceled();
   }
 
+  public boolean isSleep() {
+    return isSleep;
+  }
+
+  public void setSleep(boolean isSleep) {
+    this.isSleep = isSleep;
+    if (!isSleep) {
+      synchronized (lock) {
+        lock.notify();
+      }
+    }
+  }
+
   protected void throwIfIsCanceled() {
     if (isCanceled()) {
       throw new OperationCanceledException("Cancel requested by user"); //$NON-NLS-1$
+    }
+    if (isSleep) {
+      try {
+        synchronized (lock) {
+          lock.wait();
+        }
+      }
+      catch (InterruptedException e) {
+        e.printStackTrace();
+      }
     }
   }
 
