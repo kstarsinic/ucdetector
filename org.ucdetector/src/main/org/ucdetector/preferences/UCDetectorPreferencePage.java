@@ -32,13 +32,14 @@ import org.eclipse.swt.widgets.Group;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.TabFolder;
 import org.eclipse.swt.widgets.TabItem;
+import org.eclipse.swt.widgets.Text;
 import org.eclipse.ui.IWorkbench;
 import org.eclipse.ui.IWorkbenchPreferencePage;
 import org.eclipse.ui.PlatformUI;
-import org.ucdetector.UCDInfo;
 import org.ucdetector.Log;
 import org.ucdetector.Log.LogLevel;
 import org.ucdetector.Messages;
+import org.ucdetector.UCDInfo;
 import org.ucdetector.UCDetectorPlugin;
 import org.ucdetector.report.ReportExtension;
 import org.ucdetector.report.ReportNameManager;
@@ -102,6 +103,7 @@ public class UCDetectorPreferencePage extends FieldEditorPreferencePage implemen
     createTabKeyworts();
     createTabReport();
     createTabOther();
+    createTabDirectories();
     modesPanel.updateModeButtons();
     modesPanel.createMyMode();
   }
@@ -135,6 +137,11 @@ public class UCDetectorPreferencePage extends FieldEditorPreferencePage implemen
   private void createTabOther() {
     Composite composite = createTab(Messages.PreferencePage_TabOther);
     createOtherGroup(composite);
+  }
+
+  private void createTabDirectories() {
+    Composite composite = createTab("Directories");
+    createDirectoriesGroup(composite);
   }
 
   private void createIgnoreResourcesGroup(Composite parentGroups) {
@@ -306,7 +313,25 @@ public class UCDetectorPreferencePage extends FieldEditorPreferencePage implemen
     combo.getLabelControl(spacer).setToolTipText(Messages.PreferencePage_LogLevelToolTip);
     appendBool(Prefs.LOG_TO_ECLIPSE, Messages.PreferencePage_LogToEclipse,//
         Messages.PreferencePage_LogToEclipseToolTip, spacer, 2);
+  }
 
+  private void createDirectoriesGroup(Composite parentGroups) {
+    Composite spacer = createGroup(parentGroups, "Directories (read only)"); //$NON-NLS-1$
+    appendLabelAndText(spacer, "Reports directory", ReportNameManager.getReportDir(true));//$NON-NLS-1$
+    appendLabelAndText(spacer, "Modes directory", UCDetectorPlugin.getModesDir().getAbsolutePath());//$NON-NLS-1$
+    appendLabelAndText(spacer, "Eclise home", UCDInfo.getEclipseHome());//$NON-NLS-1$
+    appendLabelAndText(spacer, "Log file", UCDInfo.getLogfile());//$NON-NLS-1$
+    appendLabelAndText(spacer, "Workspace", UCDInfo.getWorkspace());//$NON-NLS-1$
+  }
+
+  private static void appendLabelAndText(Composite spacer, String labelText, String textText) {
+    Label label = new Label(spacer, SWT.LEFT);
+    label.setText(labelText);
+    Text text = new Text(spacer, /*SWT.MULTI | */SWT.BORDER);
+    text.setText(textText);
+    text.setEditable(false);
+    text.setBackground(label.getBackground());
+    //    addLineHack(spacer);
   }
 
   private Combo changeVisibiliyCombo;
