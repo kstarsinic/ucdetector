@@ -241,21 +241,23 @@ public final class Messages extends NLS {
   public static String ModesPanel_ModeLabelToolTip;
   //
   public static String ModesPanel_ComboToolTipStart;
-  //
+  // == new ==
   public static String ModesPanel_ModeNew;
   public static String ModesPanel_ModeNewToolTip;
-
+  public static String ModesPanel_ModeNewTitle;
+  // == remove ==
   public static String ModesPanel_ModeRemove;
   public static String ModesPanel_ModeRemoveToolTip;
   public static String ModesPanel_ModeRemoveQuestion;
-  //
+  public static String ModesPanel_ModeRemoveTitle;
+  // == rename ==
   public static String ModesPanel_ModeRename;
   public static String ModesPanel_ModeRenameToolTip;
+  public static String ModesPanel_ModeRenameTitle;
   //
   public static String ModesPanel_ModePressNewHint;
   public static String ModesPanel_ModeAlreadyExists;
   //
-  public static String ModesPanel_NewMode;
   public static String ModesPanel_ModeName;
   public static String ModesPanel_CantSetPreferences; // NO_UCD
   public static String ModesPanel_ModeFileCantSave;
