@@ -16,7 +16,7 @@ import org.osgi.framework.Version;
  */
 @SuppressWarnings("nls")
 public class Compatibility {
-  public static final Version ECLIPSE_USED = new Version(UCDetectorPlugin.getAboutEclipseVersion());
+  public static final Version ECLIPSE_USED = new Version(UCDInfo.getEclipseVersion());
   //
   //  private static final Version ECLIPSE_3_5 = new Version("3.5.0");
   //  private static final Version ECLIPSE_3_6 = new Version("3.6.0");
