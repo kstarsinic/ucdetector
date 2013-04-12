@@ -35,9 +35,9 @@ import org.eclipse.swt.widgets.Combo;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Label;
-import org.ucdetector.UCDInfo;
 import org.ucdetector.Log;
 import org.ucdetector.Messages;
+import org.ucdetector.UCDInfo;
 import org.ucdetector.UCDetectorPlugin;
 import org.ucdetector.report.ReportNameManager;
 
@@ -100,13 +100,13 @@ class ModesPanel {
       @Override
       public void widgetSelected(SelectionEvent event) {
         if (event.widget == newButton) {
-          addMode();
+          activeModeAdd();
         }
         else if (event.widget == removeButton) {
-          removeMode();
+          activeModeRemove();
         }
         else if (event.widget == renameButton) {
-          remameMode();
+          activeModeRename();
         }
       }
     };
@@ -175,13 +175,56 @@ class ModesPanel {
   }
 
   /** Add a user specific mode, and save it to a file */
-  private void addMode() {
+  private void activeModeAdd() {
     String newName = "CopyOf_" + getActiveModeName(); //$NON-NLS-1$
-    InputDialog input = new InputDialog(parent.getShell(), Messages.ModesPanel_NewMode, Messages.ModesPanel_ModeName,
-        newName, new ValidFileNameValidator());
+    InputDialog input = new InputDialog(parent.getShell(),//
+        Messages.ModesPanel_ModeNewTitle,//
+        Messages.ModesPanel_ModeName,//
+        newName, //
+        new ValidFileNameValidator()//
+    );
     if (input.open() == Window.OK) {
       addMode(input.getValue());
     }
+  }
+
+  private void activeModeRemove() {
+    String modeToRemove = getCombo().getText();
+    boolean doRemove = MessageDialog.openQuestion(parent.getShell(),//
+        Messages.ModesPanel_ModeRemoveTitle,//
+        Messages.ModesPanel_ModeRemoveQuestion + modeToRemove//
+    );
+    if (!doRemove) {
+      return;
+    }
+    File file = ModesWriter.getModesFile(modeToRemove);
+    boolean deleteOk = file.delete();
+    Log.success(deleteOk, String.format("Delete mode '%s' - file is %s", modeToRemove, file.getAbsolutePath()));//$NON-NLS-1$
+    getCombo().setItems(getModes());
+    getCombo().setText(Mode.Default.toStringLocalized());
+    page.performDefaults();
+    updateModeButtons();
+  }
+
+  private void activeModeRename() {
+    String oldName = getActiveModeName();
+    InputDialog input = new InputDialog(parent.getShell(),//
+        Messages.ModesPanel_ModeRenameTitle,//
+        Messages.ModesPanel_ModeName, //
+        oldName, //
+        new ValidFileNameValidator()//
+    );
+    if (input.open() == Window.CANCEL) {
+      return;
+    }
+    String newName = input.getValue();
+    File oldModesFile = ModesWriter.getModesFile(oldName);
+    File newModesFile = ModesWriter.getModesFile(newName);
+    boolean renameOK = oldModesFile.renameTo(newModesFile);
+    Log.success(renameOK,
+        String.format("Rename mode '%s' to '%s' - new file: %s", oldName, newName, newModesFile.getAbsolutePath()));//$NON-NLS-1$
+    getCombo().setItems(getModes());
+    getCombo().setText(newName);
   }
 
   /** Get name of mode from combo without 'built-in' */
@@ -219,39 +262,6 @@ class ModesPanel {
     if (getCombo().getSelectionIndex() >= Mode.values().length) {
       modesWriter.saveMode(getCombo().getText()); // custom
     }
-  }
-
-  private void removeMode() {
-    String modeToRemove = getCombo().getText();
-    boolean doRemove = MessageDialog.openQuestion(parent.getShell(), Messages.ModesPanel_ModeRemove,
-        Messages.ModesPanel_ModeRemoveQuestion + modeToRemove);
-    if (!doRemove) {
-      return;
-    }
-    File file = ModesWriter.getModesFile(modeToRemove);
-    boolean deleteOk = file.delete();
-    Log.success(deleteOk, String.format("Delete mode '%s' - file is %s", modeToRemove, file.getAbsolutePath()));//$NON-NLS-1$
-    getCombo().setItems(getModes());
-    getCombo().setText(Mode.Default.toStringLocalized());
-    page.performDefaults();
-    updateModeButtons();
-  }
-
-  private void remameMode() {
-    String oldName = getActiveModeName();
-    InputDialog input = new InputDialog(parent.getShell(), Messages.ModesPanel_ModeRename,
-        Messages.ModesPanel_ModeName, oldName, new ValidFileNameValidator());
-    if (input.open() == Window.CANCEL) {
-      return;
-    }
-    String newName = input.getValue();
-    File oldModesFile = ModesWriter.getModesFile(oldName);
-    File newModesFile = ModesWriter.getModesFile(newName);
-    boolean renameOK = oldModesFile.renameTo(newModesFile);
-    Log.success(renameOK,
-        String.format("Rename mode '%s' to '%s' - new file: %s", oldName, newName, newModesFile.getAbsolutePath()));//$NON-NLS-1$
-    getCombo().setItems(getModes());
-    getCombo().setText(newName);
   }
 
   /** buttons 'save' and 'remove' are only enabled for custom modes */
