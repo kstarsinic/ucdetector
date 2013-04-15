@@ -14,7 +14,9 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.io.OutputStreamWriter;
 import java.io.StringWriter;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Set;
 
@@ -91,24 +93,19 @@ public class XmlReport implements IUCDetectorReport {
       + "     ========================================================================\n";
 
   private Document doc;
+
+  private Element statistcs;
   private Element markers;
   private Element problems;
-  private Element statistcs;
+  private Element abouts;
+
   private int markerCount;
   private int detectionProblemCount;
   private Throwable initXMLException;
-  private Element abouts;
-  // NODES --------------------
-  private Element nodeCreated;
-  private Element nodeCreatedTS;
-  private Element nodeDuration;
-  private Element nodeDurationTS;
-  private Element nodeFinished;
-  private Element nodeWarnings;
-  //
-  private boolean isFirstStatistic = true;
+
+  private final Map<String, Element> aboutNodes = new HashMap<String, Element>();
   private boolean endReportCalled;
-  //
+
   private IJavaElement[] objectsToIterate;
   private long startTime = System.currentTimeMillis();
 
@@ -146,12 +143,11 @@ public class XmlReport implements IUCDetectorReport {
       doc.insertBefore(doc.createProcessingInstruction("xml-stylesheet", stylesheet), root);
       doc.insertBefore(doc.createComment(COPY_RIGHT), root);
       doc.insertBefore(doc.createComment("\n"), root);
-      statistcs = doc.createElement("statistics");
-      root.appendChild(statistcs);
-      markers = doc.createElement("markers");
-      root.appendChild(markers);
-      problems = doc.createElement("problems");
-      root.appendChild(problems);
+
+      statistcs = appendChild(root, "statistics");
+      markers = appendChild(root, "markers");
+      problems = appendChild(root, "problems");
+      abouts = appendChild(statistcs, "abouts", null);
     }
     catch (Throwable e) {
       Log.error("Can't create xml report: ", e);
@@ -185,8 +181,7 @@ public class XmlReport implements IUCDetectorReport {
     try {
       markerCount++;
       //markers.appendChild(doc.createComment(" === Marker number " + markerCount));
-      marker = doc.createElement("marker");
-      markers.appendChild(marker);
+      marker = appendChild(markers, "marker");
       setMarkerAttributes(reportParam, marker);
 
       IMember javaElement = reportParam.getJavaElement();
@@ -276,8 +271,7 @@ public class XmlReport implements IUCDetectorReport {
 
   public void reportDetectionProblem(IStatus status) {
     detectionProblemCount++;
-    Element problem = doc.createElement("problem");
-    problems.appendChild(problem);
+    Element problem = appendChild(problems, "problem");
     appendChild(problem, "status", status.toString());
     appendChild(problem, "exception", UCDetectorPlugin.exceptionToString(status.getException()));
   }
@@ -292,21 +286,20 @@ public class XmlReport implements IUCDetectorReport {
   /** Append statistics like: date, searchDuration, searched elements   */
   @SuppressWarnings("boxing")
   private void appendStatistics(boolean isEndReport) {
-    if (isFirstStatistic) {
-      isFirstStatistic = false;
-      abouts = appendChild(statistcs, "abouts", null);
-      appendAbout("operatingSystem"/*   */, "Operating system"/* */, UCDInfo.getOS()/*              */, true, null);
-      appendAbout("javaVersion"/*       */, "Java"/*             */, UCDInfo.getJavaVersion()/*     */, true, null);
-      appendAbout("eclipseVersion"/*    */, "Eclipse"/*          */, UCDInfo.getEclipseVersion()/*  */, true, null);
-      appendAbout("eclipseHome"/*       */, "Eclipse home"/*     */, UCDInfo.getEclipseHome()/*     */, false, null);
-      appendAbout("eclipseProduct"/*    */, "Eclipse product"/*  */, UCDInfo.getEclipseProduct()/*  */, true, null);
-      appendAbout("ucdetectorVersion"/* */, "UCDetector"/*       */, UCDInfo.getUCDVersion()/*      */, true, null);
-      appendAbout("logfile"/*           */, "Logfile"/*          */, UCDInfo.getLogfile()/*         */, false, null);
-      appendAbout("workspace"/*         */, "Workspace"/*        */, UCDInfo.getWorkspace()/*       */, false, null);
-      appendAbout("mode"/*              */, "Mode"/*             */, Prefs.getModeName()/*          */, true, null);
-      appendAbout("host"/*              */, "Host"/*             */, UCDInfo.getHostName()/*        */, false, null);
-      appendAbout("createdBy"/*         */, "Created by"/*       */, getClass().getName()/*         */, false, null);
-      appendAbout("headless"/*          */, "Headless"/*         */, UCDetectorPlugin.isHeadlessMode(), false, null);
+    if (aboutNodes.isEmpty()) {
+      // First time called
+      appendAbout("operatingSystem"/*   */, "Operating system"/* */, UCDInfo.getOS()/*              */, true);
+      appendAbout("javaVersion"/*       */, "Java"/*             */, UCDInfo.getJavaVersion()/*     */, true);
+      appendAbout("eclipseVersion"/*    */, "Eclipse"/*          */, UCDInfo.getEclipseVersion()/*  */, true);
+      appendAbout("eclipseHome"/*       */, "Eclipse home"/*     */, UCDInfo.getEclipseHome()/*     */, false);
+      appendAbout("eclipseProduct"/*    */, "Eclipse product"/*  */, UCDInfo.getEclipseProduct()/*  */, true);
+      appendAbout("ucdetectorVersion"/* */, "UCDetector"/*       */, UCDInfo.getUCDVersion()/*      */, true);
+      appendAbout("logfile"/*           */, "Logfile"/*          */, UCDInfo.getLogfile()/*         */, false);
+      appendAbout("workspace"/*         */, "Workspace"/*        */, UCDInfo.getWorkspace()/*       */, false);
+      appendAbout("mode"/*              */, "Mode"/*             */, Prefs.getModeName()/*          */, true);
+      appendAbout("host"/*              */, "Host"/*             */, UCDInfo.getHostName()/*        */, false);
+      appendAbout("createdBy"/*         */, "Created by class"/* */, getClass().getName()/*         */, false);
+      appendAbout("headless"/*          */, "Headless"/*         */, UCDetectorPlugin.isHeadlessMode(), false);
       //
       Element searched = appendChild(statistcs, "searched", null);
       for (IJavaElement javaElement : objectsToIterate) {
@@ -323,14 +316,14 @@ public class XmlReport implements IUCDetectorReport {
     }
     // Nodes change after each flush
     long now = System.currentTimeMillis();
-    long duration = (now - startTime);
-    String durationString = StopWatch.timeAsString(duration);
-    nodeCreated = appendAbout("reportCreated", "Created report", UCDInfo.getNow(false), true, nodeCreated);
-    nodeCreatedTS = appendAbout("reportCreatedTS", "Created report", "" + now, false, nodeCreatedTS);
-    nodeDuration = appendAbout("searchDuration", "Search duration", durationString, true, nodeDuration);
-    nodeDurationTS = appendAbout("searchDurationTS", "Search duration", "" + duration, false, nodeDurationTS);
-    nodeFinished = appendAbout("detectionFinished", "Detection Finished", "" + isEndReport, false, nodeFinished);
-    nodeWarnings = appendAbout("warnings", "Warnings", markerCount, true, nodeWarnings);
+    long durationMillis = (now - startTime);
+    String durationString = StopWatch.timeAsString(durationMillis);
+    appendAbout("reportCreated"/*     */, "Created report"/*            */, UCDInfo.getNow(false)/* */, true);
+    appendAbout("reportCreatedTS"/*   */, "Created report timestamp"/*  */, now/*                   */, false);
+    appendAbout("searchDuration"/*    */, "Search duration"/*           */, durationString/*        */, true);
+    appendAbout("searchDurationTS"/*  */, "Search duration millis"/*    */, durationMillis/*        */, false);
+    appendAbout("detectionFinished"/* */, "Detection Finished"/*        */, isEndReport/*           */, false);
+    appendAbout("warnings"/*          */, "Warnings"/*                  */, markerCount/*           */, true);
   }
 
   /**
@@ -341,16 +334,21 @@ public class XmlReport implements IUCDetectorReport {
    *  &lt;/about>
    * </pre>
    */
-  private Element appendAbout(String nodeName, String nodeNiceName, Object value, boolean show, Element alreadyCreated) {
+  private void appendAbout(String nodeName, String nodeNiceName, Object value, boolean show) {
+    Element alreadyCreated = aboutNodes.get(nodeName);
     if (alreadyCreated != null) {
       alreadyCreated.getParentNode().removeChild(alreadyCreated);
     }
     Element about = appendChild(abouts, "about", null);
+    aboutNodes.put(nodeName, about);
     about.setAttribute("name", nodeName);
     about.setAttribute("show", Boolean.toString(show));
     appendChild(about, "key", nodeNiceName);
     appendChild(about, "value", String.valueOf(value));
-    return about;
+  }
+
+  private Element appendChild(Element parent, String tagName) {
+    return appendChild(parent, tagName, null);
   }
 
   /** Append a child node and a text node  */
@@ -416,8 +414,8 @@ public class XmlReport implements IUCDetectorReport {
     File iconsOutDir = new File(reportDir, ICONS_DIR);
     iconsOutDir.mkdirs();
     try {
-      copyResource(HTML_XSLT, iconsOutDir);
-      copyResource(DTD_FILE, iconsOutDir);
+      copyResource(iconsOutDir, HTML_XSLT);
+      copyResource(iconsOutDir, DTD_FILE);
       copyIconFiles(iconsOutDir);
     }
     catch (IOException ex) {
@@ -425,7 +423,7 @@ public class XmlReport implements IUCDetectorReport {
     }
   }
 
-  private static void copyResource(String resouce, File iconsOutDir) throws IOException {
+  private static void copyResource(File iconsOutDir, String resouce) throws IOException {
     InputStream inStream = XmlReport.class.getResourceAsStream(resouce);
     copyStream(inStream, new FileOutputStream(new File(iconsOutDir, resouce)));
   }
@@ -439,20 +437,19 @@ public class XmlReport implements IUCDetectorReport {
 
   private static void copyIconFiles(File iconsOutDir) throws IOException {
     for (String iconName : ICONS) {
-      Path iconPath = new Path("icons");
-      File outFile = new File(iconsOutDir, iconName);
       Bundle bundle = UCDetectorPlugin.getDefault().getBundle();
-      copyToIconDir(iconPath, iconName, outFile, bundle);
+      Path iconPath = new Path("icons");
+      copyToIconDir(bundle, iconPath, iconsOutDir, iconName);
     }
-    for (JavaElementUtil.MemberInfo memberInfo : JavaElementUtil.MemberInfo.values()) {
-      Path iconPath = new Path("icons/full/obj16/");
-      File outFile = new File(iconsOutDir, memberInfo.getIcon());
+    for (MemberInfo memberInfo : MemberInfo.values()) {
       Bundle bundle = Platform.getBundle("org.eclipse.jdt.ui");
-      copyToIconDir(iconPath, memberInfo.getIcon(), outFile, bundle);
+      Path iconPath = new Path("icons/full/obj16/");
+      copyToIconDir(bundle, iconPath, iconsOutDir, memberInfo.getIcon());
     }
   }
 
-  private static void copyToIconDir(Path iconPath, String iconName, File outFile, Bundle bundle) throws IOException {
+  private static void copyToIconDir(Bundle bundle, Path iconPath, File iconsOutDir, String iconName) throws IOException {
+    File outFile = new File(iconsOutDir, iconName);
     if (!outFile.exists()) {
       InputStream inStream = FileLocator.openStream(bundle, iconPath.append(iconName), false);
       copyStream(inStream, new FileOutputStream(outFile));
