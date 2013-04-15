@@ -103,7 +103,6 @@ public class UCDetectorPreferencePage extends FieldEditorPreferencePage implemen
     createTabKeyworts();
     createTabReport();
     createTabOther();
-    createTabDirectories();
     modesPanel.updateModeButtons();
     modesPanel.createMyMode();
   }
@@ -137,11 +136,6 @@ public class UCDetectorPreferencePage extends FieldEditorPreferencePage implemen
   private void createTabOther() {
     Composite composite = createTab(Messages.PreferencePage_TabOther);
     createOtherGroup(composite);
-  }
-
-  private void createTabDirectories() {
-    Composite composite = createTab("Directories");
-    createDirectoriesGroup(composite);
   }
 
   private void createIgnoreResourcesGroup(Composite parentGroups) {
@@ -249,7 +243,7 @@ public class UCDetectorPreferencePage extends FieldEditorPreferencePage implemen
     Composite spacer = createGroup(parentGroups, Messages.PreferencePage_GroupVisibility);
     //
     addChangeAllVisibiliyCombo(spacer);
-    addLineHack(spacer);
+    addLineHack(spacer, null);
     //
     Label visibilityWarnLabel = new Label(spacer, SWT.LEFT); // setForeground(Display.getDefault().getSystemColor(SWT.COLOR_RED));
     visibilityWarnLabel.setFont(new Font(spacer.getDisplay(), "Arial", 10, SWT.BOLD)); //$NON-NLS-1$
@@ -260,16 +254,16 @@ public class UCDetectorPreferencePage extends FieldEditorPreferencePage implemen
     //
     appendCombo(Prefs.ANALYZE_VISIBILITY_PROTECTED_CLASSES, Messages.PreferencePage_CheckProtectedClasses, spacer);
     appendCombo(Prefs.ANALYZE_VISIBILITY_PRIVATE_CLASSES, Messages.PreferencePage_CheckPrivateClasses, spacer);
-    addLineHack(spacer);
+    addLineHack(spacer, null);
     appendCombo(Prefs.ANALYZE_VISIBILITY_PROTECTED_METHODS, Messages.PreferencePage_CheckProtectedMethods, spacer);
     appendCombo(Prefs.ANALYZE_VISIBILITY_PRIVATE_METHODS, Messages.PreferencePage_CheckPrivateMethods, spacer);
-    addLineHack(spacer);
+    addLineHack(spacer, null);
     appendCombo(Prefs.ANALYZE_VISIBILITY_PROTECTED_FIELDS, Messages.PreferencePage_CheckProtectedFields, spacer);
     appendCombo(Prefs.ANALYZE_VISIBILITY_PRIVATE_FIELDS, Messages.PreferencePage_CheckPrivateFields, spacer);
     // [ 2804064 ] Access to enclosing type - make 2743908 configurable
     appendBool(Prefs.IGNORE_SYNTHETIC_ACCESS_EMULATION, Messages.PreferencePage_ignoreSyntheticAccessEmulation,
         Messages.PreferencePage_ignoreSyntheticAccessEmulationTooltip, spacer, 2);
-    addLineHack(spacer);
+    addLineHack(spacer, null);
     appendCombo(Prefs.ANALYZE_VISIBILITY_PROTECTED_CONSTANTS, Messages.PreferencePage_CheckProtectedConstants, spacer);
     appendCombo(Prefs.ANALYZE_VISIBILITY_PRIVATE_CONSTANTS, Messages.PreferencePage_CheckPrivateConstants, spacer);
   }
@@ -289,7 +283,7 @@ public class UCDetectorPreferencePage extends FieldEditorPreferencePage implemen
     path.getLabelControl(spacer).setToolTipText(Messages.PreferencePage_ReportDirToolTip);
     addField(path);
     //
-    addLineHack(spacer);
+    addLineHack(spacer, null);
     Button ok = new Button(spacer, SWT.PUSH);
     ok.setText(Messages.PreferencePage_BrowseReportsDir);
     ok.setToolTipText(Messages.PreferencePage_BrowseReportsDirToolTip);
@@ -313,15 +307,14 @@ public class UCDetectorPreferencePage extends FieldEditorPreferencePage implemen
     combo.getLabelControl(spacer).setToolTipText(Messages.PreferencePage_LogLevelToolTip);
     appendBool(Prefs.LOG_TO_ECLIPSE, Messages.PreferencePage_LogToEclipse,//
         Messages.PreferencePage_LogToEclipseToolTip, spacer, 2);
-  }
-
-  private void createDirectoriesGroup(Composite parentGroups) {
-    Composite spacer = createGroup(parentGroups, "Directories (read only)"); //$NON-NLS-1$
-    appendLabelAndText(spacer, "Reports directory", ReportNameManager.getReportDir(true));//$NON-NLS-1$
-    appendLabelAndText(spacer, "Modes directory", UCDetectorPlugin.getModesDir().getAbsolutePath());//$NON-NLS-1$
-    appendLabelAndText(spacer, "Eclise home", UCDInfo.getEclipseHome());//$NON-NLS-1$
-    appendLabelAndText(spacer, "Log file", UCDInfo.getLogfile());//$NON-NLS-1$
-    appendLabelAndText(spacer, "Workspace", UCDInfo.getWorkspace());//$NON-NLS-1$
+    //
+    addLineHack(spacer, null);
+    addLineHack(spacer, "Files and directories:"); // TODO: NLS
+    appendLabelAndText(spacer, "    Reports"/*     */, ReportNameManager.getReportDir(true));//$NON-NLS-1$
+    appendLabelAndText(spacer, "    Modes"/*       */, UCDetectorPlugin.getModesDir().getAbsolutePath());//$NON-NLS-1$
+    appendLabelAndText(spacer, "    Eclise home"/* */, UCDInfo.getEclipseHome());//$NON-NLS-1$
+    appendLabelAndText(spacer, "    Log file"/*    */, UCDInfo.getLogfile());//$NON-NLS-1$
+    appendLabelAndText(spacer, "    Workspace"/*   */, UCDInfo.getWorkspace());//$NON-NLS-1$
   }
 
   private static void appendLabelAndText(Composite spacer, String labelText, String textText) {
@@ -372,11 +365,21 @@ public class UCDetectorPreferencePage extends FieldEditorPreferencePage implemen
     return composite;
   }
 
-  private static void addLineHack(Composite spacer) {
+  private static void addLineHack(Composite spacer, String text) {
+    if (text != null) {
+      // Create a horizontal separator
+      GridData gdSeparator = new GridData(GridData.FILL_HORIZONTAL);
+      gdSeparator.horizontalSpan = 3;
+      Label separator = new Label(spacer, SWT.HORIZONTAL | SWT.SEPARATOR);
+      separator.setLayoutData(gdSeparator);
+    }
     Label label = new Label(spacer, SWT.NONE);
-    GridData gd = new GridData(GridData.HORIZONTAL_ALIGN_FILL);
-    gd.horizontalSpan = 3;
-    label.setLayoutData(gd);
+    if (text != null) {
+      label.setText(text);
+    }
+    GridData gdLabel = new GridData(GridData.HORIZONTAL_ALIGN_FILL);
+    gdLabel.horizontalSpan = 3;
+    label.setLayoutData(gdLabel);
   }
 
   /** Hack for layout problems. See also: IntegerFieldEditor.getNumberOfControls() */
