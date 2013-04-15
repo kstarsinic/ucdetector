@@ -22,9 +22,9 @@ import java.util.Map;
 import java.util.Map.Entry;
 
 import org.eclipse.osgi.util.NLS;
-import org.ucdetector.UCDInfo;
 import org.ucdetector.Log;
 import org.ucdetector.Messages;
+import org.ucdetector.UCDInfo;
 import org.ucdetector.UCDetectorPlugin;
 
 /**

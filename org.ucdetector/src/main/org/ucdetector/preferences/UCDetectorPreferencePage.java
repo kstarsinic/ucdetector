@@ -84,7 +84,7 @@ public class UCDetectorPreferencePage extends FieldEditorPreferencePage implemen
 
   public UCDetectorPreferencePage() {
     super(FieldEditorPreferencePage.GRID);
-    this.setPreferenceStore(Prefs.getStore());
+    setPreferenceStore(Prefs.getStore());
   }
 
   public void init(IWorkbench workbench) {
@@ -194,7 +194,7 @@ public class UCDetectorPreferencePage extends FieldEditorPreferencePage implemen
     Composite spacer = createGroup(parentGroups, Messages.PreferencePage_GroupDetect);
     IntegerFieldEditor warnLimit = new IntegerFieldEditor(Prefs.WARN_LIMIT, Messages.PreferencePage_WarnLimit, spacer);
     warnLimit.getLabelControl(spacer).setToolTipText(Messages.PreferencePage_WarnLimitToolTip);
-    this.addField(warnLimit);
+    addField(warnLimit);
     appendCombo(Prefs.ANALYZE_CLASSES, Messages.PreferencePage_Classes, spacer);
     appendCombo(Prefs.ANALYZE_MEHTODS, Messages.PreferencePage_Methods, spacer);
     appendCombo(Prefs.ANALYZE_FIELDS, Messages.PreferencePage_Fields, spacer);
@@ -209,19 +209,19 @@ public class UCDetectorPreferencePage extends FieldEditorPreferencePage implemen
   private void createFileSearchGroup(Composite parentGroups) {
     Composite spacer = createGroup(parentGroups, Messages.PreferencePage_GroupFileSearch);
     SynchBooleanFieldEditor analyzeLiteralsCheck = new SynchBooleanFieldEditor(spacer);
-    this.addField(analyzeLiteralsCheck);
+    addField(analyzeLiteralsCheck);
     //
     BooleanFieldEditor checkFullClassName = new BooleanFieldEditor(Prefs.ANALYZE_CHECK_FULL_CLASS_NAME,
         Messages.PreferencePage_CheckFullClassName, BooleanFieldEditor.SEPARATE_LABEL, spacer);
     Label label = checkFullClassName.getLabelControl(spacer);
     label.setToolTipText(Messages.PreferencePage_CheckFullClassNameToolTip);
-    this.addField(checkFullClassName);
+    addField(checkFullClassName);
     //
     BooleanFieldEditor checkSimpleClassName = new BooleanFieldEditor(Prefs.ANALYZE_CHECK_SIMPLE_CLASS_NAME,
         Messages.PreferencePage_CheckSimleClassName, BooleanFieldEditor.SEPARATE_LABEL, spacer);
     label = checkSimpleClassName.getLabelControl(spacer);
     label.setToolTipText(Messages.PreferencePage_CheckSimpleClassNameToolTip);
-    this.addField(checkSimpleClassName);
+    addField(checkSimpleClassName);
     //
     StringFieldEditor analyzeLiterals = appendText(Prefs.ANALYZE_LITERALS, Messages.PreferencePage_Literals,
         Messages.PreferencePage_LiteralsToolTip, spacer);
@@ -236,7 +236,7 @@ public class UCDetectorPreferencePage extends FieldEditorPreferencePage implemen
     cycleDepth.setValidRange(Prefs.CYCLE_DEPTH_MIN, Prefs.CYCLE_DEPTH_MAX);
     cycleDepth.setEmptyStringAllowed(false);
     cycleDepth.getLabelControl(spacer).setToolTipText(Messages.PreferencePage_MaxCycleSizeToolTip);
-    this.addField(cycleDepth);
+    addField(cycleDepth);
   }
 
   private void createFinalGroup(Composite parentGroups) {
@@ -287,7 +287,7 @@ public class UCDetectorPreferencePage extends FieldEditorPreferencePage implemen
     //
     DirectoryFieldEditor path = new DirectoryFieldEditor(Prefs.REPORT_DIR, Messages.PreferencePage_ReportDir, spacer);
     path.getLabelControl(spacer).setToolTipText(Messages.PreferencePage_ReportDirToolTip);
-    this.addField(path);
+    addField(path);
     //
     addLineHack(spacer);
     Button ok = new Button(spacer, SWT.PUSH);
@@ -478,7 +478,7 @@ public class UCDetectorPreferencePage extends FieldEditorPreferencePage implemen
     BooleanFieldEditor bool = new BooleanFieldEditor(name, text, BooleanFieldEditor.SEPARATE_LABEL, parent);
     bool.fillIntoGrid(parent, columns);
     bool.getLabelControl(parent).setToolTipText(tooltip);
-    this.addField(bool);
+    addField(bool);
   }
 
   // -------------------------------------------------------------------------
