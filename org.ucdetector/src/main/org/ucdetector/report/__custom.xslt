@@ -13,7 +13,7 @@
           &#xA; = new line
      -->
     <!-- First line: about -->
-		<xsl:value-of select="concat('UCDetector Report', '&#x9;', /ucdetector/statistics/abouts/about[@name='reportCreated']/value, '&#xA;')"/>
+		<xsl:value-of select="concat('UCDetector Report', '&#x9;', /ucdetector/statistics/abouts/about[@name='reportCreated']/value, '&#xA;', 'Created by resource org/ucdetector/report/custom.xslt', '&#xA;')"/>
     <!-- Second line: header -->
 		<xsl:value-of select="concat('Location', '&#x9;', 'Description', '&#x9;', 'Java', '&#x9;', 'Marker', '&#x9;', 'Author', '&#xA;')"/>
 		<xsl:for-each select="/ucdetector/markers/marker">
