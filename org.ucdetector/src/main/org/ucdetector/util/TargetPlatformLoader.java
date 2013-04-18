@@ -18,17 +18,20 @@ import org.eclipse.pde.internal.core.target.provisional.LoadTargetDefinitionJob;
 import org.ucdetector.Log;
 import org.ucdetector.UCDHeadless;
 
-// == Since 4.2 ==
-//import org.eclipse.pde.core.target.ITargetDefinition;
-//import org.eclipse.pde.core.target.ITargetHandle;
-//import org.eclipse.pde.core.target.ITargetPlatformService;
-//import org.eclipse.pde.core.target.LoadTargetDefinitionJob;
+//==  before 3.5 ==
+//There is no target code
 
-//== Before 4.2 ==
+//== 3.5 to 3.7  ==
 //import org.eclipse.pde.internal.core.target.provisional.ITargetDefinition;
 //import org.eclipse.pde.internal.core.target.provisional.ITargetHandle;
 //import org.eclipse.pde.internal.core.target.provisional.ITargetPlatformService;
 //import org.eclipse.pde.internal.core.target.provisional.LoadTargetDefinitionJob;
+
+//== Since 3.8 and 4.2 ==
+//import org.eclipse.pde.core.target.ITargetDefinition;
+//import org.eclipse.pde.core.target.ITargetHandle;
+//import org.eclipse.pde.core.target.ITargetPlatformService;
+//import org.eclipse.pde.core.target.LoadTargetDefinitionJob;
 
 /**
  * Load target platform if a target platform file is declared in ucdetector options file.<p>
