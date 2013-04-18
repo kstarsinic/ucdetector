@@ -109,7 +109,7 @@ public class UCDHeadless {
     try {
       Log.info("Starting UCDetector Headless");
       tryToStartDsPlugin();
-      new TargetPlatformLoader().loadTargetPlatform(ucdMonitor, targetPlatformFile);
+      loadTargetPlatform(ucdMonitor, targetPlatformFile);
       IWorkspaceRoot workspaceRoot = workspace.getRoot();
       List<IJavaProject> allProjects = createProjects(ucdMonitor, workspaceRoot);
       prepareWorkspace();
@@ -186,6 +186,23 @@ public class UCDHeadless {
     catch (Exception e) {
       Log.error("PROBLEMS STARTING DS", e);
     }
+  }
+
+  private static void loadTargetPlatform(IProgressMonitor monitor, File targetPlatformFile) throws CoreException {
+    if (targetPlatformFile == null || !targetPlatformFile.exists()) {
+      Log.info("Target platform file missing: Use eclipse as target platform");
+      return;
+    }
+    StopWatch stopWatch = new StopWatch();
+    Log.info("Use target platform declared in: " + targetPlatformFile.getAbsolutePath());
+    Log.info("START: loadTargetPlatform");
+    TargetPlatformLoader.loadTargetPlatformImpl(monitor, targetPlatformFile);
+    //    LoadTargetDefinitionJob.load(targetDefinition);
+    Log.info(stopWatch.end("END: loadTargetPlatform", false));
+    // Run it twice because of Exception, when running it with a complete workspace: See end of file
+    // https://bugs.eclipse.org/bugs/show_bug.cgi?id=314814
+    // Log.logInfo("Load target platform again, because of Exception - eclipse bug 314814");
+    // loadTargetPlatform();
   }
 
   private void prepareWorkspace() throws CoreException {

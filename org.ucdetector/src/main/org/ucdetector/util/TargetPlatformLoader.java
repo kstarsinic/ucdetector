@@ -47,24 +47,7 @@ import org.ucdetector.UCDHeadless;
 @SuppressWarnings("nls")
 public class TargetPlatformLoader {
 
-  public void loadTargetPlatform(IProgressMonitor monitor, File targetPlatformFile) throws CoreException {
-    if (targetPlatformFile == null || !targetPlatformFile.exists()) {
-      Log.info("Target platform file missing: Use eclipse as target platform");
-      return;
-    }
-    StopWatch stopWatch = new StopWatch();
-    Log.info("Use target platform declared in: " + targetPlatformFile.getAbsolutePath());
-    Log.info("START: loadTargetPlatform");
-    loadTargetPlatformImpl(monitor, targetPlatformFile);
-    //    LoadTargetDefinitionJob.load(targetDefinition);
-    Log.info(stopWatch.end("END: loadTargetPlatform", false));
-    // Run it twice because of Exception, when running it with a complete workspace: See end of file
-    // https://bugs.eclipse.org/bugs/show_bug.cgi?id=314814
-    // Log.logInfo("Load target platform again, because of Exception - eclipse bug 314814");
-    // loadTargetPlatform();
-  }
-
-  private static void loadTargetPlatformImpl(IProgressMonitor monitor, File targetPlatformFile) throws CoreException {
+  public static void loadTargetPlatformImpl(IProgressMonitor monitor, File targetPlatformFile) throws CoreException {
     try {
       // See: org.eclipse.pde.internal.core.PluginModelManager.initializeTable()
       ITargetPlatformService service = (ITargetPlatformService) PDECore.getDefault()//
@@ -79,7 +62,7 @@ public class TargetPlatformLoader {
     catch (NoClassDefFoundError error) {
       Log.error("Can't load target platform file: " + targetPlatformFile.getAbsolutePath(), error);
       Log.error("Solutions:");
-      Log.error(" - Use eclipse classic, or");
+      Log.error(" - Use eclipse classic, version >= 3.5 and <= 3.7, or");
       Log.error(" - Remove key '" + UCDHeadless.HEADLESS_KEY_TARGET + "' from " + UCDHeadless.UCDETECTOR_OPTIONS);
       throw error;
     }
