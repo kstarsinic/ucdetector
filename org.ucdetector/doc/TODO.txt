@@ -36,3 +36,16 @@ Detection time: 38.85 seconds
 * Since commit r1837
 ** OLD root: https://ucdetector.svn.sourceforge.net/svnroot/ucdetector
 ** NEW root: https://svn.code.sf.net/p/ucdetector/code
+
+
+== Eclipse versions ==
+** 3.2: Callisto 30.06.2006
+** 3.3: Europa   29.06.2007
+** 3.4: Ganymede 25.06.2008
+** 3.5: Galileo  24.06.2009
+** 3.6: Helios   23.06.2010
+** 3.7: Indigo   22.06.2011
+** 4.2: Juno     27.06.2012
+** 4.3: Kepler   26.06.2013
+** 4.4: Luna     25.06.2014
+
