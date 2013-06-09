@@ -53,6 +53,13 @@
        ===================================================================== -->
   <target name="version-info" depends="prepare" description="Create version info file">
     <property name="version.file" location="../VERSION.TXT" />
+    <!-- hack: line 4 contains svn version number
+    <loadfile srcfile="../.svn/entries" property="svn.version">
+      <filterchain>
+        <headfilter skip="3" lines="1" />
+      </filterchain>
+    </loadfile>
+     -->
 
     <echo file="${version.file}">UCDetector version: ${Bundle-Version}
 Date created      : ${NOW}
@@ -60,12 +67,15 @@ Java version      : ${java.runtime.version} - ${java.specification.vendor}
 Eclipse version   : ${osgi.splashLocation}
 Operation system  : ${os.name}
 Provided by       : Joerg Spieler</echo>
+<!--
+SVN version       : ${svn.version}
+-->
 
 <!-- Hack: Platform plugin contains eclipse version. 
            Use system property "osgi.splashLocation" to get bundle version of platform plugin:
 "Eclipse version   : /opt/eclipse-4.2.2//plugins/org.eclipse.platform_4.2.2.v201302041200/splash.bmp" ->  
 "Eclipse version   : 4.2.2.v201302041200" -->
-    <replaceregexp file="${version.file}" match="(.+ : ).+org\.eclipse\.platform_(.+)/.+" replace="\1\2" />
+    <replaceregexp file="${version.file}" match="(.+ : ).+org\.eclipse\.platform_(.+)[/\\].+" replace="\1\2" />
 
     <echo>Created version info file: ${version.file}</echo>
   </target>
