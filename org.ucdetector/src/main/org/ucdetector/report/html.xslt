@@ -153,7 +153,7 @@ ECLIPSE_HOME/dropins/org.ucdetector_*.jar/org/ucdetector/report/html.xslt
 								<xsl:value-of select="@nr"/>
 							</td>
 							<!-- JAVA TYPE -->
-							<td align="center">
+							<td align="center" valign="middle">
 								<!--
                                 <img src=".icons/Element{javaType/@simple}.gif" alt="{javaType/@long}" />
                                 -->
@@ -164,7 +164,7 @@ ECLIPSE_HOME/dropins/org.ucdetector_*.jar/org/ucdetector/report/html.xslt
 								-->
 							</td>
 							<!-- MARKER TYPE -->
-							<td align="center">
+							<td align="center" valign="middle">
 								<img src=".icons/{@markerType}.gif" alt="{@markerType}" />
 								<!--
 								<xsl:text> </xsl:text>
@@ -213,6 +213,7 @@ ECLIPSE_HOME/dropins/org.ucdetector_*.jar/org/ucdetector/report/html.xslt
 
 								<!-- Link in Eclipse Stack Trace Console View: (SWT.java:3634) -->
 								<xsl:value-of select="concat('(', class, '.java:', @line, ')')"/>
+							</td>
 							<!-- Java type -->
 							<td align="right">
 								<xsl:value-of select="javaType/@long"/>
@@ -220,7 +221,6 @@ ECLIPSE_HOME/dropins/org.ucdetector_*.jar/org/ucdetector/report/html.xslt
 							<!-- Marker type -->
 							<td align="right">
 								<xsl:value-of select="@markerType"/>
-							</td>
 							</td>
 						</tr>
 					</xsl:for-each>
