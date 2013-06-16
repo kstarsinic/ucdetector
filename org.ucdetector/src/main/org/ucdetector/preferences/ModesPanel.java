@@ -317,7 +317,8 @@ class ModesPanel {
           return Messages.ModesPanel_ModeAlreadyExists;
         }
       }
-      boolean isValidFileName = !fileName.matches(".*[\\\\/:*?|<>\"].*"); //$NON-NLS-1$
+      boolean isValidFileName = fileName != null && fileName.trim().length() > 0
+          && !fileName.matches(".*[\\\\/:*?|<>\"].*"); //$NON-NLS-1$
       return isValidFileName ? null : NLS.bind(Messages.ModesPanel_invalid_mode_name, fileName);
     }
   }
