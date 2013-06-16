@@ -57,6 +57,7 @@ import org.ucdetector.report.ReportNameManager;
  * @since 2008-02-29
  */
 public class UCDetectorPreferencePage extends FieldEditorPreferencePage implements IWorkbenchPreferencePage {
+  private static final String SEPARATOR = ":"; //$NON-NLS-1$
   protected final List<FieldEditor> fields = new ArrayList<FieldEditor>();
   /** Hack to enable/disable children of groups (=fields)  */
   protected final List<Composite> groups = new ArrayList<Composite>();
@@ -186,7 +187,8 @@ public class UCDetectorPreferencePage extends FieldEditorPreferencePage implemen
    */
   private void createDetectGroup(Composite parentGroups) {
     Composite spacer = createGroup(parentGroups, Messages.PreferencePage_GroupDetect);
-    IntegerFieldEditor warnLimit = new IntegerFieldEditor(Prefs.WARN_LIMIT, Messages.PreferencePage_WarnLimit, spacer);
+    IntegerFieldEditor warnLimit = new IntegerFieldEditor(Prefs.WARN_LIMIT, Messages.PreferencePage_WarnLimit
+        + SEPARATOR, spacer);
     warnLimit.getLabelControl(spacer).setToolTipText(Messages.PreferencePage_WarnLimitToolTip);
     addField(warnLimit);
     appendCombo(Prefs.ANALYZE_CLASSES, Messages.PreferencePage_Classes, spacer);
@@ -206,13 +208,13 @@ public class UCDetectorPreferencePage extends FieldEditorPreferencePage implemen
     addField(analyzeLiteralsCheck);
     //
     BooleanFieldEditor checkFullClassName = new BooleanFieldEditor(Prefs.ANALYZE_CHECK_FULL_CLASS_NAME,
-        Messages.PreferencePage_CheckFullClassName, BooleanFieldEditor.SEPARATE_LABEL, spacer);
+        Messages.PreferencePage_CheckFullClassName + SEPARATOR, BooleanFieldEditor.SEPARATE_LABEL, spacer);
     Label label = checkFullClassName.getLabelControl(spacer);
     label.setToolTipText(Messages.PreferencePage_CheckFullClassNameToolTip);
     addField(checkFullClassName);
     //
     BooleanFieldEditor checkSimpleClassName = new BooleanFieldEditor(Prefs.ANALYZE_CHECK_SIMPLE_CLASS_NAME,
-        Messages.PreferencePage_CheckSimleClassName, BooleanFieldEditor.SEPARATE_LABEL, spacer);
+        Messages.PreferencePage_CheckSimleClassName + SEPARATOR, BooleanFieldEditor.SEPARATE_LABEL, spacer);
     label = checkSimpleClassName.getLabelControl(spacer);
     label.setToolTipText(Messages.PreferencePage_CheckSimpleClassNameToolTip);
     addField(checkSimpleClassName);
@@ -302,24 +304,26 @@ public class UCDetectorPreferencePage extends FieldEditorPreferencePage implemen
 
   private void createOtherGroup(Composite parentGroups) {
     Composite spacer = createGroup(parentGroups, Messages.PreferencePage_GroupLogging);
-    ComboFieldEditor combo = new ComboFieldEditor(Prefs.LOG_LEVEL, Messages.PreferencePage_LogLevel, LOG_LEVELS, spacer);
+    ComboFieldEditor combo = new ComboFieldEditor(Prefs.LOG_LEVEL, Messages.PreferencePage_LogLevel + SEPARATOR,
+        LOG_LEVELS, spacer);
     addField(combo);
     combo.getLabelControl(spacer).setToolTipText(Messages.PreferencePage_LogLevelToolTip);
     appendBool(Prefs.LOG_TO_ECLIPSE, Messages.PreferencePage_LogToEclipse,//
         Messages.PreferencePage_LogToEclipseToolTip, spacer, 2);
     //
-    addLineHack(spacer, null);
-    addLineHack(spacer, "Files and directories:"); // TODO: NLS
-    appendLabelAndText(spacer, "    Reports"/*     */, ReportNameManager.getReportDir(true));//$NON-NLS-1$
-    appendLabelAndText(spacer, "    Modes"/*       */, UCDetectorPlugin.getModesDir().getAbsolutePath());//$NON-NLS-1$
-    appendLabelAndText(spacer, "    Eclise home"/* */, UCDInfo.getEclipseHome());//$NON-NLS-1$
-    appendLabelAndText(spacer, "    Log file"/*    */, UCDInfo.getLogfile());//$NON-NLS-1$
-    appendLabelAndText(spacer, "    Workspace"/*   */, UCDInfo.getWorkspace());//$NON-NLS-1$
+    Composite spacerFiles = createGroup(parentGroups, "Files and directories:");
+    //    addLineHack(spacer, null);
+    //    addLineHack(spacer, "Files and directories:"); //$NON-NLS-1$
+    appendLabelAndText(spacerFiles, "Reports"/*      */, ReportNameManager.getReportDir(true));//$NON-NLS-1$
+    appendLabelAndText(spacerFiles, "Modes"/*        */, UCDetectorPlugin.getModesDir().getAbsolutePath());//$NON-NLS-1$
+    appendLabelAndText(spacerFiles, "Eclipse home"/* */, UCDInfo.getEclipseHome());//$NON-NLS-1$
+    appendLabelAndText(spacerFiles, "Log file"/*     */, UCDInfo.getLogfile());//$NON-NLS-1$
+    appendLabelAndText(spacerFiles, "Workspace"/*    */, UCDInfo.getWorkspace());//$NON-NLS-1$
   }
 
   private static void appendLabelAndText(Composite spacer, String labelText, String textText) {
     Label label = new Label(spacer, SWT.LEFT);
-    label.setText(labelText);
+    label.setText("    " + labelText + SEPARATOR); //$NON-NLS-1$
     Text text = new Text(spacer, /*SWT.MULTI | */SWT.BORDER);
     text.setText(textText);
     text.setEditable(false);
@@ -456,7 +460,7 @@ public class UCDetectorPreferencePage extends FieldEditorPreferencePage implemen
   }
 
   private void appendCombo(String name, String label, Composite parent) {
-    ComboFieldEditor combo = new ComboFieldEditor(name, label, WARN_LEVELS, parent);
+    ComboFieldEditor combo = new ComboFieldEditor(name, label + SEPARATOR, WARN_LEVELS, parent);
     combo.fillIntoGrid(parent, 2);
     combo.getLabelControl(parent).setToolTipText(Messages.PreferencePage_ComboToolTip);
     Label labelControl = combo.getLabelControl(parent);
@@ -470,7 +474,7 @@ public class UCDetectorPreferencePage extends FieldEditorPreferencePage implemen
   }
 
   private StringFieldEditor appendText(String name, String label, String toolTip, Composite parent, int columns) {
-    StringFieldEditor text = new StringFieldEditor(name, label, parent);
+    StringFieldEditor text = new StringFieldEditor(name, label + SEPARATOR, parent);
     text.fillIntoGrid(parent, columns);
     text.getLabelControl(parent).setToolTipText(toolTip);
     addField(text);
@@ -478,7 +482,7 @@ public class UCDetectorPreferencePage extends FieldEditorPreferencePage implemen
   }
 
   private void appendBool(String name, String text, String tooltip, Composite parent, int columns) {
-    BooleanFieldEditor bool = new BooleanFieldEditor(name, text, BooleanFieldEditor.SEPARATE_LABEL, parent);
+    BooleanFieldEditor bool = new BooleanFieldEditor(name, text + SEPARATOR, BooleanFieldEditor.SEPARATE_LABEL, parent);
     bool.fillIntoGrid(parent, columns);
     bool.getLabelControl(parent).setToolTipText(tooltip);
     addField(bool);
