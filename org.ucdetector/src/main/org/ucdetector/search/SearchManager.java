@@ -108,7 +108,7 @@ public class SearchManager {
       }
     }
     catch (OperationCanceledException e) {
-      // ignore, do not log
+      Log.info("Stop searching because: " + UCDProgressMonitor.CANCEL_MESSAGE); //$NON-NLS-1$
     }
     Log.info("Search end: " + UCDInfo.getNow(true)); //$NON-NLS-1$
     if (searchProblems.size() > 0) {

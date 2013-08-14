@@ -24,6 +24,7 @@ import org.ucdetector.UCDetectorPlugin;
  * @since 2008-09-17
  */
 public class UCDProgressMonitor implements IProgressMonitor {
+  static final String CANCEL_MESSAGE = "Cancel requested by user"; //$NON-NLS-1$
   private String taskName = ""; //$NON-NLS-1$
   private final IProgressMonitor delegate;
   private String lastWork;
@@ -67,7 +68,11 @@ public class UCDProgressMonitor implements IProgressMonitor {
   }
 
   public boolean isCanceled() {
-    return delegate.isCanceled();
+    boolean isCanceled = delegate.isCanceled();
+    if (isCanceled) {
+      Log.info(CANCEL_MESSAGE);
+    }
+    return isCanceled;
   }
 
   public boolean isSleep() {
@@ -85,7 +90,7 @@ public class UCDProgressMonitor implements IProgressMonitor {
 
   protected void throwIfIsCanceled() {
     if (isCanceled()) {
-      throw new OperationCanceledException("Cancel requested by user"); //$NON-NLS-1$
+      throw new OperationCanceledException();
     }
     if (isSleep) {
       try {
