@@ -55,8 +55,7 @@ import org.ucdetector.util.StopWatch;
 public abstract class AbstractUCDetectorIterator {
   static final boolean DEBUG = "true".equalsIgnoreCase(Platform //$NON-NLS-1$ // NO_UCD
       .getDebugOption("org.ucdetector/debug/iterator")); //$NON-NLS-1$
-  static final String SEP = ", "; //$NON-NLS-1$ // NO_UCD
-  static final String NL = System.getProperty("line.separator"); //$NON-NLS-1$
+  protected static final String NL = System.getProperty("line.separator"); //$NON-NLS-1$
   private UCDProgressMonitor monitor;
   /** Elements selected in the UI */
   protected IJavaElement[] objectsToIterate;
@@ -178,7 +177,7 @@ public abstract class AbstractUCDetectorIterator {
    * @param javaElement to iterate
    * @throws CoreException if an error occurs during iterations
    */
-  protected final void iterate(IJavaElement javaElement) throws CoreException {
+  final void iterate(IJavaElement javaElement) throws CoreException {
     if (getMonitor().isCanceled()) {
       return;
     }
@@ -288,21 +287,7 @@ public abstract class AbstractUCDetectorIterator {
    */
   public abstract String getJobName();
 
-  /**
-   * @return creates a String for all selected javaElements
-   */
-  protected static final String getSelectedString(IJavaElement[] javaElements) {
-    StringBuilder selectedAsString = new StringBuilder();
-    for (IJavaElement javaElement : javaElements) {
-      if (selectedAsString.length() > 0) {
-        selectedAsString.append(SEP);
-      }
-      selectedAsString.append(JavaElementUtil.getElementName(javaElement));
-    }
-    return selectedAsString.toString();
-  }
-
-  protected final MarkerFactory getMarkerFactory() throws CoreException {
+  final MarkerFactory getMarkerFactory() throws CoreException {
     if (markerFactory == null) {
       markerFactory = MarkerFactory.createInstance();
       markerFactory.startReport(objectsToIterate, timeStart);

@@ -5,6 +5,7 @@ New features:
  - Added dtd for xml reports
  - Better debug log output for ignored elements
  - Improved tooltips for UCDetector preferences
+ - Improved messages, labels
  
 Bugfixes:
  - 

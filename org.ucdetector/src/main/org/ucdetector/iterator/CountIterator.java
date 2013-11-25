@@ -17,6 +17,7 @@ import org.eclipse.jdt.core.IPackageFragmentRoot;
 import org.eclipse.jdt.core.IType;
 import org.ucdetector.Messages;
 import org.ucdetector.preferences.Prefs;
+import org.ucdetector.util.JavaElementUtil;
 
 /**
  * Count non private <code>IJavaElement</code>'s like:
@@ -49,7 +50,7 @@ public class CountIterator extends AbstractUCDetectorIterator {
   @Override
   public void handleStartGlobal(IJavaElement[] objects) throws CoreException {
     getMonitor().beginTask(getJobName(), 10);
-    selectedAsString = getSelectedString(objects);
+    selectedAsString = CountIterator.getSelectedString(objects);
     super.handleStartGlobal(objects);
   }
 
@@ -123,7 +124,7 @@ public class CountIterator extends AbstractUCDetectorIterator {
     appendLine(sb, Messages.CountIterator_Classes, classes);
     appendLine(sb, Messages.CountIterator_Methods, methods);
     appendLine(sb, Messages.CountIterator_Fields, fields);
-    sb.append(NL).append("In: ").append(selectedAsString);//$NON-NLS-1$
+    sb.append(NL).append("In:").append(NL).append(selectedAsString);//$NON-NLS-1$
     return sb.toString();
   }
 
@@ -139,5 +140,23 @@ public class CountIterator extends AbstractUCDetectorIterator {
   @Override
   public String getJobName() {
     return Messages.CountIterator_JobName;
+  }
+
+  /**
+   * @return creates a String for all selected javaElements. String is cutted for to many elements
+   */
+  private static final String getSelectedString(IJavaElement[] javaElements) {
+    StringBuilder result = new StringBuilder();
+    for (int i = 0; i < javaElements.length; i++) {
+      if (i >= 10) {
+        int skipped = javaElements.length - i;
+        if (skipped > 0) {
+          result.append(String.format("... skipped %s more elements ...", String.valueOf(skipped))); //$NON-NLS-1$
+        }
+        break;
+      }
+      result.append(JavaElementUtil.getElementName(javaElements[i])).append(NL);
+    }
+    return result.toString();
   }
 }
