@@ -39,6 +39,7 @@ Detection time: 38.85 seconds
 
 
 == Eclipse versions ==
+* http://en.wikipedia.org/wiki/Eclipse_(software)#Releases
 ** 3.2: Callisto 30.06.2006
 ** 3.3: Europa   29.06.2007
 ** 3.4: Ganymede 25.06.2008
