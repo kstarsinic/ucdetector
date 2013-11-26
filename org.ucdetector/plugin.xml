@@ -438,7 +438,7 @@
        ===================================================================== -->
     <extension point="org.eclipse.core.runtime.applications" id="detect">
        <application visible="false">
-          <run class="org.ucdetector.UCDApplication"></run>
+          <run class="org.ucdetector.headless.UCDApplication"></run>
        </application>
     </extension>
 

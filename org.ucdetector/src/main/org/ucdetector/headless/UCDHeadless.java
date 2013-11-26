@@ -4,10 +4,13 @@
  * Public License v1.0 which accompanies this distribution, and is available at
  * http://www.eclipse.org/legal/epl-v10.html
  */
-package org.ucdetector;
+package org.ucdetector.headless;
 
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -30,15 +33,16 @@ import org.eclipse.jdt.core.IJavaElement;
 import org.eclipse.jdt.core.IJavaProject;
 import org.eclipse.jdt.core.JavaCore;
 import org.osgi.framework.Bundle;
+import org.ucdetector.Log;
+import org.ucdetector.UCDInfo;
+import org.ucdetector.UCDetectorPlugin;
 import org.ucdetector.iterator.AbstractUCDetectorIterator;
-import org.ucdetector.iterator.HeadlessExtension;
 import org.ucdetector.iterator.UCDetectorIterator;
 import org.ucdetector.preferences.ModesReader;
 import org.ucdetector.preferences.Prefs;
 import org.ucdetector.search.UCDProgressMonitor;
 import org.ucdetector.util.JavaElementUtil;
 import org.ucdetector.util.StopWatch;
-import org.ucdetector.util.TargetPlatformLoader;
 
 /**
  * Run UCDetector in headless mode (no UI). Entry point is an eclipse application.
@@ -48,13 +52,14 @@ import org.ucdetector.util.TargetPlatformLoader;
  */
 @SuppressWarnings("nls")
 public class UCDHeadless {
+  private static final String HEADLESS_PROPERTIES = "headless.properties";
   public static final String UCDETECTOR_OPTIONS = "ucdetector.options";
   /**  "org.ucdetector.internal.headless." */
   private static final String HEADLESS_KEY = Prefs.INTERNAL + ".headless.";
   public static final String HEADLESS_KEY_TARGET = HEADLESS_KEY + "targetPlatformFile";
 
   private static final String INCREMENTAL_BUILD = "INCREMENTAL_BUILD";
-  final UCDProgressMonitor ucdMonitor = new UCDProgressMonitor();
+  public final UCDProgressMonitor ucdMonitor = new UCDProgressMonitor();
   private final int buildType;
   private final File targetPlatformFile;
   private final Report report;
@@ -149,7 +154,7 @@ public class UCDHeadless {
     }
   }
 
-  static Map<String, String> loadOptions(File optionFile) {
+  private static Map<String, String> loadOptions(File optionFile) {
     Map<String, String> ucdOptions = Collections.emptyMap();
     Log.info("   optionFile: %s exists: %s", UCDetectorPlugin.getCanonicalPath(optionFile), "" + optionFile.exists());
     if (optionFile.exists()) {
@@ -290,6 +295,21 @@ public class UCDHeadless {
       Log.info("    " + JavaElementUtil.getElementName(javaElement));//$NON-NLS-1$
     }
     return javaElementsToIterate;
+  }
+
+  public static String getHeadlessProperties() {
+    InputStream inStream = null;
+    try {
+      inStream = UCDHeadless.class.getResourceAsStream(UCDHeadless.HEADLESS_PROPERTIES);
+      return UCDetectorPlugin.readAll(new InputStreamReader(inStream, UCDetectorPlugin.UTF_8));
+    }
+    catch (IOException ex) {
+      Log.error(ex, "Can't read %s", UCDHeadless.HEADLESS_PROPERTIES);
+    }
+    finally {
+      UCDetectorPlugin.closeSave(inStream);
+    }
+    return "";
   }
 
   private static List<IJavaProject> createProjects(IProgressMonitor monitor, IWorkspaceRoot workspaceRoot)

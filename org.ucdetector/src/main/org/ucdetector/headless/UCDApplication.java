@@ -4,7 +4,7 @@
  * Public License v1.0 which accompanies this distribution, and is available at
  * http://www.eclipse.org/legal/epl-v10.html
  */
-package org.ucdetector;
+package org.ucdetector.headless;
 
 import java.io.BufferedReader;
 import java.io.FileNotFoundException;
@@ -14,6 +14,8 @@ import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.Platform;
 import org.eclipse.equinox.app.IApplication;
 import org.eclipse.equinox.app.IApplicationContext;
+import org.ucdetector.Log;
+import org.ucdetector.UCDetectorPlugin;
 import org.ucdetector.search.UCDProgressMonitor;
 
 /**

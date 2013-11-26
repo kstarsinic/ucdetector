@@ -4,7 +4,7 @@
  * Public License v1.0 which accompanies this distribution, and is available at
  * http://www.eclipse.org/legal/epl-v10.html
  */
-package org.ucdetector.util;
+package org.ucdetector.headless;
 
 import java.io.File;
 
@@ -16,7 +16,6 @@ import org.eclipse.pde.internal.core.target.provisional.ITargetHandle;
 import org.eclipse.pde.internal.core.target.provisional.ITargetPlatformService;
 import org.eclipse.pde.internal.core.target.provisional.LoadTargetDefinitionJob;
 import org.ucdetector.Log;
-import org.ucdetector.UCDHeadless;
 
 //==  before 3.5 ==
 //There is no target code

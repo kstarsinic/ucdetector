@@ -12,8 +12,6 @@ import static org.ucdetector.preferences.UCDetectorPreferencePage.TAB_START;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
 import java.text.MessageFormat;
 import java.util.LinkedHashMap;
@@ -26,6 +24,7 @@ import org.ucdetector.Log;
 import org.ucdetector.Messages;
 import org.ucdetector.UCDInfo;
 import org.ucdetector.UCDetectorPlugin;
+import org.ucdetector.headless.UCDHeadless;
 
 /**
  * Write modes file
@@ -35,9 +34,7 @@ import org.ucdetector.UCDetectorPlugin;
  */
 @SuppressWarnings("nls")
 public class ModesWriter {
-  private static final String HEADLESS_PROPERTIES = "headless.properties";
   static final String MODES_FILE_TYPE = ".properties";
-  private static String headlessPropertiesContent;
   private final List<String> extendedPreferences;
 
   public ModesWriter(List<String> extendedPreferences) {
@@ -75,7 +72,7 @@ public class ModesWriter {
       }
     }
     flushGroupPrefs(groupPrefs, text);
-    appendHeadlessProperties(text);
+    text.append(UCDHeadless.getHeadlessProperties());
     String fileText = text.toString();
     if (Log.isDebug()) {
       Log.debug(fileText);
@@ -95,24 +92,6 @@ public class ModesWriter {
     finally {
       UCDetectorPlugin.closeSave(writer);
     }
-  }
-
-  private static void appendHeadlessProperties(StringBuilder sb) {
-    InputStream inStream = null;
-    try {
-      if (headlessPropertiesContent == null) {
-        inStream = ModesWriter.class.getResourceAsStream(HEADLESS_PROPERTIES);
-        headlessPropertiesContent = UCDetectorPlugin.readAll(new InputStreamReader(inStream, UCDetectorPlugin.UTF_8));
-      }
-    }
-    catch (IOException ex) {
-      headlessPropertiesContent = "";
-      Log.error(ex, "Can't read %s", HEADLESS_PROPERTIES);
-    }
-    finally {
-      UCDetectorPlugin.closeSave(inStream);
-    }
-    sb.append(headlessPropertiesContent);
   }
 
   /** Nice key value formatting only */
