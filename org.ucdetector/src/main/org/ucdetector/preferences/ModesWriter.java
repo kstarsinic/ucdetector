@@ -24,7 +24,6 @@ import org.ucdetector.Log;
 import org.ucdetector.Messages;
 import org.ucdetector.UCDInfo;
 import org.ucdetector.UCDetectorPlugin;
-import org.ucdetector.headless.UCDHeadless;
 
 /**
  * Write modes file
@@ -72,7 +71,6 @@ public class ModesWriter {
       }
     }
     flushGroupPrefs(groupPrefs, text);
-    text.append(UCDHeadless.getHeadlessProperties());
     String fileText = text.toString();
     if (Log.isDebug()) {
       Log.debug(fileText);

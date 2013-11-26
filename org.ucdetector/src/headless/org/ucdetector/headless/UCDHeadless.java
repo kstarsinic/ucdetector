@@ -8,9 +8,6 @@ package org.ucdetector.headless;
 
 import java.io.File;
 import java.io.FileNotFoundException;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -52,7 +49,6 @@ import org.ucdetector.util.StopWatch;
  */
 @SuppressWarnings("nls")
 public class UCDHeadless {
-  private static final String HEADLESS_PROPERTIES = "headless.properties";
   public static final String UCDETECTOR_OPTIONS = "ucdetector.options";
   /**  "org.ucdetector.internal.headless." */
   private static final String HEADLESS_KEY = Prefs.INTERNAL + ".headless.";
@@ -295,21 +291,6 @@ public class UCDHeadless {
       Log.info("    " + JavaElementUtil.getElementName(javaElement));//$NON-NLS-1$
     }
     return javaElementsToIterate;
-  }
-
-  public static String getHeadlessProperties() {
-    InputStream inStream = null;
-    try {
-      inStream = UCDHeadless.class.getResourceAsStream(UCDHeadless.HEADLESS_PROPERTIES);
-      return UCDetectorPlugin.readAll(new InputStreamReader(inStream, UCDetectorPlugin.UTF_8));
-    }
-    catch (IOException ex) {
-      Log.error(ex, "Can't read %s", UCDHeadless.HEADLESS_PROPERTIES);
-    }
-    finally {
-      UCDetectorPlugin.closeSave(inStream);
-    }
-    return "";
   }
 
   private static List<IJavaProject> createProjects(IProgressMonitor monitor, IWorkspaceRoot workspaceRoot)
