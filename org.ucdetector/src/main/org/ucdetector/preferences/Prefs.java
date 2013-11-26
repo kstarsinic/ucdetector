@@ -85,7 +85,7 @@ public final class Prefs {
   static final String ANALYZE_FINAL_FIELD = ID + ".finalField";
   static final String ANALYZE_FINAL_METHOD = ID + ".finalMethod";
   // REPORTS ------------------------------------------------------------------
-  public static final String REPORT_DIR = ID + ".report.dir";
+  static final String REPORT_DIR = ID + ".report.dir";
   static final String REPORT_FILE = ID + ".report.file";
   private static final String REPORT_CREATE = ID + ".report.create";
   static final String REPORT_CREATE_XML = REPORT_CREATE + ".xml";
@@ -141,28 +141,28 @@ public final class Prefs {
    * @return <code>true</code>, when bean methods should be filtered
    */
   public static boolean isFilterBeanMethod() {
-    return getStore().getBoolean(FILTER_BEAN_METHOD);
+    return getBoolean(FILTER_BEAN_METHOD);
   }
 
   /**
    * @return <code>true</code>, when deprecated code should be filtered
    */
   public static boolean isFilterDeprecated() {
-    return getStore().getBoolean(IGNORE_DEPRECATED);
+    return getBoolean(IGNORE_DEPRECATED);
   }
 
   /**
    * @return <code>true</code>, when comment lines containing "NO_UCD" code should be filtered
    */
   public static boolean isFilter_NO_UCD() {
-    return getStore().getBoolean(IGNORE_NO_UCD);
+    return getBoolean(IGNORE_NO_UCD);
   }
 
   /**
    * @return <code>true</code>, when derived resources should be ignored
    */
   public static boolean isIgnoreDerived() {
-    return getStore().getBoolean(IGNORE_DERIVED);
+    return getBoolean(IGNORE_DERIVED);
   }
 
   /**
@@ -170,21 +170,21 @@ public final class Prefs {
    * see: compiler warnings: Code style, 'access to a non-accessible member of an enclosing type'
    */
   public static boolean isIgnoreSyntheticAccessEmulationWarning() {
-    return getStore().getBoolean(IGNORE_SYNTHETIC_ACCESS_EMULATION);
+    return getBoolean(IGNORE_SYNTHETIC_ACCESS_EMULATION);
   }
 
   /**
    * @return <code>true</code>, when code is references only by test code
    */
   public static boolean isDetectTestOnly() {
-    return getStore().getBoolean(DETECT_TEST_ONLY);
+    return getBoolean(DETECT_TEST_ONLY);
   }
 
   /**
    * @return <code>true</code>, when a class containing a main method should be filtered
    */
   public static boolean isFilterClassWithMainMethod() {
-    return getStore().getBoolean(FILTER_CLASS_WITH_MAIN_METHOD);
+    return getBoolean(FILTER_CLASS_WITH_MAIN_METHOD);
   }
 
   /**
@@ -224,7 +224,7 @@ public final class Prefs {
   }
 
   public static boolean isFilterImplements() {
-    String filter = getStore().getString(FILTER_IMPLEMENTS);
+    String filter = getString(FILTER_IMPLEMENTS);
     return filter.trim().length() > 0;
   }
 
@@ -263,7 +263,7 @@ public final class Prefs {
    * @return WarnLevel for unnecessary code in classes
    */
   public static WarnLevel getUCDetectionInClasses() {
-    return WarnLevel.valueOf(getString(ANALYZE_CLASSES));
+    return getWarnLevel(ANALYZE_CLASSES);
   }
 
   /**
@@ -280,7 +280,7 @@ public final class Prefs {
    * @return WarnLevel for unnecessary code in methods
    */
   public static WarnLevel getUCDetectionInMethods() {
-    return WarnLevel.valueOf(getString(ANALYZE_MEHTODS));
+    return getWarnLevel(ANALYZE_MEHTODS);
   }
 
   /**
@@ -297,7 +297,7 @@ public final class Prefs {
    * @return WarnLevel for unnecessary code in fields
    */
   public static WarnLevel getUCDetectionInFields() {
-    return WarnLevel.valueOf(getString(ANALYZE_FIELDS));
+    return getWarnLevel(ANALYZE_FIELDS);
   }
 
   /**
@@ -324,21 +324,25 @@ public final class Prefs {
    * @return <code>true</code> if we should detect class names in literals as well
    */
   public static boolean isUCDetectionInLiterals() {
-    return getStore().getBoolean(ANALYZE_LITERALS_CHECK) && getString(ANALYZE_LITERALS).length() > 0;
+    return getBoolean(ANALYZE_LITERALS_CHECK) && isAnalyseLiterals();
   }
 
   /**
    * @return <code>true</code> if we should detect FULL class names in literals as well
    */
   public static boolean isUCDetectionInLiteralsFullClassName() {
-    return getStore().getBoolean(ANALYZE_CHECK_FULL_CLASS_NAME) && getString(ANALYZE_LITERALS).length() > 0;
+    return getBoolean(ANALYZE_CHECK_FULL_CLASS_NAME) && isAnalyseLiterals();
   }
 
   /**
    * @return <code>true</code> if we should detect SIMPLE class names in literals as well
    */
   public static boolean isUCDetectionInLiteralsSimpleClassName() {
-    return getStore().getBoolean(ANALYZE_CHECK_SIMPLE_CLASS_NAME) && getString(ANALYZE_LITERALS).length() > 0;
+    return getBoolean(ANALYZE_CHECK_SIMPLE_CLASS_NAME) && isAnalyseLiterals();
+  }
+
+  private static boolean isAnalyseLiterals() {
+    return getString(ANALYZE_LITERALS).length() > 0;
   }
 
   // WARN GROUP ----------------------------------------------------------------
@@ -358,17 +362,17 @@ public final class Prefs {
    */
   public static WarnLevel getVisibilityProtectedCheck(IJavaElement javaElement) {
     if (javaElement instanceof IType) {
-      return WarnLevel.valueOf(getString(ANALYZE_VISIBILITY_PROTECTED_CLASSES));
+      return getWarnLevel(ANALYZE_VISIBILITY_PROTECTED_CLASSES);
     }
     if (javaElement instanceof IMethod) {
-      return WarnLevel.valueOf(getString(ANALYZE_VISIBILITY_PROTECTED_METHODS));
+      return getWarnLevel(ANALYZE_VISIBILITY_PROTECTED_METHODS);
     }
     if (javaElement instanceof IField) {
       IField field = (IField) javaElement;
       if (isConstant(field)) {
-        return WarnLevel.valueOf(getString(ANALYZE_VISIBILITY_PROTECTED_CONSTANTS));
+        return getWarnLevel(ANALYZE_VISIBILITY_PROTECTED_CONSTANTS);
       }
-      return WarnLevel.valueOf(getString(ANALYZE_VISIBILITY_PROTECTED_FIELDS));
+      return getWarnLevel(ANALYZE_VISIBILITY_PROTECTED_FIELDS);
     }
     // Text search: member == null, initializer
     return WarnLevel.WARNING;
@@ -389,17 +393,17 @@ public final class Prefs {
    */
   public static WarnLevel getVisibilityPrivateCheck(IJavaElement javaElement) {
     if (javaElement instanceof IType) {
-      return WarnLevel.valueOf(getString(ANALYZE_VISIBILITY_PRIVATE_CLASSES));
+      return getWarnLevel(ANALYZE_VISIBILITY_PRIVATE_CLASSES);
     }
     if (javaElement instanceof IMethod) {
-      return WarnLevel.valueOf(getString(ANALYZE_VISIBILITY_PRIVATE_METHODS));
+      return getWarnLevel(ANALYZE_VISIBILITY_PRIVATE_METHODS);
     }
     if (javaElement instanceof IField) {
       IField field = (IField) javaElement;
       if (isConstant(field)) {
-        return WarnLevel.valueOf(getString(ANALYZE_VISIBILITY_PRIVATE_CONSTANTS));
+        return getWarnLevel(ANALYZE_VISIBILITY_PRIVATE_CONSTANTS);
       }
-      return WarnLevel.valueOf(getString(ANALYZE_VISIBILITY_PRIVATE_FIELDS));
+      return getWarnLevel(ANALYZE_VISIBILITY_PRIVATE_FIELDS);
     }
     // Text search: member == null, initializer
     return WarnLevel.WARNING;
@@ -437,7 +441,7 @@ public final class Prefs {
    * @return WarnLevel if we can use final for fields
    */
   public static WarnLevel getCheckUseFinalField() {
-    return WarnLevel.valueOf(getString(ANALYZE_FINAL_FIELD));
+    return getWarnLevel(ANALYZE_FINAL_FIELD);
   }
 
   /**
@@ -452,7 +456,7 @@ public final class Prefs {
    * @return WarnLevel if we can use final for methods
    */
   public static WarnLevel getCheckUseFinalMethod() {
-    return WarnLevel.valueOf(getString(ANALYZE_FINAL_METHOD));
+    return getWarnLevel(ANALYZE_FINAL_METHOD);
   }
 
   /**
@@ -463,11 +467,11 @@ public final class Prefs {
   }
 
   public static String getReportFile() {
-    return getStore().getString(REPORT_FILE);
+    return getString(REPORT_FILE);
   }
 
   public static boolean isCreateReportXML() {
-    return getStore().getBoolean(REPORT_CREATE_XML);
+    return getBoolean(REPORT_CREATE_XML);
   }
 
   public static LogLevel getLogLevel() {
@@ -475,11 +479,11 @@ public final class Prefs {
   }
 
   public static boolean isLogToEclipse() {
-    return getStore().getBoolean(LOG_TO_ECLIPSE);
+    return getBoolean(LOG_TO_ECLIPSE);
   }
 
   public static String getModeName() {
-    return getStore().getString(MODE_NAME);
+    return getString(MODE_NAME);
   }
 
   /**
@@ -502,19 +506,19 @@ public final class Prefs {
     return UCDetectorPlugin.getDefault().getPreferenceStore();
   }
 
-  /**
-   * @param name name of the preference
-   * @return never <code>null</code>. Returns "" instead!
-   */
-  public static String getString(String name) {
-    return getStore().getString(name);
+  public static String getReportsDir() {
+    return getString(REPORT_DIR);
+  }
+
+  static void setReportsDir(String dir) {
+    setValue(Prefs.REPORT_DIR, dir);
   }
 
   /**
    * @return array of strings splitted by {@link #LIST_SEPARATOR}, strings maybe trimmed
    */
   private static String[] getStrings(String name, boolean trim) {
-    String[] strings = getStore().getString(name).split(LIST_SEPARATOR);
+    String[] strings = getString(name).split(LIST_SEPARATOR);
     if (trim) {
       // Bugs 2996965: Property File name pattern to search
       for (int i = 0; i < strings.length; i++) {
@@ -577,11 +581,28 @@ public final class Prefs {
     return cycleDepth < CYCLE_DEPTH_MIN ? CYCLE_DEPTH_MIN : cycleDepth > CYCLE_DEPTH_MAX ? CYCLE_DEPTH_MAX : cycleDepth;
   }
 
-  public static String getReportStoreKey(ReportExtension extension) {
+  static String getReportStoreKey(ReportExtension extension) {
     return REPORT_CREATE + "." + extension.getId();
   }
 
   public static boolean isCreateReport(ReportExtension extension) {
-    return getStore().getBoolean(getReportStoreKey(extension));
+    return getBoolean(getReportStoreKey(extension));
+  }
+
+  // Impl ---------------------------------------------------------------------
+  /**
+   * @param name name of the preference
+   * @return never <code>null</code>. Returns "" instead!
+   */
+  private static String getString(String name) {
+    return getStore().getString(name);
+  }
+
+  private static boolean getBoolean(String name) {
+    return getStore().getBoolean(name);
+  }
+
+  private static WarnLevel getWarnLevel(String name) {
+    return WarnLevel.valueOf(getString(name));
   }
 }

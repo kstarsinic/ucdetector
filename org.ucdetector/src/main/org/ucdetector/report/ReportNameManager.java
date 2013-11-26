@@ -37,7 +37,7 @@ public class ReportNameManager {
    * @return report directory
    */
   public static String getReportDir(boolean create) {
-    String dir = Prefs.getString(Prefs.REPORT_DIR);
+    String dir = Prefs.getReportsDir();
     if (dir.length() == 0) {
       dir = ReportNameManager.getReportDirDefault();
     }

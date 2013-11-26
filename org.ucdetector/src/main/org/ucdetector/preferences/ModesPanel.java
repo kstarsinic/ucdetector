@@ -238,7 +238,7 @@ class ModesPanel {
     page.performOk();
     if (newModeName != null && newModeName.trim().length() > 0) {
       // set default, when report directory is missing
-      Prefs.getStore().setValue(Prefs.REPORT_DIR, ReportNameManager.getReportDir(false));
+      Prefs.setReportsDir(ReportNameManager.getReportDir(false));
       modesWriter.saveMode(newModeName);
       Log.info("Added new mode: %s", newModeName); //$NON-NLS-1$
       getCombo().setItems(getModes());
