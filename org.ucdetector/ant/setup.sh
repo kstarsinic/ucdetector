@@ -7,10 +7,18 @@
 #   ------------------------------------------------------------------------------
 
 # == Installer script for UCDetector headless ==
-# This script:
-# * Downloads and unzips eclipse
-# * Downloads UCDetector and installs it in downloaded eclipse
-# * Downloads and unzips UCDetectors source code
+
+# == Usage ==
+# * Put this file in a new directory
+# * Run $ ./setup.sh
+
+# == This script ==
+# * Downloads eclipse
+# * Unzips eclipse
+# * Downloads UCDetector
+# * Installs UCDetector in downloaded eclipse
+# * Downloads UCDetectors source code
+# * Unzips UCDetectors source code
 # * Runs UCDetectors headless checking UCDetectors source code
 
 DOWNLOADS_DIR=downloads
@@ -19,7 +27,7 @@ UCDETECTOR=org.ucdetector_$UCDETECTOR_VERSION.jar
 UCDETECTOR_SOURCE=org.ucdetector.source_$UCDETECTOR_VERSION.zip
 
 ### Install java, if missing
-# java --version || sudo apt-get install -y openjdk-6-jre
+# java -version || sudo apt-get install -y openjdk-7-jre
 
 downloadFile(){
     downloadRemoteDir=$1
@@ -36,16 +44,16 @@ downloadFile(){
 arch=`uname -m`
 if [ "$arch" == 'x86_64' ] ; then
   # ECLIPSE=eclipse-SDK-3.8.1-linux-gtk-x86_64.tar.gz
-    ECLIPSE=eclipse-SDK-4.2.1-linux-gtk-x86_64.tar.gz
+    ECLIPSE=eclipse-SDK-4.3.1-linux-gtk-x86_64.tar.gz
 else
   # ECLIPSE=eclipse-SDK-3.8.1-linux-gtk.tar.gz
-    ECLIPSE=eclipse-SDK-4.2.1-linux-gtk.tar.gz
+    ECLIPSE=eclipse-SDK-4.3.1-linux-gtk.tar.gz
 fi
 
 echo "== Download files =="
 mkdir -p $DOWNLOADS_DIR
 # downloadFile http://ftp.halifax.rwth-aachen.de/eclipse/eclipse/downloads/drops/R-3.8.1-201209141540/ $ECLIPSE
-downloadFile http://ftp.halifax.rwth-aachen.de/eclipse/eclipse/downloads/drops4/R-4.2.1-201209141800/ $ECLIPSE
+downloadFile http://ftp.halifax.rwth-aachen.de/eclipse/eclipse/downloads/drops4/R-4.3.1-201309111000/ $ECLIPSE
 
 downloadFile http://netcologne.dl.sourceforge.net/project/ucdetector/ucdetector/$UCDETECTOR_VERSION/ $UCDETECTOR
 downloadFile http://netcologne.dl.sourceforge.net/project/ucdetector/ucdetector/$UCDETECTOR_VERSION/ $UCDETECTOR_SOURCE
