@@ -91,7 +91,7 @@ ECLIPSE_HOME/dropins/org.ucdetector_*.jar/org/ucdetector/report/html.xslt
 									</tr>
 								</xsl:for-each>
 							</table>
-							Only preferences which are different from default are listed.
+							<xsl:value-of select="count(/ucdetector/statistics/preferences/preference)"/> preferences above are different from default prefences.
 						</td>
 						<td valign="top">
 						 <!-- ==============================================================
@@ -120,6 +120,7 @@ ECLIPSE_HOME/dropins/org.ucdetector_*.jar/org/ucdetector/report/html.xslt
 									</tr>
 								</xsl:for-each>
 							</table>
+							Searched: <xsl:value-of select="count(/ucdetector/statistics/searched/search)"/>
 						</td>
 					</tr>
 				</table><!-- top outer table -->
