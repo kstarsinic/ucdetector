@@ -942,10 +942,18 @@ public final class JavaElementUtil {
    * @throws JavaModelException when there are problems creating hierarchy
    */
   public static IType[] getAllSupertypes(IType type) throws JavaModelException {
-    //profile:5900
-    ITypeHierarchy hierarchy = type.newTypeHierarchy(NULL_MONITOR);
-    if (hierarchy != null) {
-      return hierarchy.getAllSupertypes(type);
+    try {
+      //profile:5900
+      ITypeHierarchy hierarchy = type.newTypeHierarchy(NULL_MONITOR);
+      if (hierarchy != null) {
+        return hierarchy.getAllSupertypes(type);
+      }
+    }
+    catch (Exception ex) {
+      // Workaround for eclipse bug: https://bugs.eclipse.org/bugs/show_bug.cgi?id=416267
+      // See UCDetector bug #69: Crash when using non JDK type in "implements" setting
+      // Simply log exception :-(
+      Log.warn("Eclipse bug. Can't get all supertypes for: " + getTypeNameFull(type));
     }
     return new IType[0];
   }
