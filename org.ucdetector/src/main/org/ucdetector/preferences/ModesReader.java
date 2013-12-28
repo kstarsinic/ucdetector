@@ -46,7 +46,7 @@ public class ModesReader {
     try {
       inStream = getInputStream(isFile, modeFileName);
       BufferedReader reader = new BufferedReader(new InputStreamReader(inStream, UCDetectorPlugin.UTF_8));
-      String line = null;
+      String line = "";
       boolean isInsideMultiLine = false;
       String key = null;
       String value = "";
