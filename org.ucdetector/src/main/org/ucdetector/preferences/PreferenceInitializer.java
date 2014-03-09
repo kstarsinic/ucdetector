@@ -26,12 +26,12 @@ import org.ucdetector.report.ReportNameManager;
  */
 @SuppressWarnings("nls")
 public class PreferenceInitializer extends AbstractPreferenceInitializer {
-  private static final String SOURCE_FOLDER_FILTER = "*test*,generated,";
+  private static final String SOURCE_FOLDER_FILTER = "*test*,*gen*,";
   private static final String PACKAGE_FILTER = "*test*,";
-  private static final String CLASS_FILTER = "Test*,*Test";
-  private static final String METHOD_FILTER = "test*,*Test";
-  private static final String FIELD_FILTER = "test*,*Test";
-  private static final String ANNOATIONS_FILTER = "";
+  private static final String CLASS_FILTER = "Test*,*Test,";
+  private static final String METHOD_FILTER = "test*,*Test,";
+  private static final String FIELD_FILTER = "test*,*Test,";
+  private static final String ANNOATIONS_FILTER = "Generated,Inject*,";
   // feature 2996537: Eclipse Plug-in/Extension detection: added MANIFEST.MF
   private static final String FILE_PATTERN_LITERAL_SEARCH = "*.xml,MANIFEST.MF,";
 
