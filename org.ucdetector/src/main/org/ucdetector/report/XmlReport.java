@@ -201,9 +201,11 @@ public class XmlReport implements IUCDetectorReport {
         }
       }
       IPackageFragment pack = JavaElementUtil.getPackageFor(javaElement);
-      appendChild(marker, "package", pack.getElementName());
-      IType type = JavaElementUtil.getTypeFor(javaElement, true);// NODE: UCDetectorPlugin
-      appendChild(marker, "class", JavaElementUtil.getElementName(type));
+      if (pack != null) {
+        appendChild(marker, "package", pack.getElementName());
+        IType type = JavaElementUtil.getTypeFor(javaElement, true);// NODE: UCDetectorPlugin
+        appendChild(marker, "class", JavaElementUtil.getElementName(type));
+      }
       //
       Element javaTypeElement = appendChild(marker, "javaType", null);
       javaTypeElement.setAttribute("simple", JavaElementUtil.getMemberTypeStringSimple(javaElement));
