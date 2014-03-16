@@ -433,7 +433,7 @@ public class XmlReport implements IUCDetectorReport {
   private static final String[] ICONS = new String[] { //
   //  "ElementClass.gif", "ElementField.gif", "ElementMethod.gif",//
       "FewReference.gif", "Final.gif", "Reference.gif", "TestOnly.gif",//
-      "ucd.gif", "ucdetector32.png", //
+      "ucd.gif", "ucdetector32.png", "Other.gif", //
       "VisibilityDefault.gif", "VisibilityPrivate.gif", "VisibilityProtected.gif", //
   };
 

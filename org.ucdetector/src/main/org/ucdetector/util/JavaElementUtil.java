@@ -971,12 +971,15 @@ public final class JavaElementUtil {
    */
   public static String createJavaLink(IMember javaElement, int lineNr) {
     IType type = getTypeFor(javaElement, true);
+    if (type == null) {
+      // Needed for plugins extending ucdetector
+      return String.format("%s:%s", javaElement.getElementName(), Integer.toString(lineNr));
+    }
     String typeNameFull = getTypeNameFull(type);
     String member = (javaElement instanceof IType) ? "<init>" : javaElement.getElementName();
     String typeName = getElementName(type);
     return String.format("%s.%s(%s.java:%s)", typeNameFull, member, typeName, Integer.toString(lineNr));
   }
-
   /*
    * @return the annotation for a method like @org.junit.Test
    * This method seems to be slow, because it needs to parse

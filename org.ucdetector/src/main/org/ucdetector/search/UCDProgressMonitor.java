@@ -88,7 +88,8 @@ public class UCDProgressMonitor implements IProgressMonitor {
     }
   }
 
-  protected void throwIfIsCanceled() {
+  // Visibiliy needed for plugins extending ucdetector
+  public void throwIfIsCanceled() {
     if (isCanceled()) {
       throw new OperationCanceledException();
     }

@@ -234,6 +234,16 @@
     <super type="org.ucdetector.analyzeMarker"/>
     <persistent  value="true"></persistent>
   </extension>
+  <!-- other -->
+  <extension
+      id="org.ucdetector.analyzeMarkerOther"
+      name="%extension.name.9"
+      point="org.eclipse.core.resources.markers">
+    <super type="org.eclipse.core.resources.problemmarker"/>
+    <super type="org.eclipse.core.resources.textmarker"/>
+    <super type="org.ucdetector.analyzeMarker"/>
+    <persistent  value="true"></persistent>
+  </extension>
   
    <!-- ucd icon -->
     <!-- *** 2 *** -->

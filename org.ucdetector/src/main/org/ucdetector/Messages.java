@@ -187,6 +187,7 @@ public final class Messages extends NLS {
   public static String MarkerFactory_MarkerReference;
   public static String MarkerFactory_MarkerReferenceFieldNeverRead;
   public static String MarkerFactory_MarkerTestOnly;
+  public static String MarkerFactory_MarkerOther;
   //
   public static String SearchManager_Monitor;
   public static String SearchManager_SearchReferences;

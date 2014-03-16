@@ -53,7 +53,7 @@ import org.ucdetector.util.StopWatch;
  * @since 2008-02-29
  */
 public abstract class AbstractUCDetectorIterator {
-  static final boolean DEBUG = "true".equalsIgnoreCase(Platform //$NON-NLS-1$ // NO_UCD
+  protected static final boolean DEBUG = "true".equalsIgnoreCase(Platform //$NON-NLS-1$ // NO_UCD
       .getDebugOption("org.ucdetector/debug/iterator")); //$NON-NLS-1$
   protected static final String NL = System.getProperty("line.separator"); //$NON-NLS-1$
   private UCDProgressMonitor monitor;
@@ -177,7 +177,7 @@ public abstract class AbstractUCDetectorIterator {
    * @param javaElement to iterate
    * @throws CoreException if an error occurs during iterations
    */
-  final void iterate(IJavaElement javaElement) throws CoreException {
+  protected final void iterate(IJavaElement javaElement) throws CoreException {
     if (getMonitor().isCanceled()) {
       return;
     }
@@ -287,7 +287,7 @@ public abstract class AbstractUCDetectorIterator {
    */
   public abstract String getJobName();
 
-  final MarkerFactory getMarkerFactory() throws CoreException {
+  protected final MarkerFactory getMarkerFactory() throws CoreException {
     if (markerFactory == null) {
       markerFactory = MarkerFactory.createInstance();
       markerFactory.startReport(objectsToIterate, timeStart);

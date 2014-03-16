@@ -58,6 +58,8 @@ public final class MarkerFactory implements IUCDetectorReport {
   public static final String UCD_MARKER_TYPE_USE_DEFAULT/*    */= UCD_MARKER_TYPE_PREFIX + "VisibilityDefault";
   public static final String UCD_MARKER_TYPE_USE_FINAL /*     */= UCD_MARKER_TYPE_PREFIX + "Final";
   public static final String UCD_MARKER_TYPE_TEST_ONLY /*     */= UCD_MARKER_TYPE_PREFIX + "TestOnly";
+  public static final String UCD_MARKER_TYPE_OTHER /*         */= UCD_MARKER_TYPE_PREFIX + "Other"; //for extensions to use
+
   //##############################################
   // When adding new marker here, also add it to:
   // * plugin.xml 
@@ -75,6 +77,7 @@ public final class MarkerFactory implements IUCDetectorReport {
     map.put(UCD_MARKER_TYPE_USE_DEFAULT, "use default");
     map.put(UCD_MARKER_TYPE_USE_FINAL, "use final");
     map.put(UCD_MARKER_TYPE_TEST_ONLY, "test only");
+    map.put(UCD_MARKER_TYPE_OTHER, "other");
     MARKER_MAP = Collections.unmodifiableMap(map);
   }
 
@@ -220,6 +223,18 @@ public final class MarkerFactory implements IUCDetectorReport {
     String elementName = JavaElementUtil.getElementName(member);
     String message = NLS.bind(Messages.MarkerFactory_MarkerTestOnly, new Object[] { searchInfo, elementName });
     return reportMarker(new ReportParam(member, message, line, UCD_MARKER_TYPE_TEST_ONLY));
+  }
+
+  /**
+   * Create an eclipse marker: Method "ClassName.myMethod()"  is only matched by test code
+   * @param member  to create marker for
+   * @param message  to create marker for
+   * @param line  to create marker for
+   * @return <code>true</code>, if a marker was created
+   * @throws CoreException when there are problem creating marker
+   */
+  public boolean createReferenceMarkerOther(IMember member, String message, int line) throws CoreException {
+    return reportMarker(new ReportParam(member, message, line, UCD_MARKER_TYPE_OTHER));
   }
 
   /**
