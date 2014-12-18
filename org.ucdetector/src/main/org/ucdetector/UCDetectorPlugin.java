@@ -29,6 +29,8 @@ import org.eclipse.core.runtime.Status;
 import org.eclipse.core.runtime.preferences.DefaultScope;
 import org.eclipse.core.runtime.preferences.IEclipsePreferences;
 import org.eclipse.core.runtime.preferences.InstanceScope;
+import org.eclipse.jdt.core.dom.AST;
+import org.eclipse.jdt.core.dom.ASTParser;
 import org.eclipse.jdt.internal.ui.JavaPluginImages;
 import org.eclipse.jdt.ui.JavaUI;
 import org.eclipse.jface.resource.ImageDescriptor;
@@ -336,6 +338,13 @@ public class UCDetectorPlugin extends AbstractUIPlugin {
     Status status = new Status(IStatus.ERROR, ID, IStatus.ERROR, message, ex);
     logToEclipseLog(status);
     return status;
+  }
+
+  // Do not use AST.JLS3:
+  // JLS4 fixes: #70 Error in numeric literal with underscores
+  // http://sourceforge.net/p/ucdetector/bugs/70/
+  public static ASTParser newASTParser() {
+    return ASTParser.newParser(AST.JLS4);
   }
 
   ///**

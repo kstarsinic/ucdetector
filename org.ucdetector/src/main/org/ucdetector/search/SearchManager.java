@@ -611,7 +611,7 @@ public class SearchManager {
     //        try {
     //          String code = lineManager.getPieceOfCode(matchElement, offset);
     //          System.out.println("code: " + code);
-    //          ASTParser parser = ASTParser.newParser(AST.JLS3);
+    //          ASTParser parser = UCDetectorPlugin.newASTParser();
     //          ICompilationUnit compilationUnit = JavaElementUtil.getTypeFor(matchElement, true).getCompilationUnit();
     //          parser.setSource(compilationUnit); // compilationUnit needed for resolve bindings!
     //          parser.setKind(ASTParser.K_COMPILATION_UNIT);

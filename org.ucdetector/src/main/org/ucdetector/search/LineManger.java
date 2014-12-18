@@ -27,7 +27,6 @@ import org.eclipse.jdt.core.ToolFactory;
 import org.eclipse.jdt.core.compiler.IScanner;
 import org.eclipse.jdt.core.compiler.ITerminalSymbols;
 import org.eclipse.jdt.core.compiler.InvalidInputException;
-import org.eclipse.jdt.core.dom.AST;
 import org.eclipse.jdt.core.dom.ASTNode;
 import org.eclipse.jdt.core.dom.ASTParser;
 import org.eclipse.jdt.core.dom.AbstractTypeDeclaration;
@@ -166,7 +165,7 @@ public class LineManger {
    * See feature request: Want annotations, not comments, to indicate non-dead code - ID: 2658675
    */
   private static FindIgnoreLinesVisitor findUcdSuppressWarningLines(IScanner scanner, ICompilationUnit compilationUnit) {
-    ASTParser parser = ASTParser.newParser(AST.JLS3);
+    ASTParser parser = UCDetectorPlugin.newASTParser();
     parser.setSource(compilationUnit); // compilationUnit needed for resolve bindings!
     parser.setKind(ASTParser.K_COMPILATION_UNIT);
     parser.setResolveBindings(true);

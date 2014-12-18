@@ -371,7 +371,7 @@ public final class JavaElementUtil {
    *         <li><code>public boolean isValid()</code></li>
    *         </ul>
    * @throws JavaModelException if this element does not exist or if an
-  *      exception occurs while accessing its corresponding resource.
+   *      exception occurs while accessing its corresponding resource.
    */
   public static boolean isBeanMethod(IMethod method) throws JavaModelException {
     if (!Flags.isPublic(method.getFlags()) || Flags.isStatic(method.getFlags())) {
@@ -440,7 +440,7 @@ public final class JavaElementUtil {
    *         <li><code>private static final ObjectStreamField[] serialPersistentFields</code></li>
    * </ul>
    * @throws JavaModelException if this element does not exist or if an
-  *      exception occurs while accessing its corresponding resource.
+   *      exception occurs while accessing its corresponding resource.
    * @see "http://download.oracle.com/javase/1.5.0/docs/api/java/io/Serializable.html"
    * @see org.eclipse.jdt.internal.compiler.problem.ProblemReporter#unusedPrivateField
    */
@@ -453,12 +453,12 @@ public final class JavaElementUtil {
   }
 
   /**
-  *
-  * @param field to check if it is a constant
-  * @return <code>true</code>, when a field is static and final
-  * @throws JavaModelException if this element does not exist or if an
-  *      exception occurs while accessing its corresponding resource.
-  */
+   *
+   * @param field to check if it is a constant
+   * @return <code>true</code>, when a field is static and final
+   * @throws JavaModelException if this element does not exist or if an
+   *      exception occurs while accessing its corresponding resource.
+   */
   public static boolean isConstant(IField field) throws JavaModelException { // NO_UCD
     return Flags.isStatic(field.getFlags()) && Flags.isFinal(field.getFlags());
   }
@@ -483,11 +483,11 @@ public final class JavaElementUtil {
   /**
    * @param element to get name for
    * @return <ul>
-  * <li>For classes: <code>ClassName</code></li>
-  * <li>For methods: <code>ClassName.methodName(String, int, double )</code></li>
-  * <li>For fields: <code>ClassName.fieldName</code></li>
-  * </ul>
-  * @see org.eclipse.jdt.internal.core.JavaElement#readableName()
+   * <li>For classes: <code>ClassName</code></li>
+   * <li>For methods: <code>ClassName.methodName(String, int, double )</code></li>
+   * <li>For fields: <code>ClassName.fieldName</code></li>
+   * </ul>
+   * @see org.eclipse.jdt.internal.core.JavaElement#readableName()
    */
   public static String getElementName(IJavaElement element) {
     if (element == null) {
@@ -613,30 +613,30 @@ public final class JavaElementUtil {
   }
 
   /**
-  * @param member to crate a string for
-  * @return "???" if unknown, otherwise:<p>
-  * For classes:
-  * <ul>
-  * <li>"Annotation"</li>
-  * <li>"Anonymous class"</li>
-  * <li>"Enumeration"</li>
-  * <li>"Interface"</li>
-  * <li>"Local class"</li>
-  * <li>"Class"</li>
-  * </ul>
-  * For methods:
-  * <ul>
-  * <li>"Constructor"</li>
-  * <li>"Method"</li>
-  * </ul>
-  * For IField:
-  * <ul>
-  * <li>"EnumConstant"</li>
-  * <li>"Constant"</li>
-  * <li>"Field"</li>
-  * <li>"Initializer"</li>
-  * </ul>
-  */
+   * @param member to crate a string for
+   * @return "???" if unknown, otherwise:<p>
+   * For classes:
+   * <ul>
+   * <li>"Annotation"</li>
+   * <li>"Anonymous class"</li>
+   * <li>"Enumeration"</li>
+   * <li>"Interface"</li>
+   * <li>"Local class"</li>
+   * <li>"Class"</li>
+   * </ul>
+   * For methods:
+   * <ul>
+   * <li>"Constructor"</li>
+   * <li>"Method"</li>
+   * </ul>
+   * For IField:
+   * <ul>
+   * <li>"EnumConstant"</li>
+   * <li>"Constant"</li>
+   * <li>"Field"</li>
+   * <li>"Initializer"</li>
+   * </ul>
+   */
   public static String getMemberTypeString(IMember member) {
     MemberInfo memberInfo = getMemberInfo(member);
     return memberInfo == null ? "???" : memberInfo.toString();
@@ -847,7 +847,7 @@ public final class JavaElementUtil {
    * @param type to check for subclasses
    * @return <code>true</code>, when a type has sub classes
    * @throws JavaModelException if this element does not exist or if an
-  *      exception occurs while accessing its corresponding resource.
+   *      exception occurs while accessing its corresponding resource.
    */
   public static boolean hasSubClasses(IType type) throws JavaModelException {
     return hasXType(type, false);
@@ -857,7 +857,7 @@ public final class JavaElementUtil {
    * @param type to check for super classes
    * @return <code>true</code>, when a type has super classes
    * @throws JavaModelException if this element does not exist or if an
-  *      exception occurs while accessing its corresponding resource.
+   *      exception occurs while accessing its corresponding resource.
    */
   public static boolean hasSuperClasses(IType type) throws JavaModelException { // NO_UCD
     return hasXType(type, true);
@@ -964,9 +964,9 @@ public final class JavaElementUtil {
 
   /**
    * Create link to java element, which can be used in Eclipse "Java Stack Trace Console"
-   * 
+   *
    * @param javaElement class/method/field to create link for
-   * @param lineNr line of javaElement 
+   * @param lineNr line of javaElement
    * @return java link eg: org.eclipse.swt.SWT.error(SWT.java:3634)
    */
   public static String createJavaLink(IMember javaElement, int lineNr) {
@@ -986,7 +986,7 @@ public final class JavaElementUtil {
    * the code of the method!
   private static String getAnnotationFor(IMethod method)
       throws JavaModelException {
-    ASTParser parser = ASTParser.newParser(AST.JLS3);
+    ASTParser parser = UCDetectorPlugin.newASTParser();
     parser.setSource(method.getSource().toCharArray());
     parser.setKind(ASTParser.K_CLASS_BODY_DECLARATIONS);
     parser.setResolveBindings(true);
