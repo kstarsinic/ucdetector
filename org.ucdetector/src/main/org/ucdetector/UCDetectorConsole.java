@@ -41,6 +41,7 @@ public class UCDetectorConsole extends MessageConsole {
   }
 
   public static void log(boolean isWarn, String formattedMessage, Throwable ex) {
+    @SuppressWarnings("resource")
     PrintStream stream = isWarn ? consoleStreamWarn : consoleStreamInfo;
     if (stream != null) {
       if (formattedMessage != null) {

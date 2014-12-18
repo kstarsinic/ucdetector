@@ -384,7 +384,7 @@ public class XmlReport implements IUCDetectorReport {
       logEndReportMessage(Messages.XMLReport_WriteError, IStatus.ERROR, initXMLException, reportPath);
       return;
     }
-    // 
+    //
     if (markerCount == 0 && detectionProblemCount == 0) {
       logEndReportMessage(Messages.XMLReport_WriteNoWarnings, IStatus.INFO, initXMLException);
       return;
@@ -464,13 +464,8 @@ public class XmlReport implements IUCDetectorReport {
 
   private static void writeTextFile(Document doc, File file, String xslt) throws IOException, TransformerException {
     String text = transformToText(doc, xslt);
-    OutputStreamWriter fileWriter = null;
-    try {
-      fileWriter = new OutputStreamWriter(new FileOutputStream(file), UCDetectorPlugin.UTF_8);
+    try (OutputStreamWriter fileWriter = new OutputStreamWriter(new FileOutputStream(file), UCDetectorPlugin.UTF_8)) {
       fileWriter.write(text);
-    }
-    finally {
-      UCDetectorPlugin.closeSave(fileWriter);
     }
     Log.info("Wrote file= " + UCDetectorPlugin.getCanonicalPath(file));
   }
@@ -493,19 +488,14 @@ public class XmlReport implements IUCDetectorReport {
     catch (IllegalArgumentException ignore) {
       Log.warn("Can't change output format: " + ignore);
     }
-    OutputStreamWriter writer = null;
-    try {
-      writer = new OutputStreamWriter(new FileOutputStream(file), UCDetectorPlugin.UTF_8);
+    try (OutputStreamWriter writer = new OutputStreamWriter(new FileOutputStream(file), UCDetectorPlugin.UTF_8)) {
       Result result = new StreamResult(writer);
       xformer.transform(source, result);
-    }
-    finally {
-      UCDetectorPlugin.closeSave(writer);
     }
     Log.info("Wrote file= " + UCDetectorPlugin.getCanonicalPath(file));
   }
 
-  /** Transform from xml to text using xslt transformation 
+  /** Transform from xml to text using xslt transformation
    * @throws TransformerException */
   private static String transformToText(Document xmlDoc, String xslt) throws TransformerException {
     StringWriter stringWriter = new StringWriter();

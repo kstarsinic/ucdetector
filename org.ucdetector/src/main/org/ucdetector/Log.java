@@ -126,6 +126,7 @@ public class Log {
   }
 
   private static void logImplStream(String message, Throwable ex, boolean isWarn) {
+    @SuppressWarnings("resource")
     PrintStream stream = isWarn ? System.err : System.out;
     if (message != null) {
       stream.println(message);

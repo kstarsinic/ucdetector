@@ -109,17 +109,12 @@ public class TextReport implements IUCDetectorReport {
     String reportName = ReportNameManager.getReportFileName(extension.getResultFile(), objectsToIterate);
     String reportDir = ReportNameManager.getReportDir(true);
     File resultFile = new File(reportDir, reportName);
-    OutputStreamWriter writer = null;
-    try {
-      writer = new OutputStreamWriter(new FileOutputStream(resultFile), UCDetectorPlugin.UTF_8);
+    try (OutputStreamWriter writer = new OutputStreamWriter(new FileOutputStream(resultFile), UCDetectorPlugin.UTF_8);) {
       writer.append(report.toString());
       Log.info("Created file: " + resultFile);
     }
     catch (IOException ex) {
       UCDetectorPlugin.logToEclipseLog("Can't write report", ex);
-    }
-    finally {
-      UCDetectorPlugin.closeSave(writer);
     }
   }
 

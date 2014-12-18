@@ -77,18 +77,13 @@ public class ModesWriter {
       Log.debug("Unhandled preferences :" + allPreferences);
     }
     File modesFile = getModesFile(modeName);
-    OutputStreamWriter writer = null;
-    try {
-      writer = new OutputStreamWriter(new FileOutputStream(modesFile), UCDetectorPlugin.UTF_8);
+    try (OutputStreamWriter writer = new OutputStreamWriter(new FileOutputStream(modesFile), UCDetectorPlugin.UTF_8)) {
       writer.write(fileText);
       Log.debug("Saved mode to: %s", modesFile.getAbsolutePath());
     }
     catch (IOException ex) {
       String message = NLS.bind(Messages.ModesPanel_ModeFileCantSave, modesFile.getAbsolutePath());
       UCDetectorPlugin.logToEclipseLog(message, ex);
-    }
-    finally {
-      UCDetectorPlugin.closeSave(writer);
     }
   }
 
