@@ -199,6 +199,7 @@ public abstract class AbstractUCDetectorIterator {
     else if (javaElement instanceof IPackageFragmentRoot) {
       IPackageFragmentRoot pfRoot = (IPackageFragmentRoot) javaElement;
       doChildren = doPackageFragmentRootChildren(pfRoot);
+      debugHandle(pfRoot, "not isUCDetectionInSourceFolders", doChildren); //$NON-NLS-1$
       handlePackageFragmentRoot(pfRoot);
     }
     else if (javaElement instanceof IPackageFragment) {
@@ -214,6 +215,7 @@ public abstract class AbstractUCDetectorIterator {
           }
         }
         doChildren = doPackageChildren(packageFragment);
+        debugHandle(packageFragment, "not isUCDetectionInPackage", doChildren); //$NON-NLS-1$
         handlePackageFragment(packageFragment);
       }
     }
@@ -233,6 +235,7 @@ public abstract class AbstractUCDetectorIterator {
     // SUB CLASS -----------------------------------------------------------
     else if (javaElement instanceof IImportContainer) {
       IImportContainer importContainer = (IImportContainer) javaElement;
+      debugHandle(importContainer, "not isUCDetectionInImportContainer", doChildren); //$NON-NLS-1$
       doChildren = doImportContainerChildren(importContainer);
       handleImportContainer(importContainer);
     }
@@ -315,6 +318,21 @@ public abstract class AbstractUCDetectorIterator {
           JavaElementUtil.getMemberTypeString(member),//
           JavaElementUtil.getElementName(member), //
           reason);
+    }
+  }
+
+  /**
+   * Debug, that a member will not be handled, because it is
+   * filtered, private...
+   */
+  // Improved logging for: #71 ignore source folders doesn't seem to support 2 level deep folders
+  protected static final void debugHandle(IJavaElement javaElement, String reason, boolean doChildren) {
+    if (Log.isDebug()) {
+      Log.debug("DO CHILDREN %s, %-15s '%s' -> %s",// //$NON-NLS-1$
+          Boolean.valueOf(doChildren), //
+          javaElement == null ? "?" : javaElement.getClass().getSimpleName(),// //$NON-NLS-1$
+              JavaElementUtil.getElementName(javaElement), //
+              reason);
     }
   }
 
