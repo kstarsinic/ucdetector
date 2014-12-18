@@ -36,14 +36,17 @@ class TodoQuickFix extends AbstractUCDQuickFix {
     return offset;
   }
 
+  @Override
   public Image getImage() {
     return UCDetectorPlugin.getImage(UCDetectorPlugin.IMAGE_TODO);
   }
 
+  @Override
   public String getLabel() {
     return Messages.TodoQuickFix_label;
   }
 
+  @Override
   public String getDescription() {
     return String
         .format("Add comments:<br><b>%s...</b><br>And<br><b>%s</b>", TODO_UCD, NoUcdTagQuickFix.NO_UCD_COMMENT); //$NON-NLS-1$

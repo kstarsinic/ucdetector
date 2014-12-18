@@ -40,6 +40,7 @@ public class CountAction extends AbstractUCDetectorAction {
     final IStatus status = new Status(IStatus.INFO, UCDetectorPlugin.ID, IStatus.INFO, message, null);
     UCDetectorPlugin.logToEclipseLog(status);
     Display.getDefault().asyncExec(new Runnable() {
+      @Override
       public void run() {
         Shell shell = UCDetectorPlugin.getShell();
         Log.info(message);

@@ -21,8 +21,8 @@ import org.eclipse.jdt.core.IType;
  */
 public class TypeContainer {
   private final IType type;
-  private final List<IField> fields = new ArrayList<IField>();
-  private final List<IMethod> methods = new ArrayList<IMethod>();
+  private final List<IField> fields = new ArrayList<>();
+  private final List<IMethod> methods = new ArrayList<>();
 
   @SuppressWarnings("ucd")
   public TypeContainer(IType type) {

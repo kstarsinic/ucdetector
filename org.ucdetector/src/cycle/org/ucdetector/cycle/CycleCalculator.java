@@ -52,7 +52,7 @@ class CycleCalculator {
    * get all cycles, including double cycles
    */
   private List<Cycle> getAllCycles() {
-    List<Cycle> allCycles = new ArrayList<Cycle>();
+    List<Cycle> allCycles = new ArrayList<>();
     int count = 0;
     int prevSize = 0;
     for (TypeAndMatches typeAndMatches : typeAndMatchesList) {
@@ -63,7 +63,7 @@ class CycleCalculator {
       String mes = NLS.bind(Messages.CycleCalculator_Monitor, bindings);
       monitor.subTask(mes);
       monitor.worked(1);
-      Stack<TypeAndMatches> path = new Stack<TypeAndMatches>();
+      Stack<TypeAndMatches> path = new Stack<>();
       IType startType = typeAndMatches.getRoot();
       searchCycles(startType, path, allCycles);
       if (Log.isDebug()) {
@@ -95,12 +95,13 @@ class CycleCalculator {
   private List<Cycle> removeDoubleCycles(List<Cycle> cyclesFound) {
     monitor.subTask(Messages.CycleCalculator_removeDoubleCycles);
     monitor.worked(1);
-    List<Cycle> result = new ArrayList<Cycle>();
+    List<Cycle> result = new ArrayList<>();
     if (cyclesFound.isEmpty()) {
       return result;
     }
     // small cycles first
     Collections.sort(cyclesFound, new Comparator<Cycle>() {
+      @Override
       public int compare(Cycle o1, Cycle o2) {
         return o1.getChildrenSize() - o2.getChildrenSize();
       }
@@ -162,7 +163,7 @@ class CycleCalculator {
   }
 
   private static LinkedList<CycleType> createCycleList(List<TypeAndMatches> matches) {
-    LinkedList<CycleType> result = new LinkedList<CycleType>();
+    LinkedList<CycleType> result = new LinkedList<>();
     for (int i = 0; i < matches.size(); i++) {
       int next = (i + 1) % matches.size();
       IType matchTarget = matches.get(next).getRoot();

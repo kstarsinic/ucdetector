@@ -59,15 +59,18 @@ class LineCommentQuickFix extends AbstractUCDQuickFix {
     }
   }
 
+  @Override
   public String getLabel() {
     return Messages.LineCommentQuickFix_label;
   }
 
+  @Override
   public Image getImage() {
     return UCDetectorPlugin.getImage(UCDetectorPlugin.IMAGE_COMMENT);
     //    return JavaPluginImages.get(JavaPluginImages.IMG_CORRECTION_REMOVE); // IMG_OBJS_JSEARCH
   }
 
+  @Override
   public String getDescription() {
     return null;
   }

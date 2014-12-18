@@ -34,6 +34,7 @@ import org.ucdetector.search.UCDProgressMonitor;
 public class UCDApplication implements IApplication {
   private SystemInReader systemInReader = null;
 
+  @Override
   public Object start(IApplicationContext context) throws Exception {
     Log.info("Starting UCDHeadless as an application");
     try {
@@ -66,6 +67,7 @@ public class UCDApplication implements IApplication {
     return null;
   }
 
+  @Override
   public void stop() {
     Log.info("Stopping UCDHeadless as an application");
     if (systemInReader != null) {

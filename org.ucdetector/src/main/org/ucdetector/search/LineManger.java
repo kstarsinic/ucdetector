@@ -73,24 +73,24 @@ public class LineManger {
   /**
    * parsed java files
    */
-  private final Map<ICompilationUnit, ScannerTimestamp> scannerMap = new HashMap<ICompilationUnit, ScannerTimestamp>();
+  private final Map<ICompilationUnit, ScannerTimestamp> scannerMap = new HashMap<>();
   /**
    * lines containing "NO_UCD
    */
-  private final Map<IScanner, Set<Integer>> ignoreLineMap = new HashMap<IScanner, Set<Integer>>();
+  private final Map<IScanner, Set<Integer>> ignoreLineMap = new HashMap<>();
 
   /**
    * position in file of each end of line
    */
-  private final Map<ICompilationUnit, int[]> lineEndsMap = new HashMap<ICompilationUnit, int[]>();
+  private final Map<ICompilationUnit, int[]> lineEndsMap = new HashMap<>();
 
   /**
    * parsed java files
    */
-  private final Map<ICompilationUnit, char[]> contentsMap = new HashMap<ICompilationUnit, char[]>();
+  private final Map<ICompilationUnit, char[]> contentsMap = new HashMap<>();
 
   /** Contains author from javadoc */
-  private final static Map<IType, String> authorMap = new HashMap<IType, String>();
+  private final static Map<IType, String> authorMap = new HashMap<>();
 
   public LineManger() {
     authorMap.clear();
@@ -178,7 +178,7 @@ public class LineManger {
   }
 
   private static class FindIgnoreLinesVisitor extends ASTMemberVisitor {
-    final Set<Integer> ignoreLines = new LinkedHashSet<Integer>();
+    final Set<Integer> ignoreLines = new LinkedHashSet<>();
     private final IScanner scanner;
     private String firstAuthor;
 
@@ -334,7 +334,7 @@ public class LineManger {
     char[] contents = compilationUnit.getBuffer().getCharacters();
     contentsMap.put(compilationUnit, contents);
     scanner.setSource(contents);
-    Set<Integer> ignoreLines = new HashSet<Integer>();
+    Set<Integer> ignoreLines = new HashSet<>();
     ignoreLineMap.put(scanner, ignoreLines);
     int nextToken;
     try {

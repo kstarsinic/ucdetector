@@ -113,6 +113,7 @@ public class UCDetectorPlugin extends AbstractUIPlugin {
 
   private void addPropertyChangeListener() {
     getPreferenceStore().addPropertyChangeListener(new IPropertyChangeListener() {
+      @Override
       public void propertyChange(PropertyChangeEvent event) {
         String property = event.getProperty();
         String newValue = event.getNewValue().toString();
@@ -150,7 +151,7 @@ public class UCDetectorPlugin extends AbstractUIPlugin {
     // Eclipse 3.7: InstanceScope.INSTANCE.getNode(ID);
     IEclipsePreferences node = new InstanceScope().getNode(ID);
     Map<String, String> allDeltas = getPreferencesImpl(node);
-    Set<String> keySetClone = new HashSet<String>(allDeltas.keySet());
+    Set<String> keySetClone = new HashSet<>(allDeltas.keySet());
     for (String key : keySetClone) {
       if (key.startsWith(Prefs.INTERNAL)) {
         allDeltas.remove(key);
@@ -167,7 +168,7 @@ public class UCDetectorPlugin extends AbstractUIPlugin {
   }
 
   private static Map<String, String> getPreferencesImpl(IEclipsePreferences ePrefs) {
-    Map<String, String> result = new LinkedHashMap<String, String>();
+    Map<String, String> result = new LinkedHashMap<>();
     try {
       String[] propertyNames = ePrefs.keys();
       Arrays.sort(propertyNames);

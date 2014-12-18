@@ -55,14 +55,17 @@ class NoUcdTagQuickFix extends AbstractUCDQuickFix {
     return offset + length + 1;
   }
 
+  @Override
   public Image getImage() {
     return JavaUI.getSharedImages().getImage(JavaPluginImages.IMG_OBJS_NLS_SKIP);// IMG_OBJS_HTMLTAG
   }
 
+  @Override
   public String getLabel() {
     return Messages.UseTag_NO_UCD_QuickFix_label;
   }
 
+  @Override
   public String getDescription() {
     return null;
   }

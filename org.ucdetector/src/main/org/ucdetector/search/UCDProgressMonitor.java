@@ -46,18 +46,21 @@ public class UCDProgressMonitor implements IProgressMonitor {
     this(new NullProgressMonitor());
   }
 
+  @Override
   public void beginTask(String name, int totalWork) {
     Log.info("Task.beginTask '" + name + "'"); //$NON-NLS-1$ //$NON-NLS-2$
     this.taskName = name;
     delegate.beginTask(taskName, totalWork);
   }
 
+  @Override
   public void done() {
     Log.info("Task.done '" + taskName + "'"); //$NON-NLS-1$ //$NON-NLS-2$
     delegate.done();
     isFinished = true;
   }
 
+  @Override
   public void internalWorked(double work) {
     String sWork = FORMAT_DOUBLE.format(work);
     if (UCDetectorPlugin.isHeadlessMode() && !sWork.equals(lastWork)) {
@@ -67,6 +70,7 @@ public class UCDProgressMonitor implements IProgressMonitor {
     delegate.internalWorked(work);
   }
 
+  @Override
   public boolean isCanceled() {
     boolean isCanceled = delegate.isCanceled();
     if (isCanceled) {
@@ -105,17 +109,20 @@ public class UCDProgressMonitor implements IProgressMonitor {
     }
   }
 
+  @Override
   public void setCanceled(boolean value) {
     Log.warn("Task.setCanceled: " + value); //$NON-NLS-1$
     delegate.setCanceled(value);
   }
 
+  @Override
   public void setTaskName(String name) {
     Log.info("Task.setTaskName " + name); //$NON-NLS-1$
     this.taskName = name;
     delegate.setTaskName(name);
   }
 
+  @Override
   public void subTask(String name) {
     if (Log.isDebug()) {
       Log.debug(/*"Task.subTask: " + */name);
@@ -126,6 +133,7 @@ public class UCDProgressMonitor implements IProgressMonitor {
     delegate.subTask(name);
   }
 
+  @Override
   public void worked(int work) {
     // not useful!
     // Log.logInfo("Task.worked: " + work);//$NON-NLS-1$

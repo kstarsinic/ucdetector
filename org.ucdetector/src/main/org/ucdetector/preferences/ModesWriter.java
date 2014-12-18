@@ -52,7 +52,7 @@ public class ModesWriter {
     text.append(String.format("### Created date: %s%n", UCDInfo.getNow(false)));
     text.append(String.format("### java.util.Properties.load() may fail to load this file%n"));
     text.append(String.format("### -------------------------------------------------------------------------%n"));
-    Map<String, String> groupPrefs = new LinkedHashMap<String, String>();
+    Map<String, String> groupPrefs = new LinkedHashMap<>();
     for (String extendedPreference : extendedPreferences) {
       if (extendedPreference.startsWith(TAB_START)) {
         flushGroupPrefs(groupPrefs, text);

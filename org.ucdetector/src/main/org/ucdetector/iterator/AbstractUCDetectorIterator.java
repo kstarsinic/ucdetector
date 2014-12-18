@@ -61,7 +61,7 @@ public abstract class AbstractUCDetectorIterator {
   protected IJavaElement[] objectsToIterate;
 
   private IPackageFragment activePackage;
-  private final List<IPackageFragment> visitedPackages = new ArrayList<IPackageFragment>();
+  private final List<IPackageFragment> visitedPackages = new ArrayList<>();
 
   private final long timeStart = System.currentTimeMillis();
   private long timeEnd = 0;
@@ -76,7 +76,7 @@ public abstract class AbstractUCDetectorIterator {
    */
   public final void iterateAll() throws CoreException { // NO_UCD
     IProject[] projects = ResourcesPlugin.getWorkspace().getRoot().getProjects();
-    List<IJavaProject> openProjects = new ArrayList<IJavaProject>();
+    List<IJavaProject> openProjects = new ArrayList<>();
     for (IProject tempProject : projects) {
       IJavaProject project = JavaCore.create(tempProject);
       if (project.isOpen()) {

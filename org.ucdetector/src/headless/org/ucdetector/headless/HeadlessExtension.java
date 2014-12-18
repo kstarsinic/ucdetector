@@ -55,7 +55,7 @@ public final class HeadlessExtension {
     if (!isInitialized) {
       Log.info("Load HeadlessExtensions"); //$NON-NLS-1$
       isInitialized = true;
-      headlessExtensionList = new ArrayList<HeadlessExtension>();
+      headlessExtensionList = new ArrayList<>();
       IExtensionRegistry reg = Platform.getExtensionRegistry();
       IConfigurationElement[] elements = reg.getConfigurationElementsFor(EXTENSION_POINT_ID);
       for (IConfigurationElement element : elements) {
@@ -77,7 +77,7 @@ public final class HeadlessExtension {
 
   public static List<AbstractUCDetectorIterator> getPostIterators() {
     loadExtensions();
-    ArrayList<AbstractUCDetectorIterator> result = new ArrayList<AbstractUCDetectorIterator>();
+    ArrayList<AbstractUCDetectorIterator> result = new ArrayList<>();
     Collections.sort(headlessExtensionList, new IteratorExtensionSorter());
     for (HeadlessExtension headlessExtension : headlessExtensionList) {
       result.add(headlessExtension.getIterator());
@@ -96,6 +96,7 @@ public final class HeadlessExtension {
 
   private static final class IteratorExtensionSorter implements Comparator<HeadlessExtension> {
 
+    @Override
     public int compare(HeadlessExtension o1, HeadlessExtension o2) {
       return o1.ordinal.compareTo(o2.ordinal);
     }

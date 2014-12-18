@@ -103,7 +103,7 @@ public class XmlReport implements IUCDetectorReport {
   private int detectionProblemCount;
   private Throwable initXMLException;
 
-  private final Map<String, Element> aboutNodes = new HashMap<String, Element>();
+  private final Map<String, Element> aboutNodes = new HashMap<>();
   private boolean endReportCalled;
 
   private IJavaElement[] objectsToIterate;
@@ -158,6 +158,7 @@ public class XmlReport implements IUCDetectorReport {
   /**
    * @param startTimeIn time, when report is started
    */
+  @Override
   public void startReport(IJavaElement[] objectsToIterateArray, long startTimeIn) throws CoreException {
     this.objectsToIterate = objectsToIterateArray;
     this.startTime = startTimeIn;
@@ -166,6 +167,7 @@ public class XmlReport implements IUCDetectorReport {
   /**
    * creates for each marker a xml element and its children
    */
+  @Override
   public boolean reportMarker(ReportParam reportParam) throws CoreException {
     if (initXMLException != null || !Prefs.isWriteReportFile()) {
       return true;
@@ -271,6 +273,7 @@ public class XmlReport implements IUCDetectorReport {
     }
   }
 
+  @Override
   public void reportDetectionProblem(IStatus status) {
     detectionProblemCount++;
     Element problem = appendChild(problems, "problem");
@@ -363,6 +366,7 @@ public class XmlReport implements IUCDetectorReport {
     return childNode;
   }
 
+  @Override
   public void endReport() throws CoreException {
     endReportCalled = true;
     writeReports(true);
@@ -537,6 +541,7 @@ public class XmlReport implements IUCDetectorReport {
     }
   }
 
+  @Override
   public void setExtension(ReportExtension reportExtension) {
     //
   }

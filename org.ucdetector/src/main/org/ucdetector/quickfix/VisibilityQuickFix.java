@@ -70,11 +70,13 @@ class VisibilityQuickFix extends AbstractUCDQuickFix {
     return null;
   }
 
+  @Override
   public String getLabel() {
     String visibility = MarkerFactory.getVisibilityForMarkerType(getMarkerType());
     return NLS.bind(Messages.VisibilityQuickFix_label, visibility);
   }
 
+  @Override
   public Image getImage() {
     String markerType = getMarkerType();
     if (MarkerFactory.UCD_MARKER_TYPE_USE_PROTECTED.equals(markerType)) {
@@ -89,6 +91,7 @@ class VisibilityQuickFix extends AbstractUCDQuickFix {
     return null;
   }
 
+  @Override
   public String getDescription() {
     return null;
   }

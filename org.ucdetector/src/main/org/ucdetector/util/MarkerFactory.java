@@ -69,7 +69,7 @@ public final class MarkerFactory implements IUCDetectorReport {
   /** human readable String to use for marker tags  */
   private static final Map<String, String> MARKER_MAP;
   static {
-    Map<String, String> map = new HashMap<String, String>();
+    Map<String, String> map = new HashMap<>();
     map.put(UCD_MARKER_TYPE_UNUSED, "unused code");
     map.put(UCD_MARKER_TYPE_USED_FEW, "few used code");
     map.put(UCD_MARKER_TYPE_USE_PRIVATE, "use private");
@@ -114,7 +114,7 @@ public final class MarkerFactory implements IUCDetectorReport {
 
   public static MarkerFactory createInstance() {
     ReportNameManager.setNextFreeFileNumberString();
-    ArrayList<IUCDetectorReport> reportsList = new ArrayList<IUCDetectorReport>();
+    ArrayList<IUCDetectorReport> reportsList = new ArrayList<>();
     reportsList.add(new MarkerReport());
     if (Prefs.isWriteReportFile()) {
       reportsList.add(new XmlReport());
@@ -128,6 +128,7 @@ public final class MarkerFactory implements IUCDetectorReport {
     return new MarkerFactory(reportsList);
   }
 
+  @Override
   public void startReport(IJavaElement[] objectsToIterate, long startTime) throws CoreException {
     for (IUCDetectorReport report : reports) {
       report.startReport(objectsToIterate, startTime);
@@ -138,6 +139,7 @@ public final class MarkerFactory implements IUCDetectorReport {
    * This method does the work and creates an marker
    * @return <code>true</code>, if a marker was created
    */
+  @Override
   public boolean reportMarker(ReportParam reportParam) throws CoreException {
     if (reportParam.getLine() == LineManger.LINE_NOT_FOUND) {
       String elementName = JavaElementUtil.getElementName(reportParam.getJavaElement());
@@ -154,12 +156,14 @@ public final class MarkerFactory implements IUCDetectorReport {
     return true;
   }
 
+  @Override
   public void reportDetectionProblem(IStatus status) {
     for (IUCDetectorReport report : reports) {
       report.reportDetectionProblem(status);
     }
   }
 
+  @Override
   public void endReport() throws CoreException {
     if (!Prefs.isWriteReportFile()) {
       Log.info("Do not write reports, because no write report option is selected");
@@ -279,6 +283,7 @@ public final class MarkerFactory implements IUCDetectorReport {
     }
   }
 
+  @Override
   public void setExtension(ReportExtension reportExtension) {
     //
   }
@@ -288,7 +293,7 @@ public final class MarkerFactory implements IUCDetectorReport {
   }
 
   public static Map<String, Object> markerAsMap(IMarker m) {
-    Map<String, Object> result = new HashMap<String, Object>();
+    Map<String, Object> result = new HashMap<>();
     try {
       Map<?, ?> attributes = m.getAttributes();
       for (Object key : attributes.keySet()) {

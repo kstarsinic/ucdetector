@@ -34,6 +34,7 @@ public class CycleAction extends AbstractUCDetectorAction { // NO_UCD
   @Override
   protected IStatus postIteration() {
     Display.getDefault().asyncExec(new Runnable() {
+      @Override
       public void run() {
         try {
           UCDetectorPlugin.getActivePage().showView(CycleView.ID);

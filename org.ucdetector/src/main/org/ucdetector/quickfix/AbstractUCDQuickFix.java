@@ -73,6 +73,7 @@ public abstract class AbstractUCDQuickFix extends WorkbenchMarkerResolution {
     // From Bug [ 3474851 ]: Do not use field 'marker' here, because it changes in run() to 'marker2'!!!
   }
 
+  @Override
   public void run(IMarker marker2) {
     this.marker = marker2; //  marker2 != marker in case of multi-selection
     // [ 3474851 ] Bad handling of quickfixes on multi-selection
@@ -239,7 +240,7 @@ public abstract class AbstractUCDQuickFix extends WorkbenchMarkerResolution {
 
   @Override
   public IMarker[] findOtherMarkers(IMarker[] markers) {
-    final List<IMarker> result = new ArrayList<IMarker>();
+    final List<IMarker> result = new ArrayList<>();
     for (IMarker markerToCheck : markers) {
       if (isOtherMarker(markerToCheck)) {
         result.add(markerToCheck);

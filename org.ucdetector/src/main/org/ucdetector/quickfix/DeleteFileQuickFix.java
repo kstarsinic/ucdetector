@@ -38,14 +38,17 @@ class DeleteFileQuickFix extends AbstractUCDQuickFix {
     }
   }
 
+  @Override
   public String getLabel() {
     return Messages.DeleteFileQuickFix_label;
   }
 
+  @Override
   public Image getImage() {
     return UCDetectorPlugin.getSharedImage(ISharedImages.IMG_TOOL_DELETE);
   }
 
+  @Override
   public String getDescription() {
     return null;
   }

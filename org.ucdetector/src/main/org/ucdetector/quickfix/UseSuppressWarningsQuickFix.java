@@ -47,14 +47,17 @@ class UseSuppressWarningsQuickFix extends AbstractUCDQuickFix {
     return region.getOffset() + indent.length();
   }
 
+  @Override
   public Image getImage() {
     return JavaUI.getSharedImages().getImage(JavaPluginImages.IMG_OBJS_ANNOTATION);
   }
 
+  @Override
   public String getLabel() {
     return Messages.UseAnnotation_UCD_QuickFix_label;
   }
 
+  @Override
   public String getDescription() {
     return null;
   }

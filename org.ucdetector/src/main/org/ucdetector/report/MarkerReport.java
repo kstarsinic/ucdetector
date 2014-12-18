@@ -36,7 +36,7 @@ import org.ucdetector.util.MarkerFactory;
 public class MarkerReport implements IUCDetectorReport {
   /** Don't create each marker. Do a batch creation instead */
   private static final int MARKERS_FLASH_LIMIT = 10;
-  private final List<ReportParam> markersToFlash = new ArrayList<ReportParam>();
+  private final List<ReportParam> markersToFlash = new ArrayList<>();
   private int totalMarkerCount = 0;
 
   @SuppressWarnings("boxing")
@@ -50,7 +50,7 @@ public class MarkerReport implements IUCDetectorReport {
     ISourceRange range = javaElement.getNameRange();
     IMarker marker = javaElement.getResource().createMarker(reportParam.getMarkerType());
     // Increase speed, use map:
-    Map<String, Object> attributes = new HashMap<String, Object>();
+    Map<String, Object> attributes = new HashMap<>();
     attributes.put(IMarker.SEVERITY, severity);
     attributes.put(IMarker.MESSAGE, reportParam.getMessage());
     attributes.put(IMarker.PRIORITY, IMarker.PRIORITY_HIGH);
@@ -123,10 +123,12 @@ public class MarkerReport implements IUCDetectorReport {
     }
   }
 
+  @Override
   public void startReport(IJavaElement[] objectsToIterate, long startTime) throws CoreException {
     //
   }
 
+  @Override
   public boolean reportMarker(ReportParam reportParam) throws CoreException {
     if (Log.isDebug()) {
       Log.debug("    Add to queue: " + reportParam); //$NON-NLS-1$
@@ -154,15 +156,18 @@ public class MarkerReport implements IUCDetectorReport {
     markersToFlash.clear();
   }
 
+  @Override
   public void endReport() throws CoreException {
     flushReport();
     Log.info(totalMarkerCount + " markers created"); //$NON-NLS-1$
   }
 
+  @Override
   public void reportDetectionProblem(IStatus status) {
     // 
   }
 
+  @Override
   public void setExtension(ReportExtension reportExtension) {
     //
   }

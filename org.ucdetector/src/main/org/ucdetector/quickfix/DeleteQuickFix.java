@@ -41,15 +41,18 @@ class DeleteQuickFix extends AbstractUCDQuickFix {
     return nodeToChange.getStartPosition();
   }
 
+  @Override
   public String getLabel() {
     return Messages.DeleteCodeQuickFix_label;
   }
 
+  @Override
   public Image getImage() {
     //    return JavaPluginImages.get(JavaPluginImages.IMG_CORRECTION_REMOVE);
     return UCDetectorPlugin.getSharedImage(ISharedImages.IMG_TOOL_DELETE);
   }
 
+  @Override
   public String getDescription() {
     return null;
   }

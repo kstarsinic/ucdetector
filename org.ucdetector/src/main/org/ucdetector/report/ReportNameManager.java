@@ -106,7 +106,7 @@ public class ReportNameManager {
   }
 
   private static String getProjectName(IJavaElement[] objectsToIterate) {
-    Set<String> projects = new HashSet<String>();
+    Set<String> projects = new HashSet<>();
     for (IJavaElement element : objectsToIterate) {
       if (element.getJavaProject() != null) {
         projects.add(element.getJavaProject().getElementName());

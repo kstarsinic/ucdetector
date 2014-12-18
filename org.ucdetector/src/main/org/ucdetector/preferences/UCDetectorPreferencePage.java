@@ -58,11 +58,11 @@ import org.ucdetector.report.ReportNameManager;
  */
 public class UCDetectorPreferencePage extends FieldEditorPreferencePage implements IWorkbenchPreferencePage {
   private static final String SEPARATOR = ":"; //$NON-NLS-1$
-  protected final List<FieldEditor> fields = new ArrayList<FieldEditor>();
+  protected final List<FieldEditor> fields = new ArrayList<>();
   /** Hack to enable/disable children of groups (=fields)  */
-  protected final List<Composite> groups = new ArrayList<Composite>();
+  protected final List<Composite> groups = new ArrayList<>();
   /** Contains group names, tab names, preference names */
-  protected final List<String> extendedPreferences = new ArrayList<String>();
+  protected final List<String> extendedPreferences = new ArrayList<>();
   protected static final String GROUP_START/**/= "# "; //$NON-NLS-1$
   protected static final String TAB_START/*  */= "## "; //$NON-NLS-1$
   /**
@@ -70,16 +70,16 @@ public class UCDetectorPreferencePage extends FieldEditorPreferencePage implemen
    * ComboFieldEditor
    */
   private static final String[][] WARN_LEVELS = new String[][] {
-      { WarnLevel.ERROR.toStringLocalized(), WarnLevel.ERROR.toString() },
-      { WarnLevel.WARNING.toStringLocalized(), WarnLevel.WARNING.toString() },
-      { WarnLevel.IGNORE.toStringLocalized(), WarnLevel.IGNORE.toString() } //
+    { WarnLevel.ERROR.toStringLocalized(), WarnLevel.ERROR.toString() },
+    { WarnLevel.WARNING.toStringLocalized(), WarnLevel.WARNING.toString() },
+    { WarnLevel.IGNORE.toStringLocalized(), WarnLevel.IGNORE.toString() } //
   };
   private static final String[][] LOG_LEVELS = new String[][] {
-      { LogLevel.DEBUG.toString(), LogLevel.DEBUG.toString() },//
-      { LogLevel.INFO.toString(), LogLevel.INFO.toString() },//
-      { LogLevel.WARN.toString(), LogLevel.WARN.toString() },//
-      { LogLevel.ERROR.toString(), LogLevel.ERROR.toString() },//
-      { LogLevel.OFF.toString(), LogLevel.OFF.toString() }, //
+    { LogLevel.DEBUG.toString(), LogLevel.DEBUG.toString() },//
+    { LogLevel.INFO.toString(), LogLevel.INFO.toString() },//
+    { LogLevel.WARN.toString(), LogLevel.WARN.toString() },//
+    { LogLevel.ERROR.toString(), LogLevel.ERROR.toString() },//
+    { LogLevel.OFF.toString(), LogLevel.OFF.toString() }, //
   };
   private ModesPanel modesPanel;
 
@@ -88,6 +88,7 @@ public class UCDetectorPreferencePage extends FieldEditorPreferencePage implemen
     setPreferenceStore(Prefs.getStore());
   }
 
+  @Override
   public void init(IWorkbench workbench) {
     //
   }
@@ -311,7 +312,7 @@ public class UCDetectorPreferencePage extends FieldEditorPreferencePage implemen
     appendBool(Prefs.LOG_TO_ECLIPSE, Messages.PreferencePage_LogToEclipse,//
         Messages.PreferencePage_LogToEclipseToolTip, spacer, 2);
     //
-    Composite spacerFiles = createGroup(parentGroups, "Files and directories:");
+    Composite spacerFiles = createGroup(parentGroups, "Files and directories:"); //$NON-NLS-1$
     //    addLineHack(spacer, null);
     //    addLineHack(spacer, "Files and directories:"); //$NON-NLS-1$
     appendLabelAndText(spacerFiles, "Reports"/*      */, ReportNameManager.getReportDir(true));//$NON-NLS-1$

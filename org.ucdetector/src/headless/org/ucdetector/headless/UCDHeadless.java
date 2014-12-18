@@ -129,7 +129,7 @@ public class UCDHeadless {
   }
 
   private static List<String> getResourcesToIterate(Map<String, String> options) {
-    List<String> result = new ArrayList<String>();
+    List<String> result = new ArrayList<>();
     String resourcesToIterateString = options.get(HEADLESS_KEY + "resourcesToIterate");
     if (resourcesToIterateString != null) {
       String[] resourcesList = resourcesToIterateString.split(",");
@@ -252,7 +252,7 @@ public class UCDHeadless {
   }
 
   private List<IJavaElement> getJavaElementsToIterate(IWorkspaceRoot workspaceRoot, List<IJavaProject> allProjects) {
-    List<IJavaElement> javaElementsToIterate = new ArrayList<IJavaElement>();
+    List<IJavaElement> javaElementsToIterate = new ArrayList<>();
     if (resourcesToIterate == null || resourcesToIterate.isEmpty()) {
       javaElementsToIterate.addAll(allProjects);
     }
@@ -295,7 +295,7 @@ public class UCDHeadless {
 
   private static List<IJavaProject> createProjects(IProgressMonitor monitor, IWorkspaceRoot workspaceRoot)
       throws CoreException {
-    List<IJavaProject> projects = new ArrayList<IJavaProject>();
+    List<IJavaProject> projects = new ArrayList<>();
     File rootDir = workspaceRoot.getLocation().toFile();
     File[] rootFiles = rootDir.listFiles();
     // ---------------------------------------------------------------------------

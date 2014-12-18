@@ -29,6 +29,7 @@ import org.ucdetector.util.MarkerFactory;
  */
 public class UCDQuickGenerator implements IMarkerResolutionGenerator2 {
 
+  @Override
   public IMarkerResolution[] getResolutions(IMarker marker) {
     try {
       String markerType = marker.getType();
@@ -37,7 +38,7 @@ public class UCDQuickGenerator implements IMarkerResolutionGenerator2 {
       if (Log.isDebug()) {
         Log.debug("UCDQuickFixer.getResolutions() for: " + markerType); //$NON-NLS-1$
       }
-      List<IMarkerResolution> resolutions = new ArrayList<IMarkerResolution>();
+      List<IMarkerResolution> resolutions = new ArrayList<>();
       if (MarkerFactory.UCD_MARKER_TYPE_UNUSED.equals(markerType)) {
         boolean isPrimaryType = (ElementType.valueOfSave(javaTypeString) == ElementType.PRIMARY_TYPE);
         resolutions.add(isPrimaryType ? new DeleteFileQuickFix(marker) : new DeleteQuickFix(marker));
@@ -62,6 +63,7 @@ public class UCDQuickGenerator implements IMarkerResolutionGenerator2 {
     return new IMarkerResolution[0];
   }
 
+  @Override
   public boolean hasResolutions(IMarker marker) {
     try {
       return !MarkerFactory.UCD_MARKER_TYPE_USED_FEW.equals(marker.getType());

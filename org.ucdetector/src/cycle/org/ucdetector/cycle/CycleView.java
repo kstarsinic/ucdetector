@@ -177,6 +177,7 @@ public class CycleView extends ViewPart { //
     MenuManager menuMgr = new MenuManager("#PopupMenu"); //$NON-NLS-1$
     menuMgr.setRemoveAllWhenShown(true);
     menuMgr.addMenuListener(new IMenuListener() {
+      @Override
       public void menuAboutToShow(IMenuManager manager) {
         CycleView.this.fillContextMenu(manager);
       }
@@ -188,6 +189,7 @@ public class CycleView extends ViewPart { //
 
   private void hookDoubleClickAction() {
     viewer.addDoubleClickListener(new IDoubleClickListener() {
+      @Override
       public void doubleClick(DoubleClickEvent event) {
         openAction.run();
       }
@@ -426,26 +428,32 @@ public class CycleView extends ViewPart { //
   // -------------------------------------------------------------------------
   private static class ViewContentProvider implements ITreeContentProvider {
 
+    @Override
     public void dispose() {
       //
     }
 
+    @Override
     public Object[] getElements(Object parent) {
       return SearchResultRoot.getInstance().getChildren().toArray();
     }
 
+    @Override
     public Object[] getChildren(Object parent) {
       return ((CycleBaseElement) parent).getChildren().toArray();
     }
 
+    @Override
     public Object getParent(Object child) {
       return ((CycleBaseElement) child).getParent();
     }
 
+    @Override
     public boolean hasChildren(Object parent) {
       return ((CycleBaseElement) parent).hasChildren();
     }
 
+    @Override
     public void inputChanged(Viewer v, Object oldInput, Object newInput) {
       //
     }

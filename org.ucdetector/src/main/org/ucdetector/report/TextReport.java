@@ -38,8 +38,9 @@ public class TextReport implements IUCDetectorReport {
   private ReportExtension extension;
   private IJavaElement[] objectsToIterate;
   private int markerCount = 0;
-  private final List<IStatus> detectionProblems = new ArrayList<IStatus>();
+  private final List<IStatus> detectionProblems = new ArrayList<>();
 
+  @Override
   public void startReport(IJavaElement[] objectsToIterateIn, long startTime) throws CoreException {
     this.objectsToIterate = objectsToIterateIn;
     reset();
@@ -70,6 +71,7 @@ public class TextReport implements IUCDetectorReport {
     report.append(NEW_LINE);
   }
 
+  @Override
   public boolean reportMarker(ReportParam reportParam) throws CoreException {
     markerCount++;
     IMember javaElement = reportParam.getJavaElement();
@@ -83,10 +85,12 @@ public class TextReport implements IUCDetectorReport {
     return true;
   }
 
+  @Override
   public void reportDetectionProblem(IStatus status) {
     detectionProblems.add(status);
   }
 
+  @Override
   public void endReport() throws CoreException {
     if (!detectionProblems.isEmpty()) {
       report.append(NEW_LINE).append(detectionProblems.size()).append(" Exceptions found during detection");
@@ -119,6 +123,7 @@ public class TextReport implements IUCDetectorReport {
     }
   }
 
+  @Override
   public void setExtension(ReportExtension reportExtension) {
     this.extension = reportExtension;
   }

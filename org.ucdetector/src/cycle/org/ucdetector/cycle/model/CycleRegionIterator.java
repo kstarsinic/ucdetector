@@ -16,7 +16,7 @@ public class CycleRegionIterator {
 
   public CycleRegion getNext(CycleBaseElement startElement, boolean isNext) {
     this.start = startElement;
-    List<CycleRegion> results = new LinkedList<CycleRegion>();
+    List<CycleRegion> results = new LinkedList<>();
     getNext(SearchResultRoot.getInstance().getChildren(), results);
     int index = results.indexOf(first);
     if (!isNext) {

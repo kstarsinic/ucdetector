@@ -54,6 +54,7 @@ public class UCDetectorConsole extends MessageConsole {
 
   public static class UCDetectorConsoleFactory implements IConsoleFactory {
 
+    @Override
     public void openConsole() {
       IConsoleManager consoleManager = ConsolePlugin.getDefault().getConsoleManager();
       boolean exists = false;
@@ -88,6 +89,7 @@ public class UCDetectorConsole extends MessageConsole {
 
   public static class UCDetectorConsolePageParticipant implements IConsolePageParticipant {
 
+    @Override
     public void init(IPageBookViewPage page, IConsole unused) {
       // See: org.ucdetector.cycle.CycleView.removeSelectedMatches
       Action removeAction = new RemoveAction();
@@ -98,19 +100,23 @@ public class UCDetectorConsole extends MessageConsole {
       bars.getToolBarManager().appendToGroup(IConsoleConstants.LAUNCH_GROUP, removeAction);
     }
 
+    @Override
     @SuppressWarnings("rawtypes")
     public Object getAdapter(Class adapter) {
       return null;
     }
 
+    @Override
     public void dispose() {
       //
     }
 
+    @Override
     public void activated() {
       //
     }
 
+    @Override
     public void deactivated() {
       //
     }
