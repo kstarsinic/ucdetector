@@ -16,7 +16,6 @@ import org.eclipse.core.resources.IResource;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.jdt.core.ICompilationUnit;
 import org.eclipse.jdt.core.JavaModelException;
-import org.eclipse.jdt.core.dom.AST;
 import org.eclipse.jdt.core.dom.ASTParser;
 import org.eclipse.jdt.core.dom.BodyDeclaration;
 import org.eclipse.jdt.core.dom.ChildListPropertyDescriptor;
@@ -184,9 +183,7 @@ public abstract class AbstractUCDQuickFix extends WorkbenchMarkerResolution {
    */
   private static CompilationUnit createCopy(ICompilationUnit unit) throws JavaModelException {
     unit.becomeWorkingCopy(null);
-    // JLS4 fixes: #70 Error in numeric literal with underscores
-    // http://sourceforge.net/p/ucdetector/bugs/70/
-    ASTParser parser = ASTParser.newParser(AST.JLS4);
+    ASTParser parser = UCDetectorPlugin.newASTParser();
     parser.setSource(unit);
     parser.setResolveBindings(true);
     return (CompilationUnit) parser.createAST(null);
