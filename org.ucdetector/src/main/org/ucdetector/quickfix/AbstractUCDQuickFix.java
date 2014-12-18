@@ -53,7 +53,7 @@ import org.ucdetector.util.MarkerFactory;
  * <li>{@link org.eclipse.jdt.internal.corext.refactoring.changes.AbstractDeleteChange}</li>
  * <li>{@link org.eclipse.jdt.internal.ui.text.correction.CorrectionMarkerResolutionGenerator}</li>
  * </ul>
- * 
+ *
  * @see <a href="http://help.eclipse.org/help32/index.jsp?topic=/org.eclipse.jdt.doc.isv/reference/api/org/eclipse/jdt/core/dom/rewrite/ASTRewrite.html" >javadoc ASTRewrite</a>
  * @see <a href="http://www.eclipse.org/articles/article.php?file=Article-JavaCodeManipulation_AST/index.html">Abstract Syntax Tree</a>
  * <p>
@@ -183,7 +183,9 @@ public abstract class AbstractUCDQuickFix extends WorkbenchMarkerResolution {
    */
   private static CompilationUnit createCopy(ICompilationUnit unit) throws JavaModelException {
     unit.becomeWorkingCopy(null);
-    ASTParser parser = ASTParser.newParser(AST.JLS3);
+    // JLS4 fixes: #70 Error in numeric literal with underscores
+    // http://sourceforge.net/p/ucdetector/bugs/70/
+    ASTParser parser = ASTParser.newParser(AST.JLS4);
     parser.setSource(unit);
     parser.setResolveBindings(true);
     return (CompilationUnit) parser.createAST(null);
