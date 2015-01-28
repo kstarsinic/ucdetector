@@ -341,7 +341,6 @@ public class UCDetectorPlugin extends AbstractUIPlugin {
   // Do not use AST.JLS3:
   // JLS4 fixes: #70 Error in numeric literal with underscores
   // http://sourceforge.net/p/ucdetector/bugs/70/
-  @SuppressWarnings("deprecation")
   /** @return latest parser */
   public static ASTParser newASTParser() {
     try {
