@@ -150,8 +150,7 @@ public class UCDetectorPlugin extends AbstractUIPlugin {
 
   /** @return All preferences which are different from default preferences, without internal preferences  */
   public static Map<String, String> getDeltaPreferences() {
-    // Eclipse 3.7: InstanceScope.INSTANCE.getNode(ID);
-    IEclipsePreferences node = new InstanceScope().getNode(ID);
+    IEclipsePreferences node = InstanceScope.INSTANCE.getNode(ID);
     Map<String, String> allDeltas = getPreferencesImpl(node);
     Set<String> keySetClone = new HashSet<>(allDeltas.keySet());
     for (String key : keySetClone) {
@@ -164,8 +163,7 @@ public class UCDetectorPlugin extends AbstractUIPlugin {
 
   /** @return All available preferences */
   public static Map<String, String> getAllPreferences() {
-    // Eclipse 3.7: DefaultScope.INSTANCE.getNode(ID);
-    IEclipsePreferences node = new DefaultScope().getNode(ID);
+    IEclipsePreferences node = DefaultScope.INSTANCE.getNode(ID);
     return getPreferencesImpl(node);
   }
 
@@ -207,8 +205,8 @@ public class UCDetectorPlugin extends AbstractUIPlugin {
   }
 
   /**
-  * @return the shared instance.
-  */
+   * @return the shared instance.
+   */
   public static UCDetectorPlugin getDefault() {
     return plugin;
   }
@@ -343,7 +341,16 @@ public class UCDetectorPlugin extends AbstractUIPlugin {
   // Do not use AST.JLS3:
   // JLS4 fixes: #70 Error in numeric literal with underscores
   // http://sourceforge.net/p/ucdetector/bugs/70/
+  @SuppressWarnings("deprecation")
+  /** @return latest parser */
   public static ASTParser newASTParser() {
+    try {
+      // Use int here instead of AST.JLS8, to avoid compile error
+      ASTParser.newParser(8 /* AST.JLS8 */);
+    }
+    catch (Exception e) {
+      // Ignore, return older parser
+    }
     return ASTParser.newParser(AST.JLS4);
   }
 
@@ -364,10 +371,10 @@ public class UCDetectorPlugin extends AbstractUIPlugin {
   // return result.toString();
   //}
   //
-  ///** 
+  ///**
   //* @param collection collection to create a string
   //* @param separator string to separate items
-  //* @return a collection as a string 
+  //* @return a collection as a string
   //* */
   //public static String toString(Collection<? extends Object> collection, String separator) {
   // if (collection == null) {
