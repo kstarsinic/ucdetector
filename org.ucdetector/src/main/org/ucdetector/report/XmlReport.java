@@ -429,6 +429,8 @@ public class XmlReport implements IUCDetectorReport {
     }
   }
 
+  @SuppressWarnings("resource")
+  // copyStream closes streams
   private static void copyResource(File iconsOutDir, String resouce) throws IOException {
     InputStream inStream = XmlReport.class.getResourceAsStream(resouce);
     copyStream(inStream, new FileOutputStream(new File(iconsOutDir, resouce)));
@@ -454,6 +456,8 @@ public class XmlReport implements IUCDetectorReport {
     }
   }
 
+  @SuppressWarnings("resource")
+  // copyStream closes streams
   private static void copyToIconDir(Bundle bundle, Path iconPath, File iconsOutDir, String iconName) throws IOException {
     File outFile = new File(iconsOutDir, iconName);
     if (!outFile.exists()) {
