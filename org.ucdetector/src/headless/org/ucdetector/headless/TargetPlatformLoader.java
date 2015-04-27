@@ -26,7 +26,7 @@ import org.ucdetector.Log;
 //import org.eclipse.pde.internal.core.target.provisional.ITargetPlatformService;
 //import org.eclipse.pde.internal.core.target.provisional.LoadTargetDefinitionJob;
 
-//== Since 3.8 and 4.2 ==
+//== Since 3.8 and since 4.2 ==
 //import org.eclipse.pde.core.target.ITargetDefinition;
 //import org.eclipse.pde.core.target.ITargetHandle;
 //import org.eclipse.pde.core.target.ITargetPlatformService;
@@ -35,9 +35,9 @@ import org.ucdetector.Log;
 /**
  * Load target platform if a target platform file is declared in ucdetector options file.<p>
  * If plugin org.eclipse.pde.core is missing:
- * <pre> 
+ * <pre>
  * java.lang.NoClassDefFoundError: org/eclipse/pde/internal/core/PDECore
- * </pre> 
+ * </pre>
  * Log a hint to use eclipse classic.
  * <p>
  * @author Joerg Spieler
@@ -61,7 +61,7 @@ public class TargetPlatformLoader {
     catch (NoClassDefFoundError error) {
       Log.error("Can't load target platform file: " + targetPlatformFile.getAbsolutePath(), error);
       Log.error("Solutions:");
-      Log.error(" - Use eclipse classic, version >= 3.5 and <= 3.7, or");
+      Log.error(" - Use Eclipse IDE for: 'Java EE Developers' or 'Eclipse Committers', version >= 3.8 or >= 4.2");
       Log.error(" - Remove key '" + UCDHeadless.HEADLESS_KEY_TARGET + "' from " + UCDHeadless.UCDETECTOR_OPTIONS);
       throw error;
     }

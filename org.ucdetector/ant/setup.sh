@@ -44,16 +44,16 @@ downloadFile(){
 arch=`uname -m`
 if [ "$arch" == 'x86_64' ] ; then
   # ECLIPSE=eclipse-SDK-3.8.1-linux-gtk-x86_64.tar.gz
-    ECLIPSE=eclipse-SDK-4.3.1-linux-gtk-x86_64.tar.gz
+    ECLIPSE=eclipse-standard-luna-SR2-linux-gtk-x86_64.tar.gz
 else
   # ECLIPSE=eclipse-SDK-3.8.1-linux-gtk.tar.gz
-    ECLIPSE=eclipse-SDK-4.3.1-linux-gtk.tar.gz
+    ECLIPSE=eclipse-standard-luna-SR2-linux-gtk.tar.gz
 fi
 
 echo "== Download files =="
 mkdir -p $DOWNLOADS_DIR
-# downloadFile http://ftp.halifax.rwth-aachen.de/eclipse/eclipse/downloads/drops/R-3.8.1-201209141540/ $ECLIPSE
-downloadFile http://ftp.halifax.rwth-aachen.de/eclipse/eclipse/downloads/drops4/R-4.3.1-201309111000/ $ECLIPSE
+# Use Eclipse IDE for: 'Java EE Developers' or 'Eclipse Committers' ('Plug-in Development Environment' needed to load target platform)
+downloadFile http://ftp-stud.fht-esslingen.de/pub/Mirrors/eclipse/technology/epp/downloads/release/luna/SR2/ $ECLIPSE
 
 downloadFile http://netcologne.dl.sourceforge.net/project/ucdetector/ucdetector/$UCDETECTOR_VERSION/ $UCDETECTOR
 downloadFile http://netcologne.dl.sourceforge.net/project/ucdetector/ucdetector/$UCDETECTOR_VERSION/ $UCDETECTOR_SOURCE
