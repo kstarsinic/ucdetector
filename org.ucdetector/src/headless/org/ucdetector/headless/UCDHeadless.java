@@ -222,7 +222,7 @@ public class UCDHeadless {
     Log.info(stopWatch.end("Build workspace", false));
     //
     if (projects.length == 0) {
-      Log.warn("NO PROJECTS FOUND - NOTHING TODO");
+      Log.warn("NO PROJECTS FOUND IN WORKSPACE (see 'Workspace' above) - NOTHING TODO");
     }
   }
 
