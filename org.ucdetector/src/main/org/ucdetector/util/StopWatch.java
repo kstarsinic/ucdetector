@@ -21,11 +21,12 @@ import org.ucdetector.Log;
  * @since 2008-05-08
  */
 public class StopWatch {
-  private static final int MINIMUM_DURATION = 1000;// Log.getDebugOption("org.ucdetector/debug/search/duration", 1000); 
+  private static final int MINIMUM_DURATION = 1000;// Log.getDebugOption("org.ucdetector/debug/search/duration", 1000);
   private static final int MINIMUM_DURATION_WARN = MINIMUM_DURATION * 10;
+  private static final DecimalFormat DOUBLE_FORMAT = new DecimalFormat("0.00", new DecimalFormatSymbols(Locale.US)); //$NON-NLS-1$
+
   private final String message;
   private long start = System.currentTimeMillis();
-  private static final DecimalFormat DOUBLE_FORMAT = new DecimalFormat("0.00", new DecimalFormatSymbols(Locale.US)); //$NON-NLS-1$
 
   public StopWatch() {
     message = null;
@@ -65,7 +66,7 @@ public class StopWatch {
   private String createLogMessage(String info, long duration) {
     StringBuilder sb = new StringBuilder();
     if (info != null) {
-      sb.append("Duration: ").append(info).append(' '); //$NON-NLS-1$ 
+      sb.append("Duration: ").append(info).append(' '); //$NON-NLS-1$
     }
     if (message != null) {
       sb.append(message);
@@ -79,11 +80,11 @@ public class StopWatch {
       return millis + " millis";//$NON-NLS-1$
     }
     if (millis <= 60 * 1000) {
-      return StopWatch.DOUBLE_FORMAT.format(millis / 1000.0) + " seconds";//$NON-NLS-1$
+      return DOUBLE_FORMAT.format(millis / 1000.0) + " seconds";//$NON-NLS-1$
     }
     if (millis <= 60 * 60 * 1000) {
-      return StopWatch.DOUBLE_FORMAT.format(millis / 60000.0) + " minutes";//$NON-NLS-1$
+      return DOUBLE_FORMAT.format(millis / 60000.0) + " minutes";//$NON-NLS-1$
     }
-    return StopWatch.DOUBLE_FORMAT.format(millis / 3600000.0) + " hours";//$NON-NLS-1$
+    return DOUBLE_FORMAT.format(millis / 3600000.0) + " hours";//$NON-NLS-1$
   }
 }

@@ -60,12 +60,13 @@ import org.ucdetector.preferences.Prefs;
 @SuppressWarnings("nls")
 public class UCDetectorPlugin extends AbstractUIPlugin {
   public static final String UTF_8 = "UTF-8";
-  //
-  public static final String IMAGE_FINAL = "IMAGE_FINAL";
-  public static final String IMAGE_UCD = "IMAGE_UCD";
+  // @formatter:off
+  public static final String IMAGE_FINAL   = "IMAGE_FINAL";
+  public static final String IMAGE_UCD     = "IMAGE_UCD";
   public static final String IMAGE_COMMENT = "IMAGE_COMMENT";
-  public static final String IMAGE_TODO = "IMAGE_TODO";
-  public static final String IMAGE_CYCLE = "IMAGE_CYCLE";
+  public static final String IMAGE_TODO    = "IMAGE_TODO";
+  public static final String IMAGE_CYCLE   = "IMAGE_CYCLE";
+  // @formatter:on
   /**
    * See MANIFEST.MF: Bundle-SymbolicName, and .project
    */

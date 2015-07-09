@@ -7,6 +7,8 @@
  */
 package org.ucdetector.preferences;
 
+import static org.ucdetector.UCDetectorPlugin.ID;
+
 import java.util.regex.Pattern;
 import java.util.regex.PatternSyntaxException;
 
@@ -34,70 +36,71 @@ import org.ucdetector.util.JavaElementUtil;
  */
 @SuppressWarnings("nls")
 public final class Prefs {
-  private static final String ID = UCDetectorPlugin.ID;
 
   private Prefs() {
     // avoid instantiation
   }
 
   // FILTER --------------------------------------------------------------------
-  static final String FILTER_SOURCE_FOLDER = ID + ".sourceFolderFilter";
-  static final String FILTER_PACKAGE = ID + ".packageFilter";
-  static final String FILTER_CLASS = ID + ".classFilter";
-  static final String FILTER_METHOD = ID + ".methodFilter";
-  static final String FILTER_FIELD = ID + ".fieldFilter";
-  static final String FILTER_ANNOATIONS = ID + ".annotationsFilter";
-  static final String FILTER_IMPLEMENTS = ID + ".superClassFilter";
-  static final String FILTER_CONTAIN_STRING = ID + ".containString";
-  static final String FILTER_CLASS_WITH_MAIN_METHOD = ID + ".classWithMainMethodFilter";
-  static final String FILTER_BEAN_METHOD = ID + ".beanMethodFilter";
-  static final String IGNORE_DEPRECATED = ID + ".ignoreDeprecated";
-  static final String IGNORE_NO_UCD = ID + ".ignore.NO_UCD";
-  static final String IGNORE_DERIVED = ID + ".ignoreDerived";
-  static final String DETECT_TEST_ONLY = ID + ".detectTestOnly";
+  // @formatter:off
+  static final String FILTER_SOURCE_FOLDER            = ID + ".sourceFolderFilter";
+  static final String FILTER_PACKAGE                  = ID + ".packageFilter";
+  static final String FILTER_CLASS                    = ID + ".classFilter";
+  static final String FILTER_METHOD                   = ID + ".methodFilter";
+  static final String FILTER_FIELD                    = ID + ".fieldFilter";
+  static final String FILTER_ANNOATIONS               = ID + ".annotationsFilter";
+  static final String FILTER_IMPLEMENTS               = ID + ".superClassFilter";
+  static final String FILTER_CONTAIN_STRING           = ID + ".containString";
+  static final String FILTER_CLASS_WITH_MAIN_METHOD   = ID + ".classWithMainMethodFilter";
+  static final String FILTER_BEAN_METHOD              = ID + ".beanMethodFilter";
+  static final String IGNORE_DEPRECATED               = ID + ".ignoreDeprecated";
+  static final String IGNORE_NO_UCD                   = ID + ".ignore.NO_UCD";
+  static final String IGNORE_DERIVED                  = ID + ".ignoreDerived";
+  static final String DETECT_TEST_ONLY                = ID + ".detectTestOnly";
   // ANALYZE -------------------------------------------------------------------
-  static final String ANALYZE_CLASSES = ID + ".classes";
-  static final String ANALYZE_MEHTODS = ID + ".methods";
-  static final String ANALYZE_FIELDS = ID + ".member";
-  static final String ANALYZE_LITERALS_CHECK = ID + ".literalsCheck";
-  static final String ANALYZE_CHECK_FULL_CLASS_NAME = ID + ".checkFullClassName";
+  static final String ANALYZE_CLASSES                 = ID + ".classes";
+  static final String ANALYZE_MEHTODS                 = ID + ".methods";
+  static final String ANALYZE_FIELDS                  = ID + ".member";
+  static final String ANALYZE_LITERALS_CHECK          = ID + ".literalsCheck";
+  static final String ANALYZE_CHECK_FULL_CLASS_NAME   = ID + ".checkFullClassName";
   static final String ANALYZE_CHECK_SIMPLE_CLASS_NAME = ID + ".checkSimpleClassName";
-  static final String ANALYZE_LITERALS = ID + ".literals";
+  static final String ANALYZE_LITERALS                = ID + ".literals";
   // WARN_LIMIT ----------------------------------------------------------------
   static final String WARN_LIMIT = ID + ".warnLimit";
   // KEYWORD -------------------------------------------------------------------
 
   /*  Feature Requests ID: 2490344: */
   static final String ANALYZE_VISIBILITY_PREFIX = ID + ".visibility";
-  static final String ANALYZE_VISIBILITY_PROTECTED_CLASSES = ANALYZE_VISIBILITY_PREFIX + ".protected.classes";
-  static final String ANALYZE_VISIBILITY_PRIVATE_CLASSES = ANALYZE_VISIBILITY_PREFIX + ".private.classes";
-  //
-  static final String ANALYZE_VISIBILITY_PROTECTED_METHODS = ANALYZE_VISIBILITY_PREFIX + ".protected.methods";
-  static final String ANALYZE_VISIBILITY_PRIVATE_METHODS = ANALYZE_VISIBILITY_PREFIX + ".private.methods";
-  //
-  static final String ANALYZE_VISIBILITY_PROTECTED_FIELDS = ANALYZE_VISIBILITY_PREFIX + ".protected.fields";
-  static final String ANALYZE_VISIBILITY_PRIVATE_FIELDS = ANALYZE_VISIBILITY_PREFIX + ".private.fields";
-  static final String IGNORE_SYNTHETIC_ACCESS_EMULATION = ID + ".ignore.synthetic.access.emulation";
-  //
+  static final String ANALYZE_VISIBILITY_PROTECTED_CLASSES   = ANALYZE_VISIBILITY_PREFIX + ".protected.classes";
+  static final String ANALYZE_VISIBILITY_PRIVATE_CLASSES     = ANALYZE_VISIBILITY_PREFIX + ".private.classes";
+
+  static final String ANALYZE_VISIBILITY_PROTECTED_METHODS   = ANALYZE_VISIBILITY_PREFIX + ".protected.methods";
+  static final String ANALYZE_VISIBILITY_PRIVATE_METHODS     = ANALYZE_VISIBILITY_PREFIX + ".private.methods";
+
+  static final String ANALYZE_VISIBILITY_PROTECTED_FIELDS    = ANALYZE_VISIBILITY_PREFIX + ".protected.fields";
+  static final String ANALYZE_VISIBILITY_PRIVATE_FIELDS      = ANALYZE_VISIBILITY_PREFIX + ".private.fields";
+  static final String IGNORE_SYNTHETIC_ACCESS_EMULATION      = ID + ".ignore.synthetic.access.emulation";
+
   static final String ANALYZE_VISIBILITY_PROTECTED_CONSTANTS = ANALYZE_VISIBILITY_PREFIX + ".protected.constants";
-  static final String ANALYZE_VISIBILITY_PRIVATE_CONSTANTS = ANALYZE_VISIBILITY_PREFIX + ".private.constants";
-  //
-  static final String ANALYZE_FINAL_FIELD = ID + ".finalField";
+  static final String ANALYZE_VISIBILITY_PRIVATE_CONSTANTS   = ANALYZE_VISIBILITY_PREFIX + ".private.constants";
+
+  static final String ANALYZE_FINAL_FIELD  = ID + ".finalField";
   static final String ANALYZE_FINAL_METHOD = ID + ".finalMethod";
   // REPORTS ------------------------------------------------------------------
-  static final String REPORT_DIR = ID + ".report.dir";
-  static final String REPORT_FILE = ID + ".report.file";
-  private static final String REPORT_CREATE = ID + ".report.create";
-  static final String REPORT_CREATE_XML = REPORT_CREATE + ".xml";
+  static final String         REPORT_DIR        = ID + ".report.dir";
+  static final String         REPORT_FILE       = ID + ".report.file";
+  private static final String REPORT_CREATE     = ID + ".report.create";
+  static final String         REPORT_CREATE_XML = REPORT_CREATE + ".xml";
   //  private static final String REPORT_CREATE_EXTENSION = ID + ".extension";
-  //
-  public static final String LOG_LEVEL = ID + ".log.level";
+
+  public static final String LOG_LEVEL      = ID + ".log.level";
   public static final String LOG_TO_ECLIPSE = ID + ".log.toEclipse";
-  //
-  public static final String INTERNAL = ID + ".internal";
-  static final String MODE_NAME = INTERNAL + ".mode.name";
-  static final String PREFS_VERSION = INTERNAL + ".version";
-  //
+
+  public static final String INTERNAL      = ID       + ".internal";
+  static final String        MODE_NAME     = INTERNAL + ".mode.name";
+  static final String        PREFS_VERSION = INTERNAL + ".version";
+  // @formatter:on
+
   private static final String[] EMPTY_ARRAY = new String[0];
   // CYCLE -------------------------------------------------------------------
   static final String CYCLE_DEPTH = ID + ".cycleDepth";

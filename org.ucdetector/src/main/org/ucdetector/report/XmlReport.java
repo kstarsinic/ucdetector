@@ -293,19 +293,20 @@ public class XmlReport implements IUCDetectorReport {
   private void appendStatistics(boolean isEndReport) {
     if (aboutNodes.isEmpty()) {
       // First time called
-      appendAbout("operatingSystem"/*   */, "Operating system"/* */, UCDInfo.getOS()/*              */, true);
-      appendAbout("javaVersion"/*       */, "Java"/*             */, UCDInfo.getJavaVersion()/*     */, true);
-      appendAbout("eclipseVersion"/*    */, "Eclipse"/*          */, UCDInfo.getEclipseVersion()/*  */, true);
-      appendAbout("eclipseHome"/*       */, "Eclipse home"/*     */, UCDInfo.getEclipseHome()/*     */, false);
-      appendAbout("eclipseProduct"/*    */, "Eclipse product"/*  */, UCDInfo.getEclipseProduct()/*  */, true);
-      appendAbout("ucdetectorVersion"/* */, "UCDetector"/*       */, UCDInfo.getUCDVersion()/*      */, true);
-      appendAbout("logfile"/*           */, "Logfile"/*          */, UCDInfo.getLogfile()/*         */, false);
-      appendAbout("workspace"/*         */, "Workspace"/*        */, UCDInfo.getWorkspace()/*       */, false);
-      appendAbout("mode"/*              */, "Mode"/*             */, Prefs.getModeName()/*          */, true);
-      appendAbout("host"/*              */, "Host"/*             */, UCDInfo.getHostName()/*        */, false);
-      appendAbout("createdBy"/*         */, "Created by class"/* */, getClass().getName()/*         */, false);
-      appendAbout("headless"/*          */, "Headless"/*         */, UCDetectorPlugin.isHeadlessMode(), false);
-      //
+      // @formatter:off
+      appendAbout("operatingSystem"  , "Operating system" , UCDInfo.getOS()                  , true );
+      appendAbout("javaVersion"      , "Java"             , UCDInfo.getJavaVersion()         , true );
+      appendAbout("eclipseVersion"   , "Eclipse"          , UCDInfo.getEclipseVersion()      , true );
+      appendAbout("eclipseHome"      , "Eclipse home"     , UCDInfo.getEclipseHome()         , false);
+      appendAbout("eclipseProduct"   , "Eclipse product"  , UCDInfo.getEclipseProduct()      , true );
+      appendAbout("ucdetectorVersion", "UCDetector"       , UCDInfo.getUCDVersion()          , true );
+      appendAbout("logfile"          , "Logfile"          , UCDInfo.getLogfile()             , false);
+      appendAbout("workspace"        , "Workspace"        , UCDInfo.getWorkspace()           , false);
+      appendAbout("mode"             , "Mode"             , Prefs.getModeName()              , true );
+      appendAbout("host"             , "Host"             , UCDInfo.getHostName()            , false);
+      appendAbout("createdBy"        , "Created by class" , getClass().getName()             , false);
+      appendAbout("headless"         , "Headless"         , UCDetectorPlugin.isHeadlessMode(), false);
+      // @formatter:on
       Element searched = appendChild(statistcs, "searched", null);
       for (IJavaElement javaElement : objectsToIterate) {
         Element search = appendChild(searched, "search", JavaElementUtil.getElementName(javaElement));
@@ -323,12 +324,14 @@ public class XmlReport implements IUCDetectorReport {
     long now = System.currentTimeMillis();
     long durationMillis = (now - startTime);
     String durationString = StopWatch.timeAsString(durationMillis);
-    appendAbout("reportCreated"/*     */, "Created report"/*            */, UCDInfo.getNow(false)/* */, true);
-    appendAbout("reportCreatedTS"/*   */, "Created report timestamp"/*  */, now/*                   */, false);
-    appendAbout("searchDuration"/*    */, "Search duration"/*           */, durationString/*        */, true);
-    appendAbout("searchDurationTS"/*  */, "Search duration millis"/*    */, durationMillis/*        */, false);
-    appendAbout("detectionFinished"/* */, "Detection Finished"/*        */, isEndReport/*           */, false);
-    appendAbout("warnings"/*          */, "Warnings"/*                  */, markerCount/*           */, true);
+    // @formatter:off
+    appendAbout("reportCreated"    , "Created report"          , UCDInfo.getNow(false), true );
+    appendAbout("reportCreatedTS"  , "Created report timestamp", now                  , false);
+    appendAbout("searchDuration"   , "Search duration"         , durationString       , true );
+    appendAbout("searchDurationTS" , "Search duration millis"  , durationMillis       , false);
+    appendAbout("detectionFinished", "Detection Finished"      , isEndReport          , false);
+    appendAbout("warnings"         , "Warnings"                , markerCount          , true );
+    // @formatter:on
   }
 
   /**
@@ -436,12 +439,20 @@ public class XmlReport implements IUCDetectorReport {
     copyStream(inStream, new FileOutputStream(new File(iconsOutDir, resouce)));
   }
 
-  private static final String[] ICONS = new String[] { //
-  //  "ElementClass.gif", "ElementField.gif", "ElementMethod.gif",//
-      "FewReference.gif", "Final.gif", "Reference.gif", "TestOnly.gif",//
-      "ucd.gif", "ucdetector32.png", "Other.gif", //
-      "VisibilityDefault.gif", "VisibilityPrivate.gif", "VisibilityProtected.gif", //
-  };
+  /** Siehe: /org.ucdetector/plugin.xml */
+  private static final String[] ICONS = new String[] { // @formatter:off
+      //  "ElementClass.gif", "ElementField.gif", "ElementMethod.gif",//
+      "FewReference.gif"     ,
+      "Final.gif"            ,
+      "Reference.gif"        ,
+      "TestOnly.gif"         ,
+      "ucd.gif"              ,
+      "ucdetector32.png"     ,
+      "Other.gif"            ,
+      "VisibilityDefault.gif",
+      "VisibilityPrivate.gif",
+      "VisibilityProtected.gif"
+  };    // @formatter:on
 
   private static void copyIconFiles(File iconsOutDir) throws IOException {
     for (String iconName : ICONS) {
@@ -458,7 +469,8 @@ public class XmlReport implements IUCDetectorReport {
 
   @SuppressWarnings("resource")
   // copyStream closes streams
-  private static void copyToIconDir(Bundle bundle, Path iconPath, File iconsOutDir, String iconName) throws IOException {
+  private static void copyToIconDir(Bundle bundle, Path iconPath, File iconsOutDir, String iconName)
+      throws IOException {
     File outFile = new File(iconsOutDir, iconName);
     if (!outFile.exists()) {
       InputStream inStream = FileLocator.openStream(bundle, iconPath.append(iconName), false);

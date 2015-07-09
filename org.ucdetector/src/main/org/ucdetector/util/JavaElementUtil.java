@@ -410,7 +410,7 @@ public final class JavaElementUtil {
     if (enumType.isEnum()) {
       String[] stringPatterns = new String[] {
           // We need '.' as class name separator for search!
-          enumType.getFullyQualifiedName('.') + ".values()",//
+          enumType.getFullyQualifiedName('.') + ".values()", //
           enumType.getFullyQualifiedName('.') + ".valueOf(java.lang.String)"//
       };
       for (String stringPattern : stringPatterns) {
@@ -585,21 +585,23 @@ public final class JavaElementUtil {
   }
 
   public enum MemberInfo {
+    // @formatter:off
     // org.eclipse.jdt.ui/icons/full/obj16/field_public_obj.gif:
-    Annotation("annotation_obj.gif"), //
-    Class("class_obj.gif"), //
-    ClassAnonymous("innerclass_public_obj.gif"), //
-    ClassLocal("innerclass_public_obj.gif"), //
-    ClassMember("innerclass_public_obj.gif"), //
-    Constant("field_public_obj.gif"), //
-    Constructor("methpub_obj.gif"), //
-    Enum("enum_obj.gif"), //
-    EnumConstant("field_public_obj.gif"), //
-    Field("field_public_obj.gif"), //
-    Initializer("methpub_obj.gif"), //
-    Interface("int_obj.gif"), //
-    Method("methpub_obj.gif"), //
-    ;
+    Annotation    ("annotation_obj.gif"       ),
+    Class         ("class_obj.gif"            ),
+    ClassAnonymous("innerclass_public_obj.gif"),
+    ClassLocal    ("innerclass_public_obj.gif"),
+    ClassMember   ("innerclass_public_obj.gif"),
+    Constant      ("field_public_obj.gif"     ),
+    Constructor   ("methpub_obj.gif"          ),
+    Enum          ("enum_obj.gif"             ),
+    EnumConstant  ("field_public_obj.gif"     ),
+    Field         ("field_public_obj.gif"     ),
+    Initializer   ("methpub_obj.gif"          ),
+    Interface     ("int_obj.gif"              ),
+    Method        ("methpub_obj.gif"          ),
+    // @formatter:onn
+                    ;
 
     private final String icon;
 

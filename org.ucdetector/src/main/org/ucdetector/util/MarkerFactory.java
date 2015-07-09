@@ -37,7 +37,7 @@ import org.ucdetector.search.LineManger;
 
 /**
  * Create ERROR, WARN markers. Delete markers<p>
- * 
+ *
  * CALL endReport() TO FLUSH MARKERS!!!
  * <p>
  * @author Joerg Spieler
@@ -49,37 +49,40 @@ public final class MarkerFactory implements IUCDetectorReport {
    * Marker prefix for all UCDetector markers
    * See extension point="org.eclipse.core.resources.markers" in plugin.xml
    */
-  public static final String UCD_MARKER_TYPE_PREFIX/*         */= UCDetectorPlugin.ID + ".analyzeMarker";
-  public static final String UCD_MARKER_TYPE_UNUSED /*        */= UCD_MARKER_TYPE_PREFIX + "Reference";
-  public static final String UCD_MARKER_TYPE_USED_FEW /*      */= UCD_MARKER_TYPE_PREFIX + "FewReference";
-  public static final String UCD_MARKER_TYPE_USE_PRIVATE/*    */= UCD_MARKER_TYPE_PREFIX + "VisibilityPrivate";
+  //@formatter:off
+  public static final String UCD_MARKER_TYPE_PREFIX        = UCDetectorPlugin.ID + ".analyzeMarker";
+  public static final String UCD_MARKER_TYPE_UNUSED        = UCD_MARKER_TYPE_PREFIX + "Reference";
+  public static final String UCD_MARKER_TYPE_USED_FEW      = UCD_MARKER_TYPE_PREFIX + "FewReference";
+  public static final String UCD_MARKER_TYPE_USE_PRIVATE   = UCD_MARKER_TYPE_PREFIX + "VisibilityPrivate";
   // TODO remove? [ 3191417 ] Change to "protected" should be default
-  public static final String UCD_MARKER_TYPE_USE_PROTECTED /* */= UCD_MARKER_TYPE_PREFIX + "VisibilityProtected";
-  public static final String UCD_MARKER_TYPE_USE_DEFAULT/*    */= UCD_MARKER_TYPE_PREFIX + "VisibilityDefault";
-  public static final String UCD_MARKER_TYPE_USE_FINAL /*     */= UCD_MARKER_TYPE_PREFIX + "Final";
-  public static final String UCD_MARKER_TYPE_TEST_ONLY /*     */= UCD_MARKER_TYPE_PREFIX + "TestOnly";
-  public static final String UCD_MARKER_TYPE_OTHER /*         */= UCD_MARKER_TYPE_PREFIX + "Other"; //for extensions to use
+  public static final String UCD_MARKER_TYPE_USE_PROTECTED = UCD_MARKER_TYPE_PREFIX + "VisibilityProtected";
+  public static final String UCD_MARKER_TYPE_USE_DEFAULT   = UCD_MARKER_TYPE_PREFIX + "VisibilityDefault";
+  public static final String UCD_MARKER_TYPE_USE_FINAL     = UCD_MARKER_TYPE_PREFIX + "Final";
+  public static final String UCD_MARKER_TYPE_TEST_ONLY     = UCD_MARKER_TYPE_PREFIX + "TestOnly";
+  public static final String UCD_MARKER_TYPE_OTHER         = UCD_MARKER_TYPE_PREFIX + "Other"; //for extensions to use
 
   //##############################################
   // When adding new marker here, also add it to:
-  // * plugin.xml 
+  // * plugin.xml
   // * ucdetector.dtd
   //##############################################
 
   /** human readable String to use for marker tags  */
   private static final Map<String, String> MARKER_MAP;
+
   static {
     Map<String, String> map = new HashMap<>();
-    map.put(UCD_MARKER_TYPE_UNUSED, "unused code");
-    map.put(UCD_MARKER_TYPE_USED_FEW, "few used code");
-    map.put(UCD_MARKER_TYPE_USE_PRIVATE, "use private");
+    map.put(UCD_MARKER_TYPE_UNUSED       , "unused code"  );
+    map.put(UCD_MARKER_TYPE_USED_FEW     , "few used code");
+    map.put(UCD_MARKER_TYPE_USE_PRIVATE  , "use private"  );
     map.put(UCD_MARKER_TYPE_USE_PROTECTED, "use protected");
-    map.put(UCD_MARKER_TYPE_USE_DEFAULT, "use default");
-    map.put(UCD_MARKER_TYPE_USE_FINAL, "use final");
-    map.put(UCD_MARKER_TYPE_TEST_ONLY, "test only");
+    map.put(UCD_MARKER_TYPE_USE_DEFAULT  , "use default"  );
+    map.put(UCD_MARKER_TYPE_USE_FINAL    , "use final"    );
+    map.put(UCD_MARKER_TYPE_TEST_ONLY    , "test only"    );
     map.put(UCD_MARKER_TYPE_OTHER, "other");
     MARKER_MAP = Collections.unmodifiableMap(map);
   }
+  //@formatter:on
 
   /**
    * @param marker UCDetector marker (see {@link MarkerFactory#UCD_MARKER_TYPE_PREFIX})

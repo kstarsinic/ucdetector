@@ -7,6 +7,138 @@
  */
 package org.ucdetector.preferences;
 
+import static org.ucdetector.Messages.PreferencePage_BrowseReportsDir;
+import static org.ucdetector.Messages.PreferencePage_BrowseReportsDirToolTip;
+import static org.ucdetector.Messages.PreferencePage_ChangeVisibilityCombos;
+import static org.ucdetector.Messages.PreferencePage_CheckFinalField;
+import static org.ucdetector.Messages.PreferencePage_CheckFinalMethod;
+import static org.ucdetector.Messages.PreferencePage_CheckFullClassName;
+import static org.ucdetector.Messages.PreferencePage_CheckFullClassNameToolTip;
+import static org.ucdetector.Messages.PreferencePage_CheckPrivateClasses;
+import static org.ucdetector.Messages.PreferencePage_CheckPrivateConstants;
+import static org.ucdetector.Messages.PreferencePage_CheckPrivateFields;
+import static org.ucdetector.Messages.PreferencePage_CheckPrivateMethods;
+import static org.ucdetector.Messages.PreferencePage_CheckProtectedClasses;
+import static org.ucdetector.Messages.PreferencePage_CheckProtectedConstants;
+import static org.ucdetector.Messages.PreferencePage_CheckProtectedFields;
+import static org.ucdetector.Messages.PreferencePage_CheckProtectedMethods;
+import static org.ucdetector.Messages.PreferencePage_CheckSimleClassName;
+import static org.ucdetector.Messages.PreferencePage_CheckSimpleClassNameToolTip;
+import static org.ucdetector.Messages.PreferencePage_Classes;
+import static org.ucdetector.Messages.PreferencePage_ComboToolTip;
+import static org.ucdetector.Messages.PreferencePage_CreateXmlReport;
+import static org.ucdetector.Messages.PreferencePage_DetectTestOnly;
+import static org.ucdetector.Messages.PreferencePage_DetectTestOnlyToolTip;
+import static org.ucdetector.Messages.PreferencePage_Fields;
+import static org.ucdetector.Messages.PreferencePage_FilterClassWithMainMethod;
+import static org.ucdetector.Messages.PreferencePage_FilterClassWithMainMethodToolTip;
+import static org.ucdetector.Messages.PreferencePage_GroupCycles;
+import static org.ucdetector.Messages.PreferencePage_GroupDetect;
+import static org.ucdetector.Messages.PreferencePage_GroupFileSearch;
+import static org.ucdetector.Messages.PreferencePage_GroupFinal;
+import static org.ucdetector.Messages.PreferencePage_GroupLogging;
+import static org.ucdetector.Messages.PreferencePage_GroupReports;
+import static org.ucdetector.Messages.PreferencePage_GroupVisibility;
+import static org.ucdetector.Messages.PreferencePage_IgnoreAnnotationsFilter;
+import static org.ucdetector.Messages.PreferencePage_IgnoreAnnotationsFilterToolTip;
+import static org.ucdetector.Messages.PreferencePage_IgnoreBeanMethods;
+import static org.ucdetector.Messages.PreferencePage_IgnoreBeanMethodsToolTip;
+import static org.ucdetector.Messages.PreferencePage_IgnoreClassFilter;
+import static org.ucdetector.Messages.PreferencePage_IgnoreClassFilterToolTip;
+import static org.ucdetector.Messages.PreferencePage_IgnoreClassesGroup;
+import static org.ucdetector.Messages.PreferencePage_IgnoreContainString;
+import static org.ucdetector.Messages.PreferencePage_IgnoreContainStringToolTip;
+import static org.ucdetector.Messages.PreferencePage_IgnoreDeprecated;
+import static org.ucdetector.Messages.PreferencePage_IgnoreDeprecatedToolTip;
+import static org.ucdetector.Messages.PreferencePage_IgnoreDerived;
+import static org.ucdetector.Messages.PreferencePage_IgnoreDerivedToolTip;
+import static org.ucdetector.Messages.PreferencePage_IgnoreFieldFilter;
+import static org.ucdetector.Messages.PreferencePage_IgnoreFieldFilterToolTip;
+import static org.ucdetector.Messages.PreferencePage_IgnoreImplements;
+import static org.ucdetector.Messages.PreferencePage_IgnoreImplementsToolTip;
+import static org.ucdetector.Messages.PreferencePage_IgnoreMarkedCodeGroup;
+import static org.ucdetector.Messages.PreferencePage_IgnoreMethodFilter;
+import static org.ucdetector.Messages.PreferencePage_IgnoreMethodFilterToolTip;
+import static org.ucdetector.Messages.PreferencePage_IgnoreNoUcd;
+import static org.ucdetector.Messages.PreferencePage_IgnoreNoUcdToolTip;
+import static org.ucdetector.Messages.PreferencePage_IgnoreOthersGroup;
+import static org.ucdetector.Messages.PreferencePage_IgnorePackageFilter;
+import static org.ucdetector.Messages.PreferencePage_IgnorePackageFilterToolTip;
+import static org.ucdetector.Messages.PreferencePage_IgnoreResourcesGroup;
+import static org.ucdetector.Messages.PreferencePage_IgnoreSourceFolderFilter;
+import static org.ucdetector.Messages.PreferencePage_IgnoreSourceFolderFilterToolTip;
+import static org.ucdetector.Messages.PreferencePage_Literals;
+import static org.ucdetector.Messages.PreferencePage_LiteralsCheck;
+import static org.ucdetector.Messages.PreferencePage_LiteralsCheckToolTip;
+import static org.ucdetector.Messages.PreferencePage_LiteralsToolTip;
+import static org.ucdetector.Messages.PreferencePage_LogLevel;
+import static org.ucdetector.Messages.PreferencePage_LogLevelToolTip;
+import static org.ucdetector.Messages.PreferencePage_LogToEclipse;
+import static org.ucdetector.Messages.PreferencePage_LogToEclipseToolTip;
+import static org.ucdetector.Messages.PreferencePage_MaxCycleSize;
+import static org.ucdetector.Messages.PreferencePage_MaxCycleSizeToolTip;
+import static org.ucdetector.Messages.PreferencePage_Methods;
+import static org.ucdetector.Messages.PreferencePage_ReduceVisibiltyWarning;
+import static org.ucdetector.Messages.PreferencePage_ReportDir;
+import static org.ucdetector.Messages.PreferencePage_ReportDirToolTip;
+import static org.ucdetector.Messages.PreferencePage_ReportFile;
+import static org.ucdetector.Messages.PreferencePage_ReportFileToolTip;
+import static org.ucdetector.Messages.PreferencePage_TabDetect;
+import static org.ucdetector.Messages.PreferencePage_TabIgnore;
+import static org.ucdetector.Messages.PreferencePage_TabKeywords;
+import static org.ucdetector.Messages.PreferencePage_TabOther;
+import static org.ucdetector.Messages.PreferencePage_TabReport;
+import static org.ucdetector.Messages.PreferencePage_WarnLimit;
+import static org.ucdetector.Messages.PreferencePage_WarnLimitToolTip;
+import static org.ucdetector.Messages.PreferencePage_ignoreSyntheticAccessEmulation;
+import static org.ucdetector.Messages.PreferencePage_ignoreSyntheticAccessEmulationTooltip;
+import static org.ucdetector.preferences.Prefs.ANALYZE_CHECK_FULL_CLASS_NAME;
+import static org.ucdetector.preferences.Prefs.ANALYZE_CHECK_SIMPLE_CLASS_NAME;
+import static org.ucdetector.preferences.Prefs.ANALYZE_CLASSES;
+import static org.ucdetector.preferences.Prefs.ANALYZE_FIELDS;
+import static org.ucdetector.preferences.Prefs.ANALYZE_FINAL_FIELD;
+import static org.ucdetector.preferences.Prefs.ANALYZE_FINAL_METHOD;
+import static org.ucdetector.preferences.Prefs.ANALYZE_LITERALS;
+import static org.ucdetector.preferences.Prefs.ANALYZE_LITERALS_CHECK;
+import static org.ucdetector.preferences.Prefs.ANALYZE_MEHTODS;
+import static org.ucdetector.preferences.Prefs.ANALYZE_VISIBILITY_PREFIX;
+import static org.ucdetector.preferences.Prefs.ANALYZE_VISIBILITY_PRIVATE_CLASSES;
+import static org.ucdetector.preferences.Prefs.ANALYZE_VISIBILITY_PRIVATE_CONSTANTS;
+import static org.ucdetector.preferences.Prefs.ANALYZE_VISIBILITY_PRIVATE_FIELDS;
+import static org.ucdetector.preferences.Prefs.ANALYZE_VISIBILITY_PRIVATE_METHODS;
+import static org.ucdetector.preferences.Prefs.ANALYZE_VISIBILITY_PROTECTED_CLASSES;
+import static org.ucdetector.preferences.Prefs.ANALYZE_VISIBILITY_PROTECTED_CONSTANTS;
+import static org.ucdetector.preferences.Prefs.ANALYZE_VISIBILITY_PROTECTED_FIELDS;
+import static org.ucdetector.preferences.Prefs.ANALYZE_VISIBILITY_PROTECTED_METHODS;
+import static org.ucdetector.preferences.Prefs.CYCLE_DEPTH;
+import static org.ucdetector.preferences.Prefs.CYCLE_DEPTH_MAX;
+import static org.ucdetector.preferences.Prefs.CYCLE_DEPTH_MIN;
+import static org.ucdetector.preferences.Prefs.DETECT_TEST_ONLY;
+import static org.ucdetector.preferences.Prefs.FILTER_ANNOATIONS;
+import static org.ucdetector.preferences.Prefs.FILTER_BEAN_METHOD;
+import static org.ucdetector.preferences.Prefs.FILTER_CLASS;
+import static org.ucdetector.preferences.Prefs.FILTER_CLASS_WITH_MAIN_METHOD;
+import static org.ucdetector.preferences.Prefs.FILTER_CONTAIN_STRING;
+import static org.ucdetector.preferences.Prefs.FILTER_FIELD;
+import static org.ucdetector.preferences.Prefs.FILTER_IMPLEMENTS;
+import static org.ucdetector.preferences.Prefs.FILTER_METHOD;
+import static org.ucdetector.preferences.Prefs.FILTER_PACKAGE;
+import static org.ucdetector.preferences.Prefs.FILTER_SOURCE_FOLDER;
+import static org.ucdetector.preferences.Prefs.IGNORE_DEPRECATED;
+import static org.ucdetector.preferences.Prefs.IGNORE_DERIVED;
+import static org.ucdetector.preferences.Prefs.IGNORE_NO_UCD;
+import static org.ucdetector.preferences.Prefs.IGNORE_SYNTHETIC_ACCESS_EMULATION;
+import static org.ucdetector.preferences.Prefs.LOG_LEVEL;
+import static org.ucdetector.preferences.Prefs.LOG_TO_ECLIPSE;
+import static org.ucdetector.preferences.Prefs.MODE_NAME;
+import static org.ucdetector.preferences.Prefs.REPORT_CREATE_XML;
+import static org.ucdetector.preferences.Prefs.REPORT_DIR;
+import static org.ucdetector.preferences.Prefs.REPORT_FILE;
+import static org.ucdetector.preferences.Prefs.WARN_LIMIT;
+import static org.ucdetector.preferences.Prefs.getReportStoreKey;
+import static org.ucdetector.preferences.Prefs.getStore;
+
+import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -38,7 +170,6 @@ import org.eclipse.ui.IWorkbenchPreferencePage;
 import org.eclipse.ui.PlatformUI;
 import org.ucdetector.Log;
 import org.ucdetector.Log.LogLevel;
-import org.ucdetector.Messages;
 import org.ucdetector.UCDInfo;
 import org.ucdetector.UCDetectorPlugin;
 import org.ucdetector.report.ReportExtension;
@@ -63,29 +194,31 @@ public class UCDetectorPreferencePage extends FieldEditorPreferencePage implemen
   protected final List<Composite> groups = new ArrayList<>();
   /** Contains group names, tab names, preference names */
   protected final List<String> extendedPreferences = new ArrayList<>();
-  protected static final String GROUP_START/**/= "# "; //$NON-NLS-1$
-  protected static final String TAB_START/*  */= "## "; //$NON-NLS-1$
+  // @formatter:off
+  protected static final String GROUP_START = "# "; //$NON-NLS-1$
+  protected static final String TAB_START   = "## "; //$NON-NLS-1$
   /**
    * entryNames (first column) and values (second column) for the
    * ComboFieldEditor
    */
   private static final String[][] WARN_LEVELS = new String[][] {
-    { WarnLevel.ERROR.toStringLocalized(), WarnLevel.ERROR.toString() },
-    { WarnLevel.WARNING.toStringLocalized(), WarnLevel.WARNING.toString() },
-    { WarnLevel.IGNORE.toStringLocalized(), WarnLevel.IGNORE.toString() } //
+    { WarnLevel.ERROR  .toStringLocalized(), WarnLevel.ERROR  .toString()},
+    { WarnLevel.WARNING.toStringLocalized(), WarnLevel.WARNING.toString()},
+    { WarnLevel.IGNORE .toStringLocalized(), WarnLevel.IGNORE .toString()},
   };
   private static final String[][] LOG_LEVELS = new String[][] {
-    { LogLevel.DEBUG.toString(), LogLevel.DEBUG.toString() },//
-    { LogLevel.INFO.toString(), LogLevel.INFO.toString() },//
-    { LogLevel.WARN.toString(), LogLevel.WARN.toString() },//
-    { LogLevel.ERROR.toString(), LogLevel.ERROR.toString() },//
-    { LogLevel.OFF.toString(), LogLevel.OFF.toString() }, //
+    { LogLevel.DEBUG.toString(), LogLevel.DEBUG.toString()},
+    { LogLevel.INFO .toString(), LogLevel.INFO .toString()},
+    { LogLevel.WARN .toString(), LogLevel.WARN .toString()},
+    { LogLevel.ERROR.toString(), LogLevel.ERROR.toString()},
+    { LogLevel.OFF  .toString(), LogLevel.OFF  .toString()},
   };
+  // @formatter:on
   private ModesPanel modesPanel;
 
   public UCDetectorPreferencePage() {
     super(FieldEditorPreferencePage.GRID);
-    setPreferenceStore(Prefs.getStore());
+    setPreferenceStore(getStore());
   }
 
   @Override
@@ -110,7 +243,7 @@ public class UCDetectorPreferencePage extends FieldEditorPreferencePage implemen
   }
 
   private void createTabIgnore() {
-    Composite tab = createTab(Messages.PreferencePage_TabIgnore);
+    Composite tab = createTab(PreferencePage_TabIgnore);
     createIgnoreResourcesGroup(tab);
     createIgnoreClassesGroup(tab);
     createIgnoreMarkedCode(tab);
@@ -118,68 +251,61 @@ public class UCDetectorPreferencePage extends FieldEditorPreferencePage implemen
   }
 
   private void createTabDetect() {
-    Composite composite = createTab(Messages.PreferencePage_TabDetect);
+    Composite composite = createTab(PreferencePage_TabDetect);
     createDetectGroup(composite);
     createFileSearchGroup(composite);
     createCycleGroup(composite);
   }
 
   private void createTabKeyworts() {
-    Composite composite = createTab(Messages.PreferencePage_TabKeywords);
+    Composite composite = createTab(PreferencePage_TabKeywords);
     createFinalGroup(composite);
     createVisibilityGroup(composite);
   }
 
   private void createTabReport() {
-    Composite composite = createTab(Messages.PreferencePage_TabReport);
+    Composite composite = createTab(PreferencePage_TabReport);
     createReportGroup(composite);
   }
 
   private void createTabOther() {
-    Composite composite = createTab(Messages.PreferencePage_TabOther);
+    Composite composite = createTab(PreferencePage_TabOther);
     createOtherGroup(composite);
   }
 
   private void createIgnoreResourcesGroup(Composite parentGroups) {
-    Composite spacer = createGroup(parentGroups, Messages.PreferencePage_IgnoreResourcesGroup);
-    appendText(Prefs.FILTER_SOURCE_FOLDER, Messages.PreferencePage_IgnoreSourceFolderFilter,
-        Messages.PreferencePage_IgnoreSourceFolderFilterToolTip, spacer);
-    appendText(Prefs.FILTER_PACKAGE, Messages.PreferencePage_IgnorePackageFilter,
-        Messages.PreferencePage_IgnorePackageFilterToolTip, spacer);
+    Composite spacer = createGroup(parentGroups, PreferencePage_IgnoreResourcesGroup);
+    appendText(FILTER_SOURCE_FOLDER, PreferencePage_IgnoreSourceFolderFilter,
+        PreferencePage_IgnoreSourceFolderFilterToolTip, spacer);
+    appendText(FILTER_PACKAGE, PreferencePage_IgnorePackageFilter, PreferencePage_IgnorePackageFilterToolTip, spacer);
   }
 
   private void createIgnoreClassesGroup(Composite parentGroups) {
-    Composite spacer = createGroup(parentGroups, Messages.PreferencePage_IgnoreClassesGroup);
-    appendText(Prefs.FILTER_CLASS, Messages.PreferencePage_IgnoreClassFilter,
-        Messages.PreferencePage_IgnoreClassFilterToolTip, spacer);
-    appendText(Prefs.FILTER_IMPLEMENTS, Messages.PreferencePage_IgnoreImplements,
-        Messages.PreferencePage_IgnoreImplementsToolTip, spacer);
-    appendText(Prefs.FILTER_CONTAIN_STRING, Messages.PreferencePage_IgnoreContainString,
-        Messages.PreferencePage_IgnoreContainStringToolTip, spacer);
-    appendBool(Prefs.FILTER_CLASS_WITH_MAIN_METHOD, Messages.PreferencePage_FilterClassWithMainMethod,
-        Messages.PreferencePage_FilterClassWithMainMethodToolTip, spacer, 2);
-    appendBool(Prefs.IGNORE_DERIVED, Messages.PreferencePage_IgnoreDerived,
-        Messages.PreferencePage_IgnoreDerivedToolTip, spacer, 2);
+    Composite spacer = createGroup(parentGroups, PreferencePage_IgnoreClassesGroup);
+    appendText(FILTER_CLASS, PreferencePage_IgnoreClassFilter, PreferencePage_IgnoreClassFilterToolTip, spacer);
+    appendText(FILTER_IMPLEMENTS, PreferencePage_IgnoreImplements, PreferencePage_IgnoreImplementsToolTip, spacer);
+    appendText(FILTER_CONTAIN_STRING, PreferencePage_IgnoreContainString, PreferencePage_IgnoreContainStringToolTip,
+        spacer);
+    appendBool(FILTER_CLASS_WITH_MAIN_METHOD, PreferencePage_FilterClassWithMainMethod,
+        PreferencePage_FilterClassWithMainMethodToolTip, spacer, 2);
+    appendBool(IGNORE_DERIVED, PreferencePage_IgnoreDerived, PreferencePage_IgnoreDerivedToolTip, spacer, 2);
   }
 
   private void createIgnoreMarkedCode(Composite parentGroups) {
-    Composite spacer = createGroup(parentGroups, Messages.PreferencePage_IgnoreMarkedCodeGroup);
-    appendText(Prefs.FILTER_ANNOATIONS, Messages.PreferencePage_IgnoreAnnotationsFilter,
-        Messages.PreferencePage_IgnoreAnnotationsFilterToolTip, spacer);
-    appendBool(Prefs.IGNORE_DEPRECATED, Messages.PreferencePage_IgnoreDeprecated,
-        Messages.PreferencePage_IgnoreDeprecatedToolTip, spacer, 2);
-    appendBool(Prefs.IGNORE_NO_UCD, Messages.PreferencePage_IgnoreNoUcd, //
-        Messages.PreferencePage_IgnoreNoUcdToolTip, spacer, 2);
+    Composite spacer = createGroup(parentGroups, PreferencePage_IgnoreMarkedCodeGroup);
+    appendText(FILTER_ANNOATIONS, PreferencePage_IgnoreAnnotationsFilter, PreferencePage_IgnoreAnnotationsFilterToolTip,
+        spacer);
+    appendBool(IGNORE_DEPRECATED, PreferencePage_IgnoreDeprecated, PreferencePage_IgnoreDeprecatedToolTip, spacer, 2);
+    appendBool(IGNORE_NO_UCD, PreferencePage_IgnoreNoUcd, //
+        PreferencePage_IgnoreNoUcdToolTip, spacer, 2);
   }
 
   private void createIgnoreOthers(Composite parentGroups) {
-    Composite spacer = createGroup(parentGroups, Messages.PreferencePage_IgnoreOthersGroup);
-    appendText(Prefs.FILTER_FIELD, Messages.PreferencePage_IgnoreFieldFilter,
-        Messages.PreferencePage_IgnoreFieldFilterToolTip, spacer);
-    appendText(Prefs.FILTER_METHOD, Messages.PreferencePage_IgnoreMethodFilter,
-        Messages.PreferencePage_IgnoreMethodFilterToolTip, spacer);
-    appendBool(Prefs.FILTER_BEAN_METHOD, Messages.PreferencePage_IgnoreBeanMethods,
-        Messages.PreferencePage_IgnoreBeanMethodsToolTip, spacer, 2);
+    Composite spacer = createGroup(parentGroups, PreferencePage_IgnoreOthersGroup);
+    appendText(FILTER_FIELD, PreferencePage_IgnoreFieldFilter, PreferencePage_IgnoreFieldFilterToolTip, spacer);
+    appendText(FILTER_METHOD, PreferencePage_IgnoreMethodFilter, PreferencePage_IgnoreMethodFilterToolTip, spacer);
+    appendBool(FILTER_BEAN_METHOD, PreferencePage_IgnoreBeanMethods, PreferencePage_IgnoreBeanMethodsToolTip, spacer,
+        2);
   }
 
   /**
@@ -187,16 +313,14 @@ public class UCDetectorPreferencePage extends FieldEditorPreferencePage implemen
    * search class names in text files
    */
   private void createDetectGroup(Composite parentGroups) {
-    Composite spacer = createGroup(parentGroups, Messages.PreferencePage_GroupDetect);
-    IntegerFieldEditor warnLimit = new IntegerFieldEditor(Prefs.WARN_LIMIT, Messages.PreferencePage_WarnLimit
-        + SEPARATOR, spacer);
-    warnLimit.getLabelControl(spacer).setToolTipText(Messages.PreferencePage_WarnLimitToolTip);
+    Composite spacer = createGroup(parentGroups, PreferencePage_GroupDetect);
+    IntegerFieldEditor warnLimit = new IntegerFieldEditor(WARN_LIMIT, PreferencePage_WarnLimit + SEPARATOR, spacer);
+    warnLimit.getLabelControl(spacer).setToolTipText(PreferencePage_WarnLimitToolTip);
     addField(warnLimit);
-    appendCombo(Prefs.ANALYZE_CLASSES, Messages.PreferencePage_Classes, spacer);
-    appendCombo(Prefs.ANALYZE_MEHTODS, Messages.PreferencePage_Methods, spacer);
-    appendCombo(Prefs.ANALYZE_FIELDS, Messages.PreferencePage_Fields, spacer);
-    appendBool(Prefs.DETECT_TEST_ONLY, Messages.PreferencePage_DetectTestOnly,
-        Messages.PreferencePage_DetectTestOnlyToolTip, spacer, 2);
+    appendCombo(ANALYZE_CLASSES, PreferencePage_Classes, spacer);
+    appendCombo(ANALYZE_MEHTODS, PreferencePage_Methods, spacer);
+    appendCombo(ANALYZE_FIELDS, PreferencePage_Fields, spacer);
+    appendBool(DETECT_TEST_ONLY, PreferencePage_DetectTestOnly, PreferencePage_DetectTestOnlyToolTip, spacer, 2);
   }
 
   /**
@@ -204,92 +328,92 @@ public class UCDetectorPreferencePage extends FieldEditorPreferencePage implemen
    * search class names in text files
    */
   private void createFileSearchGroup(Composite parentGroups) {
-    Composite spacer = createGroup(parentGroups, Messages.PreferencePage_GroupFileSearch);
+    Composite spacer = createGroup(parentGroups, PreferencePage_GroupFileSearch);
     SynchBooleanFieldEditor analyzeLiteralsCheck = new SynchBooleanFieldEditor(spacer);
     addField(analyzeLiteralsCheck);
-    //
-    BooleanFieldEditor checkFullClassName = new BooleanFieldEditor(Prefs.ANALYZE_CHECK_FULL_CLASS_NAME,
-        Messages.PreferencePage_CheckFullClassName + SEPARATOR, BooleanFieldEditor.SEPARATE_LABEL, spacer);
+
+    BooleanFieldEditor checkFullClassName = new BooleanFieldEditor(ANALYZE_CHECK_FULL_CLASS_NAME,
+        PreferencePage_CheckFullClassName + SEPARATOR, BooleanFieldEditor.SEPARATE_LABEL, spacer);
     Label label = checkFullClassName.getLabelControl(spacer);
-    label.setToolTipText(Messages.PreferencePage_CheckFullClassNameToolTip);
+    label.setToolTipText(PreferencePage_CheckFullClassNameToolTip);
     addField(checkFullClassName);
-    //
-    BooleanFieldEditor checkSimpleClassName = new BooleanFieldEditor(Prefs.ANALYZE_CHECK_SIMPLE_CLASS_NAME,
-        Messages.PreferencePage_CheckSimleClassName + SEPARATOR, BooleanFieldEditor.SEPARATE_LABEL, spacer);
+
+    BooleanFieldEditor checkSimpleClassName = new BooleanFieldEditor(ANALYZE_CHECK_SIMPLE_CLASS_NAME,
+        PreferencePage_CheckSimleClassName + SEPARATOR, BooleanFieldEditor.SEPARATE_LABEL, spacer);
     label = checkSimpleClassName.getLabelControl(spacer);
-    label.setToolTipText(Messages.PreferencePage_CheckSimpleClassNameToolTip);
+    label.setToolTipText(PreferencePage_CheckSimpleClassNameToolTip);
     addField(checkSimpleClassName);
-    //
-    StringFieldEditor analyzeLiterals = appendText(Prefs.ANALYZE_LITERALS, Messages.PreferencePage_Literals,
-        Messages.PreferencePage_LiteralsToolTip, spacer);
+
+    StringFieldEditor analyzeLiterals = appendText(ANALYZE_LITERALS, PreferencePage_Literals,
+        PreferencePage_LiteralsToolTip, spacer);
     analyzeLiteralsCheck.setAnalyzeLiterals(analyzeLiterals);
     analyzeLiteralsCheck.setCheckFullClassName(checkFullClassName, checkSimpleClassName);
   }
 
   private void createCycleGroup(Composite parentGroups) {
-    Composite spacer = createGroup(parentGroups, Messages.PreferencePage_GroupCycles);
-    IntegerFieldEditor cycleDepth = new IntegerFieldEditor(Prefs.CYCLE_DEPTH, Messages.PreferencePage_MaxCycleSize
-        + SEPARATOR, spacer, 1);
-    cycleDepth.setValidRange(Prefs.CYCLE_DEPTH_MIN, Prefs.CYCLE_DEPTH_MAX);
+    Composite spacer = createGroup(parentGroups, PreferencePage_GroupCycles);
+    IntegerFieldEditor cycleDepth = new IntegerFieldEditor(CYCLE_DEPTH, PreferencePage_MaxCycleSize + SEPARATOR, spacer,
+        1);
+    cycleDepth.setValidRange(CYCLE_DEPTH_MIN, CYCLE_DEPTH_MAX);
     cycleDepth.setEmptyStringAllowed(false);
-    cycleDepth.getLabelControl(spacer).setToolTipText(Messages.PreferencePage_MaxCycleSizeToolTip);
+    cycleDepth.getLabelControl(spacer).setToolTipText(PreferencePage_MaxCycleSizeToolTip);
     addField(cycleDepth);
   }
 
   private void createFinalGroup(Composite parentGroups) {
-    Composite spacer = createGroup(parentGroups, Messages.PreferencePage_GroupFinal);
-    appendCombo(Prefs.ANALYZE_FINAL_METHOD, Messages.PreferencePage_CheckFinalMethod, spacer);
-    appendCombo(Prefs.ANALYZE_FINAL_FIELD, Messages.PreferencePage_CheckFinalField, spacer);
+    Composite spacer = createGroup(parentGroups, PreferencePage_GroupFinal);
+    appendCombo(ANALYZE_FINAL_METHOD, PreferencePage_CheckFinalMethod, spacer);
+    appendCombo(ANALYZE_FINAL_FIELD, PreferencePage_CheckFinalField, spacer);
   }
 
   private void createVisibilityGroup(Composite parentGroups) {
-    Composite spacer = createGroup(parentGroups, Messages.PreferencePage_GroupVisibility);
-    //
+    Composite spacer = createGroup(parentGroups, PreferencePage_GroupVisibility);
+
     addChangeAllVisibiliyCombo(spacer);
     addLineHack(spacer, null);
-    //
+
     Label visibilityWarnLabel = new Label(spacer, SWT.LEFT); // setForeground(Display.getDefault().getSystemColor(SWT.COLOR_RED));
     visibilityWarnLabel.setFont(new Font(spacer.getDisplay(), "Arial", 10, SWT.BOLD)); //$NON-NLS-1$
-    visibilityWarnLabel.setText(Messages.PreferencePage_ReduceVisibiltyWarning);
+    visibilityWarnLabel.setText(PreferencePage_ReduceVisibiltyWarning);
     GridData gd = new GridData(GridData.FILL_HORIZONTAL);
     gd.horizontalSpan = 2;
     visibilityWarnLabel.setLayoutData(gd);
-    //
-    appendCombo(Prefs.ANALYZE_VISIBILITY_PROTECTED_CLASSES, Messages.PreferencePage_CheckProtectedClasses, spacer);
-    appendCombo(Prefs.ANALYZE_VISIBILITY_PRIVATE_CLASSES, Messages.PreferencePage_CheckPrivateClasses, spacer);
+    // @formatter:off
+    appendCombo(ANALYZE_VISIBILITY_PROTECTED_CLASSES , PreferencePage_CheckProtectedClasses, spacer);
+    appendCombo(ANALYZE_VISIBILITY_PRIVATE_CLASSES   , PreferencePage_CheckPrivateClasses, spacer);
     addLineHack(spacer, null);
-    appendCombo(Prefs.ANALYZE_VISIBILITY_PROTECTED_METHODS, Messages.PreferencePage_CheckProtectedMethods, spacer);
-    appendCombo(Prefs.ANALYZE_VISIBILITY_PRIVATE_METHODS, Messages.PreferencePage_CheckPrivateMethods, spacer);
+    appendCombo(ANALYZE_VISIBILITY_PROTECTED_METHODS , PreferencePage_CheckProtectedMethods, spacer);
+    appendCombo(ANALYZE_VISIBILITY_PRIVATE_METHODS   , PreferencePage_CheckPrivateMethods, spacer);
     addLineHack(spacer, null);
-    appendCombo(Prefs.ANALYZE_VISIBILITY_PROTECTED_FIELDS, Messages.PreferencePage_CheckProtectedFields, spacer);
-    appendCombo(Prefs.ANALYZE_VISIBILITY_PRIVATE_FIELDS, Messages.PreferencePage_CheckPrivateFields, spacer);
+    appendCombo(ANALYZE_VISIBILITY_PROTECTED_FIELDS  , PreferencePage_CheckProtectedFields, spacer);
+    appendCombo(ANALYZE_VISIBILITY_PRIVATE_FIELDS    , PreferencePage_CheckPrivateFields, spacer);
     // [ 2804064 ] Access to enclosing type - make 2743908 configurable
-    appendBool(Prefs.IGNORE_SYNTHETIC_ACCESS_EMULATION, Messages.PreferencePage_ignoreSyntheticAccessEmulation,
-        Messages.PreferencePage_ignoreSyntheticAccessEmulationTooltip, spacer, 2);
+    appendBool(IGNORE_SYNTHETIC_ACCESS_EMULATION      , PreferencePage_ignoreSyntheticAccessEmulation,
+                                                        PreferencePage_ignoreSyntheticAccessEmulationTooltip, spacer, 2);
     addLineHack(spacer, null);
-    appendCombo(Prefs.ANALYZE_VISIBILITY_PROTECTED_CONSTANTS, Messages.PreferencePage_CheckProtectedConstants, spacer);
-    appendCombo(Prefs.ANALYZE_VISIBILITY_PRIVATE_CONSTANTS, Messages.PreferencePage_CheckPrivateConstants, spacer);
+    appendCombo(ANALYZE_VISIBILITY_PROTECTED_CONSTANTS, PreferencePage_CheckProtectedConstants, spacer);
+    appendCombo(ANALYZE_VISIBILITY_PRIVATE_CONSTANTS  , PreferencePage_CheckPrivateConstants, spacer);
+    // @formatter:on
   }
 
   private void createReportGroup(Composite parentGroups) {
-    Composite spacer = createGroup(parentGroups, Messages.PreferencePage_GroupReports);
-    appendBool(Prefs.REPORT_CREATE_XML, Messages.PreferencePage_CreateXmlReport, null, spacer, 3);
+    Composite spacer = createGroup(parentGroups, PreferencePage_GroupReports);
+    appendBool(REPORT_CREATE_XML, PreferencePage_CreateXmlReport, null, spacer, 3);
     for (ReportExtension extension : ReportExtension.getAllExtensions()) {
       String text = String.format("Create %s report", extension.getDescription()); //$NON-NLS-1$
-      appendBool(Prefs.getReportStoreKey(extension), text, null, spacer, 3);
+      appendBool(getReportStoreKey(extension), text, null, spacer, 3);
     }
-    //
-    appendText(Prefs.REPORT_FILE, Messages.PreferencePage_ReportFile, Messages.PreferencePage_ReportFileToolTip,
-        spacer, 3);
-    //
-    DirectoryFieldEditor path = new DirectoryFieldEditor(Prefs.REPORT_DIR, Messages.PreferencePage_ReportDir, spacer);
-    path.getLabelControl(spacer).setToolTipText(Messages.PreferencePage_ReportDirToolTip);
+
+    appendText(REPORT_FILE, PreferencePage_ReportFile, PreferencePage_ReportFileToolTip, spacer, 3);
+
+    DirectoryFieldEditor path = new DirectoryFieldEditor(REPORT_DIR, PreferencePage_ReportDir, spacer);
+    path.getLabelControl(spacer).setToolTipText(PreferencePage_ReportDirToolTip);
     addField(path);
-    //
+
     addLineHack(spacer, null);
     Button ok = new Button(spacer, SWT.PUSH);
-    ok.setText(Messages.PreferencePage_BrowseReportsDir);
-    ok.setToolTipText(Messages.PreferencePage_BrowseReportsDirToolTip);
+    ok.setText(PreferencePage_BrowseReportsDir);
+    ok.setToolTipText(PreferencePage_BrowseReportsDirToolTip);
     ok.addSelectionListener(new SelectionAdapter() {
       @Override
       public void widgetSelected(SelectionEvent e) {
@@ -304,22 +428,23 @@ public class UCDetectorPreferencePage extends FieldEditorPreferencePage implemen
   }
 
   private void createOtherGroup(Composite parentGroups) {
-    Composite spacer = createGroup(parentGroups, Messages.PreferencePage_GroupLogging);
-    ComboFieldEditor combo = new ComboFieldEditor(Prefs.LOG_LEVEL, Messages.PreferencePage_LogLevel + SEPARATOR,
-        LOG_LEVELS, spacer);
+    Composite spacer = createGroup(parentGroups, PreferencePage_GroupLogging);
+    ComboFieldEditor combo = new ComboFieldEditor(LOG_LEVEL, PreferencePage_LogLevel + SEPARATOR, LOG_LEVELS, spacer);
     addField(combo);
-    combo.getLabelControl(spacer).setToolTipText(Messages.PreferencePage_LogLevelToolTip);
-    appendBool(Prefs.LOG_TO_ECLIPSE, Messages.PreferencePage_LogToEclipse,//
-        Messages.PreferencePage_LogToEclipseToolTip, spacer, 2);
-    //
+    combo.getLabelControl(spacer).setToolTipText(PreferencePage_LogLevelToolTip);
+    appendBool(LOG_TO_ECLIPSE, PreferencePage_LogToEclipse, PreferencePage_LogToEclipseToolTip, spacer, 2);
+
     Composite spacerFiles = createGroup(parentGroups, "Files and directories:"); //$NON-NLS-1$
     //    addLineHack(spacer, null);
     //    addLineHack(spacer, "Files and directories:"); //$NON-NLS-1$
-    appendLabelAndText(spacerFiles, "Reports"/*      */, ReportNameManager.getReportDir(true));//$NON-NLS-1$
-    appendLabelAndText(spacerFiles, "Modes"/*        */, UCDetectorPlugin.getModesDir().getAbsolutePath());//$NON-NLS-1$
-    appendLabelAndText(spacerFiles, "Eclipse home"/* */, UCDInfo.getEclipseHome());//$NON-NLS-1$
-    appendLabelAndText(spacerFiles, "Log file"/*     */, UCDInfo.getLogfile());//$NON-NLS-1$
-    appendLabelAndText(spacerFiles, "Workspace"/*    */, UCDInfo.getWorkspace());//$NON-NLS-1$
+    // @formatter:off
+    File modesDir = UCDetectorPlugin.getModesDir();
+    appendLabelAndText(spacerFiles, "Reports"     , ReportNameManager.getReportDir(true));//$NON-NLS-1$
+    appendLabelAndText(spacerFiles, "Modes"       , modesDir.getAbsolutePath()          );//$NON-NLS-1$
+    appendLabelAndText(spacerFiles, "Eclipse home", UCDInfo.getEclipseHome()            );//$NON-NLS-1$
+    appendLabelAndText(spacerFiles, "Log file"    , UCDInfo.getLogfile()                );//$NON-NLS-1$
+    appendLabelAndText(spacerFiles, "Workspace"   , UCDInfo.getWorkspace()              );//$NON-NLS-1$
+    // @formatter:on
   }
 
   private static void appendLabelAndText(Composite spacer, String labelText, String textText) {
@@ -338,10 +463,14 @@ public class UCDetectorPreferencePage extends FieldEditorPreferencePage implemen
   // [2810803] Change visibility options more comfortable
   private void addChangeAllVisibiliyCombo(Composite parent) {
     Label label = new Label(parent, SWT.LEFT);
-    label.setText(Messages.PreferencePage_ChangeVisibilityCombos);
+    label.setText(PreferencePage_ChangeVisibilityCombos);
     changeVisibiliyCombo = new Combo(parent, SWT.READ_ONLY);
-    changeVisibiliyCombo.setItems(new String[] { WarnLevel.ERROR.toStringLocalized(),
-        WarnLevel.WARNING.toStringLocalized(), WarnLevel.IGNORE.toStringLocalized() });
+    changeVisibiliyCombo.setItems(new String[] { // @formatter:off
+          WarnLevel.ERROR  .toStringLocalized(),
+          WarnLevel.WARNING.toStringLocalized(),
+          WarnLevel.IGNORE .toStringLocalized()
+        }
+    );// @formatter:on
     changeVisibiliyCombo.setText(WarnLevel.WARNING.toStringLocalized());
     changeVisibiliyCombo.addSelectionListener(new SelectionAdapter() {
       @Override
@@ -349,7 +478,7 @@ public class UCDetectorPreferencePage extends FieldEditorPreferencePage implemen
         int selectionIndex = changeVisibiliyCombo.getSelectionIndex();
         if (selectionIndex != -1) {
           for (FieldEditor field : fields) {
-            if (field.getPreferenceName().startsWith(Prefs.ANALYZE_VISIBILITY_PREFIX)) {
+            if (field.getPreferenceName().startsWith(ANALYZE_VISIBILITY_PREFIX)) {
               // "ERROR" instead of "Error"
               String comboValue = WarnLevel.values()[selectionIndex].name();
               field.getPreferenceStore().setValue(field.getPreferenceName(), comboValue);
@@ -418,10 +547,10 @@ public class UCDetectorPreferencePage extends FieldEditorPreferencePage implemen
     private final Button check;
 
     SynchBooleanFieldEditor(Composite parent) {
-      super(Prefs.ANALYZE_LITERALS_CHECK, Messages.PreferencePage_LiteralsCheck, parent);
+      super(ANALYZE_LITERALS_CHECK, PreferencePage_LiteralsCheck, parent);
       this.parent = parent;
       check = getChangeControl(parent);
-      check.setToolTipText(Messages.PreferencePage_LiteralsCheckToolTip);
+      check.setToolTipText(PreferencePage_LiteralsCheckToolTip);
     }
 
     /** Necessary, because first "literal check box" must be created, then analyzeLiterals  */
@@ -463,7 +592,7 @@ public class UCDetectorPreferencePage extends FieldEditorPreferencePage implemen
   private void appendCombo(String name, String label, Composite parent) {
     ComboFieldEditor combo = new ComboFieldEditor(name, label + SEPARATOR, WARN_LEVELS, parent);
     combo.fillIntoGrid(parent, 2);
-    combo.getLabelControl(parent).setToolTipText(Messages.PreferencePage_ComboToolTip);
+    combo.getLabelControl(parent).setToolTipText(PreferencePage_ComboToolTip);
     Label labelControl = combo.getLabelControl(parent);
     GridData gd = new GridData(GridData.FILL_HORIZONTAL);
     labelControl.setLayoutData(gd);
@@ -540,7 +669,7 @@ public class UCDetectorPreferencePage extends FieldEditorPreferencePage implemen
   public boolean performOk() {
     boolean result = super.performOk();
     modesPanel.saveMode();
-    getPreferenceStore().setValue(Prefs.MODE_NAME, modesPanel.getCombo().getText());
+    getPreferenceStore().setValue(MODE_NAME, modesPanel.getCombo().getText());
     if (Log.isDebug()) {
       Log.debug("New preferences: " + UCDetectorPlugin.getPreferencesAsString()); //$NON-NLS-1$
     }
