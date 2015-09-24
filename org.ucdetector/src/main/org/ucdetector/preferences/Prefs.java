@@ -546,9 +546,21 @@ public final class Prefs {
   private static boolean isMatchFilter(String filterName, String elementName) {
     String[] filters = parseFilters(filterName);
     for (String regex : filters) {
-      // IPackageFragmentRoot can be "", filter can be ""
       try {
-        if (regex.length() > 0 && Pattern.matches(regex, elementName)) {
+        // IPackageFragmentRoot can be "", filter can be ""
+        if (regex.length() == 0) {
+          continue;
+        }
+        boolean negate = regex.startsWith("!");
+        if (negate) {
+          String realRegex = regex.substring(1);
+          if (!Pattern.matches(realRegex, elementName)) {
+            Log.debug("IGNORE: Negative filter '%s' matches: '%s'", regex, elementName);
+            return true;
+          }
+          continue;
+        }
+        if (Pattern.matches(regex, elementName)) {
           return true;
         }
       }

@@ -291,6 +291,7 @@ public abstract class AbstractUCDQuickFix extends WorkbenchMarkerResolution {
       return marker.getType();
     }
     catch (CoreException e) {
+      Log.warn("Can't getMarkerType: %s", e);
       return null;
     }
   }
