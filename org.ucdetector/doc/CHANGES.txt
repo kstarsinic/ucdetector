@@ -6,12 +6,14 @@ New features:
  - Better debug log output for ignored elements
  - Improved tooltips for UCDetector preferences
  - Improved messages, labels
+ - Added negative ignore filter
  
 Bugfixes:
  - 
  - 
  
 Todo:
+ - Compatible with JAVA 6!!!
  - [ 3396900 ] Abstract classes' constructors can always be protected
  - [ 3400167 ] Removed warnings: Restrict method/field visibility to class visibility
  - Unused marker for code marked with javadoc @deprecated
