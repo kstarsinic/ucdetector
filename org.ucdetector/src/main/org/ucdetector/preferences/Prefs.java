@@ -543,17 +543,17 @@ public final class Prefs {
    * @return <code>true</code>, when the name matches one of the Strings
    * found in the preference filteName.<br>
    */
-  private static boolean isMatchFilter(String filterName, String name) {
+  private static boolean isMatchFilter(String filterName, String elementName) {
     String[] filters = parseFilters(filterName);
     for (String regex : filters) {
       // IPackageFragmentRoot can be "", filter can be ""
       try {
-        if (regex.length() > 0 && Pattern.matches(regex, name)) {
+        if (regex.length() > 0 && Pattern.matches(regex, elementName)) {
           return true;
         }
       }
       catch (PatternSyntaxException e) {
-        Log.warn(e.getMessage());
+        Log.warn("isMatchFilter(%s, %s): %s", filterName, elementName, e);
       }
     }
     return false;
