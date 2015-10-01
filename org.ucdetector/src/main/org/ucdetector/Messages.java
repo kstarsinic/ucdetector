@@ -21,6 +21,7 @@ import org.ucdetector.util.UsedBy;
 @SuppressWarnings("nls")
 public final class Messages extends NLS {
   private static final String BUNDLE_NAME = "org.ucdetector.messages";
+
   static {
     // initialize resource bundle
     NLS.initializeMessages(BUNDLE_NAME, Messages.class);
@@ -56,7 +57,7 @@ public final class Messages extends NLS {
   public static String UCDetectorIterator_JobName;
   public static String CleanMarkersIterator_JobName;
   public static String UCDetectorIterator_MONITOR_INFO;
-  //  public static String UCDetectorPreferencePageKeywords_ChangeAllCombos; 
+  //  public static String UCDetectorPreferencePageKeywords_ChangeAllCombos;
   public static String AbstractUCDetectorIterator_NothingToDetectTitle;
   public static String AbstractUCDetectorIterator_NothingToDetect;
   // count
@@ -173,12 +174,12 @@ public final class Messages extends NLS {
   public static String PreferencePage_ReportFile;
   public static String PreferencePage_ReportFileToolTip;
   // SearchManager -----------------------------------------------------------
-  //  public static String JavaElementUtil_Class; 
-  //  public static String JavaElementUtil_Constructor; 
-  //  public static String JavaElementUtil_Field; 
-  //  public static String JavaElementUtil_Constant; 
-  //  public static String JavaElementUtil_Method; 
-  //  public static String JavaElementUtil_Initializer; 
+  //  public static String JavaElementUtil_Class;
+  //  public static String JavaElementUtil_Constructor;
+  //  public static String JavaElementUtil_Field;
+  //  public static String JavaElementUtil_Constant;
+  //  public static String JavaElementUtil_Method;
+  //  public static String JavaElementUtil_Initializer;
   //
   public static String MarkerFactory_MarkerVisibility;
   public static String MarkerFactory_VisibilityCompileErrorForClass;
@@ -187,7 +188,6 @@ public final class Messages extends NLS {
   public static String MarkerFactory_MarkerReference;
   public static String MarkerFactory_MarkerReferenceFieldNeverRead;
   public static String MarkerFactory_MarkerTestOnly;
-  public static String MarkerFactory_MarkerOther;
   //
   public static String SearchManager_Monitor;
   public static String SearchManager_SearchReferences;
