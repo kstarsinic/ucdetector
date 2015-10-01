@@ -29,7 +29,7 @@ import org.ucdetector.preferences.Prefs;
 @SuppressWarnings("nls")
 public class ReportNameManager {
   private static final String FILE_NAME_REPLACE_NUMBER = "${number}";
-  private static final String REPORT_DEFAULT_DIR = "ucdetector_reports";
+  private static final String REPORT_DEFAULT_DIR = ".ucdetector_reports";
   private static final DecimalFormat FORMAT_REPORT_NUMBER = new DecimalFormat("000");
 
   /**
@@ -59,7 +59,7 @@ public class ReportNameManager {
       Log.error("Can't get report file name", e);
     }
     // Needed to avoid message: Value must be an existing directory
-    new File(reportDir).mkdirs();
+    //    new File(reportDir).mkdirs();
     return reportDir;
   }
 
