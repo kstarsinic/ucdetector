@@ -61,12 +61,15 @@ public class UCDetectorConsole extends MessageConsole {
       boolean exists = false;
       if (console == null) {
         console = new UCDetectorConsole("UCDetector Console", null, true); //$NON-NLS-1$
+
         MessageConsoleStream infoStream = console.newMessageStream();
         infoStream.setColor(Display.getDefault().getSystemColor(SWT.COLOR_BLACK));
+
+        MessageConsoleStream warnStream = console.newMessageStream();
+        warnStream.setColor(Display.getDefault().getSystemColor(SWT.COLOR_RED));
+
         try {
           consoleStreamInfo = new PrintStream(infoStream, true, UCDetectorPlugin.UTF_8);
-          MessageConsoleStream warnStream = infoStream;
-          warnStream.setColor(Display.getDefault().getSystemColor(SWT.COLOR_RED));
           consoleStreamWarn = new PrintStream(warnStream, true, UCDetectorPlugin.UTF_8);
         }
         catch (UnsupportedEncodingException ex) {
