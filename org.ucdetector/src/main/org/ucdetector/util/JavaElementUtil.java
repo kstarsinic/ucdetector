@@ -586,20 +586,22 @@ public final class JavaElementUtil {
 
   public enum MemberInfo {
     // @formatter:off
-    // org.eclipse.jdt.ui/icons/full/obj16/field_public_obj.gif:
-    Annotation    ("annotation_obj.gif"       ),
-    Class         ("class_obj.gif"            ),
-    ClassAnonymous("innerclass_public_obj.gif"),
-    ClassLocal    ("innerclass_public_obj.gif"),
-    ClassMember   ("innerclass_public_obj.gif"),
-    Constant      ("field_public_obj.gif"     ),
-    Constructor   ("methpub_obj.gif"          ),
-    Enum          ("enum_obj.gif"             ),
-    EnumConstant  ("field_public_obj.gif"     ),
-    Field         ("field_public_obj.gif"     ),
-    Initializer   ("methpub_obj.gif"          ),
-    Interface     ("int_obj.gif"              ),
-    Method        ("methpub_obj.gif"          ),
+    // Since eclipse 4.x icons are not anymore in:
+    // org.eclipse.jdt.ui/icons/full/obj16/field_public_obj.gif
+    // These are copies of icons from old eclipse
+    Annotation    ("j_annotation_obj.gif"       ), //
+    Class         ("j_class_obj.gif"            ),
+    ClassAnonymous("j_innerclass_public_obj.gif"),
+    ClassLocal    ("j_innerclass_public_obj.gif"),
+    ClassMember   ("j_innerclass_public_obj.gif"),
+    Constant      ("j_field_public_obj.gif"     ),
+    Constructor   ("j_methpub_obj.gif"          ),
+    Enum          ("j_enum_obj.gif"             ),
+    EnumConstant  ("j_field_public_obj.gif"     ),
+    Field         ("j_field_public_obj.gif"     ),
+    Initializer   ("j_methpub_obj.gif"          ),
+    Interface     ("j_int_obj.gif"              ),
+    Method        ("j_methpub_obj.gif"          ),
     // @formatter:onn
                     ;
 
@@ -999,10 +1001,10 @@ public final class JavaElementUtil {
     //        + visitor.annotation.getFullyQualifiedName());
     return visitor.annotation.getFullyQualifiedName();
   }
-
+  
   private static class FindAnnotationVisitor extends ASTVisitor {
     private Name annotation;
-
+  
     @Override
     public boolean visit(MethodDeclaration node) {
       for (Object modifier : node.modifiers()) {
@@ -1015,7 +1017,7 @@ public final class JavaElementUtil {
       return false;
     }
   }
-
+  
    */
   /*
    * @see OverrideIndicatorLabelDecorator, MethodOverrideTester
@@ -1045,7 +1047,7 @@ public final class JavaElementUtil {
     addAllSuperClasses(clazz, result);
     return result;
   }
-
+  
   private static void addAllSuperClasses(Class<?> clazz, Set<Class<?>> result) {
     Class<?>[] interfaces = clazz.getInterfaces();
     for (Class<?> interfaze : interfaces) {

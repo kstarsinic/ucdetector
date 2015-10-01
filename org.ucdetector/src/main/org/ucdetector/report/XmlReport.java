@@ -39,7 +39,6 @@ import org.eclipse.core.runtime.FileLocator;
 import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Path;
-import org.eclipse.core.runtime.Platform;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.jdt.core.IField;
 import org.eclipse.jdt.core.IJavaElement;
@@ -455,14 +454,15 @@ public class XmlReport implements IUCDetectorReport {
   };    // @formatter:on
 
   private static void copyIconFiles(File iconsOutDir) throws IOException {
+    Bundle bundle = UCDetectorPlugin.getDefault().getBundle();
+    Path iconPath = new Path("icons");
     for (String iconName : ICONS) {
-      Bundle bundle = UCDetectorPlugin.getDefault().getBundle();
-      Path iconPath = new Path("icons");
       copyToIconDir(bundle, iconPath, iconsOutDir, iconName);
     }
     for (MemberInfo memberInfo : MemberInfo.values()) {
-      Bundle bundle = Platform.getBundle("org.eclipse.jdt.ui");
-      Path iconPath = new Path("icons/full/obj16/");
+      // Since eclipse 4.x icons are not anymore here
+      // Bundle bundle = Platform.getBundle("org.eclipse.jdt.ui");
+      // Path iconPath = new Path("icons/full/obj16/");
       copyToIconDir(bundle, iconPath, iconsOutDir, memberInfo.getIcon());
     }
   }
