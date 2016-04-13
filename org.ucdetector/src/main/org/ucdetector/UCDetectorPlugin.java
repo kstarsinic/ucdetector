@@ -151,7 +151,8 @@ public class UCDetectorPlugin extends AbstractUIPlugin {
 
   /** @return All preferences which are different from default preferences, without internal preferences  */
   public static Map<String, String> getDeltaPreferences() {
-    IEclipsePreferences node = InstanceScope.INSTANCE.getNode(ID);
+    // Eclipse 3.7: InstanceScope.INSTANCE.getNode(ID);
+    IEclipsePreferences node = new InstanceScope().getNode(ID);
     Map<String, String> allDeltas = getPreferencesImpl(node);
     Set<String> keySetClone = new HashSet<String>(allDeltas.keySet());
     for (String key : keySetClone) {
@@ -164,7 +165,8 @@ public class UCDetectorPlugin extends AbstractUIPlugin {
 
   /** @return All available preferences */
   public static Map<String, String> getAllPreferences() {
-    IEclipsePreferences node = DefaultScope.INSTANCE.getNode(ID);
+    // Eclipse 3.7: DefaultScope.INSTANCE.getNode(ID);
+    IEclipsePreferences node = new DefaultScope().getNode(ID);
     return getPreferencesImpl(node);
   }
 
@@ -339,19 +341,26 @@ public class UCDetectorPlugin extends AbstractUIPlugin {
     return status;
   }
 
-  // Do not use AST.JLS3:
-  // JLS4 fixes: #70 Error in numeric literal with underscores
-  // http://sourceforge.net/p/ucdetector/bugs/70/
+  /** Try newest Parser first. */
+  private static final int[] AST_PARSER_LEVELS = { //
+      8, // AST.JLS8
+      4, // AST.JLS4, fixes: #70 Error in numeric literal with underscores:  http://sourceforge.net/p/ucdetector/bugs/70/
+      AST.JLS3, //
+  };
+
+  //
   /** @return latest parser */
   public static ASTParser newASTParser() {
-    try {
-      // Use int here instead of AST.JLS8, to avoid compile error
-      ASTParser.newParser(8 /* AST.JLS8 */);
+    for (int level : AST_PARSER_LEVELS) {
+      try {
+        // Use int here instead of AST.JLS8, to avoid compile error
+        return ASTParser.newParser(level);
+      }
+      catch (Exception e) {
+        // Ignore, return older parser
+      }
     }
-    catch (Exception e) {
-      // Ignore, return older parser
-    }
-    return ASTParser.newParser(AST.JLS4);
+    throw new RuntimeException("Cant find ASTParser for levels: " + Arrays.toString(AST_PARSER_LEVELS));
   }
 
   ///**
