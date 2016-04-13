@@ -18,6 +18,12 @@
 * toc:   org.eclipse.pde.doc.user_3.8.2.v20130121-200410.jar/toc.xml
 
 
+== Activate Headless again ==
+* Deactivated Headless plugin to preserve compatibility to eclipse 3.4
+* Revert changes form r1916: .classpath, MANIFEST.MF, plugin.xml
+* Switch to Eclipse 3.8
+
+
 == Code examples ==
 * org.eclipse.jdt.internal.corext.util.JavaModelUtil
 * GOTO action: /org.eclipse.team.ui/src/org/eclipse/team/ui/TeamOperation.java
@@ -31,10 +37,6 @@
 * git svn clone --find-copies-harder --no-metadata -A authors.txt -t tags -b branches -T trunk file://localhost/~/svn2git/svn > convert.log 2>warn.log
 * rsync -av ucdetector.svn.sourceforge.net::svn/ucdetector/* .
 
-
-Detection time: 56.20 seconds
-Detection time: 41.49 seconds
-Detection time: 38.85 seconds
 
 == Changed repository ==
 * Since commit r1837
