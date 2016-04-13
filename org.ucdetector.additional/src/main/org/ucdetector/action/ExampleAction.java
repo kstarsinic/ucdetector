@@ -26,8 +26,8 @@ import org.ucdetector.iterator.MakeMethodsStaticIterator;
  * Run Example Action
  */
 public class ExampleAction extends AbstractUCDetectorAction {// NO_UCD
-  private static final AdditionalIterator ITERATORS[] = {//
-  /**/new MakeMethodsStaticIterator(), //
+  private static final AdditionalIterator ITERATORS[] = { //
+      /**/new MakeMethodsStaticIterator(), //
       new CheckNameConventionIterator(), //
       new CommentIterator(), //
       new DetectDoubleClassNameIterator(), //
@@ -73,6 +73,7 @@ public class ExampleAction extends AbstractUCDetectorAction {// NO_UCD
     if (message != null) {
       // show message dialog
       Display.getDefault().asyncExec(new Runnable() {
+        @Override
         public void run() {
           status = new Status(IStatus.INFO, UCDetectorPlugin.ID, IStatus.INFO, message, null);
           MessageDialog.openInformation(UCDetectorPlugin.getShell(), iterator.getJobName(), message);

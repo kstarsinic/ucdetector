@@ -29,7 +29,7 @@ import org.ucdetector.Messages;
 public class SearchResultRoot extends CycleBaseElement {
   private static final SearchResultRoot INSTANCE = new SearchResultRoot();
 
-  private static final List<SearchResult> searchResults = new ArrayList<>();
+  private static final List<SearchResult> searchResults = new ArrayList<SearchResult>();
 
   public static final SearchResultRoot getInstance() {
     return INSTANCE;

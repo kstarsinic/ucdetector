@@ -157,11 +157,11 @@ class ModesPanel {
 
   /** Get built in modes and user specific modes */
   private static String[] getModes() {
-    Set<String> result = new LinkedHashSet<>();
+    Set<String> result = new LinkedHashSet<String>();
     for (Mode mode : Mode.values()) {
       result.add(mode.toStringLocalized());
     }
-    List<String> modesFiles = new ArrayList<>(Arrays.asList(MODES_DIR.list()));
+    List<String> modesFiles = new ArrayList<String>(Arrays.asList(MODES_DIR.list()));
     Collections.sort(modesFiles, String.CASE_INSENSITIVE_ORDER);
     for (String modesFile : modesFiles) {
       if (modesFile.endsWith(ModesWriter.MODES_FILE_TYPE)) {

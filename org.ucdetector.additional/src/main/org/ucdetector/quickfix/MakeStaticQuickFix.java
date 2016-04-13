@@ -44,14 +44,17 @@ public class MakeStaticQuickFix extends AbstractUCDQuickFix {
     return startPosition;
   }
 
+  @Override
   public String getLabel() {
     return "Add keyword 'static'";// Messages.UseFinalQuickFix_label;
   }
 
+  @Override
   public Image getImage() {
     return null;// UCDetectorPlugin.getImage(UCDetectorPlugin.IMAGE_FINAL);
   }
 
+  @Override
   public String getDescription() {
     return null;
   }

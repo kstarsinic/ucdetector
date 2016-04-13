@@ -136,7 +136,7 @@ public final class JavaElementUtil {
    * @throws CoreException when there are problems finding sub packages
    */
   public static List<IPackageFragment> getSubPackages(IPackageFragment packageFragment) throws CoreException {
-    List<IPackageFragment> subPackages = new ArrayList<>();
+    List<IPackageFragment> subPackages = new ArrayList<IPackageFragment>();
     IJavaElement[] allPackages = ((IPackageFragmentRoot) packageFragment.getParent()).getChildren();
     for (IJavaElement javaElement : allPackages) {
       IPackageFragment pakage = (IPackageFragment) javaElement;

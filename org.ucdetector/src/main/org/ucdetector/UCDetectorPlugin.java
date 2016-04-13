@@ -153,7 +153,7 @@ public class UCDetectorPlugin extends AbstractUIPlugin {
   public static Map<String, String> getDeltaPreferences() {
     IEclipsePreferences node = InstanceScope.INSTANCE.getNode(ID);
     Map<String, String> allDeltas = getPreferencesImpl(node);
-    Set<String> keySetClone = new HashSet<>(allDeltas.keySet());
+    Set<String> keySetClone = new HashSet<String>(allDeltas.keySet());
     for (String key : keySetClone) {
       if (key.startsWith(Prefs.INTERNAL)) {
         allDeltas.remove(key);
@@ -169,7 +169,7 @@ public class UCDetectorPlugin extends AbstractUIPlugin {
   }
 
   private static Map<String, String> getPreferencesImpl(IEclipsePreferences ePrefs) {
-    Map<String, String> result = new LinkedHashMap<>();
+    Map<String, String> result = new LinkedHashMap<String, String>();
     try {
       String[] propertyNames = ePrefs.keys();
       Arrays.sort(propertyNames);

@@ -52,7 +52,7 @@ public class ModesWriter {
     text.append(String.format("### Created date: %s%n", UCDInfo.getNow(false)));
     text.append(String.format("### java.util.Properties.load() may fail to load this file%n"));
     text.append(String.format("### -------------------------------------------------------------------------%n"));
-    Map<String, String> groupPrefs = new LinkedHashMap<>();
+    Map<String, String> groupPrefs = new LinkedHashMap<String, String>();
     for (String extendedPreference : extendedPreferences) {
       if (extendedPreference.startsWith(TAB_START)) {
         flushGroupPrefs(groupPrefs, text);
@@ -77,13 +77,18 @@ public class ModesWriter {
       Log.debug("Unhandled preferences :" + allPreferences);
     }
     File modesFile = getModesFile(modeName);
-    try (OutputStreamWriter writer = new OutputStreamWriter(new FileOutputStream(modesFile), UCDetectorPlugin.UTF_8)) {
+    OutputStreamWriter writer = null;
+    try {
+      writer = new OutputStreamWriter(new FileOutputStream(modesFile), UCDetectorPlugin.UTF_8);
       writer.write(fileText);
       Log.debug("Saved mode to: %s", modesFile.getAbsolutePath());
     }
     catch (IOException ex) {
       String message = NLS.bind(Messages.ModesPanel_ModeFileCantSave, modesFile.getAbsolutePath());
       UCDetectorPlugin.logToEclipseLog(message, ex);
+    }
+    finally {
+      UCDetectorPlugin.closeSave(writer);
     }
   }
 

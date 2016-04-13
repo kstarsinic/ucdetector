@@ -189,11 +189,11 @@ import org.ucdetector.report.ReportNameManager;
  */
 public class UCDetectorPreferencePage extends FieldEditorPreferencePage implements IWorkbenchPreferencePage {
   private static final String SEPARATOR = ":"; //$NON-NLS-1$
-  protected final List<FieldEditor> fields = new ArrayList<>();
+  protected final List<FieldEditor> fields = new ArrayList<FieldEditor>();
   /** Hack to enable/disable children of groups (=fields)  */
-  protected final List<Composite> groups = new ArrayList<>();
+  protected final List<Composite> groups = new ArrayList<Composite>();
   /** Contains group names, tab names, preference names */
-  protected final List<String> extendedPreferences = new ArrayList<>();
+  protected final List<String> extendedPreferences = new ArrayList<String>();
   // @formatter:off
   protected static final String GROUP_START = "# "; //$NON-NLS-1$
   protected static final String TAB_START   = "## "; //$NON-NLS-1$

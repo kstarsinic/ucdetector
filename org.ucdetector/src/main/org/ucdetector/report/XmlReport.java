@@ -84,12 +84,12 @@ public class XmlReport implements IUCDetectorReport {
   private static final String HTML_XSLT = "html.xslt";
   private static final String DTD_FILE = "ucdetector.dtd";
   private static final String COPY_RIGHT = //
-  /*<!-- */" ===========================================================================\n"
-      + "     Copyright (c) 2012 Joerg Spieler All rights reserved. This program and the\n"
-      + "     accompanying materials are made available under the terms of the Eclipse\n"
-      + "     Public License v1.0 which accompanies this distribution, and is available at\n"
-      + "     http://www.eclipse.org/legal/epl-v10.html\n"
-      + "     ========================================================================\n";
+      /*<!-- */" ===========================================================================\n"
+          + "     Copyright (c) 2012 Joerg Spieler All rights reserved. This program and the\n"
+          + "     accompanying materials are made available under the terms of the Eclipse\n"
+          + "     Public License v1.0 which accompanies this distribution, and is available at\n"
+          + "     http://www.eclipse.org/legal/epl-v10.html\n"
+          + "     ========================================================================\n";
 
   private Document doc;
 
@@ -102,7 +102,7 @@ public class XmlReport implements IUCDetectorReport {
   private int detectionProblemCount;
   private Throwable initXMLException;
 
-  private final Map<String, Element> aboutNodes = new HashMap<>();
+  private final Map<String, Element> aboutNodes = new HashMap<String, Element>();
   private boolean endReportCalled;
 
   private IJavaElement[] objectsToIterate;
@@ -480,8 +480,13 @@ public class XmlReport implements IUCDetectorReport {
 
   private static void writeTextFile(Document doc, File file, String xslt) throws IOException, TransformerException {
     String text = transformToText(doc, xslt);
-    try (OutputStreamWriter fileWriter = new OutputStreamWriter(new FileOutputStream(file), UCDetectorPlugin.UTF_8)) {
-      fileWriter.write(text);
+    OutputStreamWriter writer = null;
+    try {
+      writer = new OutputStreamWriter(new FileOutputStream(file), UCDetectorPlugin.UTF_8);
+      writer.write(text);
+    }
+    finally {
+      UCDetectorPlugin.closeSave(writer);
     }
     Log.info("Wrote file= " + UCDetectorPlugin.getCanonicalPath(file));
   }
@@ -504,9 +509,14 @@ public class XmlReport implements IUCDetectorReport {
     catch (IllegalArgumentException ignore) {
       Log.warn("Can't change output format: " + ignore);
     }
-    try (OutputStreamWriter writer = new OutputStreamWriter(new FileOutputStream(file), UCDetectorPlugin.UTF_8)) {
+    OutputStreamWriter writer = null;
+    try {
+      writer = new OutputStreamWriter(new FileOutputStream(file), UCDetectorPlugin.UTF_8);
       Result result = new StreamResult(writer);
       xformer.transform(source, result);
+    }
+    finally {
+      UCDetectorPlugin.closeSave(writer);
     }
     Log.info("Wrote file= " + UCDetectorPlugin.getCanonicalPath(file));
   }

@@ -41,7 +41,7 @@ class CycleSearchManager {
    * We search cycles for each project, because there should be no
    * cycles between project A and project B!
    */
-  private final Map<IJavaProject, List<IType>> typesMap = new HashMap<>();
+  private final Map<IJavaProject, List<IType>> typesMap = new HashMap<IJavaProject, List<IType>>();
   private final IJavaElement[] selections;
 
   public CycleSearchManager(IProgressMonitor monitor, List<IType> types, IJavaElement[] selections) {
@@ -52,7 +52,7 @@ class CycleSearchManager {
       IJavaProject javaProject = type.getJavaProject();
       List<IType> typesList = typesMap.get(javaProject);
       if (typesList == null) {
-        typesList = new ArrayList<>();
+        typesList = new ArrayList<IType>();
         typesMap.put(javaProject, typesList);
       }
       typesList.add(type);
@@ -86,7 +86,7 @@ class CycleSearchManager {
   }
 
   private List<TypeAndMatches> searchAllTypes(List<IType> types, int projectNr) throws CoreException {
-    List<TypeAndMatches> result = new ArrayList<>();
+    List<TypeAndMatches> result = new ArrayList<TypeAndMatches>();
     int search = 0;
     for (IType type : types) {
       if (monitor.isCanceled()) {
@@ -115,7 +115,7 @@ class CycleSearchManager {
   }
 
   private String getMonitorMessage(List<IType> types, int projectNr, int search, IType type) {
-    List<Object> bindingList = new ArrayList<>();
+    List<Object> bindingList = new ArrayList<Object>();
     if (typesMap.size() > 1) {
       bindingList.add(Integer.valueOf(projectNr));
       bindingList.add(Integer.valueOf(typesMap.size()));

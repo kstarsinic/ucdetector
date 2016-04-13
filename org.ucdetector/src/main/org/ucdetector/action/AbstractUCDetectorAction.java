@@ -45,7 +45,7 @@ import org.ucdetector.search.UCDProgressMonitor;
  */
 // Don't change visibility to default!
 public abstract class AbstractUCDetectorAction extends ActionDelegate { // NO_UCD
-  private final List<Object> selections = new ArrayList<>();
+  private final List<Object> selections = new ArrayList<Object>();
 
   @Override
   public void runWithEvent(IAction action, Event event) {
@@ -152,7 +152,7 @@ public abstract class AbstractUCDetectorAction extends ActionDelegate { // NO_UC
   /** @return never <code>null</code> */
   // Create javaProject lazy, because selectionChanged() is called frequently
   protected IJavaElement[] getSelections() {
-    List<IJavaElement> result = new ArrayList<>();
+    List<IJavaElement> result = new ArrayList<IJavaElement>();
     for (Object selection : selections) {
       if (selection instanceof IJavaElement) {
         result.add((IJavaElement) selection);

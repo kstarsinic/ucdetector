@@ -38,7 +38,7 @@ public class UCDQuickGenerator implements IMarkerResolutionGenerator2 {
       if (Log.isDebug()) {
         Log.debug("UCDQuickFixer.getResolutions() for: " + markerType); //$NON-NLS-1$
       }
-      List<IMarkerResolution> resolutions = new ArrayList<>();
+      List<IMarkerResolution> resolutions = new ArrayList<IMarkerResolution>();
       if (MarkerFactory.UCD_MARKER_TYPE_UNUSED.equals(markerType)) {
         boolean isPrimaryType = (ElementType.valueOfSave(javaTypeString) == ElementType.PRIMARY_TYPE);
         resolutions.add(isPrimaryType ? new DeleteFileQuickFix(marker) : new DeleteQuickFix(marker));

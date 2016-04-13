@@ -41,7 +41,7 @@ public class ModesReader {
    * @return Map containing key value pairs loaded from modeFileName
    */
   public static Map<String, String> loadModeFile(boolean isFile, String modeFileName) {
-    Map<String, String> result = new HashMap<>();
+    Map<String, String> result = new HashMap<String, String>();
     InputStream inStream = null;
     try {
       inStream = getInputStream(isFile, modeFileName);

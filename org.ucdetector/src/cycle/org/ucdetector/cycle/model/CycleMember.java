@@ -29,7 +29,7 @@ import org.ucdetector.util.JavaElementUtil;
  */
 public class CycleMember extends CycleJavaElement {
   private final IJavaElement match;
-  private final List<CycleRegion> cycleRegions = new ArrayList<>();
+  private final List<CycleRegion> cycleRegions = new ArrayList<CycleRegion>();
   private CycleType parent;
 
   public CycleMember(IJavaElement match) {

@@ -15,8 +15,8 @@ import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.jdt.core.IJavaElement;
 import org.eclipse.jdt.core.IMember;
-import org.ucdetector.UCDInfo;
 import org.ucdetector.Log;
+import org.ucdetector.UCDInfo;
 import org.ucdetector.UCDetectorPlugin;
 import org.ucdetector.preferences.Prefs;
 import org.ucdetector.util.JavaElementUtil;
@@ -39,6 +39,7 @@ public class AdditionalReport implements IUCDetectorReport {
   private IJavaElement[] objectsToIterate;
   private int markerCount = 0;
 
+  @Override
   public void startReport(IJavaElement[] objectsToIterateIn, long startTime) throws CoreException {
     this.objectsToIterate = objectsToIterateIn;
     reset();
@@ -68,6 +69,7 @@ public class AdditionalReport implements IUCDetectorReport {
     report.append(NEW_LINE);
   }
 
+  @Override
   public boolean reportMarker(ReportParam reportParam) throws CoreException {
     markerCount++;
     IMember javaElement = reportParam.getJavaElement();
@@ -84,6 +86,7 @@ public class AdditionalReport implements IUCDetectorReport {
     return true;
   }
 
+  @Override
   public void endReport() throws CoreException {
     writeReportFile();
   }
@@ -109,10 +112,12 @@ public class AdditionalReport implements IUCDetectorReport {
     }
   }
 
+  @Override
   public void setExtension(ReportExtension reportExtension) {
     this.extension = reportExtension;
   }
 
+  @Override
   public void reportDetectionProblem(IStatus status) {
     // 
   }

@@ -58,6 +58,7 @@ public class MakeMethodsStaticIterator extends AdditionalIterator {
   @Override
   public void handleEndGlobal(IJavaElement[] objects) throws CoreException {
     Display.getDefault().syncExec(new Runnable() {
+      @Override
       public void run() {
         String message = "Do your really want to fix " + markersToFix.size() + " static warnings?";
         doContinue = MessageDialog.openQuestion(UCDetectorPlugin.getShell(), "Multi QuickFix", message);
@@ -68,6 +69,7 @@ public class MakeMethodsStaticIterator extends AdditionalIterator {
       return;
     }
     Display.getDefault().asyncExec(new Runnable() {
+      @Override
       public void run() {
         doQuickFix();
       }

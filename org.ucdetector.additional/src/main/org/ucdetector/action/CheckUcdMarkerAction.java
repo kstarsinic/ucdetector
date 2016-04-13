@@ -27,6 +27,7 @@ public class CheckUcdMarkerAction extends AbstractUCDetectorAction {// NO_UCD
     final IStatus status = new Status(IStatus.INFO, UCDetectorPlugin.ID, IStatus.INFO, iterator.toString(), null);
     //    UCDetectorPlugin.log(status);
     Display.getDefault().asyncExec(new Runnable() {
+      @Override
       public void run() {
         Shell shell = UCDetectorPlugin.getShell();
         String title = "Find bad markers";

@@ -41,7 +41,7 @@ class TypeAndMatches {
   private final LineManger lineManger = new LineManger();
 
   private final Map<IType, List<CycleMember>> referencesMap //
-  = new HashMap<>();
+  = new HashMap<IType, List<CycleMember>>();
 
   TypeAndMatches(IType root) {
     if (root == null) {
@@ -80,7 +80,7 @@ class TypeAndMatches {
   private List<CycleMember> getOrCreateCycleElementList(IType matchtedType) {
     List<CycleMember> cycleElementList = referencesMap.get(matchtedType);
     if (cycleElementList == null) {
-      cycleElementList = new ArrayList<>();
+      cycleElementList = new ArrayList<CycleMember>();
       this.referencesMap.put(matchtedType, cycleElementList);
     }
     return cycleElementList;

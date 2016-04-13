@@ -78,9 +78,9 @@ public final class ReportExtension {
   private static void loadExtensions() {
     if (!isInitialized) {
       isInitialized = true;
-      xsltExtensions = new ArrayList<>();
-      classExtensions = new ArrayList<>();
-      allExtensions = new ArrayList<>();
+      xsltExtensions = new ArrayList<ReportExtension>();
+      classExtensions = new ArrayList<ReportExtension>();
+      allExtensions = new ArrayList<ReportExtension>();
       IExtensionRegistry reg = Platform.getExtensionRegistry();
       IConfigurationElement[] reports = reg.getConfigurationElementsFor(EXTENSION_POINT_ID);
       for (IConfigurationElement report : reports) {

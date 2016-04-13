@@ -237,7 +237,7 @@ public abstract class AbstractUCDQuickFix extends WorkbenchMarkerResolution {
 
   @Override
   public IMarker[] findOtherMarkers(IMarker[] markers) {
-    final List<IMarker> result = new ArrayList<>();
+    final List<IMarker> result = new ArrayList<IMarker>();
     for (IMarker markerToCheck : markers) {
       if (isOtherMarker(markerToCheck)) {
         result.add(markerToCheck);

@@ -38,7 +38,7 @@ public class TextReport implements IUCDetectorReport {
   private ReportExtension extension;
   private IJavaElement[] objectsToIterate;
   private int markerCount = 0;
-  private final List<IStatus> detectionProblems = new ArrayList<>();
+  private final List<IStatus> detectionProblems = new ArrayList<IStatus>();
 
   @Override
   public void startReport(IJavaElement[] objectsToIterateIn, long startTime) throws CoreException {
@@ -111,12 +111,17 @@ public class TextReport implements IUCDetectorReport {
     String reportName = ReportNameManager.getReportFileName(extension.getResultFile(), objectsToIterate);
     String reportDir = ReportNameManager.getReportDir(true);
     File resultFile = new File(reportDir, reportName);
-    try (OutputStreamWriter writer = new OutputStreamWriter(new FileOutputStream(resultFile), UCDetectorPlugin.UTF_8);) {
+    OutputStreamWriter writer = null;
+    try {
+      writer = new OutputStreamWriter(new FileOutputStream(resultFile), UCDetectorPlugin.UTF_8);
       writer.append(report.toString());
       Log.info("Created file: " + resultFile);
     }
     catch (IOException ex) {
       UCDetectorPlugin.logToEclipseLog("Can't write report", ex);
+    }
+    finally {
+      UCDetectorPlugin.closeSave(writer);
     }
   }
 

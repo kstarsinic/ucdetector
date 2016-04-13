@@ -22,7 +22,7 @@ import org.ucdetector.preferences.Prefs;
  * search for class cycles
  */
 class CycleIterator extends AbstractUCDetectorIterator {
-  private final List<IType> types = new ArrayList<>();
+  private final List<IType> types = new ArrayList<IType>();
 
   @Override
   protected boolean handleType(IType type) throws CoreException {

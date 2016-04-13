@@ -31,7 +31,7 @@ import org.ucdetector.util.StopWatch;
  * @since 2008-02-29
  * */
 public class UCDetectorIterator extends AbstractUCDetectorIterator {
-  private final Set<TypeContainer> typeContainers = new LinkedHashSet<>();
+  private final Set<TypeContainer> typeContainers = new LinkedHashSet<TypeContainer>();
   private TypeContainer iteratedTypeContainer = null;
 
   /**
