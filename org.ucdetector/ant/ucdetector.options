@@ -1,8 +1,8 @@
 ### -------------------------------------------------------------------------
-###               UCDetector preference file for mode: 'CopyOf_Default'
+###               UCDetector preference file for mode: 'Default'
 ### -------------------------------------------------------------------------
-### Created by  : UCDetector 1.10.0
-### Created date: 2012-03-27 20:00:00
+### Created by  : UCDetector 2.0.0
+### Created date: 2016-04-14 01:59:43
 ### java.util.Properties.load() may fail to load this file
 ### -------------------------------------------------------------------------
 ### :mode=properties:
@@ -12,24 +12,24 @@
 ## --------------------------------------------------------------------------
 
 # Group: Resources
-org.ucdetector.sourceFolderFilter = *test*,generated,
+org.ucdetector.sourceFolderFilter = *test*,*gen*,
 org.ucdetector.packageFilter      = *test*,
 
 # Group: Classes
-org.ucdetector.classFilter               = Test*,*Test
+org.ucdetector.classFilter               = Test*,*Test,
 org.ucdetector.superClassFilter          = 
 org.ucdetector.containString             = 
 org.ucdetector.classWithMainMethodFilter = false
 org.ucdetector.ignoreDerived             = true
 
 # Group: Marked code
-org.ucdetector.annotationsFilter = 
+org.ucdetector.annotationsFilter = Generated,Inject*,
 org.ucdetector.ignoreDeprecated  = false
 org.ucdetector.ignore.NO_UCD     = true
 
 # Group: Others
-org.ucdetector.fieldFilter      = test*,*Test
-org.ucdetector.methodFilter     = test*,*Test
+org.ucdetector.fieldFilter      = test*,*Test,
+org.ucdetector.methodFilter     = test*,*Test,
 org.ucdetector.beanMethodFilter = true
 
 ## --------------------------------------------------------------------------
@@ -76,11 +76,12 @@ org.ucdetector.visibility.private.constants      = WARNING
 ## --------------------------------------------------------------------------
 
 # Group: Reports
-org.ucdetector.report.create.xml  = false
-org.ucdetector.report.create.text = true
-org.ucdetector.report.create.html = true
-org.ucdetector.report.file             = UCDetectorReport_${number}
-org.ucdetector.report.dir              = 
+org.ucdetector.report.create.xml        = false
+org.ucdetector.report.create.text       = true
+org.ucdetector.report.create.additional = true
+org.ucdetector.report.create.html       = true
+org.ucdetector.report.file              = UCDetectorReport_${number}
+org.ucdetector.report.dir               = 
 
 ## --------------------------------------------------------------------------
 ## Tab: Other
@@ -90,7 +91,7 @@ org.ucdetector.report.dir              =
 org.ucdetector.log.level     = INFO
 org.ucdetector.log.toEclipse = false
 
-
+# Group: Files and directories:
 
 
 
