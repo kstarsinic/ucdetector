@@ -10,11 +10,11 @@ import java.io.File;
 
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IProgressMonitor;
-import org.eclipse.pde.core.target.ITargetDefinition;
-import org.eclipse.pde.core.target.ITargetHandle;
-import org.eclipse.pde.core.target.ITargetPlatformService;
-import org.eclipse.pde.core.target.LoadTargetDefinitionJob;
 import org.eclipse.pde.internal.core.PDECore;
+import org.eclipse.pde.internal.core.target.provisional.ITargetDefinition;
+import org.eclipse.pde.internal.core.target.provisional.ITargetHandle;
+import org.eclipse.pde.internal.core.target.provisional.ITargetPlatformService;
+import org.eclipse.pde.internal.core.target.provisional.LoadTargetDefinitionJob;
 import org.ucdetector.Log;
 
 //==  before 3.5 ==

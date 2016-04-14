@@ -2,7 +2,7 @@ Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: %pluginName
 Bundle-SymbolicName: org.ucdetector;singleton:=true
-Bundle-Version: 1.10.6
+Bundle-Version: 2.0.0
 Bundle-Activator: org.ucdetector.UCDetectorPlugin
 Bundle-Vendor: %providerName
 Bundle-Localization: plugin
@@ -24,6 +24,7 @@ Export-Package: org.ucdetector,
  org.ucdetector.action,
  org.ucdetector.cycle,
  org.ucdetector.cycle.model,
+ org.ucdetector.headless,
  org.ucdetector.iterator,
  org.ucdetector.preferences,
  org.ucdetector.preferences.modes,
