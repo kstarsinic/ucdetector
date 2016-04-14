@@ -412,7 +412,10 @@ public class SearchManager {
         return found;
       }
     }
-    created = markerFactory.createReferenceMarker(member, markerMessage, line, found);
+    // 2016-04-15: Don't create "0 references marker" for overridden methods
+    if (!isOverriddenMethod) {
+      created = markerFactory.createReferenceMarker(member, markerMessage, line, found);
+    }
     if (created) {
       markerCreated++;
     }
