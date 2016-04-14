@@ -29,6 +29,11 @@ import org.eclipse.core.runtime.Status;
 import org.eclipse.core.runtime.preferences.DefaultScope;
 import org.eclipse.core.runtime.preferences.IEclipsePreferences;
 import org.eclipse.core.runtime.preferences.InstanceScope;
+import org.eclipse.jdt.core.IJavaElement;
+import org.eclipse.jdt.core.IJavaProject;
+import org.eclipse.jdt.core.JavaCore;
+import org.eclipse.jdt.core.ToolFactory;
+import org.eclipse.jdt.core.compiler.IScanner;
 import org.eclipse.jdt.core.dom.AST;
 import org.eclipse.jdt.core.dom.ASTParser;
 import org.eclipse.jdt.internal.ui.JavaPluginImages;
@@ -361,6 +366,18 @@ public class UCDetectorPlugin extends AbstractUIPlugin {
       }
     }
     throw new RuntimeException("Cant find ASTParser for levels: " + Arrays.toString(AST_PARSER_LEVELS));
+  }
+
+  /**
+   * Fix for: #70 Error in numeric literal with underscores. See sourceLevel
+   * @param javaElement JavaElement
+   * @return Scanner
+   */
+  public static IScanner createScanner(IJavaElement javaElement) {
+    IJavaProject project = javaElement.getJavaProject();
+    String sourceLevel = project == null ? null : project.getOption(JavaCore.COMPILER_SOURCE, true);
+    String complianceLevel = project == null ? null : project.getOption(JavaCore.COMPILER_COMPLIANCE, true);
+    return ToolFactory.createScanner(true, false, true, sourceLevel, complianceLevel);
   }
 
   ///**
