@@ -408,10 +408,11 @@ public final class JavaElementUtil {
    */
   public static boolean isUsedBySpecialEnumMethods(IType enumType) throws CoreException {
     if (enumType.isEnum()) {
-      String[] stringPatterns = new String[] {
-          // We need '.' as class name separator for search!
-          enumType.getFullyQualifiedName('.') + ".values()", //
-          enumType.getFullyQualifiedName('.') + ".valueOf(java.lang.String)"//
+      // We need '.' as class name separator for search!
+      String typeName = enumType.getFullyQualifiedName('.');
+      String[] stringPatterns = new String[] { //
+          typeName + ".values()", //
+          typeName + ".valueOf(String)"// 2016-04-15: String instead of java.lang.String fixed broken search
       };
       for (String stringPattern : stringPatterns) {
         SearchPattern pattern = SearchPattern.createPattern(stringPattern, IJavaSearchConstants.METHOD,
