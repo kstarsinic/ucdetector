@@ -23,7 +23,6 @@ import org.eclipse.jdt.core.IMember;
 import org.eclipse.jdt.core.IOpenable;
 import org.eclipse.jdt.core.ISourceRange;
 import org.eclipse.jdt.core.IType;
-import org.eclipse.jdt.core.ToolFactory;
 import org.eclipse.jdt.core.compiler.IScanner;
 import org.eclipse.jdt.core.compiler.ITerminalSymbols;
 import org.eclipse.jdt.core.compiler.InvalidInputException;
@@ -328,7 +327,7 @@ public class LineManger {
         return scannerMap.get(compilationUnit).scanner;
       }
     }
-    IScanner scanner = ToolFactory.createScanner(true, false, false, true);
+    IScanner scanner = UCDetectorPlugin.createScanner(javaElement);
     // old: char[] contents = org.eclipse.jdt.internal.core.CompilationUnit.getContents();
     char[] contents = compilationUnit.getBuffer().getCharacters();
     contentsMap.put(compilationUnit, contents);
