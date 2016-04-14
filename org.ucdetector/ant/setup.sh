@@ -22,7 +22,7 @@
 # * Runs UCDetectors headless checking UCDetectors source code
 
 DOWNLOADS_DIR=downloads
-UCDETECTOR_VERSION=1.10.0
+UCDETECTOR_VERSION=2.0.0
 UCDETECTOR=org.ucdetector_$UCDETECTOR_VERSION.jar
 UCDETECTOR_SOURCE=org.ucdetector.source_$UCDETECTOR_VERSION.zip
 

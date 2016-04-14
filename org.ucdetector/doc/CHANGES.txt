@@ -1,5 +1,5 @@
 // -----------------------------------------------------------------------------
-UCDetector 1.11.0 from 2012-xx-xx - eclipse 3.4 - 3.8:
+UCDetector 2.0.0 from 2016-xx-xx - eclipse >=3.4:
 
 New features:
  - Added dtd for xml reports
@@ -7,16 +7,19 @@ New features:
  - Improved tooltips for UCDetector preferences
  - Improved messages, labels
  - Added negative ignore filter
+
  
 Bugfixes:
- - 
- - 
+ - #70 Error in numeric literal with underscores
+ 
+Changes:
+ - UCDetector needs java >= 1.6
  
 Todo:
- - Compatible with JAVA 6!!!
  - [ 3396900 ] Abstract classes' constructors can always be protected
  - [ 3400167 ] Removed warnings: Restrict method/field visibility to class visibility
  - Unused marker for code marked with javadoc @deprecated
+ - #48 Keyboard binding doesn't work, and can't be changed
 
 // -----------------------------------------------------------------------------
 UCDetector 1.10.0 from 2012-04-05 - eclipse 3.4 - 3.8:
