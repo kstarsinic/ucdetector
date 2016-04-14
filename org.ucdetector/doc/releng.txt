@@ -26,12 +26,12 @@ Steps to create new UCDetector version.
 === Create ===
 * use eclipse 3.4 and java 1.6:
 * Create ucd.jar, source.jar, additional: /org.ucdetector/build/build-ucd.launch -> run as "build-ucd"
-** check ucdetector.jar (VERSION.TXT file must contain eclipse 3.5 and java 1.5)
+** check ucdetector.jar (VERSION.TXT file must contain eclipse 3.5 and java 1.6)
 ** check source.jar (missing files? additional files?)
 
 
 === Smoke test ===
-* deploy org.ucdetector.jar and org.ucdetector.additional.jar to a CLEAN eclipse 3.5, java5
+* deploy org.ucdetector.jar and org.ucdetector.additional.jar to a CLEAN eclipse 3.5, java6
 ** Run UCDetector detecting code in org.ucdetector.example/examples with settings: release_settings.properties
 * deploy org.ucdetector.jar and org.ucdetector.additional.jar to "Eclipse IDE for Java Developers"
 	   

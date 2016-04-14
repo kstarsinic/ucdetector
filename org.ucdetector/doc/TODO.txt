@@ -20,7 +20,7 @@
 
 == Activate Headless again ==
 * Deactivated Headless plugin to preserve compatibility to eclipse 3.4
-* Revert changes form r1916: .classpath, MANIFEST.MF, plugin.xml
+* Revert changes form r1916: .classpath, MANIFEST.MF, plugin.xml, build.properties
 * Switch to Eclipse 3.8
 
 
