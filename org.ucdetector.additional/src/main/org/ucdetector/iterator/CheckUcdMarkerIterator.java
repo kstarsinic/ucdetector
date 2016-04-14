@@ -147,9 +147,9 @@ public class CheckUcdMarkerIterator extends AbstractUCDetectorIterator {
   /**
    * Parse the java code
    */
-  private static Set<LineNrComments> getLineNumbersMarkersExpected(ICompilationUnit unit) throws CoreException,
-      InvalidInputException {
-    IScanner scanner = ToolFactory.createScanner(true, false, false, true);
+  private static Set<LineNrComments> getLineNumbersMarkersExpected(ICompilationUnit unit)
+      throws CoreException, InvalidInputException {
+    IScanner scanner = UCDetectorPlugin.createScanner(unit);
     scanner.setSource(unit.getBuffer().getCharacters());
     Set<LineNrComments> ignoreLines = new HashSet<LineNrComments>();
     int nextToken;

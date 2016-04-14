@@ -15,7 +15,6 @@ import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.jdt.core.ICompilationUnit;
 import org.eclipse.jdt.core.IJavaElement;
-import org.eclipse.jdt.core.ToolFactory;
 import org.eclipse.jdt.core.compiler.IScanner;
 import org.eclipse.jdt.core.compiler.ITerminalSymbols;
 import org.eclipse.jdt.core.compiler.InvalidInputException;
@@ -38,7 +37,7 @@ public class CommentIterator extends AdditionalIterator {
 
   @Override
   protected void handleCompilationUnit(ICompilationUnit unit) throws CoreException {
-    IScanner scanner = ToolFactory.createScanner(true, false, false, true);
+    IScanner scanner = UCDetectorPlugin.createScanner(unit);
     // old: char[] contents = org.eclipse.jdt.internal.core.CompilationUnit.getContents();
     char[] contents = unit.getBuffer().getCharacters();
     scanner.setSource(contents);
