@@ -1,5 +1,5 @@
 // -----------------------------------------------------------------------------
-UCDetector 2.0.0 from 2016-xx-xx - eclipse >=3.5:
+UCDetector 2.0.0 from 2016-04-15 - eclipse >=3.5:
 
 New features:
  - Added dtd for xml reports
