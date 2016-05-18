@@ -25,6 +25,9 @@ Steps to create new UCDetector version.
 
 === Create ===
 * use eclipse 3.5 and java 1.6:
+# $ECLIPSE_HOME/eclipse.ini 
+-vm
+/opt/jdk1.6.0_23/bin/java
 * Create ucd.jar, source.jar, additional: /org.ucdetector/build/UCDetector-build.launch -> run as "UCDetector-build"
 ** check ucdetector.jar (VERSION.TXT file must contain eclipse 3.5 and java 1.6)
 ** check source.jar (missing files? additional files?)
