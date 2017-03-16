@@ -100,5 +100,5 @@ Steps to create new UCDetector version.
 
 
 === Post
-* add to freshmeat http://freshmeat.net/projects/ucdetector/releases/new
-* post at http://marketplace.eclipse.org/content/unnecessary-code-detector/edit
+* Edit https://marketplace.eclipse.org/content/unnecessary-code-detector
+* [add to freshmeat http://freshmeat.net/projects/ucdetector/releases/new]
