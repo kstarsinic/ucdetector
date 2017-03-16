@@ -9,6 +9,7 @@
     <echo>ant.home = ${ant.home}</echo>
     <property name="ucd.props" location="${user.home}/.ucdetector.properties" />
     <property file="${user.home}/.ucdetector.properties" />
+    <!-- spj:PW@web.sourceforge.net:/home/groups/u/uc/ucdetector/htdocs/update -->
     <property name="todir" value="${sf.userid}:${sf.password}@${sf.server}:${sf.remotedir}" />
     <echo>Loaded ucdetector.properties from ${ucd.props}</echo>
     <echo>Sending udpate site to: ${todir}...</echo>
@@ -20,7 +21,6 @@
       <fileset dir="${basedir}">
         <include name="features/*" />
         <include name="plugins/*" />
-        <include name="web/*" />
         <include name="web/*" />
         <include name="artifacts.jar" />
         <include name="content.jar" />

@@ -1,8 +1,8 @@
-== UCDetector release engineering == 
+== UCDetector release engineering
 Steps to create new UCDetector version.
 
 
-=== Clean up code ===
+=== Clean up code
 * run PDE tools on MANIFEST.MF
 * run source ... popup menus on UCDetector project
 * check TODO's in code
@@ -15,7 +15,7 @@ Steps to create new UCDetector version.
 * Update CHANGES.txt from bug/feature list from sourceforge
 
 
-=== HELP ===
+=== HELP
 * check screenshots
 * add new features, bug fixes to help
 * update org.ucdetector.website\xml\releases.xml from
@@ -23,7 +23,7 @@ Steps to create new UCDetector version.
 * check help
 
 
-=== Create ===
+=== Create
 * use eclipse 3.5 and java 1.6:
 # $ECLIPSE_HOME/eclipse.ini 
 -vm
@@ -33,7 +33,7 @@ Steps to create new UCDetector version.
 ** check source.jar (missing files? additional files?)
 
 
-=== Smoke test ===
+=== Smoke test
 * deploy org.ucdetector.jar and org.ucdetector.additional.jar to a CLEAN eclipse 3.5, java6
 ** Run UCDetector detecting code in org.ucdetector.example/examples with settings: release_settings.properties
 * deploy org.ucdetector.jar and org.ucdetector.additional.jar to "Eclipse IDE for Java Developers"
@@ -54,45 +54,51 @@ Steps to create new UCDetector version.
 ** [Commit html/xml report to: /org.ucdetector.releases/reports]
 
 
-=== Run headless ===
+=== [Run headless]
 * Put jar in        : ~/ucdetector/ucdetector-headless/eclipse/dropins
 * Unzip ant files to: ~/ucdetector/ucdetector-headless/eclipse/ant
 * Run               : ~/ucdetector/ucdetector-headless/ant> ant
 
 
-=== Sourceforge ===
+=== Sourceforge
 * Firefox
 * https://sourceforge.net/project/admin/?group_id=219599
-* Firefox! Files / Add folder / Add file
+* Firefox! Files / Add folder "1.2.3" / Add file
 * Upload
 ** org.ucdetector_x.y.z.jar         - Default Download For: Select all
 ** org.ucdetector.source_x.y.z.zip 
 ** README.TXT                       - Only text of last version!
-* Submit news "UCDetector 1.x.0 released": https://sourceforge.net/news/submit.php?group_id=219599
-  Details. See changes: http://netcologne.dl.sourceforge.net/project/ucdetector/ucdetector/1.x.0/CHANGES.txt
 
 
 === update site (http://ucdetector.sourceforge.net/update):
-* /org.ucdetector.update_site/site.xml click: synchronize, build all
-* Delete old /org.ucdetector.update_site/features and /org.ucdetector.update_site/plugins
+* Update Version number
+* /org.ucdetector.update_site/site.xml
+** click: synchronize, build all
+* Delete old /org.ucdetector.update_site/features
+* Delete old /org.ucdetector.update_site/plugins
 * Copy "original" plugin from /org.ucdetector/build/output/plugins to /org.ucdetector.update_site/plugins
-* /org.ucdetector.update_site/build.xml:send -d  (when there are problems in eclipse, use command line)
+* ant send -d
+** when there are problems in eclipse, use command line
 * check if update site works: http://ucdetector.sourceforge.net/update
-* Add artifacts to: org.ucdetector.releases: plugins, features, source
+
+=== Add artifacts to: org.ucdetector.releases
+* plugins
+* features
+* source
 
 
-=== Homepage ===
+=== Homepage
 * update homepage: run /org.ucdetector.website/build.xml:homepage -d
 * check homepage
 
 
-=== SVN ===
+=== SVN
 * see: ~/info/ucdetector.txt
 * SVN commit
 * SVN tag
 * SVN branch
 
 
-=== Post ===
+=== Post
 * add to freshmeat http://freshmeat.net/projects/ucdetector/releases/new
 * post at http://marketplace.eclipse.org/content/unnecessary-code-detector/edit
