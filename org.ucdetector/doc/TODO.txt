@@ -1,4 +1,6 @@
 == TODO ==
+* Action -> Command ? https://wiki.eclipse.org/FAQ_What_is_the_difference_between_a_command_and_an_action
+
 * Deprecated warnings in plugin.xml: 
   http://www.vogella.com/tutorials/EclipseCommands/article.html
   http://help.eclipse.org/indigo/index.jsp?topic=%2Forg.eclipse.platform.doc.isv%2Fguide%2Fworkbench_cmd_menus.htm
