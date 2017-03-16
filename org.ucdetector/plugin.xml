@@ -50,7 +50,7 @@
         id="org.ucdetector.CountAction"
         label="%CountAction.label"
         tooltip="%CountAction.tooltip"
-        icon="platform:/plugin/org.eclipse.ui/icons/full/obj16/info_tsk.gif"
+        icon="icons/info_tsk.gif"
         menubarPath="ucdetectorGroup/ucdetector"/>
     
     <!-- CLEAN MARKERS ============================ -->
@@ -59,7 +59,7 @@
         id="org.ucdetector.CleanMarkersAction"
         label="%CleanMarkersAction.label"
         tooltip="%CleanMarkersAction.tooltip"
-        icon="platform:/plugin/org.eclipse.ui/icons/full/obj16/delete_obj.gif"
+        icon="icons/delete_obj.gif"
         menubarPath="ucdetectorGroup/ucdetector"/>
 
     <!-- DETECT UC ============================ -->
@@ -103,7 +103,7 @@
         id="org.ucdetector.CountActionWorkingSet"
         label="%CountAction.label"
         tooltip="%CountAction.tooltip"
-        icon="platform:/plugin/org.eclipse.ui/icons/full/obj16/info_tsk.gif"
+        icon="icons/info_tsk.gif"
         menubarPath="ucdetectorGroup/ucdetector"/>
     
     <!-- CLEAN MARKERS ============================ -->
@@ -112,7 +112,7 @@
         id="org.ucdetector.CleanMarkersActionWorkingSet"
         label="%CleanMarkersAction.label"
         tooltip="%CleanMarkersAction.tooltip"
-        icon="platform:/plugin/org.eclipse.ui/icons/full/obj16/delete_obj.gif"
+        icon="icons/delete_obj.gif"
         menubarPath="ucdetectorGroup/ucdetector"/>
 
     <!-- DETECT UC ============================ -->

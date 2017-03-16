@@ -11,6 +11,8 @@ New features:
  
 Bugfixes:
  - #70 Error in numeric literal with underscores
+ - #79 The image could not be loaded: info_tsk.gif, delete_obj.gif
+ 
  
 Changes:
  - UCDetector needs java >= 1.6
