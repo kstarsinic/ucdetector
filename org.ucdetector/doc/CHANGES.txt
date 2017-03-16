@@ -1,4 +1,4 @@
-UCDetector 2.1.0 from XXX - eclipse >=3.8 >=4.2:
+UCDetector 2.1.0 from XXX - eclipse >=4.2 (3.8):
 
 New features:
  

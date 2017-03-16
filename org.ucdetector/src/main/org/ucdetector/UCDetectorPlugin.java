@@ -156,8 +156,8 @@ public class UCDetectorPlugin extends AbstractUIPlugin {
 
   /** @return All preferences which are different from default preferences, without internal preferences  */
   public static Map<String, String> getDeltaPreferences() {
-    // Eclipse 3.7: InstanceScope.INSTANCE.getNode(ID);
-    IEclipsePreferences node = new InstanceScope().getNode(ID);
+    //IEclipsePreferences node = new InstanceScope().getNode(ID);
+    IEclipsePreferences node = InstanceScope.INSTANCE.getNode(ID);
     Map<String, String> allDeltas = getPreferencesImpl(node);
     Set<String> keySetClone = new HashSet<String>(allDeltas.keySet());
     for (String key : keySetClone) {
@@ -170,8 +170,8 @@ public class UCDetectorPlugin extends AbstractUIPlugin {
 
   /** @return All available preferences */
   public static Map<String, String> getAllPreferences() {
-    // Eclipse 3.7: DefaultScope.INSTANCE.getNode(ID);
-    IEclipsePreferences node = new DefaultScope().getNode(ID);
+    // IEclipsePreferences node = new DefaultScope().getNode(ID);
+    IEclipsePreferences node = DefaultScope.INSTANCE.getNode(ID);
     return getPreferencesImpl(node);
   }
 
@@ -349,8 +349,8 @@ public class UCDetectorPlugin extends AbstractUIPlugin {
   /** Try newest Parser first. */
   private static final int[] AST_PARSER_LEVELS = { //
       8, // AST.JLS8
-      4, // AST.JLS4, fixes: #70 Error in numeric literal with underscores:  http://sourceforge.net/p/ucdetector/bugs/70/
-      AST.JLS3, //
+      AST.JLS4, // AST.JLS4, fixes: #70 Error in numeric literal with underscores:  http://sourceforge.net/p/ucdetector/bugs/70/
+      //AST.JLS3, //
   };
 
   //

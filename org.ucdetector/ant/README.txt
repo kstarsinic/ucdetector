@@ -4,10 +4,9 @@ Build manager may need to run UCDetector without starting the Eclipse IDE
 
 
 == Requirements ==
-* java            >= 5.0
+* java            >= 6.0
 * Eclipse package: CLASSIC or 'Eclipse for Committers'
-* Eclipse Version: [3.5, 3.7]  for technical reason an old version is required. 
-                               change TargetPlatformLoader.java and rebuild to use a newer version
+* Eclipse Version: >= 4.2
 * org.ucdetector_x.y.z.jar
 * Optional: ant (http://ant.apache.org)
 
