@@ -51,7 +51,7 @@ Steps to create new UCDetector version.
 * check UCDMarker: /org.ucdetector.example/example
 ** check html report
 ** Add version number to html report: <title> tag: version 1.0.0
-** Commit html/xml report to: /org.ucdetector.releases/reports
+** [Commit html/xml report to: /org.ucdetector.releases/reports]
 
 
 === Run headless ===
