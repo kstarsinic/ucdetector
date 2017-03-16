@@ -16,9 +16,12 @@ import java.util.Set;
 
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IProgressMonitor;
+import org.eclipse.jdt.core.Flags;
+import org.eclipse.jdt.core.IImportDeclaration;
 import org.eclipse.jdt.core.IJavaElement;
 import org.eclipse.jdt.core.IJavaProject;
 import org.eclipse.jdt.core.IType;
+import org.eclipse.jdt.core.JavaModelException;
 import org.eclipse.jdt.core.search.IJavaSearchConstants;
 import org.eclipse.jdt.core.search.SearchMatch;
 import org.eclipse.jdt.core.search.SearchPattern;
@@ -125,7 +128,7 @@ class CycleSearchManager {
     bindingList.add(type.getElementName());
     Object[] bindings = bindingList.toArray();
     String message = typesMap.size() > 1 ? //
-    NLS.bind(Messages.CycleSearchManager_MonitorProject, bindings)
+        NLS.bind(Messages.CycleSearchManager_MonitorProject, bindings)
         : NLS.bind(Messages.CycleSearchManager_Monitor, bindings);
     if (Log.isDebug()) {
       Log.debug(message);
@@ -149,6 +152,22 @@ class CycleSearchManager {
       if (javaElement == null) {
         return;
       }
+
+      // Bugfix #49: Exclude in cycles javadoc references -----------------------------------------
+      // Copy and Paste from SearchManager.UCDSearchRequestor.ignoreMatch()
+      if (javaElement instanceof IImportDeclaration) {
+        IImportDeclaration importDecl = (IImportDeclaration) javaElement;
+        try {
+          if (!Flags.isStatic(importDecl.getFlags())) {
+            return;
+          }
+        }
+        catch (JavaModelException ex) {
+          Log.error("Can't get flags of: " + importDecl.getElementName(), ex); //$NON-NLS-1$
+          return;
+        }
+      }
+      // ------------------------------------------------------------------------------------------
       this.typeAndMatches.addMatch(match);
     }
   }

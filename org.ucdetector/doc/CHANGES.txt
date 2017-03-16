@@ -1,17 +1,18 @@
 // -----------------------------------------------------------------------------
-UCDetector 2.0.0 from 2016-04-15 - eclipse >=3.5:
+UCDetector 2.0.0 from 2017-02-16 - eclipse >=3.5:
 
 New features:
- - Added dtd for xml reports
- - Better debug log output for ignored elements
  - Improved tooltips for UCDetector preferences
  - Improved messages, labels
  - Added negative ignore filter
+ - Added dtd for xml reports
+ - Better debug log output for ignored elements
 
  
 Bugfixes:
  - #70 Error in numeric literal with underscores
  - #79 The image could not be loaded: info_tsk.gif, delete_obj.gif
+ - #49 Exclude in cycles javadoc references 
  
  
 Changes:
