@@ -68,6 +68,7 @@ Steps to create new UCDetector version.
 ** org.ucdetector_x.y.z.jar         - Default Download For: Select all
 ** org.ucdetector.source_x.y.z.zip 
 ** README.TXT                       - Only text of last version!
+* Make last jar default download: Files -> ... -> org.ucdetector_x.y.z.jar -> i icon -> Select All -> Save
 
 
 === update site (http://ucdetector.sourceforge.net/update):
