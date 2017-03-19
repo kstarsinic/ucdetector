@@ -90,7 +90,7 @@ Steps to create new UCDetector version.
 
 === Homepage
 * update homepage: run /org.ucdetector.website/build.xml:homepage -d
-* check homepage
+* check homepage (icons OK?,  Top of pages OK?)
 
 
 === SVN
