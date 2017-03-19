@@ -14,7 +14,6 @@ import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.jdt.core.ICompilationUnit;
 import org.eclipse.jdt.core.IJavaElement;
-import org.eclipse.jdt.core.ToolFactory;
 import org.eclipse.jdt.core.compiler.IScanner;
 import org.eclipse.jdt.core.compiler.ITerminalSymbols;
 import org.eclipse.jdt.core.compiler.InvalidInputException;
@@ -122,7 +121,8 @@ public class CheckUcdMarkerIterator extends AbstractUCDetectorIterator {
     return badMarkerCount;
   }
 
-  private void createMarker(IMarker markerFound, IResource resource, String message, Integer line) throws CoreException {
+  private void createMarker(IMarker markerFound, IResource resource, String message, Integer line)
+      throws CoreException {
     IMarker marker = resource.createMarker(CHECK_UCD_MARKERS);
     marker.setAttribute(IMarker.MESSAGE, message);
     marker.setAttribute(IMarker.PRIORITY, IMarker.PRIORITY_HIGH);
