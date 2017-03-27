@@ -37,7 +37,6 @@ import org.eclipse.jdt.core.compiler.IScanner;
 import org.eclipse.jdt.core.dom.AST;
 import org.eclipse.jdt.core.dom.ASTParser;
 import org.eclipse.jdt.internal.ui.JavaPluginImages;
-import org.eclipse.jdt.ui.JavaUI;
 import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.jface.resource.ImageRegistry;
 import org.eclipse.jface.util.IPropertyChangeListener;
@@ -48,7 +47,6 @@ import org.eclipse.ui.ISharedImages;
 import org.eclipse.ui.IWorkbenchWindow;
 import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.internal.WorkbenchPage;
-import org.eclipse.ui.internal.ide.IDEWorkbenchPlugin;
 import org.eclipse.ui.plugin.AbstractUIPlugin;
 import org.osgi.framework.Bundle;
 import org.osgi.framework.BundleContext;
@@ -72,6 +70,11 @@ public class UCDetectorPlugin extends AbstractUIPlugin {
   public static final String IMAGE_TODO    = "IMAGE_TODO";
   public static final String IMAGE_CYCLE   = "IMAGE_CYCLE";
   // @formatter:on
+
+  public static final String ICONS_PATH = "icons";
+  public static final String FINAL_GIF = "Final.gif";
+  public static final String UCD_GIF = "ucd.gif";
+
   /**
    * See MANIFEST.MF: Bundle-SymbolicName, and .project
    */
@@ -225,18 +228,21 @@ public class UCDetectorPlugin extends AbstractUIPlugin {
   @Override
   protected void initializeImageRegistry(ImageRegistry registry) {
     super.initializeImageRegistry(registry);
-    registry.put(IMAGE_UCD, createImage(ID, "icons/ucd.gif"));
-    // Since eclipse 3.7 icon was renamed from refresh_nav.gif to refresh.gif in platform:/plugin/
-    registry.put(IMAGE_CYCLE, createImage(ID, "icons/cycle.gif"));
-    registry.put(IMAGE_FINAL, createImage(JavaUI.ID_PLUGIN, "icons/full/ovr16/final_co.gif"));
-    registry.put(IMAGE_COMMENT, createImage(JavaUI.ID_PLUGIN, "icons/full/etool16/comment_edit.gif"));
-    registry.put(IMAGE_TODO, createImage(IDEWorkbenchPlugin.IDE_WORKBENCH, "icons/full/elcl16/showtsk_tsk.gif"));
+    // @formatter:off
+    registry.put(IMAGE_UCD    , createImage(UCD_GIF));
+    registry.put(IMAGE_CYCLE  , createImage("cycle.gif"));
+    registry.put(IMAGE_FINAL  , createImage(FINAL_GIF));
+    registry.put(IMAGE_COMMENT, createImage("comment_edit.gif"));
+    registry.put(IMAGE_TODO   , createImage("showtsk_tsk.gif"));
+    // @formatter:on
   }
 
-  private static ImageDescriptor createImage(String bundleName, String icon) {
-    IPath path = new Path(icon);
+  // Don't use JavaUI.ID_PLUGIN or IDEWorkbenchPlugin.IDE_WORKBENCH here:
+  // Icons may change between Releases (gif -> png)!
+  private static ImageDescriptor createImage(String iconName) {
+    IPath path = new Path(ICONS_PATH + "/" + iconName);
     // Other example: AbstractUIPlugin.imageDescriptorFromPlugin("plugin.name", "icons/xxx.gif");
-    Bundle bundle = Platform.getBundle(bundleName);
+    Bundle bundle = Platform.getBundle(ID);
     return JavaPluginImages.createImageDescriptor(bundle, path, true);
   }
 

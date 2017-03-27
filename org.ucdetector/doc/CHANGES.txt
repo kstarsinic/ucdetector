@@ -3,6 +3,7 @@ UCDetector 2.1.0 from XXX - eclipse >=4.2 (3.8):
 New features:
  
 Bugfixes:
+- Fixed missing QuickFix icons
  
 Changes:
  - UCDetector needs java >= 1.6 or 1.8? -> See Manifest of org.eclipse plugins

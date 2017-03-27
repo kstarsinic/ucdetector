@@ -442,10 +442,10 @@ public class XmlReport implements IUCDetectorReport {
   private static final String[] ICONS = new String[] { // @formatter:off
       //  "ElementClass.gif", "ElementField.gif", "ElementMethod.gif",//
       "FewReference.gif"     ,
-      "Final.gif"            ,
+      UCDetectorPlugin.FINAL_GIF,
       "Reference.gif"        ,
       "TestOnly.gif"         ,
-      "ucd.gif"              ,
+      UCDetectorPlugin.UCD_GIF,
       "ucdetector32.png"     ,
       "Other.gif"            ,
       "VisibilityDefault.gif",
@@ -455,7 +455,7 @@ public class XmlReport implements IUCDetectorReport {
 
   private static void copyIconFiles(File iconsOutDir) throws IOException {
     Bundle bundle = UCDetectorPlugin.getDefault().getBundle();
-    Path iconPath = new Path("icons");
+    Path iconPath = new Path(UCDetectorPlugin.ICONS_PATH);
     for (String iconName : ICONS) {
       copyToIconDir(bundle, iconPath, iconsOutDir, iconName);
     }

@@ -284,6 +284,7 @@
   </extension>
   
   <!-- *** 3 *** -->
+  <!-- ICONS SEE ALSO: UCDetectorPlugin.initializeImageRegistry() -->
   <extension point="org.eclipse.ui.editors.markerAnnotationSpecification">
     <!-- references -->
     <specification
