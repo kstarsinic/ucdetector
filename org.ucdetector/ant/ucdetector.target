@@ -7,6 +7,6 @@
     edit this file with Eclipse target editor
     for custom target platform
     ======================================================================== -->
-		<location path="/opt/eclipse-3.7" type="Directory"/>
+		<location path="/opt/eclipse-4.6.2" type="Directory"/>
 	</locations>
 </target>
