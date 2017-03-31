@@ -19,7 +19,7 @@ import org.ucdetector.UCDetectorPlugin;
 import org.ucdetector.search.UCDProgressMonitor;
 
 /**
- * 
+ *
  * Run UCDetector from command line as an application in headless mode.
  * <p>
  * See files:
@@ -114,7 +114,7 @@ public class UCDApplication implements IApplication {
           }
           // continue ---------------------------------------------------------
           if (line.length() == 0) {
-            Log.info("Type 'h' for help");
+            Log.info("Type 'h' ENTER to get help");
             continue;
           }
           if (line.startsWith("h") || line.startsWith("?")) {
@@ -143,11 +143,11 @@ public class UCDApplication implements IApplication {
     }
 
     private static void dumpHelp() {
-      Log.info("====================================");
-      Log.info("= USAGE: Type 'h' to get help      =");
-      Log.info("= USAGE: Type 'e' to exit          =");
-      Log.info("= USAGE: Type 's' to stop/continue =");
-      Log.info("====================================");
+      Log.info("========================================");
+      Log.info("= USAGE: Type 'h' ENTER to get help");
+      Log.info("= USAGE: Type 'e' ENTER to exit");
+      Log.info("= USAGE: Type 's' ENTER to stop/continue");
+      Log.info("========================================");
     }
   }
 }
