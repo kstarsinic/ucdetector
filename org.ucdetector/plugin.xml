@@ -136,8 +136,9 @@
   </extension>
     
   <!-- =====================================================================
-       OMMAND+BINDINGS to declare shortcut  Alt+Shift+U
-       ===================================================================== -->
+       COMMAND+BINDINGS to declare shortcut  Alt+Shift+U
+       2017-03-31: Removed: Does not work. Needs commands instead of actions
+       ===================================================================== 
 	<extension point="org.eclipse.ui.commands"> 
 		<command name="%command.name.0" 
 		       id="org.ucdetector.definitionId.ucd"> 
@@ -150,6 +151,7 @@
          sequence="M2+M3+U"
          /> 
   </extension>
+  -->
 
   <!-- =====================================================================
        MARKER
