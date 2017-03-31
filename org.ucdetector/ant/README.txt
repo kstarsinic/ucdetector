@@ -33,7 +33,7 @@ Build manager may need to run UCDetector without starting the Eclipse IDE
 ** $ ant
 ** $ detect.bat
 ** $ ./detect.sh
-* Check reports: ucdetector-headless/workspace/ucdetector_reports
+* Check reports: ucdetector-headless/workspace/.ucdetector_reports
 * Next steps: Change ucdetector.options, run ucdetector again
 
 

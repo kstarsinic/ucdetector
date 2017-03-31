@@ -1,6 +1,6 @@
 #!/bin/bash
 #   ------------------------------------------------------------------------------
-#   Copyright (c) 2013 Joerg Spieler All rights reserved. This program and the
+#   Copyright (c) 2017 Joerg Spieler All rights reserved. This program and the
 #   accompanying materials are made available under the terms of the Eclipse
 #   Public License v1.0 which accompanies this distribution, and is available at
 #   http://www.eclipse.org/legal/epl-v10.html
@@ -13,6 +13,7 @@
 # * Run $ ./setup.sh
 
 # == This script ==
+# * Needs a java installation
 # * Downloads eclipse
 # * Unzips eclipse
 # * Downloads UCDetector
@@ -27,7 +28,6 @@ UCDETECTOR=org.ucdetector_$UCDETECTOR_VERSION.jar
 UCDETECTOR_SOURCE=org.ucdetector.source_$UCDETECTOR_VERSION.zip
 
 ### Install java, if missing
-# java -version || sudo apt-get install -y openjdk-7-jre
 
 downloadFile(){
     downloadRemoteDir=$1
@@ -43,17 +43,15 @@ downloadFile(){
 # eclipse
 arch=`uname -m`
 if [ "$arch" == 'x86_64' ] ; then
-  # ECLIPSE=eclipse-SDK-3.8.1-linux-gtk-x86_64.tar.gz
-    ECLIPSE=eclipse-standard-luna-SR2-linux-gtk-x86_64.tar.gz
+    ECLIPSE=eclipse-committers-neon-3-linux-gtk-x86_64.tar.gz
 else
-  # ECLIPSE=eclipse-SDK-3.8.1-linux-gtk.tar.gz
-    ECLIPSE=eclipse-standard-luna-SR2-linux-gtk.tar.gz
+    ECLIPSE=eclipse-committers-neon-3-linux-gtk.tar.gz
 fi
 
 echo "== Download files =="
 mkdir -p $DOWNLOADS_DIR
 # Use Eclipse IDE for: 'Java EE Developers' or 'Eclipse Committers' ('Plug-in Development Environment' needed to load target platform)
-downloadFile http://ftp-stud.fht-esslingen.de/pub/Mirrors/eclipse/technology/epp/downloads/release/luna/SR2/ $ECLIPSE
+downloadFile http://ftp-stud.fht-esslingen.de/pub/Mirrors/eclipse/technology/epp/downloads/release/neon/3/ $ECLIPSE
 
 downloadFile http://netcologne.dl.sourceforge.net/project/ucdetector/ucdetector/$UCDETECTOR_VERSION/ $UCDETECTOR
 downloadFile http://netcologne.dl.sourceforge.net/project/ucdetector/ucdetector/$UCDETECTOR_VERSION/ $UCDETECTOR_SOURCE
