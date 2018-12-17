@@ -3,15 +3,13 @@ UCDetector 2.1.0 from XXX - eclipse >=4.2 (3.8):
 New features:
  
 Bugfixes:
-- Fixed missing QuickFix icons
+- Fixed missing QuickFix icons (https://sourceforge.net/p/ucdetector/bugs/82/)
  
 Changes:
  - UCDetector needs java >= 1.6 or 1.8? -> See Manifest of org.eclipse plugins
 
 
 Todo:
- - TODO Icon: https://sourceforge.net/p/ucdetector/bugs/82/
-   UCDetectorPlugin.initializeImageRegistry()
  - [ 3396900 ] Abstract classes' constructors can always be protected
  - [ 3400167 ] Removed warnings: Restrict method/field visibility to class visibility
  - Unused marker for code marked with javadoc @deprecated
