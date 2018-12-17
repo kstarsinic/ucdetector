@@ -233,7 +233,7 @@ public class UCDetectorPlugin extends AbstractUIPlugin {
     registry.put(IMAGE_CYCLE  , createImage("cycle.gif"));
     registry.put(IMAGE_FINAL  , createImage(FINAL_GIF));
     registry.put(IMAGE_COMMENT, createImage("comment_edit.gif"));
-    registry.put(IMAGE_TODO   , createImage("showtsk_tsk.gif"));
+    registry.put(IMAGE_TODO   , createImage("showtsk_tsk.gif")); // TODO: https://sourceforge.net/p/ucdetector/bugs/82/
     // @formatter:on
   }
 

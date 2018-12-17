@@ -10,6 +10,8 @@ Changes:
 
 
 Todo:
+ - TODO Icon: https://sourceforge.net/p/ucdetector/bugs/82/
+   UCDetectorPlugin.initializeImageRegistry()
  - [ 3396900 ] Abstract classes' constructors can always be protected
  - [ 3400167 ] Removed warnings: Restrict method/field visibility to class visibility
  - Unused marker for code marked with javadoc @deprecated
